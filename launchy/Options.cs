@@ -125,6 +125,11 @@ namespace Launchy
             textPath.Text = browseDialog.SelectedPath;
         }
 
+        private void butOkay_Click(object sender, EventArgs e)
+        {
+            
+        }
+
 
     }
 }
