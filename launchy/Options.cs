@@ -19,8 +19,8 @@ namespace Launchy
     partial class Options : Form
     {
         public List<launchyDir> dirs;
-        private int posX;
-        private int posY;
+        public int posX;
+        public int posY;
 
         public Options()
         {
