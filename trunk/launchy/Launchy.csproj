@@ -93,7 +93,6 @@
     <Compile Include="Options.Designer.cs">
       <DependentUpon>Options.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ini.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -39,6 +39,7 @@
             this.butRemove = new System.Windows.Forms.Button();
             this.listDirs = new System.Windows.Forms.ListBox();
             this.browseDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.butOkay = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
@@ -142,11 +143,25 @@
             this.listDirs.Size = new System.Drawing.Size(362, 95);
             this.listDirs.TabIndex = 0;
 // 
+// butOkay
+// 
+            this.butOkay.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.butOkay.Location = new System.Drawing.Point(403, 289);
+            this.butOkay.Name = "butOkay";
+            this.butOkay.TabIndex = 1;
+            this.butOkay.Text = "Okay";
+            this.butOkay.Click += new System.EventHandler(this.butOkay_Click);
+// 
 // Options
 // 
+            this.AcceptButton = this.butOkay;
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(490, 294);
+            this.ClientSize = new System.Drawing.Size(493, 330);
+            this.ControlBox = false;
+            this.Controls.Add(this.butOkay);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "Options";
             this.Text = "Form2";
             this.Load += new System.EventHandler(this.Options_Load);
@@ -171,5 +186,6 @@
         private System.Windows.Forms.TextBox textPath;
         private System.Windows.Forms.Button butRemove;
         private System.Windows.Forms.FolderBrowserDialog browseDialog;
+        private System.Windows.Forms.Button butOkay;
     }
 }

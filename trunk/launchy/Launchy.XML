@@ -20,37 +20,6 @@
             the contents of this method with the code editor.
             </summary>
         </member>
-        <member name="T:Ini.IniFile">
-            <summary>
-            Create a New INI file to store or load data
-            </summary>
-        </member>
-        <member name="M:Ini.IniFile.#ctor(System.String)">
-            <summary>
-            INIFile Constructor.
-            </summary>
-            <PARAM name="INIPath"></PARAM>
-        </member>
-        <member name="M:Ini.IniFile.IniWriteValue(System.String,System.String,System.String)">
-            <summary>
-            Write Data to the INI File
-            </summary>
-            <PARAM name="Section"></PARAM>
-            Section name
-            <PARAM name="Key"></PARAM>
-            Key Name
-            <PARAM name="Value"></PARAM>
-            Value Name
-        </member>
-        <member name="M:Ini.IniFile.IniReadValue(System.String,System.String)">
-            <summary>
-            Read Data Value From the Ini File
-            </summary>
-            <PARAM name="Section"></PARAM>
-            <PARAM name="Key"></PARAM>
-            <PARAM name="Path"></PARAM>
-            <returns></returns>
-        </member>
         <member name="T:Onyeyiri.HotKeyEventHandler">
             <summary>
             Delegate for HotKeyManager events.

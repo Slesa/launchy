@@ -27,7 +27,6 @@ using System.Windows.Forms;
 using System.Data;
 using Onyeyiri;
 using System.Collections.Generic;
-using Ini;
 using System.Threading;
 using System.Timers;
 using System.Text;
