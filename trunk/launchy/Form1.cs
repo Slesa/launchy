@@ -204,18 +204,7 @@ namespace Launchy
                     else
                         rec.croppedName = rec.Name;
 
-                    // Is it a duplicate?
-                    bool isdup = false;
 
-                    /*
-                    // This is expensive, it's n^2 just to add records
-                    // to the catalog.  We need to find a slick way around this.
-					foreach(Record r in catalog) 
-					{
-						if (r.Name == rec.Name) 
-							isdup = true;
-					}
-                    */
                     if (!catalog.ContainsKey(rec.Name))
                         catalog.Add(rec.Name, (object)rec);
                 }
@@ -475,26 +464,7 @@ namespace Launchy
             catch (Exception ex) { MessageBox.Show(ex.ToString()); }
 
             // Set the window position
-
-            // Attempt to open the key
-            RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Launchy\\WindowPos");
-
-            // If the return value is null, the key doesn't exist
-            if (key == null)
-            {
-                // The key doesn't exist; create it / open it
-                key = Registry.CurrentUser.CreateSubKey("Software\\Launchy\\WindowPos");
-            }
-
-            // Attempt to retrieve the value X; if null is returned, the value
-            // doesn't exist in the registry.
-            if (key.GetValue("X") != null)
-            {
-                // The value exists; move the form to the coordinates stored in the
-                // registry.
-                Location = new Point((int)key.GetValue("X"), (int)key.GetValue("Y"));
-            }
-
+            Location = new Point(options.posX, options.posY);
 
             listBox.DrawItem += new DrawItemEventHandler(listBox_DrawItem);
         }
