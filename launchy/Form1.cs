@@ -182,6 +182,12 @@ namespace Launchy
                     rec.type = type;
                     rec.launcher = launcher;
 
+                    int ind = rec.Name.IndexOf(type);
+                    if (ind != -1)
+                        rec.croppedName = rec.Name.Substring(0, ind);
+                    else
+                        rec.croppedName =  rec.Name;
+
                     // Is it a duplicate?
 					bool isdup = false;
 
@@ -215,7 +221,7 @@ namespace Launchy
 			scanMenu(allMenus, ".lnk",exeL);
             
             // Want mp3 listings?  Do something like this.. it works great!
-            // scanMenu("C:\\Documents and Settings\\karlinjf\\My Documents\\My Music", ".mp3", exeL);
+             scanMenu("C:\\Documents and Settings\\karlinjf\\My Documents\\My Music", ".mp3", exeL);
 		}
 
 
@@ -452,7 +458,7 @@ namespace Launchy
 			//			MessageBox.Show(text)
 			// Find the records that match
 			currentMatches.Clear();
-			string regex = "^.*";
+			string regex = ".*";
 			foreach (char c in text) 
 			{
 				regex += c + ".*"; 
@@ -465,7 +471,7 @@ namespace Launchy
             for (int i = 0; i < catalog.Count; i++)
             {
                 Record rec = (Record)catalog.GetByIndex(i);
-                m = r.Match(rec.Name);
+                m = r.Match(rec.croppedName);
                 if (m.Success)
                 {
                     rec.match = m;
@@ -481,7 +487,7 @@ namespace Launchy
 
 			if (currentMatches.Count > 0) 
 			{
-                String best = ((Record)currentMatches[0]).ToString();
+                String best = ((Record)currentMatches[0]).croppedName;
 					Suggestion.Text = best;
 //				Suggestion.Text = ((Record) currentMatches[0]).Name.TrimEnd(".lnk".ToCharArray());
                 selectedRecord = (Record)currentMatches[0];
@@ -593,7 +599,12 @@ namespace Launchy
         /// The filename
         /// </summary>
 		public String Name;
-        
+
+        /// <summary>
+        /// The name without the type at the end
+        /// </summary>
+        public String croppedName;
+
         /// <summary>
         /// The lowercase version of the filename.  Stored this way so that it only has to be done once.
         /// </summary>
@@ -622,12 +633,8 @@ namespace Launchy
         /// <returns></returns>
 		public override string ToString() 
 		{
-            int ind = Name.IndexOf(type);
-			if (ind != -1)
-				return Name.Substring(0,ind);
-			else
-				return Name;
-		}
+            return croppedName;
+        }
 
 
        /// <summary>
