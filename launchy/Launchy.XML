@@ -231,20 +231,6 @@
             Launch the currently selected record
             </summary>
         </member>
-        <member name="M:Launchy.Launchy.sortMatches(System.String)">
-            <summary>
-            An n^2 sorting function, obviously not super fast but it has its benefits.  It's essentially 
-            bubblesort except that there are 2 variables being sorted on not just 1 like most sorts.  First, if
-            the entire string is found as a substring within the current index's string, then it takes sorting priority (moves closer to the front)
-            over its neighbor.
-            Otherwise, if there is a tie (they either both contain the substring or neither do), then the shorter of the matched strings moves
-            closer to the front.
-            
-            If after an iteration through the entire list no change is made, terminate early.
-            
-            </summary>
-            <param name="lowtext">The lowercase version of the query entered by the user</param>
-        </member>
         <member name="M:Launchy.Launchy.updateFields(System.String)">
             <summary>
             When it's time to find the best matches for the users query, this function gets called.
@@ -304,6 +290,18 @@
             Returns the filename without the type attachment at the end
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Launchy.Record.CompareTo(System.Object)">
+            <summary>
+            This CompareTo is used for a query.  The catalog is kept sorted via
+            the usual String.CompareTo
+            We sort based on two variables.  We take preference to strings which have exact substring matches
+            with the query.  Otherwise, we sort by string length, shorter is better.
+            </summary>
+            <param name="x">the other record to compare to</param>
+            <returns>1 if 'this' is greater than x
+                     -1 if 'this' is less than x
+                     0 if tied</returns>
         </member>
     </members>
 </doc>

@@ -69,7 +69,7 @@ namespace Launchy
         /// <summary>
         /// The catalog of records
         /// </summary>
-		private ArrayList catalog;
+        private SortedList catalog;
         /// <summary>
         /// The result of the last query
         /// </summary>
@@ -78,6 +78,7 @@ namespace Launchy
         private bool ignoreNextChange;
 		private System.Windows.Forms.TextBox Suggestion;
         private Launcher exeL = new exeLauncher();
+        public static String queryText;
 
         private System.ComponentModel.Container components = null;
         #endregion
@@ -146,7 +147,7 @@ namespace Launchy
         /// </summary>
 		private void rescan() 
 		{
-			catalog.RemoveRange(0, catalog.Count);
+			catalog.Clear();
 			scanStartMenu();
 		}
 
@@ -184,6 +185,7 @@ namespace Launchy
                     // Is it a duplicate?
 					bool isdup = false;
 
+                    /*
                     // This is expensive, it's n^2 just to add records
                     // to the catalog.  We need to find a slick way around this.
 					foreach(Record r in catalog) 
@@ -191,8 +193,9 @@ namespace Launchy
 						if (r.Name == rec.Name) 
 							isdup = true;
 					}
-					if (!isdup)
-						catalog.Add(rec);
+                    */
+                    if (!catalog.ContainsKey(rec.Name))
+						catalog.Add(rec.Name, (object)rec);
 				}
 			}
 			catch(Exception e) {return;}
@@ -210,6 +213,9 @@ namespace Launchy
 			allMenus = allMenus + "Start Menu";
 			scanMenu(myMenu, ".lnk", exeL);
 			scanMenu(allMenus, ".lnk",exeL);
+            
+            // Want mp3 listings?  Do something like this.. it works great!
+            // scanMenu("C:\\Documents and Settings\\karlinjf\\My Documents\\My Music", ".mp3", exeL);
 		}
 
 
@@ -224,7 +230,7 @@ namespace Launchy
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-			catalog = new ArrayList(100);
+			catalog = new SortedList(100);
 			currentMatches = new ArrayList(100);
 			ignoreNextChange = false;
 
@@ -431,52 +437,6 @@ namespace Launchy
 		}
 
 
-        /// <summary>
-        /// An n^2 sorting function, obviously not super fast but it has its benefits.  It's essentially 
-        /// bubblesort except that there are 2 variables being sorted on not just 1 like most sorts.  First, if
-        /// the entire string is found as a substring within the current index's string, then it takes sorting priority (moves closer to the front)
-        /// over its neighbor.
-        /// Otherwise, if there is a tie (they either both contain the substring or neither do), then the shorter of the matched strings moves
-        /// closer to the front.
-        /// 
-        /// If after an iteration through the entire list no change is made, terminate early.
-        /// 
-        /// </summary>
-        /// <param name="lowtext">The lowercase version of the query entered by the user</param>
-		private void sortMatches(String lowtext) 
-		{
-			bool madeChange = false;
-
-			for(int i = 0; i < currentMatches.Count-1; i++) 
-			{
-				madeChange = false;
-				for(int j = 0; j < currentMatches.Count-1; j++) 
-				{	
-					Record jr = (Record) currentMatches[j];
-					Record jr1 = (Record) currentMatches[j+1];
-					if (jr1.LowName.IndexOf(lowtext) > -1 && jr.LowName.IndexOf(lowtext) == -1)
-					{
-						madeChange = true;
-						currentMatches[j] = jr1;
-						currentMatches[j+1] = jr;
-					}
-						
-					if (jr1.LowName.IndexOf(lowtext) != -1 && jr.LowName.IndexOf(lowtext) != -1 ||
-						jr1.LowName.IndexOf(lowtext) == -1 && jr.LowName.IndexOf(lowtext) == -1)
-					{
-						if (jr.Name.Length > jr1.Name.Length) 
-						{
-							madeChange = true;
-							currentMatches[j] = jr1;
-							currentMatches[j+1] = jr;
-						}
-					}
-				}
-				if (!madeChange) { break; }
-			}
-
-
-		}
 
 
         /// <summary>
@@ -502,17 +462,22 @@ namespace Launchy
 			Regex r = new Regex(regex, RegexOptions.IgnoreCase);
 
 			Match m;
-			foreach (Record rec in catalog) 
-			{
-				m = r.Match(rec.Name);
-				if (m.Success) { 
-					rec.match = m;
-					currentMatches.Add(rec); 
-				}
-			}
-			// Sort the matches
+            for (int i = 0; i < catalog.Count; i++)
+            {
+                Record rec = (Record)catalog.GetByIndex(i);
+                m = r.Match(rec.Name);
+                if (m.Success)
+                {
+                    rec.match = m;
+                    currentMatches.Add(rec);
+                }
+            }
 
-			sortMatches(lowtext);
+			// Sort the matches
+        
+            queryText = lowtext;
+            currentMatches.Sort();
+		//	sortMatches(lowtext);
 
 			if (currentMatches.Count > 0) 
 			{
@@ -621,7 +586,8 @@ namespace Launchy
         }
     }
 
-    public class Record
+
+    public class Record : IComparable
 	{
         /// <summary>
         /// The filename
@@ -662,5 +628,40 @@ namespace Launchy
 			else
 				return Name;
 		}
+
+
+       /// <summary>
+       /// This CompareTo is used for a query.  The catalog is kept sorted via
+       /// the usual String.CompareTo
+       /// We sort based on two variables.  We take preference to strings which have exact substring matches
+       /// with the query.  Otherwise, we sort by string length, shorter is better.
+       /// </summary>
+       /// <param name="x">the other record to compare to</param>
+       /// <returns>1 if 'this' is greater than x
+       ///          -1 if 'this' is less than x
+       ///          0 if tied</returns>
+
+        public int CompareTo(object x) {
+            Record y = (Record) x;
+
+            if (y.LowName.IndexOf(Launchy.queryText) > -1 && this.LowName.IndexOf(Launchy.queryText) == -1)
+			{
+                return 1;
+			}
+            if (this.LowName.IndexOf(Launchy.queryText) > -1 && y.LowName.IndexOf(Launchy.queryText) == -1)
+            {
+                return -1;
+            }
+            if (this.Name.Length > y.Name.Length)
+            {
+                return 1;
+            }
+            if (this.Name.Length <= y.Name.Length)
+            {
+                return -1;
+            }
+            
+            return 0;
+        }
 	}
 }
