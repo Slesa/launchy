@@ -265,6 +265,11 @@
             The filename
             </summary>
         </member>
+        <member name="F:Launchy.Record.croppedName">
+            <summary>
+            The name without the type at the end
+            </summary>
+        </member>
         <member name="F:Launchy.Record.LowName">
             <summary>
             The lowercase version of the filename.  Stored this way so that it only has to be done once.
