@@ -4,6 +4,53 @@
         <name>Launchy</name>
     </assembly>
     <members>
+        <member name="F:Launchy.Options.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Launchy.Options.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:Launchy.Options.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Ini.IniFile">
+            <summary>
+            Create a New INI file to store or load data
+            </summary>
+        </member>
+        <member name="M:Ini.IniFile.#ctor(System.String)">
+            <summary>
+            INIFile Constructor.
+            </summary>
+            <PARAM name="INIPath"></PARAM>
+        </member>
+        <member name="M:Ini.IniFile.IniWriteValue(System.String,System.String,System.String)">
+            <summary>
+            Write Data to the INI File
+            </summary>
+            <PARAM name="Section"></PARAM>
+            Section name
+            <PARAM name="Key"></PARAM>
+            Key Name
+            <PARAM name="Value"></PARAM>
+            Value Name
+        </member>
+        <member name="M:Ini.IniFile.IniReadValue(System.String,System.String)">
+            <summary>
+            Read Data Value From the Ini File
+            </summary>
+            <PARAM name="Section"></PARAM>
+            <PARAM name="Key"></PARAM>
+            <PARAM name="Path"></PARAM>
+            <returns></returns>
+        </member>
         <member name="T:Onyeyiri.HotKeyEventHandler">
             <summary>
             Delegate for HotKeyManager events.
@@ -136,22 +183,22 @@
             </summary>
             <param name="id">Hotkey ID.</param>
         </member>
-        <member name="T:Launchy.Launchy">
+        <member name="T:Launchy.Form1">
             <summary>
             Summary description for Form1.
             </summary>
         </member>
-        <member name="F:Launchy.Launchy.catalog">
+        <member name="F:Launchy.Form1.catalog">
             <summary>
             The catalog of records
             </summary>
         </member>
-        <member name="F:Launchy.Launchy.currentMatches">
+        <member name="F:Launchy.Form1.currentMatches">
             <summary>
             The result of the last query
             </summary>
         </member>
-        <member name="M:Launchy.Launchy.Handler(System.Int32)">
+        <member name="M:Launchy.Form1.Handler(System.Int32)">
             <summary>
             At program launch sets the program to not visible
             
@@ -159,7 +206,7 @@
             </summary>
             <param name="id">not used</param>
         </member>
-        <member name="M:Launchy.Launchy.onTimer(System.Object,System.Timers.ElapsedEventArgs)">
+        <member name="M:Launchy.Form1.onTimer(System.Object,System.Timers.ElapsedEventArgs)">
             <summary>
             Called when the user has typed in a query but has not hit enter before the timeout, so we should
             show a dropdown list of other suggestions.
@@ -167,19 +214,19 @@
             <param name="source">unused</param>
             <param name="e">unused</param>
         </member>
-        <member name="M:Launchy.Launchy.onRescanTimer(System.Object,System.Timers.ElapsedEventArgs)">
+        <member name="M:Launchy.Form1.onRescanTimer(System.Object,System.Timers.ElapsedEventArgs)">
             <summary>
             A callback timer function to rescan the catalog.  It simply calls rescan().
             </summary>
             <param name="source">unused</param>
             <param name="e">unused</param>
         </member>
-        <member name="M:Launchy.Launchy.rescan">
+        <member name="M:Launchy.Form1.rescan">
             <summary>
             Emptyes the catalog and refills it with fresh records
             </summary>
         </member>
-        <member name="M:Launchy.Launchy.scanMenu(System.String,System.String,Launchy.Launcher)">
+        <member name="M:Launchy.Form1.scanMenu(System.String,System.String,Launchy.Launcher)">
             <summary>
             Given a directory and a filetype it recursively (infinite depth) scans the
             directory and subdirectories for the file type, creates records of them, and
@@ -189,36 +236,36 @@
             <param name="type">The filetype to search for</param>
             <param name="launcher">The class which knows how to execute the type</param>
         </member>
-        <member name="M:Launchy.Launchy.scanStartMenu">
+        <member name="M:Launchy.Form1.scanStartMenu">
             <summary>
             Automagically detects the locations of the start menu directories and adds their contents to the
             catalog by calling scanMenu() on those directories with "*.lnk" as the file type
             </summary>
         </member>
-        <member name="M:Launchy.Launchy.#ctor">
+        <member name="M:Launchy.Form1.#ctor">
             <summary>
             Does the routine startup stuff such as starting the timers, performing the initial catalog update,
             and setting visibility as well as boilerplate GUI code.
             </summary>
         </member>
-        <member name="M:Launchy.Launchy.Dispose(System.Boolean)">
+        <member name="M:Launchy.Form1.Dispose(System.Boolean)">
             <summary>
             Application shutdown.  Save the XY coordinates of the program to the registry.
             </summary>
             <param name="disposing"></param>
         </member>
-        <member name="M:Launchy.Launchy.InitializeComponent">
+        <member name="M:Launchy.Form1.InitializeComponent">
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
             </summary>
         </member>
-        <member name="M:Launchy.Launchy.Main">
+        <member name="M:Launchy.Form1.Main">
             <summary>
             The main entry point for the application.
             </summary>
         </member>
-        <member name="M:Launchy.Launchy.Form1_Load(System.Object,System.EventArgs)">
+        <member name="M:Launchy.Form1.Form1_Load(System.Object,System.EventArgs)">
             <summary>
             Setup the background image, enable transparency, and move the window position
             to that saved in the registry if available
@@ -226,12 +273,12 @@
             <param name="sender">unused</param>
             <param name="e">unused</param>
         </member>
-        <member name="M:Launchy.Launchy.Execute">
+        <member name="M:Launchy.Form1.Execute">
             <summary>
             Launch the currently selected record
             </summary>
         </member>
-        <member name="M:Launchy.Launchy.updateFields(System.String)">
+        <member name="M:Launchy.Form1.updateFields(System.String)">
             <summary>
             When it's time to find the best matches for the users query, this function gets called.
             
@@ -241,7 +288,7 @@
             </summary>
             <param name="text">The user's query</param>
         </member>
-        <member name="M:Launchy.Launchy.listBox_KeyPress(System.Object,System.Windows.Forms.KeyPressEventArgs)">
+        <member name="M:Launchy.Form1.listBox_KeyPress(System.Object,System.Windows.Forms.KeyPressEventArgs)">
             <summary>
             We need to register all keystrokes, and this is the function to do it.
             Escape key makes the program dissapear
@@ -252,7 +299,7 @@
             <param name="sender">unused</param>
             <param name="e">unused</param>
         </member>
-        <member name="M:Launchy.Launchy.listBox_TextChanged(System.Object,System.EventArgs)">
+        <member name="M:Launchy.Form1.listBox_TextChanged(System.Object,System.EventArgs)">
             <summary>
             If listbox_KeyPress doesn't know what to do with the key press then it's going to be
             part of the user's query, update matches based upon the new query.
