@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?>
+<UpgradeLog>
+<Properties><Property Name="Solution" Value="typelaunch">
+</Property><Property Name="Solution File" Value="C:\dev\typelaunch\typelaunch.sln">
+</Property><Property Name="Date" Value="Saturday, March 05, 2005">
+</Property><Property Name="Time" Value="11:33 AM">
+</Property></Properties><Event ErrorLevel="0" Project="typelaunch" Source="typelaunch.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="typelaunch" Source="typelaunch.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="typelaunch.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="typelaunch.sln" Description="Converted">
+</Event></UpgradeLog>

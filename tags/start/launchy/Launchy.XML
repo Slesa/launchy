@@ -1,0 +1,309 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Launchy</name>
+    </assembly>
+    <members>
+        <member name="T:Onyeyiri.HotKeyEventHandler">
+            <summary>
+            Delegate for HotKeyManager events.
+            </summary>
+        </member>
+        <member name="T:Onyeyiri.HotKeyModifier">
+            <summary>
+            Modifiers for hot keys.
+            </summary>
+        </member>
+        <member name="F:Onyeyiri.HotKeyModifier.Alt">
+            <summary>
+            Alt key.
+            </summary>
+        </member>
+        <member name="F:Onyeyiri.HotKeyModifier.Control">
+            <summary>
+            Control key.
+            </summary>
+        </member>
+        <member name="F:Onyeyiri.HotKeyModifier.Shift">
+            <summary>
+            Shift key.
+            </summary>
+        </member>
+        <member name="F:Onyeyiri.HotKeyModifier.Windows">
+            <summary>
+            Windows key.
+            </summary>
+        </member>
+        <member name="T:Onyeyiri.HotKey">
+            <summary>
+            Contains information on a hotkey.
+            </summary>
+        </member>
+        <member name="M:Onyeyiri.HotKey.#ctor(System.Windows.Forms.Keys,Onyeyiri.HotKeyModifier,System.Int32,Onyeyiri.HotKeyEventHandler)">
+            <summary>
+            Creates a new HotKey object.
+            </summary>
+            <param name="key">Key.</param>
+            <param name="modifiers">Key modifiers.</param>
+            <param name="id">Hotkey ID.</param>
+            <param name="handler">Hotkey event handler.</param>
+        </member>
+        <member name="P:Onyeyiri.HotKey.ID">
+            <summary>
+            Gets the hotkey identifier.
+            </summary>
+        </member>
+        <member name="P:Onyeyiri.HotKey.Modifiers">
+            <summary>
+            Gets the hotkeys modifiers.
+            </summary>
+        </member>
+        <member name="P:Onyeyiri.HotKey.Key">
+            <summary>
+            Gets the hotkeys key.
+            </summary>
+        </member>
+        <member name="P:Onyeyiri.HotKey.Handler">
+            <summary>
+            Gets / Sets the hotkeys event handler.
+            </summary>
+        </member>
+        <member name="T:Onyeyiri.HotKeyManager">
+            <summary>
+            Manages the registering and unregistering of hotkeys.
+            </summary>
+        </member>
+        <member name="M:Onyeyiri.HotKeyManager.#ctor">
+            <summary>
+            Creates a new HotKeyManager object.
+            </summary>
+        </member>
+        <member name="M:Onyeyiri.HotKeyManager.Register(System.Windows.Forms.Keys,Onyeyiri.HotKeyModifier,System.Int32,Onyeyiri.HotKeyEventHandler)">
+            <summary>
+            Registers a new hotkey.
+            </summary>
+            <param name="key">Key.</param>
+            <param name="modifier">Key modifiers.</param>
+            <param name="id">Hotkey ID.</param>
+            <param name="handler">Hotkey event handler.</param>
+            <returns>True if hotkey was registered, otherwise false.</returns>
+        </member>
+        <member name="M:Onyeyiri.HotKeyManager.Register(Onyeyiri.HotKey)">
+            <summary>
+            Registers a new hotkey.
+            </summary>
+            <param name="hk">Hotkey to register.</param>
+            <returns>True if hotkey was registered, otherwise false.</returns>
+        </member>
+        <member name="M:Onyeyiri.HotKeyManager.Unregister(System.Int32)">
+            <summary>
+            Unregisters the specified hotkey.
+            </summary>
+            <param name="id">Hotkey Id.</param>
+            <returns>True if the hotkey was unregistered, otherwise false.</returns>
+        </member>
+        <member name="M:Onyeyiri.HotKeyManager.Unregister(Onyeyiri.HotKey)">
+            <summary>
+            Unregisters the specified hotkey.
+            </summary>
+            <param name="hk">Hotkey to unregister.</param>
+            <returns>True if the hotkey was unregistered, otherwise false.</returns>
+        </member>
+        <member name="E:Onyeyiri.HotKeyManager.HotKeyHit">
+            <summary>
+            Event fired when hotkey doesnt have its own event handler specified.
+            </summary>
+        </member>
+        <member name="T:Onyeyiri.HotKeyManager.HotKeyCollection">
+            <summary>
+            Collection for HotKey objects.
+            </summary>
+        </member>
+        <member name="M:Onyeyiri.HotKeyManager.HotKeyCollection.#ctor">
+            <summary>
+            Creates a new hotkey collection.
+            </summary>
+        </member>
+        <member name="M:Onyeyiri.HotKeyManager.HotKeyCollection.Add(Onyeyiri.HotKey)">
+            <summary>
+            Adds a hotkey to the collection.
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:Onyeyiri.HotKeyManager.HotKeyCollection.RemoveId(System.Int32)">
+            <summary>
+            Removes the hotkey with the specified ID from the colleciton.
+            </summary>
+            <param name="id">Hotkey ID.</param>
+        </member>
+        <member name="T:Launchy.Launchy">
+            <summary>
+            Summary description for Form1.
+            </summary>
+        </member>
+        <member name="F:Launchy.Launchy.catalog">
+            <summary>
+            The catalog of records
+            </summary>
+        </member>
+        <member name="F:Launchy.Launchy.currentMatches">
+            <summary>
+            The result of the last query
+            </summary>
+        </member>
+        <member name="M:Launchy.Launchy.Handler(System.Int32)">
+            <summary>
+            At program launch sets the program to not visible
+            
+            Otherwise it toggles visibility
+            </summary>
+            <param name="id">not used</param>
+        </member>
+        <member name="M:Launchy.Launchy.onTimer(System.Object,System.Timers.ElapsedEventArgs)">
+            <summary>
+            Called when the user has typed in a query but has not hit enter before the timeout, so we should
+            show a dropdown list of other suggestions.
+            </summary>
+            <param name="source">unused</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="M:Launchy.Launchy.onRescanTimer(System.Object,System.Timers.ElapsedEventArgs)">
+            <summary>
+            A callback timer function to rescan the catalog.  It simply calls rescan().
+            </summary>
+            <param name="source">unused</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="M:Launchy.Launchy.rescan">
+            <summary>
+            Emptyes the catalog and refills it with fresh records
+            </summary>
+        </member>
+        <member name="M:Launchy.Launchy.scanMenu(System.String,System.String,Launchy.Launcher)">
+            <summary>
+            Given a directory and a filetype it recursively (infinite depth) scans the
+            directory and subdirectories for the file type, creates records of them, and
+            adds them to the catalog
+            </summary>
+            <param name="dir">The root of the directory tree to search</param>
+            <param name="type">The filetype to search for</param>
+            <param name="launcher">The class which knows how to execute the type</param>
+        </member>
+        <member name="M:Launchy.Launchy.scanStartMenu">
+            <summary>
+            Automagically detects the locations of the start menu directories and adds their contents to the
+            catalog by calling scanMenu() on those directories with "*.lnk" as the file type
+            </summary>
+        </member>
+        <member name="M:Launchy.Launchy.#ctor">
+            <summary>
+            Does the routine startup stuff such as starting the timers, performing the initial catalog update,
+            and setting visibility as well as boilerplate GUI code.
+            </summary>
+        </member>
+        <member name="M:Launchy.Launchy.Dispose(System.Boolean)">
+            <summary>
+            Application shutdown.  Save the XY coordinates of the program to the registry.
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:Launchy.Launchy.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Launchy.Launchy.Main">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+        <member name="M:Launchy.Launchy.Form1_Load(System.Object,System.EventArgs)">
+            <summary>
+            Setup the background image, enable transparency, and move the window position
+            to that saved in the registry if available
+            </summary>
+            <param name="sender">unused</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="M:Launchy.Launchy.Execute">
+            <summary>
+            Launch the currently selected record
+            </summary>
+        </member>
+        <member name="M:Launchy.Launchy.sortMatches(System.String)">
+            <summary>
+            An n^2 sorting function, obviously not super fast but it has its benefits.  It's essentially 
+            bubblesort except that there are 2 variables being sorted on not just 1 like most sorts.  First, if
+            the entire string is found as a substring within the current index's string, then it takes sorting priority (moves closer to the front)
+            over its neighbor.
+            Otherwise, if there is a tie (they either both contain the substring or neither do), then the shorter of the matched strings moves
+            closer to the front.
+            
+            If after an iteration through the entire list no change is made, terminate early.
+            
+            </summary>
+            <param name="lowtext">The lowercase version of the query entered by the user</param>
+        </member>
+        <member name="M:Launchy.Launchy.updateFields(System.String)">
+            <summary>
+            When it's time to find the best matches for the users query, this function gets called.
+            
+            It clears the current list of matches, then it finds all records in the catalog that match
+            the loose general expression form of the user's query, then it sorts the matching records by 
+            calling sortMatches, and finally it places the #1 suggestion in the suggestion box found in the GUI
+            </summary>
+            <param name="text">The user's query</param>
+        </member>
+        <member name="M:Launchy.Launchy.listBox_KeyPress(System.Object,System.Windows.Forms.KeyPressEventArgs)">
+            <summary>
+            We need to register all keystrokes, and this is the function to do it.
+            Escape key makes the program dissapear
+            Return key causes execution
+            Keys which confuse the regular expression matcher such as ( * and . are ignored
+            
+            </summary>
+            <param name="sender">unused</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="M:Launchy.Launchy.listBox_TextChanged(System.Object,System.EventArgs)">
+            <summary>
+            If listbox_KeyPress doesn't know what to do with the key press then it's going to be
+            part of the user's query, update matches based upon the new query.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:Launchy.Record.Name">
+            <summary>
+            The filename
+            </summary>
+        </member>
+        <member name="F:Launchy.Record.LowName">
+            <summary>
+            The lowercase version of the filename.  Stored this way so that it only has to be done once.
+            </summary>
+        </member>
+        <member name="F:Launchy.Record.Path">
+            <summary>
+            The path to the file
+            </summary>
+        </member>
+        <member name="F:Launchy.Record.type">
+            <summary>
+            The file extension that was used to match this file
+            </summary>
+        </member>
+        <member name="F:Launchy.Record.launcher">
+            <summary>
+            The class which knows how to execute this type of file
+            </summary>
+        </member>
+        <member name="M:Launchy.Record.ToString">
+            <summary>
+            Returns the filename without the type attachment at the end
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
