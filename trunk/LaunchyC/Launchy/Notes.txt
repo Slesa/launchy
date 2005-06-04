@@ -1,2 +1,2 @@
-I left off at LaunchySmarts->ScanMenu, it currently reads all the files, now I need to print them to make sure it's
-got the correct ones.
+Why doesn't 'windows update' come up?
+Why don't the office lnks work?!?!?!

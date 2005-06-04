@@ -51,6 +51,8 @@ CLaunchyApp::CLaunchyApp()
 CLaunchyApp theApp;
 
 
+CString searchTxt;
+
 // CLaunchyApp initialization
 
 BOOL CLaunchyApp::InitInstance()

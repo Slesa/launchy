@@ -35,12 +35,13 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
     CTypeEdit      m_edit;
     CListBox   m_listbox;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnDestroy();
+	afx_msg void OnCbnEditupdate();
+//	afx_msg void OnCbnSelchange();
+	afx_msg void OnCbnCloseup();
 };
 
 

@@ -20,11 +20,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 
+class FileRecord;
+
 class Launcher
 {
 public:
 	Launcher(void);
 	~Launcher(void);
-	virtual void Run(CString
-		path) = 0;
+	virtual void Run(FileRecord
+		file) = 0;
 };

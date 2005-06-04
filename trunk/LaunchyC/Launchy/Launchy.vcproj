@@ -6,6 +6,7 @@
 	ProjectGUID="{6558DB3A-6C08-41BC-A42B-CA5DF22D07F7}"
 	RootNamespace="Launchy"
 	Keyword="MFCProj"
+	SignManifests="true"
 	>
 	<Platforms>
 		<Platform
@@ -204,6 +205,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FileRecord.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Launcher.cpp"
 				>
 			</File>
@@ -274,6 +279,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FileRecord.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Launcher.h"
 				>
 			</File>
@@ -294,11 +303,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OpaqueListBox.h"
+				RelativePath=".\Options.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Options.h"
+				RelativePath=".\QArray.h"
 				>
 			</File>
 			<File
