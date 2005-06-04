@@ -38,7 +38,7 @@ CLaunchyDlg::CLaunchyDlg(CWnd* pParent /*=NULL*/)
 : CDialogSK(CLaunchyDlg::IDD, pParent)
 , DelayTimer(0)
 {
-	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 
 	atLaunch = true;
 

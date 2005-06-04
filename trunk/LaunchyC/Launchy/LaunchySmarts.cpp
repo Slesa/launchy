@@ -127,7 +127,7 @@ void LaunchySmarts::Update(CString txt)
 	}
 
 	int size = matches.GetSize();
-	for(int i = 0; i < size && i < 50; i++) {
+	for(int i = 0; i < size && i < 10; i++) {
 		dlg->InputBox.AddString(matches[i].croppedName);
 	}
 }
@@ -145,7 +145,7 @@ void LaunchySmarts::FindMatches(CString txt)
 
 
 
-BOOL LaunchySmarts::Match(FileRecord record, CString txt)
+inline BOOL LaunchySmarts::Match(FileRecord record, CString txt)
 {
 	int size = record.lowName.GetLength();
 	int txtSize = txt.GetLength();
