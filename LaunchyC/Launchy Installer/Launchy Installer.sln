@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Launchy Installer", "Launchy Installer\Launchy Installer.vdproj", "{96F63D5A-75A3-4AB5-A9A9-5CBDD50BF77F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{96F63D5A-75A3-4AB5-A9A9-5CBDD50BF77F}.Debug|Default.ActiveCfg = Debug
+		{96F63D5A-75A3-4AB5-A9A9-5CBDD50BF77F}.Debug|Default.Build.0 = Debug
+		{96F63D5A-75A3-4AB5-A9A9-5CBDD50BF77F}.Release|Default.ActiveCfg = Release
+		{96F63D5A-75A3-4AB5-A9A9-5CBDD50BF77F}.Release|Default.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
