@@ -31,21 +31,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // CLaunchyDlg dialog
 
-
-
+#define DELAY_TIMER 100
+#define UPDATE_TIMER 101
 
 CLaunchyDlg::CLaunchyDlg(CWnd* pParent /*=NULL*/)
 : CDialogSK(CLaunchyDlg::IDD, pParent)
+, DelayTimer(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
 	atLaunch = true;
+
+	m_Font.CreatePointFont(100,_T("Trebuchet MS"));
+
+	DelayTimer = 100;
 }
 
 void CLaunchyDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogSK::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_Input, InputBox);
+	DDX_Control(pDX, IDC_PREVIEW, Preview);
 }
 
 BEGIN_MESSAGE_MAP(CLaunchyDlg, CDialogSK)
@@ -57,6 +63,7 @@ BEGIN_MESSAGE_MAP(CLaunchyDlg, CDialogSK)
 	ON_WM_CLOSE()
 	ON_WM_DESTROY()
 	ON_CBN_SELCHANGE(IDC_Input, &CLaunchyDlg::OnCbnSelchangeInput)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -72,6 +79,8 @@ BOOL CLaunchyDlg::OnInitDialog()
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
+
+
 
 	// BEGIN SKINNING FUNCTIONS
 	EnableEasyMove();                       // enable moving of
@@ -98,6 +107,18 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 	ASSERT(m_isKeyRegistered != FALSE);
 
+
+
+	InputBox.SetFont(&m_Font);
+	Preview.SetFont(&m_Font);
+
+	SetTimer(UPDATE_TIMER, 1200000, NULL);
+
+	// In order to subclass the combobox list and edit controls
+	// we have to first paint the controls to make sure the message
+	// mapping is setup before we use the controls.
+	InputBox.ShowDropDown(true);
+	InputBox.ShowDropDown(false);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -205,8 +226,11 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 	// TODO: Add your specialized code here and/or call the base class
 	if(pMsg->message==WM_KEYDOWN)
 	{
+		SetTimer(DELAY_TIMER, 1000, NULL);
 		if(pMsg->wParam==VK_RETURN) {
-
+			this->ShowWindow(SW_HIDE);
+			this->Visible = false;
+			smarts.Launch();
 			pMsg->wParam = NULL;
 		}
 
@@ -218,20 +242,26 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 
 	} 
 
-	if (pMsg->message == WM_CHAR) 
-	{
-		switch(pMsg->wParam) {
-			case ')':
-			case '(':
-			case '*':
-			case '.':
-			case '[':
-			case ']':
-			case '^':
-			case '$':
-			case '!': pMsg->wParam = NULL;
-		}
+	if (pMsg->message == WM_CHAR) {
+		SetTimer(DELAY_TIMER, 1000, NULL);
 
 	}
 	return CDialogSK::PreTranslateMessage(pMsg);
+}
+
+void CLaunchyDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	if (nIDEvent == DELAY_TIMER) {
+		if (Visible && InputBox.m_edit.GetWindowTextLengthW() > 0 &&
+			InputBox.m_listbox.GetCount() > 1) {
+			InputBox.ShowDropDown(true);
+		}
+		KillTimer(DELAY_TIMER);
+		CDialogSK::OnTimer(nIDEvent);
+	}
+	else if (nIDEvent == UPDATE_TIMER) {
+		smarts.LoadCatalog();
+	}
 }

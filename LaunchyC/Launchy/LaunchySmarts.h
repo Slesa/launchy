@@ -20,6 +20,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #pragma once
 #include "ExeLauncher.h"
 #include "DiskObject.h"
+#include "afxtempl.h"
+#include "FileRecord.h"
+#include "QArray.h"
 
 class LaunchySmarts
 {
@@ -34,4 +37,14 @@ protected:
 public:
 	void ScanDir(CString path, CString extension, Launcher* launcher);
 
+protected:
+	CQArray<FileRecord,FileRecord&> catalog;
+	CQArray<FileRecord,FileRecord&> matches;
+public:
+	void Update(CString txt);
+	void FindMatches(CString txt);
+	BOOL Match(FileRecord record, CString txt);
+	void Launch(void);
+protected:
+	void RemoveDuplicates(void);
 };

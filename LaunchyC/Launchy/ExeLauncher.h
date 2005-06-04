@@ -26,5 +26,5 @@ class ExeLauncher :
 public:
 	ExeLauncher(void);
 	~ExeLauncher(void);
-	virtual void Run(CString path);
+	virtual void Run(FileRecord file);
 };

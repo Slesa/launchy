@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Options.h"
 #include "smartcombobox.h"
 #include "LaunchySmarts.h"
+#include "Resource.h"
 
 // CLaunchyDlg dialog
 class CLaunchyDlg : public CDialogSK
@@ -44,7 +45,7 @@ public:
 
 // Implementation
 protected:
-	LaunchySmarts smarts;
+	CFont m_Font;
 	HICON m_hIcon;
 	BOOL atLaunch;
 	BOOL Visible;
@@ -55,6 +56,8 @@ protected:
 	LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 public:
+	
+	LaunchySmarts smarts;
 //	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 //	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 //	afx_msg void OnWindowPosChanged(WINDOWPOS* lpwndpos);
@@ -68,10 +71,13 @@ public:
 	afx_msg void OnCbnSelchangeInput();
 //	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 //	afx_msg int OnCharToItem(UINT nChar, CListBox* pListBox, UINT nIndex);
-	CComboBox InputBox;
+	SmartComboBox InputBox;
 protected:
 //	virtual void OnCancel();
 //	virtual void OnOK();
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	CEdit Preview;
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	unsigned int DelayTimer;
 };

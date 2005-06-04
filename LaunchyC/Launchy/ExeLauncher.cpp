@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "StdAfx.h"
 #include "ExeLauncher.h"
 #include <shellapi.h>
+#include "FileRecord.h"
 
 ExeLauncher::ExeLauncher(void)
 {
@@ -29,7 +30,11 @@ ExeLauncher::~ExeLauncher(void)
 {
 }
 
-void ExeLauncher::Run(CString path)
+void ExeLauncher::Run(FileRecord file)
 {
-	ShellExecute(NULL, _T("open"), path, NULL, NULL, SW_SHOWNORMAL);
+	HINSTANCE res =	ShellExecute(NULL, _T("open"),file.fullPath, _T(""), _T(""), SW_SHOW);
+//	CString str;
+//	str.Format(_T("%d"),(int) res);
+//	AfxMessageBox(str);
+
 }

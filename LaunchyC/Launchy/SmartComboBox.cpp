@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "stdafx.h"
 #include "Launchy.h"
 #include "SmartComboBox.h"
-
+#include "LaunchyDlg.h"
 
 // SmartComboBox
 
@@ -40,31 +40,17 @@ SmartComboBox::~SmartComboBox()
 
 
 BEGIN_MESSAGE_MAP(SmartComboBox, CComboBox)
-	ON_WM_KEYDOWN()
-	ON_WM_CHAR()
 	ON_WM_CTLCOLOR()
 	ON_WM_DESTROY()
+	ON_CONTROL_REFLECT(CBN_EDITUPDATE, &SmartComboBox::OnCbnEditupdate)
+//	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnCbnSelchange)
+	ON_CONTROL_REFLECT(CBN_CLOSEUP, &SmartComboBox::OnCbnCloseup)
 END_MESSAGE_MAP()
 
 
 
 // SmartComboBox message handlers
 
-
-
-void SmartComboBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	// TODO: Add your message handler code here and/or call default
-	AfxMessageBox(_T("Hello!"));
-	CComboBox::OnKeyDown(nChar, nRepCnt, nFlags);
-}
-
-void SmartComboBox::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
-{
-	// TODO: Add your message handler code here and/or call default
-	AfxMessageBox(_T("Hello!"));
-	CComboBox::OnChar(nChar, nRepCnt, nFlags);
-}
 
 
 
@@ -102,4 +88,21 @@ void SmartComboBox::OnDestroy()
 	CComboBox::OnDestroy();
 
 	// TODO: Add your message handler code here
+}
+
+void SmartComboBox::OnCbnEditupdate()
+{
+	m_edit.GetWindowTextW(searchTxt);
+	((CLaunchyDlg*)AfxGetMainWnd())->smarts.Update(searchTxt);
+}
+
+
+
+void SmartComboBox::OnCbnCloseup()
+{
+	int sel = m_listbox.GetCurSel();
+	if (sel != LB_ERR) {
+		m_listbox.GetText(sel, searchTxt);
+		((CLaunchyDlg*)AfxGetMainWnd())->smarts.Update(searchTxt);	
+	}
 }
