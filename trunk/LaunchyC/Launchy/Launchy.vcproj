@@ -339,7 +339,31 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\Circle.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\FrostyMarble.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\res\Grumptastic.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\icon.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\icon4.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\icon6.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\icon8.ico"
 				>
 			</File>
 			<File
@@ -359,6 +383,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\Installer\Installer.sln"
+			>
+		</File>
 		<File
 			RelativePath=".\Notes.txt"
 			>
