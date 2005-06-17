@@ -32,9 +32,23 @@ ExeLauncher::~ExeLauncher(void)
 
 void ExeLauncher::Run(FileRecord file)
 {
-	HINSTANCE res =	ShellExecute(NULL, _T("open"),file.fullPath, _T(""), _T(""), SW_SHOW);
+//	HINSTANCE res =	ShellExecuteEx(NULL, _T("open"),file.fullPath, _T(""), _T(""), SW_SHOW);
 //	CString str;
 //	str.Format(_T("%d"),(int) res);
 //	AfxMessageBox(str);
+	SHELLEXECUTEINFO ShExecInfo;
 
+	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+	ShExecInfo.fMask = NULL;
+	ShExecInfo.hwnd = NULL;
+	ShExecInfo.lpVerb = NULL;
+	ShExecInfo.lpFile = file.fullPath;
+	ShExecInfo.lpParameters = NULL;
+	ShExecInfo.lpDirectory = NULL;
+	ShExecInfo.nShow = SW_MAXIMIZE;
+	ShExecInfo.hInstApp = NULL;
+
+	BOOL ret = ShellExecuteEx(&ShExecInfo);
+
+	
 }

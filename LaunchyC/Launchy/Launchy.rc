@@ -59,16 +59,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Icon
-//
-
-// Icon with lowest ID value placed first to ensure application icon
-// remains consistent on all systems.
-IDI_ICON2               ICON                    "res\\Grumptastic.ico"
-IDI_ICON1               ICON                    "res\\ShemmatContained.ico"
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Dialog
 //
 
@@ -146,6 +136,15 @@ END
 //
 
 IDB_BACKGROUND          BITMAP                  "res\\bkgd2.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "res\\launchy.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
