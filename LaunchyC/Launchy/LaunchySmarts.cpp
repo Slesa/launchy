@@ -157,6 +157,7 @@ inline BOOL LaunchySmarts::Match(FileRecord record, CString txt)
 			if (curChar >= txtSize) {
 				return true;
 			}
+		} else {
 		}
 	}
 	return false;

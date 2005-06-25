@@ -13,6 +13,7 @@ public:
 	CString croppedName;
 	CString lowName;
 	Launcher* launcher;
+	int matchValue;
 	
 	void set(CString p, CString type, Launcher* l);
 	
