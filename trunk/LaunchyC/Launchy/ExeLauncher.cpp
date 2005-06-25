@@ -45,7 +45,7 @@ void ExeLauncher::Run(FileRecord file)
 	ShExecInfo.lpFile = file.fullPath;
 	ShExecInfo.lpParameters = NULL;
 	ShExecInfo.lpDirectory = NULL;
-	ShExecInfo.nShow = SW_MAXIMIZE;
+	ShExecInfo.nShow = SW_NORMAL;
 	ShExecInfo.hInstApp = NULL;
 
 	BOOL ret = ShellExecuteEx(&ShExecInfo);

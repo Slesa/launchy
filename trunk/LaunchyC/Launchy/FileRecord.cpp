@@ -12,6 +12,7 @@ FileRecord::~FileRecord(void)
 
 void FileRecord::set(CString p, CString type, Launcher* l)
 {
+	matchValue = 0;
 	launcher = l;
 	fullPath = p;
 	if (type[0] == '*')
