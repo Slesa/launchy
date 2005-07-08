@@ -98,8 +98,8 @@ BOOL CLaunchyDlg::OnInitDialog()
 	// color
 	// END SKINNING FUNCTIONS
 
-	options = new Options();
-
+	options.reset(new Options());
+	smarts.reset(new LaunchySmarts());
 
 
 	BOOL m_isKeyRegistered = RegisterHotKey(GetSafeHwnd(), 100,
@@ -196,9 +196,9 @@ void CLaunchyDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 
 void CLaunchyDlg::OnClose()
 {
+	options.reset();
+	smarts.reset();
 	// TODO: Add your message handler code here and/or call default
-	delete options;
-	options = NULL;
 	CDialogSK::OnClose();
 }
 
@@ -230,7 +230,7 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 		if(pMsg->wParam==VK_RETURN) {
 			this->ShowWindow(SW_HIDE);
 			this->Visible = false;
-			smarts.Launch();
+			smarts->Launch();
 			pMsg->wParam = NULL;
 		}
 
@@ -262,6 +262,6 @@ void CLaunchyDlg::OnTimer(UINT_PTR nIDEvent)
 		CDialogSK::OnTimer(nIDEvent);
 	}
 	else if (nIDEvent == UPDATE_TIMER) {
-		smarts.LoadCatalog();
+		smarts->LoadCatalog();
 	}
 }

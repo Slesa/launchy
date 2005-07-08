@@ -58,13 +58,12 @@ template <class T> void QuickSortRecursive(T *pArr, int d, int h, BOOL bAscendin
 	str = pArr[((int) ((d+h) / 2))];
 
 	do {
-
 		if (bAscending) {
-			while ((j <= h) && (pArr[j] < str)) j++;
-			while (( i >= 0) && (pArr[i] > str)) i--;
+			while ((j <= h) && (*pArr[j].get() < *str.get())) j++;
+			while ((i >= 0) && (*pArr[i].get() > *str.get())) i--;
 		} else {
-			while (j <= h && pArr[j] > str) j++;
-			while (i >= 0 && pArr[i] < str) i--;
+			while (j <= h && *pArr[j].get() > *str.get()) j++;
+			while (i >= 0 && *pArr[i].get() < *str.get()) i--;
 		}
 
 		if ( i >= j ) {

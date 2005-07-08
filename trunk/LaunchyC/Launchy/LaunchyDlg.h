@@ -28,6 +28,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "smartcombobox.h"
 #include "LaunchySmarts.h"
 #include "Resource.h"
+#include <boost/smart_ptr.hpp>
+
+using namespace boost;
 
 // CLaunchyDlg dialog
 class CLaunchyDlg : public CDialogSK
@@ -57,13 +60,13 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	
-	LaunchySmarts smarts;
+	scoped_ptr<LaunchySmarts> smarts;
 //	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 //	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 //	afx_msg void OnWindowPosChanged(WINDOWPOS* lpwndpos);
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 
-	Options* options;
+	scoped_ptr<Options> options;
 	afx_msg void OnClose();
 	afx_msg void OnDestroy();
 //	afx_msg void OnCbnEditchangeInput();

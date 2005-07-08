@@ -93,7 +93,7 @@ void SmartComboBox::OnDestroy()
 void SmartComboBox::OnCbnEditupdate()
 {
 	m_edit.GetWindowTextW(searchTxt);
-	((CLaunchyDlg*)AfxGetMainWnd())->smarts.Update(searchTxt);
+	((CLaunchyDlg*)AfxGetMainWnd())->smarts->Update(searchTxt);
 }
 
 
@@ -103,6 +103,6 @@ void SmartComboBox::OnCbnCloseup()
 	int sel = m_listbox.GetCurSel();
 	if (sel != LB_ERR) {
 		m_listbox.GetText(sel, searchTxt);
-		((CLaunchyDlg*)AfxGetMainWnd())->smarts.Update(searchTxt);	
+		((CLaunchyDlg*)AfxGetMainWnd())->smarts->Update(searchTxt);	
 	}
 }
