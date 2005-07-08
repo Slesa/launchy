@@ -104,8 +104,8 @@ void LaunchySmarts::ScanDir(CString path, CString extension, Launcher* launcher)
 
 	int count = files.GetCount();
 	for(int i = 0; i < count; i++) {
-		FileRecord rec;
-		rec.set(files[i], extension, launcher);
+		FileRecordPtr rec(new FileRecord());
+		rec->set(files[i], extension, launcher);
 		catalog.Add(rec);
 	}
 }
@@ -121,14 +121,14 @@ void LaunchySmarts::Update(CString txt)
 	matches.QuickSort();
 
 	if (matches.GetSize() > 0) {
-		dlg->Preview.SetWindowText(matches[0].croppedName);
+		dlg->Preview.SetWindowText(matches[0]->croppedName);
 	} else {
 		dlg->Preview.SetWindowText(_T(""));
 	}
 
 	int size = matches.GetSize();
 	for(int i = 0; i < size && i < 10; i++) {
-		dlg->InputBox.AddString(matches[i].croppedName);
+		dlg->InputBox.AddString(matches[i]->croppedName);
 	}
 }
 
@@ -145,14 +145,14 @@ void LaunchySmarts::FindMatches(CString txt)
 
 
 
-inline BOOL LaunchySmarts::Match(FileRecord record, CString txt)
+inline BOOL LaunchySmarts::Match(FileRecordPtr record, CString txt)
 {
-	int size = record.lowName.GetLength();
+	int size = record->lowName.GetLength();
 	int txtSize = txt.GetLength();
 	int curChar = 0;
 
 	for(int i = 0; i < size; i++) {
-		if (record.lowName[i] == txt[curChar]) {
+		if (record->lowName[i] == txt[curChar]) {
 			curChar++;
 			if (curChar >= txtSize) {
 				return true;
@@ -166,7 +166,7 @@ inline BOOL LaunchySmarts::Match(FileRecord record, CString txt)
 void LaunchySmarts::Launch(void)
 {
 	if(matches.GetSize() > 0) {
-		matches[0].launcher->Run(matches[0]);
+		matches[0]->launcher->Run(matches[0]);
 	}
 }
 
@@ -177,11 +177,11 @@ void LaunchySmarts::Launch(void)
 void LaunchySmarts::RemoveDuplicates(void)
 {
 	catalog.QuickSort();
-	CQArray<FileRecord,FileRecord&> tmpArray;
+	CQArray<FileRecordPtr,FileRecordPtr> tmpArray;
 	tmpArray.SetSize(catalog.GetSize());
 	int curEle = 0;
 	for(int i = 0; i < catalog.GetSize()-1; i++) {
-		if (catalog[i].lowName != catalog[i+1].lowName) {
+		if (catalog[i]->lowName != catalog[i+1]->lowName) {
 			tmpArray[curEle++] = catalog[i];
 		}
 	}

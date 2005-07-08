@@ -30,7 +30,7 @@ ExeLauncher::~ExeLauncher(void)
 {
 }
 
-void ExeLauncher::Run(FileRecord file)
+void ExeLauncher::Run(FileRecordPtr file)
 {
 //	HINSTANCE res =	ShellExecuteEx(NULL, _T("open"),file.fullPath, _T(""), _T(""), SW_SHOW);
 //	CString str;
@@ -42,7 +42,7 @@ void ExeLauncher::Run(FileRecord file)
 	ShExecInfo.fMask = NULL;
 	ShExecInfo.hwnd = NULL;
 	ShExecInfo.lpVerb = NULL;
-	ShExecInfo.lpFile = file.fullPath;
+	ShExecInfo.lpFile = file->fullPath;
 	ShExecInfo.lpParameters = NULL;
 	ShExecInfo.lpDirectory = NULL;
 	ShExecInfo.nShow = SW_NORMAL;

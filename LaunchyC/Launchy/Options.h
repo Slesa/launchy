@@ -20,13 +20,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #pragma once
 
 #include "LaunchyDir.h"
+#include <boost/smart_ptr.hpp>
+
+using namespace boost;
 
 class Options
 {
 public:
 	int posX;
 	int posY;
-	CList<LaunchyDir*,LaunchyDir*> dirs;
+	CList<shared_ptr<LaunchyDir> > dirs;
 
 	Options(void);
 	~Options(void);

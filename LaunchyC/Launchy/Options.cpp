@@ -22,7 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Options::Options(void)
 {
-
 	Load();
 }
 
@@ -31,8 +30,6 @@ Options::Options(void)
 Options::~Options(void)
 {
 	Store();
-	while (!dirs.IsEmpty())
-		delete dirs.RemoveHead();
 }
 
 void Options::Load(void)
