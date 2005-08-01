@@ -24,4 +24,5 @@ public:
 	
 	bool operator< (const FileRecord & other) const;
 	bool operator> (const FileRecord & other) const;
+	bool isHistory;
 };

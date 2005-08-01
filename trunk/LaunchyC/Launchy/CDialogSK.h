@@ -66,7 +66,7 @@ enum LayOutStyle
 //          To use this class create Dialog and then make the dialog class
 //          derive from CDialogSK instead of CDialog
 //  ===========================================================================
-class AFX_EXT_CLASS CDialogSK : public CDialog
+class CDialogSK : public CDialog
 {
 public:
     //  =======================================================================

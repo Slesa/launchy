@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #pragma once
 
 #include "LaunchyDir.h"
+#include "iniFile.h"
 #include <boost/smart_ptr.hpp>
 
 using namespace boost;
@@ -27,6 +28,7 @@ using namespace boost;
 class Options
 {
 public:
+	shared_ptr<CIniFile> ini;
 	int posX;
 	int posY;
 	CList<shared_ptr<LaunchyDir> > dirs;
@@ -35,4 +37,6 @@ public:
 	~Options(void);
 	void Load(void);
 	void Store(void);
+	void Associate(CString entry, CString destination);
+	CString GetAssociation(CString query);
 };

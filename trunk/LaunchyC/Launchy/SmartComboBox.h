@@ -42,6 +42,10 @@ public:
 	afx_msg void OnCbnEditupdate();
 //	afx_msg void OnCbnSelchange();
 	afx_msg void OnCbnCloseup();
+	afx_msg void OnCbnEditchange();
+	CString typed;
+	afx_msg void OnCbnSelchange();
+	afx_msg void OnCbnDropdown();
 };
 
 

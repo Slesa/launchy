@@ -20,8 +20,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "StdAfx.h"
 #include "Options.h"
 
-Options::Options(void)
+Options::Options(void) : ini(new CIniFile())
 {
+	ini->SetPath(L"launchy.ini");
+	ini->ReadFile();
 	Load();
 }
 
@@ -34,9 +36,8 @@ Options::~Options(void)
 
 void Options::Load(void)
 {
-	CWinApp* pApp = AfxGetApp();
-	posX = (int)pApp->GetProfileInt(_T("Settings"),_T("posX"),-1);
-	posY = (int)pApp->GetProfileInt(_T("Settings"),_T("posY"),-1);
+	posX = ini->GetValueI(L"Position", L"pos_x");
+	posY = ini->GetValueI(L"Position", L"pos_y");
 }
 
 void Options::Store(void)
@@ -45,7 +46,23 @@ void Options::Store(void)
 	RECT location;
 	pApp->GetMainWnd()->GetWindowRect(&location);
 
-	posX = (int)pApp->WriteProfileInt(_T("Settings"),_T("posX"),location.left);
-	posY = (int)pApp->WriteProfileInt(_T("Settings"),_T("posY"),location.top);	
+	ini->SetValueI(L"Position", L"pos_x", location.left);
+	ini->SetValueI(L"Position", L"pos_y", location.top);
 }
 
+void Options::Associate(CString entry, CString destination)
+{
+	ini->SetValue(L"Associations", std::wstring(entry.GetBuffer()), std::wstring(destination.GetBuffer()));
+}
+
+
+CString Options::GetAssociation(CString query)
+{
+	wstring res = ini->GetValue(L"Associations", std::wstring(query.GetBuffer()));
+
+	if (res != L"") {
+		CString x = CString(res.c_str());
+		return x;
+	}
+	return _T("");
+}
