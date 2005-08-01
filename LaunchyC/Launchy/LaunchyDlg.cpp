@@ -230,6 +230,12 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 		if(pMsg->wParam==VK_RETURN) {
 			this->ShowWindow(SW_HIDE);
 			this->Visible = false;
+
+
+			if (InputBox.typed != searchTxt) {
+				options->Associate(InputBox.typed, searchTxt);
+			}
+
 			smarts->Launch();
 			pMsg->wParam = NULL;
 		}

@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 IMPLEMENT_DYNAMIC(SmartComboBox, CComboBox)
 
 SmartComboBox::SmartComboBox()
+: typed(_T(""))
 {
 	CComboBox();
 }
@@ -45,6 +46,9 @@ BEGIN_MESSAGE_MAP(SmartComboBox, CComboBox)
 	ON_CONTROL_REFLECT(CBN_EDITUPDATE, &SmartComboBox::OnCbnEditupdate)
 //	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnCbnSelchange)
 	ON_CONTROL_REFLECT(CBN_CLOSEUP, &SmartComboBox::OnCbnCloseup)
+	ON_CONTROL_REFLECT(CBN_EDITCHANGE, &SmartComboBox::OnCbnEditchange)
+	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnCbnSelchange)
+	ON_CONTROL_REFLECT(CBN_DROPDOWN, &SmartComboBox::OnCbnDropdown)
 END_MESSAGE_MAP()
 
 
@@ -93,16 +97,57 @@ void SmartComboBox::OnDestroy()
 void SmartComboBox::OnCbnEditupdate()
 {
 	m_edit.GetWindowTextW(searchTxt);
-	((CLaunchyDlg*)AfxGetMainWnd())->smarts->Update(searchTxt);
+
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	pDlg->smarts->Update(searchTxt);
 }
 
 
 
 void SmartComboBox::OnCbnCloseup()
 {
+//	AfxMessageBox(_T("Closing!"));
 	int sel = m_listbox.GetCurSel();
 	if (sel != LB_ERR) {
+
 		m_listbox.GetText(sel, searchTxt);
-		((CLaunchyDlg*)AfxGetMainWnd())->smarts->Update(searchTxt);	
+		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+
+		pDlg->smarts->Update(searchTxt);
 	}
 }
+
+void SmartComboBox::OnCbnEditchange()
+{
+	m_edit.GetWindowTextW(typed);
+}
+
+void SmartComboBox::OnCbnSelchange()
+{
+}
+void SmartComboBox::OnCbnDropdown()
+{
+	SmartComboBox* pmyComboBox = this;
+		// Find the longest string in the combo box.
+	CString str;
+	CSize   sz;
+	int     dx=0;
+	CDC*    pDC = pmyComboBox->GetDC();
+	for (int i=0;i < pmyComboBox->GetCount();i++)
+	{
+	pmyComboBox->GetLBText( i, str );
+	sz = pDC->GetTextExtent(str);
+
+	if (sz.cx > dx)
+		dx = sz.cx;
+	}
+	pmyComboBox->ReleaseDC(pDC);
+
+	// Adjust the width for the vertical scroll bar and the left and
+	// right border.
+	dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2*::GetSystemMetrics(SM_CXEDGE);
+
+	// Set the width of the list box so that every item is completely visible.
+	pmyComboBox->SetDroppedWidth(dx);
+}
+

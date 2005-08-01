@@ -127,9 +127,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
-				FavorSizeOrSpeed="1"
-				WholeProgramOptimization="true"
+				Optimization="1"
+				FavorSizeOrSpeed="2"
+				OmitFramePointers="true"
+				WholeProgramOptimization="false"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="false"
 				RuntimeLibrary="0"
@@ -211,6 +212,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\iniFile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Launcher.cpp"
 				>
 			</File>
@@ -221,6 +226,14 @@
 			<File
 				RelativePath=".\LaunchyDir.cpp"
 				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						WholeProgramOptimization="false"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\LaunchyDlg.cpp"
@@ -282,6 +295,10 @@
 			</File>
 			<File
 				RelativePath=".\FileRecord.h"
+				>
+			</File>
+			<File
+				RelativePath=".\iniFile.h"
 				>
 			</File>
 			<File

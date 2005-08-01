@@ -21,6 +21,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_2BEBE8BADC9D41CD9CA7A812369373C6"
+        "OwnerKey" = "8:_DD070C92C33445168971E6A89ABB104E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3589274AB2C84B088926F20B3E8C06DD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -34,6 +40,12 @@
         "Entry"
         {
         "MsmKey" = "8:_4352A33AFF274099B5600ECB95F73399"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8DF4795D9ECC4857B347E069A38D343E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -86,10 +98,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.2.0"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft Visual C++ 8.0 Redist (x86)"
                     {
-                    "Name" = "8:.NET Framework 2.0 Beta"
-                    "ProductCode" = "8:Microsoft.Net.Framework.2.0"
+                    "Name" = "8:VC Redist"
+                    "ProductCode" = "8:Microsoft Visual C++ 8.0 Redist (x86)"
                     }
                 }
             }
@@ -194,6 +206,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8DF4795D9ECC4857B347E069A38D343E"
+            {
+            "SourcePath" = "8:..\\..\\Launchy\\install_launchy.ini"
+            "TargetName" = "8:launchy.ini"
+            "Tag" = "8:"
+            "Folder" = "8:_850346E8EB854C47AF27E2A0378445FA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -260,14 +292,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Launchy"
-        "ProductCode" = "8:{1146B565-BD24-48BC-B1C9-4DE6F381341B}"
-        "PackageCode" = "8:{B4139E97-0C8F-4079-9D82-2860870B72BA}"
+        "ProductCode" = "8:{DC062C36-F61C-41EC-B2C3-59378F14B20C}"
+        "PackageCode" = "8:{184C7A1B-AC2D-4D6C-96A2-F43196037B73}"
         "UpgradeCode" = "8:{2C8139E9-38F0-484A-926B-FB84D191953B}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
-        "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.62"
+        "InstallAllUsers" = "11:TRUE"
+        "ProductVersion" = "8:0.7"
         "Manufacturer" = "8:KWorks"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -321,20 +353,6 @@
                     "Transitive" = "11:FALSE"
                         "Keys"
                         {
-                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_6805DE7C02D541DD8EF25720165AF0F1"
-                            {
-                            "Name" = "8:Launchy"
-                            "Condition" = "8:"
-                            "AlwaysCreate" = "11:TRUE"
-                            "DeleteAtUninstall" = "11:TRUE"
-                            "Transitive" = "11:FALSE"
-                                "Keys"
-                                {
-                                }
-                                "Values"
-                                {
-                                }
-                            }
                         }
                         "Values"
                         {
@@ -851,6 +869,20 @@
         }
         "MergeModule"
         {
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_2BEBE8BADC9D41CD9CA7A812369373C6"
+            {
+            "UseDynamicProperties" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "SourcePath" = "8:Microsoft_VC80_CRT_x86.msm"
+                "Properties"
+                {
+                }
+            "LanguageId" = "3:0"
+            "Exclude" = "11:FALSE"
+            "Folder" = "8:"
+            "Feature" = "8:"
+            "IsolateTo" = "8:"
+            }
         }
         "ProjectOutput"
         {

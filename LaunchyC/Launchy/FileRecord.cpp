@@ -3,6 +3,7 @@
 #include "Launchy.h"
 
 FileRecord::FileRecord(void)
+: isHistory(false)
 {
 }
 
@@ -44,6 +45,9 @@ void FileRecord::set(CString p, CString type, Launcher* l)
 
 bool FileRecord::operator<(const FileRecord & other) const 
 {
+	if (isHistory) { return 1; } 
+	if (other.isHistory) { return 0; }
+
 	int localFind = lowName.Find(searchTxt);
 	int otherFind = other.lowName.Find(searchTxt);
 	int localLen = lowName.GetLength();
@@ -63,6 +67,9 @@ bool FileRecord::operator<(const FileRecord & other) const
 
 bool FileRecord::operator>(const FileRecord & other) const
 {
+	if (isHistory) { return 0; }
+	if (other.isHistory) { return 1; }
+
 	int localFind = lowName.Find(searchTxt);
 	int otherFind = other.lowName.Find(searchTxt);
 	int localLen = lowName.GetLength();
