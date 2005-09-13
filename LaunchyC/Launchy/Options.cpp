@@ -43,11 +43,14 @@ void Options::Load(void)
 void Options::Store(void)
 {
 	CWinApp* pApp = AfxGetApp();
+	if (pApp == NULL) return;
 	RECT location;
 	pApp->GetMainWnd()->GetWindowRect(&location);
 
 	ini->SetValueI(L"Position", L"pos_x", location.left);
 	ini->SetValueI(L"Position", L"pos_y", location.top);
+
+	ini->WriteFile();
 }
 
 void Options::Associate(CString entry, CString destination)

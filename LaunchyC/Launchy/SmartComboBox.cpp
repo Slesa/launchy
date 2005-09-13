@@ -99,6 +99,7 @@ void SmartComboBox::OnCbnEditupdate()
 	m_edit.GetWindowTextW(searchTxt);
 
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
 	pDlg->smarts->Update(searchTxt);
 }
 
@@ -112,6 +113,7 @@ void SmartComboBox::OnCbnCloseup()
 
 		m_listbox.GetText(sel, searchTxt);
 		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+		if (pDlg == NULL) return;
 
 		pDlg->smarts->Update(searchTxt);
 	}
