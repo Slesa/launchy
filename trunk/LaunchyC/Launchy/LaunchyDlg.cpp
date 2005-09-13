@@ -64,6 +64,7 @@ BEGIN_MESSAGE_MAP(CLaunchyDlg, CDialogSK)
 	ON_WM_DESTROY()
 	ON_CBN_SELCHANGE(IDC_Input, &CLaunchyDlg::OnCbnSelchangeInput)
 	ON_WM_TIMER()
+	ON_WM_ENDSESSION()
 END_MESSAGE_MAP()
 
 
@@ -233,6 +234,7 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 
 
 			if (InputBox.typed != searchTxt) {
+				CString x;
 				options->Associate(InputBox.typed, searchTxt);
 			}
 
@@ -270,4 +272,12 @@ void CLaunchyDlg::OnTimer(UINT_PTR nIDEvent)
 	else if (nIDEvent == UPDATE_TIMER) {
 		smarts->LoadCatalog();
 	}
+}
+
+void CLaunchyDlg::OnEndSession(BOOL bEnding)
+{
+	if (options != NULL) { options->Store(); }
+	CDialogSK::OnEndSession(bEnding);
+
+	// TODO: Add your message handler code here
 }

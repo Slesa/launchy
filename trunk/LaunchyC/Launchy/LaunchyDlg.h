@@ -83,4 +83,5 @@ public:
 	CEdit Preview;
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	unsigned int DelayTimer;
+	afx_msg void OnEndSession(BOOL bEnding);
 };

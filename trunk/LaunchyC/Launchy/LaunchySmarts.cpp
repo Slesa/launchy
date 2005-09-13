@@ -115,20 +115,22 @@ void LaunchySmarts::ScanDir(CString path, CString extension, Launcher* launcher)
 void LaunchySmarts::Update(CString txt)
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
-	CString history = pDlg->options->GetAssociation(txt);
-
+	if (pDlg == NULL)
+		return;
 
 	if (txt == "") return;
 
-	CLaunchyDlg* dlg = (CLaunchyDlg*) AfxGetMainWnd();
+	CString history = pDlg->options->GetAssociation(txt);
+
 	matches.RemoveAll();
-	dlg->InputBox.m_listbox.ResetContent();
+	pDlg->InputBox.m_listbox.ResetContent();
 	FindMatches(txt);
 
 	// Set the preferred bit for the history match
 	int count = matches.GetCount();
 	for(int i = 0; i < count; i++) {
 		if (matches[i]->croppedName == history) {
+//			AfxMessageBox(matches[i]->croppedName);
 			matches[i]->isHistory = true;
 		}
 	}
@@ -141,15 +143,15 @@ void LaunchySmarts::Update(CString txt)
 
 
 	if (matches.GetSize() > 0) {
-		dlg->Preview.SetWindowText(matches[0]->croppedName);
+		pDlg->Preview.SetWindowText(matches[0]->croppedName);
 	} else {
-		dlg->Preview.SetWindowText(_T(""));
+		pDlg->Preview.SetWindowText(_T(""));
 	}
 
 	
 	int size = matches.GetSize();
 	for(int i = 0; i < size && i < 10; i++) {
-		dlg->InputBox.AddString(matches[i]->croppedName);
+		pDlg->InputBox.AddString(matches[i]->croppedName);
 	}
 
 }
