@@ -19,10 +19,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "StdAfx.h"
 #include "Options.h"
+#include "LaunchySmarts.h"
 
 Options::Options(void) : ini(new CIniFile())
 {
-	ini->SetPath(L"launchy.ini");
+	CString dir;
+	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
+	dir += "\\launchy.ini";
+	ini->SetPath(dir.GetBuffer());
 	ini->ReadFile();
 	Load();
 }

@@ -34,37 +34,6 @@ typedef enum {
 } SHGFP_TYPE;
 #endif//CSIDL_WINDOWS
 
-BOOL GetShellDir( int iType, CString& szPath )
-{
-     HINSTANCE hInst = ::LoadLibrary( _T("shell32.dll") );
-     if ( NULL == hInst )
-     {
-          ASSERT( 0 );
-          return FALSE;
-     }
-     
-	 HRESULT (__stdcall *pfnSHGetFolderPath)( HWND, int, HANDLE, DWORD, LPWSTR );
-	 
-	 
-	 pfnSHGetFolderPath = reinterpret_cast<HRESULT (__stdcall *)( HWND, int, HANDLE, DWORD, LPWSTR )>( GetProcAddress( hInst, "SHGetFolderPathW" ) );
-
-     if ( NULL == pfnSHGetFolderPath )
-     {
-          // function not available!
-          ASSERT( 0 );
-          FreeLibrary( hInst ); // <-- here
-          return FALSE;
-     }
-
-     // call it
-     HRESULT hRet = pfnSHGetFolderPath( NULL, iType, NULL, 0, szPath.GetBufferSetLength( _MAX_PATH ) );
-     szPath.ReleaseBuffer();
-     FreeLibrary( hInst ); // <-- and here
-     return TRUE;
-}
-
-
-
 
 
 LaunchySmarts::LaunchySmarts(void)
@@ -215,4 +184,34 @@ void LaunchySmarts::RemoveDuplicates(void)
 	for(int i = 0; i < tmpArray.GetSize(); i++) {
 		catalog.Add(tmpArray[i]);
 	}
+}
+
+BOOL LaunchySmarts::GetShellDir(int iType, CString& szPath)
+{
+     HINSTANCE hInst = ::LoadLibrary( _T("shell32.dll") );
+     if ( NULL == hInst )
+     {
+          ASSERT( 0 );
+          return FALSE;
+     }
+     
+	 HRESULT (__stdcall *pfnSHGetFolderPath)( HWND, int, HANDLE, DWORD, LPWSTR );
+	 
+	 
+	 pfnSHGetFolderPath = reinterpret_cast<HRESULT (__stdcall *)( HWND, int, HANDLE, DWORD, LPWSTR )>( GetProcAddress( hInst, "SHGetFolderPathW" ) );
+
+     if ( NULL == pfnSHGetFolderPath )
+     {
+          // function not available!
+          ASSERT( 0 );
+          FreeLibrary( hInst ); // <-- here
+          return FALSE;
+     }
+
+     // call it
+     HRESULT hRet = pfnSHGetFolderPath( NULL, iType, NULL, 0, szPath.GetBufferSetLength( _MAX_PATH ) );
+     szPath.ReleaseBuffer();
+     FreeLibrary( hInst ); // <-- and here
+     return TRUE;
+	return 0;
 }
