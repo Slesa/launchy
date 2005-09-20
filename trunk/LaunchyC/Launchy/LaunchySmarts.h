@@ -49,4 +49,6 @@ public:
 	void Launch(void);
 protected:
 	void RemoveDuplicates(void);
+public:
+	static BOOL GetShellDir(int iType, CString& szPath);
 };
