@@ -61,6 +61,17 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                }
+            }
         }
         "Release"
         {
@@ -260,14 +271,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Launchy"
-        "ProductCode" = "8:{DC062C36-F61C-41EC-B2C3-59378F14B20C}"
-        "PackageCode" = "8:{A3E3F5EA-9993-44CF-9C28-7234A78A9D1C}"
+        "ProductCode" = "8:{893878DE-44E2-4A3D-8FCF-A7761D39D4AA}"
+        "PackageCode" = "8:{1996E709-957D-4285-BE39-F1AF4F32FAF8}"
         "UpgradeCode" = "8:{2C8139E9-38F0-484A-926B-FB84D191953B}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.7"
+        "ProductVersion" = "8:0.8"
         "Manufacturer" = "8:KWorks"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

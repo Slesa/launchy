@@ -63,12 +63,23 @@ END
 //
 
 IDD_LAUNCHY_DIALOG DIALOGEX 0, 0, 270, 50
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP
+STYLE DS_SETFONT | WS_POPUP
 EXSTYLE WS_EX_TOPMOST
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
+FONT 8, "Tahoma", 400, 0, 0x0
 BEGIN
     COMBOBOX        IDC_Input,17,17,103,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_PREVIEW,147,17,103,16,ES_CENTER | ES_AUTOHSCROLL | ES_READONLY
+END
+
+IDD_HOTKEY_DIALOG DIALOGEX 0, 0, 186, 94
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Change the hotkey"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,17,62,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,112,62,50,14
+    COMBOBOX        IDC_MOD_COMBO,31,26,56,12,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_KEY_COMBO,101,25,42,12,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
 END
 
 
@@ -124,7 +135,15 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 263
         TOPMARGIN, 7
-        BOTTOMMARGIN, 43
+        BOTTOMMARGIN, 42
+    END
+
+    IDD_HOTKEY_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -145,6 +164,22 @@ IDB_BACKGROUND          BITMAP                  "res\\bkgd2.bmp"
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_ICON1               ICON                    "res\\launchy.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU 
+BEGIN
+    POPUP "Launchy Settings"
+    BEGIN
+        MENUITEM "Directories",                 ID_SETTINGS_DIRECTORIES
+        MENUITEM "Skins",                       ID_SETTINGS_SKINS
+        MENUITEM "Hotkey",                      ID_SETTINGS_HOTKEY
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

@@ -21,14 +21,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Options.h"
 #include "LaunchySmarts.h"
 
+
 Options::Options(void) : ini(new CIniFile())
+, vkey(0)
+, mod_key(0)
 {
 	CString dir;
 	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
 	dir += "\\launchy.ini";
 	ini->SetPath(dir.GetBuffer());
 	ini->ReadFile();
-	Load();
+	ParseIni();
+	LoadSkins();
 }
 
 
@@ -38,10 +42,15 @@ Options::~Options(void)
 	Store();
 }
 
-void Options::Load(void)
+void Options::ParseIni(void)
 {
 	posX = ini->GetValueI(L"Position", L"pos_x");
 	posY = ini->GetValueI(L"Position", L"pos_y");
+
+	mod_key =  ini->GetValueI(L"Hotkey", L"mod_key", MOD_ALT);
+	vkey =  ini->GetValueI(L"Hotkey", L"vkey", VK_SPACE);
+
+	skinName = ini->GetValue(L"Skin", L"name", L"Blue Trim").c_str();
 }
 
 void Options::Store(void)
@@ -54,6 +63,10 @@ void Options::Store(void)
 	ini->SetValueI(L"Position", L"pos_x", location.left);
 	ini->SetValueI(L"Position", L"pos_y", location.top);
 
+	ini->SetValueI(L"Hotkey", L"mod_key", mod_key);
+	ini->SetValueI(L"Hotkey", L"vkey", vkey);
+
+	ini->SetValue(L"Skin", L"name", skinName.GetBuffer());
 	ini->WriteFile();
 }
 
@@ -72,4 +85,31 @@ CString Options::GetAssociation(CString query)
 		return x;
 	}
 	return _T("");
+}
+
+void Options::LoadSkins(void)
+{
+	wchar_t buffer[_MAX_PATH];
+	
+	/* Get the current working directory: */
+	_wgetcwd( buffer, _MAX_PATH );
+
+	CString dir = buffer;
+	dir += "\\Skins\\";
+
+
+	CDiskObject disk;
+	CStringArray skinDirs;
+	disk.EnumAllDirectories(dir, skinDirs);
+
+	int count = skinDirs.GetCount();
+	for(int i = 0; i < count; i++) {
+		shared_ptr<Skin> x(new Skin(skinDirs[i]));
+		skins.AddTail(x);
+		if (x->name == skinName) {
+			skin = x;
+		}
+	}
+
+
 }
