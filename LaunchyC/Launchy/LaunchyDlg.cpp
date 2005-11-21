@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "stdafx.h"
 #include "Launchy.h"
 #include "LaunchyDlg.h"
+#include "HotkeyDialog.h"
+#include "Skin.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -65,6 +67,7 @@ BEGIN_MESSAGE_MAP(CLaunchyDlg, CDialogSK)
 	ON_CBN_SELCHANGE(IDC_Input, &CLaunchyDlg::OnCbnSelchangeInput)
 	ON_WM_TIMER()
 	ON_WM_ENDSESSION()
+	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
 
@@ -89,22 +92,15 @@ BOOL CLaunchyDlg::OnInitDialog()
 	// clicking
 	// anywhere in
 	// the dialog
-	SetBitmap (IDB_BACKGROUND);             // set background
-	// bitmap
-	SetStyle (LO_STRETCH);                   // resize dialog to
-	// the size of
-	// the bitmap
-	SetTransparentColor(RGB(255, 0, 0));    // set red as
-	// the transparent
-	// color
-	// END SKINNING FUNCTIONS
+
 
 	options.reset(new Options());
 	smarts.reset(new LaunchySmarts());
 
+	applySkin();
 
 	BOOL m_isKeyRegistered = RegisterHotKey(GetSafeHwnd(), 100,
-		MOD_ALT, VK_SPACE);
+		options->mod_key, options->vkey);
 
 	ASSERT(m_isKeyRegistered != FALSE);
 
@@ -280,4 +276,66 @@ void CLaunchyDlg::OnEndSession(BOOL bEnding)
 	CDialogSK::OnEndSession(bEnding);
 
 	// TODO: Add your message handler code here
+}
+
+void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
+{
+	// TODO: Add your message handler code here
+	// Load the desired menu
+	CMenu mnuPopupSubmit;
+	mnuPopupSubmit.LoadMenu(IDR_MENU1);
+
+
+	// Get a pointer to the first item of the menu
+	CMenu *mnuPopupMenu = mnuPopupSubmit.GetSubMenu(0);
+	ASSERT(mnuPopupMenu);
+	
+	DWORD selection = mnuPopupMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON| TPM_NONOTIFY | TPM_RETURNCMD, point.x, point.y, this);
+
+	if (selection == ID_SETTINGS_SKINS) {
+
+
+	}
+	else if (selection == ID_SETTINGS_HOTKEY) {
+		CHotkeyDialog dlg;
+		dlg.DoModal();
+	}
+
+	else if (selection == ID_SETTINGS_DIRECTORIES) {
+
+	}
+}
+
+void CLaunchyDlg::applySkin()
+{
+	if (options->skin == NULL) {
+		return;
+	}
+
+	SetBitmap(options->skin->bgFile);
+//	SetBitmap (IDB_BACKGROUND);             // set background
+	// bitmap
+	SetStyle (LO_STRETCH);                   // resize dialog to
+	// the size of
+	// the bitmap
+	if (options->skin->transparency != -1) {
+		SetTransparent(options->skin->transparency);
+	} else {
+		SetTransparentColor(RGB(options->skin->red, options->skin->green, options->skin->blue));    // set red as
+	}
+	// the transparent
+	// color
+
+/*	CRect rect;
+	GetClientRect(&rect);
+
+	CString x;
+	MoveWindow(0,0,405,81,1);
+	x.Format(_T("%d,%d,%d,%d"),rect.left, rect.top, rect.Width(), rect.Height()); 
+AfxMessageBox(x);
+*/
+	MoveWindow(options->posX, options->posY, options->skin->width, options->skin->height,1);
+	InputBox.MoveWindow(options->skin->inputRect,1);
+	Preview.MoveWindow(options->skin->resultRect,1);
+
 }

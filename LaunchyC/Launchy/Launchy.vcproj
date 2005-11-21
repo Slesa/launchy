@@ -6,7 +6,6 @@
 	ProjectGUID="{6558DB3A-6C08-41BC-A42B-CA5DF22D07F7}"
 	RootNamespace="Launchy"
 	Keyword="MFCProj"
-	SignManifests="true"
 	>
 	<Platforms>
 		<Platform
@@ -212,6 +211,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\HotkeyDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\iniFile.cpp"
 				>
 			</File>
@@ -245,6 +248,10 @@
 			</File>
 			<File
 				RelativePath=".\Options.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Skin.cpp"
 				>
 			</File>
 			<File
@@ -298,6 +305,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\HotkeyDialog.h"
+				>
+			</File>
+			<File
 				RelativePath=".\iniFile.h"
 				>
 			</File>
@@ -334,6 +345,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Skin.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SmartComboBox.h"
 				>
 			</File>
@@ -353,6 +368,10 @@
 			>
 			<File
 				RelativePath=".\res\bkgd2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\bkgd3.bmp"
 				>
 			</File>
 			<File

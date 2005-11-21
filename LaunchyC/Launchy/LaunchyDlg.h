@@ -84,4 +84,8 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	unsigned int DelayTimer;
 	afx_msg void OnEndSession(BOOL bEnding);
+public:
+	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
+public:
+	void applySkin(void);
 };
