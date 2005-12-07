@@ -24,13 +24,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <boost/shared_ptr.hpp>
 #include "Skin.h"
 
+#include <vector>
+
+using namespace std;
+
 using namespace boost;
 
 class Options
 {
 public:
 	shared_ptr<CIniFile> ini;
-	CList<shared_ptr<Skin> > skins;
+	vector<shared_ptr<Skin> > skins;
+//	CArray<CString> Types;
+//	CArray<CString> Directories;
+
+	vector<CString> Types;
+	vector<CString> Directories;
+
 	shared_ptr<Skin> skin;
 	CString skinName;
 

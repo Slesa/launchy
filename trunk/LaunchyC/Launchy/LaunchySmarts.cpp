@@ -21,7 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "LaunchySmarts.h"
 #include <shlobj.h>
 #include "LaunchyDlg.h"
-
+#include "FileRecord.h"
+#include "Launchy.h"
 
 // Code to get shell directories
 #ifndef CSIDL_WINDOWS
@@ -35,11 +36,32 @@ typedef enum {
 #endif//CSIDL_WINDOWS
 
 
+bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
+{
+	if (a->isHistory) { return true; } 
+	if (b->isHistory) { return false; }
+
+	int localFind = a->lowName.Find(searchTxt);
+	int otherFind = b->lowName.Find(searchTxt);
+	int localLen = a->lowName.GetLength();
+	int otherLen = b->lowName.GetLength();
+	
+	if (localFind > -1 && otherFind == -1)
+		return true;
+	if (localFind == -1 && otherFind > -1)
+		return false;
+	if (localLen < otherLen)
+		return true;
+	if (localLen > otherLen)
+		return false;
+
+	return false;
+}
+
 
 LaunchySmarts::LaunchySmarts(void)
 {
-	catalog.SetSize(1024,1024);
-	matches.SetSize(1024,1024);
+	catFiles = 0;
 	LoadCatalog();
 }
 
@@ -49,33 +71,81 @@ LaunchySmarts::~LaunchySmarts(void)
 
 void LaunchySmarts::LoadCatalog(void)
 {
-	catalog.RemoveAll();
+	catFiles = 0;
+	charUsage.clear();
+	charMap.clear();
 	ScanStartMenu();
 }
 
 void LaunchySmarts::ScanStartMenu(void)
 {
+	
+	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 	CString myMenu, allMenus;
 	if (FALSE == GetShellDir(CSIDL_COMMON_STARTMENU, allMenus))
 		return;
 	if (FALSE == GetShellDir(CSIDL_STARTMENU, myMenu))
 		return;
 
-	ScanDir(myMenu, _T("*.lnk"), &exeLauncher);
-	ScanDir(allMenus, _T("*.lnk"), &exeLauncher);
+	map<CString,bool> catalog;
+	map<CString, bool> typeMap;
+	for(int i = 0; i < ops->Types.size(); i++) {
+		typeMap[ops->Types[i]] = true;
+	}
+
+	// Force "lnk" files
+	typeMap[_T("lnk")] = true;
+
+	ScanDir(myMenu, &exeLauncher, catalog, typeMap);
+	ScanDir(allMenus, &exeLauncher, catalog, typeMap);
+
+	for(int i = 0; i < ops->Directories.size(); i++) {
+			ScanDir(ops->Directories[i], &exeLauncher, catalog, typeMap);
+	}
 //	ScanDir(_T("C:\\Documents and Settings\\karlinjf\\My Documents\\My Music"), _T("*.mp3"), &exeLauncher);
 }
 
-void LaunchySmarts::ScanDir(CString path, CString extension, Launcher* launcher)
+void LaunchySmarts::ScanDir(CString path, Launcher* launcher, map<CString, bool>& catalog, map<CString,bool>& typeMap)
 {
 	CStringArray files;
-	disk.EnumAllFilesWithFilter(extension, path, files);
+	CString tmps;
+	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+
+
+
+	//	disk.EnumAllFilesWithFilter(extension, path, files);
+	disk.EnumAllFiles(path, files);
+
+
+
+
+	CMap<char, char&, bool, bool&> added;
 
 	int count = files.GetCount();
+
 	for(int i = 0; i < count; i++) {
+		tmps = files[i].Mid(files[i].GetLength()-4,4);
+		tmps.MakeLower();
+		if (typeMap[tmps] == false) continue;
 		FileRecordPtr rec(new FileRecord());
-		rec->set(files[i], extension, launcher);
-		catalog.Add(rec);
+		rec->set(files[i], tmps, launcher);
+
+		if (catalog[rec->lowName] == true) continue;
+		catalog[rec->lowName] = true;
+		catFiles += 1;
+		added.RemoveAll();
+		for(int i = 0; i < rec->lowName.GetLength( ); i++) {
+			char c = rec->lowName[i];
+			charUsage[c] += 1;
+
+			if (charMap[c] == NULL) {
+				charMap[c].reset(new vector<FileRecordPtr>());	
+			}
+			if (added[c] == false) {
+				charMap[c]->push_back(rec);
+				added[c] = true;
+			}
+		}
 	}
 }
 
@@ -91,34 +161,33 @@ void LaunchySmarts::Update(CString txt)
 
 	CString history = pDlg->options->GetAssociation(txt);
 
-	matches.RemoveAll();
+	matches.clear();
 	pDlg->InputBox.m_listbox.ResetContent();
 	FindMatches(txt);
 
 	// Set the preferred bit for the history match
-	int count = matches.GetCount();
+	int count = matches.size();
 	for(int i = 0; i < count; i++) {
 		if (matches[i]->croppedName == history) {
-//			AfxMessageBox(matches[i]->croppedName);
 			matches[i]->isHistory = true;
 		}
 	}
 
-	matches.QuickSort();
+	sort(matches.begin(), matches.end(), less_than);
 
 	// Unset the preferred bit for the history match
 	if (count > 0)
 		matches[0]->isHistory = false;
 
 
-	if (matches.GetSize() > 0) {
+	if (matches.size() > 0) {
 		pDlg->Preview.SetWindowText(matches[0]->croppedName);
 	} else {
 		pDlg->Preview.SetWindowText(_T(""));
 	}
 
 	
-	int size = matches.GetSize();
+	int size = matches.size();
 	for(int i = 0; i < size && i < 10; i++) {
 		pDlg->InputBox.AddString(matches[i]->croppedName);
 	}
@@ -128,12 +197,30 @@ void LaunchySmarts::Update(CString txt)
 void LaunchySmarts::FindMatches(CString txt)
 {
 	txt.MakeLower();
-	int count = catalog.GetCount();
-	for(int i = 0; i < count; i++) {
-		if (Match(catalog[i], txt)) {
-			matches.Add(catalog[i]);
+
+	char mostInfo = -1;
+	// Find the character with the most amount of information
+	for(int i = 0; i < txt.GetLength(); i++) {
+		char c = txt[i];
+		if (charUsage[c] < charUsage[mostInfo] || mostInfo == -1) {
+			mostInfo = c;
 		}
 	}
+
+	if (charMap[mostInfo] != NULL) {
+		int count = charMap[mostInfo]->size();
+		for(int i = 0; i < count; i++) {
+			if (Match(charMap[mostInfo]->at(i), txt)) {
+				matches.push_back(charMap[mostInfo]->at(i));
+			}
+		}
+	}
+
+	else {
+		AfxMessageBox(_T("I shouldn't get here"));
+	}
+
+
 }
 
 
@@ -150,39 +237,15 @@ inline BOOL LaunchySmarts::Match(FileRecordPtr record, CString txt)
 			if (curChar >= txtSize) {
 				return true;
 			}
-		} else {
-		}
+		} 
 	}
 	return false;
 }
 
 void LaunchySmarts::Launch(void)
 {
-	if(matches.GetSize() > 0) {
+	if(matches.size() > 0) {
 		matches[0]->launcher->Run(matches[0]);
-	}
-}
-
-
-// This is currently quite broken as the quicksort does
-// not arrange in string order!  It arranges in a special
-// order defined by FileRecords's < and > operator overloads
-void LaunchySmarts::RemoveDuplicates(void)
-{
-	catalog.QuickSort();
-	CQArray<FileRecordPtr,FileRecordPtr> tmpArray;
-	tmpArray.SetSize(catalog.GetSize());
-	int curEle = 0;
-	for(int i = 0; i < catalog.GetSize()-1; i++) {
-		if (catalog[i]->lowName != catalog[i+1]->lowName) {
-			tmpArray[curEle++] = catalog[i];
-		}
-	}
-	tmpArray[curEle] = catalog[catalog.GetSize()-1];
-
-	catalog.RemoveAll();
-	for(int i = 0; i < tmpArray.GetSize(); i++) {
-		catalog.Add(tmpArray[i]);
 	}
 }
 

@@ -60,6 +60,13 @@ END_MESSAGE_MAP()
 
 HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
+	
+	HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	pDC->SetTextColor(m_crText);
+//	pDC->SetBkColor(m_crBackGnd);
+	pDC->SetBkMode(TRANSPARENT);
+
 	if (nCtlColor == CTLCOLOR_EDIT)
 	{
 		//[ASCII 160][ASCII 160][ASCII 160]Edit control
@@ -74,12 +81,36 @@ HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			m_listbox.SubclassWindow(pWnd->GetSafeHwnd());
 	}
 
-	HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  Change any attributes of the DC here
 
 	// TODO:  Return a different brush if the default is not desired
-	return hbr;
+	return m_brBackGnd;
+}
+
+void SmartComboBox::SetBackColor(COLORREF rgb)
+{
+	//set background color ref (used for text's background)
+	m_crBackGnd = rgb;
+	
+	//free brush
+	if (m_brBackGnd.GetSafeHandle())
+       m_brBackGnd.DeleteObject();
+	//set brush to new color
+	m_brBackGnd.CreateSolidBrush(rgb);
+	
+	//redraw
+//	Invalidate(TRUE);
+}
+
+
+void SmartComboBox::SetTextColor(COLORREF rgb)
+{
+	//set text color ref
+	m_crText = rgb;
+
+	//redraw
+//	Invalidate(TRUE);
 }
 
 void SmartComboBox::OnDestroy()

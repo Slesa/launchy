@@ -19,12 +19,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 
+#include "ReadOnlyEdit.h"
 
 // CTypeEdit
 
-class CTypeEdit : public CEdit
+class CTypeEdit : public CReadOnlyEdit
 {
-	DECLARE_DYNAMIC(CTypeEdit)
+//	DECLARE_DYNAMIC(CTypeEdit)
 
 public:
 	CTypeEdit();

@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "LaunchySmarts.h"
 
 
+
 Options::Options(void) : ini(new CIniFile())
 , vkey(0)
 , mod_key(0)
@@ -42,6 +43,33 @@ Options::~Options(void)
 	Store();
 }
 
+vector<CString> DeSerializeStringArray(CString input) {
+	vector<CString> output;
+
+	CString tmp;
+	int cur = 0;
+	while(true) {
+		int c = input.Find(_T(";"), cur);
+		if (c > 0 && c < input.GetLength()) {
+			tmp = input.Mid(cur,c-cur);
+			output.push_back(tmp);
+		} else {
+			break;
+		}
+		cur = c+1;
+	}
+	return output;
+}
+
+CString SerializeStringArray(vector<CString> input) {
+	CString output = _T("");
+	for(int i = 0; i < input.size(); i++) {
+		output.Append(input[i]);
+		output.Append(_T(";"));
+	}
+	return output;
+}
+
 void Options::ParseIni(void)
 {
 	posX = ini->GetValueI(L"Position", L"pos_x");
@@ -51,6 +79,10 @@ void Options::ParseIni(void)
 	vkey =  ini->GetValueI(L"Hotkey", L"vkey", VK_SPACE);
 
 	skinName = ini->GetValue(L"Skin", L"name", L"Blue Trim").c_str();
+
+	Directories = DeSerializeStringArray(ini->GetValue(L"General", L"Directories", L"").c_str());
+	Types = DeSerializeStringArray(ini->GetValue(L"General", L"Types", L"").c_str());
+
 }
 
 void Options::Store(void)
@@ -67,6 +99,10 @@ void Options::Store(void)
 	ini->SetValueI(L"Hotkey", L"vkey", vkey);
 
 	ini->SetValue(L"Skin", L"name", skinName.GetBuffer());
+
+	ini->SetValue(L"General", L"Directories", SerializeStringArray(Directories).GetBuffer());
+	ini->SetValue(L"General", L"Types", SerializeStringArray(Types).GetBuffer());
+
 	ini->WriteFile();
 }
 
@@ -97,7 +133,6 @@ void Options::LoadSkins(void)
 	CString dir = buffer;
 	dir += "\\Skins\\";
 
-
 	CDiskObject disk;
 	CStringArray skinDirs;
 	disk.EnumAllDirectories(dir, skinDirs);
@@ -105,7 +140,8 @@ void Options::LoadSkins(void)
 	int count = skinDirs.GetCount();
 	for(int i = 0; i < count; i++) {
 		shared_ptr<Skin> x(new Skin(skinDirs[i]));
-		skins.AddTail(x);
+		if (x->name == _T("")) continue;
+		skins.push_back(x);
 		if (x->name == skinName) {
 			skin = x;
 		}

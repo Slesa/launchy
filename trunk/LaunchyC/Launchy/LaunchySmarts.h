@@ -22,13 +22,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "DiskObject.h"
 #include "afxtempl.h"
 #include "FileRecord.h"
-#include "QArray.h"
+#include <map>
+#include <vector>
 
+using namespace std;
 
+#include <boost/smart_ptr.hpp>
+using namespace boost;
+
+typedef shared_ptr<vector<FileRecordPtr> > CharSectionPtr;
 
 class LaunchySmarts
 {
 public:
+	int catFiles;
 	LaunchySmarts(void);
 	~LaunchySmarts(void);
 	void LoadCatalog(void);
@@ -37,11 +44,12 @@ protected:
 	ExeLauncher exeLauncher;
 	CDiskObject disk;
 public:
-	void ScanDir(CString path, CString extension, Launcher* launcher);
+	void ScanDir(CString path, Launcher* launcher,map<CString, bool>& catalog, map<CString,bool>& typeMap);
 
 protected:
-	CQArray<FileRecordPtr, FileRecordPtr> catalog;
-	CQArray<FileRecordPtr, FileRecordPtr> matches;
+	map<char, int> charUsage;
+	map<char, CharSectionPtr> charMap;
+	vector<FileRecordPtr> matches;
 public:
 	void Update(CString txt);
 	void FindMatches(CString txt);

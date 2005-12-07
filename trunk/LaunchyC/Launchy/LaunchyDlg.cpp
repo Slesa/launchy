@@ -25,6 +25,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "LaunchyDlg.h"
 #include "HotkeyDialog.h"
 #include "Skin.h"
+#include "SkinChooser.h"
+#include "DirectoryChooser.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -43,8 +45,6 @@ CLaunchyDlg::CLaunchyDlg(CWnd* pParent /*=NULL*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 
 	atLaunch = true;
-
-	m_Font.CreatePointFont(100,_T("Trebuchet MS"));
 
 	DelayTimer = 100;
 }
@@ -104,10 +104,6 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 	ASSERT(m_isKeyRegistered != FALSE);
 
-
-
-	InputBox.SetFont(&m_Font);
-	Preview.SetFont(&m_Font);
 
 	SetTimer(UPDATE_TIMER, 1200000, NULL);
 
@@ -293,8 +289,8 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	DWORD selection = mnuPopupMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON| TPM_NONOTIFY | TPM_RETURNCMD, point.x, point.y, this);
 
 	if (selection == ID_SETTINGS_SKINS) {
-
-
+		SkinChooser dlg;
+		dlg.DoModal();
 	}
 	else if (selection == ID_SETTINGS_HOTKEY) {
 		CHotkeyDialog dlg;
@@ -302,7 +298,12 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	}
 
 	else if (selection == ID_SETTINGS_DIRECTORIES) {
+		DirectoryChooser dlg;
+		dlg.DoModal();
+	}
 
+	else if (selection == ID_EXIT) {
+		this->EndDialog(1);
 	}
 }
 
@@ -338,4 +339,28 @@ AfxMessageBox(x);
 	InputBox.MoveWindow(options->skin->inputRect,1);
 	Preview.MoveWindow(options->skin->resultRect,1);
 
+	CFont ff1, ff2;
+	ff1.CreatePointFont(240,_T("Tahoma"));
+/*	LOGFONT lf;
+	options->skin->m_FontInput.GetLogFont(&lf);
+	ff1.CreateFontIndirectW(&lf);
+	
+	options->skin->m_FontResult.GetLogFont(&lf);
+	ff2.CreateFontIndirectW(&lf);
+
+	InputBox.setfo
+	*/
+		this->SetFont(&ff1);
+
+//	InputBox.SetFont(&ff1);
+//	Preview.SetFont(&ff2);
+
+
+	InputBox.SetTextColor(options->skin->inputFontRGB);
+	Preview.SetTextColor(options->skin->resultFontRGB);
+
+	// Widget backgrounds
+
+	InputBox.SetBackColor(options->skin->inputRGB);
+	Preview.SetBackColor(options->skin->resultRGB);	
 }
