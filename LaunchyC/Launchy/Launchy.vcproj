@@ -199,6 +199,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ColorCombo.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DirectoryChooser.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\DiskObject.cpp"
 				>
 			</File>
@@ -251,7 +259,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ReadOnlyEdit.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Skin.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SkinChooser.cpp"
 				>
 			</File>
 			<File
@@ -290,6 +306,14 @@
 			>
 			<File
 				RelativePath=".\CDialogSK.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ColorCombo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DirectoryChooser.h"
 				>
 			</File>
 			<File
@@ -337,7 +361,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\QArray.h"
+				RelativePath=".\ReadOnlyEdit.h"
 				>
 			</File>
 			<File
@@ -346,6 +370,10 @@
 			</File>
 			<File
 				RelativePath=".\Skin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SkinChooser.h"
 				>
 			</File>
 			<File

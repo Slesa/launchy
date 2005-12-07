@@ -58,6 +58,7 @@ bool CIniFile::ReadFile()
     return false;
   
   while( getline( f, line)) {
+	  CString vn, v;
 //	line = _TCHAR(l.c_str());
     // To be compatible with Win32, check for existence of '\r'.
     // Win32 files have the '\r' and Unix files don't at the end of a line.
@@ -88,7 +89,11 @@ bool CIniFile::ReadFile()
 	case '=':
 	  valuename = line.substr( 0, pLeft);
 	  value = line.substr( pLeft + 1);
-	  SetValue( keyname, valuename, value);
+	  vn = valuename.c_str();
+	  v = value.c_str();
+	  vn.TrimRight(_T(" "));
+	  v.TrimLeft(_T(" "));
+	  SetValue( keyname, vn.GetBuffer(), v.GetBuffer());
 	  break;
 	  
 	case ';':

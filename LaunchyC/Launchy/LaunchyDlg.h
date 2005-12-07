@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "LaunchySmarts.h"
 #include "Resource.h"
 #include <boost/smart_ptr.hpp>
+#include "ReadOnlyEdit.h"
 
 using namespace boost;
 
@@ -48,7 +49,8 @@ public:
 
 // Implementation
 protected:
-	CFont m_Font;
+	CFont m_FontInput;
+	CFont m_FontResult;
 	HICON m_hIcon;
 	BOOL atLaunch;
 	BOOL Visible;
@@ -60,13 +62,13 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	
-	scoped_ptr<LaunchySmarts> smarts;
+	shared_ptr<LaunchySmarts> smarts;
 //	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 //	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 //	afx_msg void OnWindowPosChanged(WINDOWPOS* lpwndpos);
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 
-	scoped_ptr<Options> options;
+	shared_ptr<Options> options;
 	afx_msg void OnClose();
 	afx_msg void OnDestroy();
 //	afx_msg void OnCbnEditchangeInput();
@@ -80,7 +82,7 @@ protected:
 //	virtual void OnOK();
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	CEdit Preview;
+	CReadOnlyEdit Preview;
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	unsigned int DelayTimer;
 	afx_msg void OnEndSession(BOOL bEnding);

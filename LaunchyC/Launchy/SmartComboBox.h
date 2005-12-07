@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "TypeEdit.h"
 #include "OpaqueListBox.h"
+#include "ColorCombo.h"
 
 // SmartComboBox
 
@@ -35,6 +36,8 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
+	void SetTextColor(COLORREF rgb);
+	void SetBackColor(COLORREF rgb);
     CTypeEdit      m_edit;
     CListBox   m_listbox;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
@@ -46,6 +49,12 @@ public:
 	CString typed;
 	afx_msg void OnCbnSelchange();
 	afx_msg void OnCbnDropdown();
+private:
+	//text and text background colors
+	COLORREF m_crText;
+	COLORREF m_crBackGnd;
+	//background brush
+	CBrush m_brBackGnd;
 };
 
 

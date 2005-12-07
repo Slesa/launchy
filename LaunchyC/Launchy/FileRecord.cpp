@@ -13,7 +13,7 @@ FileRecord::~FileRecord(void)
 
 void FileRecord::set(CString p, CString type, Launcher* l)
 {
-	matchValue = 0;
+	CString fileName, fileType;
 	launcher = l;
 	fullPath = p;
 	if (type[0] == '*')
@@ -24,10 +24,10 @@ void FileRecord::set(CString p, CString type, Launcher* l)
 	int ind = p.ReverseFind(_T('\\'));
 	if (ind != -1) {
 		fileName = p.Mid(ind+1);
-		dirPath = p.Mid(0,ind);
+		//dirPath = p.Mid(0,ind);
 	} else {
 		fileName = p;
-		dirPath = p;
+		//dirPath = p;
 	}
 
 	lowName = fileName;
@@ -42,47 +42,3 @@ void FileRecord::set(CString p, CString type, Launcher* l)
 	
 }
 
-
-bool FileRecord::operator<(const FileRecord & other) const 
-{
-	if (isHistory) { return 1; } 
-	if (other.isHistory) { return 0; }
-
-	int localFind = lowName.Find(searchTxt);
-	int otherFind = other.lowName.Find(searchTxt);
-	int localLen = lowName.GetLength();
-	int otherLen = other.lowName.GetLength();
-	
-	if (localFind > -1 && otherFind == -1)
-		return 1;
-	if (localFind == -1 && otherFind > -1)
-		return 0;
-	if (localLen < otherLen)
-		return 1;
-	if (localLen > otherLen)
-		return 0;
-
-	return 0;
-}
-
-bool FileRecord::operator>(const FileRecord & other) const
-{
-	if (isHistory) { return 0; }
-	if (other.isHistory) { return 1; }
-
-	int localFind = lowName.Find(searchTxt);
-	int otherFind = other.lowName.Find(searchTxt);
-	int localLen = lowName.GetLength();
-	int otherLen = other.lowName.GetLength();
-	
-	if (localFind > -1 && otherFind == -1)
-		return 0;
-	if (localFind == -1 && otherFind > -1)
-		return 1;
-	if (localLen < otherLen)
-		return 0;
-	if (localLen > otherLen)
-		return 1;
-
-	return 0;
-}
