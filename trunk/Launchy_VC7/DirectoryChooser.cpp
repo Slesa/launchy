@@ -101,6 +101,7 @@ void DirectoryChooser::OnBnClickedAddType()
 	TypeEdit.GetWindowTextW(txt);
 	if (txt == "")
 		return;
+	txt.MakeLower();
 	ops->Types.push_back(txt);
 	Types.AddString(txt);
 	TypeEdit.SetWindowTextW(_T(""));

@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "LaunchyDlg.h"
 #include "FileRecord.h"
 #include "Launchy.h"
+#include "launchysmarts.h"
+#include "CArchiveEx.h"
 
 // Code to get shell directories
 #ifndef CSIDL_WINDOWS
@@ -61,6 +63,12 @@ bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 
 LaunchySmarts::LaunchySmarts(void)
 {
+	hMutex = CreateMutex( 
+    NULL,                       // default security attributes
+    FALSE,                      // initially not owned
+    NULL);                      // unnamed mutex
+
+
 	catFiles = 0;
 	LoadCatalog();
 }
@@ -69,55 +77,22 @@ LaunchySmarts::~LaunchySmarts(void)
 {
 }
 
-void LaunchySmarts::LoadCatalog(void)
-{
-	catFiles = 0;
-	charUsage.clear();
-	charMap.clear();
-	ScanStartMenu();
-}
 
-void LaunchySmarts::ScanStartMenu(void)
-{
-	
-	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
-	CString myMenu, allMenus;
-	if (FALSE == GetShellDir(CSIDL_COMMON_STARTMENU, allMenus))
-		return;
-	if (FALSE == GetShellDir(CSIDL_STARTMENU, myMenu))
-		return;
 
+void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
+{
 	map<CString,bool> catalog;
 	map<CString, bool> typeMap;
-	for(int i = 0; i < ops->Types.size(); i++) {
-		typeMap[ops->Types[i]] = true;
+	for(int i = 0; i < bun->ops->Types.size(); i++) {
+		typeMap[bun->ops->Types[i]] = true;
 	}
 
 	// Force "lnk" files
 	typeMap[_T(".lnk")] = true;
 
-	ScanDir(myMenu, &exeLauncher, catalog, typeMap);
-	ScanDir(allMenus, &exeLauncher, catalog, typeMap);
 
-	for(int i = 0; i < ops->Directories.size(); i++) {
-			ScanDir(ops->Directories[i], &exeLauncher, catalog, typeMap);
-	}
-//	ScanDir(_T("C:\\Documents and Settings\\karlinjf\\My Documents\\My Music"), _T("*.mp3"), &exeLauncher);
-}
-
-void LaunchySmarts::ScanDir(CString path, Launcher* launcher, map<CString, bool>& catalog, map<CString,bool>& typeMap)
-{
-	CStringArray files;
 	CString tmps;
-	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
-
-
-
-	//	disk.EnumAllFilesWithFilter(extension, path, files);
-	disk.EnumAllFiles(path, files);
-
-
-
+	Options* ops = bun->ops;
 
 	CMap<char, char&, bool, bool&> added;
 
@@ -128,25 +103,151 @@ void LaunchySmarts::ScanDir(CString path, Launcher* launcher, map<CString, bool>
 		tmps.MakeLower();
 		if (typeMap[tmps] == false) continue;
 		FileRecordPtr rec(new FileRecord());
-		rec->set(files[i], tmps, launcher);
-
+		rec->set(files[i], tmps, &bun->smarts->exeLauncher);
+		out.Add(files[i]);
 		if (catalog[rec->lowName] == true) continue;
 		catalog[rec->lowName] = true;
-		catFiles += 1;
+		bun->catFiles += 1;
 		added.RemoveAll();
 		for(int i = 0; i < rec->lowName.GetLength( ); i++) {
 			char c = rec->lowName[i];
-			charUsage[c] += 1;
+			bun->charUsage[c] += 1;
 
-			if (charMap[c] == NULL) {
-				charMap[c].reset(new vector<FileRecordPtr>());	
+			if (bun->charMap[c] == NULL) {
+				bun->charMap[c].reset(new vector<FileRecordPtr>());	
 			}
 			if (added[c] == false) {
-				charMap[c]->push_back(rec);
+				bun->charMap[c]->push_back(rec);
 				added[c] = true;
 			}
 		}
 	}
+}
+
+
+UINT ScanStartMenu(LPVOID pParam)
+{
+	ScanBundle* bun = (ScanBundle*) pParam;
+	
+	Options* ops = bun->ops;
+	CString myMenu, allMenus;
+
+	if (FALSE == bun->smarts->GetShellDir(CSIDL_COMMON_STARTMENU, allMenus))
+		return 0;
+	if (FALSE == bun->smarts->GetShellDir(CSIDL_STARTMENU, myMenu))
+		return 0;
+
+	CStringArray files, smaller;
+	CStringArray tmpFiles;
+	files.SetSize(1024);
+	tmpFiles.SetSize(1024);
+	
+
+	CDiskObject disk;
+	disk.EnumAllFiles(myMenu, files);
+	disk.EnumAllFiles(allMenus, tmpFiles);
+	files.Append(tmpFiles);
+	tmpFiles.RemoveAll();
+
+	for(int i = 0; i < ops->Directories.size(); i++) {
+		disk.EnumAllFiles(ops->Directories[i], tmpFiles);
+		files.Append(tmpFiles);
+		tmpFiles.RemoveAll();
+	}
+
+	ScanFiles(files, bun, smaller);
+
+
+	// Now replace the catalog files
+	bun->smarts->getCatalogLock();
+
+	bun->smarts->charMap = bun->charMap;
+	bun->smarts->charUsage = bun->charUsage;
+	bun->smarts->catFiles = bun->catFiles;
+
+	bun->smarts->releaseCatalogLock();
+
+
+	CFile theFile;
+	CString dir;
+	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
+	dir += _T("\\Launchy");
+	dir += _T("\\launchy.db");
+	if (!theFile.Open(dir, CFile::modeWrite | CFile::modeCreate)) {
+		int x = 3;
+		x += 3;
+		delete bun;
+		return 0;
+	}
+
+//CArchiveExt(CFile* pFile, UINT nMode, int nBufSize = 4096, void* lpBuf = NULL, CString Key = _TEXT(""), BOOL bCompress = FALSE);
+	CArchiveExt archive(&theFile, CArchive::store, 4096, NULL, _T(""), TRUE);
+
+	smaller.Serialize(archive);
+
+	archive.Close();
+	theFile.Close();
+
+	delete bun;
+
+	return 0;
+}
+
+void LaunchySmarts::LoadCatalog(void)
+{
+	ScanBundle* bundle = new ScanBundle();
+	bundle->smarts = this;
+	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
+	bundle->catFiles = 0;
+	AfxBeginThread(ScanStartMenu, bundle);
+
+
+}
+
+
+
+/*
+	When the program is launched, it's faster to just
+	read an old archive of the file names rather than
+	plow through the filesystem while the computer is
+	trying to start up.  This makes Launchy feel lighter.
+*/
+
+void LaunchySmarts::LoadFirstTime()
+{
+	CFile theFile;
+	CString dir;
+	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
+	dir += _T("\\Launchy");
+	dir += _T("\\launchy.db");
+	if (!theFile.Open(dir, CFile::modeRead)) {
+		LoadCatalog();
+		return;
+	}
+
+	CArchiveExt archive(&theFile, CArchive::load, 4096, NULL, _T(""), TRUE);
+
+	CStringArray files, smaller;
+	files.Serialize(archive);
+
+	archive.Close();
+	theFile.Close();
+	
+
+	ScanBundle* bundle = new ScanBundle();
+	bundle->smarts = this;
+	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
+	bundle->catFiles = 0;
+	ScanFiles(files, bundle, smaller);
+	
+	// Now replace the catalog files
+	bundle->smarts->getCatalogLock();
+
+	bundle->smarts->charMap = bundle->charMap;
+	bundle->smarts->charUsage = bundle->charUsage;
+	bundle->smarts->catFiles = bundle->catFiles;
+
+	bundle->smarts->releaseCatalogLock();
 }
 
 
@@ -196,6 +297,7 @@ void LaunchySmarts::Update(CString txt)
 
 void LaunchySmarts::FindMatches(CString txt)
 {
+	getCatalogLock();
 	txt.MakeLower();
 
 	char mostInfo = -1;
@@ -216,10 +318,10 @@ void LaunchySmarts::FindMatches(CString txt)
 		}
 	}
 
-	else {
-		AfxMessageBox(_T("I shouldn't get here"));
-	}
-
+//	else {
+//		AfxMessageBox(_T("I shouldn't get here"));
+//	}
+	releaseCatalogLock();
 
 }
 
@@ -279,4 +381,25 @@ BOOL LaunchySmarts::GetShellDir(int iType, CString& szPath)
      FreeLibrary( hInst ); // <-- and here
      return TRUE;
 	return 0;
+}
+
+
+
+void LaunchySmarts::getCatalogLock(void)
+{
+	WaitForSingleObject(hMutex, INFINITE);
+}
+
+void LaunchySmarts::releaseCatalogLock(void)
+{
+	ReleaseMutex(hMutex);
+}
+
+void LaunchySmarts::getStrings(CStringArray& strings)
+{
+	for(map<char, CharSectionPtr>::iterator it = charMap.begin(); it != charMap.end(); ++it) {
+		for(vector<FileRecordPtr>::iterator jt = it->second->begin(); jt != it->second->end(); ++jt) {
+			strings.Add(jt->get()->fullPath);
+		}
+	}
 }

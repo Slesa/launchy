@@ -32,31 +32,57 @@ using namespace boost;
 
 typedef shared_ptr<vector<FileRecordPtr> > CharSectionPtr;
 
+class LaunchySmarts;
+#include "Options.h"
+
+
+struct ScanBundle {
+	Options* ops;
+	LaunchySmarts* smarts;
+	map<char, int> charUsage;
+	map<char, CharSectionPtr> charMap;
+	int catFiles;
+};
+
+
+
+
 class LaunchySmarts
 {
+
+
 public:
 	int catFiles;
 	LaunchySmarts(void);
 	~LaunchySmarts(void);
 	void LoadCatalog(void);
 protected:
-	void ScanStartMenu(void);
-	ExeLauncher exeLauncher;
+	//	static UINT ScanStartMenu(LPVOID pParam);
+
 	CDiskObject disk;
 public:
-	void ScanDir(CString path, Launcher* launcher,map<CString, bool>& catalog, map<CString,bool>& typeMap);
-
-protected:
 	map<char, int> charUsage;
 	map<char, CharSectionPtr> charMap;
+	//	static void ScanDir(CString path, Launcher* launcher,map<CString, bool>& catalog, map<CString,bool>& typeMap);
+
+protected:
+
 	vector<FileRecordPtr> matches;
 public:
 	void Update(CString txt);
 	void FindMatches(CString txt);
 	BOOL Match(FileRecordPtr record, CString txt);
+	ExeLauncher exeLauncher;
 	void Launch(void);
+private:
+
 protected:
 	void RemoveDuplicates(void);
 public:
 	static BOOL GetShellDir(int iType, CString& szPath);
+	void getCatalogLock(void);
+	void releaseCatalogLock(void);
+	HANDLE hMutex;
+	void getStrings(CStringArray& strings);
+	void LoadFirstTime();
 };

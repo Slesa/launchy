@@ -69,7 +69,7 @@
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
 			UseOfMFC="1"
-			CharacterSet="2">
+			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
@@ -124,6 +124,9 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath=".\CArchiveEx.cpp">
+			</File>
 			<File
 				RelativePath=".\CDialogSK.cpp">
 			</File>
@@ -201,6 +204,9 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath=".\CArchiveEx.h">
+			</File>
 			<File
 				RelativePath=".\CDialogSK.h">
 			</File>
@@ -280,6 +286,13 @@
 			</File>
 			<File
 				RelativePath=".\res\Launchy.rc2">
+			</File>
+		</Filter>
+		<Filter
+			Name="zlib"
+			Filter="">
+			<File
+				RelativePath=".\zlib\zlib.lib">
 			</File>
 		</Filter>
 		<File

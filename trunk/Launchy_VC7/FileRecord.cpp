@@ -21,6 +21,8 @@ void FileRecord::set(CString p, CString type, Launcher* l)
 	else
 		fileType = type;
 
+
+
 	int ind = p.ReverseFind(_T('\\'));
 	if (ind != -1) {
 		fileName = p.Mid(ind+1);
@@ -30,13 +32,7 @@ void FileRecord::set(CString p, CString type, Launcher* l)
 		//dirPath = p;
 	}
 
-
-	ind = fileName.Find(fileType);
-	if (ind != -1) {
-		croppedName = fileName.Mid(0, ind);
-	} else {
-		croppedName = fileName;
-	}
+	croppedName = fileName.Mid(0, fileName.GetLength() - type.GetLength());
 
 	lowName = croppedName;
 	lowName.MakeLower();
