@@ -105,7 +105,7 @@ BOOL CLaunchyDlg::OnInitDialog()
 	ASSERT(m_isKeyRegistered != FALSE);
 
 
-	SetTimer(UPDATE_TIMER, 1200000, NULL);
+	SetTimer(UPDATE_TIMER, 120000, NULL);
 
 	// In order to subclass the combobox list and edit controls
 	// we have to first paint the controls to make sure the message
@@ -263,6 +263,8 @@ void CLaunchyDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 	else if (nIDEvent == UPDATE_TIMER) {
 		smarts->LoadCatalog();
+		KillTimer(UPDATE_TIMER);
+		SetTimer(UPDATE_TIMER, 600000, NULL);
 	}
 }
 
