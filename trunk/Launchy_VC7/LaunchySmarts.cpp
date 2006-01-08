@@ -200,8 +200,6 @@ void LaunchySmarts::LoadCatalog(void)
 	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
 	bundle->catFiles = 0;
 	AfxBeginThread(ScanStartMenu, bundle);
-
-
 }
 
 
@@ -248,6 +246,8 @@ void LaunchySmarts::LoadFirstTime()
 	bundle->smarts->catFiles = bundle->catFiles;
 
 	bundle->smarts->releaseCatalogLock();
+
+	delete bundle;
 }
 
 

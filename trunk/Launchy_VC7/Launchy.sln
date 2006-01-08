@@ -3,6 +3,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Launchy", "Launchy.vcproj",
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{FA9D2589-A695-49FA-9A87-9B76DEE47C65}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -13,6 +17,8 @@ Global
 		{0F712363-FE44-450E-A219-BC25D0B749FE}.Debug.Build.0 = Debug|Win32
 		{0F712363-FE44-450E-A219-BC25D0B749FE}.Release.ActiveCfg = Release|Win32
 		{0F712363-FE44-450E-A219-BC25D0B749FE}.Release.Build.0 = Release|Win32
+		{FA9D2589-A695-49FA-9A87-9B76DEE47C65}.Debug.ActiveCfg = Debug
+		{FA9D2589-A695-49FA-9A87-9B76DEE47C65}.Release.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
