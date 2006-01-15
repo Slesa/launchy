@@ -40,6 +40,34 @@ BEGIN_MESSAGE_MAP(DirectoryChooser, CDialog)
 	ON_BN_CLICKED(IDCANCEL, &DirectoryChooser::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
+void SetWidthByContentInListBox(CDialog* pDlg, int nID)
+{
+if (nID <= 0|| pDlg == NULL) return;
+CWnd* pWnd = (CWnd*)pDlg;
+
+CListBox* pCB = (CListBox*)pWnd->GetDlgItem(nID);
+if (pCB == NULL) return;
+
+int origSize = pCB->GetHorizontalExtent();
+int maxSize = origSize;
+
+CDC* pDC = pWnd->GetDC();
+CString cStr;
+int str_num = pCB->GetCount();
+for (int i = 0; i < str_num; i++)
+{
+pCB->GetText(i, cStr);
+
+CSize strSize = pDC->GetOutputTextExtent(cStr);
+if (strSize.cx > maxSize)
+maxSize = strSize.cx;
+}
+
+// in case when adding to list, existing items may be
+// longer than newer ones, so may not want to resize
+if (maxSize > origSize)
+pCB->SetHorizontalExtent(maxSize);
+}
 
 // DirectoryChooser message handlers
 
@@ -71,6 +99,7 @@ void DirectoryChooser::OnBnClickedAddDirectory()
             imalloc->Release ( );
         }
     }
+	SetWidthByContentInListBox(this, IDC_LIST1);
 }
 
 void DirectoryChooser::OnBnClickedRemoveDirectory()
@@ -92,6 +121,7 @@ void DirectoryChooser::OnBnClickedRemoveDirectory()
 	}
 
 	Directories.DeleteString(item);
+	SetWidthByContentInListBox(this, IDC_LIST1);
 }
 
 void DirectoryChooser::OnBnClickedAddType()
@@ -105,6 +135,7 @@ void DirectoryChooser::OnBnClickedAddType()
 	ops->Types.push_back(txt);
 	Types.AddString(txt);
 	TypeEdit.SetWindowTextW(_T(""));
+	SetWidthByContentInListBox(this, IDC_LIST2);
 }
 
 void DirectoryChooser::OnBnClickedRemoveType()
@@ -126,6 +157,7 @@ void DirectoryChooser::OnBnClickedRemoveType()
 	}
 
 	Types.DeleteString(item);
+	SetWidthByContentInListBox(this, IDC_LIST2);
 }
 
 BOOL DirectoryChooser::OnInitDialog()
@@ -150,6 +182,8 @@ BOOL DirectoryChooser::OnInitDialog()
 	dbak = ops->Directories;
 	tbak = ops->Types; 
 
+	SetWidthByContentInListBox(this, IDC_LIST1);
+	SetWidthByContentInListBox(this, IDC_LIST2);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
