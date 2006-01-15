@@ -67,6 +67,7 @@ HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 //	pDC->SetBkColor(m_crBackGnd);
 	pDC->SetBkMode(TRANSPARENT);
 
+
 	if (nCtlColor == CTLCOLOR_EDIT)
 	{
 		//[ASCII 160][ASCII 160][ASCII 160]Edit control
@@ -182,5 +183,6 @@ void SmartComboBox::OnCbnDropdown()
 
 	// Set the width of the list box so that every item is completely visible.
 	pmyComboBox->SetDroppedWidth(dx);
+	pmyComboBox->SetCurSel(0);
 }
 

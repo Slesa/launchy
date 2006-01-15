@@ -6,7 +6,7 @@
     name="Microsoft.Windows.Launchy"
     type="win32" 
 /> 
-<description>Your app description here</description> 
+<description>Launchy</description> 
 <dependency> 
     <dependentAssembly> 
         <assemblyIdentity 

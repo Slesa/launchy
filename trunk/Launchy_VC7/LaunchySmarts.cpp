@@ -32,8 +32,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define CSIDL_SYSTEM                    0x0025      // GetSystemDirectory()
 #define CSIDL_PROGRAM_FILES             0x0026      // C:\Program Files
 typedef enum {
-     SHGFP_TYPE_CURRENT  = 0,   // current value for user, verify it exists
-     SHGFP_TYPE_DEFAULT  = 1,   // default value, may not exist
+	SHGFP_TYPE_CURRENT  = 0,   // current value for user, verify it exists
+	SHGFP_TYPE_DEFAULT  = 1,   // default value, may not exist
 } SHGFP_TYPE;
 #endif//CSIDL_WINDOWS
 
@@ -47,7 +47,7 @@ bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 	int otherFind = b->lowName.Find(searchTxt);
 	int localLen = a->lowName.GetLength();
 	int otherLen = b->lowName.GetLength();
-	
+
 	if (localFind > -1 && otherFind == -1)
 		return true;
 	if (localFind == -1 && otherFind > -1)
@@ -64,13 +64,13 @@ bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 LaunchySmarts::LaunchySmarts(void)
 {
 	hMutex = CreateMutex( 
-    NULL,                       // default security attributes
-    FALSE,                      // initially not owned
-    NULL);                      // unnamed mutex
+		NULL,                       // default security attributes
+		FALSE,                      // initially not owned
+		NULL);                      // unnamed mutex
 
 
 	catFiles = 0;
-	LoadCatalog();
+	LoadFirstTime();
 }
 
 LaunchySmarts::~LaunchySmarts(void)
@@ -128,7 +128,7 @@ void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
 UINT ScanStartMenu(LPVOID pParam)
 {
 	ScanBundle* bun = (ScanBundle*) pParam;
-	
+
 	Options* ops = bun->ops;
 	CString myMenu, allMenus;
 
@@ -141,7 +141,7 @@ UINT ScanStartMenu(LPVOID pParam)
 	CStringArray tmpFiles;
 	files.SetSize(1024);
 	tmpFiles.SetSize(1024);
-	
+
 
 	CDiskObject disk;
 	disk.EnumAllFiles(myMenu, files);
@@ -180,7 +180,7 @@ UINT ScanStartMenu(LPVOID pParam)
 		return 0;
 	}
 
-//CArchiveExt(CFile* pFile, UINT nMode, int nBufSize = 4096, void* lpBuf = NULL, CString Key = _TEXT(""), BOOL bCompress = FALSE);
+	//CArchiveExt(CFile* pFile, UINT nMode, int nBufSize = 4096, void* lpBuf = NULL, CString Key = _TEXT(""), BOOL bCompress = FALSE);
 	CArchiveExt archive(&theFile, CArchive::store, 4096, NULL, _T(""), TRUE);
 
 	smaller.Serialize(archive);
@@ -205,10 +205,10 @@ void LaunchySmarts::LoadCatalog(void)
 
 
 /*
-	When the program is launched, it's faster to just
-	read an old archive of the file names rather than
-	plow through the filesystem while the computer is
-	trying to start up.  This makes Launchy feel lighter.
+When the program is launched, it's faster to just
+read an old archive of the file names rather than
+plow through the filesystem while the computer is
+trying to start up.  This makes Launchy feel lighter.
 */
 
 void LaunchySmarts::LoadFirstTime()
@@ -230,14 +230,14 @@ void LaunchySmarts::LoadFirstTime()
 
 	archive.Close();
 	theFile.Close();
-	
+
 
 	ScanBundle* bundle = new ScanBundle();
 	bundle->smarts = this;
 	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
 	bundle->catFiles = 0;
 	ScanFiles(files, bundle, smaller);
-	
+
 	// Now replace the catalog files
 	bundle->smarts->getCatalogLock();
 
@@ -287,9 +287,10 @@ void LaunchySmarts::Update(CString txt)
 		pDlg->Preview.SetWindowText(_T(""));
 	}
 
-	
+
 	int size = matches.size();
 	for(int i = 0; i < size && i < 10; i++) {
+		CString blah = matches[i]->croppedName;
 		pDlg->InputBox.AddString(matches[i]->croppedName);
 	}
 
@@ -318,9 +319,9 @@ void LaunchySmarts::FindMatches(CString txt)
 		}
 	}
 
-//	else {
-//		AfxMessageBox(_T("I shouldn't get here"));
-//	}
+	//	else {
+	//		AfxMessageBox(_T("I shouldn't get here"));
+	//	}
 	releaseCatalogLock();
 
 }
@@ -353,33 +354,33 @@ void LaunchySmarts::Launch(void)
 
 BOOL LaunchySmarts::GetShellDir(int iType, CString& szPath)
 {
-     HINSTANCE hInst = ::LoadLibrary( _T("shell32.dll") );
-     if ( NULL == hInst )
-     {
-          ASSERT( 0 );
-          return FALSE;
-     }
-     
-	 HRESULT (__stdcall *pfnSHGetFolderPath)( HWND, int, HANDLE, DWORD, LPWSTR );
-	 
-	 
-	 pfnSHGetFolderPath = reinterpret_cast<HRESULT (__stdcall *)( HWND, int, HANDLE, DWORD, LPWSTR )>( GetProcAddress( hInst, "SHGetFolderPathW" ) );
+	HINSTANCE hInst = ::LoadLibrary( _T("shell32.dll") );
+	if ( NULL == hInst )
+	{
+		ASSERT( 0 );
+		return FALSE;
+	}
 
-     if ( NULL == pfnSHGetFolderPath )
-     {
-          // function not available!
-          ASSERT( 0 );
-          FreeLibrary( hInst ); // <-- here
-          return FALSE;
-     }
+	HRESULT (__stdcall *pfnSHGetFolderPath)( HWND, int, HANDLE, DWORD, LPWSTR );
 
 
-     // call it
-     HRESULT hRet = pfnSHGetFolderPath( NULL, iType, NULL, 0, szPath.GetBufferSetLength( _MAX_PATH ) );
-//     HRESULT hRet = pfnSHGetFolderPathA( NULL, iType, NULL, 0, buff );
-	 szPath.ReleaseBuffer();
-     FreeLibrary( hInst ); // <-- and here
-     return TRUE;
+	pfnSHGetFolderPath = reinterpret_cast<HRESULT (__stdcall *)( HWND, int, HANDLE, DWORD, LPWSTR )>( GetProcAddress( hInst, "SHGetFolderPathW" ) );
+
+	if ( NULL == pfnSHGetFolderPath )
+	{
+		// function not available!
+		ASSERT( 0 );
+		FreeLibrary( hInst ); // <-- here
+		return FALSE;
+	}
+
+
+	// call it
+	HRESULT hRet = pfnSHGetFolderPath( NULL, iType, NULL, 0, szPath.GetBufferSetLength( _MAX_PATH ) );
+	//     HRESULT hRet = pfnSHGetFolderPathA( NULL, iType, NULL, 0, buff );
+	szPath.ReleaseBuffer();
+	FreeLibrary( hInst ); // <-- and here
+	return TRUE;
 	return 0;
 }
 

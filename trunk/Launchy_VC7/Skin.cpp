@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "Skin.h"
+#include ".\skin.h"
 
 
 
@@ -22,7 +23,12 @@ Skin::Skin(CString dir) : ini(new CIniFile())
 
 Skin::~Skin(void)
 {
+	// Need to properly dispose of fonts
+//	delete this->m_FontInput;
+//	delete this->m_FontResult;
 }
+
+
 
 void Skin::parseSkinFile(void)
 {
@@ -36,11 +42,10 @@ void Skin::parseSkinFile(void)
 
 	width = ini->GetValueI(L"Background", L"width", 400);
 	height = ini->GetValueI(L"Background", L"height", 50);
-	red = ini->GetValueI(L"Background", L"transparent_red", 0);
-	green = ini->GetValueI(L"Background", L"transparent_green", 0);
-	blue = ini->GetValueI(L"Background", L"transparent_blue", 0);
 
-	transparency = ini->GetValueI(L"Background", L"transparency",-1);
+	trans_rgb = stringToRGB(ini->GetValue(L"Background", L"transparent_color",L"255x255x255"));
+	
+	translucensy = ini->GetValueI(L"Background", L"translucensy",-1);
 
 	// Widget positions
 	int tX = ini->GetValueI(L"Widgets", L"TextEntry_X", 25);
@@ -60,8 +65,27 @@ void Skin::parseSkinFile(void)
 	int fontSize = ini->GetValueI(L"Widgets", L"TextEntry_Font_Size", 10);
 	int italics = ini->GetValueI(L"Widgets", L"TextEntry_Font_Italics", 0);
 	int bold = ini->GetValueI(L"Widgets", L"TextEntry_Font_Bold", 0);
+	if (bold == 1) bold = 700;
 	// Fonts
-/*	m_FontInput.CreateFontW(
+	m_FontInput = new CFont;
+	m_FontResult = new CFont;
+	m_FontInput->CreateFontW(
+	   fontSize,                        // nHeight
+	   0,                         // nWidth
+	   0,                         // nEscapement
+	   0,                         // nOrientation
+	   bold,						// nWeight
+	   italics,                     // bItalic
+	   FALSE,                     // bUnderline
+	   0,                         // cStrikeOut
+	   ANSI_CHARSET,              // nCharSet
+	   OUT_DEFAULT_PRECIS,        // nOutPrecision
+	   CLIP_DEFAULT_PRECIS,       // nClipPrecision
+	   DEFAULT_QUALITY,           // nQuality
+	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
+	   fontName);                 // lpszFacename	
+
+	/*	m_FontInput.CreateFontW(
 	   fontSize,                        // nHeight
 	   0,                         // nWidth
 	   0,                         // nEscapement
@@ -77,13 +101,14 @@ void Skin::parseSkinFile(void)
 	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
 	   fontName);                 // lpszFacename	
 */
-	fontName = ini->GetValue(L"Widgets", L"Results_Font", L"Trebuchet MS").c_str();
+	fontName = ini->GetValue(_T("Widgets"), _T("Results_Font"), _T("Trebuchet MS")).c_str();
 	fontSize = ini->GetValueI(L"Widgets", L"Results_Font_Size", 10);
 	italics = ini->GetValueI(L"Widgets", L"Results_Font_Italics", 0);
 	bold = ini->GetValueI(L"Widgets", L"Results_Font_Bold", 0);
+	if (bold == 1) bold = 700;
 
 	// Fonts
-/*	m_FontResult.CreateFontW(
+	m_FontResult->CreateFontW(
 	   fontSize,                        // nHeight
 	   0,                         // nWidth
 	   0,                         // nEscapement
@@ -98,28 +123,42 @@ void Skin::parseSkinFile(void)
 	   DEFAULT_QUALITY,           // nQuality
 	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
 	   fontName);                 // lpszFacename	
-*/
-
-	// Widget background colors
-	int r = ini->GetValueI(L"Widgets", L"TextEntry_Red", 0);
-	int g = ini->GetValueI(L"Widgets", L"TextEntry_Green", 0);
-	int b = ini->GetValueI(L"Widgets", L"TextEntry_Blue", 0);
-	inputRGB = RGB(r,g,b);
-
-	r = ini->GetValueI(L"Widgets", L"TextEntry_Font_Red", 255);
-	g = ini->GetValueI(L"Widgets", L"TextEntry_Font_Green", 255);
-	b = ini->GetValueI(L"Widgets", L"TextEntry_Font_Blue", 255);
-	inputFontRGB = RGB(r,g,b);
-
-	r = ini->GetValueI(L"Widgets", L"Results_Red", 0);
-	g = ini->GetValueI(L"Widgets", L"Results_Green", 0);
-	b = ini->GetValueI(L"Widgets", L"Results_Blue", 0);
-	resultRGB = RGB(r,g,b);
 
 
-	r = ini->GetValueI(L"Widgets", L"Results_Font_Red", 255);
-	g = ini->GetValueI(L"Widgets", L"Results_Font_Green", 255);
-	b = ini->GetValueI(L"Widgets", L"Results_Font_Blue", 255);
-	resultFontRGB = RGB(r,g,b);
+	inputRGB = stringToRGB(ini->GetValue(L"Widgets", L"TextEntry_Color",L"255x255x255"));
+	inputFontRGB = stringToRGB(ini->GetValue(L"Widgets", L"TextEntry_Font_Color",L"255x255x255"));
+	resultRGB = stringToRGB(ini->GetValue(L"Widgets", L"Results_Color",L"255x255x255"));
+	resultFontRGB = stringToRGB(ini->GetValue(L"Widgets", L"Results_Font_Color",L"255x255x255"));
+}
 
+void Split(wstring str, vector<wstring>& tokens, const char delim = ' ') {
+	if (str.size() == 0) return;
+	int start = 0;
+	for(int i = 0; i < str.size(); i++) {
+		if (str[i] == delim) {
+			if (i != 0) 
+				tokens.push_back(str.substr(start,i-start));
+			start = i+1;
+		}
+	}
+	if (str[str.size()-1] != delim) {
+		tokens.push_back(str.substr(start, str.size()-start));
+	}
+}
+
+int wsToI(wstring val) {
+  int len = val.size();
+  string s;
+  s.resize(len);
+  for(int i = 0; i < len; i++)
+		s[i] = static_cast<char>(val[i]);
+  int i = atoi(s.c_str());
+  return i;
+}
+
+int Skin::stringToRGB(wstring input)
+{
+	vector<wstring> parts;
+	Split(input, parts, 'x');
+	return RGB(wsToI(parts[0]),wsToI(parts[1]),wsToI(parts[2]));
 }
