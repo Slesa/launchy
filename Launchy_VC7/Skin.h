@@ -27,20 +27,19 @@ public:
 	CString directory;
 	
 	// Font information
-	CFont m_FontResult;
-	CFont m_FontInput;
+	CFont* m_FontResult;
+	CFont* m_FontInput;
 	int inputFontRGB;
 	int resultFontRGB;
 
 
 	int width;
 	int height;
-	int red;
-	int green;
-	int blue;
-	int transparency;
+	int trans_rgb;
+	int translucensy;
 	int inputRGB;
 	int resultRGB;
 
 
+	int stringToRGB(wstring input);
 };

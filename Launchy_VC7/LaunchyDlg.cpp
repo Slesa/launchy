@@ -321,10 +321,10 @@ void CLaunchyDlg::applySkin()
 	SetStyle (LO_STRETCH);                   // resize dialog to
 	// the size of
 	// the bitmap
-	if (options->skin->transparency != -1) {
-		SetTransparent(options->skin->transparency);
+	if (options->skin->translucensy != -1) {
+		SetTransparent(options->skin->translucensy);
 	} else {
-		SetTransparentColor(RGB(options->skin->red, options->skin->green, options->skin->blue));    // set red as
+		SetTransparentColor(options->skin->trans_rgb);    // set red as
 	}
 	// the transparent
 	// color
@@ -341,8 +341,15 @@ AfxMessageBox(x);
 	InputBox.MoveWindow(options->skin->inputRect,1);
 	Preview.MoveWindow(options->skin->resultRect,1);
 
-	CFont ff1, ff2;
-	ff1.CreatePointFont(240,_T("Tahoma"));
+	// This doesn't seem to do anything
+//	InputBox.SetItemHeight(-1, 90);
+
+//	CFont* ff1 = new CFont;
+	//, ff2;
+//	ff1->CreatePointFont(160,_T("Garamond"));
+	InputBox.SetFont(options->skin->m_FontInput,1);
+	Preview.SetFont(options->skin->m_FontResult,1);
+	//InputBox.m_listbox.SetFont(ff1,1);
 /*	LOGFONT lf;
 	options->skin->m_FontInput.GetLogFont(&lf);
 	ff1.CreateFontIndirectW(&lf);
@@ -352,7 +359,7 @@ AfxMessageBox(x);
 
 	InputBox.setfo
 	*/
-		this->SetFont(&ff1);
+//		this->SetFont(&ff1);
 
 //	InputBox.SetFont(&ff1);
 //	Preview.SetFont(&ff2);

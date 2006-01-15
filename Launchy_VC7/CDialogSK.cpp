@@ -112,7 +112,8 @@ CDialogSK::SetTransparentColor (COLORREF col, BOOL bTrans)
         //  set layered style for the dialog
         SetWindowLong(m_hWnd, GWL_EXSTYLE, GetWindowLong(m_hWnd, GWL_EXSTYLE) | WS_EX_LAYERED);
         //  call it with 0 alpha for the given color
-        g_pSetLayeredWindowAttributes(m_hWnd, col, 0, LWA_COLORKEY);
+		g_pSetLayeredWindowAttributes(m_hWnd, col, 0, LWA_COLORKEY);
+
     }
     else
     {

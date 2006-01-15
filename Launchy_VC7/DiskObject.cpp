@@ -1400,6 +1400,7 @@ BOOL CDiskObject::EnumAllFilesWithFilter( const CString& filter,const CString& s
 					files.Add( file );
 				}
 			}
+//			Sleep(100);
 		}
 	}
 
