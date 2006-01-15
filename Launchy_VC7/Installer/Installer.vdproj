@@ -15,6 +15,18 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_357723DBEA074368AB87808A138ADE2E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3B7E0456742847CB8DC5E5D8B9887A57"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5B8D8B9D538547F494EEDCC39CBDC5EB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -39,8 +51,62 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_81B5138325554537B580DC24BBED9C57"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8358183BEB31428C97927AE681C29231"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_84B4E45A6AF94931AFD2AF66E0DD6955"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_94F5E9089CF847DB960AA607E2786AE1"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9BE25BAD9AB191300F5847482F8328A4"
         "OwnerKey" = "8:_5B8D8B9D538547F494EEDCC39CBDC5EB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B20E972DD0504016A9A0853145E69BD0"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C3129AE0404444118FC911A0A7FAE997"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F5F37BEBB1A04D9EB3D1CCE04C66AE97"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F6CDD18DC9324B889D67885299C404B4"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F91E42975A114BD591D43E9799315811"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -101,6 +167,46 @@
         }
         "File"
         {
+            "{A582A373-4685-4296-BEFE-614B80A702C3}:_357723DBEA074368AB87808A138ADE2E"
+            {
+            "SourcePath" = "8:..\\Skins\\Blue Trim\\CVS\\Repository"
+            "TargetName" = "8:Repository"
+            "Tag" = "8:"
+            "Folder" = "8:_C4F886BA16AC4C2A8129EFB208983399"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{A582A373-4685-4296-BEFE-614B80A702C3}:_3B7E0456742847CB8DC5E5D8B9887A57"
+            {
+            "SourcePath" = "8:..\\Skins\\Blue Trim\\skin.ini"
+            "TargetName" = "8:skin.ini"
+            "Tag" = "8:"
+            "Folder" = "8:_5B02D805DC904F2C9FFB891E6BA4254E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{A582A373-4685-4296-BEFE-614B80A702C3}:_5C4B8EC15AFE428C8212DD13ACA8B9A7"
             {
             "SourcePath" = "8:..\\res\\Launchy.ico"
@@ -161,6 +267,86 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{A582A373-4685-4296-BEFE-614B80A702C3}:_81B5138325554537B580DC24BBED9C57"
+            {
+            "SourcePath" = "8:..\\Skins\\CVS\\skin.ini"
+            "TargetName" = "8:skin.ini"
+            "Tag" = "8:"
+            "Folder" = "8:_7BC591CC221C43D6996F4883EEFCDFBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{A582A373-4685-4296-BEFE-614B80A702C3}:_8358183BEB31428C97927AE681C29231"
+            {
+            "SourcePath" = "8:..\\Skins\\CVS\\Root"
+            "TargetName" = "8:Root"
+            "Tag" = "8:"
+            "Folder" = "8:_7BC591CC221C43D6996F4883EEFCDFBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{A582A373-4685-4296-BEFE-614B80A702C3}:_84B4E45A6AF94931AFD2AF66E0DD6955"
+            {
+            "SourcePath" = "8:..\\Skins\\CVS\\Entries.Log"
+            "TargetName" = "8:Entries.Log"
+            "Tag" = "8:"
+            "Folder" = "8:_7BC591CC221C43D6996F4883EEFCDFBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{A582A373-4685-4296-BEFE-614B80A702C3}:_94F5E9089CF847DB960AA607E2786AE1"
+            {
+            "SourcePath" = "8:..\\Skins\\Blue Trim\\bluetrim.bmp"
+            "TargetName" = "8:bluetrim.bmp"
+            "Tag" = "8:"
+            "Folder" = "8:_5B02D805DC904F2C9FFB891E6BA4254E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{A582A373-4685-4296-BEFE-614B80A702C3}:_9BE25BAD9AB191300F5847482F8328A4"
             {
             "SourcePath" = "8:comdlg32.dll"
@@ -179,6 +365,106 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{A582A373-4685-4296-BEFE-614B80A702C3}:_B20E972DD0504016A9A0853145E69BD0"
+            {
+            "SourcePath" = "8:..\\Skins\\CVS\\Entries"
+            "TargetName" = "8:Entries"
+            "Tag" = "8:"
+            "Folder" = "8:_7BC591CC221C43D6996F4883EEFCDFBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{A582A373-4685-4296-BEFE-614B80A702C3}:_C3129AE0404444118FC911A0A7FAE997"
+            {
+            "SourcePath" = "8:..\\Skins\\Blue Trim\\CVS\\Root"
+            "TargetName" = "8:Root"
+            "Tag" = "8:"
+            "Folder" = "8:_C4F886BA16AC4C2A8129EFB208983399"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{A582A373-4685-4296-BEFE-614B80A702C3}:_F5F37BEBB1A04D9EB3D1CCE04C66AE97"
+            {
+            "SourcePath" = "8:..\\Skins\\Blue Trim\\CVS\\Entries"
+            "TargetName" = "8:Entries"
+            "Tag" = "8:"
+            "Folder" = "8:_C4F886BA16AC4C2A8129EFB208983399"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{A582A373-4685-4296-BEFE-614B80A702C3}:_F6CDD18DC9324B889D67885299C404B4"
+            {
+            "SourcePath" = "8:..\\Skins\\CVS\\Repository"
+            "TargetName" = "8:Repository"
+            "Tag" = "8:"
+            "Folder" = "8:_7BC591CC221C43D6996F4883EEFCDFBE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{A582A373-4685-4296-BEFE-614B80A702C3}:_F91E42975A114BD591D43E9799315811"
+            {
+            "SourcePath" = "8:..\\Skins\\Blue Trim\\CVS\\skin.ini"
+            "TargetName" = "8:skin.ini"
+            "Tag" = "8:"
+            "Folder" = "8:_C4F886BA16AC4C2A8129EFB208983399"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
         }
@@ -202,12 +488,56 @@
             {
             "DefaultLocation" = "8:[ProgramFilesFolder]\\[ProductName]"
             "Name" = "8:#1925"
-            "AlwaysCreate" = "11:FALSE"
+            "AlwaysCreate" = "11:TRUE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{F27BD5C5-A65D-4608-96D4-7C5DA1F76302}:_8FA0491156A64FADA913A8AE694DF667"
+                    {
+                    "Name" = "8:Skins"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_E246E5D41F0F43F3A9CC19EE125AA25F"
+                        "Folders"
+                        {
+                            "{F27BD5C5-A65D-4608-96D4-7C5DA1F76302}:_5B02D805DC904F2C9FFB891E6BA4254E"
+                            {
+                            "Name" = "8:Blue Trim"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_861A8812B37F48CEA1E10DA745D3767C"
+                                "Folders"
+                                {
+                                    "{F27BD5C5-A65D-4608-96D4-7C5DA1F76302}:_C4F886BA16AC4C2A8129EFB208983399"
+                                    {
+                                    "Name" = "8:CVS"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_B3C4C0CD72A147BEA9BDB868B04704DB"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
+                                }
+                            }
+                            "{F27BD5C5-A65D-4608-96D4-7C5DA1F76302}:_7BC591CC221C43D6996F4883EEFCDFBE"
+                            {
+                            "Name" = "8:CVS"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_1828602AAAE04333A98A16CD2A56CCBA"
+                                "Folders"
+                                {
+                                }
+                            }
+                        }
+                    }
                 }
             }
             "{78BAF5CE-F2E5-45BE-83BC-DB6AF387E941}:_51C19EDB802646AB9685A497D088ABB9"
@@ -259,7 +589,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Launchy"
         "ProductCode" = "8:{893878DE-44E2-4A3D-8FCF-A7761D39D4AA}"
-        "PackageCode" = "8:{CFEE617C-1BCB-49C7-B542-5577728E7581}"
+        "PackageCode" = "8:{2D497D02-9274-4535-BF27-A48FD6BE4BE4}"
         "UpgradeCode" = "8:{EF994F7D-2EC1-4B80-BB16-D3DEA132E1D8}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"

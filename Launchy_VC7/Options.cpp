@@ -85,7 +85,7 @@ void Options::ParseIni(void)
 	skinName = ini->GetValue(L"Skin", L"name", L"Blue Trim").c_str();
 
 	Directories = DeSerializeStringArray(ini->GetValue(L"General", L"Directories", L"").c_str());
-	Types = DeSerializeStringArray(ini->GetValue(L"General", L"Types", L"").c_str());
+	Types = DeSerializeStringArray(ini->GetValue(L"General", L"Types", L".lnk;").c_str());
 
 }
 
