@@ -69,6 +69,12 @@ BOOL CLaunchyApp::InitInstance()
 
 	CWinApp::InitInstance();
 
+
+	// Create application mutexes so that installer knows when
+	// Launchy is running
+	CreateMutex(NULL,0,_T("LaunchyMutex"));
+	CreateMutex(NULL,0,_T("Global\LaunchyMutex"));
+
 /*	if (!AfxSocketInit())
 	{
 		AfxMessageBox(IDP_SOCKETS_INIT_FAILED);
