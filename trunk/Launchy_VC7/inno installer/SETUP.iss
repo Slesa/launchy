@@ -39,7 +39,7 @@ Source: ..\Release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
 ;Source: ..\Skins\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ..\res\Launchy.ico; DestDir: {app}; Flags: ignoreversion
 Source: ..\license.rtf; DestDir: {app}; Flags: ignoreversion
-Source: ..\Readme.pdf; DestDir: {app}; Flags: ignoreversion
+Source: ..\Readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
 Source: ..\Skins\Blue Trim\bluetrim.bmp; DestDir: {app}\Skins\Blue Trim\; Flags: ignoreversion
 Source: ..\Skins\Blue Trim\skin.ini; DestDir: {app}\Skins\Blue Trim\; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
@@ -48,15 +48,18 @@ Source: ..\Skins\Blue Trim\skin.ini; DestDir: {app}\Skins\Blue Trim\; Flags: ign
 Filename: {app}\{#MyAppUrlName}; Section: InternetShortcut; Key: URL; String: {#MyAppURL}
 
 [Icons]
-Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
+Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
 Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
-Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: quicklaunchicon
-Name: {commonstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
+Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon; WorkingDir: {app}
+Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: quicklaunchicon; WorkingDir: {app}
+Name: {commonstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
+Name: {group}\Readme.pdf; Filename: {app}\Readme.pdf; WorkingDir: {app}
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
 
 [UninstallDelete]
 Type: files; Name: {app}\{#MyAppUrlName}
+[Messages]
+SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close all instances of it now (bring Launchy forward and type Alt+F4), then click OK to continue, or Cancel to exit.

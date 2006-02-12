@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "smartcombobox.h"
 #include "LaunchySmarts.h"
 #include "Resource.h"
+#include "TransparentStatic2.h"
 #include <boost/smart_ptr.hpp>
 //#include "ReadOnlyEdit.h"
 
@@ -90,4 +91,5 @@ public:
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
 public:
 	void applySkin(void);
+	CTransparentStatic2 IconPreview;
 };

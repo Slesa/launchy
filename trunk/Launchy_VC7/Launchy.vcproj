@@ -201,7 +201,13 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\TransparentStatic2.cpp">
+			</File>
+			<File
 				RelativePath=".\TypeEdit.cpp">
+			</File>
+			<File
+				RelativePath=".\UseShGetFileInfo.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -275,7 +281,13 @@
 				RelativePath=".\stdafx.h">
 			</File>
 			<File
+				RelativePath=".\TransparentStatic2.h">
+			</File>
+			<File
 				RelativePath=".\TypeEdit.h">
+			</File>
+			<File
+				RelativePath=".\UseShGetFileInfo.h">
 			</File>
 		</Filter>
 		<Filter
@@ -310,5 +322,8 @@
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="Launchy.rc"/>
 	</Globals>
 </VisualStudioProject>

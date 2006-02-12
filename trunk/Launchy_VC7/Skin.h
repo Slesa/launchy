@@ -21,6 +21,8 @@ public:
 	CRect inputRect;
 public:
 	CRect resultRect;
+	CRect iconRect;
+
 public:
 	CString name;
 	CString bgFile;
@@ -40,6 +42,6 @@ public:
 	int inputRGB;
 	int resultRGB;
 
-
+	CRect stringToRect(wstring input);
 	int stringToRGB(wstring input);
 };

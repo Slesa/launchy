@@ -54,6 +54,7 @@ void CLaunchyDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogSK::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_Input, InputBox);
 	DDX_Control(pDX, IDC_PREVIEW, Preview);
+	DDX_Control(pDX, IDC_PIC, IconPreview);
 }
 
 BEGIN_MESSAGE_MAP(CLaunchyDlg, CDialogSK)
@@ -78,6 +79,8 @@ END_MESSAGE_MAP()
 BOOL CLaunchyDlg::OnInitDialog()
 {
 	CDialogSK::OnInitDialog();
+
+    CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
@@ -105,7 +108,7 @@ BOOL CLaunchyDlg::OnInitDialog()
 	ASSERT(m_isKeyRegistered != FALSE);
 
 
-	SetTimer(UPDATE_TIMER, 120000, NULL);
+	SetTimer(UPDATE_TIMER, 100, NULL);
 
 	// In order to subclass the combobox list and edit controls
 	// we have to first paint the controls to make sure the message
@@ -219,6 +222,26 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 	// TODO: Add your specialized code here and/or call the base class
 	if(pMsg->message==WM_KEYDOWN)
 	{
+		if (pMsg->wParam==VK_DOWN) {
+			if (InputBox.GetDroppedState()) {
+
+//				InputBox.m_listbox.SetSel(1);
+			}
+		} 
+		else if (pMsg->wParam==VK_UP) {
+
+		}
+		else {
+			if (InputBox.GetDroppedState()) {
+			CString typed = InputBox.typed;
+				InputBox.ShowDropDown(false);
+			InputBox.m_edit.SetWindowText(typed);
+
+				InputBox.SetEditSel(InputBox.m_edit.GetWindowTextLengthW(), InputBox.m_edit.GetWindowTextLengthW());
+//			InputBox.SetCurSel(-1);
+
+			}
+		}
 		SetTimer(DELAY_TIMER, 1000, NULL);
 		if(pMsg->wParam==VK_RETURN) {
 			this->ShowWindow(SW_HIDE);
@@ -240,11 +263,12 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 			pMsg->wParam = NULL;
 		}
 
+
+
 	} 
 
 	if (pMsg->message == WM_CHAR) {
 		SetTimer(DELAY_TIMER, 1000, NULL);
-
 	}
 	return CDialogSK::PreTranslateMessage(pMsg);
 }
@@ -254,9 +278,17 @@ void CLaunchyDlg::OnTimer(UINT_PTR nIDEvent)
 	// TODO: Add your message handler code here and/or call default
 
 	if (nIDEvent == DELAY_TIMER) {
-		if (Visible && InputBox.m_edit.GetWindowTextLengthW() > 0 &&
+		if (Visible && !InputBox.GetDroppedState() && InputBox.m_edit.GetWindowTextLengthW() > 0 &&
 			InputBox.m_listbox.GetCount() > 1) {
+	//			CString prev = InputBox.typed;
+				InputBox.SetCurSel(-1);
+//				InputBox.m_listbox.
 			InputBox.ShowDropDown(true);
+			InputBox.m_edit.SetWindowText(InputBox.typed);
+			InputBox.SetEditSel(InputBox.typed.GetLength(), InputBox.typed.GetLength());
+//			InputBox.typed = prev;
+//			InputBox.m_edit.SetSel(0,-1);
+//			InputBox.m_edit.SetSel(prev.GetLength(),prev.GetLength(),TRUE);
 		}
 		KillTimer(DELAY_TIMER);
 		CDialogSK::OnTimer(nIDEvent);
@@ -340,6 +372,7 @@ AfxMessageBox(x);
 	MoveWindow(options->posX, options->posY, options->skin->width, options->skin->height,1);
 	InputBox.MoveWindow(options->skin->inputRect,1);
 	Preview.MoveWindow(options->skin->resultRect,1);
+	IconPreview.MoveWindow(options->skin->iconRect,1);
 
 	// This doesn't seem to do anything
 //	InputBox.SetItemHeight(-1, 90);

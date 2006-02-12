@@ -33,6 +33,7 @@ SmartComboBox::SmartComboBox()
 : typed(_T(""))
 {
 	CComboBox();
+	SetCurSel(-1);
 }
 
 SmartComboBox::~SmartComboBox()
@@ -132,6 +133,7 @@ void SmartComboBox::OnCbnEditupdate()
 
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
+
 	pDlg->smarts->Update(searchTxt);
 }
 
@@ -149,6 +151,7 @@ void SmartComboBox::OnCbnCloseup()
 
 		pDlg->smarts->Update(searchTxt);
 	}
+	SetCurSel(-1);
 }
 
 void SmartComboBox::OnCbnEditchange()
@@ -162,7 +165,9 @@ void SmartComboBox::OnCbnSelchange()
 void SmartComboBox::OnCbnDropdown()
 {
 	SmartComboBox* pmyComboBox = this;
-		// Find the longest string in the combo box.
+//	pmyComboBox->SetCurSel(-1);
+
+	// Find the longest string in the combo box.
 	CString str;
 	CSize   sz;
 	int     dx=0;
@@ -179,10 +184,9 @@ void SmartComboBox::OnCbnDropdown()
 
 	// Adjust the width for the vertical scroll bar and the left and
 	// right border.
-	dx += ::GetSystemMetrics(SM_CXVSCROLL) + 2*::GetSystemMetrics(SM_CXEDGE);
+	dx += ::GetSystemMetrics(SM_CXVSCROLL);// + 2*::GetSystemMetrics(SM_CXEDGE);
 
 	// Set the width of the list box so that every item is completely visible.
 	pmyComboBox->SetDroppedWidth(dx);
-	pmyComboBox->SetCurSel(0);
 }
 
