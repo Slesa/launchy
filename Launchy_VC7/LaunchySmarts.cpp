@@ -280,8 +280,38 @@ void LaunchySmarts::Update(CString txt)
 	if (count > 0)
 		matches[0]->isHistory = false;
 
-
 	if (matches.size() > 0) {
+		HICON hNew = IconInfo.GetIconHandleNoOverlay(matches[0]->fullPath, false);
+/*		int index = FileInfo.GetFileIconIndex(matches[0]->fullPath, false);
+		HICON nH = ImageList_GetIcon(      
+			HIMAGELIST himl,
+			int i,
+			UINT flags
+		);
+		SHFILEINFO info;
+		DWORD_PTR ptr = SHGetFileInfo(      
+			matches[0]->fullPath,
+			0, //DWORD dwFileAttributes,
+			&info, //SHFILEINFO *psfi,
+			sizeof(SHFILEINFO), // UINT cbFileInfo,
+			SHGFI_ICON | SHGFI_SHELLICONSIZE  //	UINT uFlags
+			);
+
+HICON nH = ImageList_GetIcon(      
+    HIMAGELIST himl,
+    int i,
+    UINT flags
+);
+*/
+
+		//NEED TO MAKE SURE ICONS GET DELETED!
+
+		HICON h = pDlg->IconPreview.SetIcon(hNew);
+		if (h != hNew) {
+			DestroyIcon(h);
+		}
+
+
 		pDlg->Preview.SetWindowText(matches[0]->croppedName);
 	} else {
 		pDlg->Preview.SetWindowText(_T(""));

@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "DiskObject.h"
 #include "afxtempl.h"
 #include "FileRecord.h"
+#include "UseShGetFileInfo.h"
 #include <map>
 #include <vector>
 
@@ -85,4 +86,5 @@ public:
 	HANDLE hMutex;
 	void getStrings(CStringArray& strings);
 	void LoadFirstTime();
+	CUseShGetFileInfo IconInfo;
 };

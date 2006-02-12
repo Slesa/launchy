@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "Skin.h"
 #include ".\skin.h"
-
+#include <sstream>
 
 
 Skin::Skin(CString dir) : ini(new CIniFile())
@@ -48,17 +48,9 @@ void Skin::parseSkinFile(void)
 	translucensy = ini->GetValueI(L"Background", L"translucensy",-1);
 
 	// Widget positions
-	int tX = ini->GetValueI(L"Widgets", L"TextEntry_X", 25);
-	int tY = ini->GetValueI(L"Widgets", L"TextEntry_Y", 25);
-	int tW = tX + ini->GetValueI(L"Widgets", L"TextEntry_Width", 140);
-	int tH = tY + ini->GetValueI(L"Widgets", L"TextEntry_Height", 50);
-	inputRect.SetRect(tX,tY,tW,tH);
-
-	tX = ini->GetValueI(L"Widgets", L"Results_X", 25);
-	tY = ini->GetValueI(L"Widgets", L"Results_Y", 25);
-	tW = tX + ini->GetValueI(L"Widgets", L"Results_Width", 140);
-	tH = tY + ini->GetValueI(L"Widgets", L"Results_Height", 50);
-	resultRect.SetRect(tX,tY,tW,tH);
+	inputRect = stringToRect(ini->GetValue(L"Widgets", L"TextEntryRect", L"25,25,140,50"));
+	resultRect = stringToRect(ini->GetValue(L"Widgets", L"ResultsRect", L"25,25,140,50"));
+	iconRect = stringToRect(ini->GetValue(L"Widgets",L"IconRect",L"183,25,32,32"));
 
 	// Widget fonts
 	CString fontName = ini->GetValue(L"Widgets", L"TextEntry_Font", L"Trebuchet MS").c_str();
@@ -161,4 +153,28 @@ int Skin::stringToRGB(wstring input)
 	vector<wstring> parts;
 	Split(input, parts, 'x');
 	return RGB(wsToI(parts[0]),wsToI(parts[1]),wsToI(parts[2]));
+}
+
+int wsToInt(wstring val) {
+  int len = val.size();
+  string s;
+  s.resize(len);
+  for(int i = 0; i < len; i++)
+		s[i] = static_cast<char>(val[i]);
+  int i = atoi(s.c_str());
+	return i;
+}
+
+CRect Skin::stringToRect(wstring input)
+{
+	vector<wstring> parts;
+	Split(input, parts, ',');
+	CRect r;
+	int x1,y1,x2,y2;
+	x1 = wsToInt(parts[0]);
+	y1 = wsToInt(parts[1]);
+	x2 = wsToInt(parts[2]);
+	y2 = wsToInt(parts[3]);
+	r.SetRect(x1,y1,x1+x2,y1+y2);
+	return r;
 }
