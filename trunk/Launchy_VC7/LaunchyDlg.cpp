@@ -47,6 +47,8 @@ CLaunchyDlg::CLaunchyDlg(CWnd* pParent /*=NULL*/)
 	atLaunch = true;
 
 	DelayTimer = 100;
+
+	border = NULL;
 }
 
 void CLaunchyDlg::DoDataExchange(CDataExchange* pDX)
@@ -89,12 +91,16 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 
 
+	SetWindowLong(GetSafeHwnd(), GWL_EXSTYLE, GetWindowLong(GetSafeHwnd(), GWL_EXSTYLE) | WS_EX_TOOLWINDOW);
+
+
 	// BEGIN SKINNING FUNCTIONS
 	EnableEasyMove();                       // enable moving of
 	// the dialog by
 	// clicking
 	// anywhere in
 	// the dialog
+
 
 
 	options.reset(new Options());
@@ -115,6 +121,7 @@ BOOL CLaunchyDlg::OnInitDialog()
 	// mapping is setup before we use the controls.
 	InputBox.ShowDropDown(true);
 	InputBox.ShowDropDown(false);
+
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -165,12 +172,12 @@ LRESULT CLaunchyDlg::OnHotKey(WPARAM wParam, LPARAM lParam) {
 		this->Visible = !this->Visible;
 		if (Visible)
 		{
-			this->ShowWindow(SW_SHOW);
+			this->ShowWindows(SW_SHOW);
 			this->ActivateTopParent();
 			this->InputBox.SetFocus();
 		}
 		else {
-			this->ShowWindow(SW_HIDE);
+			this->ShowWindows(SW_HIDE);
 		}
 	}
 	return 1;
@@ -233,18 +240,17 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 		}
 		else {
 			if (InputBox.GetDroppedState()) {
-			CString typed = InputBox.typed;
+				CString typed = InputBox.typed;
 				InputBox.ShowDropDown(false);
-			InputBox.m_edit.SetWindowText(typed);
+				InputBox.m_edit.SetWindowText(typed);
 
 				InputBox.SetEditSel(InputBox.m_edit.GetWindowTextLengthW(), InputBox.m_edit.GetWindowTextLengthW());
 //			InputBox.SetCurSel(-1);
-
 			}
 		}
 		SetTimer(DELAY_TIMER, 1000, NULL);
 		if(pMsg->wParam==VK_RETURN) {
-			this->ShowWindow(SW_HIDE);
+			this->ShowWindows(SW_HIDE);
 			this->Visible = false;
 
 
@@ -253,13 +259,15 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 				options->Associate(InputBox.typed, searchTxt);
 			}
 
+			KillTimer(DELAY_TIMER);
 			smarts->Launch();
 			pMsg->wParam = NULL;
 		}
 
 		if (pMsg->wParam==VK_ESCAPE) {
-			this->ShowWindow(SW_HIDE);
+			this->ShowWindows(SW_HIDE);
 			this->Visible = false;
+			KillTimer(DELAY_TIMER);
 			pMsg->wParam = NULL;
 		}
 
@@ -343,66 +351,69 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 void CLaunchyDlg::applySkin()
 {
+
 	if (options->skin == NULL) {
 		return;
 	}
 
+	if (options->skin->resultBorder) {
+		SetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE, GetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE) | WS_EX_CLIENTEDGE);
+
+	} else {
+		SetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE, GetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE) & ~WS_EX_CLIENTEDGE);
+	}
+
+
+
 	SetBitmap(options->skin->bgFile);
-//	SetBitmap (IDB_BACKGROUND);             // set background
-	// bitmap
 	SetStyle (LO_STRETCH);                   // resize dialog to
-	// the size of
-	// the bitmap
 	if (options->skin->translucensy != -1) {
 		SetTransparent(options->skin->translucensy);
 	} else {
 		SetTransparentColor(options->skin->trans_rgb);    // set red as
 	}
-	// the transparent
-	// color
 
-/*	CRect rect;
-	GetClientRect(&rect);
+	if (options->skin->alphaBorderFile == "") {
+		if (border != NULL) {
+			border->ShowWindow(false);
+			border->DestroyWindow();
+			free(border);
+			border = NULL;
+		}
+	} else {
+		if (border == NULL) {
+			border = (AlphaBorder*)  new AlphaBorder();
+			bool ret = border->Create(IDD_ALPHA_BORDER, NULL);			
+		}
+		border->SetImage(options->skin->alphaBorderFile);
+		RECT r;
+		GetWindowRect(&r);
+		border->MoveWindow(r.left + options->skin->alphaRect.left, r.top + options->skin->alphaRect.top, r.right, r.bottom, 1);
+		ShowWindows(this->Visible);
 
-	CString x;
-	MoveWindow(0,0,405,81,1);
-	x.Format(_T("%d,%d,%d,%d"),rect.left, rect.top, rect.Width(), rect.Height()); 
-AfxMessageBox(x);
-*/
-	MoveWindow(options->posX, options->posY, options->skin->width, options->skin->height,1);
+	}
+
+
+	MoveWindow(options->posX, options->posY, options->skin->backRect.Width(), options->skin->backRect.Height(),1);
 	InputBox.MoveWindow(options->skin->inputRect,1);
 	Preview.MoveWindow(options->skin->resultRect,1);
 	IconPreview.MoveWindow(options->skin->iconRect,1);
 
-	// This doesn't seem to do anything
-//	InputBox.SetItemHeight(-1, 90);
-
-//	CFont* ff1 = new CFont;
-	//, ff2;
-//	ff1->CreatePointFont(160,_T("Garamond"));
 	InputBox.SetFont(options->skin->m_FontInput,1);
 	Preview.SetFont(options->skin->m_FontResult,1);
-	//InputBox.m_listbox.SetFont(ff1,1);
-/*	LOGFONT lf;
-	options->skin->m_FontInput.GetLogFont(&lf);
-	ff1.CreateFontIndirectW(&lf);
-	
-	options->skin->m_FontResult.GetLogFont(&lf);
-	ff2.CreateFontIndirectW(&lf);
-
-	InputBox.setfo
-	*/
-//		this->SetFont(&ff1);
-
-//	InputBox.SetFont(&ff1);
-//	Preview.SetFont(&ff2);
 
 
 	InputBox.SetTextColor(options->skin->inputFontRGB);
 	Preview.SetTextColor(options->skin->resultFontRGB);
 
-	// Widget backgrounds
+
+
+	Preview.m_isBackTransparent = options->skin->resultTransparent;
 
 	InputBox.SetBackColor(options->skin->inputRGB);
 	Preview.SetBackColor(options->skin->resultRGB);	
+//	IconPreview.ShowWindow(false);
+//	IconPreview.Invalidate(true);
+	IconPreview.m_GrabBkgnd = true;
+//	IconPreview.ShowWindow(true);
 }

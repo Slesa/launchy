@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Launchy"
-#define MyAppVerName "Launchy 0.81"
+#define MyAppVerName "Launchy 0.82"
 #define MyAppPublisher "JK Consulting"
 #define MyAppURL "http://www.launchy.net"
 #define MyAppExeName "Launchy.exe"
@@ -42,6 +42,9 @@ Source: ..\license.rtf; DestDir: {app}; Flags: ignoreversion
 Source: ..\Readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
 Source: ..\Skins\Blue Trim\bluetrim.bmp; DestDir: {app}\Skins\Blue Trim\; Flags: ignoreversion
 Source: ..\Skins\Blue Trim\skin.ini; DestDir: {app}\Skins\Blue Trim\; Flags: ignoreversion
+Source: ..\Skins\Quicksilver\quicksilver.bmp; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion
+Source: ..\Skins\Quicksilver\skin.ini; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion
+Source: ..\Skins\Quicksilver\border.png; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]
@@ -63,3 +66,4 @@ Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; F
 Type: files; Name: {app}\{#MyAppUrlName}
 [Messages]
 SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close all instances of it now (bring Launchy forward and type Alt+F4), then click OK to continue, or Cancel to exit.
+WelcomeLabel2=!!!!!!READ THIS!!!!!!  You MUST close and uninstall any previous versions of Launchy before running this installer!

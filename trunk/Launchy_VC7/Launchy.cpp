@@ -92,6 +92,9 @@ BOOL CLaunchyApp::InitInstance()
 
 	CLaunchyDlg dlg;
 	m_pMainWnd = &dlg;
+
+
+
 	INT_PTR nResponse = dlg.DoModal();
 	if (nResponse == IDOK)
 	{

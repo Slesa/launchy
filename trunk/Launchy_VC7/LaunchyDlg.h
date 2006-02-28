@@ -29,6 +29,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "LaunchySmarts.h"
 #include "Resource.h"
 #include "TransparentStatic2.h"
+#include "AlphaBorder.h"
+
 #include <boost/smart_ptr.hpp>
 //#include "ReadOnlyEdit.h"
 

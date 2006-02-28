@@ -11,6 +11,7 @@
 IMPLEMENT_DYNAMIC(CTransparentStatic2, CStatic)
 CTransparentStatic2::CTransparentStatic2()
 {
+	m_GrabBkgnd = false;
 }
 
 CTransparentStatic2::~CTransparentStatic2()
@@ -45,8 +46,11 @@ HBRUSH CTransparentStatic2::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 
 BOOL CTransparentStatic2::OnEraseBkgnd(CDC* pDC)
 {
-	if (m_Bmp.GetSafeHandle() == NULL)
+	
+	if (m_Bmp.GetSafeHandle() == NULL || m_GrabBkgnd)
 	{
+		if (m_GrabBkgnd)
+			ShowWindow(false);
 		CRect Rect;
 		GetWindowRect(&Rect);
 		CWnd *pParent = GetParent();
@@ -54,14 +58,17 @@ BOOL CTransparentStatic2::OnEraseBkgnd(CDC* pDC)
 		pParent->ScreenToClient(&Rect);  //convert our corrdinates to our parents
 
 		//copy what's on the parents at this point
-		CDC *pDC = pParent->GetDC();
+		CDC *spDC = pParent->GetDC();
 		CDC MemDC;
-		MemDC.CreateCompatibleDC(pDC);
-		m_Bmp.CreateCompatibleBitmap(pDC,Rect.Width(),Rect.Height());
+		MemDC.CreateCompatibleDC(spDC);
+		m_Bmp.CreateCompatibleBitmap(spDC,Rect.Width(),Rect.Height());
 		CBitmap *pOldBmp = MemDC.SelectObject(&m_Bmp);
-		MemDC.BitBlt(0,0,Rect.Width(),Rect.Height(),pDC,Rect.left,Rect.top,SRCCOPY);
+		MemDC.BitBlt(0,0,Rect.Width(),Rect.Height(),spDC,Rect.left,Rect.top,SRCCOPY);
 		MemDC.SelectObject(pOldBmp);
-		pParent->ReleaseDC(pDC);
+		pParent->ReleaseDC(spDC);
+		if (m_GrabBkgnd)
+			ShowWindow(true);
+		m_GrabBkgnd = false;
 	}
 	else //copy what we copied off the parent the first time back onto the parent
 	{
@@ -124,9 +131,23 @@ void CTransparentStatic2::OnPaint()
 //		Invalidate();
 //		UpdateWindow();
 //		GetParent()->InvalidateRect(&client_rect, TRUE);
+		/*
+    CRect   rect;
+    GetClientRect(rect);
+    ICONINFO IconI;
+	GetIconInfo(hIcon, &IconI);
+    CDC dc2;
+    dc2.CreateCompatibleDC(&dc);
+	BITMAP bmp;
+	GetObject(IconI.hbmColor, sizeof(BITMAP), &bmp);
 
 
 
+	SelectObject(dc2.m_hDC, IconI.hbmColor);
+
+	dc.StretchBlt(rect.left, rect.top, rect.Width(), rect.Height(), &dc2, 0, 0, 32, 32, SRCCOPY);
+*/
+		
 		dc.DrawIcon(0, 0, hIcon);
 	}
 
