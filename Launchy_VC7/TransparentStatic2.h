@@ -20,6 +20,7 @@ private:
    CBitmap m_Bmp;
 public:
 	afx_msg void OnPaint();
+	bool m_GrabBkgnd;
 };
 
 

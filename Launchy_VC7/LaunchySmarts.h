@@ -70,7 +70,7 @@ protected:
 
 	vector<FileRecordPtr> matches;
 public:
-	void Update(CString txt);
+	void Update(CString txt, bool UpdateDropdown = true);
 	void FindMatches(CString txt);
 	BOOL Match(FileRecordPtr record, CString txt);
 	ExeLauncher exeLauncher;

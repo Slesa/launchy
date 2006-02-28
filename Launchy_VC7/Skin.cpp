@@ -37,11 +37,16 @@ void Skin::parseSkinFile(void)
 
 	// Background material
 	bgFile = ini->GetValue(L"Background", L"bitmap", L"").c_str();
+//	if (bgFile != "") 
+		bgFile = directory + bgFile;
 
-	bgFile = directory + bgFile;
+	backRect = stringToRect(ini->GetValue(L"Background", L"backRect", L"0,0,400,50"));
 
-	width = ini->GetValueI(L"Background", L"width", 400);
-	height = ini->GetValueI(L"Background", L"height", 50);
+	alphaBorderFile = ini->GetValue(L"Background", L"alphaBorder", L"").c_str();
+	if (alphaBorderFile != "")
+		alphaBorderFile = directory + alphaBorderFile;
+
+	alphaRect = stringToRect(ini->GetValue(L"Background", L"AlphaRect", L"0,0,400,50"));
 
 	trans_rgb = stringToRGB(ini->GetValue(L"Background", L"transparent_color",L"255x255x255"));
 	
@@ -97,6 +102,9 @@ void Skin::parseSkinFile(void)
 	fontSize = ini->GetValueI(L"Widgets", L"Results_Font_Size", 10);
 	italics = ini->GetValueI(L"Widgets", L"Results_Font_Italics", 0);
 	bold = ini->GetValueI(L"Widgets", L"Results_Font_Bold", 0);
+
+	
+
 	if (bold == 1) bold = 700;
 
 	// Fonts
@@ -116,6 +124,8 @@ void Skin::parseSkinFile(void)
 	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
 	   fontName);                 // lpszFacename	
 
+	resultBorder = ini->GetValueB(L"Widgets", L"Results_ShowBorder", true);
+	resultTransparent = ini->GetValueB(L"Widgets", L"Results_TransparentBkgnd", false);
 
 	inputRGB = stringToRGB(ini->GetValue(L"Widgets", L"TextEntry_Color",L"255x255x255"));
 	inputFontRGB = stringToRGB(ini->GetValue(L"Widgets", L"TextEntry_Font_Color",L"255x255x255"));

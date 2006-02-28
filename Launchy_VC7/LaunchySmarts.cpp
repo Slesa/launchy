@@ -252,7 +252,7 @@ void LaunchySmarts::LoadFirstTime()
 
 
 
-void LaunchySmarts::Update(CString txt)
+void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL)
@@ -263,7 +263,6 @@ void LaunchySmarts::Update(CString txt)
 	CString history = pDlg->options->GetAssociation(txt);
 
 	matches.clear();
-	pDlg->InputBox.m_listbox.ResetContent();
 	FindMatches(txt);
 
 	// Set the preferred bit for the history match
@@ -317,11 +316,14 @@ HICON nH = ImageList_GetIcon(
 		pDlg->Preview.SetWindowText(_T(""));
 	}
 
-
-	int size = matches.size();
-	for(int i = 0; i < size && i < 10; i++) {
-		CString blah = matches[i]->croppedName;
-		pDlg->InputBox.AddString(matches[i]->croppedName);
+	if (UpdateDropdown) {
+		
+	pDlg->InputBox.m_listbox.ResetContent();
+		int size = matches.size();
+		for(int i = 0; i < size && i < 10; i++) {
+			CString blah = matches[i]->croppedName;
+			pDlg->InputBox.AddString(matches[i]->croppedName);
+		}
 	}
 
 }

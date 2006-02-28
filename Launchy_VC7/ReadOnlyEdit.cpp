@@ -20,6 +20,7 @@
 
 #include "stdafx.h"
 #include "ReadOnlyEdit.h"
+#include ".\readonlyedit.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -34,6 +35,7 @@ CReadOnlyEdit::CReadOnlyEdit()
 {
 	//default text color
 	m_crText = RGB(0,0,0);
+	m_isBackTransparent = true;
 }
 
 CReadOnlyEdit::~CReadOnlyEdit()
@@ -48,6 +50,7 @@ BEGIN_MESSAGE_MAP(CReadOnlyEdit, CEdit)
 	//{{AFX_MSG_MAP(CReadOnlyEdit)
 	ON_WM_CTLCOLOR_REFLECT()
 	//}}AFX_MSG_MAP
+	ON_CONTROL_REFLECT(EN_UPDATE, OnEnUpdate)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -61,13 +64,21 @@ HBRUSH CReadOnlyEdit::CtlColor(CDC* pDC, UINT nCtlColor)
 	
 	// TODO: Return a non-NULL brush if the parent's handler should not be called
 	
-	//set text color
-	pDC->SetTextColor(m_crText);
-	//set the text's background color
-	pDC->SetBkColor(m_crBackGnd);
+		//set text color
+		pDC->SetTextColor(m_crText);
+		//set the text's background color
+		pDC->SetBkColor(m_crBackGnd);
+
+    if (m_isBackTransparent) {
+        m_Brush.CreateStockObject(HOLLOW_BRUSH);
+        pDC->SetBkMode(TRANSPARENT);
+		return (HBRUSH) m_Brush;
+    }
+	else {
+		return m_brBackGnd;
+	}
 
 	//return the brush used for background this sets control background
-	return m_brBackGnd;
 }
 
 
@@ -94,4 +105,21 @@ void CReadOnlyEdit::SetTextColor(COLORREF rgb)
 
 	//redraw
 	Invalidate(TRUE);
+}
+
+void CReadOnlyEdit::OnEnUpdate()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CEdit::OnInitDialog()
+	// function to send the EM_SETEVENTMASK message to the control
+	// with the ENM_UPDATE flag ORed into the lParam mask.
+    CWnd* pParent = GetParent();
+    CRect   rect;
+
+    GetWindowRect(rect);
+    pParent->ScreenToClient(rect);
+    rect.DeflateRect(2, 2);
+
+	pParent->InvalidateRect(rect, TRUE); 
+	// TODO:  Add your control notification handler code here
 }

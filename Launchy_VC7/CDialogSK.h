@@ -17,6 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+
 //  ==========================================================================
 //  File    CDialogSk.h
 //  
@@ -43,6 +44,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define _ABHI_CDIALOG_H_
 
 #include <afxcmn.h>
+#include "stdafx.h"
+#include "AlphaBorder.h"
 
 
 typedef BOOL (WINAPI *lpfnSetLayeredWindowAttributes)
@@ -133,6 +136,7 @@ public:
     //  =======================================================================
     BOOL SetTransparentColor (COLORREF col, BOOL bTrans = TRUE);
 
+
 // Dialog Data
 	//{{AFX_DATA(CDialogSK)
     // NOTE: the ClassWizard will add data members here
@@ -148,11 +152,11 @@ public:
 	//}}AFX_VIRTUAL
 
 // Implementation
-protected:
+public:
 
+	AlphaBorder* border;
 	// Generated message map functions
 	//{{AFX_MSG(CDialogSK)
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	//}}AFX_MSG
@@ -167,6 +171,12 @@ private:
     DWORD		m_dwWidth;			// Width of bitmap
 	DWORD		m_dwHeight;			// Height of bitmap
     LayOutStyle m_loStyle;          // LayOutStyle style
+public:
+
+	afx_msg void OnPaint();
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnWindowPosChanged(WINDOWPOS* lpwndpos);
+	void ShowWindows(bool val);
 };
 
 #endif // _ABHI_CDIALOG_H_

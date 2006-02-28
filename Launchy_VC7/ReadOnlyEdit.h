@@ -52,7 +52,8 @@ public:
 	void SetTextColor(COLORREF rgb);
 	void SetBackColor(COLORREF rgb);
 	virtual ~CReadOnlyEdit();
-
+	bool m_isBackTransparent;
+	CBrush        m_Brush;
 	// Generated message map functions
 protected:
 	//text and text background colors
@@ -65,6 +66,8 @@ protected:
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnEnUpdate();
 };
 
 /////////////////////////////////////////////////////////////////////////////

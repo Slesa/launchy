@@ -26,6 +26,8 @@ public:
 public:
 	CString name;
 	CString bgFile;
+	CString alphaBorderFile;
+	CRect alphaRect;
 	CString directory;
 	
 	// Font information
@@ -34,13 +36,16 @@ public:
 	int inputFontRGB;
 	int resultFontRGB;
 
-
-	int width;
-	int height;
+	CRect backRect;
+//	int width;
+//	int height;
 	int trans_rgb;
 	int translucensy;
 	int inputRGB;
 	int resultRGB;
+
+	bool resultTransparent;
+	bool resultBorder;
 
 	CRect stringToRect(wstring input);
 	int stringToRGB(wstring input);

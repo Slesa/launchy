@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "stdafx.h"
 #include "CDialogSK.h"
+#include ".\cdialogsk.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogSK dialog
@@ -137,15 +138,17 @@ void CDialogSK::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CDialogSK, CDialog)
 //{{AFX_MSG_MAP(CDialogSK)
-ON_WM_LBUTTONDOWN()
 	ON_WM_ERASEBKGND()
 	ON_WM_SIZE()
 	//}}AFX_MSG_MAP
+	ON_WM_PAINT()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_WINDOWPOSCHANGED()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogSK message handlers
-
+/*
 void CDialogSK::OnLButtonDown(UINT nFlags, CPoint point) 
 {
     if (m_bEasyMove)
@@ -154,6 +157,7 @@ void CDialogSK::OnLButtonDown(UINT nFlags, CPoint point)
     CDialog::OnLButtonDown(nFlags, point);
 }
 
+*/
 void CDialogSK::Init()
 {
     m_hBitmap = NULL;
@@ -237,6 +241,7 @@ BOOL CDialogSK::OnEraseBkgnd(CDC* pDC)
     CDC dc;
     dc.CreateCompatibleDC(pDC);
 
+
     HBITMAP    pbmpOldBmp = NULL;
 
     pbmpOldBmp = (HBITMAP)::SelectObject(dc.m_hDC, m_hBitmap);
@@ -265,7 +270,7 @@ BOOL CDialogSK::OnEraseBkgnd(CDC* pDC)
         pDC->BitBlt(ixOrg, iyOrg, rect.Width(), rect.Height(), &dc, 0, 0, SRCCOPY);
     }
     else if ( m_loStyle == LO_STRETCH)
-    {
+	{
         pDC->StretchBlt(0, 0, rect.Width(), rect.Height(), &dc, 0, 0, m_dwWidth, m_dwHeight, SRCCOPY);
     }
     
@@ -299,4 +304,39 @@ CDialogSK::SetStyle(LayOutStyle style)
     {
         SetWindowPos(0, 0, 0, m_dwWidth, m_dwHeight, SWP_NOMOVE | SWP_NOREPOSITION );
     }
+}
+
+
+
+void CDialogSK::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+	// TODO: Add your message handler code here
+	// Do not call CDialog::OnPaint() for painting messages
+}
+
+void CDialogSK::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	if (m_bEasyMove) {
+        PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));	
+		if (border != NULL)
+			border->PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));	
+	}
+    CDialog::OnLButtonDown(nFlags, point);
+}
+
+void CDialogSK::OnWindowPosChanged(WINDOWPOS* lpwndpos)
+{
+	CDialog::OnWindowPosChanged(lpwndpos);
+		RECT r;
+     GetWindowRect(&r);
+	 if (border != NULL) 
+		 border->MoveWindow(&r, 1);}
+
+void CDialogSK::ShowWindows(bool val)
+{
+	ShowWindow(val);
+	if (border != NULL)
+		border->ShowWindow(val);
 }

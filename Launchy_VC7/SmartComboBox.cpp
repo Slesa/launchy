@@ -33,7 +33,6 @@ SmartComboBox::SmartComboBox()
 : typed(_T(""))
 {
 	CComboBox();
-	SetCurSel(-1);
 }
 
 SmartComboBox::~SmartComboBox()
@@ -161,6 +160,16 @@ void SmartComboBox::OnCbnEditchange()
 
 void SmartComboBox::OnCbnSelchange()
 {
+//	AfxMessageBox(L"Change");
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+//	CString txt;
+m_listbox.GetText(m_listbox.GetCurSel(), searchTxt);
+//	m_listbox.GetWindowTextW(searchTxt);
+//	AfxMessageBox(
+//m_edit.GetWindowTextW(searchTxt);
+//	m_edit.GetWindowTextW(txt);
+	pDlg->smarts->Update(searchTxt,false);
+	
 }
 void SmartComboBox::OnCbnDropdown()
 {
