@@ -6,6 +6,7 @@
 #include "Launchy.h"
 #include "LaunchyDlg.h"
 #include "AlphaBorder.h"
+#include ".\alphaborder.h"
 //#include ".\alphaborder.h"
 
 
@@ -46,6 +47,9 @@ void AlphaBorder::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(AlphaBorder, CDialog)
 	ON_WM_WINDOWPOSCHANGED()
 	ON_WM_LBUTTONDOWN()
+	ON_WM_DESTROY()
+	ON_WM_CLOSE()
+	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
 
@@ -140,4 +144,26 @@ void AlphaBorder::SetImage(CString name)
 	// perform the alpha blend
 	BOOL bRet= ::UpdateLayeredWindow(GetSafeHwnd(), dcScreen, &ptWindowScreenPosition, &szWindow, dcMemory,
 		&ptSrc, 0, &blendPixelFunction, ULW_ALPHA);
+}
+
+void AlphaBorder::OnDestroy()
+{
+	CDialog::OnDestroy();
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	pDlg->OnClose();
+	// TODO: Add your message handler code here
+}
+
+void AlphaBorder::OnClose()
+{
+	// TODO: Add your message handler code here and/or call default
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	pDlg->OnClose();
+	CDialog::OnClose();
+}
+
+void AlphaBorder::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
+{
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	pDlg->OnContextMenu(pDlg, point);
 }

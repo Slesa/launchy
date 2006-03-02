@@ -140,7 +140,6 @@ void SmartComboBox::OnCbnEditupdate()
 
 void SmartComboBox::OnCbnCloseup()
 {
-//	AfxMessageBox(_T("Closing!"));
 	int sel = m_listbox.GetCurSel();
 	if (sel != LB_ERR) {
 
@@ -160,16 +159,12 @@ void SmartComboBox::OnCbnEditchange()
 
 void SmartComboBox::OnCbnSelchange()
 {
-//	AfxMessageBox(L"Change");
-	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
-//	CString txt;
-m_listbox.GetText(m_listbox.GetCurSel(), searchTxt);
-//	m_listbox.GetWindowTextW(searchTxt);
-//	AfxMessageBox(
-//m_edit.GetWindowTextW(searchTxt);
-//	m_edit.GetWindowTextW(txt);
-	pDlg->smarts->Update(searchTxt,false);
-	
+	// If it's closing, we've already taken care of this..
+	if (GetDroppedState()) {
+		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+		m_listbox.GetText(m_listbox.GetCurSel(), searchTxt);
+		pDlg->smarts->Update(searchTxt,false);
+	}	
 }
 void SmartComboBox::OnCbnDropdown()
 {

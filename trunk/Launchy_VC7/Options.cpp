@@ -82,7 +82,7 @@ void Options::ParseIni(void)
 	mod_key =  ini->GetValueI(L"Hotkey", L"mod_key", MOD_ALT);
 	vkey =  ini->GetValueI(L"Hotkey", L"vkey", VK_SPACE);
 
-	skinName = ini->GetValue(L"Skin", L"name", L"QuickSilver").c_str();
+	skinName = ini->GetValue(L"Skin", L"name", L"Default").c_str();
 
 	Directories = DeSerializeStringArray(ini->GetValue(L"General", L"Directories", L"").c_str());
 	Types = DeSerializeStringArray(ini->GetValue(L"General", L"Types", L".lnk;").c_str());
