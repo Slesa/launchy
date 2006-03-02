@@ -114,7 +114,7 @@ BOOL CLaunchyDlg::OnInitDialog()
 	ASSERT(m_isKeyRegistered != FALSE);
 
 
-	SetTimer(UPDATE_TIMER, 100, NULL);
+	SetTimer(UPDATE_TIMER, 60000, NULL);
 
 	// In order to subclass the combobox list and edit controls
 	// we have to first paint the controls to make sure the message
@@ -383,14 +383,13 @@ void CLaunchyDlg::applySkin()
 	} else {
 		if (border == NULL) {
 			border = (AlphaBorder*)  new AlphaBorder();
-			bool ret = border->Create(IDD_ALPHA_BORDER, NULL);			
+			bool ret = border->Create(IDD_ALPHA_BORDER, NULL);
 		}
 		border->SetImage(options->skin->alphaBorderFile);
 		RECT r;
 		GetWindowRect(&r);
 		border->MoveWindow(r.left + options->skin->alphaRect.left, r.top + options->skin->alphaRect.top, r.right, r.bottom, 1);
-		ShowWindows(this->Visible);
-
+		ShowWindows(IsWindowVisible());
 	}
 
 

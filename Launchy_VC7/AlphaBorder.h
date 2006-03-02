@@ -26,4 +26,7 @@ public:
 	afx_msg void OnWindowPosChanged(WINDOWPOS* lpwndpos);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	void SetImage(CString name);
+	afx_msg void OnDestroy();
+	afx_msg void OnClose();
+	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
 };
