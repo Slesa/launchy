@@ -48,7 +48,6 @@ CLaunchyDlg::CLaunchyDlg(CWnd* pParent /*=NULL*/)
 
 	DelayTimer = 100;
 
-	border = NULL;
 }
 
 void CLaunchyDlg::DoDataExchange(CDataExchange* pDX)
@@ -90,6 +89,11 @@ BOOL CLaunchyDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 
+	// In order to subclass the combobox list and edit controls
+	// we have to first paint the controls to make sure the message
+	// mapping is setup before we use the controls.
+	InputBox.ShowDropDown(true);
+	InputBox.ShowDropDown(false);
 
 	SetWindowLong(GetSafeHwnd(), GWL_EXSTYLE, GetWindowLong(GetSafeHwnd(), GWL_EXSTYLE) | WS_EX_TOOLWINDOW);
 
@@ -102,9 +106,14 @@ BOOL CLaunchyDlg::OnInitDialog()
 	// the dialog
 
 
+	
+
+
 
 	options.reset(new Options());
 	smarts.reset(new LaunchySmarts());
+
+	this->ShowWindows(false);
 
 	applySkin();
 
@@ -115,12 +124,6 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 
 	SetTimer(UPDATE_TIMER, 60000, NULL);
-
-	// In order to subclass the combobox list and edit controls
-	// we have to first paint the controls to make sure the message
-	// mapping is setup before we use the controls.
-	InputBox.ShowDropDown(true);
-	InputBox.ShowDropDown(false);
 
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -201,6 +204,7 @@ void CLaunchyDlg::OnClose()
 {
 	options.reset();
 	smarts.reset();
+//	border.OnClose();
 	// TODO: Add your message handler code here and/or call default
 	CDialogSK::OnClose();
 }
@@ -230,13 +234,16 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 	if(pMsg->message==WM_KEYDOWN)
 	{
 		if (pMsg->wParam==VK_DOWN) {
-			if (InputBox.GetDroppedState()) {
-
+			if (!InputBox.GetDroppedState()) {
+				InputBox.ShowDropDown(true);
 //				InputBox.m_listbox.SetSel(1);
 			}
 		} 
 		else if (pMsg->wParam==VK_UP) {
-
+			if (!InputBox.GetDroppedState()) {
+				InputBox.ShowDropDown(true);
+//				InputBox.m_listbox.SetSel(1);
+			}
 		}
 		else {
 			if (InputBox.GetDroppedState()) {
@@ -333,6 +340,7 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	if (selection == ID_SETTINGS_SKINS) {
 		SkinChooser dlg;
 		dlg.DoModal();
+		applySkin();
 	}
 	else if (selection == ID_SETTINGS_HOTKEY) {
 		CHotkeyDialog dlg;
@@ -342,6 +350,11 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	else if (selection == ID_SETTINGS_DIRECTORIES) {
 		DirectoryChooser dlg;
 		dlg.DoModal();
+		smarts->LoadCatalog();
+	}
+
+	else if (selection == ID_SETTINGS_REBUILD) {
+		smarts->LoadCatalog();
 	}
 
 	else if (selection == ID_EXIT) {
@@ -355,6 +368,12 @@ void CLaunchyDlg::applySkin()
 	if (options->skin == NULL) {
 		return;
 	}
+
+	if (border.inuse) {
+		border.inuse = false;
+		border.DestroyWindow();
+	}
+
 
 	if (options->skin->resultBorder) {
 		SetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE, GetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE) | WS_EX_CLIENTEDGE);
@@ -374,21 +393,18 @@ void CLaunchyDlg::applySkin()
 	}
 
 	if (options->skin->alphaBorderFile == "") {
-		if (border != NULL) {
-			border->ShowWindow(false);
-			border->DestroyWindow();
-			free(border);
-			border = NULL;
-		}
+		border.inuse = false;
 	} else {
-		if (border == NULL) {
-			border = (AlphaBorder*)  new AlphaBorder();
-			bool ret = border->Create(IDD_ALPHA_BORDER, NULL);
+		if (!border.inuse) {
+//			border = (AlphaBorder*)  new AlphaBorder();
+			bool ret = border.Create(IDD_ALPHA_BORDER, this);
 		}
-		border->SetImage(options->skin->alphaBorderFile);
+		border.SetImage(options->skin->alphaBorderFile);
+		border.inuse = true;
+
 		RECT r;
 		GetWindowRect(&r);
-		border->MoveWindow(r.left + options->skin->alphaRect.left, r.top + options->skin->alphaRect.top, r.right, r.bottom, 1);
+		border.MoveWindow(r.left + options->skin->alphaRect.left, r.top + options->skin->alphaRect.top, r.right, r.bottom, 1);
 		ShowWindows(IsWindowVisible());
 	}
 
@@ -410,9 +426,15 @@ void CLaunchyDlg::applySkin()
 	Preview.m_isBackTransparent = options->skin->resultTransparent;
 
 	InputBox.SetBackColor(options->skin->inputRGB);
+
 	Preview.SetBackColor(options->skin->resultRGB);	
 //	IconPreview.ShowWindow(false);
 //	IconPreview.Invalidate(true);
+
+
 	IconPreview.m_GrabBkgnd = true;
 //	IconPreview.ShowWindow(true);
+
+	RedrawWindow();
+
 }

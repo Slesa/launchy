@@ -191,8 +191,8 @@ BOOL DirectoryChooser::OnInitDialog()
 void DirectoryChooser::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
-	shared_ptr<LaunchySmarts> smarts = ((CLaunchyDlg*)AfxGetMainWnd())->smarts;
-	smarts->LoadCatalog();
+//	shared_ptr<LaunchySmarts> smarts = ((CLaunchyDlg*)AfxGetMainWnd())->smarts;
+//	smarts->LoadCatalog();
 	OnOK();
 }
 

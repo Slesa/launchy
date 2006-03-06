@@ -165,7 +165,6 @@ UINT ScanStartMenu(LPVOID pParam)
 	bun->smarts->charUsage = bun->charUsage;
 	bun->smarts->catFiles = bun->catFiles;
 
-	bun->smarts->releaseCatalogLock();
 
 
 	CFile theFile;
@@ -177,16 +176,18 @@ UINT ScanStartMenu(LPVOID pParam)
 		int x = 3;
 		x += 3;
 		delete bun;
+		bun->smarts->releaseCatalogLock();
 		return 0;
 	}
 
-	//CArchiveExt(CFile* pFile, UINT nMode, int nBufSize = 4096, void* lpBuf = NULL, CString Key = _TEXT(""), BOOL bCompress = FALSE);
 	CArchiveExt archive(&theFile, CArchive::store, 4096, NULL, _T(""), TRUE);
 
 	smaller.Serialize(archive);
 
 	archive.Close();
 	theFile.Close();
+
+	bun->smarts->releaseCatalogLock();
 
 	delete bun;
 

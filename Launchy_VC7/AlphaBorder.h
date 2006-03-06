@@ -29,4 +29,6 @@ public:
 	afx_msg void OnDestroy();
 	afx_msg void OnClose();
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
+	bool inuse;
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

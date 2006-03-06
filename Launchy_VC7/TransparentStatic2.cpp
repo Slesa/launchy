@@ -49,8 +49,10 @@ BOOL CTransparentStatic2::OnEraseBkgnd(CDC* pDC)
 	
 	if (m_Bmp.GetSafeHandle() == NULL || m_GrabBkgnd)
 	{
-		if (m_GrabBkgnd)
+		if (m_GrabBkgnd) {
 			ShowWindow(false);
+		}
+
 		CRect Rect;
 		GetWindowRect(&Rect);
 		CWnd *pParent = GetParent();
@@ -61,14 +63,17 @@ BOOL CTransparentStatic2::OnEraseBkgnd(CDC* pDC)
 		CDC *spDC = pParent->GetDC();
 		CDC MemDC;
 		MemDC.CreateCompatibleDC(spDC);
+		m_Bmp.DeleteObject();
 		m_Bmp.CreateCompatibleBitmap(spDC,Rect.Width(),Rect.Height());
 		CBitmap *pOldBmp = MemDC.SelectObject(&m_Bmp);
 		MemDC.BitBlt(0,0,Rect.Width(),Rect.Height(),spDC,Rect.left,Rect.top,SRCCOPY);
 		MemDC.SelectObject(pOldBmp);
 		pParent->ReleaseDC(spDC);
-		if (m_GrabBkgnd)
+
+		if (m_GrabBkgnd) {
 			ShowWindow(true);
-		m_GrabBkgnd = false;
+			m_GrabBkgnd = false;
+		}
 	}
 	else //copy what we copied off the parent the first time back onto the parent
 	{

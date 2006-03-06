@@ -320,8 +320,8 @@ void CDialogSK::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO: Add your message handler code here and/or call default
 	if (m_bEasyMove) {
         PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));	
-		if (border != NULL)
-			border->PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));	
+		if (border.inuse)
+			border.PostMessage(WM_NCLBUTTONDOWN, HTCAPTION, MAKELPARAM(point.x, point.y));	
 	}
     CDialog::OnLButtonDown(nFlags, point);
 }
@@ -331,12 +331,12 @@ void CDialogSK::OnWindowPosChanged(WINDOWPOS* lpwndpos)
 	CDialog::OnWindowPosChanged(lpwndpos);
 		RECT r;
      GetWindowRect(&r);
-	 if (border != NULL) 
-		 border->MoveWindow(&r, 1);}
+	 if (border.inuse) 
+		 border.MoveWindow(&r, 1);}
 
 void CDialogSK::ShowWindows(bool val)
 {
 	ShowWindow(val);
-	if (border != NULL)
-		border->ShowWindow(val);
+	if (border.inuse)
+		border.ShowWindow(val);
 }

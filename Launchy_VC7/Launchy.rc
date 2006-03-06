@@ -249,6 +249,7 @@ BEGIN
     BEGIN
         MENUITEM "Skins",                       ID_SETTINGS_SKINS
         MENUITEM "Directories",                 ID_SETTINGS_DIRECTORIES
+        MENUITEM "Rebuild Index",               ID_SETTINGS_REBUILD
         MENUITEM "Hotkey",                      ID_SETTINGS_HOTKEY
         MENUITEM "Exit",                        ID_EXIT
     END

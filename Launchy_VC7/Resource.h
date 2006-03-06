@@ -10,7 +10,6 @@
 #define IDD_HOTKEY_DIALOG               148
 #define IDD_SKIN                        149
 #define IDD_DIRECTORIES                 150
-#define IDD_DIALOG1                     151
 #define IDD_ALPHA_BORDER                151
 #define IDC_COMBO1                      1000
 #define IDC_Input                       1000
@@ -36,13 +35,14 @@
 #define ID_SETTINGS_DIRECTORIES         32777
 #define ID_EXIT                         32778
 #define ID_LAUNCHYSETTINGS_DIRECTORIES  32779
+#define ID_SETTINGS_REBUILD             32781
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        152
-#define _APS_NEXT_COMMAND_VALUE         32780
+#define _APS_NEXT_COMMAND_VALUE         32782
 #define _APS_NEXT_CONTROL_VALUE         1013
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
