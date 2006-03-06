@@ -32,6 +32,7 @@ IMPLEMENT_DYNAMIC(AlphaBorder, CDialog)
 AlphaBorder::AlphaBorder(CWnd* pParent /*=NULL*/)
 	: CDialog(AlphaBorder::IDD, pParent)
 {
+	inuse = false;
 }
 
 AlphaBorder::~AlphaBorder()
@@ -90,68 +91,29 @@ void AlphaBorder::OnLButtonDown(UINT nFlags, CPoint point)
 
 void AlphaBorder::SetImage(CString name)
 {
+
 	ModifyStyleEx(0, WS_EX_LAYERED);
+
+	image.Destroy();
 	image.Load(name);	
 	::PreMultiplyRGBChannels(image);
 
-	pBitmap = CBitmap::FromHandle((HBITMAP) image);
-//	CBitmap& bmp = (CBitmap&) pBitmap;
+    POINT pt={0, 0};
+    SIZE sz = {image.GetWidth(), image.GetHeight()};
+    POINT ptSource = {0};
+	BLENDFUNCTION bf = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
 
+	BOOL bRet= ::UpdateLayeredWindow(GetSafeHwnd(), NULL/*dcScreen*/, &pt, &sz, image.GetDC()/*dcMemory*/,
+		&ptSource, 0, &bf, ULW_ALPHA);
 
-
-
-
-	// ok... into the per-pixel-alpha bendling....
-
-	// Create/setup the DC's
-
-	CDC dcScreen;
-	CDC dcMemory;
-
-	dcScreen.Attach(::GetDC(NULL));
-	dcMemory.CreateCompatibleDC(&dcScreen);
-
-	CBitmap *pOldBitmap= dcMemory.SelectObject(pBitmap);
-
-	CString str("Blah");
-	RECT rect;
-	rect.top = 70;
-	rect.left = 50;
-	rect.bottom = 95;
-	rect.right = 80;
-
-	dcMemory.SetBkMode(TRANSPARENT);
-//	dcMemory.
-	dcMemory.SetBkColor(0x00ffffff);
-	dcMemory.SetTextColor(0x00000000);
-//	dcMemory.DrawText(str, &rect, DT_CENTER);
-
-	// get the window rectangule (we are only interested in the top left position)
-	CRect rectDlg;
-	GetWindowRect(rectDlg);
-
-	// calculate the new window position/size based on the bitmap size
-	CPoint ptWindowScreenPosition(rectDlg.TopLeft());
-	CSize szWindow(image.GetWidth(), image.GetHeight());
-
-
-	// Perform the alpha blend
-
-	// setup the blend function
-	BLENDFUNCTION blendPixelFunction= { AC_SRC_OVER, 0, 0xff, AC_SRC_ALPHA };
-	CPoint ptSrc(0,0); // start point of the copy from dcMemory to dcScreen
-
-	// perform the alpha blend
-	BOOL bRet= ::UpdateLayeredWindow(GetSafeHwnd(), dcScreen, &ptWindowScreenPosition, &szWindow, dcMemory,
-		&ptSrc, 0, &blendPixelFunction, ULW_ALPHA);
 }
 
 void AlphaBorder::OnDestroy()
 {
 	CDialog::OnDestroy();
-	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
-	pDlg->OnClose();
-	// TODO: Add your message handler code here
+	image.ReleaseDC();
+	if (!image.IsNull())
+		image.Destroy();
 }
 
 void AlphaBorder::OnClose()
@@ -166,4 +128,14 @@ void AlphaBorder::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	pDlg->OnContextMenu(pDlg, point);
+}
+
+
+
+BOOL AlphaBorder::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	pDlg->PreTranslateMessage(pMsg);
+	return CDialog::PreTranslateMessage(pMsg);
 }

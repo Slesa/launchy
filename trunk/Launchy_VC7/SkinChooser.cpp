@@ -67,7 +67,6 @@ void SkinChooser::OnBnClickedOk()
 		if (ops->skins[i]->name == name) {
 			ops->skin = ops->skins[i];
 			ops->skinName = name;
-			((CLaunchyDlg*)AfxGetMainWnd())->applySkin();
 		}
 	}
 	OnOK();

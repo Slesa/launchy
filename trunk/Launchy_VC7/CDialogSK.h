@@ -154,7 +154,7 @@ public:
 // Implementation
 public:
 
-	AlphaBorder* border;
+	AlphaBorder border;
 	// Generated message map functions
 	//{{AFX_MSG(CDialogSK)
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
