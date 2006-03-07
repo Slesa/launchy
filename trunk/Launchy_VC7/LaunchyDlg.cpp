@@ -364,7 +364,6 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 void CLaunchyDlg::applySkin()
 {
-
 	if (options->skin == NULL) {
 		return;
 	}
@@ -375,6 +374,7 @@ void CLaunchyDlg::applySkin()
 	}
 
 
+
 	if (options->skin->resultBorder) {
 		SetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE, GetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE) | WS_EX_CLIENTEDGE);
 
@@ -382,7 +382,13 @@ void CLaunchyDlg::applySkin()
 		SetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE, GetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE) & ~WS_EX_CLIENTEDGE);
 	}
 
+	// After changing the windowlong, the window needs to get moved to update it.. so send
+	// it to the top left corner for now and we'll move it back into position later.
+	RECT r;
+	r.top = 0;
+	r.left = 0;
 
+	Preview.MoveWindow(&r,1);
 
 	SetBitmap(options->skin->bgFile);
 	SetStyle (LO_STRETCH);                   // resize dialog to
@@ -396,7 +402,6 @@ void CLaunchyDlg::applySkin()
 		border.inuse = false;
 	} else {
 		if (!border.inuse) {
-//			border = (AlphaBorder*)  new AlphaBorder();
 			bool ret = border.Create(IDD_ALPHA_BORDER, this);
 		}
 		border.SetImage(options->skin->alphaBorderFile);
@@ -428,12 +433,9 @@ void CLaunchyDlg::applySkin()
 	InputBox.SetBackColor(options->skin->inputRGB);
 
 	Preview.SetBackColor(options->skin->resultRGB);	
-//	IconPreview.ShowWindow(false);
-//	IconPreview.Invalidate(true);
 
 
 	IconPreview.m_GrabBkgnd = true;
-//	IconPreview.ShowWindow(true);
 
 	RedrawWindow();
 

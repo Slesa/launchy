@@ -21,6 +21,7 @@
 #include "stdafx.h"
 #include "ReadOnlyEdit.h"
 #include ".\readonlyedit.h"
+#include "LaunchyDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -51,6 +52,9 @@ BEGIN_MESSAGE_MAP(CReadOnlyEdit, CEdit)
 	ON_WM_CTLCOLOR_REFLECT()
 	//}}AFX_MSG_MAP
 	ON_CONTROL_REFLECT(EN_UPDATE, OnEnUpdate)
+	ON_WM_LBUTTONDOWN()
+	ON_WM_RBUTTONDOWN()
+	ON_WM_CONTEXTMENU()
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -122,4 +126,28 @@ void CReadOnlyEdit::OnEnUpdate()
 
 	pParent->InvalidateRect(rect, TRUE); 
 	// TODO:  Add your control notification handler code here
+}
+
+void CReadOnlyEdit::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+	pDlg->OnLButtonDown(nFlags, point);
+//	CEdit::OnLButtonDown(nFlags, point);
+}
+
+void CReadOnlyEdit::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	CEdit::OnRButtonDown(nFlags, point);
+}
+
+void CReadOnlyEdit::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+	// TODO: Add your message handler code here
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+	pDlg->OnContextMenu(pWnd, point);
+
 }
