@@ -47,13 +47,17 @@ Source: ..\Skins\Quicksilver\skin.ini; DestDir: {app}\Skins\Quicksilver\; Flags:
 Source: ..\Skins\Quicksilver\border.png; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion
 Source: ..\Skins\Default\background.bmp; DestDir: {app}\Skins\Default\; Flags: ignoreversion
 Source: ..\Skins\Default\skin.ini; DestDir: {app}\Skins\Default\; Flags: ignoreversion
-Source: ..\Skins\Default\default_border.png; DestDir: {app}\Skins\Default\; Flags: ignoreversion
+Source: ..\Skins\Default\default.png; DestDir: {app}\Skins\Default\; Flags: ignoreversion
 Source: ..\Skins\Purple Candy\purplecandy.bmp; DestDir: {app}\Skins\Purple Candy\; Flags: ignoreversion
 Source: ..\Skins\Purple Candy\skin.ini; DestDir: {app}\Skins\Purple Candy\; Flags: ignoreversion
 Source: ..\Skins\Purple Candy\border.png; DestDir: {app}\Skins\Purple Candy\; Flags: ignoreversion
 Source: ..\Skins\Green Leaf\background.bmp; DestDir: {app}\Skins\Green Leaf\; Flags: ignoreversion
 Source: ..\Skins\Green Leaf\skin.ini; DestDir: {app}\Skins\Green Leaf\; Flags: ignoreversion
 Source: ..\Skins\Green Leaf\border.png; DestDir: {app}\Skins\Green Leaf\; Flags: ignoreversion
+Source: ..\Skins\Green Leaf\background.bmp; DestDir: {app}\Skins\Green Leaf\; Flags: ignoreversion
+Source: ..\Skins\Quicksilver2\skin.ini; DestDir: {app}\Skins\Quicksilver2\; Flags: ignoreversion
+Source: ..\Skins\Quicksilver2\back.png; DestDir: {app}\Skins\Quicksilver2\; Flags: ignoreversion
+Source: ..\Skins\Quicksilver2\front.bmp; DestDir: {app}\Skins\Quicksilver2\; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]
