@@ -41,7 +41,7 @@ BOOL SkinChooser::OnInitDialog(void)
 	CDialog::OnInitDialog();
 	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
-	for(int i = 0; i < ops->skins.size(); i++) {
+	for(uint i = 0; i < ops->skins.size(); i++) {
 		skinlist.AddString(ops->skins[i]->name);
 //		AfxMessageBox(ops->skins[i]->name);
 		
@@ -63,7 +63,7 @@ void SkinChooser::OnBnClickedOk()
 	skinlist.GetText(skinlist.GetCurSel(), name);
 
 	// Select this skin
-	for(int i = 0; i < ops->skins.size(); i++) {
+	for(uint i = 0; i < ops->skins.size(); i++) {
 		if (ops->skins[i]->name == name) {
 			ops->skin = ops->skins[i];
 			ops->skinName = name;

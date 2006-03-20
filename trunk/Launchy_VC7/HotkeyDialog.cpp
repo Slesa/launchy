@@ -26,7 +26,7 @@ BOOL CHotkeyDialog::OnInitDialog()
 	modifier.SetCurSel(0);
 
 	for(int i='Z';i>='A';i--)
-		vchar.InsertString(0,(CString)(char)i);
+		vchar.InsertString(0,(CString)(TCHAR)i);
 
 	vchar.InsertString(0,_T("F1"));
 	vchar.InsertString(0,_T("F2"));

@@ -67,7 +67,7 @@ vector<CString> DeSerializeStringArray(CString input) {
 
 CString SerializeStringArray(vector<CString> input) {
 	CString output = _T("");
-	for(int i = 0; i < input.size(); i++) {
+	for(uint i = 0; i < input.size(); i++) {
 		output.Append(input[i]);
 		output.Append(_T(";"));
 	}
@@ -141,7 +141,7 @@ void Options::LoadSkins(void)
 	CStringArray skinDirs;
 	disk.EnumAllDirectories(dir, skinDirs);
 
-	int count = skinDirs.GetCount();
+	INT_PTR count = skinDirs.GetCount();
 	for(int i = 0; i < count; i++) {
 		shared_ptr<Skin> x(new Skin(skinDirs[i]));
 		if (x->name == _T("")) continue;

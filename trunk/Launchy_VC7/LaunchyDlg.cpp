@@ -175,12 +175,12 @@ LRESULT CLaunchyDlg::OnHotKey(WPARAM wParam, LPARAM lParam) {
 		this->Visible = !this->Visible;
 		if (Visible)
 		{
-			this->ShowWindows(SW_SHOW);
+			this->ShowWindows(true);
 			this->ActivateTopParent();
 			this->InputBox.SetFocus();
 		}
 		else {
-			this->ShowWindows(SW_HIDE);
+			this->ShowWindows(false);
 		}
 	}
 	return 1;
@@ -402,7 +402,7 @@ void CLaunchyDlg::applySkin()
 		border.inuse = false;
 	} else {
 		if (!border.inuse) {
-			bool ret = border.Create(IDD_ALPHA_BORDER, this);
+			int ret = border.Create(IDD_ALPHA_BORDER, this);
 		}
 		border.SetImage(options->skin->alphaBorderFile);
 		border.inuse = true;
@@ -410,7 +410,7 @@ void CLaunchyDlg::applySkin()
 		RECT r;
 		GetWindowRect(&r);
 		border.MoveWindow(r.left + options->skin->alphaRect.left, r.top + options->skin->alphaRect.top, r.right, r.bottom, 1);
-		ShowWindows(IsWindowVisible());
+		ShowWindows(IsWindowVisible() != 0);
 	}
 
 

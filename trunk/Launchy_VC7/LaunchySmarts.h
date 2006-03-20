@@ -40,8 +40,8 @@ class LaunchySmarts;
 struct ScanBundle {
 	Options* ops;
 	LaunchySmarts* smarts;
-	map<char, int> charUsage;
-	map<char, CharSectionPtr> charMap;
+	map<TCHAR, int> charUsage;
+	map<TCHAR, CharSectionPtr> charMap;
 	int catFiles;
 };
 
@@ -62,8 +62,8 @@ protected:
 
 	CDiskObject disk;
 public:
-	map<char, int> charUsage;
-	map<char, CharSectionPtr> charMap;
+	map<TCHAR, int> charUsage;
+	map<TCHAR, CharSectionPtr> charMap;
 	//	static void ScanDir(CString path, Launcher* launcher,map<CString, bool>& catalog, map<CString,bool>& typeMap);
 
 protected:

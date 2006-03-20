@@ -30,8 +30,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //  these variables should have been defined in some standard header but is not
 #define WS_EX_LAYERED 0x00080000 
-#define LWA_COLORKEY 1 // Use color as the transparency color.
-#define LWA_ALPHA    2 // Use bAlpha to determine the opacity of the layer
+//#define LWA_COLORKEY 1 // Use color as the transparency color.
+//#define LWA_ALPHA    2 // Use bAlpha to determine the opacity of the layer
 
 
 //  ===========================================================================

@@ -14,8 +14,8 @@
 #ifndef CIniFile_H
 #define CIniFile_H
 
-#define _UNICODE 
-#include <tchar.h>
+//#define _UNICODE 
+//#include <tchar.h>
 
 #include "stdafx.h"
 
@@ -83,21 +83,21 @@ public:
   long FindValue( unsigned const keyID, wstring const valuename) const;
 
   // Returns number of keys currently in the ini.
-  unsigned NumKeys() const                       {return names.size();}
-  unsigned GetNumKeys() const                    {return NumKeys();}
+  size_t NumKeys() const                       {return names.size();}
+  size_t GetNumKeys() const                    {return NumKeys();}
 
   // Add a key name.
-  unsigned AddKeyName( wstring const keyname);
+  size_t AddKeyName( wstring const keyname);
 
   // Returns key names by index.
   wstring KeyName( unsigned const keyID) const;
   wstring GetKeyName( unsigned const keyID) const {return KeyName(keyID);}
 
   // Returns number of values stored for specified key.
-  unsigned NumValues( unsigned const keyID);
-  unsigned GetNumValues( unsigned const keyID)   {return NumValues( keyID);}
-  unsigned NumValues( wstring const keyname);
-  unsigned GetNumValues( wstring const keyname)   {return NumValues( keyname);}
+  size_t NumValues( unsigned const keyID);
+  size_t GetNumValues( unsigned const keyID)   {return NumValues( keyID);}
+  size_t NumValues( wstring const keyname);
+  size_t GetNumValues( wstring const keyname)   {return NumValues( keyname);}
 
   // Returns value name by index for a given keyname or keyID.
   wstring ValueName( unsigned const keyID, unsigned const valueID) const;
@@ -116,7 +116,7 @@ public:
   wstring GetValue(wstring const keyname, wstring const valuename, wstring const defValue = L"") const; 
   int    GetValueI(wstring const keyname, wstring const valuename, int const defValue = 0) const;
   bool   GetValueB(wstring const keyname, wstring const valuename, bool const defValue = false) const {
-    return bool( GetValueI( keyname, valuename, int( defValue)));
+    return GetValueI( keyname, valuename, int( defValue)) != 0;
   }
   double   GetValueF(wstring const keyname, wstring const valuename, double const defValue = 0.0) const;
   // This is a variable length formatted GetValue routine. All these voids
@@ -153,7 +153,7 @@ public:
   // Header comments are those comments before the first key.
   //
   // Number of header comments.
-  unsigned NumHeaderComments()                  {return comments.size();}
+  size_t NumHeaderComments()                  {return comments.size();}
   // Add a header comment.
   void     HeaderComment( wstring const comment);
   // Return a header comment.
@@ -170,8 +170,8 @@ public:
   // the CIniFile::WriteFile() is called.
   //
   // Number of key comments.
-  unsigned NumKeyComments( unsigned const keyID) const;
-  unsigned NumKeyComments( wstring const keyname) const;
+  size_t NumKeyComments( unsigned const keyID) const;
+  size_t NumKeyComments( wstring const keyname) const;
   // Add a key comment.
   bool     KeyComment( unsigned const keyID, wstring const comment);
   bool     KeyComment( wstring const keyname, wstring const comment);

@@ -10,9 +10,9 @@
 // Reason:       Remove dependancy on MFC. Code should compile on any
 //               platform.
 ////////////////////////
-#define UNICODE
-#define _UNICODE 
-#include <tchar.h>
+//#define UNICODE
+//#define _UNICODE 
+//#include <tchar.h>
 
 #include "stdafx.h"
 
@@ -175,7 +175,7 @@ long CIniFile::FindValue( unsigned const keyID, wstring const valuename) const
   return noID;
 }
 
-unsigned CIniFile::AddKeyName( wstring const keyname)
+size_t CIniFile::AddKeyName( wstring const keyname)
 {
   names.resize( names.size() + 1, keyname);
   keys.resize( keys.size() + 1);
@@ -190,14 +190,14 @@ wstring CIniFile::KeyName( unsigned const keyID) const
     return L"";
 }
 
-unsigned CIniFile::NumValues( unsigned const keyID)
+size_t CIniFile::NumValues( unsigned const keyID)
 {
   if ( keyID < keys.size())
     return keys[keyID].names.size();
   return 0;
 }
 
-unsigned CIniFile::NumValues( wstring const keyname)
+size_t CIniFile::NumValues( wstring const keyname)
 {
   long keyID = FindKey( keyname);
   if ( keyID == noID)
@@ -306,15 +306,15 @@ int CIniFile::GetValueI(wstring const keyname, wstring const valuename, int cons
 
   wstring val = GetValue(keyname, valuename, wstring(svalue));
 
-  int len = val.size();
+  size_t len = val.size();
   string s;
   s.resize(len);
-  for(int i = 0; i < len; i++)
+  for(size_t i = 0; i < len; i++)
 		s[i] = static_cast<char>(val[i]);
-  int i = atoi(s.c_str());
 
-  return i;
+  int x = atoi(s.c_str());
 
+  return x;
 }
 
 double CIniFile::GetValueF(wstring const keyname, wstring const valuename, double const defValue) const
@@ -324,10 +324,10 @@ double CIniFile::GetValueF(wstring const keyname, wstring const valuename, doubl
   wsprintf( svalue, L"%f", defValue);
 
   wstring val = GetValue(keyname, valuename, wstring(svalue));
-  int len = val.size();
+  size_t len = val.size();
   string s;
   s.resize(len);
-  for(int i = 0; i < len; i++)
+  for(size_t i = 0; i < len; i++)
 		s[i] = static_cast<char>(val[i]);
 
 	return atof(s.c_str());
@@ -439,14 +439,14 @@ bool CIniFile::DeleteHeaderComment( unsigned commentID)
   return false;
 }
 
-unsigned CIniFile::NumKeyComments( unsigned const keyID) const
+size_t CIniFile::NumKeyComments( unsigned const keyID) const
 {
   if ( keyID < keys.size())
     return keys[keyID].comments.size();
   return 0;
 }
 
-unsigned CIniFile::NumKeyComments( wstring const keyname) const
+size_t CIniFile::NumKeyComments( wstring const keyname) const
 {
   long keyID = FindKey( keyname);
   if ( keyID == noID)
