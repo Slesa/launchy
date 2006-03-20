@@ -133,10 +133,10 @@ void Skin::parseSkinFile(void)
 	resultFontRGB = stringToRGB(ini->GetValue(L"Widgets", L"Results_Font_Color",L"255x255x255"));
 }
 
-void Split(wstring str, vector<wstring>& tokens, const char delim = ' ') {
+void Split(wstring str, vector<wstring>& tokens, const TCHAR delim = ' ') {
 	if (str.size() == 0) return;
 	int start = 0;
-	for(int i = 0; i < str.size(); i++) {
+	for(uint i = 0; i < str.size(); i++) {
 		if (str[i] == delim) {
 			if (i != 0) 
 				tokens.push_back(str.substr(start,i-start));
@@ -149,13 +149,13 @@ void Split(wstring str, vector<wstring>& tokens, const char delim = ' ') {
 }
 
 int wsToI(wstring val) {
-  int len = val.size();
+  size_t len = val.size();
   string s;
   s.resize(len);
-  for(int i = 0; i < len; i++)
+  for(size_t i = 0; i < len; i++)
 		s[i] = static_cast<char>(val[i]);
-  int i = atoi(s.c_str());
-  return i;
+  int x = atoi(s.c_str());
+  return x;
 }
 
 int Skin::stringToRGB(wstring input)
@@ -166,13 +166,13 @@ int Skin::stringToRGB(wstring input)
 }
 
 int wsToInt(wstring val) {
-  int len = val.size();
+  size_t len = val.size();
   string s;
   s.resize(len);
-  for(int i = 0; i < len; i++)
+  for(size_t i = 0; i < len; i++)
 		s[i] = static_cast<char>(val[i]);
-  int i = atoi(s.c_str());
-	return i;
+  int x = atoi(s.c_str());
+  return x;
 }
 
 CRect Skin::stringToRect(wstring input)

@@ -200,8 +200,8 @@ BOOL CDiskObject::CopyFiles( const CString& sourceDirectory,const CString& destD
 		// Create the destination directory, if necessary
 		if( ( result = CreateDirectory( dest ) ) )
 		{
-			int max = files.GetSize( );
-			for( int t = 0 ; t < max ; t++ )
+			INT_PTR max = files.GetSize( );
+			for( INT_PTR t = 0 ; t < max ; t++ )
 			{
 				// Copy the files
 				CString file;
@@ -259,8 +259,8 @@ BOOL CDiskObject::CopyFiles( CStringArray& files,const CString& destDirectory )
 		// Create destination, if necessary
 		if( ( result = CreateDirectory( dest ) ) )
 		{
-			int max = files.GetSize( );
-			for( int t = 0 ; t < max ; t++ )
+			INT_PTR max = files.GetSize( );
+			for( INT_PTR t = 0 ; t < max ; t++ )
 			{
 				// Loop and copy the files
 				CString file;
@@ -555,10 +555,10 @@ BOOL CDiskObject::CreateDirectory( const CString& directory )
 			directories.Add( fname );
 
 		// Loop directories one-by-one, creating as necessary
-		int max = directories.GetSize( );
+		INT_PTR max = directories.GetSize( );
 		CString strCurrentDirectory( strRoot );
 
-		for( int t = 0 ; t < max ; t++ )
+		for( INT_PTR t = 0 ; t < max ; t++ )
 		{
 			strCurrentDirectory += _TCHAR( '\\' ) + directories[ t ];
 			Trigger( strCurrentDirectory );
@@ -609,8 +609,8 @@ BOOL CDiskObject::EmptyDirectory( const CString& directory )
 	BOOL result = EnumFilesInDirectory( indir, files );
 	if( result )
 	{
-		int max = files.GetSize( );
-		for( int t = 0 ; t < max ; t++ )
+		INT_PTR max = files.GetSize( );
+		for( INT_PTR t = 0 ; t < max ; t++ )
 		{
 			// Loop and delete
 			CString file = files[ t ];
@@ -706,8 +706,8 @@ BOOL CDiskObject::RemoveDirectories( const CString& directory )
 		if( ( result = EnumAllDirectories( indir, directories ) ) )
 		{
 			// Loop and remove
-			int max = directories.GetSize( );
-			for( int t = max - 1; t >= 0 ; t-- )
+			INT_PTR max = directories.GetSize( );
+			for( INT_PTR t = max - 1; t >= 0 ; t-- )
 				if( !( result = RemoveDirectory( directories[ t ] ) ) )
 					t = -1;
 			
@@ -755,9 +755,9 @@ BOOL CDiskObject::EmptyDirectories( const CString& directory )
 	BOOL result = EnumAllDirectories( indir, directories );
 	if( result )
 	{
-		int max = directories.GetSize( );
+		INT_PTR max = directories.GetSize( );
 		// Loop and empty
-		for( int t = max - 1 ; t >= 0 ; t-- )
+		for( INT_PTR t = max - 1 ; t >= 0 ; t-- )
 			if( !( result = EmptyDirectory( directories[ t ] ) ) )
 				t = -1;
 
@@ -846,8 +846,8 @@ BOOL CDiskObject::CopyDirectories( const CString& sourceDirectory,const CString&
 	if( result )
 	{
 		// Create and copy directories
-		int max = directories.GetSize( );
-		for( int t = 0 ; t < max ; t++ )
+		INT_PTR max = directories.GetSize( );
+		for( INT_PTR t = 0 ; t < max ; t++ )
 		{
 			// Create names and copy
 			CString from = directories[ t ];
@@ -1384,7 +1384,7 @@ BOOL CDiskObject::EnumAllFilesWithFilter( const CString& filter,const CString& s
 	dirs.Add(sourceDirectory);
 	if( result )
 	{
-		int max1 = dirs.GetSize( );
+		INT_PTR max1 = dirs.GetSize( );
 		for( int t = 0 ; t < max1 ; t++ )
 		{
 			CString dir = dirs[ t ];
@@ -1392,7 +1392,7 @@ BOOL CDiskObject::EnumAllFilesWithFilter( const CString& filter,const CString& s
 			CStringArray dirfiles;
 			if( EnumFilesInDirectoryWithFilter( filter, dir, dirfiles, EF_FULLY_QUALIFIED ) ) 
 			{
-				int max2 = dirfiles.GetSize( );
+				INT_PTR max2 = dirfiles.GetSize( );
 				for( int i = 0 ; i < max2 ; i++ )
 				{
 					CString file = dirfiles[ i ];

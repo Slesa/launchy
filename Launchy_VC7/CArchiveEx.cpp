@@ -21,12 +21,12 @@ CArchiveExt::CArchiveExt(CFile* pFile, UINT nMode, int nBufSize, void* lpBuf, CS
 		    int iComprErr;
 			CString Contents, Compress;
 			_TCHAR sign[4];
-			DWORD dwFileSize = m_pFileTmp -> GetLength();
-			LPWSTR szContents = Contents.GetBuffer(dwFileSize);
-			DWORD dwComprSize;
+			ULONGLONG dwFileSize = m_pFileTmp -> GetLength();
+			LPWSTR szContents = Contents.GetBuffer((int) dwFileSize);
+			ULONGLONG dwComprSize;
 
-			m_pBuf = (BYTE *)new char[dwFileSize];
-			m_pFile = new CMemFile(m_pBuf, dwFileSize, 1024);
+			m_pBuf = (BYTE *)new char[(size_t) dwFileSize];
+			m_pFile = new CMemFile(m_pBuf, (uint) dwFileSize, 1024);
 
 			m_pFileTmp -> SeekToBegin();
 
@@ -40,12 +40,12 @@ CArchiveExt::CArchiveExt(CFile* pFile, UINT nMode, int nBufSize, void* lpBuf, CS
 
 			if(signature == sign)
 			{
-				dwFileSize = m_pFileTmp -> Read(szContents, dwFileSize);
+				dwFileSize = m_pFileTmp -> Read(szContents, (uint) dwFileSize);
 				if(ahead.uchFlag == 3)
 				{
 					ULONG crc = adler32(0L, Z_NULL, 0);
 //					Crypto(szContents, dwFileSize, m_strKey);
-					crc = adler32(crc, (const Bytef*)szContents, dwFileSize);
+					crc = adler32(crc, (const Bytef*)szContents, (uInt) dwFileSize);
 					if(crc != ahead.ulCRC)
 					{
 						AfxMessageBox(_T("Password incorrect!!!"));
@@ -55,17 +55,17 @@ CArchiveExt::CArchiveExt(CFile* pFile, UINT nMode, int nBufSize, void* lpBuf, CS
 				}
 
 				dwComprSize = ahead.dwOriginalSize;
-				LPCTSTR szCompress = Compress.GetBuffer(dwComprSize);
-				iComprErr = uncompress((LPBYTE)szCompress, &dwComprSize, (LPBYTE)szContents, dwFileSize);
+				LPCTSTR szCompress = Compress.GetBuffer((int) dwComprSize);
+				iComprErr = uncompress((LPBYTE)szCompress, (uLongf*) &dwComprSize, (LPBYTE)szContents, (uLong)dwFileSize);
 				ASSERT(iComprErr == Z_OK);
 
-				m_pFile -> Write(szCompress, dwComprSize);
+				m_pFile -> Write(szCompress, (uint) dwComprSize);
 			}
 			else
 			{
 				m_pFileTmp -> SeekToBegin();
-				dwFileSize = m_pFileTmp -> Read(szContents, dwFileSize);
-				m_pFile -> Write(szContents, dwFileSize);
+				dwFileSize = m_pFileTmp -> Read(szContents, (uint) dwFileSize);
+				m_pFile -> Write(szContents, (uint) dwFileSize);
 			}
 			m_pFile -> SeekToBegin();
 		}
@@ -109,13 +109,13 @@ void CArchiveExt::Close()
 		{
 		    int iComprErr;
 			CString Compress;
-			DWORD dwFileSize = m_pFile -> GetLength();
+			ULONGLONG dwFileSize = m_pFile -> GetLength();
 			DWORD dwComprSize;
 
 			m_pBuf = (BYTE *)(((CMemFile*)m_pFile)->Detach());
 			dwComprSize = (DWORD)(dwFileSize * 1.1) + 12;
 			LPCTSTR szCompress = Compress.GetBuffer(dwComprSize);
-			iComprErr = compress((LPBYTE)szCompress, &dwComprSize, m_pBuf, dwFileSize);
+			iComprErr = compress((LPBYTE)szCompress, &dwComprSize, m_pBuf, (uLong) dwFileSize);
 			ASSERT(iComprErr == Z_OK);
 
 			ULONG crc = adler32(0L, Z_NULL, 0);

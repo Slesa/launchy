@@ -171,11 +171,11 @@ BOOL DirectoryChooser::OnInitDialog()
 	d.Format(_T("Indexing %d files"), smarts->catFiles);
 	numFiles.SetWindowTextW(d);
 
-	for(int i = 0; i < ops->Directories.size(); i++) {
+	for(uint i = 0; i < ops->Directories.size(); i++) {
 		Directories.AddString(ops->Directories[i]);
 	}
 
-	for(int i = 0; i < ops->Types.size(); i++) {
+	for(uint i = 0; i < ops->Types.size(); i++) {
 		Types.AddString(ops->Types[i]);
 	}
 

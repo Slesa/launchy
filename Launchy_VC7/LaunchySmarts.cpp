@@ -83,7 +83,7 @@ void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
 {
 	map<CString,bool> catalog;
 	map<CString, bool> typeMap;
-	for(int i = 0; i < bun->ops->Types.size(); i++) {
+	for(uint i = 0; i < bun->ops->Types.size(); i++) {
 		typeMap[bun->ops->Types[i]] = true;
 	}
 
@@ -94,9 +94,9 @@ void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
 	CString tmps;
 	Options* ops = bun->ops;
 
-	CMap<char, char&, bool, bool&> added;
+	CMap<TCHAR, TCHAR&, bool, bool&> added;
 
-	int count = files.GetCount();
+	INT_PTR count = files.GetCount();
 
 	for(int i = 0; i < count; i++) {
 		tmps = files[i].Mid(files[i].GetLength()-4,4);
@@ -110,7 +110,7 @@ void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
 		bun->catFiles += 1;
 		added.RemoveAll();
 		for(int i = 0; i < rec->lowName.GetLength( ); i++) {
-			char c = rec->lowName[i];
+			TCHAR c = rec->lowName[i];
 			bun->charUsage[c] += 1;
 
 			if (bun->charMap[c] == NULL) {
@@ -149,7 +149,7 @@ UINT ScanStartMenu(LPVOID pParam)
 	files.Append(tmpFiles);
 	tmpFiles.RemoveAll();
 
-	for(int i = 0; i < ops->Directories.size(); i++) {
+	for(uint i = 0; i < ops->Directories.size(); i++) {
 		disk.EnumAllFiles(ops->Directories[i], tmpFiles);
 		files.Append(tmpFiles);
 		tmpFiles.RemoveAll();
@@ -267,8 +267,8 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 	FindMatches(txt);
 
 	// Set the preferred bit for the history match
-	int count = matches.size();
-	for(int i = 0; i < count; i++) {
+	size_t count = matches.size();
+	for(size_t i = 0; i < count; i++) {
 		if (matches[i]->croppedName == history) {
 			matches[i]->isHistory = true;
 		}
@@ -320,8 +320,8 @@ HICON nH = ImageList_GetIcon(
 	if (UpdateDropdown) {
 		
 	pDlg->InputBox.m_listbox.ResetContent();
-		int size = matches.size();
-		for(int i = 0; i < size && i < 10; i++) {
+		size_t size = matches.size();
+		for(size_t i = 0; i < size && i < 10; i++) {
 			CString blah = matches[i]->croppedName;
 			pDlg->InputBox.AddString(matches[i]->croppedName);
 		}
@@ -334,29 +334,27 @@ void LaunchySmarts::FindMatches(CString txt)
 	getCatalogLock();
 	txt.MakeLower();
 
-	char mostInfo = -1;
+	bool set = false;
+	TCHAR mostInfo = -1;
 	// Find the character with the most amount of information
 	for(int i = 0; i < txt.GetLength(); i++) {
-		char c = txt[i];
-		if (charUsage[c] < charUsage[mostInfo] || mostInfo == -1) {
+		TCHAR c = txt[i];
+		if (charUsage[c] < charUsage[mostInfo] || !set) {
 			mostInfo = c;
+			set = true;
 		}
 	}
 
 	if (charMap[mostInfo] != NULL) {
-		int count = charMap[mostInfo]->size();
-		for(int i = 0; i < count; i++) {
+		size_t count = charMap[mostInfo]->size();
+		for(size_t i = 0; i < count; i++) {
 			if (Match(charMap[mostInfo]->at(i), txt)) {
 				matches.push_back(charMap[mostInfo]->at(i));
 			}
 		}
 	}
 
-	//	else {
-	//		AfxMessageBox(_T("I shouldn't get here"));
-	//	}
 	releaseCatalogLock();
-
 }
 
 
@@ -431,7 +429,7 @@ void LaunchySmarts::releaseCatalogLock(void)
 
 void LaunchySmarts::getStrings(CStringArray& strings)
 {
-	for(map<char, CharSectionPtr>::iterator it = charMap.begin(); it != charMap.end(); ++it) {
+	for(map<TCHAR, CharSectionPtr>::iterator it = charMap.begin(); it != charMap.end(); ++it) {
 		for(vector<FileRecordPtr>::iterator jt = it->second->begin(); jt != it->second->end(); ++jt) {
 			strings.Add(jt->get()->fullPath);
 		}

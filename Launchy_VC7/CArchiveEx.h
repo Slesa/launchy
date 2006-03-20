@@ -5,7 +5,7 @@ struct ArcHeader
 {
 	_TCHAR			chSignature[3];		//	"akz"
 	BYTE			uchFlag;			//	0-plane text; 1-compr; 2-crypt; 3-compr & crypt;
-	DWORD			dwOriginalSize;		//	decompr size
+	ULONGLONG			dwOriginalSize;		//	decompr size
 	ULONG			ulCRC;				//	CRC
 };
 

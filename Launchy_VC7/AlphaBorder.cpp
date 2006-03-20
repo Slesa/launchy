@@ -17,10 +17,10 @@ void PreMultiplyRGBChannels(CImage& bmp)
 
 	for(int row = 0; row < bmp.GetHeight(); row++) {
 		for(long long i = 0; i < bmp.GetWidth() * 4; i += 4) {
-				int offset = (row * Pitch) + i;
-				bits[offset] = bits[offset]*bits[offset+3]/255;
-				bits[offset+1] = bits[offset+1]*bits[offset+3]/255;
-				bits[offset+2] = bits[offset+2]*bits[offset+3]/255;
+			__int64 offset = (row * Pitch) + i;
+			bits[offset] = bits[offset]*bits[offset+3]/255;
+			bits[offset+1] = bits[offset+1]*bits[offset+3]/255;
+			bits[offset+2] = bits[offset+2]*bits[offset+3]/255;
 		}
 	}
 }
@@ -30,7 +30,7 @@ void PreMultiplyRGBChannels(CImage& bmp)
 
 IMPLEMENT_DYNAMIC(AlphaBorder, CDialog)
 AlphaBorder::AlphaBorder(CWnd* pParent /*=NULL*/)
-	: CDialog(AlphaBorder::IDD, pParent)
+: CDialog(AlphaBorder::IDD, pParent)
 {
 	inuse = false;
 }
@@ -63,7 +63,7 @@ BOOL AlphaBorder::OnInitDialog()
 	// TODO:  Add extra initialization here
 	// setup the blend function
 
-	
+
 
 
 
@@ -81,9 +81,9 @@ void AlphaBorder::OnWindowPosChanged(WINDOWPOS* lpwndpos)
 void AlphaBorder::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
-		if (pDlg == NULL) return;
-		pDlg->OnLButtonDown(nFlags, point);
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+	pDlg->OnLButtonDown(nFlags, point);
 
 	CDialog::OnLButtonDown(nFlags, point);
 
@@ -98,9 +98,9 @@ void AlphaBorder::SetImage(CString name)
 	image.Load(name);	
 	::PreMultiplyRGBChannels(image);
 
-    POINT pt={0, 0};
-    SIZE sz = {image.GetWidth(), image.GetHeight()};
-    POINT ptSource = {0};
+	POINT pt={0, 0};
+	SIZE sz = {image.GetWidth(), image.GetHeight()};
+	POINT ptSource = {0};
 	BLENDFUNCTION bf = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
 
 	BOOL bRet= ::UpdateLayeredWindow(GetSafeHwnd(), NULL/*dcScreen*/, &pt, &sz, image.GetDC()/*dcMemory*/,
