@@ -24,8 +24,8 @@ using namespace boost;
 
 
 class FileRecord;
-typedef shared_ptr<FileRecord> FileRecordPtr;
-
+//typedef shared_ptr<FileRecord> FileRecordPtr;
+typedef FileRecord* FileRecordPtr;
 
 
 class Launcher

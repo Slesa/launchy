@@ -31,7 +31,7 @@ using namespace std;
 #include <boost/smart_ptr.hpp>
 using namespace boost;
 
-typedef shared_ptr<vector<FileRecordPtr> > CharSectionPtr;
+typedef vector<FileRecordPtr> CharSectionPtr;
 
 class LaunchySmarts;
 #include "Options.h"
@@ -87,4 +87,5 @@ public:
 	void getStrings(CStringArray& strings);
 	void LoadFirstTime();
 	CUseShGetFileInfo IconInfo;
+	void freeCatalog(void);
 };
