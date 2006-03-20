@@ -206,10 +206,10 @@ void LaunchySmarts::LoadCatalog(void)
 
 
 /*
-When the program is launched, it's faster to just
-read an old archive of the file names rather than
-plow through the filesystem while the computer is
-trying to start up.  This makes Launchy feel lighter.
+	When the program is launched, it's faster to just
+	read an old archive of the file names rather than
+	plow through the filesystem while the computer is
+	trying to start up.  This makes Launchy feel lighter.
 */
 
 void LaunchySmarts::LoadFirstTime()
@@ -219,9 +219,15 @@ void LaunchySmarts::LoadFirstTime()
 	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
 	dir += _T("\\Launchy");
 	dir += _T("\\launchy.db");
+
+
 	if (!theFile.Open(dir, CFile::modeRead)) {
-		LoadCatalog();
-		return;
+		// If the version is less than 0.91, we can't use the old
+		// database
+		if (((CLaunchyDlg*)AfxGetMainWnd())->options->ver >= 91) {
+			LoadCatalog();
+			return;
+		}
 	}
 
 	CArchiveExt archive(&theFile, CArchive::load, 4096, NULL, _T(""), TRUE);
@@ -282,36 +288,11 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 
 	if (matches.size() > 0) {
 		HICON hNew = IconInfo.GetIconHandleNoOverlay(matches[0]->fullPath, false);
-/*		int index = FileInfo.GetFileIconIndex(matches[0]->fullPath, false);
-		HICON nH = ImageList_GetIcon(      
-			HIMAGELIST himl,
-			int i,
-			UINT flags
-		);
-		SHFILEINFO info;
-		DWORD_PTR ptr = SHGetFileInfo(      
-			matches[0]->fullPath,
-			0, //DWORD dwFileAttributes,
-			&info, //SHFILEINFO *psfi,
-			sizeof(SHFILEINFO), // UINT cbFileInfo,
-			SHGFI_ICON | SHGFI_SHELLICONSIZE  //	UINT uFlags
-			);
-
-HICON nH = ImageList_GetIcon(      
-    HIMAGELIST himl,
-    int i,
-    UINT flags
-);
-*/
-
-		//NEED TO MAKE SURE ICONS GET DELETED!
 
 		HICON h = pDlg->IconPreview.SetIcon(hNew);
 		if (h != hNew) {
 			DestroyIcon(h);
 		}
-
-
 		pDlg->Preview.SetWindowText(matches[0]->croppedName);
 	} else {
 		pDlg->Preview.SetWindowText(_T(""));

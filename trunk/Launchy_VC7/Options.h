@@ -46,6 +46,7 @@ public:
 
 	int posX;
 	int posY;
+	int ver;
 //	CList<shared_ptr<LaunchyDir> > dirs;
 	vector<shared_ptr<LaunchyDir> > dirs;
 	Options(void);
