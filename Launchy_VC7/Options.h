@@ -21,34 +21,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "LaunchyDir.h"
 #include "iniFile.h"
-#include <boost/shared_ptr.hpp>
 #include "Skin.h"
 
 #include <vector>
 
 using namespace std;
 
-using namespace boost;
 
 class Options
 {
 public:
-	shared_ptr<CIniFile> ini;
-	vector<shared_ptr<Skin> > skins;
+	CIniFile* ini;
+	vector<Skin*> skins;
 //	CArray<CString> Types;
 //	CArray<CString> Directories;
 
 	vector<CString> Types;
 	vector<CString> Directories;
 
-	shared_ptr<Skin> skin;
+	Skin* skin;
 	CString skinName;
 
 	int posX;
 	int posY;
 	int ver;
 //	CList<shared_ptr<LaunchyDir> > dirs;
-	vector<shared_ptr<LaunchyDir> > dirs;
+//	vector<LaunchyDir> dirs;
 	Options(void);
 	~Options(void);
 	void ParseIni(void);

@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "FileRecord.h"
 #include "Launchy.h"
+#include ".\filerecord.h"
 
 FileRecord::FileRecord(void)
 : isHistory(false)
@@ -14,7 +15,7 @@ FileRecord::~FileRecord(void)
 void FileRecord::set(CString p, CString type, Launcher* l)
 {
 	CString fileName, fileType;
-	launcher = l;
+//	launcher = l;
 	fullPath = p;
 	if (type[0] == '*')
 		fileType = type.Mid(1);
@@ -39,4 +40,5 @@ void FileRecord::set(CString p, CString type, Launcher* l)
 
 
 }
+
 

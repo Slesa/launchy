@@ -28,9 +28,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using namespace std;
 
-#include <boost/smart_ptr.hpp>
-using namespace boost;
-
 typedef vector<FileRecordPtr> CharSectionPtr;
 
 class LaunchySmarts;

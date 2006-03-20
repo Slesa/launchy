@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Launchy.h"
 #include "launchysmarts.h"
 #include "CArchiveEx.h"
+#include <algorithm>
 #include ".\launchysmarts.h"
 
 // Code to get shell directories
@@ -197,7 +198,7 @@ void LaunchySmarts::LoadCatalog(void)
 {
 	ScanBundle* bundle = new ScanBundle();
 	bundle->smarts = this;
-	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
+	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 	bundle->catFiles = 0;
 	AfxBeginThread(ScanStartMenu, bundle);
 }
@@ -240,7 +241,7 @@ void LaunchySmarts::LoadFirstTime()
 
 	ScanBundle* bundle = new ScanBundle();
 	bundle->smarts = this;
-	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
+	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 	bundle->catFiles = 0;
 	ScanFiles(files, bundle, smaller);
 
@@ -359,7 +360,8 @@ inline BOOL LaunchySmarts::Match(FileRecordPtr record, CString txt)
 void LaunchySmarts::Launch(void)
 {
 	if(matches.size() > 0) {
-		matches[0]->launcher->Run(matches[0]);
+		exeLauncher.Run(matches[0]);
+//		matches[0]->launcher->Run(matches[0]);
 	}
 }
 

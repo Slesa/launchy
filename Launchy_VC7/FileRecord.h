@@ -1,8 +1,6 @@
 #pragma once
 #include "Launcher.h"
 
-#include <boost/smart_ptr.hpp>
-using namespace boost;
 
 //typedef shared_ptr<FileRecord> FileRecordPtr;
 typedef FileRecord* FileRecordPtr;
@@ -15,7 +13,7 @@ public:
 	CString fullPath;
 	CString croppedName;
 	CString lowName;
-	Launcher* launcher;
+//	Launcher* launcher;
 	
 	void set(CString p, CString type, Launcher* l);
 

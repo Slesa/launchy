@@ -39,7 +39,7 @@ END_MESSAGE_MAP()
 BOOL SkinChooser::OnInitDialog(void)
 {
 	CDialog::OnInitDialog();
-	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	Options* ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
 	for(uint i = 0; i < ops->skins.size(); i++) {
 		skinlist.AddString(ops->skins[i]->name);
@@ -53,7 +53,7 @@ BOOL SkinChooser::OnInitDialog(void)
 
 void SkinChooser::OnBnClickedOk()
 {
-	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	Options* ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 	CString name;
 	int item = skinlist.GetCurSel();
 	if (item < 0) {

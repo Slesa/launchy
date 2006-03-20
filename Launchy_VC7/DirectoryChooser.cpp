@@ -73,7 +73,7 @@ pCB->SetHorizontalExtent(maxSize);
 
 void DirectoryChooser::OnBnClickedAddDirectory()
 {
-	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	Options* ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
 	// TODO: Add your control notification handler code here
     BROWSEINFO bi = { 0 };
@@ -110,7 +110,7 @@ void DirectoryChooser::OnBnClickedRemoveDirectory()
 		return;
 	}
 	Directories.GetText(Directories.GetCurSel(), name);
-	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	Options* ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
 	for(vector<CString>::iterator it = ops->Directories.begin(); it != ops->Directories.end(); ) {
 		if (*it == name) {
@@ -126,7 +126,7 @@ void DirectoryChooser::OnBnClickedRemoveDirectory()
 
 void DirectoryChooser::OnBnClickedAddType()
 {
-	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	Options* ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 	CString txt;
 	TypeEdit.GetWindowTextW(txt);
 	if (txt == "")
@@ -146,7 +146,7 @@ void DirectoryChooser::OnBnClickedRemoveType()
 		return;
 	}
 	Types.GetText(Types.GetCurSel(), name);
-	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	Options* ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
 	for(vector<CString>::iterator it = ops->Types.begin(); it != ops->Types.end(); ) {
 		if (*it == name) {
@@ -164,8 +164,8 @@ BOOL DirectoryChooser::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
-	shared_ptr<LaunchySmarts> smarts = ((CLaunchyDlg*)AfxGetMainWnd())->smarts;
+	Options* ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	LaunchySmarts* smarts = ((CLaunchyDlg*)AfxGetMainWnd())->smarts;
 
 	CString d;
 	d.Format(_T("Indexing %d files"), smarts->catFiles);
@@ -199,7 +199,7 @@ void DirectoryChooser::OnBnClickedOk()
 
 void DirectoryChooser::OnBnClickedCancel()
 {
-	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	Options* ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 	ops->Directories = dbak;
 	ops->Types = tbak;
 

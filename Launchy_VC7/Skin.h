@@ -2,16 +2,13 @@
 #include "Inifile.h"
 #include "atltypes.h"
 #include "IniFile.h"
-#include <boost/smart_ptr.hpp>
 #include "Skin.h"
-
-using namespace boost;
 
 
 class Skin
 {
 public:
-	shared_ptr<CIniFile> ini;
+	CIniFile* ini;
 	Skin(CString dir);
 public:
 	~Skin(void);
@@ -49,4 +46,14 @@ public:
 
 	CRect stringToRect(wstring input);
 	int stringToRGB(wstring input);
+
+	CString input_fontName;
+	int input_fontSize;
+	int input_italics;
+	int input_bold;
+
+	CString results_fontName;
+	int results_fontSize;
+	int results_italics;
+	int results_bold;
 };
