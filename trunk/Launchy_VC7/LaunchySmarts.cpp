@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Launchy.h"
 #include "launchysmarts.h"
 #include "CArchiveEx.h"
+#include ".\launchysmarts.h"
 
 // Code to get shell directories
 #ifndef CSIDL_WINDOWS
@@ -38,7 +39,7 @@ typedef enum {
 #endif//CSIDL_WINDOWS
 
 
-bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
+bool less_than(const FileRecordPtr a, const FileRecordPtr b)
 {
 	if (a->isHistory) { return true; } 
 	if (b->isHistory) { return false; }
@@ -102,7 +103,7 @@ void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
 		tmps = files[i].Mid(files[i].GetLength()-4,4);
 		tmps.MakeLower();
 		if (typeMap[tmps] == false) continue;
-		FileRecordPtr rec(new FileRecord());
+		FileRecordPtr rec = new FileRecord();
 		rec->set(files[i], tmps, &bun->smarts->exeLauncher);
 		out.Add(files[i]);
 		if (catalog[rec->lowName] == true) continue;
@@ -113,11 +114,8 @@ void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
 			TCHAR c = rec->lowName[i];
 			bun->charUsage[c] += 1;
 
-			if (bun->charMap[c] == NULL) {
-				bun->charMap[c].reset(new vector<FileRecordPtr>());	
-			}
 			if (added[c] == false) {
-				bun->charMap[c]->push_back(rec);
+				bun->charMap[c].push_back(rec);
 				added[c] = true;
 			}
 		}
@@ -161,6 +159,7 @@ UINT ScanStartMenu(LPVOID pParam)
 	// Now replace the catalog files
 	bun->smarts->getCatalogLock();
 
+	bun->smarts->freeCatalog();
 	bun->smarts->charMap = bun->charMap;
 	bun->smarts->charUsage = bun->charUsage;
 	bun->smarts->catFiles = bun->catFiles;
@@ -326,14 +325,14 @@ void LaunchySmarts::FindMatches(CString txt)
 		}
 	}
 
-	if (charMap[mostInfo] != NULL) {
-		size_t count = charMap[mostInfo]->size();
+//	if (charMap[mostInfo] != NULL) {
+		size_t count = charMap[mostInfo].size();
 		for(size_t i = 0; i < count; i++) {
-			if (Match(charMap[mostInfo]->at(i), txt)) {
-				matches.push_back(charMap[mostInfo]->at(i));
+			if (Match(charMap[mostInfo].at(i), txt)) {
+				matches.push_back(charMap[mostInfo].at(i));
 			}
 		}
-	}
+//	}
 
 	releaseCatalogLock();
 }
@@ -411,8 +410,28 @@ void LaunchySmarts::releaseCatalogLock(void)
 void LaunchySmarts::getStrings(CStringArray& strings)
 {
 	for(map<TCHAR, CharSectionPtr>::iterator it = charMap.begin(); it != charMap.end(); ++it) {
-		for(vector<FileRecordPtr>::iterator jt = it->second->begin(); jt != it->second->end(); ++jt) {
-			strings.Add(jt->get()->fullPath);
+		for(uint i = 0; i < it->second.size(); i++) {
+			strings.Add(it->second[i]->fullPath);
 		}
+	}
+}
+
+/*
+	Okay this is pretty ridiculous.. but it works!
+*/
+void LaunchySmarts::freeCatalog(void)
+{
+	map<INT_PTR, FileRecordPtr> toDelete;
+
+	// Find out what to delete
+	for(map<TCHAR, CharSectionPtr>::iterator it = charMap.begin(); it != charMap.end(); ++it) {
+		for(uint i = 0; i < it->second.size(); i++) {
+			toDelete[(INT_PTR) it->second[i]] = it->second[i];
+		}
+	}
+
+	// Delete it
+	for(map<INT_PTR, FileRecordPtr>::iterator it = toDelete.begin(); it != toDelete.end(); ++it) {
+		delete(it->second);
 	}
 }

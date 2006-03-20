@@ -4,7 +4,8 @@
 #include <boost/smart_ptr.hpp>
 using namespace boost;
 
-typedef shared_ptr<FileRecord> FileRecordPtr;
+//typedef shared_ptr<FileRecord> FileRecordPtr;
+typedef FileRecord* FileRecordPtr;
 
 class FileRecord
 {
