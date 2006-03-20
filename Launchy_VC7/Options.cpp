@@ -76,6 +76,8 @@ CString SerializeStringArray(vector<CString> input) {
 
 void Options::ParseIni(void)
 {
+	ver = ini->GetValueI(L"Launchy Information", L"Version", 0);
+
 	posX = ini->GetValueI(L"Position", L"pos_x");
 	posY = ini->GetValueI(L"Position", L"pos_y");
 
@@ -96,6 +98,7 @@ void Options::Store(void)
 	RECT location;
 	pApp->GetMainWnd()->GetWindowRect(&location);
 
+	ini->SetValueI(L"Launchy Information", L"Version", LAUNCHY_VERSION);
 	ini->SetValueI(L"Position", L"pos_x", location.left);
 	ini->SetValueI(L"Position", L"pos_y", location.top);
 

@@ -67,6 +67,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 typedef unsigned int uint;
+#define LAUNCHY_VERSION 91
+
 /*
 
 #pragma once
