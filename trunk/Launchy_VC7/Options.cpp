@@ -45,6 +45,10 @@ Options::Options(void) : ini(new CIniFile())
 Options::~Options(void)
 {
 	Store();
+	for(uint i = 0; i < skins.size(); i++) {		
+		delete(skins[i]);
+	}
+	delete ini;
 }
 
 vector<CString> DeSerializeStringArray(CString input) {
@@ -146,13 +150,11 @@ void Options::LoadSkins(void)
 
 	INT_PTR count = skinDirs.GetCount();
 	for(int i = 0; i < count; i++) {
-		shared_ptr<Skin> x(new Skin(skinDirs[i]));
+		Skin* x = new Skin(skinDirs[i]);
 		if (x->name == _T("")) continue;
 		skins.push_back(x);
 		if (x->name == skinName) {
 			skin = x;
 		}
 	}
-
-
 }
