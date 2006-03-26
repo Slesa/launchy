@@ -204,10 +204,15 @@ void CLaunchyDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 
 void CLaunchyDlg::OnClose()
 {
-	delete(options);
+	delete(options);  
 	options = NULL;
 	delete(smarts);
 	smarts = NULL;
+/*	m_FontInput->DeleteObject();
+	m_FontResult->DeleteObject();
+	delete(m_FontInput);
+	delete(m_FontResult);
+	*/
 //	border.OnClose();
 	// TODO: Add your message handler code here and/or call default
 	CDialogSK::OnClose();

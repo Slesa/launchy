@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define EF_ONLY_FILENAMES	0
 #define EF_FULLY_QUALIFIED	1
 
+
+
 class CDiskObject 
 {
 public:

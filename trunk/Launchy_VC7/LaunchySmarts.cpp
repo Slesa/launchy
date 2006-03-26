@@ -77,6 +77,7 @@ LaunchySmarts::LaunchySmarts(void)
 
 LaunchySmarts::~LaunchySmarts(void)
 {
+	freeCatalog();
 }
 
 
@@ -85,6 +86,8 @@ void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
 {
 	map<CString,bool> catalog;
 	map<CString, bool> typeMap;
+	vector<FileRecord> records;
+
 	for(uint i = 0; i < bun->ops->Types.size(); i++) {
 		typeMap[bun->ops->Types[i]] = true;
 	}
@@ -96,30 +99,36 @@ void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
 	CString tmps;
 	Options* ops = bun->ops;
 
-	CMap<TCHAR, TCHAR&, bool, bool&> added;
-
+//	CMap<TCHAR, TCHAR&, bool, bool&> added;
+	map<TCHAR, bool> added;
 	INT_PTR count = files.GetCount();
 
 	for(int i = 0; i < count; i++) {
 		tmps = files[i].Mid(files[i].GetLength()-4,4);
 		tmps.MakeLower();
 		if (typeMap[tmps] == false) continue;
+
 		FileRecordPtr rec = new FileRecord();
 		rec->set(files[i], tmps, &bun->smarts->exeLauncher);
 		out.Add(files[i]);
-		if (catalog[rec->lowName] == true) continue;
+		if (catalog[rec->lowName] == true) {
+			delete rec;
+			continue;
+		}
 		catalog[rec->lowName] = true;
 		bun->catFiles += 1;
-		added.RemoveAll();
+
+		added.clear();
 		for(int i = 0; i < rec->lowName.GetLength( ); i++) {
 			TCHAR c = rec->lowName[i];
 			bun->charUsage[c] += 1;
 
-			if (added[c] == false) {
+			if (added.count(c) == 0) {
 				bun->charMap[c].push_back(rec);
 				added[c] = true;
 			}
 		}
+
 	}
 }
 
@@ -175,7 +184,6 @@ UINT ScanStartMenu(LPVOID pParam)
 	if (!theFile.Open(dir, CFile::modeWrite | CFile::modeCreate)) {
 		int x = 3;
 		x += 3;
-		delete bun;
 		bun->smarts->releaseCatalogLock();
 		return 0;
 	}
@@ -188,8 +196,6 @@ UINT ScanStartMenu(LPVOID pParam)
 	theFile.Close();
 
 	bun->smarts->releaseCatalogLock();
-
-	delete bun;
 
 	return 0;
 }
@@ -221,13 +227,13 @@ void LaunchySmarts::LoadFirstTime()
 	dir += _T("\\launchy.db");
 
 
-	if (!theFile.Open(dir, CFile::modeRead)) {
-		// If the version is less than 0.91, we can't use the old
-		// database
-		if (((CLaunchyDlg*)AfxGetMainWnd())->options->ver >= 91) {
-			LoadCatalog();
-			return;
-		}
+	// If the version is less than 0.91, we can't use the old
+	// database
+	// If the database doesn't exist (e.g. first run) we can't
+	// use the database either
+	if (!theFile.Open(dir, CFile::modeRead) || ((CLaunchyDlg*)AfxGetMainWnd())->options->ver < 91) {
+		LoadCatalog();
+		return;
 	}
 
 	CArchiveExt archive(&theFile, CArchive::load, 4096, NULL, _T(""), TRUE);
@@ -247,7 +253,6 @@ void LaunchySmarts::LoadFirstTime()
 
 	// Now replace the catalog files
 	bundle->smarts->getCatalogLock();
-
 	bundle->smarts->charMap = bundle->charMap;
 	bundle->smarts->charUsage = bundle->charUsage;
 	bundle->smarts->catFiles = bundle->catFiles;
@@ -434,6 +439,6 @@ void LaunchySmarts::freeCatalog(void)
 
 	// Delete it
 	for(map<INT_PTR, FileRecordPtr>::iterator it = toDelete.begin(); it != toDelete.end(); ++it) {
-		delete(it->second);
+		delete it->second ;
 	}
 }

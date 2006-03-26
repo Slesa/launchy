@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Options.h"
 #include "LaunchyDlg.h"
 #include "LaunchySmarts.h"
+#include ".\options.h"
 
 
 
@@ -45,9 +46,7 @@ Options::Options(void) : ini(new CIniFile())
 Options::~Options(void)
 {
 	Store();
-	for(uint i = 0; i < skins.size(); i++) {		
-		delete(skins[i]);
-	}
+	EraseSkins();
 	delete ini;
 }
 
@@ -144,6 +143,8 @@ void Options::LoadSkins(void)
 	CString dir = buffer;
 	dir += "\\Skins\\";
 
+	EraseSkins();
+
 	CDiskObject disk;
 	CStringArray skinDirs;
 	disk.EnumAllDirectories(dir, skinDirs);
@@ -151,10 +152,23 @@ void Options::LoadSkins(void)
 	INT_PTR count = skinDirs.GetCount();
 	for(int i = 0; i < count; i++) {
 		Skin* x = new Skin(skinDirs[i]);
-		if (x->name == _T("")) continue;
+		if (x->name == _T("")) {
+			delete x;
+			continue;
+		}
 		skins.push_back(x);
 		if (x->name == skinName) {
 			skin = x;
 		}
 	}
+}
+
+void Options::EraseSkins(void)
+{
+	// Erase the old skins
+	for(uint i = 0; i < skins.size(); i++) {
+		delete skins[i];
+	}
+	skins.clear();
+
 }
