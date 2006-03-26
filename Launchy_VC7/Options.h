@@ -59,4 +59,5 @@ public:
 	UINT mod_key;
 public:
 	void LoadSkins(void);
+	void EraseSkins(void);
 };
