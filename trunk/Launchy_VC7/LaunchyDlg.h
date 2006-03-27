@@ -31,8 +31,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "TransparentStatic2.h"
 #include "AlphaBorder.h"
 
+#include <boost/smart_ptr.hpp>
 //#include "ReadOnlyEdit.h"
 
+using namespace boost;
 
 // CLaunchyDlg dialog
 class CLaunchyDlg : public CDialogSK
@@ -50,8 +52,8 @@ public:
 
 // Implementation
 protected:
-	CFont* m_FontInput;
-	CFont* m_FontResult;
+	CFont m_FontInput;
+	CFont m_FontResult;
 	HICON m_hIcon;
 	BOOL atLaunch;
 	BOOL Visible;
@@ -63,13 +65,13 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	
-	LaunchySmarts* smarts;
+	shared_ptr<LaunchySmarts> smarts;
 //	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 //	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 //	afx_msg void OnWindowPosChanged(WINDOWPOS* lpwndpos);
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 
-	Options* options;
+	shared_ptr<Options> options;
 	afx_msg void OnClose();
 	afx_msg void OnDestroy();
 //	afx_msg void OnCbnEditchangeInput();
