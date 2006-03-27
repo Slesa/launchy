@@ -28,7 +28,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using namespace std;
 
-typedef vector<FileRecordPtr> CharSectionPtr;
+#include <boost/smart_ptr.hpp>
+using namespace boost;
+
+typedef shared_ptr<vector<FileRecordPtr> > CharSectionPtr;
 
 class LaunchySmarts;
 #include "Options.h"
@@ -84,5 +87,4 @@ public:
 	void getStrings(CStringArray& strings);
 	void LoadFirstTime();
 	CUseShGetFileInfo IconInfo;
-	void freeCatalog(void);
 };

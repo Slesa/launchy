@@ -25,8 +25,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Launchy.h"
 #include "launchysmarts.h"
 #include "CArchiveEx.h"
-#include <algorithm>
-#include ".\launchysmarts.h"
 
 // Code to get shell directories
 #ifndef CSIDL_WINDOWS
@@ -40,7 +38,7 @@ typedef enum {
 #endif//CSIDL_WINDOWS
 
 
-bool less_than(const FileRecordPtr a, const FileRecordPtr b)
+bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 {
 	if (a->isHistory) { return true; } 
 	if (b->isHistory) { return false; }
@@ -77,7 +75,6 @@ LaunchySmarts::LaunchySmarts(void)
 
 LaunchySmarts::~LaunchySmarts(void)
 {
-	freeCatalog();
 }
 
 
@@ -86,8 +83,6 @@ void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
 {
 	map<CString,bool> catalog;
 	map<CString, bool> typeMap;
-	vector<FileRecord> records;
-
 	for(uint i = 0; i < bun->ops->Types.size(); i++) {
 		typeMap[bun->ops->Types[i]] = true;
 	}
@@ -99,36 +94,33 @@ void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
 	CString tmps;
 	Options* ops = bun->ops;
 
-//	CMap<TCHAR, TCHAR&, bool, bool&> added;
-	map<TCHAR, bool> added;
+	CMap<TCHAR, TCHAR&, bool, bool&> added;
+
 	INT_PTR count = files.GetCount();
 
 	for(int i = 0; i < count; i++) {
 		tmps = files[i].Mid(files[i].GetLength()-4,4);
 		tmps.MakeLower();
 		if (typeMap[tmps] == false) continue;
-
-		FileRecordPtr rec = new FileRecord();
+		FileRecordPtr rec(new FileRecord());
 		rec->set(files[i], tmps, &bun->smarts->exeLauncher);
 		out.Add(files[i]);
-		if (catalog[rec->lowName] == true) {
-			delete rec;
-			continue;
-		}
+		if (catalog[rec->lowName] == true) continue;
 		catalog[rec->lowName] = true;
 		bun->catFiles += 1;
-
-		added.clear();
+		added.RemoveAll();
 		for(int i = 0; i < rec->lowName.GetLength( ); i++) {
 			TCHAR c = rec->lowName[i];
 			bun->charUsage[c] += 1;
 
-			if (added.count(c) == 0) {
-				bun->charMap[c].push_back(rec);
+			if (bun->charMap[c] == NULL) {
+				bun->charMap[c].reset(new vector<FileRecordPtr>());	
+			}
+			if (added[c] == false) {
+				bun->charMap[c]->push_back(rec);
 				added[c] = true;
 			}
 		}
-
 	}
 }
 
@@ -169,7 +161,6 @@ UINT ScanStartMenu(LPVOID pParam)
 	// Now replace the catalog files
 	bun->smarts->getCatalogLock();
 
-	bun->smarts->freeCatalog();
 	bun->smarts->charMap = bun->charMap;
 	bun->smarts->charUsage = bun->charUsage;
 	bun->smarts->catFiles = bun->catFiles;
@@ -184,6 +175,7 @@ UINT ScanStartMenu(LPVOID pParam)
 	if (!theFile.Open(dir, CFile::modeWrite | CFile::modeCreate)) {
 		int x = 3;
 		x += 3;
+		delete bun;
 		bun->smarts->releaseCatalogLock();
 		return 0;
 	}
@@ -197,6 +189,8 @@ UINT ScanStartMenu(LPVOID pParam)
 
 	bun->smarts->releaseCatalogLock();
 
+	delete bun;
+
 	return 0;
 }
 
@@ -204,7 +198,7 @@ void LaunchySmarts::LoadCatalog(void)
 {
 	ScanBundle* bundle = new ScanBundle();
 	bundle->smarts = this;
-	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
 	bundle->catFiles = 0;
 	AfxBeginThread(ScanStartMenu, bundle);
 }
@@ -226,14 +220,12 @@ void LaunchySmarts::LoadFirstTime()
 	dir += _T("\\Launchy");
 	dir += _T("\\launchy.db");
 
-
 	// If the version is less than 0.91, we can't use the old
 	// database
-	// If the database doesn't exist (e.g. first run) we can't
-	// use the database either
+	// If there is no database, we can't use it either
 	if (!theFile.Open(dir, CFile::modeRead) || ((CLaunchyDlg*)AfxGetMainWnd())->options->ver < 91) {
-		LoadCatalog();
-		return;
+			LoadCatalog();
+			return;
 	}
 
 	CArchiveExt archive(&theFile, CArchive::load, 4096, NULL, _T(""), TRUE);
@@ -247,12 +239,13 @@ void LaunchySmarts::LoadFirstTime()
 
 	ScanBundle* bundle = new ScanBundle();
 	bundle->smarts = this;
-	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
 	bundle->catFiles = 0;
 	ScanFiles(files, bundle, smaller);
 
 	// Now replace the catalog files
 	bundle->smarts->getCatalogLock();
+
 	bundle->smarts->charMap = bundle->charMap;
 	bundle->smarts->charUsage = bundle->charUsage;
 	bundle->smarts->catFiles = bundle->catFiles;
@@ -331,14 +324,14 @@ void LaunchySmarts::FindMatches(CString txt)
 		}
 	}
 
-//	if (charMap[mostInfo] != NULL) {
-		size_t count = charMap[mostInfo].size();
+	if (charMap[mostInfo] != NULL) {
+		size_t count = charMap[mostInfo]->size();
 		for(size_t i = 0; i < count; i++) {
-			if (Match(charMap[mostInfo].at(i), txt)) {
-				matches.push_back(charMap[mostInfo].at(i));
+			if (Match(charMap[mostInfo]->at(i), txt)) {
+				matches.push_back(charMap[mostInfo]->at(i));
 			}
 		}
-//	}
+	}
 
 	releaseCatalogLock();
 }
@@ -417,28 +410,8 @@ void LaunchySmarts::releaseCatalogLock(void)
 void LaunchySmarts::getStrings(CStringArray& strings)
 {
 	for(map<TCHAR, CharSectionPtr>::iterator it = charMap.begin(); it != charMap.end(); ++it) {
-		for(uint i = 0; i < it->second.size(); i++) {
-			strings.Add(it->second[i]->fullPath);
+		for(vector<FileRecordPtr>::iterator jt = it->second->begin(); jt != it->second->end(); ++jt) {
+			strings.Add(jt->get()->fullPath);
 		}
-	}
-}
-
-/*
-	Okay this is pretty ridiculous.. but it works!
-*/
-void LaunchySmarts::freeCatalog(void)
-{
-	map<INT_PTR, FileRecordPtr> toDelete;
-
-	// Find out what to delete
-	for(map<TCHAR, CharSectionPtr>::iterator it = charMap.begin(); it != charMap.end(); ++it) {
-		for(uint i = 0; i < it->second.size(); i++) {
-			toDelete[(INT_PTR) it->second[i]] = it->second[i];
-		}
-	}
-
-	// Delete it
-	for(map<INT_PTR, FileRecordPtr>::iterator it = toDelete.begin(); it != toDelete.end(); ++it) {
-		delete it->second ;
 	}
 }
