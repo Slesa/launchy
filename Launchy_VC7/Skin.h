@@ -29,10 +29,18 @@ public:
 	CString alphaBorderFile;
 	CRect alphaRect;
 	CString directory;
-	
-	// Font information
-	CFont* m_FontResult;
-	CFont* m_FontInput;
+
+
+	CString input_fontName;
+	int input_fontSize;
+	int input_italics;
+	int input_bold;
+
+	CString results_fontName;
+	int results_fontSize;
+	int results_italics;
+	int results_bold;
+
 	int inputFontRGB;
 	int resultFontRGB;
 

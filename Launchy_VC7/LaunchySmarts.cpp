@@ -25,6 +25,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Launchy.h"
 #include "launchysmarts.h"
 #include "CArchiveEx.h"
+//#define SECURITY_WIN32 1
+//#include <Security.h>
 
 // Code to get shell directories
 #ifndef CSIDL_WINDOWS
@@ -168,9 +170,14 @@ UINT ScanStartMenu(LPVOID pParam)
 
 
 	CFile theFile;
+	TCHAR name[256];
+	DWORD size = 256;
+	GetUserName(name, &size);
 	CString dir;
-	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
-	dir += _T("\\Launchy");
+	dir.Format(_T("Users\\ %s\\"), name);
+
+//	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
+//	dir += _T("\\Launchy");
 	dir += _T("\\launchy.db");
 	if (!theFile.Open(dir, CFile::modeWrite | CFile::modeCreate)) {
 		int x = 3;
@@ -215,9 +222,13 @@ void LaunchySmarts::LoadCatalog(void)
 void LaunchySmarts::LoadFirstTime()
 {
 	CFile theFile;
+	TCHAR name[256];
+	DWORD size = 256;
+	GetUserName(name, &size);
 	CString dir;
-	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
-	dir += _T("\\Launchy");
+	dir.Format(_T("Users\\ %s\\"), name);
+//	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
+//	dir += _T("\\Launchy");
 	dir += _T("\\launchy.db");
 
 	// If the version is less than 0.91, we can't use the old
