@@ -21,6 +21,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Options.h"
 #include "LaunchyDlg.h"
 #include "LaunchySmarts.h"
+//#define SECURITY_WIN32
+//#include <Security.h>
+
+
 
 
 
@@ -28,13 +32,14 @@ Options::Options(void) : ini(new CIniFile())
 , vkey(0)
 , mod_key(0)
 {
-	CString dir;
-	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
-	dir += _T("\\Launchy");
+	TCHAR name[256];
+	DWORD size = 256;
+	GetUserName(name, &size);
+	userDir.Format(_T("Users\\ %s\\"), name);
 	CDiskObject disk;
-	disk.CreateDirectory(dir);
-	dir += _T("\\launchy.ini");
-	ini->SetPath(dir);
+	disk.CreateDirectory(userDir);
+	userDir += _T("\\launchy.ini");
+	ini->SetPath(userDir);
 	ini->ReadFile();
 	ParseIni();
 	LoadSkins();

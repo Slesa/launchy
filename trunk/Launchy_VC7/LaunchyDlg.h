@@ -52,8 +52,8 @@ public:
 
 // Implementation
 protected:
-	CFont m_FontInput;
-	CFont m_FontResult;
+	CFont* m_FontInput;
+	CFont* m_FontResult;
 	HICON m_hIcon;
 	BOOL atLaunch;
 	BOOL Visible;

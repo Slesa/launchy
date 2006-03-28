@@ -58,71 +58,20 @@ void Skin::parseSkinFile(void)
 	iconRect = stringToRect(ini->GetValue(L"Widgets",L"IconRect",L"183,25,32,32"));
 
 	// Widget fonts
-	CString fontName = ini->GetValue(L"Widgets", L"TextEntry_Font", L"Trebuchet MS").c_str();
-	int fontSize = ini->GetValueI(L"Widgets", L"TextEntry_Font_Size", 10);
-	int italics = ini->GetValueI(L"Widgets", L"TextEntry_Font_Italics", 0);
-	int bold = ini->GetValueI(L"Widgets", L"TextEntry_Font_Bold", 0);
-	if (bold == 1) bold = 700;
-	// Fonts
-	m_FontInput = new CFont;
-	m_FontResult = new CFont;
-	m_FontInput->CreateFontW(
-	   fontSize,                        // nHeight
-	   0,                         // nWidth
-	   0,                         // nEscapement
-	   0,                         // nOrientation
-	   bold,						// nWeight
-	   italics,                     // bItalic
-	   FALSE,                     // bUnderline
-	   0,                         // cStrikeOut
-	   ANSI_CHARSET,              // nCharSet
-	   OUT_DEFAULT_PRECIS,        // nOutPrecision
-	   CLIP_DEFAULT_PRECIS,       // nClipPrecision
-	   DEFAULT_QUALITY,           // nQuality
-	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
-	   fontName);                 // lpszFacename	
+	input_fontName = ini->GetValue(L"Widgets", L"TextEntry_Font", L"Trebuchet MS").c_str();
+	input_fontSize = ini->GetValueI(L"Widgets", L"TextEntry_Font_Size", 10);
+	input_italics = ini->GetValueI(L"Widgets", L"TextEntry_Font_Italics", 0);
+	input_bold = ini->GetValueI(L"Widgets", L"TextEntry_Font_Bold", 0);
+	if (input_bold == 1) input_bold = 700;
 
-	/*	m_FontInput.CreateFontW(
-	   fontSize,                        // nHeight
-	   0,                         // nWidth
-	   0,                         // nEscapement
-	   0,                         // nOrientation
-	   bold,                 // nWeight
-	   italics,                     // bItalic
-	   FALSE,                     // bUnderline
-	   0,                         // cStrikeOut
-	   ANSI_CHARSET,              // nCharSet
-	   OUT_DEFAULT_PRECIS,        // nOutPrecision
-	   CLIP_DEFAULT_PRECIS,       // nClipPrecision
-	   DEFAULT_QUALITY,           // nQuality
-	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
-	   fontName);                 // lpszFacename	
-*/
-	fontName = ini->GetValue(_T("Widgets"), _T("Results_Font"), _T("Trebuchet MS")).c_str();
-	fontSize = ini->GetValueI(L"Widgets", L"Results_Font_Size", 10);
-	italics = ini->GetValueI(L"Widgets", L"Results_Font_Italics", 0);
-	bold = ini->GetValueI(L"Widgets", L"Results_Font_Bold", 0);
+	results_fontName = ini->GetValue(_T("Widgets"), _T("Results_Font"), _T("Trebuchet MS")).c_str();
+	results_fontSize = ini->GetValueI(L"Widgets", L"Results_Font_Size", 10);
+	results_italics = ini->GetValueI(L"Widgets", L"Results_Font_Italics", 0);
+	results_bold = ini->GetValueI(L"Widgets", L"Results_Font_Bold", 0);
+	if (results_bold == 1) results_bold = 700;
 
-	
 
-	if (bold == 1) bold = 700;
 
-	// Fonts
-	m_FontResult->CreateFontW(
-	   fontSize,                        // nHeight
-	   0,                         // nWidth
-	   0,                         // nEscapement
-	   0,                         // nOrientation
-	   bold,                 // nWeight
-	   italics,                     // bItalic
-	   FALSE,                     // bUnderline
-	   0,                         // cStrikeOut
-	   ANSI_CHARSET,              // nCharSet
-	   OUT_DEFAULT_PRECIS,        // nOutPrecision
-	   CLIP_DEFAULT_PRECIS,       // nClipPrecision
-	   DEFAULT_QUALITY,           // nQuality
-	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
-	   fontName);                 // lpszFacename	
 
 	resultBorder = ini->GetValueB(L"Widgets", L"Results_ShowBorder", true);
 	resultTransparent = ini->GetValueB(L"Widgets", L"Results_TransparentBkgnd", false);

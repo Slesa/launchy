@@ -48,6 +48,9 @@ CLaunchyDlg::CLaunchyDlg(CWnd* pParent /*=NULL*/)
 
 	DelayTimer = 100;
 
+	
+	m_FontInput = NULL;
+	m_FontResult = NULL;
 }
 
 void CLaunchyDlg::DoDataExchange(CDataExchange* pDX)
@@ -419,8 +422,66 @@ void CLaunchyDlg::applySkin()
 	Preview.MoveWindow(options->skin->resultRect,1);
 	IconPreview.MoveWindow(options->skin->iconRect,1);
 
-	InputBox.SetFont(options->skin->m_FontInput,1);
-	Preview.SetFont(options->skin->m_FontResult,1);
+
+//	InputBox.SetFont(options->skin->m_FontInput,1);
+//	Preview.SetFont(options->skin->m_FontResult,1);
+
+
+
+	CFont* old1;
+	CFont* old2;
+
+	old1 = m_FontInput;
+	old2 = m_FontResult;
+
+	m_FontInput = new CFont;
+	m_FontResult = new CFont;
+
+	m_FontInput->CreateFontW(
+		options->skin->input_fontSize,                        // nHeight
+	   0,                         // nWidth
+	   0,                         // nEscapement
+	   0,                         // nOrientation
+	   options->skin->input_bold,						// nWeight
+	   options->skin->input_italics,                     // bItalic
+	   FALSE,                     // bUnderline
+	   0,                         // cStrikeOut
+	   ANSI_CHARSET,              // nCharSet
+	   OUT_DEFAULT_PRECIS,        // nOutPrecision
+	   CLIP_DEFAULT_PRECIS,       // nClipPrecision
+	   DEFAULT_QUALITY,           // nQuality
+	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
+	   options->skin->input_fontName);                 // lpszFacename	
+
+
+	// Fonts
+	m_FontResult->CreateFontW(
+	   options->skin->results_fontSize,                        // nHeight
+	   0,                         // nWidth
+	   0,                         // nEscapement
+	   0,                         // nOrientation
+	   options->skin->results_bold,                 // nWeight
+	   options->skin->results_italics,                     // bItalic
+	   FALSE,                     // bUnderline
+	   0,                         // cStrikeOut
+	   ANSI_CHARSET,              // nCharSet
+	   OUT_DEFAULT_PRECIS,        // nOutPrecision
+	   CLIP_DEFAULT_PRECIS,       // nClipPrecision
+	   DEFAULT_QUALITY,           // nQuality
+	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
+	   options->skin->results_fontName);                 // lpszFacename	
+
+	InputBox.SetFont(m_FontInput,1);
+	Preview.SetFont(m_FontResult,1);
+
+	// Free the old fonts!
+	if (old1 != NULL && old2 != NULL) {
+		old1->DeleteObject();
+		old2->DeleteObject();
+		delete(old1);
+		delete(old2);
+	}
+
 
 
 	InputBox.SetTextColor(options->skin->inputFontRGB);

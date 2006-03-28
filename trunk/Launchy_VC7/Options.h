@@ -44,6 +44,7 @@ public:
 	shared_ptr<Skin> skin;
 	CString skinName;
 
+	CString userDir;
 	int posX;
 	int posY;
 	int ver;
