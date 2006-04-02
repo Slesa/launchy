@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Options.h"
 #include "LaunchyDlg.h"
 #include "LaunchySmarts.h"
+#include ".\options.h"
 //#define SECURITY_WIN32
 //#include <Security.h>
 
@@ -32,6 +33,7 @@ Options::Options(void) : ini(new CIniFile())
 , vkey(0)
 , mod_key(0)
 {
+	firstRun = false;
 	TCHAR name[256];
 	DWORD size = 256;
 	GetUserName(name, &size);
@@ -40,9 +42,12 @@ Options::Options(void) : ini(new CIniFile())
 	disk.CreateDirectory(userDir);
 	userDir += _T("\\launchy.ini");
 	ini->SetPath(userDir);
-	ini->ReadFile();
+	if (!ini->ReadFile()) {
+		firstRun = true;
+	}
 	ParseIni();
 	LoadSkins();
+	UpgradeCleanup();
 }
 
 
@@ -93,6 +98,7 @@ void Options::ParseIni(void)
 
 	Directories = DeSerializeStringArray(ini->GetValue(L"General", L"Directories", L"").c_str());
 	Types = DeSerializeStringArray(ini->GetValue(L"General", L"Types", L".lnk;").c_str());
+
 
 }
 
@@ -160,4 +166,24 @@ void Options::LoadSkins(void)
 	}
 
 
+}
+
+void Options::UpgradeCleanup(void)
+{
+	if (firstRun) {
+/*		AfxMessageBox(_T("Welcome to Launchy!\n \
+			Launchy is currently running in the background and can be brought forward by pressing Alt+Space\n \
+			Enjoy!"));
+			*/
+	} 
+
+	// Ver == 0 for all versions below 0.91 (ver wasn't added until 0.91)
+	if (ver == 0) {
+		// Remove the old configuration directories if they exist
+		CString dir;
+		LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
+		dir += _T("\\Launchy");
+		CDiskObject disk;
+		disk.RemoveDirectory(dir);
+	}
 }
