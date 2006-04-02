@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Launchy.h"
 #include "launchysmarts.h"
 #include "CArchiveEx.h"
+#include ".\launchysmarts.h"
 //#define SECURITY_WIN32 1
 //#include <Security.h>
 
@@ -40,8 +41,55 @@ typedef enum {
 #endif//CSIDL_WINDOWS
 
 
+
+
+class ArchiveType : public CObject {
+public:
+	DECLARE_SERIAL( ArchiveType )
+	ArchiveType() {}
+	ArchiveType(CString str, int u): name(str), usage(u) {}
+	CString name;
+	int usage;
+	void Serialize( CArchive& archive )
+	{
+		// call base class function first
+		// base class is CObject in this case
+		CObject::Serialize( archive );
+
+		// now do the stuff for our specific class
+		if( archive.IsStoring() )
+			archive << name << usage;
+		else
+			archive >> name >> usage;
+	}
+    ArchiveType( const ArchiveType &s ) {  // copy ctor 
+			name = s.name;
+		  usage = s.usage;
+	}
+	ArchiveType& operator=( const ArchiveType &s )  {// assignment operator
+			name = s.name;
+		  usage = s.usage;
+		return *this;
+	}
+};
+
+
+IMPLEMENT_SERIAL( ArchiveType, CObject, 1 )
+
+template <> void AFXAPI SerializeElements <ArchiveType> ( CArchive& ar, 
+    ArchiveType* pArchs, INT_PTR nCount )
+{
+    for ( int i = 0; i < nCount; i++, pArchs++ )
+    {
+        // Serialize each ArchiveType object
+        pArchs->Serialize( ar );
+    }
+}
+
+
 bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 {
+
 	if (a->isHistory) { return true; } 
 	if (b->isHistory) { return false; }
 
@@ -50,6 +98,10 @@ bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 	int localLen = a->lowName.GetLength();
 	int otherLen = b->lowName.GetLength();
 
+	if(a->usage > b->usage)
+		return true;
+	if (a->usage < b->usage)
+		return false;
 	if (localFind > -1 && otherFind == -1)
 		return true;
 	if (localFind == -1 && otherFind > -1)
@@ -77,11 +129,26 @@ LaunchySmarts::LaunchySmarts(void)
 
 LaunchySmarts::~LaunchySmarts(void)
 {
+	getCatalogLock();
+	this->archiveCatalog();
+	releaseCatalogLock();
+}
+
+
+int findCount(LaunchySmarts* smarts, CString word) {
+	if (smarts->charMap.count(word[0]) == 0)
+		return 0;
+	for(uint i = 0; i < smarts->charMap[word[0]]->size(); i++) {
+		if (word == smarts->charMap[word[0]]->at(i)->lowName) {
+			return smarts->charMap[word[0]]->at(i)->usage;
+		}
+	}
+	return 0;
 }
 
 
 
-void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
+void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& out)
 {
 	map<CString,bool> catalog;
 	map<CString, bool> typeMap;
@@ -98,15 +165,22 @@ void ScanFiles(CStringArray& files, ScanBundle* bun, CStringArray& out)
 
 	CMap<TCHAR, TCHAR&, bool, bool&> added;
 
-	INT_PTR count = files.GetCount();
+	INT_PTR count = in.GetCount();
 
 	for(int i = 0; i < count; i++) {
-		tmps = files[i].Mid(files[i].GetLength()-4,4);
+		tmps = in[i].name.Mid(in[i].name.GetLength()-4,4);
 		tmps.MakeLower();
 		if (typeMap[tmps] == false) continue;
 		FileRecordPtr rec(new FileRecord());
-		rec->set(files[i], tmps, &bun->smarts->exeLauncher);
-		out.Add(files[i]);
+		rec->set(in[i].name, tmps, &bun->smarts->exeLauncher);
+
+		if (in[i].usage != -1)
+			rec->setUsage(in[i].usage);
+		else
+			rec->setUsage(findCount(bun->smarts, rec->lowName));
+
+		ArchiveType at(in[i].name, rec->usage);
+		out.Add(at);
 		if (catalog[rec->lowName] == true) continue;
 		catalog[rec->lowName] = true;
 		bun->catFiles += 1;
@@ -139,7 +213,9 @@ UINT ScanStartMenu(LPVOID pParam)
 	if (FALSE == bun->smarts->GetShellDir(CSIDL_STARTMENU, myMenu))
 		return 0;
 
-	CStringArray files, smaller;
+	CStringArray files;
+	CArray<ArchiveType> input;
+	CArray<ArchiveType> smaller;
 	CStringArray tmpFiles;
 	files.SetSize(1024);
 	tmpFiles.SetSize(1024);
@@ -157,7 +233,12 @@ UINT ScanStartMenu(LPVOID pParam)
 		tmpFiles.RemoveAll();
 	}
 
-	ScanFiles(files, bun, smaller);
+	for(int i = 0; i < files.GetSize(); i++) {
+		ArchiveType at(files[i], -1);
+		input.Add(at);
+	}
+
+	ScanFiles(input, bun, smaller);
 
 
 	// Now replace the catalog files
@@ -166,33 +247,6 @@ UINT ScanStartMenu(LPVOID pParam)
 	bun->smarts->charMap = bun->charMap;
 	bun->smarts->charUsage = bun->charUsage;
 	bun->smarts->catFiles = bun->catFiles;
-
-
-
-	CFile theFile;
-	TCHAR name[256];
-	DWORD size = 256;
-	GetUserName(name, &size);
-	CString dir;
-	dir.Format(_T("Users\\ %s\\"), name);
-
-//	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
-//	dir += _T("\\Launchy");
-	dir += _T("\\launchy.db");
-	if (!theFile.Open(dir, CFile::modeWrite | CFile::modeCreate)) {
-		int x = 3;
-		x += 3;
-		delete bun;
-		bun->smarts->releaseCatalogLock();
-		return 0;
-	}
-
-	CArchiveExt archive(&theFile, CArchive::store, 4096, NULL, _T(""), TRUE);
-
-	smaller.Serialize(archive);
-
-	archive.Close();
-	theFile.Close();
 
 	bun->smarts->releaseCatalogLock();
 
@@ -241,8 +295,10 @@ void LaunchySmarts::LoadFirstTime()
 
 	CArchiveExt archive(&theFile, CArchive::load, 4096, NULL, _T(""), TRUE);
 
-	CStringArray files, smaller;
-	files.Serialize(archive);
+	CArray<ArchiveType> archtypes;
+	CArray<ArchiveType> smaller;
+
+	archtypes.Serialize(archive);
 
 	archive.Close();
 	theFile.Close();
@@ -252,7 +308,7 @@ void LaunchySmarts::LoadFirstTime()
 	bundle->smarts = this;
 	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
 	bundle->catFiles = 0;
-	ScanFiles(files, bundle, smaller);
+	ScanFiles(archtypes, bundle, smaller);
 
 	// Now replace the catalog files
 	bundle->smarts->getCatalogLock();
@@ -369,6 +425,7 @@ inline BOOL LaunchySmarts::Match(FileRecordPtr record, CString txt)
 void LaunchySmarts::Launch(void)
 {
 	if(matches.size() > 0) {
+		matches[0]->setUsage(matches[0]->usage + 1);
 		exeLauncher.Run(matches[0]);
 //		matches[0]->launcher->Run(matches[0]);
 	}
@@ -425,4 +482,41 @@ void LaunchySmarts::getStrings(CStringArray& strings)
 			strings.Add(jt->get()->fullPath);
 		}
 	}
+}
+
+void LaunchySmarts::archiveCatalog(void)
+{
+	map<CString, bool> used;
+	CArray<ArchiveType> files;
+
+	for(map<TCHAR, CharSectionPtr>::iterator it = charMap.begin(); it != charMap.end(); ++it) {
+		for(vector<FileRecordPtr>::iterator jt = it->second->begin(); jt != it->second->end(); ++jt) {
+			if (used.count(jt->get()->fullPath) == 0) {
+				used[jt->get()->fullPath] = true;
+				ArchiveType at(jt->get()->fullPath, jt->get()->usage);
+				files.Add(at);
+			}
+		}
+	}
+
+
+	CFile theFile;
+	TCHAR name[256];
+	DWORD size = 256;
+	GetUserName(name, &size);
+	CString dir;
+	dir.Format(_T("Users\\ %s\\"), name);
+
+	dir += _T("\\launchy.db");
+
+	if (!theFile.Open(dir, CFile::modeWrite | CFile::modeCreate)) {
+		return;
+	}
+
+	CArchiveExt archive(&theFile, CArchive::store, 4096, NULL, _T(""), TRUE);
+
+	files.Serialize(archive);
+
+	archive.Close();
+	theFile.Close();
 }
