@@ -87,4 +87,5 @@ public:
 	void getStrings(CStringArray& strings);
 	void LoadFirstTime();
 	CUseShGetFileInfo IconInfo;
+	void archiveCatalog(void);
 };
