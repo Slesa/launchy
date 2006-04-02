@@ -45,6 +45,7 @@ public:
 	CString skinName;
 
 	CString userDir;
+	bool firstRun;
 	int posX;
 	int posY;
 	int ver;
@@ -62,4 +63,5 @@ public:
 	UINT mod_key;
 public:
 	void LoadSkins(void);
+	void UpgradeCleanup(void);
 };

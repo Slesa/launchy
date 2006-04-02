@@ -77,6 +77,18 @@ Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; F
 
 [UninstallDelete]
 Type: files; Name: {app}\{#MyAppUrlName}
+
+[Code]
+procedure DeinitializeUninstall();
+var
+  DeleteConfig: Boolean;
+begin
+  DeleteConfig := MsgBox('Would you like to delete the Launchy user configuration files as well?', mbConfirmation, MB_YESNO) = idYes;
+  if DeleteConfig = True then
+    DelTree(ExpandConstant('{app}\Users'), True, True, True);
+end;
+
+
 [Messages]
 SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close all instances of it now (bring Launchy forward and type Alt+F4), then click OK to continue, or Cancel to exit.
 WelcomeLabel2=!!!!!!READ THIS!!!!!!  You MUST close and uninstall any previous versions of Launchy before running this installer!

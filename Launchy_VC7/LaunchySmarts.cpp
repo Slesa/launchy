@@ -62,13 +62,13 @@ public:
 		else
 			archive >> name >> usage;
 	}
-    ArchiveType( const ArchiveType &s ) {  // copy ctor 
-			name = s.name;
-		  usage = s.usage;
+	ArchiveType( const ArchiveType &s ) {  // copy ctor 
+		name = s.name;
+		usage = s.usage;
 	}
 	ArchiveType& operator=( const ArchiveType &s )  {// assignment operator
-			name = s.name;
-		  usage = s.usage;
+		name = s.name;
+		usage = s.usage;
 		return *this;
 	}
 };
@@ -77,13 +77,13 @@ public:
 IMPLEMENT_SERIAL( ArchiveType, CObject, 1 )
 
 template <> void AFXAPI SerializeElements <ArchiveType> ( CArchive& ar, 
-    ArchiveType* pArchs, INT_PTR nCount )
+														 ArchiveType* pArchs, INT_PTR nCount )
 {
-    for ( int i = 0; i < nCount; i++, pArchs++ )
-    {
-        // Serialize each ArchiveType object
-        pArchs->Serialize( ar );
-    }
+	for ( int i = 0; i < nCount; i++, pArchs++ )
+	{
+		// Serialize each ArchiveType object
+		pArchs->Serialize( ar );
+	}
 }
 
 
@@ -267,10 +267,10 @@ void LaunchySmarts::LoadCatalog(void)
 
 
 /*
-	When the program is launched, it's faster to just
-	read an old archive of the file names rather than
-	plow through the filesystem while the computer is
-	trying to start up.  This makes Launchy feel lighter.
+When the program is launched, it's faster to just
+read an old archive of the file names rather than
+plow through the filesystem while the computer is
+trying to start up.  This makes Launchy feel lighter.
 */
 
 void LaunchySmarts::LoadFirstTime()
@@ -281,16 +281,13 @@ void LaunchySmarts::LoadFirstTime()
 	GetUserName(name, &size);
 	CString dir;
 	dir.Format(_T("Users\\ %s\\"), name);
-//	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
-//	dir += _T("\\Launchy");
+	//	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
+	//	dir += _T("\\Launchy");
 	dir += _T("\\launchy.db");
 
-	// If the version is less than 0.91, we can't use the old
-	// database
-	// If there is no database, we can't use it either
-	if (!theFile.Open(dir, CFile::modeRead) || ((CLaunchyDlg*)AfxGetMainWnd())->options->ver < 91) {
-			LoadCatalog();
-			return;
+	if (!theFile.Open(dir, CFile::modeRead)) {
+		LoadCatalog();
+		return;
 	}
 
 	CArchiveExt archive(&theFile, CArchive::load, 4096, NULL, _T(""), TRUE);
@@ -364,8 +361,8 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 	}
 
 	if (UpdateDropdown) {
-		
-	pDlg->InputBox.m_listbox.ResetContent();
+
+		pDlg->InputBox.m_listbox.ResetContent();
 		size_t size = matches.size();
 		for(size_t i = 0; i < size && i < 10; i++) {
 			CString blah = matches[i]->croppedName;
@@ -427,7 +424,7 @@ void LaunchySmarts::Launch(void)
 	if(matches.size() > 0) {
 		matches[0]->setUsage(matches[0]->usage + 1);
 		exeLauncher.Run(matches[0]);
-//		matches[0]->launcher->Run(matches[0]);
+		//		matches[0]->launcher->Run(matches[0]);
 	}
 }
 
