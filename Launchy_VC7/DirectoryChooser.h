@@ -34,6 +34,7 @@ public:
 	afx_msg void OnBnClickedAddDirectory();
 public:
 	afx_msg void OnBnClickedRemoveDirectory();
+	afx_msg void OnBnClickedDefaultDirectory();
 public:
 	afx_msg void OnBnClickedAddType();
 public:
@@ -49,4 +50,5 @@ public:
 	afx_msg void OnBnClickedCancel();
 public:
 	CEdit numFiles;
+	afx_msg void OnBnClickedDefaultType();
 };
