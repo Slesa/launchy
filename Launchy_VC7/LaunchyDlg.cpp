@@ -73,6 +73,7 @@ BEGIN_MESSAGE_MAP(CLaunchyDlg, CDialogSK)
 	ON_WM_TIMER()
 	ON_WM_ENDSESSION()
 	ON_WM_CONTEXTMENU()
+	ON_MESSAGE(LAUNCHY_DB_DONE, OnDBDone)
 END_MESSAGE_MAP()
 
 
@@ -500,4 +501,8 @@ void CLaunchyDlg::applySkin()
 
 	RedrawWindow();
 
+}
+LRESULT CLaunchyDlg::OnDBDone(UINT wParam, LONG lParam) {
+	smarts->Update(searchTxt, false);
+	return true;
 }

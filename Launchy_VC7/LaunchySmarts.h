@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #pragma once
+#include "stdafx.h"
 #include "ExeLauncher.h"
 #include "DiskObject.h"
 #include "afxtempl.h"
@@ -43,6 +44,7 @@ struct ScanBundle {
 	map<TCHAR, int> charUsage;
 	map<TCHAR, CharSectionPtr> charMap;
 	int catFiles;
+	HWND dlg;
 };
 
 
@@ -88,4 +90,5 @@ public:
 	void LoadFirstTime();
 	CUseShGetFileInfo IconInfo;
 	void archiveCatalog(void);
+	CString lastUpdateTxt;
 };

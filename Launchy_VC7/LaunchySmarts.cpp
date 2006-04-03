@@ -116,6 +116,7 @@ bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 
 
 LaunchySmarts::LaunchySmarts(void)
+: lastUpdateTxt(_T(""))
 {
 	hMutex = CreateMutex( 
 		NULL,                       // default security attributes
@@ -236,8 +237,9 @@ UINT ScanStartMenu(LPVOID pParam)
 	bun->smarts->catFiles = bun->catFiles;
 
 	bun->smarts->releaseCatalogLock();
-
+	::PostMessage(bun->dlg, LAUNCHY_DB_DONE, (WPARAM)0, (LPARAM)0);
 	delete bun;
+
 
 	return 0;
 }
@@ -248,6 +250,7 @@ void LaunchySmarts::LoadCatalog(void)
 	bundle->smarts = this;
 	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
 	bundle->catFiles = 0;
+	bundle->dlg = AfxGetMainWnd()->GetSafeHwnd();
 	AfxBeginThread(ScanStartMenu, bundle);
 }
 
@@ -292,6 +295,7 @@ void LaunchySmarts::LoadFirstTime()
 	bundle->smarts = this;
 	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
 	bundle->catFiles = 0;
+	bundle->dlg = AfxGetMainWnd()->GetSafeHwnd();
 	ScanFiles(archtypes, bundle, smaller);
 
 	// Now replace the catalog files
@@ -302,6 +306,7 @@ void LaunchySmarts::LoadFirstTime()
 	bundle->smarts->catFiles = bundle->catFiles;
 
 	bundle->smarts->releaseCatalogLock();
+	::PostMessage(bundle->dlg, LAUNCHY_DB_DONE, (WPARAM)0, (LPARAM)0);
 
 	delete bundle;
 }
@@ -314,10 +319,17 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 	if (pDlg == NULL)
 		return;
 
-	if (txt == "") return;
-
+	lastUpdateTxt = txt;
+/*
+	if (txt == "") {
+		HICON h = pDlg->IconPreview.SetIcon(NULL);
+		if (h != NULL) {
+			DestroyIcon(h);
+		}
+		return;
+	}
+*/
 	CString history = pDlg->options->GetAssociation(txt);
-
 	matches.clear();
 	FindMatches(txt);
 
@@ -344,6 +356,10 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 		}
 		pDlg->Preview.SetWindowText(matches[0]->croppedName);
 	} else {
+		HICON h = pDlg->IconPreview.SetIcon(NULL);
+		if (h != NULL) {
+			DestroyIcon(h);
+		}
 		pDlg->Preview.SetWindowText(_T(""));
 	}
 
@@ -504,3 +520,4 @@ void LaunchySmarts::archiveCatalog(void)
 	archive.Close();
 	theFile.Close();
 }
+
