@@ -86,6 +86,12 @@ CString SerializeStringArray(vector<CString> input) {
 
 void Options::ParseIni(void)
 {
+	CString DefaultDirs;
+	CString myMenu, allMenus;
+	LaunchySmarts::GetShellDir(CSIDL_COMMON_STARTMENU, allMenus);
+	LaunchySmarts::GetShellDir(CSIDL_STARTMENU, myMenu);
+	DefaultDirs.Format(_T("%s;%s;"), myMenu, allMenus);
+
 	ver = ini->GetValueI(L"Launchy Information", L"Version", 0);
 
 	posX = ini->GetValueI(L"Position", L"pos_x");
@@ -96,7 +102,7 @@ void Options::ParseIni(void)
 
 	skinName = ini->GetValue(L"Skin", L"name", L"Default").c_str();
 
-	Directories = DeSerializeStringArray(ini->GetValue(L"General", L"Directories", L"").c_str());
+	Directories = DeSerializeStringArray(ini->GetValue(L"General", L"Directories", DefaultDirs.GetBuffer()).c_str());
 	Types = DeSerializeStringArray(ini->GetValue(L"General", L"Types", L".lnk;").c_str());
 
 

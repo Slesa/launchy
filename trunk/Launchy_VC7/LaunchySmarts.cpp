@@ -156,9 +156,6 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 		typeMap[bun->ops->Types[i]] = true;
 	}
 
-	// Force "lnk" files
-	typeMap[_T(".lnk")] = true;
-
 
 	CString tmps;
 	Options* ops = bun->ops;
@@ -189,7 +186,7 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 			TCHAR c = rec->lowName[i];
 			bun->charUsage[c] += 1;
 
-			if (bun->charMap[c] == NULL) {
+			if (bun->charMap.count(c) == 0) {
 				bun->charMap[c].reset(new vector<FileRecordPtr>());	
 			}
 			if (added[c] == false) {
@@ -206,12 +203,6 @@ UINT ScanStartMenu(LPVOID pParam)
 	ScanBundle* bun = (ScanBundle*) pParam;
 
 	Options* ops = bun->ops;
-	CString myMenu, allMenus;
-
-	if (FALSE == bun->smarts->GetShellDir(CSIDL_COMMON_STARTMENU, allMenus))
-		return 0;
-	if (FALSE == bun->smarts->GetShellDir(CSIDL_STARTMENU, myMenu))
-		return 0;
 
 	CStringArray files;
 	CArray<ArchiveType> input;
@@ -222,10 +213,6 @@ UINT ScanStartMenu(LPVOID pParam)
 
 
 	CDiskObject disk;
-	disk.EnumAllFiles(myMenu, files);
-	disk.EnumAllFiles(allMenus, tmpFiles);
-	files.Append(tmpFiles);
-	tmpFiles.RemoveAll();
 
 	for(uint i = 0; i < ops->Directories.size(); i++) {
 		disk.EnumAllFiles(ops->Directories[i], tmpFiles);
@@ -388,7 +375,7 @@ void LaunchySmarts::FindMatches(CString txt)
 		}
 	}
 
-	if (charMap[mostInfo] != NULL) {
+	if (charMap.count(mostInfo) != 0) {
 		size_t count = charMap[mostInfo]->size();
 		for(size_t i = 0; i < count; i++) {
 			if (Match(charMap[mostInfo]->at(i), txt)) {

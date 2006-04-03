@@ -6,6 +6,7 @@
 #include "DirectoryChooser.h"
 #include "Options.h"
 #include "LaunchyDlg.h"
+#include ".\directorychooser.h"
 
 // DirectoryChooser dialog
 
@@ -34,10 +35,12 @@ void DirectoryChooser::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(DirectoryChooser, CDialog)
 	ON_BN_CLICKED(IDC_ADD_DIRECTORY, &DirectoryChooser::OnBnClickedAddDirectory)
 	ON_BN_CLICKED(IDC_REMOVE_DIRECTORY, &DirectoryChooser::OnBnClickedRemoveDirectory)
+	ON_BN_CLICKED(IDC_DEFAULT_DIRECTORY, &DirectoryChooser::OnBnClickedDefaultDirectory)
 	ON_BN_CLICKED(IDC_ADD_TYPE, &DirectoryChooser::OnBnClickedAddType)
 	ON_BN_CLICKED(IDC_REMOVE_TYPE, &DirectoryChooser::OnBnClickedRemoveType)
 	ON_BN_CLICKED(IDOK, &DirectoryChooser::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &DirectoryChooser::OnBnClickedCancel)
+	ON_BN_CLICKED(IDC_DEFAULT_TYPE, OnBnClickedDefaultType)
 END_MESSAGE_MAP()
 
 void SetWidthByContentInListBox(CDialog* pDlg, int nID)
@@ -123,6 +126,28 @@ void DirectoryChooser::OnBnClickedRemoveDirectory()
 	Directories.DeleteString(item);
 	SetWidthByContentInListBox(this, IDC_LIST1);
 }
+void DirectoryChooser::OnBnClickedDefaultDirectory()
+{
+	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+//	for(vector<CString>::iterator it = ops->Directories.begin(); it != ops->Directories.end(); ) {
+//		ops->Directories.erase(it);
+//	}
+	ops->Directories.clear();
+	Directories.ResetContent();
+
+	CString myMenu, allMenus;
+	LaunchySmarts::GetShellDir(CSIDL_COMMON_STARTMENU, allMenus);
+	LaunchySmarts::GetShellDir(CSIDL_STARTMENU, myMenu);
+
+	ops->Directories.push_back(allMenus);
+	ops->Directories.push_back(myMenu);
+
+	Directories.AddString(allMenus);
+	Directories.AddString(myMenu);
+
+
+	SetWidthByContentInListBox(this, IDC_LIST1);
+}
 
 void DirectoryChooser::OnBnClickedAddType()
 {
@@ -136,6 +161,15 @@ void DirectoryChooser::OnBnClickedAddType()
 	Types.AddString(txt);
 	TypeEdit.SetWindowTextW(_T(""));
 	SetWidthByContentInListBox(this, IDC_LIST2);
+}
+
+void DirectoryChooser::OnBnClickedDefaultType()
+{
+	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	ops->Types.clear();
+	Types.ResetContent();
+	ops->Types.push_back(L".lnk");
+	Types.AddString(L".lnk");
 }
 
 void DirectoryChooser::OnBnClickedRemoveType()
@@ -206,4 +240,5 @@ void DirectoryChooser::OnBnClickedCancel()
 	// TODO: Add your control notification handler code here
 	OnCancel();
 }
+
 
