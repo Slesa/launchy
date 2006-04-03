@@ -25,7 +25,10 @@
 #define IDC_REMOVE_DIRECTORY            1009
 #define IDC_EDIT2                       1010
 #define IDC_INDEXED                     1010
+#define IDC_DEFAULT_DIRECTORY           1011
 #define IDC_PIC                         1012
+#define IDC_REMOVE_TYPE2                1012
+#define IDC_DEFAULT_TYPE                1012
 #define ID_SKINS_CUSTOMDIRECTORIES      32771
 #define ID_SKINS_SKINS                  32772
 #define ID_SETTINGS_CUSTOMDIRECTORIES   32773
@@ -43,7 +46,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        152
 #define _APS_NEXT_COMMAND_VALUE         32782
-#define _APS_NEXT_CONTROL_VALUE         1013
+#define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

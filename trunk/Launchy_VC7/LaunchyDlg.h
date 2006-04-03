@@ -34,6 +34,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <boost/smart_ptr.hpp>
 //#include "ReadOnlyEdit.h"
 
+#define LAUNCHY_DB_DONE (WM_APP + 1)
+
 using namespace boost;
 
 // CLaunchyDlg dialog
@@ -91,6 +93,7 @@ public:
 	afx_msg void OnEndSession(BOOL bEnding);
 public:
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
+	afx_msg LRESULT OnDBDone(UINT wParam, LONG lParam);
 public:
 	void applySkin(void);
 	CTransparentStatic2 IconPreview;
