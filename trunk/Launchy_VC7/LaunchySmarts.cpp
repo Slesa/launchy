@@ -505,7 +505,7 @@ void LaunchySmarts::archiveCatalog(void)
 	DWORD size = 256;
 	GetUserName(name, &size);
 	CString dir;
-	dir.Format(_T("Users\\ %s\\"), name);
+	dir.Format(_T("Users\\%s\\"), name);
 
 	dir += _T("\\launchy.db");
 
