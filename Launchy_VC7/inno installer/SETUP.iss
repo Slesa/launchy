@@ -86,6 +86,7 @@ begin
   DeleteConfig := MsgBox('Would you like to delete the Launchy user configuration files as well?', mbConfirmation, MB_YESNO) = idYes;
   if DeleteConfig = True then
     DelTree(ExpandConstant('{app}\Users'), True, True, True);
+;  RemoveDir(ExpandConstant('{app}'));
 end;
 
 
