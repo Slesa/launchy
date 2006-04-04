@@ -270,7 +270,7 @@ void LaunchySmarts::LoadFirstTime()
 	DWORD size = 256;
 	GetUserName(name, &size);
 	CString dir;
-	dir.Format(_T("Users\\ %s\\"), name);
+	dir.Format(_T("Users\\%s\\"), name);
 	//	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
 	//	dir += _T("\\Launchy");
 	dir += _T("\\launchy.db");
