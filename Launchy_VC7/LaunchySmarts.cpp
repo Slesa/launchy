@@ -168,8 +168,12 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 	INT_PTR count = in.GetCount();
 
 	for(int i = 0; i < count; i++) {
-		tmps = in[i].name.Mid(in[i].name.GetLength()-4,4);
+		int lastDot = in[i].name.ReverseFind('.');
+		if (lastDot == -1) continue;
+
+		tmps = in[i].name.Mid(lastDot);
 		tmps.MakeLower();
+
 		if (typeMap[tmps] == false) continue;
 		FileRecordPtr rec(new FileRecord());
 		rec->set(in[i].name, tmps, &bun->smarts->exeLauncher);
