@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "TransparentStatic2.h"
 #include "AlphaBorder.h"
 
-#include <boost/smart_ptr.hpp>
+#include "boost/smart_ptr.hpp"
 //#include "ReadOnlyEdit.h"
 
 #define LAUNCHY_DB_DONE (WM_APP + 1)
