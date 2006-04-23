@@ -238,6 +238,7 @@ UINT ScanStartMenu(LPVOID pParam)
 	bun->smarts->charUsage = bun->charUsage;
 	bun->smarts->catFiles = bun->catFiles;
 
+	bun->smarts->archiveCatalog();
 	bun->smarts->releaseCatalogLock();
 	::PostMessage(bun->dlg, LAUNCHY_DB_DONE, (WPARAM)0, (LPARAM)0);
 	delete bun;
