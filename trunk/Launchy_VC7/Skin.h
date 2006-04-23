@@ -2,7 +2,7 @@
 #include "Inifile.h"
 #include "atltypes.h"
 #include "IniFile.h"
-#include <boost/smart_ptr.hpp>
+#include "boost/smart_ptr.hpp"
 #include "Skin.h"
 
 using namespace boost;
