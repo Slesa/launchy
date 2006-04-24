@@ -71,7 +71,9 @@ void Skin::parseSkinFile(void)
 	if (results_bold == 1) results_bold = 700;
 
 
-
+	inputBorder = ini->GetValueB(L"Widgets", L"TextEntry_ShowBorder", true);
+	inputButton = ini->GetValueB(L"Widgets", L"TextEntry_ShowButton", true);
+	inputTransparent = ini->GetValueB(L"Widgets", L"TextEntry_TransparentBkgnd", false);
 
 	resultBorder = ini->GetValueB(L"Widgets", L"Results_ShowBorder", true);
 	resultTransparent = ini->GetValueB(L"Widgets", L"Results_TransparentBkgnd", false);

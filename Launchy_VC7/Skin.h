@@ -55,6 +55,10 @@ public:
 	bool resultTransparent;
 	bool resultBorder;
 
+	bool inputBorder;
+	bool inputButton;
+	bool inputTransparent;
+
 	CRect stringToRect(wstring input);
 	int stringToRGB(wstring input);
 };
