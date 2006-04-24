@@ -78,6 +78,12 @@ HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		if (m_edit.GetSafeHwnd() == NULL) {
 			m_edit.SubclassWindow(pWnd->GetSafeHwnd());
 		}
+	if (m_Transparent) {
+		CBrush m_Brush;
+		m_Brush.CreateStockObject(HOLLOW_BRUSH);
+		return (HBRUSH) m_Brush;
+	}
+
 	}
 	else if (nCtlColor == CTLCOLOR_LISTBOX)
 	{
@@ -91,11 +97,6 @@ HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 	// TODO:  Return a different brush if the default is not desired
 
-	if (m_Transparent) {
-		CBrush m_Brush;
-		m_Brush.CreateStockObject(HOLLOW_BRUSH);
-		return (HBRUSH) m_Brush;
-	}
 
 	return m_brBackGnd;
 	
