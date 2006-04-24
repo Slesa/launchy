@@ -381,10 +381,13 @@ void CLaunchyDlg::applySkin()
 
 	if (options->skin->resultBorder) {
 		SetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE, GetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE) | WS_EX_CLIENTEDGE);
-
 	} else {
 		SetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE, GetWindowLong(Preview.GetSafeHwnd(), GWL_EXSTYLE) & ~WS_EX_CLIENTEDGE);
 	}
+
+	InputBox.m_RemoveFrame = !options->skin->inputBorder;
+	InputBox.m_RemoveButton = !options->skin->inputButton;
+	InputBox.m_Transparent = options->skin->inputTransparent;
 
 	// After changing the windowlong, the window needs to get moved to update it.. so send
 	// it to the top left corner for now and we'll move it back into position later.

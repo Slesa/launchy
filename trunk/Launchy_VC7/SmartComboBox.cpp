@@ -32,6 +32,8 @@ IMPLEMENT_DYNAMIC(SmartComboBox, CComboBox)
 SmartComboBox::SmartComboBox()
 : typed(_T(""))
 {
+	m_RemoveFrame = false;
+	m_RemoveButton = false;
 	CComboBox();
 }
 
@@ -42,6 +44,7 @@ SmartComboBox::~SmartComboBox()
 
 BEGIN_MESSAGE_MAP(SmartComboBox, CComboBox)
 	ON_WM_CTLCOLOR()
+	ON_WM_PAINT()
 	ON_WM_DESTROY()
 	ON_CONTROL_REFLECT(CBN_EDITUPDATE, &SmartComboBox::OnCbnEditupdate)
 //	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnCbnSelchange)
@@ -60,8 +63,9 @@ END_MESSAGE_MAP()
 
 HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
+
 	
-	HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
+	//HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	pDC->SetTextColor(m_crText);
 //	pDC->SetBkColor(m_crBackGnd);
@@ -86,7 +90,15 @@ HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	// TODO:  Change any attributes of the DC here
 
 	// TODO:  Return a different brush if the default is not desired
+
+	if (m_Transparent) {
+		CBrush m_Brush;
+		m_Brush.CreateStockObject(HOLLOW_BRUSH);
+		return (HBRUSH) m_Brush;
+	}
+
 	return m_brBackGnd;
+	
 }
 
 void SmartComboBox::SetBackColor(COLORREF rgb)
@@ -134,6 +146,18 @@ void SmartComboBox::OnCbnEditupdate()
 	if (pDlg == NULL) return;
 
 	pDlg->smarts->Update(searchTxt);
+
+
+	if (m_Transparent) {
+
+		CWnd* pParent = GetParent();
+		CRect rect;
+		GetWindowRect(rect);
+		pParent->ScreenToClient(rect);
+		rect.DeflateRect(2, 2);
+
+		pParent->InvalidateRect(rect, TRUE); 
+	}
 }
 
 
@@ -194,3 +218,51 @@ void SmartComboBox::OnCbnDropdown()
 	pmyComboBox->SetDroppedWidth(dx);
 }
 
+
+void SmartComboBox::OnPaint()
+{
+	// TODO: Add your message handler code here
+	// Do not call CComboBox::OnPaint() for painting messages
+
+	if (m_RemoveFrame) {
+		if (!m_RemoveButton) {
+			CComboBox::OnPaint();
+		}
+		CPaintDC dc(this); // device context for painting
+		RECT         rect;
+
+		// Find coordinates of client area
+		GetClientRect(&rect);
+
+		
+		// Deflate the rectangle by the size of the borders
+		InflateRect(&rect, -GetSystemMetrics(SM_CXEDGE), -GetSystemMetrics(SM_CYEDGE));
+
+		if (m_RemoveButton) {
+			// Remove the drop-down button as well
+			rect.right -= GetSystemMetrics(SM_CXHSCROLL);
+		}
+
+		// Make a mask from the rectangle, so the borders aren't included
+		dc.IntersectClipRect(rect.left, rect.top, rect.right, rect.bottom);
+
+		// Draw the combo-box into our DC
+		CComboBox::OnPaint();
+
+		// Remove the clipping region
+		dc.SelectClipRgn(NULL);
+
+		// now mask off the inside of the control so we can paint the borders
+		dc.ExcludeClipRect(rect.left, rect.top, rect.right, rect.bottom);
+
+		// paint a flat colour
+		GetClientRect(&rect);
+		CBrush b;
+		b.CreateStockObject(HOLLOW_BRUSH);
+		//b.CreateSolidBrush(RGB(124,124,124));
+		dc.FillRect(&rect, &b);
+	}
+	else {
+		CComboBox::OnPaint();
+	}
+}

@@ -49,6 +49,10 @@ public:
 	afx_msg void OnCbnEditchange();
 	CString typed;
 	afx_msg void OnCbnSelchange();
+
+	bool m_RemoveFrame;
+	bool m_RemoveButton;
+	bool m_Transparent;
 	afx_msg void OnCbnDropdown();
 private:
 	//text and text background colors
@@ -56,6 +60,7 @@ private:
 	COLORREF m_crBackGnd;
 	//background brush
 	CBrush m_brBackGnd;
+	afx_msg void OnPaint();
 };
 
 
