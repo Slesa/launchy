@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Launchy"
-#define MyAppVerName "Launchy 0.9.2"
+#define MyAppVerName "Launchy 0.9.3"
 #define MyAppPublisher "JK Consulting"
 #define MyAppURL "http://www.launchy.net"
 #define MyAppExeName "Launchy.exe"
@@ -36,28 +36,52 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 
 [Files]
 Source: ..\Release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
-;Source: ..\Skins\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ..\res\Launchy.ico; DestDir: {app}; Flags: ignoreversion
 Source: ..\license.rtf; DestDir: {app}; Flags: ignoreversion
 Source: ..\Readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
-Source: ..\Skins\Blue Trim\bluetrim.bmp; DestDir: {app}\Skins\Blue Trim\; Flags: ignoreversion
-Source: ..\Skins\Blue Trim\skin.ini; DestDir: {app}\Skins\Blue Trim\; Flags: ignoreversion
+
 Source: ..\Skins\Quicksilver\quicksilver.bmp; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion
 Source: ..\Skins\Quicksilver\skin.ini; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion
 Source: ..\Skins\Quicksilver\border.png; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion
+
 Source: ..\Skins\Default\background.bmp; DestDir: {app}\Skins\Default\; Flags: ignoreversion
 Source: ..\Skins\Default\skin.ini; DestDir: {app}\Skins\Default\; Flags: ignoreversion
 Source: ..\Skins\Default\default.png; DestDir: {app}\Skins\Default\; Flags: ignoreversion
-Source: ..\Skins\Purple Candy\purplecandy.bmp; DestDir: {app}\Skins\Purple Candy\; Flags: ignoreversion
-Source: ..\Skins\Purple Candy\skin.ini; DestDir: {app}\Skins\Purple Candy\; Flags: ignoreversion
-Source: ..\Skins\Purple Candy\border.png; DestDir: {app}\Skins\Purple Candy\; Flags: ignoreversion
-Source: ..\Skins\Green Leaf\background.bmp; DestDir: {app}\Skins\Green Leaf\; Flags: ignoreversion
-Source: ..\Skins\Green Leaf\skin.ini; DestDir: {app}\Skins\Green Leaf\; Flags: ignoreversion
-Source: ..\Skins\Green Leaf\border.png; DestDir: {app}\Skins\Green Leaf\; Flags: ignoreversion
-Source: ..\Skins\Green Leaf\background.bmp; DestDir: {app}\Skins\Green Leaf\; Flags: ignoreversion
+
 Source: ..\Skins\Quicksilver2\skin.ini; DestDir: {app}\Skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\Skins\Quicksilver2\back.png; DestDir: {app}\Skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\Skins\Quicksilver2\front.bmp; DestDir: {app}\Skins\Quicksilver2\; Flags: ignoreversion
+
+Source: ..\Skins\Aero Soft\background.bmp; DestDir: {app}\Skins\Aero Soft\; Flags: ignoreversion
+Source: ..\Skins\Aero Soft\skin.ini; DestDir: {app}\Skins\Aero Soft\; Flags: ignoreversion
+Source: ..\Skins\Aero Soft\default.png; DestDir: {app}\Skins\Aero Soft\; Flags: ignoreversion
+Source: ..\Skins\Aero Soft\Author.txt; DestDir: {app}\Skins\Aero Soft\; Flags: ignoreversion
+
+Source: ..\Skins\Gantchy Blue\background.bmp; DestDir: {app}\Skins\Gantchy Blue\; Flags: ignoreversion
+Source: ..\Skins\Gantchy Blue\skin.ini; DestDir: {app}\Skins\Gantchy Blue\; Flags: ignoreversion
+Source: ..\Skins\Gantchy Blue\default.png; DestDir: {app}\Skins\Gantchy Blue\; Flags: ignoreversion
+Source: ..\Skins\Gantchy Blue\Author.txt; DestDir: {app}\Skins\Gantchy Blue\; Flags: ignoreversion
+
+Source: ..\Skins\Gantchy Deep\background.bmp; DestDir: {app}\Skins\Gantchy Deep\; Flags: ignoreversion
+Source: ..\Skins\Gantchy Deep\skin.ini; DestDir: {app}\Skins\Gantchy Deep\; Flags: ignoreversion
+Source: ..\Skins\Gantchy Deep\default.png; DestDir: {app}\Skins\Gantchy Deep\; Flags: ignoreversion
+Source: ..\Skins\Gantchy Deep\Author.txt; DestDir: {app}\Skins\Gantchy Deep\; Flags: ignoreversion
+
+Source: ..\Skins\Mini Blue\background.bmp; DestDir: {app}\Skins\Mini Blue\; Flags: ignoreversion
+Source: ..\Skins\Mini Blue\skin.ini; DestDir: {app}\Skins\Mini Blue\; Flags: ignoreversion
+Source: ..\Skins\Mini Blue\default.png; DestDir: {app}\Skins\Mini Blue\; Flags: ignoreversion
+Source: ..\Skins\Mini Blue\Author.txt; DestDir: {app}\Skins\Mini Blue\; Flags: ignoreversion
+
+Source: ..\Skins\Mini Soft\background.bmp; DestDir: {app}\Skins\Mini Soft\; Flags: ignoreversion
+Source: ..\Skins\Mini Soft\skin.ini; DestDir: {app}\Skins\Mini Soft\; Flags: ignoreversion
+Source: ..\Skins\Mini Soft\default.png; DestDir: {app}\Skins\Mini Soft\; Flags: ignoreversion
+Source: ..\Skins\Mini Soft\Author.txt; DestDir: {app}\Skins\Mini Soft\; Flags: ignoreversion
+
+Source: ..\Skins\transparent\bluetrim.bmp; DestDir: {app}\Skins\transparent\; Flags: ignoreversion
+Source: ..\Skins\transparent\skin.ini; DestDir: {app}\Skins\transparent\; Flags: ignoreversion
+Source: ..\Skins\transparent\alpha.png; DestDir: {app}\Skins\transparent\; Flags: ignoreversion
+Source: ..\Skins\transparent\Author.txt; DestDir: {app}\Skins\transparent\; Flags: ignoreversion
+
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]

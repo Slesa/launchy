@@ -23,9 +23,6 @@ Skin::Skin(CString dir) : ini(new CIniFile())
 
 Skin::~Skin(void)
 {
-	// Need to properly dispose of fonts
-//	delete this->m_FontInput;
-//	delete this->m_FontResult;
 }
 
 
@@ -72,7 +69,6 @@ void Skin::parseSkinFile(void)
 
 
 	inputBorder = ini->GetValueB(L"Widgets", L"TextEntry_ShowBorder", true);
-	inputButton = ini->GetValueB(L"Widgets", L"TextEntry_ShowButton", true);
 	inputTransparent = ini->GetValueB(L"Widgets", L"TextEntry_TransparentBkgnd", false);
 
 	resultBorder = ini->GetValueB(L"Widgets", L"Results_ShowBorder", true);
