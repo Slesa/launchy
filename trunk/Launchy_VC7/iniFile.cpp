@@ -38,6 +38,8 @@ using namespace std;
 #define iniEOL '\r' << endl
 #endif
 
+
+
 CIniFile::CIniFile( CString const iniPath)
 {
   Path(iniPath);
@@ -294,6 +296,7 @@ wstring CIniFile::GetValue( wstring const keyname, wstring const valuename, wstr
   long valueID = FindValue( unsigned(keyID), valuename);
   if ( valueID == noID)
     return defValue;
+
 
   return keys[keyID].values[valueID];
 }

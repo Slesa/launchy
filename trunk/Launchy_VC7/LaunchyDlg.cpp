@@ -386,7 +386,6 @@ void CLaunchyDlg::applySkin()
 	}
 
 	InputBox.m_RemoveFrame = !options->skin->inputBorder;
-	InputBox.m_RemoveButton = !options->skin->inputButton;
 	InputBox.m_Transparent = options->skin->inputTransparent;
 
 	// After changing the windowlong, the window needs to get moved to update it.. so send

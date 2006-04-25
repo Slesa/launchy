@@ -226,9 +226,6 @@ void SmartComboBox::OnPaint()
 	// Do not call CComboBox::OnPaint() for painting messages
 
 	if (m_RemoveFrame) {
-		if (!m_RemoveButton) {
-			CComboBox::OnPaint();
-		}
 		CPaintDC dc(this); // device context for painting
 		RECT         rect;
 
@@ -239,10 +236,8 @@ void SmartComboBox::OnPaint()
 		// Deflate the rectangle by the size of the borders
 		InflateRect(&rect, -GetSystemMetrics(SM_CXEDGE), -GetSystemMetrics(SM_CYEDGE));
 
-		if (m_RemoveButton) {
 			// Remove the drop-down button as well
 			rect.right -= GetSystemMetrics(SM_CXHSCROLL);
-		}
 
 		// Make a mask from the rectangle, so the borders aren't included
 		dc.IntersectClipRect(rect.left, rect.top, rect.right, rect.bottom);
@@ -267,3 +262,5 @@ void SmartComboBox::OnPaint()
 		CComboBox::OnPaint();
 	}
 }
+
+
