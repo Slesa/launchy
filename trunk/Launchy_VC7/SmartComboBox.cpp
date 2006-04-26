@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Launchy.h"
 #include "SmartComboBox.h"
 #include "LaunchyDlg.h"
+#include ".\smartcombobox.h"
 
 // SmartComboBox
 
@@ -47,7 +48,7 @@ BEGIN_MESSAGE_MAP(SmartComboBox, CComboBox)
 	ON_WM_PAINT()
 	ON_WM_DESTROY()
 	ON_CONTROL_REFLECT(CBN_EDITUPDATE, &SmartComboBox::OnCbnEditupdate)
-//	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnCbnSelchange)
+	//	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnCbnSelchange)
 	ON_CONTROL_REFLECT(CBN_CLOSEUP, &SmartComboBox::OnCbnCloseup)
 	ON_CONTROL_REFLECT(CBN_EDITCHANGE, &SmartComboBox::OnCbnEditchange)
 	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnCbnSelchange)
@@ -64,11 +65,11 @@ END_MESSAGE_MAP()
 HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 
-	
+
 	//HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	pDC->SetTextColor(m_crText);
-//	pDC->SetBkColor(m_crBackGnd);
+	//	pDC->SetBkColor(m_crBackGnd);
 	pDC->SetBkMode(TRANSPARENT);
 
 
@@ -78,11 +79,11 @@ HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		if (m_edit.GetSafeHwnd() == NULL) {
 			m_edit.SubclassWindow(pWnd->GetSafeHwnd());
 		}
-	if (m_Transparent) {
-		CBrush m_Brush;
-		m_Brush.CreateStockObject(HOLLOW_BRUSH);
-		return (HBRUSH) m_Brush;
-	}
+		if (m_Transparent) {
+			CBrush m_Brush;
+			m_Brush.CreateStockObject(HOLLOW_BRUSH);
+			return (HBRUSH) m_Brush;
+		}
 
 	}
 	else if (nCtlColor == CTLCOLOR_LISTBOX)
@@ -99,22 +100,22 @@ HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 
 	return m_brBackGnd;
-	
+
 }
 
 void SmartComboBox::SetBackColor(COLORREF rgb)
 {
 	//set background color ref (used for text's background)
 	m_crBackGnd = rgb;
-	
+
 	//free brush
 	if (m_brBackGnd.GetSafeHandle())
-       m_brBackGnd.DeleteObject();
+		m_brBackGnd.DeleteObject();
 	//set brush to new color
 	m_brBackGnd.CreateSolidBrush(rgb);
-	
+
 	//redraw
-//	Invalidate(TRUE);
+	//	Invalidate(TRUE);
 }
 
 
@@ -124,7 +125,7 @@ void SmartComboBox::SetTextColor(COLORREF rgb)
 	m_crText = rgb;
 
 	//redraw
-//	Invalidate(TRUE);
+	//	Invalidate(TRUE);
 }
 
 void SmartComboBox::OnDestroy()
@@ -148,17 +149,7 @@ void SmartComboBox::OnCbnEditupdate()
 
 	pDlg->smarts->Update(searchTxt);
 
-
-	if (m_Transparent) {
-
-		CWnd* pParent = GetParent();
-		CRect rect;
-		GetWindowRect(rect);
-		pParent->ScreenToClient(rect);
-		rect.DeflateRect(2, 2);
-
-		pParent->InvalidateRect(rect, TRUE); 
-	}
+	CleanText();
 }
 
 
@@ -194,7 +185,7 @@ void SmartComboBox::OnCbnSelchange()
 void SmartComboBox::OnCbnDropdown()
 {
 	SmartComboBox* pmyComboBox = this;
-//	pmyComboBox->SetCurSel(-1);
+	//	pmyComboBox->SetCurSel(-1);
 
 	// Find the longest string in the combo box.
 	CString str;
@@ -203,11 +194,11 @@ void SmartComboBox::OnCbnDropdown()
 	CDC*    pDC = pmyComboBox->GetDC();
 	for (int i=0;i < pmyComboBox->GetCount();i++)
 	{
-	pmyComboBox->GetLBText( i, str );
-	sz = pDC->GetTextExtent(str);
+		pmyComboBox->GetLBText( i, str );
+		sz = pDC->GetTextExtent(str);
 
-	if (sz.cx > dx)
-		dx = sz.cx;
+		if (sz.cx > dx)
+			dx = sz.cx;
 	}
 	pmyComboBox->ReleaseDC(pDC);
 
@@ -232,12 +223,12 @@ void SmartComboBox::OnPaint()
 		// Find coordinates of client area
 		GetClientRect(&rect);
 
-		
+
 		// Deflate the rectangle by the size of the borders
 		InflateRect(&rect, -GetSystemMetrics(SM_CXEDGE), -GetSystemMetrics(SM_CYEDGE));
 
-			// Remove the drop-down button as well
-			rect.right -= GetSystemMetrics(SM_CXHSCROLL);
+		// Remove the drop-down button as well
+		rect.right -= GetSystemMetrics(SM_CXHSCROLL);
 
 		// Make a mask from the rectangle, so the borders aren't included
 		dc.IntersectClipRect(rect.left, rect.top, rect.right, rect.bottom);
@@ -264,3 +255,18 @@ void SmartComboBox::OnPaint()
 }
 
 
+
+void SmartComboBox::CleanText(void)
+{
+	
+	if (m_Transparent) {
+		CWnd* pParent = GetParent();
+		CRect rect;
+		GetWindowRect(rect);
+		pParent->ScreenToClient(rect);
+		rect.DeflateRect(2, 2);
+
+		pParent->InvalidateRect(rect, TRUE); 
+	}
+
+}

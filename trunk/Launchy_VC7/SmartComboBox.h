@@ -61,6 +61,8 @@ private:
 	//background brush
 	CBrush m_brBackGnd;
 	afx_msg void OnPaint();
+public:
+	void CleanText(void);
 };
 
 
