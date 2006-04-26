@@ -254,9 +254,9 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 				CString typed = InputBox.typed;
 				InputBox.ShowDropDown(false);
 				InputBox.m_edit.SetWindowText(typed);
-
 				InputBox.SetEditSel(InputBox.m_edit.GetWindowTextLengthW(), InputBox.m_edit.GetWindowTextLengthW());
-//			InputBox.SetCurSel(-1);
+				InputBox.CleanText();
+				//			InputBox.SetCurSel(-1);
 			}
 		}
 		SetTimer(DELAY_TIMER, 1000, NULL);
@@ -305,6 +305,7 @@ void CLaunchyDlg::OnTimer(UINT_PTR nIDEvent)
 			InputBox.ShowDropDown(true);
 			InputBox.m_edit.SetWindowText(InputBox.typed);
 			InputBox.SetEditSel(InputBox.typed.GetLength(), InputBox.typed.GetLength());
+			InputBox.CleanText();
 //			InputBox.typed = prev;
 //			InputBox.m_edit.SetSel(0,-1);
 //			InputBox.m_edit.SetSel(prev.GetLength(),prev.GetLength(),TRUE);
