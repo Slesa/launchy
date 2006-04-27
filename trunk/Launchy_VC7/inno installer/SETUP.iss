@@ -82,6 +82,17 @@ Source: ..\Skins\transparent\skin.ini; DestDir: {app}\Skins\transparent\; Flags:
 Source: ..\Skins\transparent\alpha.png; DestDir: {app}\Skins\transparent\; Flags: ignoreversion
 Source: ..\Skins\transparent\Author.txt; DestDir: {app}\Skins\transparent\; Flags: ignoreversion
 
+
+Source: ..\Skins\BioHazard\background.bmp; DestDir: {app}\Skins\BioHazard\; Flags: ignoreversion
+Source: ..\Skins\BioHazard\skin.ini; DestDir: {app}\Skins\BioHazard\; Flags: ignoreversion
+Source: ..\Skins\BioHazard\default.png; DestDir: {app}\Skins\BioHazard\; Flags: ignoreversion
+Source: ..\Skins\BioHazard\Author.txt; DestDir: {app}\Skins\BioHazard\; Flags: ignoreversion
+
+Source: ..\Skins\Black Glass\glass.bmp; DestDir: {app}\Skins\Black Glass\; Flags: ignoreversion
+Source: ..\Skins\Black Glass\skin.ini; DestDir: {app}\Skins\Black Glass\; Flags: ignoreversion
+Source: ..\Skins\Black Glass\border.png; DestDir: {app}\Skins\Black Glass\; Flags: ignoreversion
+Source: ..\Skins\Black Glass\Author.txt; DestDir: {app}\Skins\Black Glass\; Flags: ignoreversion
+
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]
