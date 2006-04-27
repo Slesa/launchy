@@ -43,14 +43,17 @@ Source: ..\Readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
 Source: ..\Skins\Quicksilver\quicksilver.bmp; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion
 Source: ..\Skins\Quicksilver\skin.ini; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion
 Source: ..\Skins\Quicksilver\border.png; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion
+Source: ..\Skins\Quicksilver\Author.txt; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion
 
 Source: ..\Skins\Default\background.bmp; DestDir: {app}\Skins\Default\; Flags: ignoreversion
 Source: ..\Skins\Default\skin.ini; DestDir: {app}\Skins\Default\; Flags: ignoreversion
 Source: ..\Skins\Default\default.png; DestDir: {app}\Skins\Default\; Flags: ignoreversion
+Source: ..\Skins\Default\Author.txt; DestDir: {app}\Skins\Default\; Flags: ignoreversion
 
 Source: ..\Skins\Quicksilver2\skin.ini; DestDir: {app}\Skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\Skins\Quicksilver2\back.png; DestDir: {app}\Skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\Skins\Quicksilver2\front.bmp; DestDir: {app}\Skins\Quicksilver2\; Flags: ignoreversion
+Source: ..\Skins\Quicksilver2\Author.txt; DestDir: {app}\Skins\Quicksilver2\; Flags: ignoreversion
 
 Source: ..\Skins\Aero Soft\background.bmp; DestDir: {app}\Skins\Aero Soft\; Flags: ignoreversion
 Source: ..\Skins\Aero Soft\skin.ini; DestDir: {app}\Skins\Aero Soft\; Flags: ignoreversion

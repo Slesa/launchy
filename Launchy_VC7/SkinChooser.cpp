@@ -62,13 +62,7 @@ void SkinChooser::OnBnClickedOk()
 	}
 	skinlist.GetText(skinlist.GetCurSel(), name);
 
-	// Select this skin
-	for(uint i = 0; i < ops->skins.size(); i++) {
-		if (ops->skins[i]->name == name) {
-			ops->skin = ops->skins[i];
-			ops->skinName = name;
-		}
-	}
+	ops->SetSkin(name);
 	OnOK();
 }
 
