@@ -64,4 +64,5 @@ public:
 public:
 	void LoadSkins(void);
 	void UpgradeCleanup(void);
+	void SetSkin(CString skinName);
 };

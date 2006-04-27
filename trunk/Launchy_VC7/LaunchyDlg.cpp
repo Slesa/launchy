@@ -370,7 +370,10 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 void CLaunchyDlg::applySkin()
 {
 	if (options->skin == NULL) {
-		return;
+			options->SetSkin(_T("Default"));
+			if (options->skin == NULL) {
+				return;
+			}
 	}
 
 	if (border.inuse) {

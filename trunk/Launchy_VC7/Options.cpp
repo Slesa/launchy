@@ -191,3 +191,15 @@ void Options::UpgradeCleanup(void)
 		disk.RemoveDirectory(dir);
 	}
 }
+
+void Options::SetSkin(CString name)
+{
+	// Select this skin
+	for(uint i = 0; i < skins.size(); i++) {
+		if (skins[i]->name == name) {
+			skin = skins[i];
+			skinName = name;
+			break;
+		}
+	}
+}
