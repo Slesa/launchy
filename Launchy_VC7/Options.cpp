@@ -34,7 +34,7 @@ Options::Options(void) : ini(new CIniFile())
 	firstRun = false;
 	TCHAR name[256];
 	DWORD size = 256;
-	GetUserName(name, &size);
+	GetUserNameW(name, &size);
 	userDir.Format(_T("Users\\%s\\"), name);
 	CDiskObject disk;
 	disk.CreateDirectory(userDir);
