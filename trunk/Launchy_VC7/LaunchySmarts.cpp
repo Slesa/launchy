@@ -275,7 +275,7 @@ void LaunchySmarts::LoadFirstTime()
 	CFile theFile;
 	TCHAR name[256];
 	DWORD size = 256;
-	GetUserName(name, &size);
+	GetUserNameW(name, &size);
 	CString dir;
 	dir.Format(_T("Users\\%s\\"), name);
 	//	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
@@ -510,7 +510,7 @@ void LaunchySmarts::archiveCatalog(void)
 	CFile theFile;
 	TCHAR name[256];
 	DWORD size = 256;
-	GetUserName(name, &size);
+	GetUserNameW(name, &size);
 	CString dir;
 	dir.Format(_T("Users\\%s\\"), name);
 
