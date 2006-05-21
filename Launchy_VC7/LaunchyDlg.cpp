@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Skin.h"
 #include "SkinChooser.h"
 #include "DirectoryChooser.h"
+#include ".\launchydlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -180,7 +181,7 @@ LRESULT CLaunchyDlg::OnHotKey(WPARAM wParam, LPARAM lParam) {
 			this->InputBox.SetFocus();
 		}
 		else {
-			this->ShowWindows(false);
+			HideLaunchy();
 		}
 	}
 	return 1;
@@ -234,13 +235,15 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 	if(pMsg->message==WM_KEYDOWN)
 	{
 		if (pMsg->wParam==VK_DOWN) {
-			if (!InputBox.GetDroppedState()) {
+			InputBox.CleanText();
+			if (!InputBox.GetDroppedState() && InputBox.typed != _T("")) {
 				InputBox.ShowDropDown(true);
 //				InputBox.m_listbox.SetSel(1);
 			}
 		} 
 		else if (pMsg->wParam==VK_UP) {
-			if (!InputBox.GetDroppedState()) {
+			InputBox.CleanText();
+			if (!InputBox.GetDroppedState() && InputBox.typed != _T("")) {
 				InputBox.ShowDropDown(true);
 //				InputBox.m_listbox.SetSel(1);
 			}
@@ -272,9 +275,7 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 		}
 
 		if (pMsg->wParam==VK_ESCAPE) {
-			this->ShowWindows(SW_HIDE);
-			this->Visible = false;
-			KillTimer(DELAY_TIMER);
+			HideLaunchy();
 			pMsg->wParam = NULL;
 		}
 
@@ -510,4 +511,11 @@ void CLaunchyDlg::applySkin()
 LRESULT CLaunchyDlg::OnDBDone(UINT wParam, LONG lParam) {
 	smarts->Update(searchTxt, false);
 	return true;
+}
+void CLaunchyDlg::HideLaunchy(void)
+{
+	this->ShowWindows(SW_HIDE);
+	this->Visible = false;
+	KillTimer(DELAY_TIMER);
+	InputBox.ShowDropDown(false);
 }
