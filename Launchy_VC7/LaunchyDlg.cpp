@@ -110,10 +110,6 @@ BOOL CLaunchyDlg::OnInitDialog()
 	// the dialog
 
 
-	
-
-
-
 	options.reset(new Options());
 	smarts.reset(new LaunchySmarts());
 
@@ -346,16 +342,19 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		SkinChooser dlg;
 		dlg.DoModal();
 		applySkin();
+		options->Store();
 	}
 	else if (selection == ID_SETTINGS_HOTKEY) {
 		CHotkeyDialog dlg;
 		dlg.DoModal();
+		options->Store();
 	}
 
 	else if (selection == ID_SETTINGS_DIRECTORIES) {
 		DirectoryChooser dlg;
 		dlg.DoModal();
 		smarts->LoadCatalog();
+		options->Store();
 	}
 
 	else if (selection == ID_SETTINGS_REBUILD) {

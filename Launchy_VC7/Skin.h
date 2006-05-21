@@ -58,6 +58,6 @@ public:
 	bool inputBorder;
 	bool inputTransparent;
 
-	CRect stringToRect(wstring input);
-	int stringToRGB(wstring input);
+	CRect stringToRect(CString input);
+	int stringToRGB(CString input);
 };
