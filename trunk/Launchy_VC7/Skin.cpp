@@ -1,8 +1,11 @@
 #include "StdAfx.h"
 #include "Skin.h"
 #include ".\skin.h"
+#include <string>
 #include <sstream>
+#include <vector>
 
+using namespace std;
 
 Skin::Skin(CString dir) : ini(new CIniFile())
 {
@@ -30,54 +33,54 @@ Skin::~Skin(void)
 void Skin::parseSkinFile(void)
 {
 	// General Skin Information
-	name = ini->GetValue(L"General", L"name", L"default skin name").c_str();
+	name = ini->GetValue(_T("General"), _T("name"), _T("default skin name"));
 
 	// Background material
-	bgFile = ini->GetValue(L"Background", L"bitmap", L"").c_str();
+	bgFile = ini->GetValue(_T("Background"), _T("bitmap"), _T(""));
 //	if (bgFile != "") 
 		bgFile = directory + bgFile;
 
-	backRect = stringToRect(ini->GetValue(L"Background", L"backRect", L"0,0,400,50"));
+	backRect = stringToRect(ini->GetValue(_T("Background"), _T("backRect"), _T("0,0,400,50")));
 
-	alphaBorderFile = ini->GetValue(L"Background", L"alphaBorder", L"").c_str();
+	alphaBorderFile = ini->GetValue(_T("Background"), _T("alphaBorder"), _T(""));
 	if (alphaBorderFile != "")
 		alphaBorderFile = directory + alphaBorderFile;
 
-	alphaRect = stringToRect(ini->GetValue(L"Background", L"AlphaRect", L"0,0,400,50"));
+	alphaRect = stringToRect(ini->GetValue(_T("Background"), _T("AlphaRect"), _T("0,0,400,50")));
 
-	trans_rgb = stringToRGB(ini->GetValue(L"Background", L"transparent_color",L"255x255x255"));
+	trans_rgb = stringToRGB(ini->GetValue(_T("Background"), _T("transparent_color"),_T("255x255x255")));
 	
-	translucensy = ini->GetValueI(L"Background", L"translucensy",-1);
+	translucensy = ini->GetValueI(_T("Background"), _T("translucensy"),-1);
 
 	// Widget positions
-	inputRect = stringToRect(ini->GetValue(L"Widgets", L"TextEntryRect", L"25,25,140,50"));
-	resultRect = stringToRect(ini->GetValue(L"Widgets", L"ResultsRect", L"25,25,140,50"));
-	iconRect = stringToRect(ini->GetValue(L"Widgets",L"IconRect",L"183,25,32,32"));
+	inputRect = stringToRect(ini->GetValue(_T("Widgets"), _T("TextEntryRect"), _T("25,25,140,50")));
+	resultRect = stringToRect(ini->GetValue(_T("Widgets"), _T("ResultsRect"), _T("25,25,140,50")));
+	iconRect = stringToRect(ini->GetValue(_T("Widgets"),_T("IconRect"),_T("183,25,32,32")));
 
 	// Widget fonts
-	input_fontName = ini->GetValue(L"Widgets", L"TextEntry_Font", L"Trebuchet MS").c_str();
-	input_fontSize = ini->GetValueI(L"Widgets", L"TextEntry_Font_Size", 10);
-	input_italics = ini->GetValueI(L"Widgets", L"TextEntry_Font_Italics", 0);
-	input_bold = ini->GetValueI(L"Widgets", L"TextEntry_Font_Bold", 0);
+	input_fontName = ini->GetValue(_T("Widgets"), _T("TextEntry_Font"), _T("Trebuchet MS"));
+	input_fontSize = ini->GetValueI(_T("Widgets"), _T("TextEntry_Font_Size"), 10);
+	input_italics = ini->GetValueI(_T("Widgets"), _T("TextEntry_Font_Italics"), 0);
+	input_bold = ini->GetValueI(_T("Widgets"), _T("TextEntry_Font_Bold"), 0);
 	if (input_bold == 1) input_bold = 700;
 
-	results_fontName = ini->GetValue(_T("Widgets"), _T("Results_Font"), _T("Trebuchet MS")).c_str();
-	results_fontSize = ini->GetValueI(L"Widgets", L"Results_Font_Size", 10);
-	results_italics = ini->GetValueI(L"Widgets", L"Results_Font_Italics", 0);
-	results_bold = ini->GetValueI(L"Widgets", L"Results_Font_Bold", 0);
+	results_fontName = ini->GetValue(_T("Widgets"), _T("Results_Font"), _T("Trebuchet MS"));
+	results_fontSize = ini->GetValueI(_T("Widgets"), _T("Results_Font_Size"), 10);
+	results_italics = ini->GetValueI(_T("Widgets"), _T("Results_Font_Italics"), 0);
+	results_bold = ini->GetValueI(_T("Widgets"), _T("Results_Font_Bold"), 0);
 	if (results_bold == 1) results_bold = 700;
 
 
-	inputBorder = ini->GetValueB(L"Widgets", L"TextEntry_ShowBorder", true);
-	inputTransparent = ini->GetValueB(L"Widgets", L"TextEntry_TransparentBkgnd", false);
+	inputBorder = ini->GetValueB(_T("Widgets"), _T("TextEntry_ShowBorder"), true);
+	inputTransparent = ini->GetValueB(_T("Widgets"), _T("TextEntry_TransparentBkgnd"), false);
 
-	resultBorder = ini->GetValueB(L"Widgets", L"Results_ShowBorder", true);
-	resultTransparent = ini->GetValueB(L"Widgets", L"Results_TransparentBkgnd", false);
+	resultBorder = ini->GetValueB(_T("Widgets"), _T("Results_ShowBorder"), true);
+	resultTransparent = ini->GetValueB(_T("Widgets"), _T("Results_TransparentBkgnd"), false);
 
-	inputRGB = stringToRGB(ini->GetValue(L"Widgets", L"TextEntry_Color",L"255x255x255"));
-	inputFontRGB = stringToRGB(ini->GetValue(L"Widgets", L"TextEntry_Font_Color",L"255x255x255"));
-	resultRGB = stringToRGB(ini->GetValue(L"Widgets", L"Results_Color",L"255x255x255"));
-	resultFontRGB = stringToRGB(ini->GetValue(L"Widgets", L"Results_Font_Color",L"255x255x255"));
+	inputRGB = stringToRGB(ini->GetValue(_T("Widgets"), _T("TextEntry_Color"),_T("255x255x255")));
+	inputFontRGB = stringToRGB(ini->GetValue(_T("Widgets"), _T("TextEntry_Font_Color"),_T("255x255x255")));
+	resultRGB = stringToRGB(ini->GetValue(_T("Widgets"), _T("Results_Color"),_T("255x255x255")));
+	resultFontRGB = stringToRGB(ini->GetValue(_T("Widgets"), _T("Results_Font_Color"),_T("255x255x255")));
 }
 
 void Split(wstring str, vector<wstring>& tokens, const TCHAR delim = ' ') {
@@ -105,8 +108,9 @@ int wsToI(wstring val) {
   return x;
 }
 
-int Skin::stringToRGB(wstring input)
+int Skin::stringToRGB(CString in)
 {
+	wstring input = in.GetBuffer();
 	vector<wstring> parts;
 	Split(input, parts, 'x');
 	return RGB(wsToI(parts[0]),wsToI(parts[1]),wsToI(parts[2]));
@@ -122,8 +126,9 @@ int wsToInt(wstring val) {
   return x;
 }
 
-CRect Skin::stringToRect(wstring input)
+CRect Skin::stringToRect(CString in)
 {
+	wstring input = in.GetBuffer();
 	vector<wstring> parts;
 	Split(input, parts, ',');
 	CRect r;

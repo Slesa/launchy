@@ -76,6 +76,7 @@ vector<CString> DeSerializeStringArray(CString input) {
 CString SerializeStringArray(vector<CString> input) {
 	CString output = _T("");
 	for(uint i = 0; i < input.size(); i++) {
+
 		output.Append(input[i]);
 		output.Append(_T(";"));
 	}
@@ -90,18 +91,18 @@ void Options::ParseIni(void)
 	LaunchySmarts::GetShellDir(CSIDL_STARTMENU, myMenu);
 	DefaultDirs.Format(_T("%s;%s;"), myMenu, allMenus);
 
-	ver = ini->GetValueI(L"Launchy Information", L"Version", 0);
+	ver = ini->GetValueI(_T("Launchy Information"), _T("Version"), 0);
 
-	posX = ini->GetValueI(L"Position", L"pos_x");
-	posY = ini->GetValueI(L"Position", L"pos_y");
+	posX = ini->GetValueI(_T("Position"), _T("pos_x"));
+	posY = ini->GetValueI(_T("Position"), _T("pos_y"));
 
-	mod_key =  ini->GetValueI(L"Hotkey", L"mod_key", MOD_ALT);
-	vkey =  ini->GetValueI(L"Hotkey", L"vkey", VK_SPACE);
+	mod_key =  ini->GetValueI(_T("Hotkey"), _T("mod_key"), MOD_ALT);
+	vkey =  ini->GetValueI(_T("Hotkey"), _T("vkey"), VK_SPACE);
 
-	skinName = ini->GetValue(L"Skin", L"name", L"Default").c_str();
+	skinName = ini->GetValue(_T("Skin"), _T("name"), _T("Default"));
 
-	Directories = DeSerializeStringArray(ini->GetValue(L"General", L"Directories", DefaultDirs.GetBuffer()).c_str());
-	Types = DeSerializeStringArray(ini->GetValue(L"General", L"Types", L".lnk;").c_str());
+	Directories = DeSerializeStringArray(ini->GetValue(_T("General"), _T("Directories"), DefaultDirs));
+	Types = DeSerializeStringArray(ini->GetValue(_T("General"), _T("Types"), _T(".lnk;")));
 
 
 }
@@ -113,36 +114,35 @@ void Options::Store(void)
 	RECT location;
 	pApp->GetMainWnd()->GetWindowRect(&location);
 
-	ini->SetValueI(L"Launchy Information", L"Version", LAUNCHY_VERSION);
-	ini->SetValueI(L"Position", L"pos_x", location.left);
-	ini->SetValueI(L"Position", L"pos_y", location.top);
+	ini->SetValueI(_T("Launchy Information"), _T("Version"), LAUNCHY_VERSION);
+	ini->SetValueI(_T("Position"), _T("pos_x"), location.left);
+	ini->SetValueI(_T("Position"), _T("pos_y"), location.top);
 
-	ini->SetValueI(L"Hotkey", L"mod_key", mod_key);
-	ini->SetValueI(L"Hotkey", L"vkey", vkey);
+	ini->SetValueI(_T("Hotkey"), _T("mod_key"), mod_key);
+	ini->SetValueI(_T("Hotkey"), _T("vkey"), vkey);
 
-	ini->SetValue(L"Skin", L"name", skinName.GetBuffer());
+	ini->SetValue(_T("Skin"), _T("name"), skinName);
 
-	ini->SetValue(L"General", L"Directories", SerializeStringArray(Directories).GetBuffer());
-	ini->SetValue(L"General", L"Types", SerializeStringArray(Types).GetBuffer());
+	ini->SetValue(_T("General"), _T("Directories"), SerializeStringArray(Directories));
+	ini->SetValue(_T("General"), _T("Types"), SerializeStringArray(Types));
 
 	ini->WriteFile();
 }
 
 void Options::Associate(CString entry, CString destination)
 {
-	ini->SetValue(L"Associations", std::wstring(entry.GetBuffer()), std::wstring(destination.GetBuffer()));
+	ini->SetValue(_T("Associations"), entry, destination);
 }
 
 
 CString Options::GetAssociation(CString query)
 {
-	wstring res = ini->GetValue(L"Associations", std::wstring(query.GetBuffer()));
-
-	if (res != L"") {
-		CString x = CString(res.c_str());
-		return x;
-	}
+	CString res = ini->GetValue(_T("Associations"), query, _T(""));
+	if (res != _T("")) 
+		return res;
 	return _T("");
+
+	return res;
 }
 
 void Options::LoadSkins(void)

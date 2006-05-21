@@ -278,8 +278,6 @@ void LaunchySmarts::LoadFirstTime()
 	GetUserNameW(name, &size);
 	CString dir;
 	dir.Format(_T("Users\\%s\\"), name);
-	//	LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
-	//	dir += _T("\\Launchy");
 	dir += _T("\\launchy.db");
 
 	if (!theFile.Open(dir, CFile::modeRead)) {
@@ -327,15 +325,7 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 		return;
 
 	lastUpdateTxt = txt;
-/*
-	if (txt == "") {
-		HICON h = pDlg->IconPreview.SetIcon(NULL);
-		if (h != NULL) {
-			DestroyIcon(h);
-		}
-		return;
-	}
-*/
+
 	CString history = pDlg->options->GetAssociation(txt);
 	matches.clear();
 	FindMatches(txt);

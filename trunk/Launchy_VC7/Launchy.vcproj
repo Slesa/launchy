@@ -70,7 +70,8 @@
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
 			UseOfMFC="1"
-			CharacterSet="1">
+			CharacterSet="1"
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
@@ -217,6 +218,9 @@
 			<File
 				RelativePath=".\UseShGetFileInfo.cpp">
 			</File>
+			<File
+				RelativePath=".\UTF16File.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -299,6 +303,9 @@
 			</File>
 			<File
 				RelativePath=".\UseShGetFileInfo.h">
+			</File>
+			<File
+				RelativePath=".\UTF16File.h">
 			</File>
 		</Filter>
 		<Filter

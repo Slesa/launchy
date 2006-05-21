@@ -168,8 +168,8 @@ void DirectoryChooser::OnBnClickedDefaultType()
 	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 	ops->Types.clear();
 	Types.ResetContent();
-	ops->Types.push_back(L".lnk");
-	Types.AddString(L".lnk");
+	ops->Types.push_back(_T(".lnk"));
+	Types.AddString(_T(".lnk"));
 }
 
 void DirectoryChooser::OnBnClickedRemoveType()
