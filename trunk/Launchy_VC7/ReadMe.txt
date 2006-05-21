@@ -1,6 +1,11 @@
 Changes since 0.9.3:
 
-1) Now save ini after changing settings with menus
-2) Unicode support in the ini file!  Yay :)
+Bug Fixes:
+1) Unicode support in the ini file!  Yay :)
+2) Spelled 'translucency' correctly for the skin ini file :p
+3) Fixed up/down keys bringing forward a dropdown when no options are available
 
-I completely redid the CIniFile.. and it still won't save ?????? as a directory name!
+Others:
+1) Now save ini after changing settings with menus
+2) Now spaces are ignored from user input, in other words they don't help with matches
+   -- this allows you to match johnny_cash.mp3 with 'johnny cash'

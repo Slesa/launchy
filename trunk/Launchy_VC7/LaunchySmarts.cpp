@@ -324,6 +324,8 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 	if (pDlg == NULL)
 		return;
 
+	txt.Replace(_T(" "), _T(""));
+
 	lastUpdateTxt = txt;
 
 	CString history = pDlg->options->GetAssociation(txt);

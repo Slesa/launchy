@@ -97,4 +97,5 @@ public:
 public:
 	void applySkin(void);
 	CTransparentStatic2 IconPreview;
+	void HideLaunchy(void);
 };
