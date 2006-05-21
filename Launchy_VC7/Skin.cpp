@@ -50,7 +50,7 @@ void Skin::parseSkinFile(void)
 
 	trans_rgb = stringToRGB(ini->GetValue(_T("Background"), _T("transparent_color"),_T("255x255x255")));
 	
-	translucensy = ini->GetValueI(_T("Background"), _T("translucensy"),-1);
+	translucensy = ini->GetValueI(_T("Background"), _T("translucency"),-1);
 
 	// Widget positions
 	inputRect = stringToRect(ini->GetValue(_T("Widgets"), _T("TextEntryRect"), _T("25,25,140,50")));
