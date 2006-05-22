@@ -1,11 +1,15 @@
 Changes since 0.9.3:
 
+Currently Working On: why does 'ff' have a different result from 'Ff'?
+
 Bug Fixes:
 1) Unicode support in the ini file!  Yay :)
 2) Spelled 'translucency' correctly for the skin ini file :p
 3) Fixed up/down keys bringing forward a dropdown when no options are available
+4) Explicit check for equality in sorting rather than partial match, otherwise usage wins
 
 Others:
 1) Now save ini after changing settings with menus
 2) Now spaces are ignored from user input, in other words they don't help with matches
    -- this allows you to match johnny_cash.mp3 with 'johnny cash'
+3) Removed association code
