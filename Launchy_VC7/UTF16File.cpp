@@ -141,7 +141,8 @@ BOOL CUTF16File::ReadUnicodeString( CString& rString ) {
 
         m_Accumulator.pop_front();
 
-        if( L'\n' == c ) { break; }
+		// Added the check for '\r' since that's what windows does..
+        if( L'\n' == c || L'\r' == c) { break; }
 
         rString += c;
 
@@ -259,7 +260,7 @@ LONG CUTF16File::Seek(LONG lOff, UINT nFrom)
 
 VOID CUTF16File::WriteANSIString( LPCWSTR lpsz )
 {
-
+	
     CStdioFile::WriteString( lpsz );
 }
 
