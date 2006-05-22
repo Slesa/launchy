@@ -55,8 +55,6 @@ public:
 	~Options(void);
 	void ParseIni(void);
 	void Store(void);
-	void Associate(CString entry, CString destination);
-	CString GetAssociation(CString query);
 public:
 	UINT vkey;
 public:

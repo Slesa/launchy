@@ -20,7 +20,6 @@ void FileRecord::Serialize( CArchive& archive )
 }
 
 FileRecord::FileRecord(void)
-: isHistory(false)
 {
 }
 

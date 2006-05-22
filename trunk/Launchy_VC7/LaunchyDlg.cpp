@@ -263,12 +263,6 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 			this->ShowWindows(SW_HIDE);
 			this->Visible = false;
 
-
-			if (InputBox.typed != searchTxt) {
-				CString x;
-				options->Associate(InputBox.typed, searchTxt);
-			}
-
 			KillTimer(DELAY_TIMER);
 			smarts->Launch();
 			pMsg->wParam = NULL;

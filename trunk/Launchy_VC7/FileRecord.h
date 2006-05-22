@@ -19,7 +19,7 @@ public:
 	
 	void set(CString p, CString type, Launcher* l, int u = 0);
 
-	bool isHistory;
+//	bool isHistory;
 	void setUsage(int x);
 	void Serialize( CArchive& archive );
 
