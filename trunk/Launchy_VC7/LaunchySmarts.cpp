@@ -89,21 +89,31 @@ template <> void AFXAPI SerializeElements <ArchiveType> ( CArchive& ar,
 
 bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 {
+	bool localEqual = a->lowName == searchTxt;
+	bool otherEqual = b->lowName == searchTxt;
+
+	if (localEqual && !otherEqual)
+		return true;
+	if (!localEqual && otherEqual)
+		return false;
+
+
+	if(a->usage > b->usage)
+		return true;
+	if (a->usage < b->usage)
+		return false;
+
 	int localFind = a->lowName.Find(searchTxt);
 	int otherFind = b->lowName.Find(searchTxt);
-	int localLen = a->lowName.GetLength();
-	int otherLen = b->lowName.GetLength();
-
 
 	if (localFind > -1 && otherFind == -1)
 		return true;
 	if (localFind == -1 && otherFind > -1)
 		return false;
 
-	if(a->usage > b->usage)
-		return true;
-	if (a->usage < b->usage)
-		return false;
+	int localLen = a->lowName.GetLength();
+	int otherLen = b->lowName.GetLength();
+
 	if (localLen < otherLen)
 		return true;
 	if (localLen > otherLen)
