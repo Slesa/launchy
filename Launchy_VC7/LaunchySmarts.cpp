@@ -173,6 +173,8 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 
 	INT_PTR count = in.GetCount();
 
+
+	// Scan for files
 	for(int i = 0; i < count; i++) {
 		int lastDot = in[i].name.ReverseFind('.');
 		if (lastDot == -1) continue;
@@ -188,6 +190,7 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 			rec->setUsage(in[i].usage);
 		else
 			rec->setUsage(findCount(bun->smarts, rec->lowName));
+
 
 		ArchiveType at(in[i].name, rec->usage);
 		out.Add(at);
@@ -231,7 +234,18 @@ UINT ScanStartMenu(LPVOID pParam)
 		disk.EnumAllFiles(ops->Directories[i], tmpFiles);
 		files.Append(tmpFiles);
 		tmpFiles.RemoveAll();
+
+		CStringArray dirs;
+		BOOL result = disk.EnumAllDirectories( ops->Directories[i], dirs);
+		dirs.Add(ops->Directories[i]);
+		
+		for(int i = 0; i < dirs.GetSize(); i++) {
+			CString x = dirs[i].TrimRight(_T("\\")) + _T(".directory");
+			files.Add(x);
+		}
+		dirs.RemoveAll();
 	}
+
 
 	for(int i = 0; i < files.GetSize(); i++) {
 		ArchiveType at(files[i], -1);
@@ -343,8 +357,13 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 
 
 	if (matches.size() > 0) {
-		HICON hNew = IconInfo.GetIconHandleNoOverlay(matches[0]->fullPath, false);
 
+		HICON hNew;
+		if (matches[0]->fullPath.Find(_T(".directory")) != -1) {
+			hNew = IconInfo.GetFolderIconHandle(false);
+		} else {
+			hNew = IconInfo.GetIconHandleNoOverlay(matches[0]->fullPath, false);
+		}
 		HICON h = pDlg->IconPreview.SetIcon(hNew);
 		if (h != hNew) {
 			DestroyIcon(h);

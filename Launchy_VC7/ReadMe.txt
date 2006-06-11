@@ -17,3 +17,4 @@ Others:
    -- this allows you to match johnny_cash.mp3 with 'johnny cash'
 3) Removed association code
 4) Added donate code
+5) Added folder name indexing

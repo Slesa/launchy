@@ -36,13 +36,20 @@ void ExeLauncher::Run(FileRecordPtr file)
 //	CString str;
 //	str.Format(_T("%d"),(int) res);
 //	AfxMessageBox(str);
+
+	CString exec = file->fullPath;
+	if (exec.Find(_T(".directory")) != -1) {
+		exec = exec.Left(exec.Find(_T(".directory")));
+	}
+
+
 	SHELLEXECUTEINFO ShExecInfo;
 
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
 	ShExecInfo.fMask = NULL;
 	ShExecInfo.hwnd = NULL;
 	ShExecInfo.lpVerb = NULL;
-	ShExecInfo.lpFile = file->fullPath;
+	ShExecInfo.lpFile = exec;
 	ShExecInfo.lpParameters = NULL;
 	ShExecInfo.lpDirectory = file->GetDirectory();
 	ShExecInfo.nShow = SW_NORMAL;

@@ -48,6 +48,12 @@ FileRecord::~FileRecord(void)
 
 void FileRecord::set(CString p, CString type, Launcher* l, int u /* = 0 */)
 {
+/*	if (type == _T(".directory")) {
+		p = p.Mid(0, p.GetLength() - type.GetLength());
+		int x = 3;
+		x = x + 1;
+	}
+	*/
 	usage = u;
 	CString fileName;
 	fullPath = p;
@@ -55,8 +61,6 @@ void FileRecord::set(CString p, CString type, Launcher* l, int u /* = 0 */)
 	int ind = p.ReverseFind(_T('\\'));
 	if (ind != -1) {
 		fileName = p.Mid(ind+1);
-	} else {
-		fileName = p;
 	}
 
 	croppedName = fileName.Mid(0, fileName.GetLength() - type.GetLength());
