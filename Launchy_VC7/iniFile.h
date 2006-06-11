@@ -1,3 +1,22 @@
+/*
+Launchy: Application Launcher
+Copyright (C) 2005  Josh Karlin
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+
 // IniFile.h: interface for the CIniFile class.
 // Written by: Adam Clauss
 // Email: pandcc3@comwerx.net
@@ -93,6 +112,7 @@ public:
 	//returns "", or 0 if key/value not found.  Sets error member to show problem
 	CString GetValue(CString keyname, CString valuename, CString def); 
 	int GetValueI(CString keyname, CString valuename, int def = 0); 
+	__time64_t GetValueTime(CString keyname, CString valuename, __time64_t def = 0);
 	double GetValueF(CString keyname, CString valuename, double def = 0.0);
 	bool GetValueB(CString keyname, CString valuename, bool def = false);
 
@@ -102,6 +122,7 @@ public:
 	//overloaded to accept CString, int, and double
 	bool SetValue(CString key, CString valuename, CString value, bool create = 1);
 	bool SetValueI(CString key, CString valuename, int value, bool create = 1);
+	bool SetValueTime(CString key, CString valuename, __time64_t value, bool create = 1);
 	bool SetValueF(CString key, CString valuename, double value, bool create = 1);
 	bool SetValueB(CString key, CString valuename, bool value, bool create = 1);
 	//deletes specified value

@@ -1,3 +1,23 @@
+/*
+Launchy: Application Launcher
+Copyright (C) 2005  Josh Karlin
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+
+
 // IniFile.cpp: implementation of the CIniFile class.
 // Written by: Adam Clauss
 //////////////////////////////////////////////////////////////////////
@@ -181,29 +201,25 @@ int CIniFile::GetValueI(CString keyname, CString valuename, int def)
 	CString ret = GetValue(keyname, valuename, _T("Asddfcnsd923"));
 	if (ret == _T("Asddfcnsd923")) return def;
 
-	wstring val = ret.GetBuffer();
-	size_t len = val.size();
-	string s;
-	s.resize(len);
-	for(size_t i = 0; i < len; i++)
-		s[i] = static_cast<char>(val[i]);
-
-  int x = atoi(s.c_str());
-
-
-	return x;
+	return _wtoi(ret.GetBuffer());
 }
+
+__time64_t CIniFile::GetValueTime(CString keyname, CString valuename, __time64_t def)
+{
+	CString ret = GetValue(keyname, valuename, _T("Asddfcnsd923"));
+	if (ret == _T("Asddfcnsd923")) return def;
+
+
+	TCHAR* pend;
+
+
+	return _wcstoi64(ret.GetBuffer(), &pend, 10); 
+}
+
 
 bool CIniFile::GetValueB(CString keyname, CString valuename, bool def)
 {
 	return GetValueI(keyname, valuename, def);
-	
-/*	CString ret = GetValueB(keyname, valuename, def);
-	if (ret == L"Asddfcnsd923") return def;	
-	int x = atoi(ret);
-	if (x) return true;
-	return false;
-	*/
 }
 
 //gets value of [keyname] valuename = 
@@ -212,15 +228,7 @@ double CIniFile::GetValueF(CString keyname, CString valuename, double def)
 {
 	CString ret = GetValue(keyname, valuename, _T("Asddfcnsd923"));
 	if (ret == _T("Asddfcnsd923")) return def;
-	wstring val = ret.GetBuffer();
-  size_t len = val.size();
-  string s;
-  s.resize(len);
-  for(size_t i = 0; i < len; i++)
-		s[i] = static_cast<char>(val[i]);
-
-	return atof(s.c_str());
-
+	return _wtof(ret.GetBuffer());
 }
 
 //sets value of [keyname] valuename =.
@@ -264,6 +272,13 @@ bool CIniFile::SetValueI(CString keyname, CString valuename, int value, bool cre
 {
 	CString temp;
 	temp.Format(_T("%d"),value);
+	return SetValue(keyname, valuename, temp, create);
+}
+
+bool CIniFile::SetValueTime(CString keyname, CString valuename, __time64_t value, bool create)
+{
+	CString temp;
+	temp.Format(_T("%I64d"),value);
 	return SetValue(keyname, valuename, temp, create);
 }
 

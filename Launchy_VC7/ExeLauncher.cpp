@@ -44,6 +44,25 @@ void ExeLauncher::Run(FileRecordPtr file)
 	ShExecInfo.lpVerb = NULL;
 	ShExecInfo.lpFile = file->fullPath;
 	ShExecInfo.lpParameters = NULL;
+	ShExecInfo.lpDirectory = file->GetDirectory();
+	ShExecInfo.nShow = SW_NORMAL;
+	ShExecInfo.hInstApp = NULL;
+
+	BOOL ret = ShellExecuteEx(&ShExecInfo);
+
+	
+}
+
+void ExeLauncher::Run(CString path)
+{
+	SHELLEXECUTEINFO ShExecInfo;
+
+	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+	ShExecInfo.fMask = NULL;
+	ShExecInfo.hwnd = NULL;
+	ShExecInfo.lpVerb = NULL;
+	ShExecInfo.lpFile = path;
+	ShExecInfo.lpParameters = NULL;
 	ShExecInfo.lpDirectory = NULL;
 	ShExecInfo.nShow = SW_NORMAL;
 	ShExecInfo.hInstApp = NULL;

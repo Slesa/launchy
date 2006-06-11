@@ -1,6 +1,9 @@
 Changes since 0.9.3:
 
-Currently Working On: why does 'ff' have a different result from 'Ff'?
+Code fixes to do once I can read up about them:
+
+Still todo:
+. Why does Launchy crash when started up quickly?!
 
 Bug Fixes:
 1) Unicode support in the ini file!  Yay :)
@@ -13,3 +16,4 @@ Others:
 2) Now spaces are ignored from user input, in other words they don't help with matches
    -- this allows you to match johnny_cash.mp3 with 'johnny cash'
 3) Removed association code
+4) Added donate code
