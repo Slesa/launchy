@@ -1,3 +1,22 @@
+/*
+Launchy: Application Launcher
+Copyright (C) 2005  Josh Karlin
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+*/
+
 #include "StdAfx.h"
 #include "Skin.h"
 #include ".\skin.h"
@@ -98,33 +117,16 @@ void Split(wstring str, vector<wstring>& tokens, const TCHAR delim = ' ') {
 	}
 }
 
-int wsToI(wstring val) {
-  size_t len = val.size();
-  string s;
-  s.resize(len);
-  for(size_t i = 0; i < len; i++)
-		s[i] = static_cast<char>(val[i]);
-  int x = atoi(s.c_str());
-  return x;
-}
 
 int Skin::stringToRGB(CString in)
 {
 	wstring input = in.GetBuffer();
 	vector<wstring> parts;
 	Split(input, parts, 'x');
-	return RGB(wsToI(parts[0]),wsToI(parts[1]),wsToI(parts[2]));
+	return RGB(_wtoi(parts[0].c_str()),_wtoi(parts[1].c_str()),_wtoi(parts[2].c_str()));
 }
 
-int wsToInt(wstring val) {
-  size_t len = val.size();
-  string s;
-  s.resize(len);
-  for(size_t i = 0; i < len; i++)
-		s[i] = static_cast<char>(val[i]);
-  int x = atoi(s.c_str());
-  return x;
-}
+
 
 CRect Skin::stringToRect(CString in)
 {
@@ -133,10 +135,10 @@ CRect Skin::stringToRect(CString in)
 	Split(input, parts, ',');
 	CRect r;
 	int x1,y1,x2,y2;
-	x1 = wsToInt(parts[0]);
-	y1 = wsToInt(parts[1]);
-	x2 = wsToInt(parts[2]);
-	y2 = wsToInt(parts[3]);
+	x1 = _wtoi(parts[0].c_str());
+	y1 = _wtoi(parts[1].c_str());
+	x2 = _wtoi(parts[2].c_str());
+	y2 = _wtoi(parts[3].c_str());
 	r.SetRect(x1,y1,x1+x2,y1+y2);
 	return r;
 }

@@ -11,6 +11,7 @@
 #define IDD_SKIN                        149
 #define IDD_DIRECTORIES                 150
 #define IDD_ALPHA_BORDER                151
+#define IDB_BITMAP1                     153
 #define IDC_COMBO1                      1000
 #define IDC_Input                       1000
 #define IDC_MOD_COMBO                   1000
@@ -45,7 +46,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        152
+#define _APS_NEXT_RESOURCE_VALUE        154
 #define _APS_NEXT_COMMAND_VALUE         32782
 #define _APS_NEXT_CONTROL_VALUE         1015
 #define _APS_NEXT_SYMED_VALUE           101

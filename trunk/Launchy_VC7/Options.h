@@ -45,6 +45,7 @@ public:
 	CString skinName;
 
 	CString userDir;
+	CTime installTime;
 	bool firstRun;
 	int posX;
 	int posY;

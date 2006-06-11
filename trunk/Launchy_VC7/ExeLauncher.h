@@ -27,4 +27,5 @@ public:
 	ExeLauncher(void);
 	~ExeLauncher(void);
 	virtual void Run(FileRecordPtr file);
+	virtual void ExeLauncher::Run(CString path);
 };

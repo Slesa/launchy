@@ -98,4 +98,5 @@ public:
 	void applySkin(void);
 	CTransparentStatic2 IconPreview;
 	void HideLaunchy(void);
+	bool DoDonate(void);
 };

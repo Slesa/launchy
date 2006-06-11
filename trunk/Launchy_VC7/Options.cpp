@@ -105,6 +105,12 @@ void Options::ParseIni(void)
 	Types = DeSerializeStringArray(ini->GetValue(_T("General"), _T("Types"), _T(".lnk;")));
 
 
+
+	CTime t = CTime::GetCurrentTime();
+
+	installTime = CTime( ini->GetValueTime(_T("Launchy Information"), _T("InstallTime"), t.GetTime()));
+
+
 }
 
 void Options::Store(void)
@@ -125,6 +131,11 @@ void Options::Store(void)
 
 	ini->SetValue(_T("General"), _T("Directories"), SerializeStringArray(Directories));
 	ini->SetValue(_T("General"), _T("Types"), SerializeStringArray(Types));
+
+
+	ini->SetValueTime(_T("Launchy Information"), _T("InstallTime"), installTime.GetTime());
+
+
 
 	ini->WriteFile();
 }
@@ -177,6 +188,10 @@ void Options::UpgradeCleanup(void)
 
 	if (ver < 95) {
 		ini->DeleteKey(_T("Associations"));
+	}
+
+	if (ver < LAUNCHY_VERSION) {
+		installTime = CTime::GetCurrentTime();
 	}
 }
 

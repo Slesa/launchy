@@ -179,6 +179,7 @@ LRESULT CLaunchyDlg::OnHotKey(WPARAM wParam, LPARAM lParam) {
 			this->ShowWindows(true);
 			this->ActivateTopParent();
 			this->InputBox.SetFocus();
+			this->DoDonate();
 		}
 		else {
 			HideLaunchy();
@@ -512,4 +513,16 @@ void CLaunchyDlg::HideLaunchy(void)
 	this->Visible = false;
 	KillTimer(DELAY_TIMER);
 	InputBox.ShowDropDown(false);
+}
+
+bool CLaunchyDlg::DoDonate(void)
+{
+	CTime time = CTime::GetCurrentTime();
+	CTimeSpan span(21,0,0,0);
+	if (options->installTime != 0 && options->installTime + span <= time) {
+		smarts->exeLauncher.Run(_T("http://www.launchy.net/donate.html"));
+		options->installTime = CTime(0);
+		return true;
+	}
+	return false;
 }
