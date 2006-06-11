@@ -31,6 +31,8 @@
 #define IDC_REMOVE_TYPE2                1012
 #define IDC_DEFAULT_TYPE                1012
 #define IDC_TREE1                       1014
+#define IDC_CHECK1                      1015
+#define IDC_INDEX_NAMES                 1015
 #define ID_SKINS_CUSTOMDIRECTORIES      32771
 #define ID_SKINS_SKINS                  32772
 #define ID_SETTINGS_CUSTOMDIRECTORIES   32773
@@ -48,7 +50,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        154
 #define _APS_NEXT_COMMAND_VALUE         32782
-#define _APS_NEXT_CONTROL_VALUE         1015
+#define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

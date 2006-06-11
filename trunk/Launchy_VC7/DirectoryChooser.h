@@ -58,6 +58,7 @@ public:
 	afx_msg void OnBnClickedAddType();
 public:
 	afx_msg void OnBnClickedRemoveType();
+	afx_msg void OnBnClickedDirIndex();
 public:
 	virtual BOOL OnInitDialog();
 public:
@@ -70,4 +71,5 @@ public:
 public:
 	CEdit numFiles;
 	afx_msg void OnBnClickedDefaultType();
+	CButton IndexNames;
 };

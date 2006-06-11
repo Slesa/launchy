@@ -48,6 +48,7 @@ void DirectoryChooser::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST2, Types);
 	DDX_Control(pDX, IDC_EDIT1, TypeEdit);
 	DDX_Control(pDX, IDC_INDEXED, numFiles);
+	DDX_Control(pDX, IDC_INDEX_NAMES, IndexNames);
 }
 
 
@@ -60,6 +61,7 @@ BEGIN_MESSAGE_MAP(DirectoryChooser, CDialog)
 	ON_BN_CLICKED(IDOK, &DirectoryChooser::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &DirectoryChooser::OnBnClickedCancel)
 	ON_BN_CLICKED(IDC_DEFAULT_TYPE, OnBnClickedDefaultType)
+	ON_BN_CLICKED(IDC_INDEX_NAMES, &DirectoryChooser::OnBnClickedDirIndex)
 END_MESSAGE_MAP()
 
 void SetWidthByContentInListBox(CDialog* pDlg, int nID)
@@ -230,6 +232,9 @@ BOOL DirectoryChooser::OnInitDialog()
 
 	for(uint i = 0; i < ops->Types.size(); i++) {
 		Types.AddString(ops->Types[i]);
+		if (ops->Types[i] == _T(".directory")) {
+			IndexNames.SetCheck(BST_CHECKED);
+		}
 	}
 
 	dbak = ops->Directories;
@@ -260,4 +265,26 @@ void DirectoryChooser::OnBnClickedCancel()
 	OnCancel();
 }
 
+void DirectoryChooser::OnBnClickedDirIndex()
+{
+	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
+	if (IndexNames.GetCheck() == BST_CHECKED) {
+		ops->Types.push_back(_T(".directory"));
+		Types.AddString(_T(".directory"));
+	} else {
+		for(vector<CString>::iterator it = ops->Types.begin(); it != ops->Types.end(); ) {
+			if (*it == _T(".directory")) {
+				ops->Types.erase(it);
+			} else {
+				it++;
+			}
+		}
+		int id = Types.FindStringExact(-1, _T(".directory"));
+		if (id != -1) {
+			Types.DeleteString(id);
+		}
+	}
+	
+	SetWidthByContentInListBox(this, IDC_LIST2);
+}
