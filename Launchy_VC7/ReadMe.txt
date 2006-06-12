@@ -6,7 +6,6 @@ Still todo:
 . Why does Launchy crash when started up quickly?!
 
 Bug Fixes:
-1) Unicode support in the ini file!  Yay :)
 2) Spelled 'translucency' correctly for the skin ini file :p
 3) Fixed up/down keys bringing forward a dropdown when no options are available
 4) Explicit check for equality in sorting rather than partial match, otherwise usage wins
@@ -18,3 +17,4 @@ Others:
 3) Removed association code
 4) Added donate code
 5) Added folder name indexing
+1) Unicode support in the ini file!  Yay :)

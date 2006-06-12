@@ -162,10 +162,12 @@ void DirectoryChooser::OnBnClickedDefaultDirectory()
 
 	ops->Directories.push_back(allMenus);
 	ops->Directories.push_back(myMenu);
+	ops->Directories.push_back(_T("utilities\\"));
+
 
 	Directories.AddString(allMenus);
 	Directories.AddString(myMenu);
-
+	Directories.AddString(_T("utilities\\"));
 
 	SetWidthByContentInListBox(this, IDC_LIST1);
 }
