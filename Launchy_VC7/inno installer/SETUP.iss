@@ -91,6 +91,17 @@ Source: ..\Skins\BioHazard\skin.ini; DestDir: {app}\Skins\BioHazard\; Flags: ign
 Source: ..\Skins\BioHazard\default.png; DestDir: {app}\Skins\BioHazard\; Flags: ignoreversion
 Source: ..\Skins\BioHazard\Author.txt; DestDir: {app}\Skins\BioHazard\; Flags: ignoreversion
 
+Source: ..\Skins\BlueMetal\background.bmp; DestDir: {app}\Skins\BlueMetal\; Flags: ignoreversion
+Source: ..\Skins\BlueMetal\skin.ini; DestDir: {app}\Skins\BlueMetal\; Flags: ignoreversion
+Source: ..\Skins\BlueMetal\default.png; DestDir: {app}\Skins\BlueMetal\; Flags: ignoreversion
+Source: ..\Skins\BlueMetal\Author.txt; DestDir: {app}\Skins\BlueMetal\; Flags: ignoreversion
+
+
+Source: ..\Skins\Top Tab\topTab.bmp; DestDir: {app}\Skins\Top Tab\; Flags: ignoreversion
+Source: ..\Skins\Top Tab\skin.ini; DestDir: {app}\Skins\Top Tab\; Flags: ignoreversion
+Source: ..\Skins\Top Tab\border.png; DestDir: {app}\Skins\Top Tab\; Flags: ignoreversion
+Source: ..\Skins\Top Tab\Author.txt; DestDir: {app}\Skins\Top Tab\; Flags: ignoreversion
+
 Source: ..\Skins\Black Glass\glass.bmp; DestDir: {app}\Skins\Black Glass\; Flags: ignoreversion
 Source: ..\Skins\Black Glass\skin.ini; DestDir: {app}\Skins\Black Glass\; Flags: ignoreversion
 Source: ..\Skins\Black Glass\border.png; DestDir: {app}\Skins\Black Glass\; Flags: ignoreversion
