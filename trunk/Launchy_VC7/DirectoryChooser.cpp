@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 IMPLEMENT_DYNAMIC(DirectoryChooser, CDialog)
 
 DirectoryChooser::DirectoryChooser(CWnd* pParent /*=NULL*/)
-	: CDialog(DirectoryChooser::IDD, pParent)
+: CDialog(DirectoryChooser::IDD, pParent)
 {
 
 }
@@ -66,31 +66,31 @@ END_MESSAGE_MAP()
 
 void SetWidthByContentInListBox(CDialog* pDlg, int nID)
 {
-if (nID <= 0|| pDlg == NULL) return;
-CWnd* pWnd = (CWnd*)pDlg;
+	if (nID <= 0|| pDlg == NULL) return;
+	CWnd* pWnd = (CWnd*)pDlg;
 
-CListBox* pCB = (CListBox*)pWnd->GetDlgItem(nID);
-if (pCB == NULL) return;
+	CListBox* pCB = (CListBox*)pWnd->GetDlgItem(nID);
+	if (pCB == NULL) return;
 
-int origSize = pCB->GetHorizontalExtent();
-int maxSize = origSize;
+	int origSize = pCB->GetHorizontalExtent();
+	int maxSize = origSize;
 
-CDC* pDC = pWnd->GetDC();
-CString cStr;
-int str_num = pCB->GetCount();
-for (int i = 0; i < str_num; i++)
-{
-pCB->GetText(i, cStr);
+	CDC* pDC = pWnd->GetDC();
+	CString cStr;
+	int str_num = pCB->GetCount();
+	for (int i = 0; i < str_num; i++)
+	{
+		pCB->GetText(i, cStr);
 
-CSize strSize = pDC->GetOutputTextExtent(cStr);
-if (strSize.cx > maxSize)
-maxSize = strSize.cx;
-}
+		CSize strSize = pDC->GetOutputTextExtent(cStr);
+		if (strSize.cx > maxSize)
+			maxSize = strSize.cx;
+	}
 
-// in case when adding to list, existing items may be
-// longer than newer ones, so may not want to resize
-if (maxSize > origSize)
-pCB->SetHorizontalExtent(maxSize);
+	// in case when adding to list, existing items may be
+	// longer than newer ones, so may not want to resize
+	if (maxSize > origSize)
+		pCB->SetHorizontalExtent(maxSize);
 }
 
 // DirectoryChooser message handlers
@@ -100,29 +100,29 @@ void DirectoryChooser::OnBnClickedAddDirectory()
 	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
 	// TODO: Add your control notification handler code here
-    BROWSEINFO bi = { 0 };
-    bi.lpszTitle = _T("Pick a Directory");
+	BROWSEINFO bi = { 0 };
+	bi.lpszTitle = _T("Pick a Directory");
 	bi.hwndOwner = GetSafeHwnd();
-    LPITEMIDLIST pidl = SHBrowseForFolder ( &bi );
-    if ( pidl != 0 )
-    {
-        // get the name of the folder
-        TCHAR path[MAX_PATH];
-        if ( SHGetPathFromIDList ( pidl, path ) )
-        {
-            // ( "Selected Folder: %s\n", path );
+	LPITEMIDLIST pidl = SHBrowseForFolder ( &bi );
+	if ( pidl != 0 )
+	{
+		// get the name of the folder
+		TCHAR path[MAX_PATH];
+		if ( SHGetPathFromIDList ( pidl, path ) )
+		{
+			// ( "Selected Folder: %s\n", path );
 			ops->Directories.push_back(path);
 			Directories.AddString(path);
-        }
+		}
 
-        // free memory used
-        IMalloc * imalloc = 0;
-        if ( SUCCEEDED( SHGetMalloc ( &imalloc )) )
-        {
-            imalloc->Free ( pidl );
-            imalloc->Release ( );
-        }
-    }
+		// free memory used
+		IMalloc * imalloc = 0;
+		if ( SUCCEEDED( SHGetMalloc ( &imalloc )) )
+		{
+			imalloc->Free ( pidl );
+			imalloc->Release ( );
+		}
+	}
 	SetWidthByContentInListBox(this, IDC_LIST1);
 }
 
@@ -150,9 +150,7 @@ void DirectoryChooser::OnBnClickedRemoveDirectory()
 void DirectoryChooser::OnBnClickedDefaultDirectory()
 {
 	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
-//	for(vector<CString>::iterator it = ops->Directories.begin(); it != ops->Directories.end(); ) {
-//		ops->Directories.erase(it);
-//	}
+
 	ops->Directories.clear();
 	Directories.ResetContent();
 
@@ -250,9 +248,6 @@ BOOL DirectoryChooser::OnInitDialog()
 
 void DirectoryChooser::OnBnClickedOk()
 {
-	// TODO: Add your control notification handler code here
-//	shared_ptr<LaunchySmarts> smarts = ((CLaunchyDlg*)AfxGetMainWnd())->smarts;
-//	smarts->LoadCatalog();
 	OnOK();
 }
 
@@ -287,6 +282,6 @@ void DirectoryChooser::OnBnClickedDirIndex()
 			Types.DeleteString(id);
 		}
 	}
-	
+
 	SetWidthByContentInListBox(this, IDC_LIST2);
 }

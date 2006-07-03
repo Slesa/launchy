@@ -34,6 +34,7 @@ public:
 	CString croppedName;
 	CString lowName;
 	int usage;
+	bool isHistory;
 //	Launcher* launcher;
 	
 	void set(CString p, CString type, Launcher* l, int u = 0);

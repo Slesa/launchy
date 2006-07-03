@@ -38,7 +38,7 @@ void FileRecord::Serialize( CArchive& archive )
 		archive >> fullPath >> croppedName >> lowName >> usage;
 }
 
-FileRecord::FileRecord(void)
+FileRecord::FileRecord(void)	 : isHistory(false)
 {
 }
 
