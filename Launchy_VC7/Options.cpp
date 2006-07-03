@@ -186,9 +186,6 @@ void Options::UpgradeCleanup(void)
 		disk.RemoveDirectory(dir);
 	}
 
-	if (ver < 95) {
-		ini->DeleteKey(_T("Associations"));
-	}
 
 	if (ver < LAUNCHY_VERSION) {
 		installTime = CTime::GetCurrentTime();
@@ -205,4 +202,20 @@ void Options::SetSkin(CString name)
 			break;
 		}
 	}
+}
+
+void Options::Associate(CString entry, CString destination) 	 
+{ 	 
+	ini->SetValue(_T("Associations"), entry, destination); 	 
+} 	 
+
+
+CString Options::GetAssociation(CString query) 	 
+{ 	 
+	CString res = ini->GetValue(_T("Associations"), query, _T("")); 	 
+	if (res != _T("")) 	 
+		return res; 	 
+	return _T(""); 	 
+
+	return res; 	 
 }

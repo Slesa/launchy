@@ -89,6 +89,9 @@ template <> void AFXAPI SerializeElements <ArchiveType> ( CArchive& ar,
 
 bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 {
+	if (a->isHistory) { return true; }
+	if (b->isHistory) { return false; }
+
 	bool localEqual = a->lowName == searchTxt;
 	bool otherEqual = b->lowName == searchTxt;
 
@@ -349,12 +352,22 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 
 	lastUpdateTxt = txt;
 
+	CString history = pDlg->options->GetAssociation(txt);
 	matches.clear();
 	FindMatches(txt);
 
-
+	// Set the preferred bit for the history match 	 
+	size_t count = matches.size(); 	 
+	for(size_t i = 0; i < count; i++) { 	 
+		if (matches[i]->croppedName == history) { 	 
+			matches[i]->isHistory = true; 	 
+		} 	 
+	}
 	sort(matches.begin(), matches.end(), less_than);
 
+	// Unset the preferred bit for the history match 	 
+	if (count > 0) 	 
+		matches[0]->isHistory = false;
 
 	if (matches.size() > 0) {
 
