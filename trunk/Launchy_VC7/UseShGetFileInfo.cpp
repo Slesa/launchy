@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "stdafx.h"
 #include "UseShGetFileInfo.h"
+#include "LaunchySmarts.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -54,11 +55,14 @@ HIMAGELIST  CUseShGetFileInfo::GetSystemImageListHandle( BOOL bSmallIcon )
 	HIMAGELIST  hSystemImageList; 
 	SHFILEINFO    ssfi; 
 
+	CString winpath;
+	LaunchySmarts::GetShellDir(CSIDL_WINDOWS, winpath);
+	CString windrive = winpath.Left(3);
    if (bSmallIcon)
    {
 	hSystemImageList = 
     (HIMAGELIST)SHGetFileInfo( 
-    (LPCTSTR)_T("c:\\"), 
+	windrive.GetBuffer(), 
      0, 
      &ssfi, 
      sizeof(SHFILEINFO), 
@@ -68,7 +72,7 @@ HIMAGELIST  CUseShGetFileInfo::GetSystemImageListHandle( BOOL bSmallIcon )
    {
 		hSystemImageList = 
     (HIMAGELIST)SHGetFileInfo( 
-    (LPCTSTR)_T("c:\\"), 
+    windrive.GetBuffer(), 
      0, 
      &ssfi, 
      sizeof(SHFILEINFO), 

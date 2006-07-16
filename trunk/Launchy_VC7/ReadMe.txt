@@ -1,3 +1,8 @@
+Changes since 0.9.6:
+. Brought back in the association code
+. Fixed a no icon bug (looked up icon on c: rather than find the windows drive)
+. Donate screen could come up twice if you rebooted, this is annoying.  I fixed this by forcing a store after the options change.
+
 Changes since 0.9.3:
 
 Code fixes to do once I can read up about them:

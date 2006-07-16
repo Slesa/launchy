@@ -59,7 +59,9 @@ BOOL CHotkeyDialog::OnInitDialog()
 	vchar.InsertString(0,_T("F10"));
 	vchar.InsertString(0,_T("Esc"));
 	vchar.InsertString(0,_T("Space"));
-
+	vchar.InsertString(0,_T("Enter")); 
+	vchar.InsertString(0,_T("Backspace")); 
+	vchar.InsertString(0,_T("Tab")); 
 
 	vchar.SetCurSel(0);
 
@@ -135,6 +137,12 @@ void CHotkeyDialog::OnBnClickedOk()
 		vkey = VK_F9;
 	else if (vkeystr == _T("F10"))
 		vkey = VK_F10;
+	else if (vkeystr == _T("Enter")) 
+		vkey = VK_RETURN; 
+	else if (vkeystr == _T("Backspace")) 
+		vkey = VK_BACK; 
+	else if (vkeystr == _T("Tab")) 
+		vkey = VK_TAB; 
 	else {
 		vkey = vkeystr[0];
 	}

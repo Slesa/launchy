@@ -525,6 +525,7 @@ bool CLaunchyDlg::DoDonate(void)
 	if (options->installTime != 0 && options->installTime + span <= time) {
 		smarts->exeLauncher.Run(_T("http://www.launchy.net/donate.html"));
 		options->installTime = CTime(0);
+		options->Store();
 		return true;
 	}
 	return false;
