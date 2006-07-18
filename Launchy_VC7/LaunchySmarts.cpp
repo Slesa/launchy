@@ -197,8 +197,8 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 
 		ArchiveType at(in[i].name, rec->usage);
 		out.Add(at);
-		if (catalog[rec->lowName] == true) continue;
-		catalog[rec->lowName] = true;
+		//		if (catalog[rec->lowName] == true) continue;
+		//		catalog[rec->lowName] = true;
 		bun->catFiles += 1;
 		added.RemoveAll();
 		for(int i = 0; i < rec->lowName.GetLength( ); i++) {
@@ -359,7 +359,7 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 	// Set the preferred bit for the history match 	 
 	size_t count = matches.size(); 	 
 	for(size_t i = 0; i < count; i++) { 	 
-		if (matches[i]->croppedName == history) { 	 
+		if (matches[i]->fullPath == history) { 	 
 			matches[i]->isHistory = true; 	 
 		} 	 
 	}
@@ -413,7 +413,7 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 
 
 
-//			int index = pDlg->InputBox.AddString(fileName);
+			//			int index = pDlg->InputBox.AddString(fileName);
 			int index = pDlg->InputBox.AddString(matches[i]->croppedName);
 			DropItem* data = new DropItem();
 
@@ -575,3 +575,9 @@ void LaunchySmarts::archiveCatalog(void)
 	theFile.Close();
 }
 
+
+CString LaunchySmarts::GetMatchPath(int sel)
+{
+	ASSERT(matches.size() >= sel+1);
+	return matches[sel]->fullPath;
+}

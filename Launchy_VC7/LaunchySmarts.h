@@ -90,4 +90,5 @@ public:
 	void LoadFirstTime();
 	void archiveCatalog(void);
 	CString lastUpdateTxt;
+	CString GetMatchPath(int sel);
 };

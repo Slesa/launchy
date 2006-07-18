@@ -35,7 +35,7 @@ SmartComboBox::SmartComboBox()
 {
 	m_RemoveFrame = false;
 	m_RemoveButton = false;
-
+	cloneSelect = -1;
 
 	CComboBox();
 }
@@ -164,12 +164,18 @@ void SmartComboBox::OnCbnCloseup()
 {
 	int sel = m_listbox.GetCurSel();
 	if (sel != LB_ERR) {
-
+		CString szSelected;
 		m_listbox.GetText(sel, searchTxt);
 		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 		if (pDlg == NULL) return;
 
 		pDlg->smarts->Update(searchTxt);
+		if (typed == searchTxt && sel != 0) {	
+			cloneSelect = sel;
+		} else {
+			cloneSelect = -1;
+		}
+
 	}
 	SetCurSel(-1);
 }
@@ -185,9 +191,12 @@ void SmartComboBox::OnCbnSelchange()
 	if (GetDroppedState()) {
 		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 		m_listbox.GetText(m_listbox.GetCurSel(), searchTxt);
+
 		pDlg->smarts->Update(searchTxt,false);
-	}	
+	}
 }
+
+
 void SmartComboBox::OnCbnDropdown()
 {
 	//	SmartComboBox* pmyComboBox = this;
@@ -295,7 +304,6 @@ void SmartComboBox::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 	CRect rText;
 	CRect rIcon;
 	CDC* dc = CDC::FromHandle(lpDrawItemStruct->hDC);
-
 
 
 	if ((int)lpDrawItemStruct->itemID < 0)
