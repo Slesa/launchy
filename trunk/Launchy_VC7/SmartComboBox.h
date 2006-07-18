@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // SmartComboBox
 
+#define WM_LAUNCHY_MOUSE_SELECT (LAUNCHY_DB_DONE + 1)
+
 struct DropItem {
 	HICON icon;
 	CString longpath;
@@ -65,6 +67,7 @@ public:
 	void SetSmallFont(CFont* font, COLORREF rgb);
 	COLORREF m_FontSmallRGB;
 	CFont* m_FontSmall;
+	int cloneSelect;
 
 	bool m_RemoveFrame;
 	bool m_RemoveButton;

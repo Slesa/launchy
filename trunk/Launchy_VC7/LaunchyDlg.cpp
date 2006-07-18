@@ -264,9 +264,20 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 			this->ShowWindows(SW_HIDE);
 			this->Visible = false;
 			if (InputBox.typed != searchTxt) { 	 
-				CString x; 	 
-				options->Associate(InputBox.typed, searchTxt); 	 
+//				CString x;
+				options->Associate(InputBox.typed, smarts->GetMatchPath(0)); 	
+				options->Store();
+			} else if (InputBox.cloneSelect != -1) {
+				// This happens when the dropdown box was called
+				// and the selected text equaled the typed text
+				// but it wasn't the 0th item in the list
+				options->Associate(InputBox.typed, smarts->GetMatchPath(InputBox.cloneSelect));
+				options->Store();
+				InputBox.cloneSelect = -1;
+				smarts->Update(InputBox.typed);
 			}
+
+
 			KillTimer(DELAY_TIMER);
 			smarts->Launch();
 			pMsg->wParam = NULL;
