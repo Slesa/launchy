@@ -22,9 +22,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "stdafx.h"
 #include "TypeEdit.h"
 #include "OpaqueListBox.h"
+//#include "LListBox.h"
 //#include "ColorCombo.h"
 
 // SmartComboBox
+
+struct DropItem {
+	HICON icon;
+	CString longpath;
+	CString lesspath;
+
+	~DropItem() {
+		if (icon != NULL) {
+			DestroyIcon(icon);
+		}
+	}
+};
 
 class SmartComboBox : public CComboBox
 {
@@ -33,7 +46,7 @@ class SmartComboBox : public CComboBox
 public:
 	SmartComboBox();
 	virtual ~SmartComboBox();
-
+private:
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
@@ -49,6 +62,9 @@ public:
 	afx_msg void OnCbnEditchange();
 	CString typed;
 	afx_msg void OnCbnSelchange();
+	void SetSmallFont(CFont* font, COLORREF rgb);
+	COLORREF m_FontSmallRGB;
+	CFont* m_FontSmall;
 
 	bool m_RemoveFrame;
 	bool m_RemoveButton;
@@ -63,6 +79,8 @@ private:
 	afx_msg void OnPaint();
 public:
 	void CleanText(void);
+	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 };
 
 

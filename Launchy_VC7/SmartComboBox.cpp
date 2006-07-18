@@ -35,11 +35,14 @@ SmartComboBox::SmartComboBox()
 {
 	m_RemoveFrame = false;
 	m_RemoveButton = false;
+
+
 	CComboBox();
 }
 
 SmartComboBox::~SmartComboBox()
 {
+	ASSERT(icons.GetSafeHandle() == NULL);
 }
 
 
@@ -47,12 +50,16 @@ BEGIN_MESSAGE_MAP(SmartComboBox, CComboBox)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
 	ON_WM_DESTROY()
+	ON_WM_DRAWITEM_REFLECT()
+
 	ON_CONTROL_REFLECT(CBN_EDITUPDATE, &SmartComboBox::OnCbnEditupdate)
 	//	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnCbnSelchange)
 	ON_CONTROL_REFLECT(CBN_CLOSEUP, &SmartComboBox::OnCbnCloseup)
 	ON_CONTROL_REFLECT(CBN_EDITCHANGE, &SmartComboBox::OnCbnEditchange)
 	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnCbnSelchange)
 	ON_CONTROL_REFLECT(CBN_DROPDOWN, &SmartComboBox::OnCbnDropdown)
+	ON_WM_DRAWITEM()
+	ON_WM_MEASUREITEM()
 END_MESSAGE_MAP()
 
 
@@ -69,7 +76,7 @@ HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	//HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	pDC->SetTextColor(m_crText);
-	//	pDC->SetBkColor(m_crBackGnd);
+	pDC->SetBkColor(m_crBackGnd);
 	pDC->SetBkMode(TRANSPARENT);
 
 
@@ -100,7 +107,6 @@ HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 
 	return m_brBackGnd;
-
 }
 
 void SmartComboBox::SetBackColor(COLORREF rgb)
@@ -184,32 +190,45 @@ void SmartComboBox::OnCbnSelchange()
 }
 void SmartComboBox::OnCbnDropdown()
 {
-	SmartComboBox* pmyComboBox = this;
+	//	SmartComboBox* pmyComboBox = this;
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	//	pmyComboBox->SetCurSel(-1);
 
 	// Find the longest string in the combo box.
 	CString str;
 	CSize   sz;
 	int     dx=0;
-	CDC*    pDC = pmyComboBox->GetDC();
-	for (int i=0;i < pmyComboBox->GetCount();i++)
+	CDC*    pDC = GetDC();
+	pDC->SelectObject(m_FontSmall);
+	for (int i=0;i < m_listbox.GetCount();i++)
 	{
-		pmyComboBox->GetLBText( i, str );
-		sz = pDC->GetTextExtent(str);
-
+		m_listbox.SetItemHeight(i, 40);
+		//		pmyComboBox->GetLBText( i, str );		
+		//		sz = pDC->GetTextExtent(str);
+		DropItem* d = (DropItem*) m_listbox.GetItemDataPtr(i);
+		sz = pDC->GetTextExtent(d->lesspath);
 		if (sz.cx > dx)
 			dx = sz.cx;
 	}
-	pmyComboBox->ReleaseDC(pDC);
+	ReleaseDC(pDC);
+
 
 	// Adjust the width for the vertical scroll bar and the left and
 	// right border.
-	dx += ::GetSystemMetrics(SM_CXVSCROLL);// + 2*::GetSystemMetrics(SM_CXEDGE);
+	dx += ::GetSystemMetrics(SM_CXVSCROLL) + 62;// + 2*::GetSystemMetrics(SM_CXEDGE);
 
 	// Set the width of the list box so that every item is completely visible.
-	pmyComboBox->SetDroppedWidth(dx);
-}
+	SetDroppedWidth(dx);
 
+
+	for(int i = 0; i < m_listbox.GetCount(); i++) {
+		DropItem* data = (DropItem*) m_listbox.GetItemDataPtr(i);
+		if (data->longpath.Find(_T(".directory")) != -1)
+			data->icon = pDlg->IconInfo.GetFolderIconHandle(false);
+		else
+			data->icon = pDlg->IconInfo.GetIconHandleNoOverlay(data->longpath, false);
+	}
+}
 
 void SmartComboBox::OnPaint()
 {
@@ -258,7 +277,7 @@ void SmartComboBox::OnPaint()
 
 void SmartComboBox::CleanText(void)
 {
-	
+
 	if (m_Transparent) {
 		CWnd* pParent = GetParent();
 		CRect rect;
@@ -269,4 +288,129 @@ void SmartComboBox::CleanText(void)
 		pParent->InvalidateRect(rect, TRUE); 
 	}
 
+}
+void SmartComboBox::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
+	CRect rItem;
+	CRect rText;
+	CRect rIcon;
+	CDC* dc = CDC::FromHandle(lpDrawItemStruct->hDC);
+
+
+
+	if ((int)lpDrawItemStruct->itemID < 0)
+	{
+		// If there are no elements in the List Box
+		// based on whether the list box has Focus or not
+		// draw the Focus Rect or Erase it,
+		if ((lpDrawItemStruct->itemAction & ODA_FOCUS) && (lpDrawItemStruct->itemState & ODS_FOCUS))
+		{
+			dc->DrawFocusRect(&lpDrawItemStruct->rcItem);
+		}
+		else if ((lpDrawItemStruct->itemAction & ODA_FOCUS) && !(lpDrawItemStruct->itemState & ODS_FOCUS))
+		{
+			dc->DrawFocusRect(&lpDrawItemStruct->rcItem);
+		}
+		return;
+	}
+
+	// String to store the text, which will be added to the CListBox
+	CString strText;
+
+	// Get the item text.
+	m_listbox.GetText((int)lpDrawItemStruct->itemID, strText);
+	//	AfxMessageBox(strText);
+
+	//Initialize the Item's row
+	rItem = lpDrawItemStruct->rcItem;
+
+	//The icon that the sample has created has a width of 32 pixels
+	rIcon = lpDrawItemStruct->rcItem;
+	rIcon.bottom = rIcon.top + 32;
+	rIcon.right = rIcon.left + 32;
+
+	//Start drawing the text 2 pixels after the icon
+	rText.left = rIcon.right + 2;
+	rText.top = rIcon.top;
+
+	UINT nFormat = DT_LEFT | DT_SINGLELINE | DT_VCENTER;
+	if (GetStyle() & LBS_USETABSTOPS)
+		nFormat |= DT_EXPANDTABS;
+
+	// If item selected, draw the highlight rectangle.
+	// Or if item deselected, draw the rectangle using the window color.
+	if ((lpDrawItemStruct->itemState & ODS_SELECTED) && (lpDrawItemStruct->itemAction & (ODA_SELECT | ODA_DRAWENTIRE)))
+	{
+		CBrush br(::GetSysColor(COLOR_HIGHLIGHT));
+		dc->FillRect(&rItem, &br);
+	}
+	else if (!(lpDrawItemStruct->itemState & ODS_SELECTED) &&
+		(lpDrawItemStruct->itemAction & ODA_SELECT))
+	{
+		CBrush br(dc->GetBkColor());
+		//	CBrush br(::GetSysColor(COLOR_WINDOW));
+		dc->FillRect(&rItem, &br);
+	}
+
+	// If the item has focus, draw the focus rect.
+	// If the item does not have focus, erase the focus rect.
+	if ((lpDrawItemStruct->itemAction & ODA_FOCUS) && (lpDrawItemStruct->itemState & ODS_FOCUS))
+	{
+		dc->DrawFocusRect(&rItem);
+	}
+	else if ((lpDrawItemStruct->itemAction & ODA_FOCUS) && !(lpDrawItemStruct->itemState & ODS_FOCUS))
+	{
+		dc->DrawFocusRect(&rItem);
+	}
+
+	// To draw the Text set the background mode to Transparent.
+	int iBkMode = dc->SetBkMode(TRANSPARENT);
+
+	//	COLORREF crText;
+
+	//	if (lpDrawItemStruct->itemState & ODS_SELECTED)
+	//		crText = dc->SetTextColor(::GetSysColor(COLOR_HIGHLIGHTTEXT));
+	//	else if (lpDrawItemStruct->itemState & ODS_DISABLED)
+	//		crText = dc->SetTextColor(::GetSysColor(COLOR_GRAYTEXT));
+	//	else
+	//		crText = dc->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
+
+
+	DropItem* data = (DropItem*) m_listbox.GetItemDataPtr((int) lpDrawItemStruct->itemID);
+
+
+	CPoint pt(rIcon.left,rIcon.top);
+	//	icons.Draw(dc,0,pt,ILD_NORMAL);
+	dc->DrawIcon(pt.x,pt.y,data->icon);
+
+
+
+
+	dc->TextOut(rText.left,rText.top,strText);
+	CSize cs = dc->GetTextExtent(strText);
+
+	int oldColor = dc->GetTextColor();
+	CFont* oldFont = dc->GetCurrentFont();
+
+	dc->SelectObject(m_FontSmall);
+	dc->SetTextColor(m_FontSmallRGB);
+	dc->TextOut(rText.left,rText.top + cs.cy + 1,data->lesspath);
+
+	dc->SelectObject(oldFont);
+	dc->SetTextColor(oldColor);
+
+}
+
+
+void SmartComboBox::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	// TODO: Add your message handler code here and/or call default
+	lpMeasureItemStruct->itemHeight = 32;
+}
+
+
+void SmartComboBox::SetSmallFont(CFont* font, COLORREF rgb)
+{
+	m_FontSmall = font;	
+	m_FontSmallRGB = rgb;
 }

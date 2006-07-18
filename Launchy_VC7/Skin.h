@@ -55,12 +55,19 @@ public:
 	int input_italics;
 	int input_bold;
 
+	CString inputSmall_fontName;
+	int inputSmall_fontSize;
+	int inputSmall_italics;
+	int inputSmall_bold;
+
+
 	CString results_fontName;
 	int results_fontSize;
 	int results_italics;
 	int results_bold;
 
 	int inputFontRGB;
+	int inputSmallFontRGB;
 	int resultFontRGB;
 
 	CRect backRect;
