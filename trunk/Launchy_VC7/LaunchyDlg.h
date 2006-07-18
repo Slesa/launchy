@@ -55,6 +55,7 @@ public:
 // Implementation
 protected:
 	CFont* m_FontInput;
+	CFont* m_FontInputSmall;
 	CFont* m_FontResult;
 	HICON m_hIcon;
 	BOOL atLaunch;
@@ -66,7 +67,7 @@ protected:
 	LRESULT OnHotKey(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 public:
-	
+	CUseShGetFileInfo IconInfo;
 	shared_ptr<LaunchySmarts> smarts;
 //	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 //	afx_msg BOOL OnEraseBkgnd(CDC* pDC);

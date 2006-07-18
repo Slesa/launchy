@@ -83,6 +83,12 @@ void Skin::parseSkinFile(void)
 	input_bold = ini->GetValueI(_T("Widgets"), _T("TextEntry_Font_Bold"), 0);
 	if (input_bold == 1) input_bold = 700;
 
+	inputSmall_fontName = ini->GetValue(_T("Widgets"), _T("TextEntrySmall_Font"), input_fontName);
+	inputSmall_fontSize = ini->GetValueI(_T("Widgets"), _T("TextEntrySmall_Font_Size"), input_fontSize);
+	inputSmall_italics = ini->GetValueI(_T("Widgets"), _T("TextEntrySmall_Font_Italics"), 0);
+	inputSmall_bold = ini->GetValueI(_T("Widgets"), _T("TextEntrySmall_Font_Bold"), 0);
+	if (inputSmall_bold == 1) inputSmall_bold = 700;
+
 	results_fontName = ini->GetValue(_T("Widgets"), _T("Results_Font"), _T("Trebuchet MS"));
 	results_fontSize = ini->GetValueI(_T("Widgets"), _T("Results_Font_Size"), 10);
 	results_italics = ini->GetValueI(_T("Widgets"), _T("Results_Font_Italics"), 0);
@@ -97,7 +103,9 @@ void Skin::parseSkinFile(void)
 	resultTransparent = ini->GetValueB(_T("Widgets"), _T("Results_TransparentBkgnd"), false);
 
 	inputRGB = stringToRGB(ini->GetValue(_T("Widgets"), _T("TextEntry_Color"),_T("255x255x255")));
-	inputFontRGB = stringToRGB(ini->GetValue(_T("Widgets"), _T("TextEntry_Font_Color"),_T("255x255x255")));
+	CString inS = ini->GetValue(_T("Widgets"), _T("TextEntry_Font_Color"),_T("255x255x255"));
+	inputFontRGB = stringToRGB(inS);
+	inputSmallFontRGB = stringToRGB(ini->GetValue(_T("Widgets"), _T("TextEntrySmall_Font_Color"),inS));
 	resultRGB = stringToRGB(ini->GetValue(_T("Widgets"), _T("Results_Color"),_T("255x255x255")));
 	resultFontRGB = stringToRGB(ini->GetValue(_T("Widgets"), _T("Results_Font_Color"),_T("255x255x255")));
 }

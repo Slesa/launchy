@@ -105,8 +105,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma warning( disable : 4706 )
 
-#define Trigger( a)	if( m_feedbackWindow ) m_feedbackWindow->SetWindowText( a );
-
+//#define Trigger( a)	if( m_feedbackWindow ) m_feedbackWindow->SetWindowText( a );
+#define Trigger(a) 
 ////////////////////////////////////////////////////////////////////
 // CDiskObject construction/destruction/initialization
 

@@ -1,3 +1,8 @@
+Where I've left off:
+ Working on getting the displayed strings to be correct in the dropdown.  The short name should have the extension and the long name should be
+ the last 50 chars of the path but without the filename.
+
+
 Changes since 0.9.6:
 . Brought back in the association code
 . Fixed a no icon bug (looked up icon on c: rather than find the windows drive)

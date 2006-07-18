@@ -241,7 +241,7 @@ UINT ScanStartMenu(LPVOID pParam)
 		CStringArray dirs;
 		BOOL result = disk.EnumAllDirectories( ops->Directories[i], dirs);
 		dirs.Add(ops->Directories[i]);
-		
+
 		for(int i = 0; i < dirs.GetSize(); i++) {
 			CString x = dirs[i].TrimRight(_T("\\")) + _T(".directory");
 			files.Add(x);
@@ -373,9 +373,9 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 
 		HICON hNew;
 		if (matches[0]->fullPath.Find(_T(".directory")) != -1) {
-			hNew = IconInfo.GetFolderIconHandle(false);
+			hNew = pDlg->IconInfo.GetFolderIconHandle(false);
 		} else {
-			hNew = IconInfo.GetIconHandleNoOverlay(matches[0]->fullPath, false);
+			hNew = pDlg->IconInfo.GetIconHandleNoOverlay(matches[0]->fullPath, false);
 		}
 		HICON h = pDlg->IconPreview.SetIcon(hNew);
 		if (h != hNew) {
@@ -392,12 +392,39 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 
 	if (UpdateDropdown) {
 
+		vector<DropItem*> oldData;
+		for (int i = 0; i < pDlg->InputBox.GetCount(); i++) {
+			oldData.push_back((DropItem*) pDlg->InputBox.GetItemDataPtr(i));
+		}
+
 		pDlg->InputBox.m_listbox.ResetContent();
+
+		for(int i = 0; i < oldData.size(); i++) {
+			delete oldData[i];
+		}
+
 		size_t size = matches.size();
 		for(size_t i = 0; i < size && i < 10; i++) {
-			CString blah = matches[i]->croppedName;
-			pDlg->InputBox.AddString(matches[i]->croppedName);
+			CString full = matches[i]->fullPath;
+
+
+			int ind = full.ReverseFind(_T('\\'));
+
+
+
+
+//			int index = pDlg->InputBox.AddString(fileName);
+			int index = pDlg->InputBox.AddString(matches[i]->croppedName);
+			DropItem* data = new DropItem();
+
+
+			data->longpath = full;
+			data->lesspath = full.Left(ind+1).Right(50);
+			data->icon = NULL;
+
+			pDlg->InputBox.SetItemDataPtr(index, (void*) data);
 		}
+
 	}
 
 }
@@ -405,7 +432,7 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 void LaunchySmarts::FindMatches(CString txt)
 {
 	getCatalogLock();
-//	txt.MakeLower();
+	//	txt.MakeLower();
 
 	bool set = false;
 	TCHAR mostInfo = -1;

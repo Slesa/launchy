@@ -435,14 +435,33 @@ void CLaunchyDlg::applySkin()
 
 	CFont* old1;
 	CFont* old2;
+	CFont* old3;
 
 	old1 = m_FontInput;
 	old2 = m_FontResult;
+	old3 = m_FontInputSmall;
 
 	m_FontInput = new CFont;
 	m_FontResult = new CFont;
+	m_FontInputSmall = new CFont;
 
-	m_FontInput->CreateFontW(
+	m_FontInputSmall->CreateFontW(
+	   options->skin->inputSmall_fontSize,                        // nHeight
+	   0,                         // nWidth
+	   0,                         // nEscapement
+	   0,                         // nOrientation
+	   options->skin->inputSmall_bold,						// nWeight
+	   options->skin->inputSmall_italics,                     // bItalic
+	   FALSE,                     // bUnderline
+	   0,                         // cStrikeOut
+	   ANSI_CHARSET,              // nCharSet
+	   OUT_DEFAULT_PRECIS,        // nOutPrecision
+	   CLIP_DEFAULT_PRECIS,       // nClipPrecision
+	   DEFAULT_QUALITY,           // nQuality
+	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
+	   options->skin->inputSmall_fontName);                 // lpszFacename	
+
+		m_FontInput->CreateFontW(
 		options->skin->input_fontSize,                        // nHeight
 	   0,                         // nWidth
 	   0,                         // nEscapement
@@ -476,6 +495,7 @@ void CLaunchyDlg::applySkin()
 	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
 	   options->skin->results_fontName);                 // lpszFacename	
 
+	InputBox.SetSmallFont(m_FontInputSmall,options->skin->inputSmallFontRGB);
 	InputBox.SetFont(m_FontInput,1);
 	Preview.SetFont(m_FontResult,1);
 
@@ -483,8 +503,10 @@ void CLaunchyDlg::applySkin()
 	if (old1 != NULL && old2 != NULL) {
 		old1->DeleteObject();
 		old2->DeleteObject();
+		old3->DeleteObject();
 		delete(old1);
 		delete(old2);
+		delete(old3);
 	}
 
 

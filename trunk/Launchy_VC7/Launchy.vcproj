@@ -177,6 +177,9 @@
 				RelativePath=".\LaunchySmarts.cpp">
 			</File>
 			<File
+				RelativePath=".\LListBox.cpp">
+			</File>
+			<File
 				RelativePath=".\OpaqueListBox.cpp">
 			</File>
 			<File
@@ -267,6 +270,9 @@
 			</File>
 			<File
 				RelativePath=".\LaunchySmarts.h">
+			</File>
+			<File
+				RelativePath=".\LListBox.h">
 			</File>
 			<File
 				RelativePath=".\OpaqueListBox.h">

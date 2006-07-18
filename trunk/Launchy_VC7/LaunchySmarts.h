@@ -88,7 +88,6 @@ public:
 	HANDLE hMutex;
 	void getStrings(CStringArray& strings);
 	void LoadFirstTime();
-	CUseShGetFileInfo IconInfo;
 	void archiveCatalog(void);
 	CString lastUpdateTxt;
 };
