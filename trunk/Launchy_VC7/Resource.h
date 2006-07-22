@@ -12,6 +12,7 @@
 #define IDD_DIRECTORIES                 150
 #define IDD_ALPHA_BORDER                151
 #define IDB_BITMAP1                     153
+#define IDD_ADVANCED_DIALOG             154
 #define IDC_COMBO1                      1000
 #define IDC_Input                       1000
 #define IDC_MOD_COMBO                   1000
@@ -31,8 +32,8 @@
 #define IDC_REMOVE_TYPE2                1012
 #define IDC_DEFAULT_TYPE                1012
 #define IDC_TREE1                       1014
-#define IDC_CHECK1                      1015
 #define IDC_INDEX_NAMES                 1015
+#define IDC_CHECK1                      1016
 #define ID_SKINS_CUSTOMDIRECTORIES      32771
 #define ID_SKINS_SKINS                  32772
 #define ID_SETTINGS_CUSTOMDIRECTORIES   32773
@@ -48,9 +49,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        154
+#define _APS_NEXT_RESOURCE_VALUE        155
 #define _APS_NEXT_COMMAND_VALUE         32782
-#define _APS_NEXT_CONTROL_VALUE         1016
+#define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

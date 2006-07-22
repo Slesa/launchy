@@ -341,7 +341,7 @@ void LaunchySmarts::LoadFirstTime()
 
 
 
-void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
+void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHistory)
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL)
@@ -359,7 +359,7 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 	// Set the preferred bit for the history match 	 
 	size_t count = matches.size(); 	 
 	for(size_t i = 0; i < count; i++) { 	 
-		if (matches[i]->fullPath == history) { 	 
+		if (matches[i]->fullPath == history || matches[i]->fullPath == oneTimeHistory) { 	 
 			matches[i]->isHistory = true; 	 
 		} 	 
 	}
@@ -404,16 +404,12 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown)
 		}
 
 		size_t size = matches.size();
-		for(size_t i = 0; i < size && i < 10; i++) {
+		for(size_t i = 0; i < size && i < pDlg->options->listLength; i++) {
 			CString full = matches[i]->fullPath;
 
 
 			int ind = full.ReverseFind(_T('\\'));
 
-
-
-
-			//			int index = pDlg->InputBox.AddString(fileName);
 			int index = pDlg->InputBox.AddString(matches[i]->croppedName);
 			DropItem* data = new DropItem();
 

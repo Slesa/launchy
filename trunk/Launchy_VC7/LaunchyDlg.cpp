@@ -94,11 +94,7 @@ BOOL CLaunchyDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 
-	// In order to subclass the combobox list and edit controls
-	// we have to first paint the controls to make sure the message
-	// mapping is setup before we use the controls.
-	InputBox.ShowDropDown(true);
-	InputBox.ShowDropDown(false);
+
 
 	SetWindowLong(GetSafeHwnd(), GWL_EXSTYLE, GetWindowLong(GetSafeHwnd(), GWL_EXSTYLE) | WS_EX_TOOLWINDOW);
 
@@ -112,11 +108,27 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 
 	options.reset(new Options());
+/*
+	if (!options->stickyWindow) {
+		this->ShowWindows(false);
+		this->Visible = false;
+	} else {
+		this->ShowWindows(true);
+		this->Visible = true;
+		this->ActivateTopParent();
+	}
+*/
 	smarts.reset(new LaunchySmarts());
 
-	this->ShowWindows(false);
 
 	applySkin();
+
+
+	// In order to subclass the combobox list and edit controls
+	// we have to first paint the controls to make sure the message
+	// mapping is setup before we use the controls.
+	InputBox.ShowDropDown(true);
+	InputBox.ShowDropDown(false);
 
 	BOOL m_isKeyRegistered = RegisterHotKey(GetSafeHwnd(), 100,
 		options->mod_key, options->vkey);
@@ -146,7 +158,7 @@ void CLaunchyDlg::OnPaint()
 		int cxIcon = GetSystemMetrics(SM_CXICON);
 		int cyIcon = GetSystemMetrics(SM_CYICON);
 		CRect rect;
-		GetClientRect(&rect);
+		GetClientRect(&rect); 
 		int x = (rect.Width() - cxIcon + 1) / 2;
 		int y = (rect.Height() - cyIcon + 1) / 2;
 
@@ -261,13 +273,22 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 		}
 		SetTimer(DELAY_TIMER, 1000, NULL);
 		if(pMsg->wParam==VK_RETURN) {
-			this->ShowWindows(SW_HIDE);
-			this->Visible = false;
-			if (InputBox.typed != searchTxt) { 	 
-//				CString x;
+			HideLaunchy();
+
+			if (InputBox.typed != searchTxt) {
+				CString x;
 				options->Associate(InputBox.typed, smarts->GetMatchPath(0)); 	
 				options->Store();
-			} else if (InputBox.cloneSelect != -1) {
+			}
+			
+			
+			//			this->ShowWindows(SW_HIDE);
+//			this->Visible = false;
+//			if (InputBox.typed != searchTxt) { 	 
+//				options->Associate(InputBox.typed, smarts->GetMatchPath(0)); 	
+//				options->Store();
+//			} else 
+/*			if (InputBox.cloneSelect != -1) {
 				// This happens when the dropdown box was called
 				// and the selected text equaled the typed text
 				// but it wasn't the 0th item in the list
@@ -276,7 +297,7 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 				InputBox.cloneSelect = -1;
 				smarts->Update(InputBox.typed);
 			}
-
+*/
 
 			KillTimer(DELAY_TIMER);
 			smarts->Launch();
@@ -538,6 +559,7 @@ void CLaunchyDlg::applySkin()
 
 	RedrawWindow();
 
+
 }
 LRESULT CLaunchyDlg::OnDBDone(UINT wParam, LONG lParam) {
 	smarts->Update(searchTxt, false);
@@ -545,8 +567,10 @@ LRESULT CLaunchyDlg::OnDBDone(UINT wParam, LONG lParam) {
 }
 void CLaunchyDlg::HideLaunchy(void)
 {
-	this->ShowWindows(SW_HIDE);
-	this->Visible = false;
+	if (!options->stickyWindow) {
+		this->ShowWindows(SW_HIDE);
+		this->Visible = false;
+	}
 	KillTimer(DELAY_TIMER);
 	InputBox.ShowDropDown(false);
 }

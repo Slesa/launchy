@@ -47,6 +47,8 @@ public:
 	CString userDir;
 	CTime installTime;
 	bool firstRun;
+	int listLength;
+	bool stickyWindow;
 	int posX;
 	int posY;
 	int ver;
