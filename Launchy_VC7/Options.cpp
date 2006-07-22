@@ -96,6 +96,9 @@ void Options::ParseIni(void)
 	posX = ini->GetValueI(_T("Position"), _T("pos_x"));
 	posY = ini->GetValueI(_T("Position"), _T("pos_y"));
 
+	listLength = ini->GetValueI(_T("Advanced"), _T("List Length"), 10);
+	stickyWindow = ini->GetValueB(_T("Advanced"), _T("Sticky Window"), false);
+
 	mod_key =  ini->GetValueI(_T("Hotkey"), _T("mod_key"), MOD_ALT);
 	vkey =  ini->GetValueI(_T("Hotkey"), _T("vkey"), VK_SPACE);
 
@@ -123,6 +126,9 @@ void Options::Store(void)
 	ini->SetValueI(_T("Launchy Information"), _T("Version"), LAUNCHY_VERSION);
 	ini->SetValueI(_T("Position"), _T("pos_x"), location.left);
 	ini->SetValueI(_T("Position"), _T("pos_y"), location.top);
+
+	ini->SetValueI(_T("Advanced"), _T("List Length"),  listLength);
+	ini->SetValueB(_T("Advanced"), _T("Sticky Window"), stickyWindow);
 
 	ini->SetValueI(_T("Hotkey"), _T("mod_key"), mod_key);
 	ini->SetValueI(_T("Hotkey"), _T("vkey"), vkey);

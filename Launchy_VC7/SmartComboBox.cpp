@@ -42,7 +42,6 @@ SmartComboBox::SmartComboBox()
 
 SmartComboBox::~SmartComboBox()
 {
-	ASSERT(icons.GetSafeHandle() == NULL);
 }
 
 
@@ -164,18 +163,13 @@ void SmartComboBox::OnCbnCloseup()
 {
 	int sel = m_listbox.GetCurSel();
 	if (sel != LB_ERR) {
-		CString szSelected;
+		DropItem* data = (DropItem*) GetItemDataPtr(sel);
+
 		m_listbox.GetText(sel, searchTxt);
 		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 		if (pDlg == NULL) return;
 
-		pDlg->smarts->Update(searchTxt);
-		if (typed == searchTxt && sel != 0) {	
-			cloneSelect = sel;
-		} else {
-			cloneSelect = -1;
-		}
-
+		pDlg->smarts->Update(searchTxt, true, data->longpath);
 	}
 	SetCurSel(-1);
 }
@@ -209,12 +203,12 @@ void SmartComboBox::OnCbnDropdown()
 	int     dx=0;
 	CDC*    pDC = GetDC();
 	pDC->SelectObject(m_FontSmall);
-	for (int i=0;i < m_listbox.GetCount();i++)
+	for (int i=0;i < GetCount();i++)
 	{
 		m_listbox.SetItemHeight(i, 40);
 		//		pmyComboBox->GetLBText( i, str );		
 		//		sz = pDC->GetTextExtent(str);
-		DropItem* d = (DropItem*) m_listbox.GetItemDataPtr(i);
+		DropItem* d = (DropItem*) GetItemDataPtr(i);
 		sz = pDC->GetTextExtent(d->lesspath);
 		if (sz.cx > dx)
 			dx = sz.cx;
@@ -230,8 +224,8 @@ void SmartComboBox::OnCbnDropdown()
 	SetDroppedWidth(dx);
 
 
-	for(int i = 0; i < m_listbox.GetCount(); i++) {
-		DropItem* data = (DropItem*) m_listbox.GetItemDataPtr(i);
+	for(int i = 0; i < GetCount(); i++) {
+		DropItem* data = (DropItem*) GetItemDataPtr(i);
 		if (data->longpath.Find(_T(".directory")) != -1)
 			data->icon = pDlg->IconInfo.GetFolderIconHandle(false);
 		else
@@ -374,15 +368,6 @@ void SmartComboBox::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 	// To draw the Text set the background mode to Transparent.
 	int iBkMode = dc->SetBkMode(TRANSPARENT);
 
-	//	COLORREF crText;
-
-	//	if (lpDrawItemStruct->itemState & ODS_SELECTED)
-	//		crText = dc->SetTextColor(::GetSysColor(COLOR_HIGHLIGHTTEXT));
-	//	else if (lpDrawItemStruct->itemState & ODS_DISABLED)
-	//		crText = dc->SetTextColor(::GetSysColor(COLOR_GRAYTEXT));
-	//	else
-	//		crText = dc->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
-
 
 	DropItem* data = (DropItem*) m_listbox.GetItemDataPtr((int) lpDrawItemStruct->itemID);
 
@@ -413,7 +398,7 @@ void SmartComboBox::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 void SmartComboBox::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
 	// TODO: Add your message handler code here and/or call default
-	lpMeasureItemStruct->itemHeight = 32;
+	lpMeasureItemStruct->itemHeight = 40;
 }
 
 
