@@ -104,6 +104,9 @@ void DirectoryChooser::OnBnClickedAddDirectory()
 	bi.lpszTitle = _T("Pick a Directory");
 	bi.hwndOwner = GetSafeHwnd();
 	LPITEMIDLIST pidl = SHBrowseForFolder ( &bi );
+
+	vector<CString> D = ops->get_Directories();
+
 	if ( pidl != 0 )
 	{
 		// get the name of the folder
@@ -111,7 +114,7 @@ void DirectoryChooser::OnBnClickedAddDirectory()
 		if ( SHGetPathFromIDList ( pidl, path ) )
 		{
 			// ( "Selected Folder: %s\n", path );
-			ops->Directories.push_back(path);
+			D.push_back(path);
 			Directories.AddString(path);
 		}
 
@@ -123,6 +126,8 @@ void DirectoryChooser::OnBnClickedAddDirectory()
 			imalloc->Release ( );
 		}
 	}
+
+	ops->set_Directories(D);
 	SetWidthByContentInListBox(this, IDC_LIST1);
 }
 
@@ -136,14 +141,16 @@ void DirectoryChooser::OnBnClickedRemoveDirectory()
 	Directories.GetText(Directories.GetCurSel(), name);
 	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
-	for(vector<CString>::iterator it = ops->Directories.begin(); it != ops->Directories.end(); ) {
+	vector<CString> D = ops->get_Directories();
+	for(vector<CString>::iterator it = D.begin(); it != D.end(); ) {
 		if (*it == name) {
-			ops->Directories.erase(it);
+			D.erase(it);
 		} else {
 			it++;
 		}
 	}
 
+	ops->set_Directories(D);
 	Directories.DeleteString(item);
 	SetWidthByContentInListBox(this, IDC_LIST1);
 }
@@ -151,17 +158,18 @@ void DirectoryChooser::OnBnClickedDefaultDirectory()
 {
 	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
-	ops->Directories.clear();
+	vector<CString> D;
 	Directories.ResetContent();
 
 	CString myMenu, allMenus;
 	LaunchySmarts::GetShellDir(CSIDL_COMMON_STARTMENU, allMenus);
 	LaunchySmarts::GetShellDir(CSIDL_STARTMENU, myMenu);
 
-	ops->Directories.push_back(allMenus);
-	ops->Directories.push_back(myMenu);
-	ops->Directories.push_back(_T("utilities\\"));
+	D.push_back(allMenus);
+	D.push_back(myMenu);
+	D.push_back(_T("utilities\\"));
 
+	ops->set_Directories(D);
 
 	Directories.AddString(allMenus);
 	Directories.AddString(myMenu);
@@ -178,19 +186,24 @@ void DirectoryChooser::OnBnClickedAddType()
 	if (txt == "")
 		return;
 	txt.MakeLower();
-	ops->Types.push_back(txt);
+
+	vector<CString> T = ops->get_Types();
+
+	T.push_back(txt);
 	Types.AddString(txt);
 	TypeEdit.SetWindowTextW(_T(""));
 	SetWidthByContentInListBox(this, IDC_LIST2);
+	ops->set_Types(T);
 }
 
 void DirectoryChooser::OnBnClickedDefaultType()
 {
 	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
-	ops->Types.clear();
+	vector<CString> T;
 	Types.ResetContent();
-	ops->Types.push_back(_T(".lnk"));
+	T.push_back(_T(".lnk"));
 	Types.AddString(_T(".lnk"));
+	ops->set_Types(T);
 }
 
 void DirectoryChooser::OnBnClickedRemoveType()
@@ -203,14 +216,16 @@ void DirectoryChooser::OnBnClickedRemoveType()
 	Types.GetText(Types.GetCurSel(), name);
 	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
-	for(vector<CString>::iterator it = ops->Types.begin(); it != ops->Types.end(); ) {
+	vector<CString> T = ops->get_Types();
+	for(vector<CString>::iterator it = T.begin(); it != T.end(); ) {
 		if (*it == name) {
-			ops->Types.erase(it);
+			T.erase(it);
 		} else {
 			it++;
 		}
 	}
 
+	ops->set_Types(T);
 	Types.DeleteString(item);
 	SetWidthByContentInListBox(this, IDC_LIST2);
 }
@@ -226,19 +241,22 @@ BOOL DirectoryChooser::OnInitDialog()
 	d.Format(_T("Indexing %d files"), smarts->catFiles);
 	numFiles.SetWindowTextW(d);
 
-	for(uint i = 0; i < ops->Directories.size(); i++) {
-		Directories.AddString(ops->Directories[i]);
+	vector<CString> D = ops->get_Directories();
+	vector<CString> T = ops->get_Types();
+
+	for(uint i = 0; i < D.size(); i++) {
+		Directories.AddString(D[i]);
 	}
 
-	for(uint i = 0; i < ops->Types.size(); i++) {
-		Types.AddString(ops->Types[i]);
-		if (ops->Types[i] == _T(".directory")) {
+	for(uint i = 0; i < T.size(); i++) {
+		Types.AddString(T[i]);
+		if (T[i] == _T(".directory")) {
 			IndexNames.SetCheck(BST_CHECKED);
 		}
 	}
 
-	dbak = ops->Directories;
-	tbak = ops->Types; 
+	dbak = D;
+	tbak = T; 
 
 	SetWidthByContentInListBox(this, IDC_LIST1);
 	SetWidthByContentInListBox(this, IDC_LIST2);
@@ -255,8 +273,8 @@ void DirectoryChooser::OnBnClickedOk()
 void DirectoryChooser::OnBnClickedCancel()
 {
 	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
-	ops->Directories = dbak;
-	ops->Types = tbak;
+	ops->set_Directories(dbak);
+	ops->set_Types(tbak);
 
 	// TODO: Add your control notification handler code here
 	OnCancel();
@@ -266,13 +284,15 @@ void DirectoryChooser::OnBnClickedDirIndex()
 {
 	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
+	vector<CString> T = ops->get_Types();
+
 	if (IndexNames.GetCheck() == BST_CHECKED) {
-		ops->Types.push_back(_T(".directory"));
+		T.push_back(_T(".directory"));
 		Types.AddString(_T(".directory"));
 	} else {
-		for(vector<CString>::iterator it = ops->Types.begin(); it != ops->Types.end(); ) {
+		for(vector<CString>::iterator it = T.begin(); it != T.end(); ) {
 			if (*it == _T(".directory")) {
-				ops->Types.erase(it);
+				T.erase(it);
 			} else {
 				it++;
 			}
@@ -283,5 +303,6 @@ void DirectoryChooser::OnBnClickedDirIndex()
 		}
 	}
 
+	ops->set_Types(T);
 	SetWidthByContentInListBox(this, IDC_LIST2);
 }

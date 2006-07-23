@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 
+
 #include "LaunchyDir.h"
 #include "iniFile.h"
 #include "boost/shared_ptr.hpp"
@@ -33,18 +34,18 @@ using namespace boost;
 class Options
 {
 public:
+
 	shared_ptr<CIniFile> ini;
 	vector<shared_ptr<Skin> > skins;
-//	CArray<CString> Types;
-//	CArray<CString> Directories;
+	//	CArray<CString> Types;
+	//	CArray<CString> Directories;
 
-	vector<CString> Types;
-	vector<CString> Directories;
 
 	shared_ptr<Skin> skin;
 	CString skinName;
 
-	CString userDir;
+	bool usbmode;
+
 	CTime installTime;
 	bool firstRun;
 	int listLength;
@@ -52,8 +53,15 @@ public:
 	int posX;
 	int posY;
 	int ver;
-//	CList<shared_ptr<LaunchyDir> > dirs;
-	vector<shared_ptr<LaunchyDir> > dirs;
+	//	CList<shared_ptr<LaunchyDir> > dirs;
+
+private:
+	HANDLE hMutex;
+	CString dataPath;
+	vector<CString> Types;
+	vector<CString> Directories;
+
+public:
 	Options(void);
 	~Options(void);
 	void ParseIni(void);
@@ -68,4 +76,20 @@ public:
 	void LoadSkins(void);
 	void UpgradeCleanup(void);
 	void SetSkin(CString skinName);
+	void changeUsbMode(bool toUSB);
+
+	void getLock();
+	void relLock();
+
+	CString get_dataPath() { getLock(); CString ret = dataPath; relLock(); return ret; }
+	void set_dataPath(CString a1) { getLock(); dataPath = a1; relLock(); }
+
+	vector<CString> get_Types() { getLock(); vector<CString> ret = Types; relLock(); return ret; }
+	void set_Types (vector<CString> a1) { getLock(); Types = a1; relLock(); }
+
+	vector<CString> get_Directories() { getLock(); vector<CString> ret = Directories; relLock(); return ret; }
+	void set_Directories (vector<CString> a1) { getLock(); Directories = a1; relLock(); }
+
+
+
 };
