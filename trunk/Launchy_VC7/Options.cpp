@@ -30,25 +30,66 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 Options::Options(void) : ini(new CIniFile())
 , vkey(0)
 , mod_key(0)
+, usbmode(false)
 {
+	
 	firstRun = false;
-	TCHAR name[256];
-	DWORD size = 256;
-	GetUserNameW(name, &size);
-	userDir.Format(_T("Users\\%s\\"), name);
+
+	hMutex = CreateMutex( 
+		NULL,                       // default security attributes
+		FALSE,                      // initially not owned
+		NULL);                      // unnamed mutex
+
+
 	CDiskObject disk;
-	disk.CreateDirectory(userDir);
-	userDir += _T("\\launchy.ini");
-	ini->SetPath(userDir);
+	if (disk.FileExists(_T("launchy.ini"))) {
+		ini->SetPath(_T("launchy.ini"));
+		usbmode = true;
+	} else { 
+		CString dir;
+		LaunchySmarts::GetShellDir(CSIDL_APPDATA, dir);
+		dir += _T("\\Launchy");
+		disk.CreateDirectory(dir);
+		set_dataPath(dir);
+		dir += _T("\\launchy.ini");
+		ini->SetPath(dir);
+	}
+
 	if (!ini->ReadFile()) {
 		firstRun = true;
 	}
+
 	ParseIni();
 	LoadSkins();
 	UpgradeCleanup();
 }
 
 
+void Options::changeUsbMode(bool toUSB)
+{
+	if (toUSB) {
+		set_dataPath(_T(""));		
+		ini->SetPath(_T("launchy.ini"));
+		usbmode = true;
+	} else {
+		CDiskObject disk;
+		CString dir;
+		LaunchySmarts::GetShellDir(CSIDL_APPDATA, dir);
+		dir += _T("\\Launchy");
+		disk.CreateDirectory(dir);
+		set_dataPath(dir);
+		dir += _T("\\launchy.ini");
+		ini->SetPath(dir);
+		usbmode = false;
+
+		// Need to delete the old files else they will
+		// be used when next Launchy starts!
+		getLock();
+		disk.RemoveFile(_T("launchy.ini"));
+		disk.RemoveFile(_T("launchy.db"));
+		relLock();
+	}
+}
 
 Options::~Options(void)
 {
@@ -104,8 +145,8 @@ void Options::ParseIni(void)
 
 	skinName = ini->GetValue(_T("Skin"), _T("name"), _T("Default"));
 
-	Directories = DeSerializeStringArray(ini->GetValue(_T("General"), _T("Directories"), DefaultDirs));
-	Types = DeSerializeStringArray(ini->GetValue(_T("General"), _T("Types"), _T(".lnk;")));
+	set_Directories(DeSerializeStringArray(ini->GetValue(_T("General"), _T("Directories"), DefaultDirs)));
+	set_Types(DeSerializeStringArray(ini->GetValue(_T("General"), _T("Types"), _T(".lnk;"))));
 
 
 
@@ -135,8 +176,8 @@ void Options::Store(void)
 
 	ini->SetValue(_T("Skin"), _T("name"), skinName);
 
-	ini->SetValue(_T("General"), _T("Directories"), SerializeStringArray(Directories));
-	ini->SetValue(_T("General"), _T("Types"), SerializeStringArray(Types));
+	ini->SetValue(_T("General"), _T("Directories"), SerializeStringArray(get_Directories()));
+	ini->SetValue(_T("General"), _T("Types"), SerializeStringArray(get_Types()));
 
 
 	ini->SetValueTime(_T("Launchy Information"), _T("InstallTime"), installTime.GetTime());
@@ -224,4 +265,14 @@ CString Options::GetAssociation(CString query)
 	return _T(""); 	 
 
 	return res; 	 
+}
+
+void Options::getLock(void)
+{
+	WaitForSingleObject(hMutex, INFINITE);
+}
+
+void Options::relLock(void)
+{
+	ReleaseMutex(hMutex);
 }

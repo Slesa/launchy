@@ -88,7 +88,7 @@ public:
 	HANDLE hMutex;
 	void getStrings(CStringArray& strings);
 	void LoadFirstTime();
-	void archiveCatalog(void);
+	void archiveCatalog(CString path);
 	CString lastUpdateTxt;
 	CString GetMatchPath(int sel);
 };

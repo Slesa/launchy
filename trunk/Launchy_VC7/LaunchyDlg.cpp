@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Skin.h"
 #include "SkinChooser.h"
 #include "DirectoryChooser.h"
+#include "AdvancedOptions.h"
 #include ".\launchydlg.h"
 
 #ifdef _DEBUG
@@ -216,8 +217,9 @@ void CLaunchyDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 
 void CLaunchyDlg::OnClose()
 {
-	options.reset();
+	// Must close smarts before options!  
 	smarts.reset();
+	options.reset();
 //	border.OnClose();
 	// TODO: Add your message handler code here and/or call default
 	CDialogSK::OnClose();
@@ -388,9 +390,16 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		options->Store();
 	}
 
+	else if (selection == ID_SETTINGS_ADVANCED) {
+		AdvancedOptions dlg;
+		dlg.DoModal();
+		options->Store();
+	}
+
 	else if (selection == ID_SETTINGS_REBUILD) {
 		smarts->LoadCatalog();
 	}
+
 
 	else if (selection == ID_EXIT) {
 		this->EndDialog(1);

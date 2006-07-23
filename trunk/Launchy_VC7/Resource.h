@@ -16,6 +16,7 @@
 #define IDC_COMBO1                      1000
 #define IDC_Input                       1000
 #define IDC_MOD_COMBO                   1000
+#define IDC_ADV_USB                     1000
 #define IDC_EDIT1                       1001
 #define IDC_PREVIEW                     1001
 #define IDC_KEY_COMBO                   1001
@@ -44,13 +45,14 @@
 #define ID_EXIT                         32778
 #define ID_LAUNCHYSETTINGS_DIRECTORIES  32779
 #define ID_SETTINGS_REBUILD             32781
+#define ID_SETTINGS_ADVANCED            32783
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        155
-#define _APS_NEXT_COMMAND_VALUE         32782
+#define _APS_NEXT_COMMAND_VALUE         32784
 #define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

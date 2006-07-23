@@ -142,7 +142,10 @@ LaunchySmarts::LaunchySmarts(void)
 LaunchySmarts::~LaunchySmarts(void)
 {
 	getCatalogLock();
-	this->archiveCatalog();
+	shared_ptr<Options> ops =  ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	ops->getLock();
+	this->archiveCatalog(ops->get_dataPath());
+	ops->relLock();
 	releaseCatalogLock();
 }
 
@@ -164,8 +167,9 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 {
 	map<CString,bool> catalog;
 	map<CString, bool> typeMap;
-	for(uint i = 0; i < bun->ops->Types.size(); i++) {
-		typeMap[bun->ops->Types[i]] = true;
+	vector<CString> Types = bun->ops->get_Types();
+	for(uint i = 0; i < Types.size(); i++) {
+		typeMap[Types[i]] = true;
 	}
 
 
@@ -233,14 +237,16 @@ UINT ScanStartMenu(LPVOID pParam)
 
 	CDiskObject disk;
 
-	for(uint i = 0; i < ops->Directories.size(); i++) {
-		disk.EnumAllFiles(ops->Directories[i], tmpFiles);
+	vector<CString> Directories = ops->get_Directories();
+
+	for(uint i = 0; i < Directories.size(); i++) {
+		disk.EnumAllFiles(Directories[i], tmpFiles);
 		files.Append(tmpFiles);
 		tmpFiles.RemoveAll();
 
 		CStringArray dirs;
-		BOOL result = disk.EnumAllDirectories( ops->Directories[i], dirs);
-		dirs.Add(ops->Directories[i]);
+		BOOL result = disk.EnumAllDirectories( Directories[i], dirs);
+		dirs.Add(Directories[i]);
 
 		for(int i = 0; i < dirs.GetSize(); i++) {
 			CString x = dirs[i].TrimRight(_T("\\")) + _T(".directory");
@@ -265,7 +271,10 @@ UINT ScanStartMenu(LPVOID pParam)
 	bun->smarts->charUsage = bun->charUsage;
 	bun->smarts->catFiles = bun->catFiles;
 
-	bun->smarts->archiveCatalog();
+	bun->ops->getLock();
+	bun->smarts->archiveCatalog(ops->get_dataPath());
+	bun->ops->relLock();
+
 	bun->smarts->releaseCatalogLock();
 	::PostMessage(bun->dlg, LAUNCHY_DB_DONE, (WPARAM)0, (LPARAM)0);
 	delete bun;
@@ -296,12 +305,9 @@ trying to start up.  This makes Launchy feel lighter.
 void LaunchySmarts::LoadFirstTime()
 {
 	CFile theFile;
-	TCHAR name[256];
-	DWORD size = 256;
-	GetUserNameW(name, &size);
 	CString dir;
-	dir.Format(_T("Users\\%s\\"), name);
-	dir += _T("\\launchy.db");
+	dir.Format(_T("%s\\launchy.db"), ((CLaunchyDlg*)AfxGetMainWnd())->options->get_dataPath());
+
 
 	if (!theFile.Open(dir, CFile::modeRead)) {
 		LoadCatalog();
@@ -525,6 +531,7 @@ void LaunchySmarts::releaseCatalogLock(void)
 	ReleaseMutex(hMutex);
 }
 
+
 void LaunchySmarts::getStrings(CStringArray& strings)
 {
 	for(map<TCHAR, CharSectionPtr>::iterator it = charMap.begin(); it != charMap.end(); ++it) {
@@ -534,7 +541,7 @@ void LaunchySmarts::getStrings(CStringArray& strings)
 	}
 }
 
-void LaunchySmarts::archiveCatalog(void)
+void LaunchySmarts::archiveCatalog(CString path)
 {
 	map<CString, bool> used;
 	CArray<ArchiveType> files;
@@ -551,13 +558,9 @@ void LaunchySmarts::archiveCatalog(void)
 
 
 	CFile theFile;
-	TCHAR name[256];
-	DWORD size = 256;
-	GetUserNameW(name, &size);
-	CString dir;
-	dir.Format(_T("Users\\%s\\"), name);
 
-	dir += _T("\\launchy.db");
+	CString dir;
+	dir.Format(_T("%s\\launchy.db"), path);
 
 	if (!theFile.Open(dir, CFile::modeWrite | CFile::modeCreate)) {
 		return;

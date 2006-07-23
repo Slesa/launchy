@@ -147,10 +147,12 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,35,94,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,139,94,50,14
-    EDITTEXT        IDC_EDIT1,201,12,24,14,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Number of results in list:",IDC_STATIC,117,15,78,8
-    CONTROL         "Sticky Window",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,13,62,10
+    EDITTEXT        IDC_EDIT1,95,53,24,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Number of results in list:",IDC_STATIC,12,58,78,8
+    CONTROL         "Always Display Launchy Window?",IDC_CHECK1,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,11,13,123,10
+    CONTROL         "Portable Mode? (USB Stick)",IDC_ADV_USB,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,11,28,102,10
 END
 
 
@@ -282,6 +284,7 @@ BEGIN
         MENUITEM "Directories",                 ID_SETTINGS_DIRECTORIES
         MENUITEM "Rebuild Index",               ID_SETTINGS_REBUILD
         MENUITEM "Hotkey",                      ID_SETTINGS_HOTKEY
+        MENUITEM "Advanced",                    ID_SETTINGS_ADVANCED
         MENUITEM "Exit",                        ID_EXIT
     END
 END
