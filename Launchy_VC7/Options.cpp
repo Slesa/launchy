@@ -224,13 +224,15 @@ void Options::UpgradeCleanup(void)
 	} 
 
 	// Ver == 0 for all versions below 0.91 (ver wasn't added until 0.91)
-	if (ver == 0) {
+
+	// Delete the Users/ config files
+	if (ver < 98) {
 		// Remove the old configuration directories if they exist
 		CString dir;
-		LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
-		dir += _T("\\Launchy");
+//		LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
+//		dir += _T("\\Launchy");
 		CDiskObject disk;
-		disk.RemoveDirectory(dir);
+		disk.RemoveDirectory(_T("Users"));
 	}
 
 

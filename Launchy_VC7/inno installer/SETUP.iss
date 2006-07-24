@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Launchy"
-#define MyAppVerName "Launchy 0.9.6"
+#define MyAppVerName "Launchy 0.9.8"
 #define MyAppPublisher "JK Consulting"
 #define MyAppURL "http://www.launchy.net"
 #define MyAppExeName "Launchy.exe"
@@ -169,16 +169,16 @@ Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; F
 [UninstallDelete]
 Type: files; Name: {app}\{#MyAppUrlName}
 
-[Code]
-procedure DeinitializeUninstall();
-var
-  DeleteConfig: Boolean;
-begin
-  DeleteConfig := MsgBox('Would you like to delete the Launchy user configuration files as well?', mbConfirmation, MB_YESNO) = idYes;
-  if DeleteConfig = True then
-    DelTree(ExpandConstant('{app}\Users'), True, True, True);
+;[Code]
+;procedure DeinitializeUninstall();
+;var
+;  DeleteConfig: Boolean;
+;begin
+;  DeleteConfig := MsgBox('Would you like to delete the Launchy user configuration files as well?', mbConfirmation, MB_YESNO) = idYes;
+;  if DeleteConfig = True then
+;    DelTree(ExpandConstant('{app}\Users'), True, True, True);
 ;  RemoveDir(ExpandConstant('{app}'));
-end;
+;end;
 
 
 [Messages]

@@ -290,7 +290,7 @@ void LaunchySmarts::LoadCatalog(void)
 	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
 	bundle->catFiles = 0;
 	bundle->dlg = AfxGetMainWnd()->GetSafeHwnd();
-	AfxBeginThread(ScanStartMenu, bundle);
+	AfxBeginThread(ScanStartMenu, bundle, THREAD_PRIORITY_IDLE);
 }
 
 
