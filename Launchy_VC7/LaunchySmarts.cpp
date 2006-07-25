@@ -89,6 +89,10 @@ template <> void AFXAPI SerializeElements <ArchiveType> ( CArchive& ar,
 
 bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 {
+	if (searchTxt == L"f" && a->lowName == L"mozilla firefox" && b->lowName == L"mozilla firefox") {
+		int x = 3;
+		x += 1;
+	}
 	if (a->isHistory) { return true; }
 	if (b->isHistory) { return false; }
 
@@ -120,6 +124,12 @@ bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 	if (localLen < otherLen)
 		return true;
 	if (localLen > otherLen)
+		return false;
+	
+	// Absolute tiebreaker to prevent loops
+	if (a.get() < b.get()) 
+		return true;
+	else
 		return false;
 
 	return false;
@@ -196,6 +206,7 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 		if (in[i].usage != -1)
 			rec->setUsage(in[i].usage);
 		else
+			THIS IS CAUSING USAGE NUMBER PROBLEMS, NEED TO BASE USAGE OFF OF FULLPATH NOT LOWNAME!
 			rec->setUsage(findCount(bun->smarts, rec->lowName));
 
 
@@ -355,6 +366,7 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 
 	txt.MakeLower();
 	txt.Replace(_T(" "), _T(""));
+
 
 	lastUpdateTxt = txt;
 

@@ -148,6 +148,7 @@ void SmartComboBox::OnDestroy()
 void SmartComboBox::OnCbnEditupdate()
 {
 	m_edit.GetWindowTextW(searchTxt);
+	searchTxt.MakeLower();
 
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
@@ -185,6 +186,7 @@ void SmartComboBox::OnCbnSelchange()
 	if (GetDroppedState()) {
 		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 		m_listbox.GetText(m_listbox.GetCurSel(), searchTxt);
+		searchTxt.MakeLower();
 
 		pDlg->smarts->Update(searchTxt,false);
 	}
