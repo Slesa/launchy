@@ -160,12 +160,12 @@ LaunchySmarts::~LaunchySmarts(void)
 }
 
 
-int findCount(LaunchySmarts* smarts, CString word) {
-	if (smarts->charMap.count(word[0]) == 0)
+int findCount(LaunchySmarts* smarts, CString s, CString path) {
+	if (smarts->charMap.count(s[0]) == 0)
 		return 0;
-	for(uint i = 0; i < smarts->charMap[word[0]]->size(); i++) {
-		if (word == smarts->charMap[word[0]]->at(i)->lowName) {
-			return smarts->charMap[word[0]]->at(i)->usage;
+	for(uint i = 0; i < smarts->charMap[s[0]]->size(); i++) {
+		if (path == smarts->charMap[s[0]]->at(i)->fullPath) {
+			return smarts->charMap[s[0]]->at(i)->usage;
 		}
 	}
 	return 0;
@@ -206,8 +206,7 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 		if (in[i].usage != -1)
 			rec->setUsage(in[i].usage);
 		else
-			THIS IS CAUSING USAGE NUMBER PROBLEMS, NEED TO BASE USAGE OFF OF FULLPATH NOT LOWNAME!
-			rec->setUsage(findCount(bun->smarts, rec->lowName));
+			rec->setUsage(findCount(bun->smarts, rec->lowName, rec->fullPath));
 
 
 		ArchiveType at(in[i].name, rec->usage);
