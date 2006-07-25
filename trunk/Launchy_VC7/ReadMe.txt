@@ -1,14 +1,12 @@
 Where I've left off:
-If it index directories and type in 'fire', the firefox folder comes up first.  And I can't choose the other.  
-I need an elegant solution to this problem, not just another hack.  Also, I'd like the association to be
-set when I press enter, not when I choose something from the box.
 
-If i type in 'it' and scroll way down, and then hit enter, the data item doesn't seem to exist
-and so everything crashes.  Why doesn't it exist?
+Usage is way broken.  If I debug for the case when 2 files equal "mozilla firefox", the actual app will have like 10 but so will the folder!
+
 
 Trying to get sticky window to work.  It mostly works except when you start launchy it doesn't 
 show right away and also it's possible to get it to not reset its timer so sometimes the drop list
 won't show.
+
 
 
 Changes since 0.9.6:
