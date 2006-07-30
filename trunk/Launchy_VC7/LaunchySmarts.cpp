@@ -309,6 +309,15 @@ UINT ScanStartMenu(LPVOID pParam)
 
 void LaunchySmarts::LoadCatalog(void)
 {
+	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	
+	if (ops->get_Indexing()) {
+		// Already indexing, abort
+		return;
+	}
+
+	ops->set_Indexing(true);
+
 	ScanBundle* bundle = new ScanBundle();
 	bundle->smarts = this;
 	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
@@ -580,7 +589,6 @@ void LaunchySmarts::archiveCatalog(CString path)
 			}
 		}
 	}
-
 
 	CFile theFile;
 

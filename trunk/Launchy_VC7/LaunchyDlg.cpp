@@ -571,6 +571,7 @@ void CLaunchyDlg::applySkin()
 
 }
 LRESULT CLaunchyDlg::OnDBDone(UINT wParam, LONG lParam) {
+	options->set_Indexing(false);
 	smarts->Update(searchTxt, false);
 	return true;
 }

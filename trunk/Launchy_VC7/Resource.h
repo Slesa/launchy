@@ -36,16 +36,15 @@
 #define IDC_ADD_LOCAL_TYPE              1013
 #define IDC_TREE1                       1014
 #define IDC_REMOVE_LOCAL_TYPE           1014
-#define IDC_INDEX_NAMES                 1015
 #define IDC_CHECK1                      1016
 #define IDC_LIST3                       1016
-#define IDC_DEFAULT_TYPE2               1017
 #define IDC_DEFAULT_LOCAL_TYPE          1017
 #define IDC_STATIC1                     1018
-#define IDC_STATIC2                     1019
 #define IDC_STATIC3                     1020
 #define IDC_STATIC4                     1021
 #define IDC_STATIC5                     1022
+#define IDC_STATIC6                     1023
+#define IDC_STATIC7                     1024
 #define ID_SKINS_CUSTOMDIRECTORIES      32771
 #define ID_SKINS_SKINS                  32772
 #define ID_SETTINGS_CUSTOMDIRECTORIES   32773
@@ -64,7 +63,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        155
 #define _APS_NEXT_COMMAND_VALUE         32784
-#define _APS_NEXT_CONTROL_VALUE         1023
+#define _APS_NEXT_CONTROL_VALUE         1025
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

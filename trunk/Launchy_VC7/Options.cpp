@@ -31,6 +31,7 @@ Options::Options(void) : ini(new CIniFile())
 , vkey(0)
 , mod_key(0)
 , usbmode(false)
+, Indexing(false)
 {
 	
 	firstRun = false;
