@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #pragma once
 #include "afxwin.h"
 #include <vector>
+#include "Options.h"
 
 using namespace std;
 
@@ -30,7 +31,7 @@ class DirectoryChooser : public CDialog
 	DECLARE_DYNAMIC(DirectoryChooser)
 private:
 	vector<CString> tbak;
-	vector<CString> dbak;
+	vector<DirOptions> dbak;
 
 
 public:
@@ -71,5 +72,11 @@ public:
 public:
 	CEdit numFiles;
 	afx_msg void OnBnClickedDefaultType();
-	CButton IndexNames;
+	afx_msg void OnBnDoubleclickedOk();
+	afx_msg void OnLbnSelchangeList1();
+	CListBox LocalTypes;
+	afx_msg void OnBnClickedAddLocalType();
+	afx_msg void OnBnClickedRemoveLocalType();
+	afx_msg void OnBnClickedDefaultLocalType();
+	CString szLocalType;
 };

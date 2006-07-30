@@ -124,6 +124,54 @@ CString SerializeStringArray(vector<CString> input) {
 	return output;
 }
 
+
+vector<DirOptions> DeSerializeDirArray(CString input) {
+	vector<DirOptions> output;
+
+	CString tmp;
+	int cur = 0;
+	while(true) {
+		DirOptions d;
+		int c = input.Find(_T(";"), cur);
+		if (c > 0 && c < input.GetLength()) {
+			tmp = input.Mid(cur,c-cur);
+			d.dir = tmp;
+			cur = c+1;
+
+			int end = input.Find(_T("|"),cur);
+			if (end != -1) {
+				c = input.Find(_T(","),cur);
+				while(cur < end && c < end && c != -1) {
+					CString type = input.Mid(cur, c-cur);
+					d.types.push_back(type);
+					cur = c+1;
+					c = input.Find(_T(","),cur);
+				}
+				cur = end + 1;
+			}
+			output.push_back(d);
+		} else {
+			break;
+		}
+	}
+	return output;
+}
+
+CString SerializeDirArray(vector<DirOptions> input) {
+	CString output = _T("");
+	for(uint i = 0; i < input.size(); i++) {
+
+		output.Append(input[i].dir);
+		output.Append(_T(";"));
+		for(uint j = 0; j < input[i].types.size(); j++) {
+			output.Append(input[i].types[j]);
+			output.Append(_T(","));
+		}
+		output.Append(_T("|"));
+	}
+	return output;
+}
+
 void Options::ParseIni(void)
 {
 	CString DefaultDirs;
@@ -145,7 +193,7 @@ void Options::ParseIni(void)
 
 	skinName = ini->GetValue(_T("Skin"), _T("name"), _T("Default"));
 
-	set_Directories(DeSerializeStringArray(ini->GetValue(_T("General"), _T("Directories"), DefaultDirs)));
+	set_Directories(DeSerializeDirArray(ini->GetValue(_T("General"), _T("Directories"), DefaultDirs)));
 	set_Types(DeSerializeStringArray(ini->GetValue(_T("General"), _T("Types"), _T(".lnk;"))));
 
 
@@ -176,7 +224,7 @@ void Options::Store(void)
 
 	ini->SetValue(_T("Skin"), _T("name"), skinName);
 
-	ini->SetValue(_T("General"), _T("Directories"), SerializeStringArray(get_Directories()));
+	ini->SetValue(_T("General"), _T("Directories"), SerializeDirArray(get_Directories()));
 	ini->SetValue(_T("General"), _T("Types"), SerializeStringArray(get_Types()));
 
 

@@ -89,10 +89,7 @@ template <> void AFXAPI SerializeElements <ArchiveType> ( CArchive& ar,
 
 bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 {
-	if (searchTxt == L"f" && a->lowName == L"mozilla firefox" && b->lowName == L"mozilla firefox") {
-		int x = 3;
-		x += 1;
-	}
+
 	if (a->isHistory) { return true; }
 	if (b->isHistory) { return false; }
 
@@ -176,11 +173,7 @@ int findCount(LaunchySmarts* smarts, CString s, CString path) {
 void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& out)
 {
 	map<CString,bool> catalog;
-	map<CString, bool> typeMap;
-	vector<CString> Types = bun->ops->get_Types();
-	for(uint i = 0; i < Types.size(); i++) {
-		typeMap[Types[i]] = true;
-	}
+
 
 
 	CString tmps;
@@ -195,11 +188,9 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 	for(int i = 0; i < count; i++) {
 		int lastDot = in[i].name.ReverseFind('.');
 		if (lastDot == -1) continue;
-
 		tmps = in[i].name.Mid(lastDot);
 		tmps.MakeLower();
 
-		if (typeMap[tmps] == false) continue;
 		FileRecordPtr rec(new FileRecord());
 		rec->set(in[i].name, tmps, &bun->smarts->exeLauncher);
 
@@ -247,22 +238,45 @@ UINT ScanStartMenu(LPVOID pParam)
 
 	CDiskObject disk;
 
-	vector<CString> Directories = ops->get_Directories();
+	vector<DirOptions> Directories = ops->get_Directories();
+
+	map<CString, bool> globalTypeMap;
+	vector<CString> GlobalTypes = bun->ops->get_Types();
+	for(uint i = 0; i < GlobalTypes.size(); i++) {
+		globalTypeMap[GlobalTypes[i]] = true;
+	}
 
 	for(uint i = 0; i < Directories.size(); i++) {
-		disk.EnumAllFiles(Directories[i], tmpFiles);
-		files.Append(tmpFiles);
+		map<CString, bool> localTypeMap;
+
+		for(uint j = 0; j < Directories[i].types.size(); j++) {
+			localTypeMap[Directories[i].types[j]] = true;
+		}
+		disk.EnumAllFiles(Directories[i].dir, tmpFiles);
+
+		for(int j = 0; j < tmpFiles.GetCount(); j++) {
+			int lastDot = tmpFiles[j].ReverseFind('.');
+			if (lastDot == -1) continue;
+			CString tmps = tmpFiles[j].Mid(lastDot);
+			tmps.MakeLower();
+
+			if (globalTypeMap[tmps] || localTypeMap[tmps]) {
+				files.Add(tmpFiles[j]);
+			}
+		}
 		tmpFiles.RemoveAll();
 
-		CStringArray dirs;
-		BOOL result = disk.EnumAllDirectories( Directories[i], dirs);
-		dirs.Add(Directories[i]);
+		if (globalTypeMap[_T(".directory")] || localTypeMap[_T(".directory")]) {
+			CStringArray dirs;
+			BOOL result = disk.EnumAllDirectories( Directories[i].dir, dirs);
+			dirs.Add(Directories[i].dir);
 
-		for(int i = 0; i < dirs.GetSize(); i++) {
-			CString x = dirs[i].TrimRight(_T("\\")) + _T(".directory");
-			files.Add(x);
+			for(int i = 0; i < dirs.GetSize(); i++) {
+				CString x = dirs[i].TrimRight(_T("\\")) + _T(".directory");
+				files.Add(x);
+			}
+			dirs.RemoveAll();
 		}
-		dirs.RemoveAll();
 	}
 
 
