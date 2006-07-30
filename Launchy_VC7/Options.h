@@ -31,6 +31,28 @@ using namespace std;
 
 using namespace boost;
 
+class DirOptions {
+public:
+	CString dir;
+	vector<CString> types;
+
+	DirOptions(CString s) {
+		dir = s;
+	}
+	DirOptions() {
+		dir = _T("");
+	}
+	DirOptions( const DirOptions &s ) {  // copy ctor 
+		dir = s.dir;
+		types = s.types;
+	}
+	DirOptions& operator=( const DirOptions &s )  {// assignment operator
+		dir = s.dir;
+		types = s.types;
+		return *this;
+	}
+};
+
 class Options
 {
 public:
@@ -59,7 +81,7 @@ private:
 	HANDLE hMutex;
 	CString dataPath;
 	vector<CString> Types;
-	vector<CString> Directories;
+	vector<DirOptions> Directories;
 
 public:
 	Options(void);
@@ -87,8 +109,8 @@ public:
 	vector<CString> get_Types() { getLock(); vector<CString> ret = Types; relLock(); return ret; }
 	void set_Types (vector<CString> a1) { getLock(); Types = a1; relLock(); }
 
-	vector<CString> get_Directories() { getLock(); vector<CString> ret = Directories; relLock(); return ret; }
-	void set_Directories (vector<CString> a1) { getLock(); Directories = a1; relLock(); }
+	vector<DirOptions> get_Directories() { getLock(); vector<DirOptions> ret = Directories; relLock(); return ret; }
+	void set_Directories (vector<DirOptions> a1) { getLock(); Directories = a1; relLock(); }
 
 
 
