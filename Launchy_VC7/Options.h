@@ -79,6 +79,7 @@ public:
 
 private:
 	HANDLE hMutex;
+	bool Indexing;
 	CString dataPath;
 	vector<CString> Types;
 	vector<DirOptions> Directories;
@@ -111,6 +112,9 @@ public:
 
 	vector<DirOptions> get_Directories() { getLock(); vector<DirOptions> ret = Directories; relLock(); return ret; }
 	void set_Directories (vector<DirOptions> a1) { getLock(); Directories = a1; relLock(); }
+
+	bool get_Indexing() { getLock(); bool ret = Indexing; relLock(); return ret; }
+	void set_Indexing(bool a1) { getLock(); Indexing = a1; relLock(); }
 
 
 
