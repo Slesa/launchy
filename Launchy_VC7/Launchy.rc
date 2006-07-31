@@ -334,6 +334,7 @@ BEGIN
         MENUITEM "Rebuild Index",               ID_SETTINGS_REBUILD
         MENUITEM "Hotkey",                      ID_SETTINGS_HOTKEY
         MENUITEM "Advanced",                    ID_SETTINGS_ADVANCED
+        MENUITEM SEPARATOR
         MENUITEM "About",                       ID_SETTINGS_ABOUT
         MENUITEM "Exit",                        ID_EXIT
     END
