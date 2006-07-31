@@ -179,7 +179,7 @@ void Options::ParseIni(void)
 	CString myMenu, allMenus;
 	LaunchySmarts::GetShellDir(CSIDL_COMMON_STARTMENU, allMenus);
 	LaunchySmarts::GetShellDir(CSIDL_STARTMENU, myMenu);
-	DefaultDirs.Format(_T("%s;%s;Utilities\\;"), myMenu, allMenus);
+	DefaultDirs.Format(_T("%s;.lnk,|%s;.lnk,|Utilities\\;.lnk,|"), myMenu, allMenus);
 
 	ver = ini->GetValueI(_T("Launchy Information"), _T("Version"), 0);
 
