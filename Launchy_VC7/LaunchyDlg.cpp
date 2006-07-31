@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "SkinChooser.h"
 #include "DirectoryChooser.h"
 #include "AdvancedOptions.h"
+#include "AboutDialog.h"
 #include ".\launchydlg.h"
 
 #ifdef _DEBUG
@@ -398,6 +399,11 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 	else if (selection == ID_SETTINGS_REBUILD) {
 		smarts->LoadCatalog();
+	}
+
+	else if (selection == ID_SETTINGS_ABOUT) {
+		AboutDialog dlg;
+		dlg.DoModal();
 	}
 
 

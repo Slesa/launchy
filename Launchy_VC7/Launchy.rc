@@ -173,6 +173,29 @@ BEGIN
                     BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,11,28,102,10
 END
 
+IDD_ABOUT DIALOGEX 0, 0, 165, 164
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "About Launchy"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,53,143,50,14
+    LTEXT           "This is Launchy version:",IDC_STATIC1,13,16,77,8
+    EDITTEXT        IDC_EDIT1,98,13,40,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Launchy is developed  by Josh Karlin",IDC_STATIC3,21,61,
+                    118,8
+    LTEXT           "http://cs.unm.edu/~karlinjf/",IDC_STATIC4,32,70,92,8,
+                    SS_NOTIFY
+    LTEXT           "http://www.launchy.net/",IDC_STATIC2,35,30,82,8,
+                    SS_NOTIFY
+    LTEXT           "If you like Launchy and would like to make",IDC_STATIC5,
+                    13,104,135,8
+    LTEXT           "a donation, please follow this link:",IDC_STATIC6,26,
+                    112,109,8
+    LTEXT           "http://www.launchy.net/#donate",IDC_STATIC7,25,123,110,
+                    12,SS_NOTIFY
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -268,6 +291,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 125
     END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 158
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 157
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -303,6 +334,7 @@ BEGIN
         MENUITEM "Rebuild Index",               ID_SETTINGS_REBUILD
         MENUITEM "Hotkey",                      ID_SETTINGS_HOTKEY
         MENUITEM "Advanced",                    ID_SETTINGS_ADVANCED
+        MENUITEM "About",                       ID_SETTINGS_ABOUT
         MENUITEM "Exit",                        ID_EXIT
     END
 END
