@@ -51,7 +51,7 @@ CLaunchyDlg::CLaunchyDlg(CWnd* pParent /*=NULL*/)
 
 	DelayTimer = 100;
 
-	
+
 	m_FontInput = NULL;
 	m_FontResult = NULL;
 }
@@ -88,7 +88,7 @@ BOOL CLaunchyDlg::OnInitDialog()
 {
 	CDialogSK::OnInitDialog();
 
-    CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+	CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
@@ -110,16 +110,7 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 
 	options.reset(new Options());
-/*
-	if (!options->stickyWindow) {
-		this->ShowWindows(false);
-		this->Visible = false;
-	} else {
-		this->ShowWindows(true);
-		this->Visible = true;
-		this->ActivateTopParent();
-	}
-*/
+
 	smarts.reset(new LaunchySmarts());
 
 
@@ -187,16 +178,24 @@ LRESULT CLaunchyDlg::OnHotKey(WPARAM wParam, LPARAM lParam) {
 			this->Visible = false;
 			atLaunch = false;
 		}
-		this->Visible = !this->Visible;
-		if (Visible)
-		{
+		if (options->stickyWindow) {
+			this->Visible = true;
 			this->ShowWindows(true);
 			this->ActivateTopParent();
 			this->InputBox.SetFocus();
 			this->DoDonate();
-		}
-		else {
-			HideLaunchy();
+		} else {
+			this->Visible = !this->Visible;
+			if (Visible)
+			{
+				this->ShowWindows(true);
+				this->ActivateTopParent();
+				this->InputBox.SetFocus();
+				this->DoDonate();
+			}
+			else {
+				HideLaunchy();
+			}
 		}
 	}
 	return 1;
@@ -221,7 +220,7 @@ void CLaunchyDlg::OnClose()
 	// Must close smarts before options!  
 	smarts.reset();
 	options.reset();
-//	border.OnClose();
+	//	border.OnClose();
 	// TODO: Add your message handler code here and/or call default
 	CDialogSK::OnClose();
 }
@@ -254,14 +253,12 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 			InputBox.CleanText();
 			if (!InputBox.GetDroppedState() && InputBox.typed != _T("")) {
 				InputBox.ShowDropDown(true);
-//				InputBox.m_listbox.SetSel(1);
 			}
 		} 
 		else if (pMsg->wParam==VK_UP) {
 			InputBox.CleanText();
 			if (!InputBox.GetDroppedState() && InputBox.typed != _T("")) {
 				InputBox.ShowDropDown(true);
-//				InputBox.m_listbox.SetSel(1);
 			}
 		}
 		else {
@@ -271,7 +268,6 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 				InputBox.m_edit.SetWindowText(typed);
 				InputBox.SetEditSel(InputBox.m_edit.GetWindowTextLengthW(), InputBox.m_edit.GetWindowTextLengthW());
 				InputBox.CleanText();
-				//			InputBox.SetCurSel(-1);
 			}
 		}
 		SetTimer(DELAY_TIMER, 1000, NULL);
@@ -283,24 +279,6 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 				options->Associate(InputBox.typed, smarts->GetMatchPath(0)); 	
 				options->Store();
 			}
-			
-			
-			//			this->ShowWindows(SW_HIDE);
-//			this->Visible = false;
-//			if (InputBox.typed != searchTxt) { 	 
-//				options->Associate(InputBox.typed, smarts->GetMatchPath(0)); 	
-//				options->Store();
-//			} else 
-/*			if (InputBox.cloneSelect != -1) {
-				// This happens when the dropdown box was called
-				// and the selected text equaled the typed text
-				// but it wasn't the 0th item in the list
-				options->Associate(InputBox.typed, smarts->GetMatchPath(InputBox.cloneSelect));
-				options->Store();
-				InputBox.cloneSelect = -1;
-				smarts->Update(InputBox.typed);
-			}
-*/
 
 			KillTimer(DELAY_TIMER);
 			smarts->Launch();
@@ -311,9 +289,6 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 			HideLaunchy();
 			pMsg->wParam = NULL;
 		}
-
-
-
 	} 
 
 	if (pMsg->message == WM_CHAR) {
@@ -329,19 +304,14 @@ void CLaunchyDlg::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == DELAY_TIMER) {
 		if (Visible && !InputBox.GetDroppedState() && InputBox.m_edit.GetWindowTextLengthW() > 0 &&
 			InputBox.m_listbox.GetCount() > 1) {
-	//			CString prev = InputBox.typed;
 				InputBox.SetCurSel(-1);
-//				InputBox.m_listbox.
-			InputBox.ShowDropDown(true);
-			InputBox.m_edit.SetWindowText(InputBox.typed);
-			InputBox.SetEditSel(InputBox.typed.GetLength(), InputBox.typed.GetLength());
-			InputBox.CleanText();
-//			InputBox.typed = prev;
-//			InputBox.m_edit.SetSel(0,-1);
-//			InputBox.m_edit.SetSel(prev.GetLength(),prev.GetLength(),TRUE);
-		}
-		KillTimer(DELAY_TIMER);
-		CDialogSK::OnTimer(nIDEvent);
+				InputBox.ShowDropDown(true);
+				InputBox.m_edit.SetWindowText(InputBox.typed);
+				InputBox.SetEditSel(InputBox.typed.GetLength(), InputBox.typed.GetLength());
+				InputBox.CleanText();
+			}
+			KillTimer(DELAY_TIMER);
+			CDialogSK::OnTimer(nIDEvent);
 	}
 	else if (nIDEvent == UPDATE_TIMER) {
 		smarts->LoadCatalog();
@@ -369,7 +339,7 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	// Get a pointer to the first item of the menu
 	CMenu *mnuPopupMenu = mnuPopupSubmit.GetSubMenu(0);
 	ASSERT(mnuPopupMenu);
-	
+
 	DWORD selection = mnuPopupMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON| TPM_NONOTIFY | TPM_RETURNCMD, point.x, point.y, this);
 
 	if (selection == ID_SETTINGS_SKINS) {
@@ -415,10 +385,10 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 void CLaunchyDlg::applySkin()
 {
 	if (options->skin == NULL) {
-			options->SetSkin(_T("Default"));
-			if (options->skin == NULL) {
-				return;
-			}
+		options->SetSkin(_T("Default"));
+		if (options->skin == NULL) {
+			return;
+		}
 	}
 
 	if (border.inuse) {
@@ -475,8 +445,8 @@ void CLaunchyDlg::applySkin()
 	IconPreview.MoveWindow(options->skin->iconRect,1);
 
 
-//	InputBox.SetFont(options->skin->m_FontInput,1);
-//	Preview.SetFont(options->skin->m_FontResult,1);
+	//	InputBox.SetFont(options->skin->m_FontInput,1);
+	//	Preview.SetFont(options->skin->m_FontResult,1);
 
 
 
@@ -493,54 +463,54 @@ void CLaunchyDlg::applySkin()
 	m_FontInputSmall = new CFont;
 
 	m_FontInputSmall->CreateFontW(
-	   options->skin->inputSmall_fontSize,                        // nHeight
-	   0,                         // nWidth
-	   0,                         // nEscapement
-	   0,                         // nOrientation
-	   options->skin->inputSmall_bold,						// nWeight
-	   options->skin->inputSmall_italics,                     // bItalic
-	   FALSE,                     // bUnderline
-	   0,                         // cStrikeOut
-	   ANSI_CHARSET,              // nCharSet
-	   OUT_DEFAULT_PRECIS,        // nOutPrecision
-	   CLIP_DEFAULT_PRECIS,       // nClipPrecision
-	   DEFAULT_QUALITY,           // nQuality
-	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
-	   options->skin->inputSmall_fontName);                 // lpszFacename	
+		options->skin->inputSmall_fontSize,                        // nHeight
+		0,                         // nWidth
+		0,                         // nEscapement
+		0,                         // nOrientation
+		options->skin->inputSmall_bold,						// nWeight
+		options->skin->inputSmall_italics,                     // bItalic
+		FALSE,                     // bUnderline
+		0,                         // cStrikeOut
+		ANSI_CHARSET,              // nCharSet
+		OUT_DEFAULT_PRECIS,        // nOutPrecision
+		CLIP_DEFAULT_PRECIS,       // nClipPrecision
+		DEFAULT_QUALITY,           // nQuality
+		DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
+		options->skin->inputSmall_fontName);                 // lpszFacename	
 
-		m_FontInput->CreateFontW(
+	m_FontInput->CreateFontW(
 		options->skin->input_fontSize,                        // nHeight
-	   0,                         // nWidth
-	   0,                         // nEscapement
-	   0,                         // nOrientation
-	   options->skin->input_bold,						// nWeight
-	   options->skin->input_italics,                     // bItalic
-	   FALSE,                     // bUnderline
-	   0,                         // cStrikeOut
-	   ANSI_CHARSET,              // nCharSet
-	   OUT_DEFAULT_PRECIS,        // nOutPrecision
-	   CLIP_DEFAULT_PRECIS,       // nClipPrecision
-	   DEFAULT_QUALITY,           // nQuality
-	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
-	   options->skin->input_fontName);                 // lpszFacename	
+		0,                         // nWidth
+		0,                         // nEscapement
+		0,                         // nOrientation
+		options->skin->input_bold,						// nWeight
+		options->skin->input_italics,                     // bItalic
+		FALSE,                     // bUnderline
+		0,                         // cStrikeOut
+		ANSI_CHARSET,              // nCharSet
+		OUT_DEFAULT_PRECIS,        // nOutPrecision
+		CLIP_DEFAULT_PRECIS,       // nClipPrecision
+		DEFAULT_QUALITY,           // nQuality
+		DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
+		options->skin->input_fontName);                 // lpszFacename	
 
 
 	// Fonts
 	m_FontResult->CreateFontW(
-	   options->skin->results_fontSize,                        // nHeight
-	   0,                         // nWidth
-	   0,                         // nEscapement
-	   0,                         // nOrientation
-	   options->skin->results_bold,                 // nWeight
-	   options->skin->results_italics,                     // bItalic
-	   FALSE,                     // bUnderline
-	   0,                         // cStrikeOut
-	   ANSI_CHARSET,              // nCharSet
-	   OUT_DEFAULT_PRECIS,        // nOutPrecision
-	   CLIP_DEFAULT_PRECIS,       // nClipPrecision
-	   DEFAULT_QUALITY,           // nQuality
-	   DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
-	   options->skin->results_fontName);                 // lpszFacename	
+		options->skin->results_fontSize,                        // nHeight
+		0,                         // nWidth
+		0,                         // nEscapement
+		0,                         // nOrientation
+		options->skin->results_bold,                 // nWeight
+		options->skin->results_italics,                     // bItalic
+		FALSE,                     // bUnderline
+		0,                         // cStrikeOut
+		ANSI_CHARSET,              // nCharSet
+		OUT_DEFAULT_PRECIS,        // nOutPrecision
+		CLIP_DEFAULT_PRECIS,       // nClipPrecision
+		DEFAULT_QUALITY,           // nQuality
+		DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
+		options->skin->results_fontName);                 // lpszFacename	
 
 	InputBox.SetSmallFont(m_FontInputSmall,options->skin->inputSmallFontRGB);
 	InputBox.SetFont(m_FontInput,1);
