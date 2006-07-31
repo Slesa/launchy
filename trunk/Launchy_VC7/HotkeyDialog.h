@@ -26,6 +26,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class CHotkeyDialog : public CDialog
 {
 	DECLARE_DYNAMIC(CHotkeyDialog)
+private:
+	uint szKeyToIdent(CString vkeystr);
+	CString identToKeyString(uint vkeystr);
 
 public:
 	CHotkeyDialog(CWnd* pParent = NULL);   // standard constructor

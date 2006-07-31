@@ -58,12 +58,17 @@ BOOL CHotkeyDialog::OnInitDialog()
 	vchar.InsertString(0,_T("F9"));
 	vchar.InsertString(0,_T("F10"));
 	vchar.InsertString(0,_T("Esc"));
-	vchar.InsertString(0,_T("Space"));
 	vchar.InsertString(0,_T("Enter")); 
 	vchar.InsertString(0,_T("Backspace")); 
 	vchar.InsertString(0,_T("Tab")); 
+	vchar.InsertString(0,_T("Space"));
 
 	vchar.SetCurSel(0);
+
+	
+	CLaunchyDlg* main_dlg = (CLaunchyDlg*) AfxGetMainWnd();
+	modifier.SelectString(0,identToKeyString(main_dlg->options->mod_key));
+	vchar.SelectString(0,identToKeyString(main_dlg->options->vkey));
 
 	return TRUE;
 }
@@ -72,6 +77,8 @@ BOOL CHotkeyDialog::OnInitDialog()
 CHotkeyDialog::~CHotkeyDialog()
 {
 }
+
+
 
 void CHotkeyDialog::DoDataExchange(CDataExchange* pDX)
 {
@@ -87,33 +94,67 @@ BEGIN_MESSAGE_MAP(CHotkeyDialog, CDialog)
 END_MESSAGE_MAP()
 
 
-// CHotkeyDialog message handlers
-
-
-void CHotkeyDialog::OnCbnSelchangeModCombo()
-{
-	// TODO: Add your control notification handler code here
+CString CHotkeyDialog::identToKeyString(uint vkeystr) {
+	CString vkey;
+	if(vkeystr==MOD_ALT)
+		vkey=_T("ALT");
+	else if (vkeystr==MOD_CONTROL)
+		vkey=_T("CONTROL");
+	else if(vkeystr==MOD_SHIFT)
+		vkey=_T("SHIFT");
+	else if(vkeystr==MOD_WIN)
+		vkey=_T("WIN");
+	else if (vkeystr == VK_SPACE)
+		vkey = _T("Space");
+	else if (vkeystr == VK_ESCAPE)
+		vkey = _T("Esc");
+	else if (vkeystr == VK_F1)
+		vkey = _T("F1");
+	else if (vkeystr == VK_F2)
+		vkey = _T("F2");
+	else if (vkeystr == VK_F3)
+		vkey = _T("F3");
+	else if (vkeystr == VK_F4)
+		vkey = _T("F4");
+	else if (vkeystr == VK_F5)
+		vkey = _T("F5");
+	else if (vkeystr == VK_F6)
+		vkey = _T("F6");
+	else if (vkeystr == VK_F7)
+		vkey = _T("F7");
+	else if (vkeystr == VK_F8)
+		vkey = _T("F8");
+	else if (vkeystr == VK_F9)
+		vkey = _T("F9");
+	else if (vkeystr == VK_F10)
+		vkey = _T("F10");
+	else if (vkeystr == VK_RETURN) 
+		vkey = _T("Enter"); 
+	else if (vkeystr == VK_BACK) 
+		vkey = _T("Backspace"); 
+	else if (vkeystr == VK_TAB) 
+		vkey = _T("Tab"); 
+	else {
+		TCHAR i = vkeystr;
+		vkey.Format(_T("%c"), i);
+//		vkey = CString(i);
+//		vkey = vkeystr[0];
+	}
+	return vkey;
 }
 
-void CHotkeyDialog::OnBnClickedOk()
-{
-	UINT mod, vkey;
-	CString modifierstring;
-	modifier.GetLBText(modifier.GetCurSel(),modifierstring);
-	
-	if(modifierstring==_T("ALT"))
-		mod=MOD_ALT;
-	else if (modifierstring==_T("CONTROL"))
-		mod=MOD_CONTROL;
-	else if(modifierstring==_T("SHIFT"))
-		mod=MOD_SHIFT;
-	else if(modifierstring==_T("WIN"))
-		mod=MOD_WIN;
+uint CHotkeyDialog::szKeyToIdent(CString vkeystr) {
+	uint vkey;
 
-	CString vkeystr;
-	vchar.GetLBText(vchar.GetCurSel(),vkeystr);
-
-	if (vkeystr == _T("Space")) 
+	if(vkeystr==_T("ALT"))
+		vkey=MOD_ALT;
+	else if (vkeystr==_T("CONTROL"))
+		vkey=MOD_CONTROL;
+	else if(vkeystr==_T("SHIFT"))
+		vkey=MOD_SHIFT;
+	else if(vkeystr==_T("WIN"))
+		vkey=MOD_WIN;
+	else if (vkeystr == _T("Space")) 
 		vkey = VK_SPACE;
 	else if (vkeystr == _T("Esc"))
 		vkey = VK_ESCAPE;
@@ -146,6 +187,28 @@ void CHotkeyDialog::OnBnClickedOk()
 	else {
 		vkey = vkeystr[0];
 	}
+	return vkey;
+}
+
+// CHotkeyDialog message handlers
+
+
+void CHotkeyDialog::OnCbnSelchangeModCombo()
+{
+	// TODO: Add your control notification handler code here
+}
+
+void CHotkeyDialog::OnBnClickedOk()
+{
+	UINT mod, vkey;
+
+	CString modifierstring;
+	modifier.GetLBText(modifier.GetCurSel(),modifierstring);
+	CString vkeystr;
+	vchar.GetLBText(vchar.GetCurSel(),vkeystr);
+	mod = szKeyToIdent(modifierstring);
+	vkey = szKeyToIdent(vkeystr);
+
 	UnregisterHotKey(AfxGetMainWnd()->GetSafeHwnd(), 100);
 	BOOL m_isKeyRegistered = RegisterHotKey(AfxGetMainWnd()->GetSafeHwnd(), 100,
 	mod, vkey);
