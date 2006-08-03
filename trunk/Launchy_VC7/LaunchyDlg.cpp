@@ -122,6 +122,14 @@ BOOL CLaunchyDlg::OnInitDialog()
 	// mapping is setup before we use the controls.
 	InputBox.ShowDropDown(true);
 	InputBox.ShowDropDown(false);
+//	InputBox.DoSubclass();
+
+	if (options->stickyWindow) {
+		HideLaunchy();
+		ShowLaunchy();
+	}
+
+	//	InputBox.doSubclass();
 
 	BOOL m_isKeyRegistered = RegisterHotKey(GetSafeHwnd(), 100,
 		options->mod_key, options->vkey);
@@ -171,6 +179,8 @@ HCURSOR CLaunchyDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
 LRESULT CLaunchyDlg::OnHotKey(WPARAM wParam, LPARAM lParam) {
 	if (wParam == 100) {
 		if (atLaunch)
@@ -179,19 +189,12 @@ LRESULT CLaunchyDlg::OnHotKey(WPARAM wParam, LPARAM lParam) {
 			atLaunch = false;
 		}
 		if (options->stickyWindow) {
-			this->Visible = true;
-			this->ShowWindows(true);
-			this->ActivateTopParent();
-			this->InputBox.SetFocus();
-			this->DoDonate();
+			this->ShowLaunchy();
 		} else {
 			this->Visible = !this->Visible;
 			if (Visible)
 			{
-				this->ShowWindows(true);
-				this->ActivateTopParent();
-				this->InputBox.SetFocus();
-				this->DoDonate();
+				this->ShowLaunchy();
 			}
 			else {
 				HideLaunchy();
@@ -572,4 +575,13 @@ bool CLaunchyDlg::DoDonate(void)
 		return true;
 	}
 	return false;
+}
+
+void CLaunchyDlg::ShowLaunchy(void)
+{
+	this->Visible = true;
+	this->ShowWindows(SW_SHOW);
+	this->ActivateTopParent();
+	this->InputBox.SetFocus();
+	this->DoDonate();	
 }

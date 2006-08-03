@@ -71,6 +71,8 @@ void Skin::parseSkinFile(void)
 	
 	translucensy = ini->GetValueI(_T("Background"), _T("translucency"),-1);
 
+	listWidthInChars = ini->GetValueI(_T("Widgets"), _T("DropDownWidth"), 35);
+
 	// Widget positions
 	inputRect = stringToRect(ini->GetValue(_T("Widgets"), _T("TextEntryRect"), _T("25,25,140,50")));
 	resultRect = stringToRect(ini->GetValue(_T("Widgets"), _T("ResultsRect"), _T("25,25,140,50")));

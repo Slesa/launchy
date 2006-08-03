@@ -100,4 +100,5 @@ public:
 	CTransparentStatic2 IconPreview;
 	void HideLaunchy(void);
 	bool DoDonate(void);
+	void ShowLaunchy(void);
 };

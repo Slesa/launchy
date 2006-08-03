@@ -60,6 +60,8 @@ public:
 	int inputSmall_italics;
 	int inputSmall_bold;
 
+	int listWidthInChars;
+
 
 	CString results_fontName;
 	int results_fontSize;

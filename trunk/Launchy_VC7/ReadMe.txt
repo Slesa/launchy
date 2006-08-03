@@ -1,7 +1,5 @@
 Where I've left off:
 
-Usage is way broken.  If I debug for the case when 2 files equal "mozilla firefox", the actual app will have like 10 but so will the folder!
-
 
 Trying to get sticky window to work.  It mostly works except when you start launchy it doesn't 
 show right away and also it's possible to get it to not reset its timer so sometimes the drop list
