@@ -165,12 +165,14 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,35,94,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,139,94,50,14
-    EDITTEXT        IDC_EDIT1,95,53,24,14,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Number of results in list:",IDC_STATIC,12,58,78,8
+    EDITTEXT        IDC_EDIT1,95,27,24,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Number of results in list:",IDC_STATIC,7,27,78,8
     CONTROL         "Always Display Launchy Window?",IDC_CHECK1,"Button",
-                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,11,13,123,10
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | NOT WS_VISIBLE | 
+                    WS_TABSTOP,7,73,123,10
     CONTROL         "Portable Mode? (USB Stick)",IDC_ADV_USB,"Button",
-                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,11,28,102,10
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,7,7,102,10
+    LTEXT           "(0 for no dropdown menu)",IDC_STATIC,7,34,85,8
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 165, 164

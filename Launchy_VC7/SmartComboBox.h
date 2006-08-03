@@ -20,8 +20,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #pragma once
 
 #include "stdafx.h"
-#include "TypeEdit.h"
-#include "OpaqueListBox.h"
+#include "ReadOnlyEdit.h"
+//#include "TypeEdit.h"
+//#include "OpaqueListBox.h"
 //#include "LListBox.h"
 //#include "ColorCombo.h"
 
@@ -54,7 +55,7 @@ protected:
 public:
 	void SetTextColor(COLORREF rgb);
 	void SetBackColor(COLORREF rgb);
-    CTypeEdit      m_edit;
+    CEdit      m_edit;
     CListBox   m_listbox;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnDestroy();
@@ -84,6 +85,8 @@ public:
 	void CleanText(void);
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
+
+	void DoSubclass(void);
 };
 
 

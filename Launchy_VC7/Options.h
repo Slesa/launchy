@@ -67,7 +67,7 @@ public:
 	CString skinName;
 
 	bool usbmode;
-
+	
 	CTime installTime;
 	bool firstRun;
 	int listLength;

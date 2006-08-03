@@ -199,6 +199,7 @@ void Options::ParseIni(void)
 
 
 
+
 	CTime t = CTime::GetCurrentTime();
 
 	installTime = CTime( ini->GetValueTime(_T("Launchy Information"), _T("InstallTime"), t.GetTime()));

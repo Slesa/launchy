@@ -201,10 +201,11 @@ void SmartComboBox::OnCbnDropdown()
 
 	// Find the longest string in the combo box.
 	CString str;
-	CSize   sz;
+	CSize   sx,sz;
 	int     dx=0;
 	CDC*    pDC = GetDC();
 	pDC->SelectObject(m_FontSmall);
+	CString cStr;
 	for (int i=0;i < GetCount();i++)
 	{
 		m_listbox.SetItemHeight(i, 40);
@@ -212,8 +213,19 @@ void SmartComboBox::OnCbnDropdown()
 		//		sz = pDC->GetTextExtent(str);
 		DropItem* d = (DropItem*) GetItemDataPtr(i);
 		sz = pDC->GetTextExtent(d->lesspath);
-		if (sz.cx > dx)
-			dx = sz.cx;
+
+		m_listbox.GetText(i, cStr);
+		sx = pDC->GetOutputTextExtent(cStr);
+
+		if (sz.cx > sx.cx) {
+			if (sz.cx > dx) {
+				dx = sz.cx;
+			}
+		} else {
+			if (sx.cx > dx) {
+				dx = sx.cx;
+			}
+		}
 	}
 	ReleaseDC(pDC);
 
@@ -408,4 +420,16 @@ void SmartComboBox::SetSmallFont(CFont* font, COLORREF rgb)
 {
 	m_FontSmall = font;	
 	m_FontSmallRGB = rgb;
+}
+
+void SmartComboBox::DoSubclass(void)
+{
+	AfxMessageBox(L"Hi!");
+	if (m_edit.GetSafeHwnd() == NULL) {
+		m_edit.SubclassDlgItem( CTLCOLOR_EDIT,this);
+	}
+	//ListBox control
+	if (m_listbox.GetSafeHwnd() == NULL) {
+		m_listbox.SubclassDlgItem(CTLCOLOR_LISTBOX, this);
+	}
 }

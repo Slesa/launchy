@@ -455,7 +455,7 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 
 
 			data->longpath = full;
-			data->lesspath = full.Left(ind+1).Right(50);
+			data->lesspath = full.Left(ind+1).Right(pDlg->options->skin->listWidthInChars);
 			data->icon = NULL;
 
 			pDlg->InputBox.SetItemDataPtr(index, (void*) data);
