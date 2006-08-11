@@ -1,5 +1,6 @@
 Where I've left off:
 
+Hmm.  Still have the clone problem.  Need a real fix for this.
 
 Trying to get sticky window to work.  It mostly works except when you start launchy it doesn't 
 show right away and also it's possible to get it to not reset its timer so sometimes the drop list
