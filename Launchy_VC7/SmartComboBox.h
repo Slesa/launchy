@@ -64,6 +64,7 @@ public:
 	afx_msg void OnCbnCloseup();
 	afx_msg void OnCbnEditchange();
 	CString typed;
+	CString searchPath;
 	afx_msg void OnCbnSelchange();
 	afx_msg void OnDrawSelchange(int id);
 	void SetSmallFont(CFont* font, COLORREF rgb);

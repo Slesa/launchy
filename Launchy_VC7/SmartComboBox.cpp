@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 IMPLEMENT_DYNAMIC(SmartComboBox, CComboBox)
 
 SmartComboBox::SmartComboBox()
-: typed(_T(""))
+: typed(_T("")), searchPath(_T(""))
 {
 	m_RemoveFrame = false;
 	m_RemoveButton = false;
@@ -147,6 +147,7 @@ void SmartComboBox::OnDestroy()
 
 void SmartComboBox::OnCbnEditupdate()
 {
+	
 	m_edit.GetWindowTextW(searchTxt);
 	searchTxt.MakeLower();
 
@@ -178,6 +179,8 @@ void SmartComboBox::OnCbnCloseup()
 void SmartComboBox::OnCbnEditchange()
 {
 	m_edit.GetWindowTextW(typed);
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	searchPath = pDlg->smarts->GetMatchPath(0);
 }
 
 void SmartComboBox::OnCbnSelchange()

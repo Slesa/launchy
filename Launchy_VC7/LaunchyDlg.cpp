@@ -302,7 +302,12 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 		if(pMsg->wParam==VK_RETURN) {
 			HideLaunchy();
 
-			if (InputBox.typed != searchTxt) {
+		CString MatchPath = smarts->GetMatchPath(0);
+
+			if (smarts->GetMatchPath(0) != InputBox.searchPath) {
+
+
+//			if (InputBox.typed != searchTxt) {
 				CString x;
 				options->Associate(InputBox.typed, smarts->GetMatchPath(0)); 	
 				options->Store();

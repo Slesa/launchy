@@ -399,8 +399,10 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 	// Set the preferred bit for the history match 	 
 	size_t count = matches.size(); 	 
 	for(size_t i = 0; i < count; i++) { 	 
-		if (matches[i]->fullPath == history || matches[i]->fullPath == oneTimeHistory) { 	 
-			matches[i]->isHistory = true; 	 
+		if (matches[i]->fullPath == history || matches[i]->fullPath == oneTimeHistory) { 
+			if (matches[i]->fullPath == oneTimeHistory || oneTimeHistory == _T("")) {
+				matches[i]->isHistory = true; 	 
+			}
 		} 	 
 	}
 	sort(matches.begin(), matches.end(), less_than);
@@ -610,6 +612,9 @@ void LaunchySmarts::archiveCatalog(CString path)
 
 CString LaunchySmarts::GetMatchPath(int sel)
 {
-	ASSERT(matches.size() >= sel+1);
-	return matches[sel]->fullPath;
+	if(matches.size() >= sel+1) {
+		return matches[sel]->fullPath;
+	} else {
+		return _T("");
+	}
 }
