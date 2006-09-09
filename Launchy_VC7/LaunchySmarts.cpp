@@ -593,7 +593,7 @@ void LaunchySmarts::archiveCatalog(CString path)
 	CFile theFile;
 
 	CString dir;
-	dir.Format(_T("%s\\launchy.db"), path);
+	dir.Format(_T("%slaunchy.db"), path);
 
 	if (!theFile.Open(dir, CFile::modeWrite | CFile::modeCreate)) {
 		return;
