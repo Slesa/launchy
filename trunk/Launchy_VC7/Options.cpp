@@ -76,10 +76,10 @@ void Options::changeUsbMode(bool toUSB)
 		CDiskObject disk;
 		CString dir;
 		LaunchySmarts::GetShellDir(CSIDL_APPDATA, dir);
-		dir += _T("\\Launchy");
+		dir += _T("\\Launchy\\");
 		disk.CreateDirectory(dir);
 		set_dataPath(dir);
-		dir += _T("\\launchy.ini");
+		dir += _T("launchy.ini");
 		ini->SetPath(dir);
 		usbmode = false;
 
