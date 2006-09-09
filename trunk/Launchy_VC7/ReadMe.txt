@@ -10,8 +10,18 @@ won't show.
 
 Changes since 0.9.6:
 . Brought back in the association code
+. Sticky window (always on top) now possible
+. Now handles duplicates of filenames 
+. Dropdown window are much more useful
+. USB Mode Option
+. Configurable Database Update Rate
+
+BUG FIXES:
 . Fixed a no icon bug (looked up icon on c: rather than find the windows drive)
 . Donate screen could come up twice if you rebooted, this is annoying.  I fixed this by forcing a store after the options change.
+. Fixed the launchy crash bug?
+. Fixed LUA situation
+. Now the hotkey window will initialize with your current hotkey
 
 Changes since 0.9.3:
 
