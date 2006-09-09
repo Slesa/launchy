@@ -192,6 +192,17 @@ void SmartComboBox::OnCbnSelchange()
 	}
 }
 
+void SmartComboBox::OnDrawSelchange(int itemID) {
+	// If it's closing, we've already taken care of this..
+	if (GetDroppedState()) {
+		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+		m_listbox.GetText(itemID, searchTxt);
+		searchTxt.MakeLower();
+
+		pDlg->smarts->Update(searchTxt,false);
+	}
+
+}
 
 void SmartComboBox::OnCbnDropdown()
 {
@@ -308,11 +319,11 @@ void SmartComboBox::CleanText(void)
 }
 void SmartComboBox::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
+	OnDrawSelchange((int)lpDrawItemStruct->itemID);
 	CRect rItem;
 	CRect rText;
 	CRect rIcon;
 	CDC* dc = CDC::FromHandle(lpDrawItemStruct->hDC);
-
 
 	if ((int)lpDrawItemStruct->itemID < 0)
 	{
@@ -405,6 +416,7 @@ void SmartComboBox::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 	dc->SelectObject(oldFont);
 	dc->SetTextColor(oldColor);
+
 
 }
 

@@ -65,6 +65,7 @@ public:
 	afx_msg void OnCbnEditchange();
 	CString typed;
 	afx_msg void OnCbnSelchange();
+	afx_msg void OnDrawSelchange(int id);
 	void SetSmallFont(CFont* font, COLORREF rgb);
 	COLORREF m_FontSmallRGB;
 	CFont* m_FontSmall;

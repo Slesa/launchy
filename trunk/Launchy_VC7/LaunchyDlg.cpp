@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 CLaunchyDlg::CLaunchyDlg(CWnd* pParent /*=NULL*/)
 : CDialogSK(CLaunchyDlg::IDD, pParent)
-, DelayTimer(0)
+, DelayTimer(0), initialized(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDI_ICON1);
 
@@ -125,10 +125,12 @@ BOOL CLaunchyDlg::OnInitDialog()
 //	InputBox.DoSubclass();
 
 	if (options->stickyWindow) {
-		HideLaunchy();
+//		HideLaunchy();
 		ShowLaunchy();
 	}
-
+	else {
+		HideLaunchy();
+	}
 	//	InputBox.doSubclass();
 
 	BOOL m_isKeyRegistered = RegisterHotKey(GetSafeHwnd(), 100,
@@ -139,7 +141,7 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 	SetTimer(UPDATE_TIMER, 60000, NULL);
 
-
+	initialized = true;
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -207,13 +209,36 @@ LRESULT CLaunchyDlg::OnHotKey(WPARAM wParam, LPARAM lParam) {
 void CLaunchyDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 {
 	if(this->atLaunch) {
-		lpwndpos->flags &= ~SWP_SHOWWINDOW;
+
+		// This can either get called before or after OnInitDlg unfortunately
+
+		// If before oninitdialog, then it's safe to hide
+		if (!this->initialized) {
+			lpwndpos->flags &= ~SWP_SHOWWINDOW;
+		} else {	
+			// If after oninitdialog, only hide if supposed to
+			if (!options->stickyWindow) {
+				lpwndpos->flags &= ~SWP_SHOWWINDOW;		
+			}
+		}
+	}
+
+	
+	CDialogSK::OnWindowPosChanging(lpwndpos);
+
+
+//		lpwndpos->flags &= ~SWP_SHOWWINDOW;
+		// I believe that this was causing the crash on startup bug!
+		// I think OnWindowPosChanging was getting called before 
+		// options was create in oninitdialog
+		/*
 		if (options->posX != -1 && options->posY != -1) {
 			lpwndpos->x = options->posX;
 			lpwndpos->y = options->posY;
 		}
-	}
-	CDialogSK::OnWindowPosChanging(lpwndpos);
+		*/
+//	}
+	
 
 	// TODO: Add your message handler code here
 }

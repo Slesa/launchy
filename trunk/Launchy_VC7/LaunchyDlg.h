@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "boost/smart_ptr.hpp"
 //#include "ReadOnlyEdit.h"
 
-#define LAUNCHY_DB_DONE (WM_APP + 1)
+
 
 using namespace boost;
 
@@ -58,6 +58,7 @@ protected:
 	CFont* m_FontInputSmall;
 	CFont* m_FontResult;
 	HICON m_hIcon;
+	BOOL initialized;
 	BOOL atLaunch;
 	BOOL Visible;
 	// Generated message map functions
