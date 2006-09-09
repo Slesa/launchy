@@ -72,7 +72,7 @@ BEGIN
                     WS_TABSTOP,WS_EX_TRANSPARENT
     EDITTEXT        IDC_PREVIEW,147,17,103,16,ES_CENTER | ES_AUTOHSCROLL | 
                     ES_READONLY | NOT WS_TABSTOP
-    ICON            "",IDC_PIC,121,15,20,20,SS_CENTERIMAGE,WS_EX_TRANSPARENT
+    ICON            "",IDC_PIC,121,15,21,20,SS_CENTERIMAGE,WS_EX_TRANSPARENT
 END
 
 IDD_HOTKEY_DIALOG DIALOGEX 0, 0, 186, 94
@@ -168,8 +168,7 @@ BEGIN
     EDITTEXT        IDC_EDIT1,95,27,24,14,ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "Number of results in list:",IDC_STATIC,7,27,78,8
     CONTROL         "Always Display Launchy Window?",IDC_CHECK1,"Button",
-                    BS_AUTOCHECKBOX | BS_LEFTTEXT | NOT WS_VISIBLE | 
-                    WS_TABSTOP,7,73,123,10
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,7,73,123,10
     CONTROL         "Portable Mode? (USB Stick)",IDC_ADV_USB,"Button",
                     BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,7,7,102,10
     LTEXT           "(0 for no dropdown menu)",IDC_STATIC,7,34,85,8
@@ -251,7 +250,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 263
         TOPMARGIN, 7
-        BOTTOMMARGIN, 41
+        BOTTOMMARGIN, 35
     END
 
     IDD_HOTKEY_DIALOG, DIALOG

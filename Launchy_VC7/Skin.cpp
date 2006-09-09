@@ -86,7 +86,7 @@ void Skin::parseSkinFile(void)
 	if (input_bold == 1) input_bold = 700;
 
 	inputSmall_fontName = ini->GetValue(_T("Widgets"), _T("TextEntrySmall_Font"), input_fontName);
-	inputSmall_fontSize = ini->GetValueI(_T("Widgets"), _T("TextEntrySmall_Font_Size"), input_fontSize);
+	inputSmall_fontSize = ini->GetValueI(_T("Widgets"), _T("TextEntrySmall_Font_Size"), input_fontSize-1);
 	inputSmall_italics = ini->GetValueI(_T("Widgets"), _T("TextEntrySmall_Font_Italics"), 0);
 	inputSmall_bold = ini->GetValueI(_T("Widgets"), _T("TextEntrySmall_Font_Bold"), 0);
 	if (inputSmall_bold == 1) inputSmall_bold = 700;
