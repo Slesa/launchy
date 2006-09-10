@@ -122,10 +122,10 @@ BOOL CLaunchyDlg::OnInitDialog()
 	// mapping is setup before we use the controls.
 	InputBox.ShowDropDown(true);
 	InputBox.ShowDropDown(false);
-//	InputBox.DoSubclass();
+	//	InputBox.DoSubclass();
 
 	if (options->stickyWindow) {
-//		HideLaunchy();
+		//		HideLaunchy();
 		ShowLaunchy();
 	}
 	else {
@@ -223,22 +223,22 @@ void CLaunchyDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 		}
 	}
 
-	
+
 	CDialogSK::OnWindowPosChanging(lpwndpos);
 
 
-//		lpwndpos->flags &= ~SWP_SHOWWINDOW;
-		// I believe that this was causing the crash on startup bug!
-		// I think OnWindowPosChanging was getting called before 
-		// options was create in oninitdialog
-		/*
-		if (options->posX != -1 && options->posY != -1) {
-			lpwndpos->x = options->posX;
-			lpwndpos->y = options->posY;
-		}
-		*/
-//	}
-	
+	//		lpwndpos->flags &= ~SWP_SHOWWINDOW;
+	// I believe that this was causing the crash on startup bug!
+	// I think OnWindowPosChanging was getting called before 
+	// options was create in oninitdialog
+	/*
+	if (options->posX != -1 && options->posY != -1) {
+	lpwndpos->x = options->posX;
+	lpwndpos->y = options->posY;
+	}
+	*/
+	//	}
+
 
 	// TODO: Add your message handler code here
 }
@@ -302,12 +302,12 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 		if(pMsg->wParam==VK_RETURN) {
 			HideLaunchy();
 
-		CString MatchPath = smarts->GetMatchPath(0);
+			CString MatchPath = smarts->GetMatchPath(0);
 
 			if (smarts->GetMatchPath(0) != InputBox.searchPath) {
 
 
-//			if (InputBox.typed != searchTxt) {
+				//			if (InputBox.typed != searchTxt) {
 				CString x;
 				options->Associate(InputBox.typed, smarts->GetMatchPath(0)); 	
 				options->Store();
@@ -350,7 +350,7 @@ void CLaunchyDlg::OnTimer(UINT_PTR nIDEvent)
 		smarts->LoadCatalog();
 		KillTimer(UPDATE_TIMER);
 		if (options->indexTime != 0)
-			SetTimer(UPDATE_TIMER, options->indexTime, NULL);
+			SetTimer(UPDATE_TIMER, options->indexTime * 60000, NULL);
 	}
 }
 
