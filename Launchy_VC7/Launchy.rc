@@ -172,6 +172,10 @@ BEGIN
     CONTROL         "Portable Mode? (USB Stick)",IDC_ADV_USB,"Button",
                     BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,7,7,102,10
     LTEXT           "(0 for no dropdown menu)",IDC_STATIC,7,34,85,8
+    EDITTEXT        IDC_DBEDIT,113,49,24,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Minutes Between Index Scans:",IDC_STATIC_DBUP1,7,51,100,
+                    8
+    LTEXT           "(0 for manual reindexing only)",IDC_DBUP2,8,59,97,8
 END
 
 IDD_ABOUT DIALOGEX 0, 0, 165, 164

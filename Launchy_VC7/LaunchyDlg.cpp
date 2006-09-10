@@ -138,8 +138,8 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 	ASSERT(m_isKeyRegistered != FALSE);
 
-
-	SetTimer(UPDATE_TIMER, 60000, NULL);
+	if (options->indexTime != 0)
+		SetTimer(UPDATE_TIMER, 60000, NULL);
 
 	initialized = true;
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -349,7 +349,8 @@ void CLaunchyDlg::OnTimer(UINT_PTR nIDEvent)
 	else if (nIDEvent == UPDATE_TIMER) {
 		smarts->LoadCatalog();
 		KillTimer(UPDATE_TIMER);
-		SetTimer(UPDATE_TIMER, 600000, NULL);
+		if (options->indexTime != 0)
+			SetTimer(UPDATE_TIMER, options->indexTime, NULL);
 	}
 }
 

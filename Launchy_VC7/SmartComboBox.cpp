@@ -163,13 +163,16 @@ void SmartComboBox::OnCbnEditupdate()
 
 void SmartComboBox::OnCbnCloseup()
 {
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+	if (!IsWindow(m_listbox.m_hWnd)) return;
+
 	int sel = m_listbox.GetCurSel();
 	if (sel != LB_ERR) {
 		DropItem* data = (DropItem*) GetItemDataPtr(sel);
 
 		m_listbox.GetText(sel, searchTxt);
-		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
-		if (pDlg == NULL) return;
+
 
 		pDlg->smarts->Update(searchTxt, true, data->longpath);
 	}
@@ -178,16 +181,24 @@ void SmartComboBox::OnCbnCloseup()
 
 void SmartComboBox::OnCbnEditchange()
 {
-	m_edit.GetWindowTextW(typed);
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+	if (!IsWindow(m_listbox.m_hWnd)) return;
+
+
+	m_edit.GetWindowTextW(typed);
 	searchPath = pDlg->smarts->GetMatchPath(0);
 }
 
 void SmartComboBox::OnCbnSelchange()
 {
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+	if (!IsWindow(m_listbox.m_hWnd)) return;
+
+
 	// If it's closing, we've already taken care of this..
 	if (GetDroppedState()) {
-		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 		m_listbox.GetText(m_listbox.GetCurSel(), searchTxt);
 		searchTxt.MakeLower();
 

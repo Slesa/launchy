@@ -26,4 +26,5 @@ public:
 //	int cs_listlength;
 	afx_msg void OnBnClickedOk();
 	int i_listLength;
+	int dbUpdateTime;
 };
