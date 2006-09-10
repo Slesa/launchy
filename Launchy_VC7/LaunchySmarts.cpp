@@ -346,17 +346,20 @@ void LaunchySmarts::LoadFirstTime()
 		LoadCatalog();
 		return;
 	}
-
-	CArchiveExt archive(&theFile, CArchive::load, 4096, NULL, _T(""), TRUE);
-
 	CArray<ArchiveType> archtypes;
 	CArray<ArchiveType> smaller;
+	CArchiveExt archive(&theFile, CArchive::load, 4096, NULL, _T(""), TRUE);
 
-	archtypes.Serialize(archive);
-
-	archive.Close();
-	theFile.Close();
-
+	try {
+		archtypes.Serialize(archive);
+		archive.Close();
+		theFile.Close();
+	} catch (...) {
+		archive.Close();
+		theFile.Close();
+		LoadCatalog();
+		return;
+	}
 
 	ScanBundle* bundle = new ScanBundle();
 	bundle->smarts = this;
@@ -602,14 +605,19 @@ void LaunchySmarts::archiveCatalog(CString path)
 	}
 
 	CArchiveExt archive(&theFile, CArchive::store, 4096, NULL, _T(""), TRUE);
+	CDiskObject disk;
 
-	files.Serialize(archive);
-
-	archive.Close();
-	theFile.Close();
-
-	// Swap the database (this makes it more atomic)
-	disk.MoveFile(dir2,dir1);
+	try {
+		files.Serialize(archive);
+		archive.Close();
+		theFile.Close();
+		disk.RemoveFile(dir);
+		disk.RenameFile(dir2,dir);
+	} catch (...) {
+		archive.Close();
+		theFile.Close();
+		return;
+	}
 }
 
 

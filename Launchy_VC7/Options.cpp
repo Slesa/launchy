@@ -49,7 +49,7 @@ Options::Options(void) : ini(new CIniFile())
 	} else { 
 		CString dir;
 		LaunchySmarts::GetShellDir(CSIDL_APPDATA, dir);
-		dir += _T("\\Launchy");
+		dir += _T("\\Launchy\\");
 		disk.CreateDirectory(dir);
 		set_dataPath(dir);
 		dir += _T("\\launchy.ini");
