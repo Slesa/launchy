@@ -68,6 +68,7 @@ public:
 
 	bool usbmode;
 	
+	int indexTime;
 	CTime installTime;
 	bool firstRun;
 	int listLength;

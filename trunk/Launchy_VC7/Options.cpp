@@ -188,6 +188,7 @@ void Options::ParseIni(void)
 
 	listLength = ini->GetValueI(_T("Advanced"), _T("List Length"), 10);
 	stickyWindow = ini->GetValueB(_T("Advanced"), _T("Sticky Window"), false);
+	indexTime = ini->GetValueI(_T("Advanced"), _T("Index Time"), 20);
 
 	mod_key =  ini->GetValueI(_T("Hotkey"), _T("mod_key"), MOD_ALT);
 	vkey =  ini->GetValueI(_T("Hotkey"), _T("vkey"), VK_SPACE);
@@ -196,7 +197,6 @@ void Options::ParseIni(void)
 
 	set_Directories(DeSerializeDirArray(ini->GetValue(_T("General"), _T("Directories"), DefaultDirs)));
 	set_Types(DeSerializeStringArray(ini->GetValue(_T("General"), _T("Types"), _T(".lnk;"))));
-
 
 
 
@@ -220,6 +220,7 @@ void Options::Store(void)
 
 	ini->SetValueI(_T("Advanced"), _T("List Length"),  listLength);
 	ini->SetValueB(_T("Advanced"), _T("Sticky Window"), stickyWindow);
+	ini->SetValueI(_T("Advanced"), _T("Index Time"), indexTime);
 
 	ini->SetValueI(_T("Hotkey"), _T("mod_key"), mod_key);
 	ini->SetValueI(_T("Hotkey"), _T("vkey"), vkey);

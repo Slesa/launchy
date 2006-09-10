@@ -13,7 +13,6 @@
 #define IDD_ALPHA_BORDER                151
 #define IDB_BITMAP1                     153
 #define IDD_ADVANCED_DIALOG             154
-#define IDD_DIALOG1                     155
 #define IDD_ABOUT                       155
 #define IDC_COMBO1                      1000
 #define IDC_Input                       1000
@@ -23,6 +22,7 @@
 #define IDC_PREVIEW                     1001
 #define IDC_KEY_COMBO                   1001
 #define IDC_LIST1                       1002
+#define IDC_DBEDIT                      1002
 #define IDC_EDIT3                       1003
 #define IDC_LIST2                       1005
 #define IDC_ADD_TYPE                    1006
@@ -48,6 +48,8 @@
 #define IDC_STATIC7                     1024
 #define IDC_STATIC2                     1025
 #define IDC_STATIC4                     1026
+#define IDC_STATIC_DBUP1                1028
+#define IDC_DBUP2                       1029
 #define ID_SKINS_CUSTOMDIRECTORIES      32771
 #define ID_SKINS_SKINS                  32772
 #define ID_SETTINGS_CUSTOMDIRECTORIES   32773
@@ -67,7 +69,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        156
 #define _APS_NEXT_COMMAND_VALUE         32786
-#define _APS_NEXT_CONTROL_VALUE         1027
+#define _APS_NEXT_CONTROL_VALUE         1030
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

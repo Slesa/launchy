@@ -594,10 +594,10 @@ void LaunchySmarts::archiveCatalog(CString path)
 
 	CFile theFile;
 
-	CString dir;
+	CString dir,dir2;
 	dir.Format(_T("%slaunchy.db"), path);
-
-	if (!theFile.Open(dir, CFile::modeWrite | CFile::modeCreate)) {
+	dir2.Format(_T("%slaunchy2.db"),path);
+	if (!theFile.Open(dir2, CFile::modeWrite | CFile::modeCreate)) {
 		return;
 	}
 
@@ -607,6 +607,9 @@ void LaunchySmarts::archiveCatalog(CString path)
 
 	archive.Close();
 	theFile.Close();
+
+	// Swap the database (this makes it more atomic)
+	disk.MoveFile(dir2,dir1);
 }
 
 
