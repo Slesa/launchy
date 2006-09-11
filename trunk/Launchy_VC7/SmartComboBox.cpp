@@ -222,7 +222,7 @@ void SmartComboBox::OnCbnDropdown()
 {
 	//	SmartComboBox* pmyComboBox = this;
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
-	//	pmyComboBox->SetCurSel(-1);
+//	SetCurSel(-1);
 
 	// Find the longest string in the combo box.
 	CString str;
@@ -333,7 +333,7 @@ void SmartComboBox::CleanText(void)
 }
 void SmartComboBox::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
-	OnDrawSelchange((int)lpDrawItemStruct->itemID);
+//	OnDrawSelchange((int)lpDrawItemStruct->itemID);
 	CRect rItem;
 	CRect rText;
 	CRect rIcon;
