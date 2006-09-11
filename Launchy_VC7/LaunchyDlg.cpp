@@ -210,7 +210,7 @@ void CLaunchyDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 {
 	if(this->atLaunch) {
 
-		// This can either get called before or after OnInitDlg unfortunately
+		// This can either get called before or after OnInitDlg (maybe?)
 
 		// If before oninitdialog, then it's safe to hide
 		if (!this->initialized) {
@@ -225,19 +225,6 @@ void CLaunchyDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 
 
 	CDialogSK::OnWindowPosChanging(lpwndpos);
-
-
-	//		lpwndpos->flags &= ~SWP_SHOWWINDOW;
-	// I believe that this was causing the crash on startup bug!
-	// I think OnWindowPosChanging was getting called before 
-	// options was create in oninitdialog
-	/*
-	if (options->posX != -1 && options->posY != -1) {
-	lpwndpos->x = options->posX;
-	lpwndpos->y = options->posY;
-	}
-	*/
-	//	}
 
 
 	// TODO: Add your message handler code here
