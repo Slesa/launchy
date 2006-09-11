@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Launchy"
-#define MyAppVerName "Launchy 0.9.8"
-#define MyAppPublisher "JK Consulting"
+#define MyAppVerName "Launchy 1.0 Beta"
+#define MyAppPublisher "Code Jelly"
 #define MyAppURL "http://www.launchy.net"
 #define MyAppExeName "Launchy.exe"
 #define MyAppUrlName "Launchy.url"
@@ -70,26 +70,15 @@ Source: ..\Skins\Gantchy Deep\skin.ini; DestDir: {app}\Skins\Gantchy Deep\; Flag
 Source: ..\Skins\Gantchy Deep\default.png; DestDir: {app}\Skins\Gantchy Deep\; Flags: ignoreversion
 Source: ..\Skins\Gantchy Deep\Author.txt; DestDir: {app}\Skins\Gantchy Deep\; Flags: ignoreversion
 
-Source: ..\Skins\Mini Blue\background.bmp; DestDir: {app}\Skins\Mini Blue\; Flags: ignoreversion
-Source: ..\Skins\Mini Blue\skin.ini; DestDir: {app}\Skins\Mini Blue\; Flags: ignoreversion
-Source: ..\Skins\Mini Blue\default.png; DestDir: {app}\Skins\Mini Blue\; Flags: ignoreversion
-Source: ..\Skins\Mini Blue\Author.txt; DestDir: {app}\Skins\Mini Blue\; Flags: ignoreversion
+Source: ..\Skins\Aqua\background.bmp; DestDir: {app}\Skins\Aqua\; Flags: ignoreversion
+Source: ..\Skins\Aqua\skin.ini; DestDir: {app}\Skins\Aqua\; Flags: ignoreversion
+Source: ..\Skins\Aqua\border.png; DestDir: {app}\Skins\Aqua\; Flags: ignoreversion
+Source: ..\Skins\Aqua\Author.txt; DestDir: {app}\Skins\Aqua\; Flags: ignoreversion
 
-Source: ..\Skins\Mini Soft\background.bmp; DestDir: {app}\Skins\Mini Soft\; Flags: ignoreversion
-Source: ..\Skins\Mini Soft\skin.ini; DestDir: {app}\Skins\Mini Soft\; Flags: ignoreversion
-Source: ..\Skins\Mini Soft\default.png; DestDir: {app}\Skins\Mini Soft\; Flags: ignoreversion
-Source: ..\Skins\Mini Soft\Author.txt; DestDir: {app}\Skins\Mini Soft\; Flags: ignoreversion
-
-Source: ..\Skins\transparent\bluetrim.bmp; DestDir: {app}\Skins\transparent\; Flags: ignoreversion
-Source: ..\Skins\transparent\skin.ini; DestDir: {app}\Skins\transparent\; Flags: ignoreversion
-Source: ..\Skins\transparent\alpha.png; DestDir: {app}\Skins\transparent\; Flags: ignoreversion
-Source: ..\Skins\transparent\Author.txt; DestDir: {app}\Skins\transparent\; Flags: ignoreversion
-
-
-Source: ..\Skins\BioHazard\background.bmp; DestDir: {app}\Skins\BioHazard\; Flags: ignoreversion
-Source: ..\Skins\BioHazard\skin.ini; DestDir: {app}\Skins\BioHazard\; Flags: ignoreversion
-Source: ..\Skins\BioHazard\default.png; DestDir: {app}\Skins\BioHazard\; Flags: ignoreversion
-Source: ..\Skins\BioHazard\Author.txt; DestDir: {app}\Skins\BioHazard\; Flags: ignoreversion
+Source: ..\Skins\Clean\background.bmp; DestDir: {app}\Skins\Clean\; Flags: ignoreversion
+Source: ..\Skins\Clean\skin.ini; DestDir: {app}\Skins\Clean\; Flags: ignoreversion
+Source: ..\Skins\Clean\border.png; DestDir: {app}\Skins\Clean\; Flags: ignoreversion
+Source: ..\Skins\Clean\Author.txt; DestDir: {app}\Skins\Clean\; Flags: ignoreversion
 
 Source: ..\Skins\BlueMetal\background.bmp; DestDir: {app}\Skins\BlueMetal\; Flags: ignoreversion
 Source: ..\Skins\BlueMetal\skin.ini; DestDir: {app}\Skins\BlueMetal\; Flags: ignoreversion
