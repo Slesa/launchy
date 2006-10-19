@@ -4,14 +4,12 @@
 //
 #define IDD_LAUNCHY_DIALOG              102
 #define IDP_SOCKETS_INIT_FAILED         103
-#define IDB_BACKGROUND                  129
 #define IDI_ICON1                       145
 #define IDR_MENU1                       147
 #define IDD_HOTKEY_DIALOG               148
 #define IDD_SKIN                        149
 #define IDD_DIRECTORIES                 150
 #define IDD_ALPHA_BORDER                151
-#define IDB_BITMAP1                     153
 #define IDD_ADVANCED_DIALOG             154
 #define IDD_ABOUT                       155
 #define IDC_COMBO1                      1000
