@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Resource.h"
 #include "TransparentStatic2.h"
 #include "AlphaBorder.h"
+#include "Plugin.h"
 
 #include "boost/smart_ptr.hpp"
 //#include "ReadOnlyEdit.h"
@@ -76,6 +77,7 @@ public:
 	afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
 
 	shared_ptr<Options> options;
+	shared_ptr<Plugin> plugins;
 	afx_msg void OnClose();
 	afx_msg void OnDestroy();
 //	afx_msg void OnCbnEditchangeInput();

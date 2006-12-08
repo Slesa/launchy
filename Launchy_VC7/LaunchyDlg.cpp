@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "AdvancedOptions.h"
 #include "AboutDialog.h"
 #include ".\launchydlg.h"
+#include "plugin.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -110,6 +111,7 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 
 	options.reset(new Options());
+	plugins.reset(new Plugin());
 
 	smarts.reset(new LaunchySmarts());
 
@@ -140,6 +142,7 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 	if (options->indexTime != 0)
 		SetTimer(UPDATE_TIMER, 60000, NULL);
+
 
 	initialized = true;
 	return TRUE;  // return TRUE  unless you set the focus to a control
