@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "afxtempl.h"
 #include "FileRecord.h"
 #include "UseShGetFileInfo.h"
+#include "Plugin.h"
 #include <map>
 #include <vector>
 
@@ -41,6 +42,7 @@ class LaunchySmarts;
 struct ScanBundle {
 	Options* ops;
 	LaunchySmarts* smarts;
+	Plugin* plugins;
 	map<TCHAR, int> charUsage;
 	map<TCHAR, CharSectionPtr> charMap;
 	int catFiles;

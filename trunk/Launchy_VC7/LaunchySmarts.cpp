@@ -223,9 +223,9 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 	}
 
 	// Add the plugin names
-	shared_ptr<Plugin> plugins =  ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
-	vector<FileRecordPtr> recs = plugins->GetIdentifiers();
+	vector<FileRecordPtr> recs = bun->plugins->GetIdentifiers();
 
+	added.RemoveAll();
 	for(int i = 0; i < recs.size(); i++) {
 		FileRecordPtr rec = recs[i];
 		CMap<TCHAR, TCHAR&, bool, bool&> added;
@@ -345,6 +345,7 @@ void LaunchySmarts::LoadCatalog(void)
 	ScanBundle* bundle = new ScanBundle();
 	bundle->smarts = this;
 	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
+	bundle->plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins.get();
 	bundle->catFiles = 0;
 	bundle->dlg = AfxGetMainWnd()->GetSafeHwnd();
 
@@ -389,6 +390,7 @@ void LaunchySmarts::LoadFirstTime()
 	ScanBundle* bundle = new ScanBundle();
 	bundle->smarts = this;
 	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
+	bundle->plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins.get();
 	bundle->catFiles = 0;
 	bundle->dlg = AfxGetMainWnd()->GetSafeHwnd();
 	ScanFiles(archtypes, bundle, smaller);
