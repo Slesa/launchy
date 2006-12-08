@@ -20,10 +20,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;C:\Boost\include\boost-1_33_1&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="TRUE"
 				UsePrecompiledHeader="3"
 				WarningLevel="3"
@@ -35,6 +36,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/VERBOSE:LIB"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="C:\Boost\lib"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				TargetMachine="1"/>
@@ -70,6 +72,8 @@
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
 			UseOfMFC="1"
+			UseOfATL="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="1"
 			WholeProgramOptimization="TRUE">
 			<Tool
@@ -82,6 +86,7 @@
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
 				OptimizeForWindowsApplication="TRUE"
+				AdditionalIncludeDirectories="&quot;C:\Boost\include\boost-1_33_1&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="FALSE"
 				RuntimeLibrary="0"
@@ -95,6 +100,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="C:\Boost\lib"
+				IgnoreAllDefaultLibraries="FALSE"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -187,6 +195,9 @@
 			</File>
 			<File
 				RelativePath=".\Options.cpp">
+			</File>
+			<File
+				RelativePath=".\Plugin.cpp">
 			</File>
 			<File
 				RelativePath=".\ReadOnlyEdit.cpp">
@@ -287,6 +298,9 @@
 				RelativePath=".\Options.h">
 			</File>
 			<File
+				RelativePath=".\Plugin.h">
+			</File>
+			<File
 				RelativePath=".\QArray.h">
 			</File>
 			<File
@@ -349,6 +363,10 @@
 			<File
 				RelativePath=".\zlib\zlib.lib">
 			</File>
+		</Filter>
+		<Filter
+			Name="Plugins"
+			Filter="">
 		</Filter>
 		<File
 			RelativePath=".\res\Launchy.manifest">

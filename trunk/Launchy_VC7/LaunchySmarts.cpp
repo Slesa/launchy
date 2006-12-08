@@ -26,6 +26,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "launchysmarts.h"
 #include "CArchiveEx.h"
 #include ".\launchysmarts.h"
+#include <boost/regex.hpp>
+#include "Plugin.h"
 //#define SECURITY_WIN32 1
 //#include <Security.h>
 
@@ -219,6 +221,28 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 			}
 		}
 	}
+
+	// Add the plugin names
+	shared_ptr<Plugin> plugins =  ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
+	vector<FileRecordPtr> recs = plugins->GetIdentifiers();
+
+	for(int i = 0; i < recs.size(); i++) {
+		FileRecordPtr rec = recs[i];
+		CMap<TCHAR, TCHAR&, bool, bool&> added;
+
+		for(int i = 0; i < rec->lowName.GetLength( ); i++) {
+			TCHAR c = rec->lowName[i];
+			bun->charUsage[c] += 1;
+
+			if (bun->charMap.count(c) == 0) {
+				bun->charMap[c].reset(new vector<FileRecordPtr>());	
+			}
+			if (added[c] == false) {
+				bun->charMap[c]->push_back(rec);
+				added[c] = true;
+			}
+		}
+	}
 }
 
 
@@ -323,6 +347,7 @@ void LaunchySmarts::LoadCatalog(void)
 	bundle->ops = ((CLaunchyDlg*)AfxGetMainWnd())->options.get();
 	bundle->catFiles = 0;
 	bundle->dlg = AfxGetMainWnd()->GetSafeHwnd();
+
 	AfxBeginThread(ScanStartMenu, bundle, THREAD_PRIORITY_IDLE);
 }
 
@@ -472,6 +497,13 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 
 void LaunchySmarts::FindMatches(CString txt)
 {
+	/*
+   boost::wregex e(_T("hey there*"));
+   boost::wsmatch what;
+   wstring txt2 = _T("hey there");
+   boost::regex_match(txt, what, e);
+*/
+
 	getCatalogLock();
 	//	txt.MakeLower();
 
