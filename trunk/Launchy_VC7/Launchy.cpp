@@ -53,6 +53,8 @@ CLaunchyApp theApp;
 
 
 CString searchTxt;
+CStringArray SearchStrings;
+int SearchPluginID;
 
 // CLaunchyApp initialization
 

@@ -57,6 +57,7 @@ BEGIN_MESSAGE_MAP(SmartComboBox, CComboBox)
 	ON_CONTROL_REFLECT(CBN_EDITCHANGE, &SmartComboBox::OnCbnEditchange)
 	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnCbnSelchange)
 	ON_CONTROL_REFLECT(CBN_DROPDOWN, &SmartComboBox::OnCbnDropdown)
+	ON_MESSAGE(WM_CHANGE_COMBO_SEL, &SmartComboBox::AfterSelChange)
 	ON_WM_DRAWITEM()
 	ON_WM_MEASUREITEM()
 END_MESSAGE_MAP()
@@ -145,11 +146,42 @@ void SmartComboBox::OnDestroy()
 	// TODO: Add your message handler code here
 }
 
+
+void SmartComboBox::ParseSearchTxt()
+{
+	m_edit.GetWindowTextW(searchTxt);
+
+	CStringArray NewSearchStrings;
+	CString prefix = L"";
+	int pos = 0;
+	for(int strNum = 0; strNum < SearchStrings.GetCount(); strNum++) {
+		CString prefix = SearchStrings[strNum];
+		for(int charNum = 0; charNum < prefix.GetLength(); charNum++) {
+			if (prefix[charNum] != searchTxt[pos + charNum]) break;
+			pos += 1;
+		}
+		NewSearchStrings.Add(prefix);
+		if (searchTxt[pos] == L' ') 
+			pos += 1;
+	}
+	
+	//NewSearchStrings.Add( searchTxt.Right(searchTxt.GetLength() - pos) );
+
+	//searchTxt = NewSearchStrings[NewSearchStrings.GetCount()-1];
+	searchTxt = searchTxt.Right(searchTxt.GetLength() - pos);
+	searchTxt.MakeLower();
+	SearchStrings.Copy(NewSearchStrings);
+}
+
+
 void SmartComboBox::OnCbnEditupdate()
 {
-	
+
 	m_edit.GetWindowTextW(searchTxt);
-	searchTxt.MakeLower();
+
+//	searchTxt.MakeLower();
+
+	ParseSearchTxt();
 
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
@@ -172,7 +204,7 @@ void SmartComboBox::OnCbnCloseup()
 		DropItem* data = (DropItem*) GetItemDataPtr(sel);
 
 		m_listbox.GetText(sel, searchTxt);
-
+		ParseSearchTxt();
 
 		pDlg->smarts->Update(searchTxt, true, data->longpath);
 	}
@@ -196,22 +228,28 @@ void SmartComboBox::OnCbnSelchange()
 	if (pDlg == NULL) return;
 	if (!IsWindow(m_listbox.m_hWnd)) return;
 
+	
+
+	this->PostMessage(WM_CHANGE_COMBO_SEL,IDC_Input,(LPARAM)(LPCTSTR) searchTxt);
 
 	// If it's closing, we've already taken care of this..
 	if (GetDroppedState()) {
 		m_listbox.GetText(m_listbox.GetCurSel(), searchTxt);
-		searchTxt.MakeLower();
+//		searchTxt.MakeLower();
+		ParseSearchTxt();
 
 		pDlg->smarts->Update(searchTxt,false);
 	}
 }
+
 
 void SmartComboBox::OnDrawSelchange(int itemID) {
 	// If it's closing, we've already taken care of this..
 	if (GetDroppedState()) {
 		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 		m_listbox.GetText(itemID, searchTxt);
-		searchTxt.MakeLower();
+//		searchTxt.MakeLower();
+		ParseSearchTxt();
 
 		pDlg->smarts->Update(searchTxt,false);
 	}
@@ -450,7 +488,6 @@ void SmartComboBox::SetSmallFont(CFont* font, COLORREF rgb)
 
 void SmartComboBox::DoSubclass(void)
 {
-	AfxMessageBox(L"Hi!");
 	if (m_edit.GetSafeHwnd() == NULL) {
 		m_edit.SubclassDlgItem( CTLCOLOR_EDIT,this);
 	}
@@ -458,4 +495,9 @@ void SmartComboBox::DoSubclass(void)
 	if (m_listbox.GetSafeHwnd() == NULL) {
 		m_listbox.SubclassDlgItem(CTLCOLOR_LISTBOX, this);
 	}
+}
+
+LRESULT SmartComboBox::AfterSelChange(UINT wParam, LONG lParam) {
+	m_edit.SetWindowTextW(L"This is a test");
+	return true;
 }

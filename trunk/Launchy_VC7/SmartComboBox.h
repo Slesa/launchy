@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // SmartComboBox
 
 #define WM_LAUNCHY_MOUSE_SELECT (LAUNCHY_DB_DONE + 1)
+#define WM_CHANGE_COMBO_SEL (WM_LAUNCHY_MOUSE_SELECT + 1)
 
 struct DropItem {
 	HICON icon;
@@ -83,12 +84,15 @@ private:
 	//background brush
 	CBrush m_brBackGnd;
 	afx_msg void OnPaint();
+	LRESULT AfterSelChange(UINT wParam, LONG lParam);
+	void ParseSearchTxt();
 public:
 	void CleanText(void);
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
 	void DoSubclass(void);
+//	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 
 
