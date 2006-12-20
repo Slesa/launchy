@@ -557,9 +557,7 @@ void LaunchySmarts::Launch(void)
 
 	if (SearchStrings.GetSize() > 0) {
 		// This search is owned by a plugin, let it launch
-		if (matches.size() > 0) {
-			plugins->Launch(SearchPluginID);		
-		} 
+		plugins->Launch(SearchPluginID);		
 		return;
 	}
 

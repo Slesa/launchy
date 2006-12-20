@@ -2,6 +2,11 @@ PLUGIN DETAIL:
 Okay, I seem to properly recognize ownership of a string and tab sort of works but I need to 
 handle deletion of characters
 
+TODO to finish Google plugin:
+. Properly display the text, when I hit tab it should auto-complete from "goo" to "Google"
+. Transfer the icon from the dll to Launchy somehow, I have to figure out how this works.
+
+
 
 
 
