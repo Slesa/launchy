@@ -70,9 +70,9 @@ public:
 	map<TCHAR, CharSectionPtr> charMap;
 	//	static void ScanDir(CString path, Launcher* launcher,map<CString, bool>& catalog, map<CString,bool>& typeMap);
 
+	vector<FileRecordPtr> matches;
 protected:
 
-	vector<FileRecordPtr> matches;
 public:
 	void Update(CString txt, bool UpdateDropdown = true, CString oneTimeHistory = _T(""));
 	void FindMatches(CString txt);

@@ -35,6 +35,8 @@ public:
 	CString lowName;
 	int usage;
 	bool isHistory;
+	short owner;
+
 //	Launcher* launcher;
 	
 	void set(CString p, CString type, Launcher* l, int u = 0);

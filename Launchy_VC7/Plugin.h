@@ -47,8 +47,8 @@ typedef vector<IndexItem> IndexItems;
 
 typedef bool (* PLUGINOWNSSEARCH) (TCHAR*);
 typedef IndexItems (* PLUGINGETINDEXITEMS) (void);
-typedef SearchResults (* PLUGINUPDATESEARCH) (	int NumStrings, const TCHAR** Strings);
-typedef void (* PLUGINDOACTION) (	int NumStrings, const TCHAR** Strings);
+typedef SearchResults (* PLUGINUPDATESEARCH) (	int NumStrings, const TCHAR* Strings);
+typedef void (* PLUGINDOACTION) (	int NumStrings, const TCHAR* Strings);
 typedef void (* PLUGINADDINDEXITEMS) (IndexItems);
 typedef  SearchResult* (* PLUGINGETIDENTIFIERS) (int*);
 typedef void (* PLUGINFREERESULTS) ( SearchResult*, int);
@@ -75,6 +75,7 @@ public:
 
 	void LoadDlls();
 	vector<FileRecordPtr> Plugin::GetIdentifiers();
+	void Launch(short PluginID);
 	/*
 
 	LoadDlls(void);

@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include ".\plugin.h"
 #include "DiskObject.h"
+#include "Launchy.h"
 
 void FreeSearchResult (SearchResult* sr) {
 	free(sr->DisplayString);
@@ -9,6 +10,28 @@ void FreeSearchResult (SearchResult* sr) {
 	DestroyIcon(sr->DisplayIcon);
 }
 
+TCHAR* string2TCHAR(wstring str) {
+	TCHAR* dest = (TCHAR*) malloc(sizeof(TCHAR) * (str.length() + 1));
+	if (dest == NULL) exit(1);
+	_tcscpy(dest, str.c_str());
+	return dest;
+}
+
+TCHAR* StringArrayToTCHAR( CStringArray& Strings) {
+	int size = 0;
+	for(int i = 0; i < Strings.GetSize(); i++) {
+		size += Strings[i].GetLength() + 1;
+	}
+	TCHAR* out = (TCHAR*) malloc(sizeof(TCHAR) * size);
+	if (out == NULL) exit(1);
+	TCHAR* cur = out;
+	for(int i = 0; i < Strings.GetSize(); i++) {
+		TCHAR* x = Strings[i].GetBuffer();
+		_tcscpy(cur, Strings[i].GetBuffer());
+		cur += Strings[i].GetLength();
+	}
+	return out;
+}
 
 Plugin::Plugin(void)
 {
@@ -70,6 +93,7 @@ vector<FileRecordPtr> Plugin::GetIdentifiers() {
 			rec->lowName = rec->croppedName;
 			rec->lowName.MakeLower();
 			rec->usage = 1000;
+			rec->owner = (short) i;
 
 			PluginRecords.push_back(rec);
 
@@ -82,3 +106,9 @@ vector<FileRecordPtr> Plugin::GetIdentifiers() {
 }
 
 
+void Plugin::Launch(short PluginID) 
+{
+	TCHAR* szStrings = StringArrayToTCHAR(SearchStrings);
+	pfuncs[PluginID].PluginDoAction(SearchStrings.GetCount(), szStrings);
+	free(szStrings);
+}

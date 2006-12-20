@@ -279,6 +279,11 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 				InputBox.ShowDropDown(true);
 			}
 		}
+		else if (pMsg->wParam==VK_TAB && smarts->matches.size() > 0 && smarts->matches[0]->owner != -1) {
+				SearchStrings.Add(searchTxt);
+				SearchPluginID = smarts->matches[0]->owner;
+				InputBox.ParseSearchTxt();
+		}
 		else {
 			if (InputBox.GetDroppedState()) {
 				CString typed = InputBox.typed;

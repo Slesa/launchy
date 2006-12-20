@@ -1,3 +1,10 @@
+PLUGIN DETAIL:
+Okay, I seem to properly recognize ownership of a string and tab sort of works but I need to 
+handle deletion of characters
+
+
+
+
 Where I've left off:
 
 Hmm.  Still have the clone problem.  Need a real fix for this.
