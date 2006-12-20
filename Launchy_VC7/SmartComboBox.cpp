@@ -85,6 +85,7 @@ HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		//[ASCII 160][ASCII 160][ASCII 160]Edit control
 		if (m_edit.GetSafeHwnd() == NULL) {
 			m_edit.SubclassWindow(pWnd->GetSafeHwnd());
+//			m_edit.SetLimitText(512);
 		}
 		if (m_Transparent) {
 			CBrush m_Brush;
@@ -149,18 +150,19 @@ void SmartComboBox::OnDestroy()
 
 void SmartComboBox::ParseSearchTxt()
 {
-	m_edit.GetWindowTextW(searchTxt);
 
 	CStringArray NewSearchStrings;
 	CString prefix = L"";
 	int pos = 0;
 	for(int strNum = 0; strNum < SearchStrings.GetCount(); strNum++) {
 		CString prefix = SearchStrings[strNum];
+
 		for(int charNum = 0; charNum < prefix.GetLength(); charNum++) {
 			if (prefix[charNum] != searchTxt[pos]) break;
 			pos += 1;
+			if (charNum == prefix.GetLength() - 1)
+				NewSearchStrings.Add(prefix);
 		}
-		NewSearchStrings.Add(prefix);
 		if (searchTxt[pos] == L' ') 
 			pos += 1;
 	}

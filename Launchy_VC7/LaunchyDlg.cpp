@@ -122,6 +122,8 @@ BOOL CLaunchyDlg::OnInitDialog()
 	// In order to subclass the combobox list and edit controls
 	// we have to first paint the controls to make sure the message
 	// mapping is setup before we use the controls.
+
+
 	InputBox.ShowDropDown(true);
 	InputBox.ShowDropDown(false);
 	//	InputBox.DoSubclass();
@@ -283,6 +285,7 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 				SearchStrings.Add(searchTxt);
 				SearchPluginID = smarts->matches[0]->owner;
 				InputBox.ParseSearchTxt();
+				return true;
 		}
 		else {
 			if (InputBox.GetDroppedState()) {
@@ -298,7 +301,6 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 			HideLaunchy();
 
 			CString MatchPath = smarts->GetMatchPath(0);
-
 			if (smarts->GetMatchPath(0) != InputBox.searchPath) {
 
 

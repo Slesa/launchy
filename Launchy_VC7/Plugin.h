@@ -48,7 +48,7 @@ typedef vector<IndexItem> IndexItems;
 typedef bool (* PLUGINOWNSSEARCH) (TCHAR*);
 typedef IndexItems (* PLUGINGETINDEXITEMS) (void);
 typedef SearchResults (* PLUGINUPDATESEARCH) (	int NumStrings, const TCHAR* Strings);
-typedef void (* PLUGINDOACTION) (	int NumStrings, const TCHAR* Strings);
+typedef void (* PLUGINDOACTION) (	int NumStrings, const TCHAR* Strings, const TCHAR* FinalString);
 typedef void (* PLUGINADDINDEXITEMS) (IndexItems);
 typedef  SearchResult* (* PLUGINGETIDENTIFIERS) (int*);
 typedef void (* PLUGINFREERESULTS) ( SearchResult*, int);

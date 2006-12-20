@@ -109,6 +109,7 @@ vector<FileRecordPtr> Plugin::GetIdentifiers() {
 void Plugin::Launch(short PluginID) 
 {
 	TCHAR* szStrings = StringArrayToTCHAR(SearchStrings);
-	pfuncs[PluginID].PluginDoAction(SearchStrings.GetCount(), szStrings);
+	CString tmp = searchTxt;
+	pfuncs[PluginID].PluginDoAction(SearchStrings.GetCount(), szStrings, searchTxt);
 	free(szStrings);
 }
