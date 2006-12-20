@@ -85,8 +85,9 @@ private:
 	CBrush m_brBackGnd;
 	afx_msg void OnPaint();
 	LRESULT AfterSelChange(UINT wParam, LONG lParam);
-	void ParseSearchTxt();
+
 public:
+	void ParseSearchTxt();
 	void CleanText(void);
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);

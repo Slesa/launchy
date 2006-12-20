@@ -553,6 +553,19 @@ inline BOOL LaunchySmarts::Match(FileRecordPtr record, CString txt)
 
 void LaunchySmarts::Launch(void)
 {
+	shared_ptr<Plugin> plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
+
+	if (SearchStrings.GetSize() > 0) {
+		// This search is owned by a plugin, let it launch
+		if (matches.size() > 0) {
+			plugins->Launch(SearchPluginID);		
+		} 
+		return;
+	}
+
+	// Check to see if the search is owned
+
+
 	if(matches.size() > 0) {
 		matches[0]->setUsage(matches[0]->usage + 1);
 		exeLauncher.Run(matches[0]);

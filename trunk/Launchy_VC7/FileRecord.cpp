@@ -40,6 +40,7 @@ void FileRecord::Serialize( CArchive& archive )
 
 FileRecord::FileRecord(void)	 : isHistory(false)
 {
+	owner = -1;
 }
 
 FileRecord::~FileRecord(void)
@@ -67,6 +68,8 @@ void FileRecord::set(CString p, CString type, Launcher* l, int u /* = 0 */)
 
 	lowName = croppedName;
 	lowName.MakeLower();
+
+	owner = -1;
 }
 
 

@@ -157,7 +157,7 @@ void SmartComboBox::ParseSearchTxt()
 	for(int strNum = 0; strNum < SearchStrings.GetCount(); strNum++) {
 		CString prefix = SearchStrings[strNum];
 		for(int charNum = 0; charNum < prefix.GetLength(); charNum++) {
-			if (prefix[charNum] != searchTxt[pos + charNum]) break;
+			if (prefix[charNum] != searchTxt[pos]) break;
 			pos += 1;
 		}
 		NewSearchStrings.Add(prefix);
@@ -165,9 +165,6 @@ void SmartComboBox::ParseSearchTxt()
 			pos += 1;
 	}
 	
-	//NewSearchStrings.Add( searchTxt.Right(searchTxt.GetLength() - pos) );
-
-	//searchTxt = NewSearchStrings[NewSearchStrings.GetCount()-1];
 	searchTxt = searchTxt.Right(searchTxt.GetLength() - pos);
 	searchTxt.MakeLower();
 	SearchStrings.Copy(NewSearchStrings);
@@ -178,8 +175,6 @@ void SmartComboBox::OnCbnEditupdate()
 {
 
 	m_edit.GetWindowTextW(searchTxt);
-
-//	searchTxt.MakeLower();
 
 	ParseSearchTxt();
 
@@ -235,7 +230,6 @@ void SmartComboBox::OnCbnSelchange()
 	// If it's closing, we've already taken care of this..
 	if (GetDroppedState()) {
 		m_listbox.GetText(m_listbox.GetCurSel(), searchTxt);
-//		searchTxt.MakeLower();
 		ParseSearchTxt();
 
 		pDlg->smarts->Update(searchTxt,false);
@@ -248,7 +242,6 @@ void SmartComboBox::OnDrawSelchange(int itemID) {
 	if (GetDroppedState()) {
 		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 		m_listbox.GetText(itemID, searchTxt);
-//		searchTxt.MakeLower();
 		ParseSearchTxt();
 
 		pDlg->smarts->Update(searchTxt,false);
