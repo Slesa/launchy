@@ -88,6 +88,7 @@ END_MESSAGE_MAP()
 BOOL CLaunchyDlg::OnInitDialog()
 {
 	CDialogSK::OnInitDialog();
+	AfxInitRichEdit();
 
 	CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
@@ -282,16 +283,17 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 			}
 		}
 		else if (pMsg->wParam==VK_TAB && smarts->matches.size() > 0 && smarts->matches[0]->owner != -1) {
-				SearchStrings.Add(searchTxt);
-				SearchPluginID = smarts->matches[0]->owner;
-				InputBox.ParseSearchTxt();
+				InputBox.TabSearchTxt();
+//				InputBox.ParseSearchTxt();
 				return true;
 		}
 		else {
+			InputBox.CleanText();
 			if (InputBox.GetDroppedState()) {
 				CString typed = InputBox.typed;
 				InputBox.ShowDropDown(false);
-				InputBox.m_edit.SetWindowText(typed);
+//				InputBox.m_edit.SetWindowText(typed);
+				InputBox.ReformatDisplay();
 				InputBox.SetEditSel(InputBox.m_edit.GetWindowTextLengthW(), InputBox.m_edit.GetWindowTextLengthW());
 				InputBox.CleanText();
 			}
@@ -336,8 +338,9 @@ void CLaunchyDlg::OnTimer(UINT_PTR nIDEvent)
 			InputBox.m_listbox.GetCount() > 1) {
 				InputBox.SetCurSel(-1);
 				InputBox.ShowDropDown(true);
-				InputBox.m_edit.SetWindowText(InputBox.typed);
-				InputBox.SetEditSel(InputBox.typed.GetLength(), InputBox.typed.GetLength());
+//				InputBox.m_edit.SetWindowText(InputBox.typed);
+				InputBox.ReformatDisplay();
+//				InputBox.SetEditSel(InputBox.typed.GetLength(), InputBox.typed.GetLength());
 				InputBox.CleanText();
 			}
 			KillTimer(DELAY_TIMER);
