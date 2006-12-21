@@ -56,7 +56,7 @@ protected:
 public:
 	void SetTextColor(COLORREF rgb);
 	void SetBackColor(COLORREF rgb);
-    CEdit      m_edit;
+    CRichEditCtrl      m_edit;
     CListBox   m_listbox;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnDestroy();
@@ -77,6 +77,8 @@ public:
 	bool m_RemoveButton;
 	bool m_Transparent;
 	afx_msg void OnCbnDropdown();
+	void TabSearchTxt();
+	void ReformatDisplay();
 private:
 	//text and text background colors
 	COLORREF m_crText;

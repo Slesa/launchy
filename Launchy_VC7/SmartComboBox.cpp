@@ -147,6 +147,50 @@ void SmartComboBox::OnDestroy()
 	// TODO: Add your message handler code here
 }
 
+/*
+	The tab key was pressed and so we should
+	reformat the string
+*/
+void SmartComboBox::TabSearchTxt()
+{
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+
+	SearchStrings.Add(pDlg->smarts->matches[0]->croppedName);
+//	SearchStrings.Add(searchTxt);
+	searchTxt = L"";
+	SearchPluginID = pDlg->smarts->matches[0]->owner;
+	ReformatDisplay();
+}
+
+void SmartComboBox::ReformatDisplay()
+{
+	CHARFORMAT cf;
+
+	CString out = L"";
+	for(int i = 0; i < SearchStrings.GetCount(); i++) {
+		out += SearchStrings[i];
+		out += L" | ";
+	}
+	out += searchTxt;
+	m_edit.SetWindowTextW(out);
+	CleanText();
+	SetEditSel(out.GetLength(), out.GetLength());
+	/*
+	m_edit.GetSelectionCharFormat(Cfm);
+	Cfm.cbSize = sizeof(CHARFORMAT);
+	Cfm.dwMask = CFM_BOLD;
+	Cfm.dwEffects ^= CFE_BOLD; 
+
+	m_edit.SetSelectionCharFormat(Cfm); 
+	m_edit.SetFocus();
+*/
+	/*
+	cf.dwMask = CFM_STRIKEOUT|CFM_BOLD;
+	cf.dwEffects = CFE_BOLD;
+	m_edit.SetWordCharFormat(cf);
+	*/
+}
 
 void SmartComboBox::ParseSearchTxt()
 {
@@ -164,6 +208,10 @@ void SmartComboBox::ParseSearchTxt()
 				NewSearchStrings.Add(prefix);
 		}
 		if (searchTxt[pos] == L' ') 
+			pos += 1;
+		if (searchTxt[pos] == L'|')
+			pos += 1;
+		if (searchTxt[pos] == L' ')
 			pos += 1;
 	}
 	
@@ -493,6 +541,8 @@ void SmartComboBox::DoSubclass(void)
 }
 
 LRESULT SmartComboBox::AfterSelChange(UINT wParam, LONG lParam) {
-	m_edit.SetWindowTextW(L"This is a test");
+	m_edit.GetWindowTextW(searchTxt);
+	ReformatDisplay();
+//	m_edit.SetWindowTextW(L"This is a test");
 	return true;
 }
