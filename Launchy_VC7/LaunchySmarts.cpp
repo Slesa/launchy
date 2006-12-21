@@ -499,12 +499,6 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 
 void LaunchySmarts::FindMatches(CString txt)
 {
-	/*
-   boost::wregex e(_T("hey there*"));
-   boost::wsmatch what;
-   wstring txt2 = _T("hey there");
-   boost::regex_match(txt, what, e);
-*/
 
 	// Is this search owned?
 	shared_ptr<Plugin> plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
@@ -517,9 +511,7 @@ void LaunchySmarts::FindMatches(CString txt)
 		shared_ptr<vector<FileRecordPtr> > pluginMatches = plugins->GetSearchOptions(owner);
 
 		for(size_t i = 0; i < pluginMatches->size(); i++) {
-			if (Match(pluginMatches->at(i), txt)) {
 				matches.push_back(pluginMatches->at(i));
-			}
 		}
 	} else {
 
