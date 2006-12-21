@@ -160,6 +160,8 @@ void SmartComboBox::TabSearchTxt()
 //	SearchStrings.Add(searchTxt);
 	searchTxt = L"";
 	SearchPluginID = pDlg->smarts->matches[0]->owner;
+	ShowDropDown(false);
+	pDlg->smarts->Update(searchTxt);
 	ReformatDisplay();
 }
 

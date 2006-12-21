@@ -3,6 +3,7 @@
 #include "DiskObject.h"
 #include "Launchy.h"
 
+
 void FreeSearchResult (SearchResult* sr) {
 	free(sr->DisplayString);
 	free(sr->FullPath);
@@ -33,9 +34,20 @@ TCHAR* StringArrayToTCHAR( CStringArray& Strings) {
 	return out;
 }
 
+vector<wstring> TCHARListToVector(int numStrings,  const TCHAR* Strings) {
+	vector<wstring> out;
+	const TCHAR* cur = Strings;
+	for(int i = 0; i < numStrings; i++) {
+		out.push_back(cur);
+		cur += out[i].length() + 1;
+	}
+	return out;
+}
+
 Plugin::Plugin(void)
 {
 	LoadDlls();
+	LoadRegExs();
 }
 
 Plugin::~Plugin(void)
@@ -43,9 +55,51 @@ Plugin::~Plugin(void)
 	pfuncs.clear();
 
 	for(int i = 0; i < loadedPlugins.size(); i++) {
-		FreeLibrary(loadedPlugins[i]);
+		FreeLibrary(loadedPlugins[i].handle);
+	}
+	loadedPlugins.clear();
+}
+
+void Plugin::LoadRegExs() 
+{
+	for(int i = 0; i < loadedPlugins.size(); i++) {
+		if (pfuncs[i].PluginGetRegexs == NULL) continue;
+
+		int numStrings = 0;
+		TCHAR* strings = pfuncs[i].PluginGetRegexs(&numStrings);
+		vector<wstring> vstrings = TCHARListToVector(numStrings, strings);
+		for(int j = 0; j < vstrings.size(); j++) {
+			boost::wregex tmp(vstrings[j]);
+			loadedPlugins[i].regexs.push_back(tmp);
+		}
+		pfuncs[i].PluginFreeStrings(strings);
 	}
 }
+
+/*
+	Determine if one of the plugins owns the searchTxt by 
+	a regular expression match
+*/
+int Plugin::IsSearchOwned(CString search) 
+{
+	int x = 3;
+	if (search == L"zebra") {
+		x = 2;
+	}
+	wstring searchS = search.GetBuffer();
+	for(int i = 0; i < loadedPlugins.size(); i++) {
+		for(int j = 0; j < loadedPlugins[i].regexs.size(); j++) {
+			boost::wsmatch what;
+			if(boost::regex_match(searchS, what, loadedPlugins[i].regexs[j])) {
+				return i;
+			}
+		}
+	}
+	return -1;
+}
+
+
+
 
 
 void Plugin::LoadDlls() {
@@ -64,15 +118,19 @@ void Plugin::LoadDlls() {
 			AfxMessageBox(out);
 			continue;
 		}
-		loadedPlugins.push_back(LoadMe);
+		struct DLLInstance di;
+		di.handle = LoadMe;
+
+		loadedPlugins.push_back(di);
 		PluginFunctions funcs;
 
-		funcs.PluginOwnsSearch = (PLUGINOWNSSEARCH)GetProcAddress(LoadMe,"?PluginOwnsSearch@@YGXHH@Z");
+		funcs.PluginGetRegexs = (PLUGINGETREGEXS)GetProcAddress(LoadMe,"PluginGetRegexs");
 		funcs.PluginGetIndexItems = (PLUGINGETINDEXITEMS)GetProcAddress(LoadMe,"PluginGetIndexItems");
 		funcs.PluginUpdateSearch = (PLUGINUPDATESEARCH)GetProcAddress(LoadMe,"PluginUpdateSearch");
 		funcs.PluginDoAction = (PLUGINDOACTION)GetProcAddress(LoadMe,"PluginDoAction");
 		funcs.PluginGetIdentifiers = (PLUGINGETIDENTIFIERS)GetProcAddress(LoadMe,"PluginGetIdentifiers");
 		funcs.PluginFreeResults = (PLUGINFREERESULTS)GetProcAddress(LoadMe,"PluginFreeResults");
+		funcs.PluginFreeStrings = (PLUGINFREESTRINGS)GetProcAddress(LoadMe,"PluginFreeStrings");
 		pfuncs.push_back(funcs);
 	}
 }
@@ -105,11 +163,45 @@ vector<FileRecordPtr> Plugin::GetIdentifiers() {
 	return PluginRecords;
 }
 
+shared_ptr<vector<FileRecordPtr> > Plugin::GetSearchOptions(int owner)
+{
+	shared_ptr<vector<FileRecordPtr> > out;
+	out.reset(new vector<FileRecordPtr>);
+
+	if (pfuncs[owner].PluginUpdateSearch == NULL) return out;
+
+
+	int NumResults;
+	TCHAR* szStrings = StringArrayToTCHAR(SearchStrings);
+	SearchResult* res = pfuncs[owner].PluginUpdateSearch(SearchStrings.GetCount(), szStrings, searchTxt, &NumResults);
+	free(szStrings);
+
+	SearchResult* cur = res;
+	for(int j = 0; j < NumResults; j++) {
+		FileRecordPtr rec(new FileRecord());
+		rec->croppedName = cur->DisplayString;
+		rec->fullPath = cur->FullPath;
+		rec->isHistory = false;
+		rec->lowName = rec->croppedName;
+		rec->lowName.MakeLower();
+		rec->usage = 0;
+		rec->owner = (short) owner;
+
+		out->push_back(rec);
+		cur++;
+	}	
+
+	pfuncs[owner].PluginFreeResults(res, NumResults);
+
+	return out;
+}
+
+
 
 void Plugin::Launch(short PluginID) 
 {
 	TCHAR* szStrings = StringArrayToTCHAR(SearchStrings);
-	CString tmp = searchTxt;
+
 	pfuncs[PluginID].PluginDoAction(SearchStrings.GetCount(), szStrings, searchTxt);
 	free(szStrings);
 }

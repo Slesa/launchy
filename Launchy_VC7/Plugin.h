@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <map>
+#include <boost/regex.hpp>
 #include "FileRecord.h"
 
 using namespace std;
@@ -45,30 +46,38 @@ struct IndexItem {
 typedef vector<SearchResult> SearchResults;
 typedef vector<IndexItem> IndexItems;
 
-typedef bool (* PLUGINOWNSSEARCH) (TCHAR*);
+typedef TCHAR* (* PLUGINGETREGEXS) (int*);
 typedef IndexItems (* PLUGINGETINDEXITEMS) (void);
-typedef SearchResults (* PLUGINUPDATESEARCH) (	int NumStrings, const TCHAR* Strings);
+typedef SearchResult* (* PLUGINUPDATESEARCH) (	int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, int* NumResults);
 typedef void (* PLUGINDOACTION) (	int NumStrings, const TCHAR* Strings, const TCHAR* FinalString);
 typedef void (* PLUGINADDINDEXITEMS) (IndexItems);
 typedef  SearchResult* (* PLUGINGETIDENTIFIERS) (int*);
 typedef void (* PLUGINFREERESULTS) ( SearchResult*, int);
+typedef void (* PLUGINFREESTRINGS) ( TCHAR* );
+
 struct PluginFunctions {
-	PLUGINOWNSSEARCH PluginOwnsSearch;
+	PLUGINGETREGEXS PluginGetRegexs;
 	PLUGINGETINDEXITEMS PluginGetIndexItems;
 	PLUGINUPDATESEARCH PluginUpdateSearch;
 	PLUGINDOACTION PluginDoAction;
 	PLUGINGETIDENTIFIERS PluginGetIdentifiers;
 	PLUGINFREERESULTS PluginFreeResults;
+	PLUGINFREESTRINGS PluginFreeStrings;
 };
 
 
 
 class Plugin
 {
+	struct DLLInstance {
+		HINSTANCE handle;
+		vector<boost::wregex> regexs;
+	};
 
 private:
 	vector<PluginFunctions> pfuncs;
-	vector<HINSTANCE> loadedPlugins;
+	vector<DLLInstance> loadedPlugins;
+	void LoadRegExs();
 public:
 	Plugin(void);
 	~Plugin(void);
@@ -76,6 +85,8 @@ public:
 	void LoadDlls();
 	vector<FileRecordPtr> Plugin::GetIdentifiers();
 	void Launch(short PluginID);
+	int IsSearchOwned(CString searchTxt);
+	shared_ptr<vector<FileRecordPtr> > GetSearchOptions(int owner);
 	/*
 
 	LoadDlls(void);
