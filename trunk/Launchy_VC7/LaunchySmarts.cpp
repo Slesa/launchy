@@ -506,30 +506,52 @@ void LaunchySmarts::FindMatches(CString txt)
    boost::regex_match(txt, what, e);
 */
 
-	getCatalogLock();
-	//	txt.MakeLower();
+	// Is this search owned?
+	shared_ptr<Plugin> plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
+	int owner = plugins->IsSearchOwned(searchTxt);
 
-	bool set = false;
-	TCHAR mostInfo = -1;
-	// Find the character with the most amount of information
-	for(int i = 0; i < txt.GetLength(); i++) {
-		TCHAR c = txt[i];
-		if (charUsage[c] < charUsage[mostInfo] || !set) {
-			mostInfo = c;
-			set = true;
-		}
-	}
 
-	if (charMap.count(mostInfo) != 0) {
-		size_t count = charMap[mostInfo]->size();
-		for(size_t i = 0; i < count; i++) {
-			if (Match(charMap[mostInfo]->at(i), txt)) {
-				matches.push_back(charMap[mostInfo]->at(i));
+	if (SearchStrings.GetCount() > 0 || owner != -1) {
+		if (SearchStrings.GetCount() > 0)
+			owner = SearchPluginID;
+		shared_ptr<vector<FileRecordPtr> > pluginMatches = plugins->GetSearchOptions(owner);
+
+		for(size_t i = 0; i < pluginMatches->size(); i++) {
+			if (Match(pluginMatches->at(i), txt)) {
+				matches.push_back(pluginMatches->at(i));
 			}
 		}
-	}
+	} else {
 
-	releaseCatalogLock();
+		// The search is not owned, search through the general catalog
+
+		getCatalogLock();
+		//	txt.MakeLower();
+
+		bool set = false;
+		TCHAR mostInfo = -1;
+
+
+		// Find the character with the most amount of information
+		for(int i = 0; i < txt.GetLength(); i++) {
+			TCHAR c = txt[i];
+			if (charUsage[c] < charUsage[mostInfo] || !set) {
+				mostInfo = c;
+				set = true;
+			}
+		}
+
+		if (charMap.count(mostInfo) != 0) {
+			size_t count = charMap[mostInfo]->size();
+			for(size_t i = 0; i < count; i++) {
+				if (Match(charMap[mostInfo]->at(i), txt)) {
+					matches.push_back(charMap[mostInfo]->at(i));
+				}
+			}
+		}
+
+		releaseCatalogLock();
+	}
 }
 
 
@@ -554,14 +576,15 @@ inline BOOL LaunchySmarts::Match(FileRecordPtr record, CString txt)
 void LaunchySmarts::Launch(void)
 {
 	shared_ptr<Plugin> plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
-
-	if (SearchStrings.GetSize() > 0) {
-		// This search is owned by a plugin, let it launch
-		plugins->Launch(SearchPluginID);		
+	int owner = plugins->IsSearchOwned(searchTxt);
+	
+	if (SearchStrings.GetSize() > 0 || owner != -1) {
+		if (owner != -1)
+			plugins->Launch(owner);
+		else
+			plugins->Launch(SearchPluginID);
 		return;
 	}
-
-	// Check to see if the search is owned
 
 
 	if(matches.size() > 0) {
