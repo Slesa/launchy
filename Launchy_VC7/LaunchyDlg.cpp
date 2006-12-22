@@ -282,10 +282,13 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 				InputBox.ShowDropDown(true);
 			}
 		}
-		else if (pMsg->wParam==VK_TAB && smarts->matches.size() > 0 && smarts->matches[0]->owner != -1) {
+		else if (pMsg->wParam==VK_TAB && smarts->matches.size() > 0) {
 				InputBox.TabSearchTxt();
 //				InputBox.ParseSearchTxt();
 				return true;
+		}
+		else if (pMsg->wParam==VK_BACK) {
+			InputBox.DeleteWord();
 		}
 		else {
 			InputBox.CleanText();

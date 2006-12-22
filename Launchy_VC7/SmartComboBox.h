@@ -79,6 +79,7 @@ public:
 	afx_msg void OnCbnDropdown();
 	void TabSearchTxt();
 	void ReformatDisplay();
+	void DeleteWord();
 private:
 	//text and text background colors
 	COLORREF m_crText;
