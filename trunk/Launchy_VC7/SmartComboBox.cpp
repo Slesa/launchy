@@ -165,9 +165,29 @@ void SmartComboBox::TabSearchTxt()
 	ReformatDisplay();
 }
 
+void SmartComboBox::DeleteWord()
+{
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+
+	// Take it from searchTxt
+	int rightPos = searchTxt.ReverseFind(L' ');
+	if (rightPos == 1 || searchTxt == L"") {
+		if (SearchStrings.GetCount() > 1) {
+			searchTxt = SearchStrings[SearchStrings.GetCount() - 2];
+			SearchStrings.RemoveAt(SearchStrings.GetCount()-1);
+		} else {
+			searchTxt == L"";
+			SearchStrings.RemoveAll();
+		}
+	}
+	else
+		searchTxt.Delete(rightPos+1, searchTxt.GetLength() - rightPos - 1);
+	ReformatDisplay();
+}
+
 void SmartComboBox::ReformatDisplay()
 {
-	CHARFORMAT cf;
 
 	CString out = L"";
 	for(int i = 0; i < SearchStrings.GetCount(); i++) {
@@ -178,20 +198,6 @@ void SmartComboBox::ReformatDisplay()
 	m_edit.SetWindowTextW(out);
 	CleanText();
 	SetEditSel(out.GetLength(), out.GetLength());
-	/*
-	m_edit.GetSelectionCharFormat(Cfm);
-	Cfm.cbSize = sizeof(CHARFORMAT);
-	Cfm.dwMask = CFM_BOLD;
-	Cfm.dwEffects ^= CFE_BOLD; 
-
-	m_edit.SetSelectionCharFormat(Cfm); 
-	m_edit.SetFocus();
-*/
-	/*
-	cf.dwMask = CFM_STRIKEOUT|CFM_BOLD;
-	cf.dwEffects = CFE_BOLD;
-	m_edit.SetWordCharFormat(cf);
-	*/
 }
 
 void SmartComboBox::ParseSearchTxt()

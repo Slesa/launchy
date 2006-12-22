@@ -168,31 +168,58 @@ shared_ptr<vector<FileRecordPtr> > Plugin::GetSearchOptions(int owner)
 	shared_ptr<vector<FileRecordPtr> > out;
 	out.reset(new vector<FileRecordPtr>);
 
-	if (pfuncs[owner].PluginUpdateSearch == NULL) return out;
+	if (owner == -1) {
+		// This file isn't owned by anyone, we want to get a suite of options
+		// from the available utilities such as "open, enqueue, send email" etc..
+		for(int i = 0; i < loadedPlugins.size(); i++) {
+			if (pfuncs[i].PluginUpdateSearch == NULL) continue;
+			int NumResults;
+			TCHAR* szStrings = StringArrayToTCHAR(SearchStrings);
+			SearchResult* res = pfuncs[i].PluginUpdateSearch(SearchStrings.GetCount(), szStrings, searchTxt, &NumResults);
+			free(szStrings);
+			SearchResult* cur = res;
+			for(int j = 0; j < NumResults; j++) {
+				FileRecordPtr rec(new FileRecord());
+				rec->croppedName = cur->DisplayString;
+				rec->fullPath = cur->FullPath;
+				rec->isHistory = false;
+				rec->lowName = rec->croppedName;
+				rec->lowName.MakeLower();
+				rec->usage = 0;
+				rec->owner = (short) i;
+
+				out->push_back(rec);
+				cur++;
+			}	
+			pfuncs[i].PluginFreeResults(res, NumResults);
+		}
+	} else {
+
+		if (pfuncs[owner].PluginUpdateSearch == NULL) return out;
 
 
-	int NumResults;
-	TCHAR* szStrings = StringArrayToTCHAR(SearchStrings);
-	SearchResult* res = pfuncs[owner].PluginUpdateSearch(SearchStrings.GetCount(), szStrings, searchTxt, &NumResults);
-	free(szStrings);
+		int NumResults;
+		TCHAR* szStrings = StringArrayToTCHAR(SearchStrings);
+		SearchResult* res = pfuncs[owner].PluginUpdateSearch(SearchStrings.GetCount(), szStrings, searchTxt, &NumResults);
+		free(szStrings);
 
-	SearchResult* cur = res;
-	for(int j = 0; j < NumResults; j++) {
-		FileRecordPtr rec(new FileRecord());
-		rec->croppedName = cur->DisplayString;
-		rec->fullPath = cur->FullPath;
-		rec->isHistory = false;
-		rec->lowName = rec->croppedName;
-		rec->lowName.MakeLower();
-		rec->usage = 0;
-		rec->owner = (short) owner;
+		SearchResult* cur = res;
+		for(int j = 0; j < NumResults; j++) {
+			FileRecordPtr rec(new FileRecord());
+			rec->croppedName = cur->DisplayString;
+			rec->fullPath = cur->FullPath;
+			rec->isHistory = false;
+			rec->lowName = rec->croppedName;
+			rec->lowName.MakeLower();
+			rec->usage = 0;
+			rec->owner = (short) owner;
 
-		out->push_back(rec);
-		cur++;
-	}	
+			out->push_back(rec);
+			cur++;
+		}	
 
-	pfuncs[owner].PluginFreeResults(res, NumResults);
-
+		pfuncs[owner].PluginFreeResults(res, NumResults);
+	}
 	return out;
 }
 
