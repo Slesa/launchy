@@ -571,10 +571,10 @@ void LaunchySmarts::Launch(void)
 	int owner = plugins->IsSearchOwned(searchTxt);
 	
 	if (SearchStrings.GetSize() > 0 || owner != -1) {
-		if (owner != -1)
-			plugins->Launch(owner);
-		else
+		if (SearchStrings.GetSize() > 0) 
 			plugins->Launch(SearchPluginID);
+		else
+			plugins->Launch(owner);
 		return;
 	}
 
