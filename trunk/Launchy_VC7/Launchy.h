@@ -22,15 +22,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 
+
 #ifndef __AFXWIN_H__
 	#error "include 'stdafx.h' before including this file for PCH"
 #endif
 
 #include "resource.h"		// main symbols
+#include "FileRecord.h"
+
+#include <boost/spirit/phoenix.hpp>
+using phoenix::arg1;
+using phoenix::arg2;
+using phoenix::bind;
+
 
 extern CStringArray SearchStrings;
 extern int SearchPluginID;
 extern CString searchTxt;
+extern CString searchTxtBak;
+
+// The filerecord that was expanded with a "tab"
+extern FileRecord TabbedMatch;
 
 // CLaunchyApp:
 // See Launchy.cpp for the implementation of this class

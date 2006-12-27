@@ -49,6 +49,7 @@ typedef vector<IndexItem> IndexItems;
 typedef TCHAR* (* PLUGINGETREGEXS) (int*);
 typedef IndexItems (* PLUGINGETINDEXITEMS) (void);
 typedef SearchResult* (* PLUGINUPDATESEARCH) (	int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, int* NumResults);
+typedef SearchResult* (* PLUGINFILEOPTIONS) ( const TCHAR* FinalString, int* NumResults );
 typedef void (* PLUGINDOACTION) (	int NumStrings, const TCHAR* Strings, const TCHAR* FinalString);
 typedef void (* PLUGINADDINDEXITEMS) (IndexItems);
 typedef  SearchResult* (* PLUGINGETIDENTIFIERS) (int*);
@@ -59,6 +60,7 @@ struct PluginFunctions {
 	PLUGINGETREGEXS PluginGetRegexs;
 	PLUGINGETINDEXITEMS PluginGetIndexItems;
 	PLUGINUPDATESEARCH PluginUpdateSearch;
+	PLUGINFILEOPTIONS PluginFileOptions;
 	PLUGINDOACTION PluginDoAction;
 	PLUGINGETIDENTIFIERS PluginGetIdentifiers;
 	PLUGINFREERESULTS PluginFreeResults;

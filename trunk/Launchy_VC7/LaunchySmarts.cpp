@@ -488,7 +488,10 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 
 
 			data->longpath = full;
-			data->lesspath = full.Left(ind+1).Right(pDlg->options->skin->listWidthInChars);
+			if(matches[i]->owner == -1)
+				data->lesspath = full.Left(ind+1).Right(pDlg->options->skin->listWidthInChars);
+			else
+				data->lesspath = matches[i]->fullPath.Right(pDlg->options->skin->listWidthInChars);;
 			data->icon = NULL;
 
 			pDlg->InputBox.SetItemDataPtr(index, (void*) data);
@@ -569,21 +572,30 @@ inline BOOL LaunchySmarts::Match(FileRecordPtr record, CString txt)
 void LaunchySmarts::Launch(void)
 {
 	shared_ptr<Plugin> plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
-	int owner = plugins->IsSearchOwned(searchTxt);
-	
-	if (SearchStrings.GetSize() > 0 || owner != -1) {
-		if (SearchStrings.GetSize() > 0) 
-			plugins->Launch(SearchPluginID);
-		else
-			plugins->Launch(owner);
-		return;
+	int RegExOwner = plugins->IsSearchOwned(searchTxt);
+
+	if (SearchStrings.GetSize() > 0 && SearchPluginID != -1) {
+		plugins->Launch(SearchPluginID);
 	}
 
+	// Haven't selected anything after we tabbed on a file/folder, launch matches[0]
+	else if (SearchStrings.GetSize() > 0 && SearchPluginID == -1) {
+		if (matches.size() > 0) {
+			exeLauncher.Run(matches[0]);		
+		}
+		else {
+			shared_ptr<FileRecord> tmp(&TabbedMatch);
+			exeLauncher.Run(tmp);
+		}
+	}
 
-	if(matches.size() > 0) {
+	else if (RegExOwner != -1) {
+		plugins->Launch(RegExOwner);
+	}
+
+	else if(matches.size() > 0) {
 		matches[0]->setUsage(matches[0]->usage + 1);
 		exeLauncher.Run(matches[0]);
-		//		matches[0]->launcher->Run(matches[0]);
 	}
 }
 

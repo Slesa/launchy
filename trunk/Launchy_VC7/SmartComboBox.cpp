@@ -156,13 +156,16 @@ void SmartComboBox::TabSearchTxt()
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
 
+	TabbedMatch = *pDlg->smarts->matches[0].get();
+
 	SearchStrings.Add(pDlg->smarts->matches[0]->croppedName);
-//	SearchStrings.Add(searchTxt);
 	searchTxt = L"";
 	SearchPluginID = pDlg->smarts->matches[0]->owner;
 	ShowDropDown(false);
 	pDlg->smarts->Update(searchTxt);
 	ReformatDisplay();
+	ParseSearchTxt();
+
 }
 
 void SmartComboBox::DeleteWord()
@@ -170,32 +173,31 @@ void SmartComboBox::DeleteWord()
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
 
-	// Take it from searchTxt
-	int rightPos = searchTxt.ReverseFind(L' ');
-	if (rightPos == 1 || searchTxt == L"") {
-		if (SearchStrings.GetCount() > 1) {
-			searchTxt = SearchStrings[SearchStrings.GetCount() - 2];
+
+	if (searchTxt == L"") {
+		if (SearchStrings.GetCount() > 0) {
 			SearchStrings.RemoveAt(SearchStrings.GetCount()-1);
-		} else {
-			searchTxt == L"";
-			SearchStrings.RemoveAll();
 		}
 	}
-	else
-		searchTxt.Delete(rightPos+1, searchTxt.GetLength() - rightPos - 1);
+	searchTxt = L"";
+
+	ShowDropDown(false);
+	pDlg->smarts->Update(searchTxt);
 	ReformatDisplay();
+	ParseSearchTxt();
 }
 
 void SmartComboBox::ReformatDisplay()
 {
-
 	CString out = L"";
+
 	for(int i = 0; i < SearchStrings.GetCount(); i++) {
 		out += SearchStrings[i];
 		out += L" | ";
 	}
 	out += searchTxt;
 	m_edit.SetWindowTextW(out);
+	searchTxt = out;
 	CleanText();
 	SetEditSel(out.GetLength(), out.GetLength());
 }
@@ -205,6 +207,7 @@ void SmartComboBox::ParseSearchTxt()
 
 	CStringArray NewSearchStrings;
 	CString prefix = L"";
+
 	int pos = 0;
 	for(int strNum = 0; strNum < SearchStrings.GetCount(); strNum++) {
 		CString prefix = SearchStrings[strNum];
@@ -223,7 +226,17 @@ void SmartComboBox::ParseSearchTxt()
 			pos += 1;
 	}
 	
+
 	searchTxt = searchTxt.Right(searchTxt.GetLength() - pos);
+/*
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+	if (SearchStrings.GetCount() == 0 && pDlg->smarts->matches.size() > 0 && pDlg->smarts->matches[0]->owner != -1) {
+		CString tmp = searchTxtBak;
+		tmp += searchTxt;
+		searchTxt = tmp;
+	}
+	*/
 	searchTxt.MakeLower();
 	SearchStrings.Copy(NewSearchStrings);
 }
@@ -231,38 +244,17 @@ void SmartComboBox::ParseSearchTxt()
 
 void SmartComboBox::OnCbnEditupdate()
 {
-
-	m_edit.GetWindowTextW(searchTxt);
-
+	m_edit.GetWindowTextW(searchTxt);	
 	ParseSearchTxt();
 
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
 
 	pDlg->smarts->Update(searchTxt);
-
-	CleanText();
 }
 
 
 
-void SmartComboBox::OnCbnCloseup()
-{
-	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
-	if (pDlg == NULL) return;
-	if (!IsWindow(m_listbox.m_hWnd)) return;
-
-	int sel = m_listbox.GetCurSel();
-	if (sel != LB_ERR) {
-		DropItem* data = (DropItem*) GetItemDataPtr(sel);
-
-		m_listbox.GetText(sel, searchTxt);
-		ParseSearchTxt();
-
-		pDlg->smarts->Update(searchTxt, true, data->longpath);
-	}
-	SetCurSel(-1);
-}
 
 void SmartComboBox::OnCbnEditchange()
 {
@@ -283,29 +275,18 @@ void SmartComboBox::OnCbnSelchange()
 
 	
 
-	this->PostMessage(WM_CHANGE_COMBO_SEL,IDC_Input,(LPARAM)(LPCTSTR) searchTxt);
+	this->PostMessage(WM_CHANGE_COMBO_SEL,IDC_Input,(LPARAM)(bool) false);
 
 	// If it's closing, we've already taken care of this..
-	if (GetDroppedState()) {
+/*	if (GetDroppedState()) {
 		m_listbox.GetText(m_listbox.GetCurSel(), searchTxt);
 		ParseSearchTxt();
 
 		pDlg->smarts->Update(searchTxt,false);
 	}
+	*/
 }
 
-
-void SmartComboBox::OnDrawSelchange(int itemID) {
-	// If it's closing, we've already taken care of this..
-	if (GetDroppedState()) {
-		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
-		m_listbox.GetText(itemID, searchTxt);
-		ParseSearchTxt();
-
-		pDlg->smarts->Update(searchTxt,false);
-	}
-
-}
 
 void SmartComboBox::OnCbnDropdown()
 {
@@ -361,54 +342,12 @@ void SmartComboBox::OnCbnDropdown()
 	}
 }
 
-void SmartComboBox::OnPaint()
-{
-	// TODO: Add your message handler code here
-	// Do not call CComboBox::OnPaint() for painting messages
 
-	if (m_RemoveFrame) {
-		CPaintDC dc(this); // device context for painting
-		RECT         rect;
-
-		// Find coordinates of client area
-		GetClientRect(&rect);
-
-
-		// Deflate the rectangle by the size of the borders
-		InflateRect(&rect, -GetSystemMetrics(SM_CXEDGE), -GetSystemMetrics(SM_CYEDGE));
-
-		// Remove the drop-down button as well
-		rect.right -= GetSystemMetrics(SM_CXHSCROLL);
-
-		// Make a mask from the rectangle, so the borders aren't included
-		dc.IntersectClipRect(rect.left, rect.top, rect.right, rect.bottom);
-
-		// Draw the combo-box into our DC
-		CComboBox::OnPaint();
-
-		// Remove the clipping region
-		dc.SelectClipRgn(NULL);
-
-		// now mask off the inside of the control so we can paint the borders
-		dc.ExcludeClipRect(rect.left, rect.top, rect.right, rect.bottom);
-
-		// paint a flat colour
-		GetClientRect(&rect);
-		CBrush b;
-		b.CreateStockObject(HOLLOW_BRUSH);
-		//b.CreateSolidBrush(RGB(124,124,124));
-		dc.FillRect(&rect, &b);
-	}
-	else {
-		CComboBox::OnPaint();
-	}
-}
 
 
 
 void SmartComboBox::CleanText(void)
 {
-
 	if (m_Transparent) {
 		CWnd* pParent = GetParent();
 		CRect rect;
@@ -418,8 +357,53 @@ void SmartComboBox::CleanText(void)
 
 		pParent->InvalidateRect(rect, TRUE); 
 	}
-
 }
+
+
+
+void SmartComboBox::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+{
+	// TODO: Add your message handler code here and/or call default
+	lpMeasureItemStruct->itemHeight = 40;
+}
+
+
+void SmartComboBox::SetSmallFont(CFont* font, COLORREF rgb)
+{
+	m_FontSmall = font;	
+	m_FontSmallRGB = rgb;
+}
+
+void SmartComboBox::DoSubclass(void)
+{
+	if (m_edit.GetSafeHwnd() == NULL) {
+		m_edit.SubclassDlgItem( CTLCOLOR_EDIT,this);
+	}
+	//ListBox control
+	if (m_listbox.GetSafeHwnd() == NULL) {
+		m_listbox.SubclassDlgItem(CTLCOLOR_LISTBOX, this);
+	}
+}
+
+
+LRESULT SmartComboBox::AfterSelChange(UINT wParam, LONG lParam) {
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+		if (pDlg == NULL) return true;
+
+	m_edit.GetWindowTextW(searchTxt);
+
+	ReformatDisplay();
+	ParseSearchTxt();
+	CleanText();
+
+	pDlg->smarts->Update(searchTxt,(bool) lParam);
+
+	return true;
+}
+
+
+
+
 void SmartComboBox::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 //	OnDrawSelchange((int)lpDrawItemStruct->itemID);
@@ -524,33 +508,80 @@ void SmartComboBox::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 }
 
 
-void SmartComboBox::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
+void SmartComboBox::OnPaint()
 {
-	// TODO: Add your message handler code here and/or call default
-	lpMeasureItemStruct->itemHeight = 40;
-}
+	// TODO: Add your message handler code here
+	// Do not call CComboBox::OnPaint() for painting messages
+
+	if (m_RemoveFrame) {
+		CPaintDC dc(this); // device context for painting
+		RECT         rect;
+
+		// Find coordinates of client area
+		GetClientRect(&rect);
 
 
-void SmartComboBox::SetSmallFont(CFont* font, COLORREF rgb)
-{
-	m_FontSmall = font;	
-	m_FontSmallRGB = rgb;
-}
+		// Deflate the rectangle by the size of the borders
+		InflateRect(&rect, -GetSystemMetrics(SM_CXEDGE), -GetSystemMetrics(SM_CYEDGE));
 
-void SmartComboBox::DoSubclass(void)
-{
-	if (m_edit.GetSafeHwnd() == NULL) {
-		m_edit.SubclassDlgItem( CTLCOLOR_EDIT,this);
+		// Remove the drop-down button as well
+		rect.right -= GetSystemMetrics(SM_CXHSCROLL);
+
+		// Make a mask from the rectangle, so the borders aren't included
+		dc.IntersectClipRect(rect.left, rect.top, rect.right, rect.bottom);
+
+		// Draw the combo-box into our DC
+		CComboBox::OnPaint();
+
+		// Remove the clipping region
+		dc.SelectClipRgn(NULL);
+
+		// now mask off the inside of the control so we can paint the borders
+		dc.ExcludeClipRect(rect.left, rect.top, rect.right, rect.bottom);
+
+		// paint a flat colour
+		GetClientRect(&rect);
+		CBrush b;
+		b.CreateStockObject(HOLLOW_BRUSH);
+		//b.CreateSolidBrush(RGB(124,124,124));
+		dc.FillRect(&rect, &b);
 	}
-	//ListBox control
-	if (m_listbox.GetSafeHwnd() == NULL) {
-		m_listbox.SubclassDlgItem(CTLCOLOR_LISTBOX, this);
+	else {
+		CComboBox::OnPaint();
 	}
 }
 
-LRESULT SmartComboBox::AfterSelChange(UINT wParam, LONG lParam) {
-	m_edit.GetWindowTextW(searchTxt);
-	ReformatDisplay();
-//	m_edit.SetWindowTextW(L"This is a test");
-	return true;
+void SmartComboBox::OnCbnCloseup()
+{
+		
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+	if (!IsWindow(m_listbox.m_hWnd)) return;
+/*
+	int sel = m_listbox.GetCurSel();
+	if (sel != LB_ERR) {
+		DropItem* data = (DropItem*) GetItemDataPtr(sel);
+
+		m_listbox.GetText(sel, searchTxt);
+		ReformatDisplay();
+		ParseSearchTxt();
+
+		pDlg->smarts->Update(searchTxt, true, data->longpath);
+	}
+	SetCurSel(-1);
+	*/
 }
+
+/*
+void SmartComboBox::OnDrawSelchange(int itemID) {
+	// If it's closing, we've already taken care of this..
+	if (GetDroppedState()) {
+		CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+		m_listbox.GetText(itemID, searchTxt);
+		ParseSearchTxt();
+
+		pDlg->smarts->Update(searchTxt,false);
+	}
+
+}
+*/
