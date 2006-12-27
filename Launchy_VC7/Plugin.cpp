@@ -2,9 +2,12 @@
 #include ".\plugin.h"
 #include "DiskObject.h"
 #include "Launchy.h"
+#include "LaunchyDlg.h"
+#include "LaunchySmarts.h"
 
 
 void FreeSearchResult (SearchResult* sr) {
+
 	free(sr->DisplayString);
 	free(sr->FullPath);
 	free(sr->Location);
@@ -29,7 +32,7 @@ TCHAR* StringArrayToTCHAR( CStringArray& Strings) {
 	for(int i = 0; i < Strings.GetSize(); i++) {
 		TCHAR* x = Strings[i].GetBuffer();
 		_tcscpy(cur, Strings[i].GetBuffer());
-		cur += Strings[i].GetLength();
+		cur += Strings[i].GetLength() + 1;
 	}
 	return out;
 }
@@ -69,7 +72,8 @@ void Plugin::LoadRegExs()
 		TCHAR* strings = pfuncs[i].PluginGetRegexs(&numStrings);
 		vector<wstring> vstrings = TCHARListToVector(numStrings, strings);
 		for(int j = 0; j < vstrings.size(); j++) {
-			boost::wregex tmp(vstrings[j]);
+			wstring x = vstrings[j];
+			boost::wregex tmp(vstrings[j],boost::regex::perl|boost::regex::icase);
 			loadedPlugins[i].regexs.push_back(tmp);
 		}
 		pfuncs[i].PluginFreeStrings(strings);
@@ -82,10 +86,6 @@ void Plugin::LoadRegExs()
 */
 int Plugin::IsSearchOwned(CString search) 
 {
-	int x = 3;
-	if (search == L"zebra") {
-		x = 2;
-	}
 	wstring searchS = search.GetBuffer();
 	for(int i = 0; i < loadedPlugins.size(); i++) {
 		for(int j = 0; j < loadedPlugins[i].regexs.size(); j++) {
@@ -127,6 +127,7 @@ void Plugin::LoadDlls() {
 		funcs.PluginGetRegexs = (PLUGINGETREGEXS)GetProcAddress(LoadMe,"PluginGetRegexs");
 		funcs.PluginGetIndexItems = (PLUGINGETINDEXITEMS)GetProcAddress(LoadMe,"PluginGetIndexItems");
 		funcs.PluginUpdateSearch = (PLUGINUPDATESEARCH)GetProcAddress(LoadMe,"PluginUpdateSearch");
+		funcs.PluginFileOptions = (PLUGINFILEOPTIONS)GetProcAddress(LoadMe,"PluginFileOptions");
 		funcs.PluginDoAction = (PLUGINDOACTION)GetProcAddress(LoadMe,"PluginDoAction");
 		funcs.PluginGetIdentifiers = (PLUGINGETIDENTIFIERS)GetProcAddress(LoadMe,"PluginGetIdentifiers");
 		funcs.PluginFreeResults = (PLUGINFREERESULTS)GetProcAddress(LoadMe,"PluginFreeResults");
@@ -168,15 +169,17 @@ shared_ptr<vector<FileRecordPtr> > Plugin::GetSearchOptions(int owner)
 	shared_ptr<vector<FileRecordPtr> > out;
 	out.reset(new vector<FileRecordPtr>);
 
+
 	if (owner == -1) {
 		// This file isn't owned by anyone, we want to get a suite of options
 		// from the available utilities such as "open, enqueue, send email" etc..
+
 		for(int i = 0; i < loadedPlugins.size(); i++) {
 			if (pfuncs[i].PluginUpdateSearch == NULL) continue;
 			int NumResults;
-			TCHAR* szStrings = StringArrayToTCHAR(SearchStrings);
-			SearchResult* res = pfuncs[i].PluginUpdateSearch(SearchStrings.GetCount(), szStrings, searchTxt, &NumResults);
-			free(szStrings);
+
+			SearchResult* res = pfuncs[i].PluginFileOptions( TabbedMatch.fullPath, &NumResults);
+
 			SearchResult* cur = res;
 			for(int j = 0; j < NumResults; j++) {
 				FileRecordPtr rec(new FileRecord());
@@ -199,6 +202,7 @@ shared_ptr<vector<FileRecordPtr> > Plugin::GetSearchOptions(int owner)
 
 
 		int NumResults;
+
 		TCHAR* szStrings = StringArrayToTCHAR(SearchStrings);
 		SearchResult* res = pfuncs[owner].PluginUpdateSearch(SearchStrings.GetCount(), szStrings, searchTxt, &NumResults);
 		free(szStrings);
