@@ -575,7 +575,10 @@ void LaunchySmarts::Launch(void)
 	int RegExOwner = plugins->IsSearchOwned(searchTxt);
 
 	if (SearchStrings.GetSize() > 0 && SearchPluginID != -1) {
-		plugins->Launch(SearchPluginID);
+		if (matches.size() > 0)
+			plugins->Launch(SearchPluginID, matches[0]->fullPath.GetBuffer());
+		else
+			plugins->Launch(SearchPluginID, L"");
 	}
 
 	// Haven't selected anything after we tabbed on a file/folder, launch matches[0]
@@ -590,7 +593,10 @@ void LaunchySmarts::Launch(void)
 	}
 
 	else if (RegExOwner != -1) {
-		plugins->Launch(RegExOwner);
+		if (matches.size() > 0)
+			plugins->Launch(RegExOwner, matches[0]->fullPath.GetBuffer());
+		else
+			plugins->Launch(RegExOwner, L"");
 	}
 
 	else if(matches.size() > 0) {

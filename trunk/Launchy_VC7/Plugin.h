@@ -49,8 +49,8 @@ typedef vector<IndexItem> IndexItems;
 typedef TCHAR* (* PLUGINGETREGEXS) (int*);
 typedef IndexItems (* PLUGINGETINDEXITEMS) (void);
 typedef SearchResult* (* PLUGINUPDATESEARCH) (	int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, int* NumResults);
-typedef SearchResult* (* PLUGINFILEOPTIONS) ( const TCHAR* FinalString, int* NumResults );
-typedef void (* PLUGINDOACTION) (	int NumStrings, const TCHAR* Strings, const TCHAR* FinalString);
+typedef SearchResult* (* PLUGINFILEOPTIONS) (const TCHAR* FullPath, int NumStrings, const TCHAR* Strings,  const TCHAR* FinalString, int* NumResults );
+typedef void (* PLUGINDOACTION) (	int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, const TCHAR* FullPath);
 typedef void (* PLUGINADDINDEXITEMS) (IndexItems);
 typedef  SearchResult* (* PLUGINGETIDENTIFIERS) (int*);
 typedef void (* PLUGINFREERESULTS) ( SearchResult*, int);
@@ -86,7 +86,7 @@ public:
 
 	void LoadDlls();
 	vector<FileRecordPtr> Plugin::GetIdentifiers();
-	void Launch(short PluginID);
+	void Launch(short PluginID, TCHAR* FullPath);
 	int IsSearchOwned(CString searchTxt);
 	shared_ptr<vector<FileRecordPtr> > GetSearchOptions(int owner);
 	/*
