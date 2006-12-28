@@ -177,9 +177,9 @@ shared_ptr<vector<FileRecordPtr> > Plugin::GetSearchOptions(int owner)
 		for(int i = 0; i < loadedPlugins.size(); i++) {
 			if (pfuncs[i].PluginUpdateSearch == NULL) continue;
 			int NumResults;
-
-			SearchResult* res = pfuncs[i].PluginFileOptions( TabbedMatch.fullPath, &NumResults);
-
+			TCHAR* szStrings = StringArrayToTCHAR(SearchStrings);
+			SearchResult* res = pfuncs[i].PluginFileOptions( TabbedMatch.fullPath, SearchStrings.GetCount(), szStrings, searchTxt, &NumResults);
+			free(szStrings);
 			SearchResult* cur = res;
 			for(int j = 0; j < NumResults; j++) {
 				FileRecordPtr rec(new FileRecord());
@@ -229,10 +229,10 @@ shared_ptr<vector<FileRecordPtr> > Plugin::GetSearchOptions(int owner)
 
 
 
-void Plugin::Launch(short PluginID) 
+void Plugin::Launch(short PluginID, TCHAR* fullPath) 
 {
 	TCHAR* szStrings = StringArrayToTCHAR(SearchStrings);
 
-	pfuncs[PluginID].PluginDoAction(SearchStrings.GetCount(), szStrings, searchTxt);
+	pfuncs[PluginID].PluginDoAction(SearchStrings.GetCount(), szStrings, searchTxt, fullPath);
 	free(szStrings);
 }

@@ -1,3 +1,6 @@
+
+Seems like this used to work and perhaps I broke it somehow.. either way I'm too tired to work now.
+
 PLUGIN DETAIL:
 Okay, I seem to properly recognize ownership of a string and tab sort of works but I need to 
 handle deletion of characters
