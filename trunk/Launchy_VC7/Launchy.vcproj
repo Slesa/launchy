@@ -91,7 +91,7 @@
 				MinimalRebuild="FALSE"
 				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="TRUE"
-				UsePrecompiledHeader="3"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"/>
@@ -122,7 +122,8 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
 				Culture="1033"
-				AdditionalIncludeDirectories="$(IntDir)"/>
+				AdditionalIncludeDirectories="$(IntDir)"
+				ResourceOutputFileName="$(IntDir)/$(InputName).res"/>
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
@@ -143,100 +144,88 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\AboutDialog.cpp">
+				RelativePath=".\src\AboutDialog.cpp">
 			</File>
 			<File
-				RelativePath=".\AdvancedOptions.cpp">
+				RelativePath=".\src\AdvancedOptions.cpp">
 			</File>
 			<File
-				RelativePath=".\AlphaBorder.cpp">
+				RelativePath=".\src\AlphaBorder.cpp">
 			</File>
 			<File
-				RelativePath=".\CArchiveEx.cpp">
+				RelativePath=".\src\CArchiveEx.cpp">
 			</File>
 			<File
-				RelativePath=".\CDialogSK.cpp">
+				RelativePath=".\src\CDialogSK.cpp">
 			</File>
 			<File
-				RelativePath=".\DirectoryChooser.cpp">
+				RelativePath=".\src\DirectoryChooser.cpp">
 			</File>
 			<File
-				RelativePath=".\DiskObject.cpp">
+				RelativePath=".\src\DiskObject.cpp">
 			</File>
 			<File
-				RelativePath=".\ExeLauncher.cpp">
+				RelativePath=".\src\ExeLauncher.cpp">
 			</File>
 			<File
-				RelativePath=".\FileRecord.cpp">
+				RelativePath=".\src\FileRecord.cpp">
 			</File>
 			<File
-				RelativePath=".\HotkeyDialog.cpp">
+				RelativePath=".\src\HotkeyDialog.cpp">
 			</File>
 			<File
-				RelativePath=".\iniFile.cpp">
+				RelativePath=".\src\iniFile.cpp">
 			</File>
 			<File
-				RelativePath=".\Launcher.cpp">
+				RelativePath=".\src\Launcher.cpp">
 			</File>
 			<File
-				RelativePath=".\Launchy.cpp">
+				RelativePath=".\src\Launchy.cpp">
 			</File>
 			<File
-				RelativePath=".\LaunchyDir.cpp">
+				RelativePath=".\src\LaunchyDir.cpp">
 			</File>
 			<File
-				RelativePath=".\LaunchyDlg.cpp">
+				RelativePath=".\src\LaunchyDlg.cpp">
 			</File>
 			<File
-				RelativePath=".\LaunchySmarts.cpp">
+				RelativePath=".\src\LaunchySmarts.cpp">
 			</File>
 			<File
-				RelativePath=".\OpaqueListBox.cpp">
+				RelativePath=".\src\OpaqueListBox.cpp">
 			</File>
 			<File
-				RelativePath=".\Options.cpp">
+				RelativePath=".\src\Options.cpp">
 			</File>
 			<File
-				RelativePath=".\Plugin.cpp">
+				RelativePath=".\src\Plugin.cpp">
 			</File>
 			<File
-				RelativePath=".\ReadOnlyEdit.cpp">
+				RelativePath=".\src\ReadOnlyEdit.cpp">
 			</File>
 			<File
-				RelativePath=".\Skin.cpp">
+				RelativePath=".\src\Skin.cpp">
 			</File>
 			<File
-				RelativePath=".\SkinChooser.cpp">
+				RelativePath=".\src\SkinChooser.cpp">
 			</File>
 			<File
-				RelativePath=".\SmartComboBox.cpp">
+				RelativePath=".\src\SmartComboBox.cpp">
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
-				</FileConfiguration>
+				RelativePath=".\src\stdafx.cpp">
 			</File>
 			<File
-				RelativePath=".\TransparentStatic2.cpp">
+				RelativePath=".\src\TransparentStatic2.cpp">
 			</File>
 			<File
-				RelativePath=".\TypeEdit.cpp">
+				RelativePath=".\src\TypeEdit.cpp">
 			</File>
 			<File
-				RelativePath=".\UseShGetFileInfo.cpp">
+				RelativePath=".\src\UseShGetFileInfo.cpp">
 			</File>
 			<File
-				RelativePath=".\UTF16File.cpp">
+				RelativePath=".\src\UTF16File.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -244,94 +233,94 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath=".\AboutDialog.h">
+				RelativePath=".\src\AboutDialog.h">
 			</File>
 			<File
-				RelativePath=".\AdvancedOptions.h">
+				RelativePath=".\src\AdvancedOptions.h">
 			</File>
 			<File
-				RelativePath=".\AlphaBorder.h">
+				RelativePath=".\src\AlphaBorder.h">
 			</File>
 			<File
-				RelativePath=".\CArchiveEx.h">
+				RelativePath=".\src\CArchiveEx.h">
 			</File>
 			<File
-				RelativePath=".\CDialogSK.h">
+				RelativePath=".\src\CDialogSK.h">
 			</File>
 			<File
-				RelativePath=".\DirectoryChooser.h">
+				RelativePath=".\src\DirectoryChooser.h">
 			</File>
 			<File
-				RelativePath=".\DiskObject.h">
+				RelativePath=".\src\DiskObject.h">
 			</File>
 			<File
-				RelativePath=".\ExeLauncher.h">
+				RelativePath=".\src\ExeLauncher.h">
 			</File>
 			<File
-				RelativePath=".\FileRecord.h">
+				RelativePath=".\src\FileRecord.h">
 			</File>
 			<File
-				RelativePath=".\HotkeyDialog.h">
+				RelativePath=".\src\HotkeyDialog.h">
 			</File>
 			<File
-				RelativePath=".\iniFile.h">
+				RelativePath=".\src\iniFile.h">
 			</File>
 			<File
-				RelativePath=".\Launcher.h">
+				RelativePath=".\src\Launcher.h">
 			</File>
 			<File
-				RelativePath=".\Launchy.h">
+				RelativePath=".\src\Launchy.h">
 			</File>
 			<File
-				RelativePath=".\LaunchyDir.h">
+				RelativePath=".\src\LaunchyDir.h">
 			</File>
 			<File
-				RelativePath=".\LaunchyDlg.h">
+				RelativePath=".\src\LaunchyDlg.h">
 			</File>
 			<File
-				RelativePath=".\LaunchySmarts.h">
+				RelativePath=".\src\LaunchySmarts.h">
 			</File>
 			<File
-				RelativePath=".\OpaqueListBox.h">
+				RelativePath=".\src\OpaqueListBox.h">
 			</File>
 			<File
-				RelativePath=".\Options.h">
+				RelativePath=".\src\Options.h">
 			</File>
 			<File
-				RelativePath=".\Plugin.h">
+				RelativePath=".\src\Plugin.h">
 			</File>
 			<File
-				RelativePath=".\QArray.h">
+				RelativePath=".\src\QArray.h">
 			</File>
 			<File
-				RelativePath=".\ReadOnlyEdit.h">
+				RelativePath=".\src\ReadOnlyEdit.h">
 			</File>
 			<File
-				RelativePath=".\Resource.h">
+				RelativePath=".\src\Resource.h">
 			</File>
 			<File
-				RelativePath=".\Skin.h">
+				RelativePath=".\src\Skin.h">
 			</File>
 			<File
-				RelativePath=".\SkinChooser.h">
+				RelativePath=".\src\SkinChooser.h">
 			</File>
 			<File
-				RelativePath=".\SmartComboBox.h">
+				RelativePath=".\src\SmartComboBox.h">
 			</File>
 			<File
-				RelativePath=".\stdafx.h">
+				RelativePath=".\src\stdafx.h">
 			</File>
 			<File
-				RelativePath=".\TransparentStatic2.h">
+				RelativePath=".\src\TransparentStatic2.h">
 			</File>
 			<File
-				RelativePath=".\TypeEdit.h">
+				RelativePath=".\src\TypeEdit.h">
 			</File>
 			<File
-				RelativePath=".\UseShGetFileInfo.h">
+				RelativePath=".\src\UseShGetFileInfo.h">
 			</File>
 			<File
-				RelativePath=".\UTF16File.h">
+				RelativePath=".\src\UTF16File.h">
 			</File>
 		</Filter>
 		<Filter
@@ -361,7 +350,7 @@
 			Name="zlib"
 			Filter="">
 			<File
-				RelativePath=".\zlib\zlib.lib">
+				RelativePath=".\src\zlib\zlib.lib">
 			</File>
 		</Filter>
 		<Filter
