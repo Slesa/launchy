@@ -358,6 +358,9 @@
 			Filter="">
 		</Filter>
 		<File
+			RelativePath=".\Plugins\Calcy\Calcy.sln">
+		</File>
+		<File
 			RelativePath=".\res\Launchy.manifest">
 		</File>
 		<File
