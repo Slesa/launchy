@@ -11,9 +11,3 @@
 #endif
 
 #include "LaunchyPlugin.h"
-
-extern "C" __declspec(dllexport) SearchResult* PluginGetIdentifiers (int* iNumResults);
-extern "C" __declspec(dllexport) SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, int* NumResults);
-extern "C" __declspec(dllexport) SearchResult* PluginFileOptions (const TCHAR* FullPath, int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, int* NumResults);
-extern "C" __declspec(dllexport) void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* Path, const TCHAR* FullPath);
-extern "C" __declspec(dllexport) TCHAR* PluginGetRegexs(int* iNumResults);

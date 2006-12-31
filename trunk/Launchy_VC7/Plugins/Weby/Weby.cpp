@@ -126,3 +126,8 @@ void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalStr
 	BOOL ret = ShellExecuteEx(&ShExecInfo);
 	
 }
+
+TCHAR* PluginGetSeparator() {
+	wstring tmp = L" | ";
+	return string2TCHAR(tmp);
+}

@@ -132,6 +132,7 @@ void Plugin::LoadDlls() {
 		funcs.PluginGetIdentifiers = (PLUGINGETIDENTIFIERS)GetProcAddress(LoadMe,"PluginGetIdentifiers");
 		funcs.PluginFreeResults = (PLUGINFREERESULTS)GetProcAddress(LoadMe,"PluginFreeResults");
 		funcs.PluginFreeStrings = (PLUGINFREESTRINGS)GetProcAddress(LoadMe,"PluginFreeStrings");
+		funcs.PluginGetSeparator = (PLUGINGETSEPARATOR)GetProcAddress(LoadMe, "PluginGetSeparator");
 		pfuncs.push_back(funcs);
 	}
 }
@@ -169,7 +170,10 @@ shared_ptr<vector<FileRecordPtr> > Plugin::GetSearchOptions(int owner)
 	shared_ptr<vector<FileRecordPtr> > out;
 	out.reset(new vector<FileRecordPtr>);
 
-
+/*	if (searchTxt == L"buff") {
+		out.reset(new vector<FileRecordPtr>);
+	}
+*/
 	if (owner == -1) {
 		// This file isn't owned by anyone, we want to get a suite of options
 		// from the available utilities such as "open, enqueue, send email" etc..
@@ -235,4 +239,13 @@ void Plugin::Launch(short PluginID, TCHAR* fullPath)
 
 	pfuncs[PluginID].PluginDoAction(SearchStrings.GetCount(), szStrings, searchTxt, fullPath);
 	free(szStrings);
+}
+
+CString Plugin::GetSeparator(short PluginID)
+{
+	if (pfuncs[PluginID].PluginGetSeparator == NULL) return L" | ";
+	TCHAR* sep = pfuncs[PluginID].PluginGetSeparator();
+	CString tmp = sep;
+	pfuncs[PluginID].PluginFreeStrings(sep);
+	return tmp;
 }

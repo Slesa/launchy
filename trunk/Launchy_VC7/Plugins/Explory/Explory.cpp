@@ -50,7 +50,7 @@ SearchResult* PluginGetIdentifiers (int* iNumResults)
 	for(int i = L'a'; i <= L'z'; i++) {
 		wstring tmp;
 		tmp += (TCHAR) i;
-		tmp += L":\\";
+		tmp += L":";
 		results.push_back(makeResult(tmp, L"", L"", NULL));
 	}
 
@@ -64,38 +64,7 @@ SearchResult* PluginGetIdentifiers (int* iNumResults)
 
 TCHAR* PluginGetRegexs(int* iNumResults)
 {
-	/*
-	*iNumResults = 26;
-	vector<wstring> vect;
-	vect.push_back(L"^a:.*$");
-	vect.push_back(L"^b:.*$");
-	vect.push_back(L"^c:.*$");
-	vect.push_back(L"^d:.*$");
-	vect.push_back(L"^e:.*$");
-	vect.push_back(L"^f:.*$");
-	vect.push_back(L"^g:.*$");
-	vect.push_back(L"^h:.*$");
-	vect.push_back(L"^i:.*$");
-	vect.push_back(L"^j:.*$");
-	vect.push_back(L"^k:.*$");
-	vect.push_back(L"^l:.*$");
-	vect.push_back(L"^m:.*$");
-	vect.push_back(L"^n:.*$");
-	vect.push_back(L"^o:.*$");
-	vect.push_back(L"^p:.*$");
-	vect.push_back(L"^q:.*$");
-	vect.push_back(L"^r:.*$");
-	vect.push_back(L"^s:.*$");
-	vect.push_back(L"^t:.*$");
-	vect.push_back(L"^u:.*$");
-	vect.push_back(L"^v:.*$");
-	vect.push_back(L"^w:.*$");
-	vect.push_back(L"^x:.*$");
-	vect.push_back(L"^y:.*$");
-	vect.push_back(L"^z:.*$");
 
-	return StringVectorToTCHAR(vect);
-*/
 	*iNumResults = 0;
 	return NULL;
 	
@@ -183,7 +152,7 @@ bool FileExists( const wstring& file )
 	}
 	else
 	{
-		result = FALSE;
+		result = false;
 	}
 
 	return result;
@@ -287,7 +256,11 @@ bool FixPath(wstring& path) {
 		if (path[path.length()-1] != L'\\')
 			path += L'\\';
 		return true;
+	} else if (path.at(path.length() - 1) == L'\\') {
+		// It says its a directory but it's not, must be a file
+		path = path.substr(0, path.length() - 1);
 	}
+
 	return FileExists(path);
 	
 }
@@ -301,7 +274,11 @@ SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TC
 	// Build the path
 	wstring dirs = L"";
 	wstring path = L"";
-	
+	/*
+	if (NumStrings == 3 && VStrings[2].find(L"buffy") != string::npos) {
+		dirs = dirs;
+	}
+	*/
 	// Did we take this string over from a PluginFileOptions?
 	if (VStrings.size() > 0 && VStrings[0].length() > 0 && VStrings[0].at(1) != L':') {
 		dirs += TakeOverPath;
@@ -316,6 +293,7 @@ SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TC
 			dirs += L"\\";
 		}
 	}
+
 	path = dirs;
 	path += FinalString;
 
@@ -323,10 +301,13 @@ SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TC
 
 	bool ValidPath = FixPath(path);
 
-	if(ValidPath) {
+	if(ValidPath && DirectoryExists(path)) {
 		matches.push_back(FinalString);
 		EnumFilesInDirectory(path, matches);
-	} else {
+	} else if (ValidPath) {
+		matches.push_back(FinalString);
+	}
+	else {
 		EnumFilesInDirectory(dirs, matches);
 	}
 
@@ -376,42 +357,7 @@ SearchResult* PluginFileOptions (const TCHAR* FullPath, int NumStrings, const TC
 	
 
 void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, const TCHAR* FullPath) {
-/*	vector<wstring> VStrings = TCHARListToVector(NumStrings, Strings);
 
-	// Build the path
-	wstring dirs = L"";
-	wstring path = L"";
-	
-	// Did we take this string over from a PluginFileOptions?
-	if (VStrings.size() > 0 && VStrings[0].length() > 0 && VStrings[0].at(1) != L':') {
-		dirs += TakeOverPath;
-		dirs += L"\\";
-		for(int i = 1; i < NumStrings; i++) {
-			dirs += VStrings[i];
-			dirs += L"\\";
-		}
-	} else {
-		for(int i = 0; i < NumStrings; i++) {
-			dirs += VStrings[i];
-			dirs += L"\\";
-		}
-	}
-
-
-	path = dirs;
-	path += FinalString;
-
-	vector<wstring> matches;
-
-	bool ValidPath = FixPath(path);
-	wstring launchString = L"";
-	if (ValidPath) {
-		launchString = path;
-	} else {
-		launchString = dirs;
-	}
-
-	*/
 
 	SHELLEXECUTEINFO ShExecInfo;
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -426,4 +372,9 @@ void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalStr
 
 	BOOL ret = ShellExecuteEx(&ShExecInfo);
 	
+}
+
+TCHAR* PluginGetSeparator() {
+	wstring tmp = L"\\";
+	return string2TCHAR(tmp);
 }

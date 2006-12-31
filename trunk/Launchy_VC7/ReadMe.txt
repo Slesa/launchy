@@ -1,5 +1,7 @@
-
-Seems like this used to work and perhaps I broke it somehow.. either way I'm too tired to work now.
+Things need to be done:
+. When you delete a word with backspace, the separator character doesn't get appended until the dropdown falls
+. When you <tab> on a file through weby, a directory gets launched instead of the file you completed
+. When you select a file from the dropdown and hit enter, it appends the filename to the path and blows up
 
 PLUGIN DETAIL:
 Okay, I seem to properly recognize ownership of a string and tab sort of works but I need to 
