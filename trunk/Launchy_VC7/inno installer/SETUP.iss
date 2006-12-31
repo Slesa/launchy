@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Launchy"
-#define MyAppVerName "Launchy 1.0 Beta"
+#define MyAppVerName "Launchy 1.0.1"
 #define MyAppPublisher "Code Jelly"
 #define MyAppURL "http://www.launchy.net"
 #define MyAppExeName "Launchy.exe"
@@ -138,6 +138,9 @@ Source: ..\Utilities\Special Folders\Recycle Bin.lnk; DestDir: {app}\Utilities\S
 Source: ..\Utilities\System Power\System Logoff.lnk; DestDir: {app}\Utilities\System Power\; Flags: ignoreversion
 Source: ..\Utilities\System Power\System Reboot.lnk; DestDir: {app}\Utilities\System Power\; Flags: ignoreversion
 Source: ..\Utilities\System Power\System Shutdown.lnk; DestDir: {app}\Utilities\System Power\; Flags: ignoreversion
+Source: ..\Plugins\Explory.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+Source: ..\Plugins\Weby.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+Source: ..\Plugins\Calcy.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]
