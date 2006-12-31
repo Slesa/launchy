@@ -1175,6 +1175,9 @@ BOOL CDiskObject::EnumFilesInDirectoryWithFilter( const CString& strFilter,const
 				if( mode == EF_FULLY_QUALIFIED )
 					file = sourceDirectory + file;
 
+				/*
+					Launchy Doesn't need sorted results!
+
 				// Return the array alphabetically ordered
 				for( int i = 0; i < files.GetSize(); i++ )
 				{
@@ -1185,6 +1188,7 @@ BOOL CDiskObject::EnumFilesInDirectoryWithFilter( const CString& strFilter,const
 						break;
 					}
 				}
+				*/
 				if ( !added )
 				{
 					files.Add( file );

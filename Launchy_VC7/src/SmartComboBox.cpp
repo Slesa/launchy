@@ -178,8 +178,8 @@ void SmartComboBox::DeleteWord()
 		if (SearchStrings.GetCount() > 0) {
 			SearchStrings.RemoveAt(SearchStrings.GetCount()-1);
 		}
-	}
-	searchTxt = L"";
+	} else
+		searchTxt = L"";
 
 	ShowDropDown(false);
 	pDlg->smarts->Update(searchTxt);
@@ -189,11 +189,17 @@ void SmartComboBox::DeleteWord()
 
 void SmartComboBox::ReformatDisplay()
 {
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+
 	CString out = L"";
 
 	for(int i = 0; i < SearchStrings.GetCount(); i++) {
 		out += SearchStrings[i];
-		out += L" | ";
+		if (SearchPluginID != -1)
+			out += pDlg->plugins->GetSeparator(SearchPluginID);
+		else
+			out += L" | ";
 	}
 	out += searchTxt;
 	m_edit.SetWindowTextW(out);
@@ -204,7 +210,13 @@ void SmartComboBox::ReformatDisplay()
 
 void SmartComboBox::ParseSearchTxt()
 {
-
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+	CString sep;
+	if (SearchStrings.GetCount() > 0 && SearchPluginID != -1)
+		sep = pDlg->plugins->GetSeparator(SearchPluginID);
+	else
+		sep = L" | ";
 	CStringArray NewSearchStrings;
 	CString prefix = L"";
 
@@ -218,12 +230,12 @@ void SmartComboBox::ParseSearchTxt()
 			if (charNum == prefix.GetLength() - 1)
 				NewSearchStrings.Add(prefix);
 		}
-		if (searchTxt[pos] == L' ') 
-			pos += 1;
-		if (searchTxt[pos] == L'|')
-			pos += 1;
-		if (searchTxt[pos] == L' ')
-			pos += 1;
+		for(int j = 0; j < sep.GetLength(); j++) {
+			if (searchTxt[pos] == sep[j])
+				pos += 1;
+			else
+				break;
+		}
 	}
 	
 

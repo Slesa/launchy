@@ -77,3 +77,8 @@ SearchResult* PluginFileOptions (const TCHAR* FullPath, int NumStrings, const TC
 void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, const TCHAR* FullPath) {
 	return;
 }
+
+TCHAR* PluginGetSeparator() {
+	wstring tmp = L" | ";
+	return string2TCHAR(tmp);
+}

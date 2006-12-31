@@ -68,9 +68,10 @@
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="../PluginLib/ ; ."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;Weby_EXPORTS"
 				RuntimeLibrary="0"
-				UsePrecompiledHeader="3"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"/>
@@ -116,7 +117,7 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\LaunchyPlugin.cpp">
+				RelativePath="..\PluginLib\LaunchyPlugin.cpp">
 			</File>
 			<File
 				RelativePath=".\stdafx.cpp">
@@ -141,9 +142,6 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-			<File
-				RelativePath=".\LaunchyPlugin.h">
-			</File>
 			<File
 				RelativePath=".\resource.h">
 			</File>

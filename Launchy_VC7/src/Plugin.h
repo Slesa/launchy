@@ -55,7 +55,7 @@ typedef void (* PLUGINADDINDEXITEMS) (IndexItems);
 typedef  SearchResult* (* PLUGINGETIDENTIFIERS) (int*);
 typedef void (* PLUGINFREERESULTS) ( SearchResult*, int);
 typedef void (* PLUGINFREESTRINGS) ( TCHAR* );
-
+typedef TCHAR* (* PLUGINGETSEPARATOR) (void);
 struct PluginFunctions {
 	PLUGINGETREGEXS PluginGetRegexs;
 	PLUGINGETINDEXITEMS PluginGetIndexItems;
@@ -65,6 +65,7 @@ struct PluginFunctions {
 	PLUGINGETIDENTIFIERS PluginGetIdentifiers;
 	PLUGINFREERESULTS PluginFreeResults;
 	PLUGINFREESTRINGS PluginFreeStrings;
+	PLUGINGETSEPARATOR PluginGetSeparator;
 };
 
 
@@ -89,6 +90,7 @@ public:
 	void Launch(short PluginID, TCHAR* FullPath);
 	int IsSearchOwned(CString searchTxt);
 	shared_ptr<vector<FileRecordPtr> > GetSearchOptions(int owner);
+	CString Plugin::GetSeparator(short PluginID);
 	/*
 
 	LoadDlls(void);

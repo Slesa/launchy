@@ -284,21 +284,18 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (pMsg->wParam==VK_TAB && smarts->matches.size() > 0) {
 			InputBox.TabSearchTxt();
-			//				InputBox.ParseSearchTxt();
 			return true;
 		}
 		else if (pMsg->wParam==VK_BACK) {
 			InputBox.DeleteWord();
+			return true;
 		}
 		else {
 
 			if (InputBox.GetDroppedState()) {
 				CString typed = InputBox.typed;
 				InputBox.ShowDropDown(false);
-				//				InputBox.m_edit.SetWindowText(typed);
-				//				InputBox.ReformatDisplay();
 				InputBox.SetEditSel(InputBox.m_edit.GetWindowTextLengthW(), InputBox.m_edit.GetWindowTextLengthW());
-				//				InputBox.CleanText();
 			}
 			InputBox.CleanText();
 		}

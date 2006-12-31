@@ -70,9 +70,10 @@
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="../PluginLib/ ; ."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;Explory_EXPORTS"
 				RuntimeLibrary="0"
-				UsePrecompiledHeader="3"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"/>
@@ -121,7 +122,7 @@
 				RelativePath=".\Explory.cpp">
 			</File>
 			<File
-				RelativePath=".\LaunchyPlugin.cpp">
+				RelativePath="..\PluginLib\LaunchyPlugin.cpp">
 			</File>
 			<File
 				RelativePath=".\stdafx.cpp">
@@ -145,9 +146,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath=".\Explory.h">
-			</File>
-			<File
-				RelativePath=".\LaunchyPlugin.h">
 			</File>
 			<File
 				RelativePath=".\resource.h">
