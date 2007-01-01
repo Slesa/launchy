@@ -304,7 +304,7 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 			HideLaunchy();
 
 			CString MatchPath = smarts->GetMatchPath(0);
-			if (smarts->GetMatchPath(0) != InputBox.searchPath) {
+			if (smarts->GetMatchPath(0) != InputBox.searchPath && SearchStrings.GetCount() == 0) {
 
 
 				//			if (InputBox.typed != searchTxt) {

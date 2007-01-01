@@ -92,9 +92,10 @@ template <> void AFXAPI SerializeElements <ArchiveType> ( CArchive& ar,
 bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 {
 
+
 	if (a->isHistory) { return true; }
 	if (b->isHistory) { return false; }
-
+/*
 	bool localEqual = a->lowName == searchTxt;
 	bool otherEqual = b->lowName == searchTxt;
 
@@ -102,21 +103,29 @@ bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 		return true;
 	if (!localEqual && otherEqual)
 		return false;
-
+*/
 	int localFind = a->lowName.Find(searchTxt);
 	int otherFind = b->lowName.Find(searchTxt);
 
-	if (localFind > -1 && otherFind == -1)
+	if (localFind != -1 && otherFind == -1)
 		return true;
-	if (localFind == -1 && otherFind > -1)
+	else if (localFind == -1 && otherFind != -1)
 		return false;
+
+
 
 
 	if(a->usage > b->usage)
 		return true;
 	if (a->usage < b->usage)
 		return false;
-
+	
+	if (localFind != -1 && otherFind != -1) {
+		if (localFind < otherFind)
+			return true;
+		else
+			return false;
+	}
 
 	int localLen = a->lowName.GetLength();
 	int otherLen = b->lowName.GetLength();
@@ -125,6 +134,7 @@ bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 		return true;
 	if (localLen > otherLen)
 		return false;
+
 	
 	// Absolute tiebreaker to prevent loops
 	if (a.get() < b.get()) 
@@ -430,7 +440,7 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 	// Set the preferred bit for the history match 	 
 	size_t count = matches.size(); 	 
 	for(size_t i = 0; i < count; i++) { 	 
-		if (matches[i]->fullPath == history || matches[i]->fullPath == oneTimeHistory) { 
+		if (history != L"" && (matches[i]->fullPath == history || matches[i]->fullPath == oneTimeHistory)) { 
 			if (matches[i]->fullPath == oneTimeHistory || oneTimeHistory == _T("")) {
 				matches[i]->isHistory = true; 	 
 			}
