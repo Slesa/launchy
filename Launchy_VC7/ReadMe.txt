@@ -1,7 +1,9 @@
 Things need to be done:
-. When you delete a word with backspace, the separator character doesn't get appended until the dropdown falls
-. When you <tab> on a file through weby, a directory gets launched instead of the file you completed
 . When you select a file from the dropdown and hit enter, it appends the filename to the path and blows up
+. I can't seem to select Firefox now, I keep selecting Firefox (Safe Mode), seems like I broke something because
+  I remember having to deal with this issue on the last release.
+. I got a crash once when I typed in "my do" then hit tab for my documents :/  It had been in use for awhile.
+
 
 PLUGIN DETAIL:
 Okay, I seem to properly recognize ownership of a string and tab sort of works but I need to 

@@ -282,8 +282,9 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 				InputBox.ShowDropDown(true);
 			}
 		}
-		else if (pMsg->wParam==VK_TAB && smarts->matches.size() > 0) {
-			InputBox.TabSearchTxt();
+		else if (pMsg->wParam==VK_TAB) {
+			if (smarts->matches.size() > 0 && searchTxt != L"")
+				InputBox.TabSearchTxt();
 			return true;
 		}
 		else if (pMsg->wParam==VK_BACK) {
