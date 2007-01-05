@@ -104,13 +104,6 @@ bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 	if (!localEqual && otherEqual)
 		return false;
 */
-	int localFind = a->lowName.Find(searchTxt);
-	int otherFind = b->lowName.Find(searchTxt);
-
-	if (localFind != -1 && otherFind == -1)
-		return true;
-	else if (localFind == -1 && otherFind != -1)
-		return false;
 
 
 
@@ -119,14 +112,23 @@ bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 		return true;
 	if (a->usage < b->usage)
 		return false;
-	
+
+	int localFind = a->lowName.Find(searchTxt);
+	int otherFind = b->lowName.Find(searchTxt);
+
+	if (localFind != -1 && otherFind == -1)
+		return true;
+	else if (localFind == -1 && otherFind != -1)
+		return false;
+
+	/*
 	if (localFind != -1 && otherFind != -1) {
 		if (localFind < otherFind)
 			return true;
 		else
 			return false;
 	}
-
+*/
 	int localLen = a->lowName.GetLength();
 	int otherLen = b->lowName.GetLength();
 
