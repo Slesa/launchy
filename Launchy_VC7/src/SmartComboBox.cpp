@@ -423,6 +423,7 @@ LRESULT SmartComboBox::AfterSelChange(UINT wParam, LONG lParam) {
 
 	pDlg->smarts->Update(searchTxt,(bool) lParam);
 
+	
 	return true;
 }
 
@@ -578,6 +579,7 @@ void SmartComboBox::OnPaint()
 
 void SmartComboBox::OnCbnCloseup()
 {
+/*
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
 	if (!IsWindow(m_listbox.m_hWnd)) return;
@@ -594,6 +596,7 @@ void SmartComboBox::OnCbnCloseup()
 	}
 	SetCurSel(-1);
 	return;
+*/
 }
 /*
 
