@@ -168,24 +168,35 @@ void SmartComboBox::TabSearchTxt()
 
 }
 
+
+
 void SmartComboBox::DeleteWord()
-{
-	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+{	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
 
 
-	if (searchTxt == L"") {
-		if (SearchStrings.GetCount() > 0) {
-			SearchStrings.RemoveAt(SearchStrings.GetCount()-1);
+	if (searchTxt == L"" && SearchStrings.GetCount() > 0) {
+		SearchStrings.RemoveAt(SearchStrings.GetCount()-1);
+	} else {
+		searchTxt.TrimRight(L'.');
+		searchTxt.TrimRight(L' ');
+		if (searchTxt.ReverseFind(L'.') != -1) {
+			searchTxt = searchTxt.Left(searchTxt.ReverseFind(L'.')+1);
 		}
-	} else
-		searchTxt = L"";
+		else if (searchTxt.ReverseFind(L' ') != -1) {
+			searchTxt = searchTxt.Left(searchTxt.ReverseFind(L' ')+1);
+		} 
+		else {
+			searchTxt = L"";
+		}
+	}
 
 	ShowDropDown(false);
 	pDlg->smarts->Update(searchTxt);
 	ReformatDisplay();
 	ParseSearchTxt();
 }
+
 
 void SmartComboBox::ReformatDisplay()
 {
@@ -287,16 +298,18 @@ void SmartComboBox::OnCbnSelchange()
 
 	
 
-	this->PostMessage(WM_CHANGE_COMBO_SEL,IDC_Input,(LPARAM)(bool) false);
-
+//	this->PostMessage(WM_CHANGE_COMBO_SEL,IDC_Input,(LPARAM)(bool) false);
 	// If it's closing, we've already taken care of this..
-/*	if (GetDroppedState()) {
-		m_listbox.GetText(m_listbox.GetCurSel(), searchTxt);
-		ParseSearchTxt();
+	if (GetDroppedState()) {
+		int sel = m_listbox.GetCurSel();
 
-		pDlg->smarts->Update(searchTxt,false);
+		if (sel != LB_ERR) {
+			m_listbox.GetText(m_listbox.GetCurSel(), searchTxt);
+			ParseSearchTxt();
+			DropItem* data = (DropItem*) GetItemDataPtr(sel);
+			pDlg->smarts->Update(searchTxt,false, data->longpath);
+		}
 	}
-	*/
 }
 
 
@@ -565,11 +578,10 @@ void SmartComboBox::OnPaint()
 
 void SmartComboBox::OnCbnCloseup()
 {
-		
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
 	if (!IsWindow(m_listbox.m_hWnd)) return;
-/*
+
 	int sel = m_listbox.GetCurSel();
 	if (sel != LB_ERR) {
 		DropItem* data = (DropItem*) GetItemDataPtr(sel);
@@ -581,10 +593,10 @@ void SmartComboBox::OnCbnCloseup()
 		pDlg->smarts->Update(searchTxt, true, data->longpath);
 	}
 	SetCurSel(-1);
-	*/
+	return;
 }
-
 /*
+
 void SmartComboBox::OnDrawSelchange(int itemID) {
 	// If it's closing, we've already taken care of this..
 	if (GetDroppedState()) {

@@ -16,10 +16,11 @@
 			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
-			CharacterSet="2">
+			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="c:\boost\include\ ; ../PluginLib/ ; ."
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;Weby_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -71,7 +72,7 @@
 				AdditionalIncludeDirectories="../PluginLib/ ; ."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;Weby_EXPORTS"
 				RuntimeLibrary="0"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="3"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"/>

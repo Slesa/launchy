@@ -5,6 +5,8 @@ Things need to be done:
 . I got a crash once when I typed in "my do" then hit tab for my documents :/  It had been in use for awhile.
 
 
+
+
 PLUGIN DETAIL:
 Okay, I seem to properly recognize ownership of a string and tab sort of works but I need to 
 handle deletion of characters
