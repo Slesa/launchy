@@ -91,7 +91,7 @@
 				MinimalRebuild="FALSE"
 				RuntimeLibrary="0"
 				TreatWChar_tAsBuiltInType="TRUE"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="3"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"/>
@@ -211,6 +211,12 @@
 			</File>
 			<File
 				RelativePath=".\src\SmartComboBox.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\stdafx.cpp">

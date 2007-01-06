@@ -14,6 +14,8 @@
 //  [ JDG 6/29/2002 ]
 //
 ////////////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
 #include <boost/spirit/core.hpp>
 #include <boost/spirit/attribute.hpp>
 #include <iostream>

@@ -442,7 +442,7 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 	// Set the preferred bit for the history match 	 
 	size_t count = matches.size(); 	 
 	for(size_t i = 0; i < count; i++) { 	 
-		if (history != L"" && (matches[i]->fullPath == history || matches[i]->fullPath == oneTimeHistory)) { 
+		if ((history != L"" && matches[i]->fullPath == history) || matches[i]->fullPath == oneTimeHistory) { 
 			if (matches[i]->fullPath == oneTimeHistory || oneTimeHistory == _T("")) {
 				matches[i]->isHistory = true; 	 
 			}
