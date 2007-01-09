@@ -3,6 +3,12 @@ Things need to be done:
 . I can't seem to select Firefox now, I keep selecting Firefox (Safe Mode), seems like I broke something because
   I remember having to deal with this issue on the last release.
 . I got a crash once when I typed in "my do" then hit tab for my documents :/  It had been in use for awhile.
+. Icons
+> * It is weird that unless you type TAB after you type c: it does not seem to
+> go into Explory mode. That is, you cannot type c:\windows and start
+> exploring from there. As : cannot be part of any filename in windows, I
+> think that if the second character typed into launchy is : you could
+> automatically go into Explory mode. 
 
 
 

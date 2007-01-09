@@ -36,23 +36,28 @@ SearchResult* PluginGetIdentifiers (int* iNumResults)
 {
 	vector<SearchResult> results;
 	results.push_back(makeResult(L"Google", L"", L"", NULL));
+	results.push_back(makeResult(L"Live Search", L"", L"", NULL));
+	results.push_back(makeResult(L"MSN",L"", L"", NULL));
+	results.push_back(makeResult(L"Yahoo", L"", L"", NULL));
 	results.push_back(makeResult(L"Weather", L"", L"", NULL));
 	results.push_back(makeResult(L"Amazon", L"", L"", NULL));
 	results.push_back(makeResult(L"Wikipedia", L"", L"", NULL));
 	results.push_back(makeResult(L"Dictionary", L"", L"", NULL));
 	results.push_back(makeResult(L"Thesaurus", L"", L"", NULL));
 	results.push_back(makeResult(L"IMDB", L"", L"", NULL));
+	results.push_back(makeResult(L"Netflix", L"", L"", NULL));
+	results.push_back(makeResult(L"MSDN WebSearch", L"", L"", NULL));
 
-	*iNumResults = 7;
+	*iNumResults = results.size();
 	return ResultVectorToArray(results);
 }
 
 TCHAR* PluginGetRegexs(int* iNumResults)
 {
-	*iNumResults = 2;
 	vector<wstring> vect;
 	vect.push_back(L"^www.*$");
 	vect.push_back(L"^http.*$");
+	*iNumResults = vect.size();
 	return StringVectorToTCHAR(vect);
 }
 
@@ -82,6 +87,18 @@ void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalStr
 			tmp = L"http://www.google.com/search?q=";
 			tmp += FinalString;
 		}
+		else if (VStrings[0] == L"Live Search") {
+			tmp += L"http://search.live.com/results.aspx?q=";
+			tmp += FinalString;
+		}
+		else if (VStrings[0] == L"Yahoo") {
+			tmp += L"http://search.yahoo.com/search?p=";
+			tmp += FinalString;
+		}
+		else if (VStrings[0] == L"MSN") {
+			tmp += L"http://search.msn.com/results.aspx?q=";
+			tmp += FinalString;
+		}
 		else if (VStrings[0] == L"Weather") {
 			tmp = L"http://www.weather.com/weather/local/";
 			tmp += FinalString;
@@ -104,6 +121,14 @@ void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalStr
 		}
 		else if (VStrings[0] == L"IMDB") {
 			tmp = L"http://www.imdb.com/find?q=";
+			tmp += FinalString;
+		}
+		else if (VStrings[0] == L"Netflix") {
+			tmp = L"http://www.netflix.com/Search?v1=";
+			tmp += FinalString;
+		}
+		else if (VStrings[0] == L"MSDN WebSearch") {
+			tmp = L"http://search.msdn.microsoft.com/search/default.aspx?siteId=0&tab=0&query=";
 			tmp += FinalString;
 		}
 		else {
