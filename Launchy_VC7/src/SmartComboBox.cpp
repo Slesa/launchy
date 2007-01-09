@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "SmartComboBox.h"
 #include "LaunchyDlg.h"
 #include ".\smartcombobox.h"
+#include <algorithm>
 
 // SmartComboBox
 
@@ -178,15 +179,17 @@ void SmartComboBox::DeleteWord()
 	if (searchTxt == L"" && SearchStrings.GetCount() > 0) {
 		SearchStrings.RemoveAt(SearchStrings.GetCount()-1);
 	} else {
-		searchTxt.TrimRight(L'.');
-		searchTxt.TrimRight(L' ');
-		if (searchTxt.ReverseFind(L'.') != -1) {
-			searchTxt = searchTxt.Left(searchTxt.ReverseFind(L'.')+1);
+		CString schars = L" \\./";
+		searchTxt.TrimRight(schars);
+		int max = -1;
+		for(int i = 0; i < schars.GetLength(); i++) {
+			TCHAR c = schars[i];
+			if (searchTxt.ReverseFind(c) > max) 
+				max = searchTxt.ReverseFind(c);
 		}
-		else if (searchTxt.ReverseFind(L' ') != -1) {
-			searchTxt = searchTxt.Left(searchTxt.ReverseFind(L' ')+1);
-		} 
-		else {
+		if (max != -1) {
+			searchTxt = searchTxt.Left(max + 1);
+		} else {
 			searchTxt = L"";
 		}
 	}
@@ -579,10 +582,14 @@ void SmartComboBox::OnPaint()
 
 void SmartComboBox::OnCbnCloseup()
 {
-/*
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
 	if (!IsWindow(m_listbox.m_hWnd)) return;
+
+//	SetCurSel(-1);
+//	SetEditSel(searchTxt.GetLength(), searchTxt.GetLength());
+
+/*
 
 	int sel = m_listbox.GetCurSel();
 	if (sel != LB_ERR) {
@@ -594,7 +601,7 @@ void SmartComboBox::OnCbnCloseup()
 
 		pDlg->smarts->Update(searchTxt, true, data->longpath);
 	}
-	SetCurSel(-1);
+
 	return;
 */
 }

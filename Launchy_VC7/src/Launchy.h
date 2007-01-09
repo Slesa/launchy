@@ -30,10 +30,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "resource.h"		// main symbols
 #include "FileRecord.h"
 
+/*
 #include <boost/spirit/phoenix.hpp>
 using phoenix::arg1;
 using phoenix::arg2;
 using phoenix::bind;
+using namespace boost::lambda;
+*/
+#include <boost/lambda/lambda.hpp>
+using namespace std;
+using namespace boost::lambda;
 
 
 extern CStringArray SearchStrings;
