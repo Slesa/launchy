@@ -83,53 +83,67 @@ void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalStr
 	}
 
 	else if (NumStrings == 1) {
+		wstring newFS = FinalString;
+
+		/*
+		// Replace ' ' with %20
+		wstring tmpString = FinalString;
+		wstring newFS = L"";
+
+		for(int i = 0; i < tmpString.size(); i++) {
+			if (tmpString[i] == L' ')
+				newFS += L"%20";
+			else
+				newFS += tmpString[i];
+		}
+*/
 		if (VStrings[0] == L"Google") {
 			tmp = L"http://www.google.com/search?q=";
-			tmp += FinalString;
+			tmp += newFS;
 		}
 		else if (VStrings[0] == L"Live Search") {
 			tmp += L"http://search.live.com/results.aspx?q=";
-			tmp += FinalString;
+			tmp += newFS;
 		}
 		else if (VStrings[0] == L"Yahoo") {
 			tmp += L"http://search.yahoo.com/search?p=";
-			tmp += FinalString;
+			tmp += newFS;
 		}
 		else if (VStrings[0] == L"MSN") {
 			tmp += L"http://search.msn.com/results.aspx?q=";
-			tmp += FinalString;
+			tmp += newFS;
 		}
 		else if (VStrings[0] == L"Weather") {
 			tmp = L"http://www.weather.com/weather/local/";
-			tmp += FinalString;
+			tmp += newFS;
 		}
 		else if (VStrings[0] == L"Amazon") {
 			tmp = L"http://www.amazon.com/gp/search/?keywords=";
-			tmp += FinalString;
+			tmp += newFS;
 		}
 		else if (VStrings[0] == L"Wikipedia") {
 			tmp = L"http://www.wikipedia.com/wiki/Special:Search?search=";
-			tmp += FinalString;
+			tmp += newFS;
 		}
 		else if (VStrings[0] == L"Dictionary") {
 			tmp = L"http://www.dictionary.com/browse/";
-			tmp += FinalString;
+			tmp += newFS;
 		}
 		else if (VStrings[0] == L"Thesaurus") {
 			tmp = L"http://www.thesaurus.com/browse/";
-			tmp += FinalString;
+			tmp += newFS;
 		}
 		else if (VStrings[0] == L"IMDB") {
 			tmp = L"http://www.imdb.com/find?q=";
-			tmp += FinalString;
+			tmp += newFS;
 		}
 		else if (VStrings[0] == L"Netflix") {
 			tmp = L"http://www.netflix.com/Search?v1=";
-			tmp += FinalString;
+			tmp += newFS;
 		}
 		else if (VStrings[0] == L"MSDN WebSearch") {
 			tmp = L"http://search.msdn.microsoft.com/search/default.aspx?siteId=0&tab=0&query=";
-			tmp += FinalString;
+			tmp += newFS;
 		}
 		else {
 			tmp = L"http://www.google.com/search?q=";
@@ -154,5 +168,10 @@ void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalStr
 
 TCHAR* PluginGetSeparator() {
 	wstring tmp = L" | ";
+	return string2TCHAR(tmp);
+}
+
+TCHAR* PluginGetName() {
+	wstring tmp = L"Weby";
 	return string2TCHAR(tmp);
 }

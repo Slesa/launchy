@@ -378,3 +378,8 @@ TCHAR* PluginGetSeparator() {
 	wstring tmp = L"\\";
 	return string2TCHAR(tmp);
 }
+
+TCHAR* PluginGetName() {
+	wstring tmp = L"Explory";
+	return string2TCHAR(tmp);
+}

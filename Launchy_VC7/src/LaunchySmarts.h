@@ -90,7 +90,7 @@ public:
 	HANDLE hMutex;
 	void getStrings(CStringArray& strings);
 	void LoadFirstTime();
-	void archiveCatalog(CString path);
+	void archiveCatalog(CString path, Plugin*);
 	CString lastUpdateTxt;
 	CString GetMatchPath(int sel);
 };

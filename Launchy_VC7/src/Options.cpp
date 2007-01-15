@@ -279,13 +279,18 @@ void Options::UpgradeCleanup(void)
 	// Delete the Users/ config files
 	if (ver < 98) {
 		// Remove the old configuration directories if they exist
-		CString dir;
-//		LaunchySmarts::GetShellDir(CSIDL_LOCAL_APPDATA, dir);
-//		dir += _T("\\Launchy");
 		CDiskObject disk;
 		disk.RemoveDirectory(_T("Users"));
 	}
 
+	if (ver < 102) {
+		CString file;
+		LaunchySmarts::GetShellDir(CSIDL_APPDATA, file);
+		file += _T("\\Launchy\\");
+		file += L"launchy.db";
+		CDiskObject disk;
+		disk.RemoveFile(file);
+	}
 
 	if (ver < LAUNCHY_VERSION) {
 		installTime = CTime::GetCurrentTime();

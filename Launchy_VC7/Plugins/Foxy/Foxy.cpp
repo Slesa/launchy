@@ -196,6 +196,7 @@ void LoadBookMarks(wstring filename, vector<BookMark>& marks) {
 	boost::wregex regex_urlname(L"\">(.*?)<\/A>", boost::regex::perl|boost::regex::icase);
 	boost::wregex regex_shortcut(L"SHORTCUTURL=\"(.*?)\"", boost::regex::perl|boost::regex::icase);
 	boost::wregex regex_postdata(L"POST_DATA", boost::regex::perl|boost::regex::icase);
+
 	while (inifile.ReadString(line)) {
 		wline = line.GetBuffer();
 		boost::wsmatch what;
@@ -324,5 +325,10 @@ void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalStr
 
 TCHAR* PluginGetSeparator() {
 	wstring tmp = L" | ";
+	return string2TCHAR(tmp);
+}
+
+TCHAR* PluginGetName() {
+	wstring tmp = L"Foxy";
 	return string2TCHAR(tmp);
 }

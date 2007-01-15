@@ -82,3 +82,8 @@ TCHAR* PluginGetSeparator() {
 	wstring tmp = L" | ";
 	return string2TCHAR(tmp);
 }
+
+TCHAR* PluginGetName() {
+	wstring tmp = L"Calcy";
+	return string2TCHAR(tmp);
+}
