@@ -56,6 +56,8 @@ typedef  SearchResult* (* PLUGINGETIDENTIFIERS) (int*);
 typedef void (* PLUGINFREERESULTS) ( SearchResult*, int);
 typedef void (* PLUGINFREESTRINGS) ( TCHAR* );
 typedef TCHAR* (* PLUGINGETSEPARATOR) (void);
+typedef TCHAR* (* PLUGINGETNAME) (void);
+
 struct PluginFunctions {
 	PLUGINGETREGEXS PluginGetRegexs;
 	PLUGINGETINDEXITEMS PluginGetIndexItems;
@@ -66,6 +68,7 @@ struct PluginFunctions {
 	PLUGINFREERESULTS PluginFreeResults;
 	PLUGINFREESTRINGS PluginFreeStrings;
 	PLUGINGETSEPARATOR PluginGetSeparator;
+	PLUGINGETNAME PluginGetName;
 };
 
 
@@ -75,6 +78,8 @@ class Plugin
 	struct DLLInstance {
 		HINSTANCE handle;
 		vector<boost::wregex> regexs;
+		CString name;
+		unsigned long nametag;
 	};
 
 private:
@@ -91,6 +96,7 @@ public:
 	int IsSearchOwned(CString searchTxt);
 	shared_ptr<vector<FileRecordPtr> > GetSearchOptions(int owner);
 	CString Plugin::GetSeparator(short PluginID);
+	unsigned long Plugin::GetPluginNameTag(int id);
 	/*
 
 	LoadDlls(void);

@@ -80,6 +80,7 @@ public:
 	void TabSearchTxt();
 	void ReformatDisplay();
 	void DeleteWord();
+	void DeleteLine();
 private:
 	//text and text background colors
 	COLORREF m_crText;

@@ -268,9 +268,24 @@ void CLaunchyDlg::OnCbnSelchangeInput()
 BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: Add your specialized code here and/or call the base class
+	if (pMsg->message == WM_SYSKEYDOWN) {
+			if (pMsg->wParam==VK_BACK) {
+				InputBox.DeleteLine();
+				return true;
+			}
+	}
+
 	if(pMsg->message==WM_KEYDOWN)
 	{
-		if (pMsg->wParam==VK_DOWN) {
+		if (GetKeyState(VK_CONTROL) < 0) {
+			// Control is pressed down
+			if (pMsg->wParam==VK_BACK) {	 
+				InputBox.DeleteWord();
+				return true;
+			}
+		}	
+		
+		else if (pMsg->wParam==VK_DOWN) {
 			InputBox.CleanText();
 			if (!InputBox.GetDroppedState() && InputBox.typed != _T("")) {
 				InputBox.ShowDropDown(true);
@@ -287,10 +302,7 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 				InputBox.TabSearchTxt();
 			return true;
 		}
-		else if (pMsg->wParam==VK_BACK) {
-			InputBox.DeleteWord();
-			return true;
-		}
+
 		else {
 
 			if (InputBox.GetDroppedState()) {

@@ -169,12 +169,22 @@ void SmartComboBox::TabSearchTxt()
 
 }
 
-
+void SmartComboBox::DeleteLine()
+{
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+	if (pDlg == NULL) return;
+	searchTxt = L"";
+	SearchStrings.RemoveAll();
+	ShowDropDown(false);
+	pDlg->smarts->Update(searchTxt);
+	ReformatDisplay();
+	ParseSearchTxt();
+}
 
 void SmartComboBox::DeleteWord()
-{	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
+{
+	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
-
 
 	if (searchTxt == L"" && SearchStrings.GetCount() > 0) {
 		SearchStrings.RemoveAt(SearchStrings.GetCount()-1);

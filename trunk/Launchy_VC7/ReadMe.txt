@@ -1,9 +1,25 @@
 Things need to be done:
+. If Launchy starts off the screen, move it!
+. Why isn't explory's '\' being used instead of ' | ' ???
 . When you select a file from the dropdown and hit enter, it appends the filename to the path and blows up
-. I can't seem to select Firefox now, I keep selecting Firefox (Safe Mode), seems like I broke something because
-  I remember having to deal with this issue on the last release.
+. When I type in w, pause for the dropdown, then type i it expands "webstats" and appends an i
 . I got a crash once when I typed in "my do" then hit tab for my documents :/  It had been in use for awhile.
 . Icons
+. Why does "portable cygwin" have preference over "gmail" when I type "g"?
+. Why does wikipedia not work with queries with spaces like "Wolf Parade"?
+
+
+. Every time I use Launchy for the first time it crashes.
+ For example... I reboot my computer, wait for everything to load, 
+ then hit ALT+SPACE. Launchy shows up as normal, so I start typing.
+  Then it locks up and crashes. 
+  I get a Runtime error "R6025 -pure virtual function call". 
+  If I restart Launchy and try again it works just fine. 
+  But it's always the first time it's used that it crashes. Any ideas? :(
+  
+  -- This must be the dropdown menu not being properly subclassed, and hence
+  there are virtual function problems.  Ick!
+
 > * It is weird that unless you type TAB after you type c: it does not seem to
 > go into Explory mode. That is, you cannot type c:\windows and start
 > exploring from there. As : cannot be part of any filename in windows, I

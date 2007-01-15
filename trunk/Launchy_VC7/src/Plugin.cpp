@@ -21,6 +21,14 @@ TCHAR* string2TCHAR(wstring str) {
 	return dest;
 }
 
+unsigned long GenerateNameTag(CString str) {
+    unsigned long hash = 5381;
+	for(int i = 0; i < str.GetLength(); i++) {
+		hash = ((hash << 5) + hash) + str[i];
+	}
+    return hash;
+}
+
 TCHAR* StringArrayToTCHAR( CStringArray& Strings) {
 	int size = 0;
 	for(int i = 0; i < Strings.GetSize(); i++) {
@@ -99,7 +107,9 @@ int Plugin::IsSearchOwned(CString search)
 }
 
 
-
+unsigned long Plugin::GetPluginNameTag(int id) {
+	return loadedPlugins[id].nametag;
+}
 
 
 void Plugin::LoadDlls() {
@@ -121,7 +131,7 @@ void Plugin::LoadDlls() {
 		struct DLLInstance di;
 		di.handle = LoadMe;
 
-		loadedPlugins.push_back(di);
+		
 		PluginFunctions funcs;
 
 		funcs.PluginGetRegexs = (PLUGINGETREGEXS)GetProcAddress(LoadMe,"PluginGetRegexs");
@@ -133,7 +143,18 @@ void Plugin::LoadDlls() {
 		funcs.PluginFreeResults = (PLUGINFREERESULTS)GetProcAddress(LoadMe,"PluginFreeResults");
 		funcs.PluginFreeStrings = (PLUGINFREESTRINGS)GetProcAddress(LoadMe,"PluginFreeStrings");
 		funcs.PluginGetSeparator = (PLUGINGETSEPARATOR)GetProcAddress(LoadMe, "PluginGetSeparator");
+		funcs.PluginGetName = (PLUGINGETNAME)GetProcAddress(LoadMe, "PluginGetName");
 		pfuncs.push_back(funcs);
+
+		if (funcs.PluginGetName != NULL) {
+			TCHAR* tmpName = funcs.PluginGetName();
+			di.name = tmpName;
+			funcs.PluginFreeStrings(tmpName);
+			di.nametag = GenerateNameTag(di.name);
+
+		}
+		
+		loadedPlugins.push_back(di);
 	}
 }
 
@@ -152,7 +173,8 @@ vector<FileRecordPtr> Plugin::GetIdentifiers() {
 			rec->isHistory = false;
 			rec->lowName = rec->croppedName;
 			rec->lowName.MakeLower();
-			rec->usage = 1000;
+			rec->usage = 0;
+			//			rec->usage = 1000;
 			rec->owner = (short) i;
 
 			PluginRecords.push_back(rec);

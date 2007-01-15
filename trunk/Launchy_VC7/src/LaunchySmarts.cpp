@@ -49,9 +49,10 @@ class ArchiveType : public CObject {
 public:
 	DECLARE_SERIAL( ArchiveType )
 	ArchiveType() {}
-	ArchiveType(CString str, int u): name(str), usage(u) {}
+	ArchiveType(CString str, int u, unsigned long n): name(str), usage(u), nametag(n) {}
 	CString name;
 	int usage;
+	unsigned long nametag;
 	void Serialize( CArchive& archive )
 	{
 		// call base class function first
@@ -60,17 +61,19 @@ public:
 
 		// now do the stuff for our specific class
 		if( archive.IsStoring() )
-			archive << name << usage;
+			archive << name << usage << nametag;
 		else
-			archive >> name >> usage;
+			archive >> name >> usage >> nametag;
 	}
 	ArchiveType( const ArchiveType &s ) {  // copy ctor 
 		name = s.name;
 		usage = s.usage;
+		nametag = s.nametag;
 	}
 	ArchiveType& operator=( const ArchiveType &s )  {// assignment operator
 		name = s.name;
 		usage = s.usage;
+		nametag = s.nametag;
 		return *this;
 	}
 };
@@ -91,11 +94,15 @@ template <> void AFXAPI SerializeElements <ArchiveType> ( CArchive& ar,
 
 bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 {
-
-
+	if (a->lowName == L"portable cygwin" && b->lowName == L"gmail") {
+		int x = 3;
+	}
+	if (a->lowName == L"gmail" && b->lowName == L"portable cygwin") {
+		int x = 3;
+	}
 	if (a->isHistory) { return true; }
 	if (b->isHistory) { return false; }
-/*
+
 	bool localEqual = a->lowName == searchTxt;
 	bool otherEqual = b->lowName == searchTxt;
 
@@ -103,9 +110,6 @@ bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 		return true;
 	if (!localEqual && otherEqual)
 		return false;
-*/
-
-
 
 
 	if(a->usage > b->usage)
@@ -165,8 +169,9 @@ LaunchySmarts::~LaunchySmarts(void)
 {
 	getCatalogLock();
 	shared_ptr<Options> ops =  ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	shared_ptr<Plugin> plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
 	ops->getLock();
-	this->archiveCatalog(ops->get_dataPath());
+	this->archiveCatalog(ops->get_dataPath(), plugins.get());
 	ops->relLock();
 	releaseCatalogLock();
 }
@@ -199,8 +204,17 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 	INT_PTR count = in.GetCount();
 
 
+	map<int /*plugin id*/, map<CString /*FullPath*/, int /*Usage*/> > PluginCounts;
+
 	// Scan for files
 	for(int i = 0; i < count; i++) {
+		if (in[i].nametag != 0) {
+//			if (PluginCounts.count(in[i].nametag) == 0) {
+//				PluginCounts[in[i].nametag] = map<CString, int>;
+//			}
+			PluginCounts[in[i].nametag][in[i].name] = in[i].usage;
+			continue;
+		}
 		int lastDot = in[i].name.ReverseFind('.');
 		if (lastDot == -1) continue;
 		tmps = in[i].name.Mid(lastDot);
@@ -215,7 +229,7 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 			rec->setUsage(findCount(bun->smarts, rec->lowName, rec->fullPath));
 
 
-		ArchiveType at(in[i].name, rec->usage);
+		ArchiveType at(in[i].name, rec->usage, 0);
 		out.Add(at);
 		//		if (catalog[rec->lowName] == true) continue;
 		//		catalog[rec->lowName] = true;
@@ -241,6 +255,21 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 	added.RemoveAll();
 	for(int i = 0; i < recs.size(); i++) {
 		FileRecordPtr rec = recs[i];
+		int nametag = bun->plugins->GetPluginNameTag(rec->owner);
+
+		// Loading from the original database?  Get the usage values..
+		if (PluginCounts.count(nametag) != 0 && PluginCounts[nametag].count(rec->fullPath) != 0) {
+			rec->setUsage(PluginCounts[nametag][rec->fullPath]);
+		}
+
+		// Refreshing the database?  Get the usage values from the last catalog..
+		if (rec->usage == 0) {
+			rec->setUsage(findCount(bun->smarts, rec->lowName, rec->fullPath));
+		}
+
+		ArchiveType at(rec->fullPath, rec->usage, nametag);
+		out.Add(at);
+
 		CMap<TCHAR, TCHAR&, bool, bool&> added;
 
 		for(int i = 0; i < rec->lowName.GetLength( ); i++) {
@@ -318,9 +347,10 @@ UINT ScanStartMenu(LPVOID pParam)
 
 
 	for(int i = 0; i < files.GetSize(); i++) {
-		ArchiveType at(files[i], -1);
+		ArchiveType at(files[i], -1, 0);
 		input.Add(at);
 	}
+
 
 	ScanFiles(input, bun, smaller);
 
@@ -333,7 +363,7 @@ UINT ScanStartMenu(LPVOID pParam)
 	bun->smarts->catFiles = bun->catFiles;
 
 	bun->ops->getLock();
-	bun->smarts->archiveCatalog(ops->get_dataPath());
+	bun->smarts->archiveCatalog(ops->get_dataPath(), bun->plugins);
 	bun->ops->relLock();
 
 	bun->smarts->releaseCatalogLock();
@@ -442,7 +472,7 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 	// Set the preferred bit for the history match 	 
 	size_t count = matches.size(); 	 
 	for(size_t i = 0; i < count; i++) { 	 
-		if ((history != L"" && matches[i]->fullPath == history) || matches[i]->fullPath == oneTimeHistory) { 
+		if ((history != L"" && matches[i]->fullPath == history) || (oneTimeHistory != L"" && matches[i]->fullPath == oneTimeHistory)) { 
 			if (matches[i]->fullPath == oneTimeHistory || oneTimeHistory == _T("")) {
 				matches[i]->isHistory = true; 	 
 			}
@@ -671,7 +701,7 @@ void LaunchySmarts::getStrings(CStringArray& strings)
 	}
 }
 
-void LaunchySmarts::archiveCatalog(CString path)
+void LaunchySmarts::archiveCatalog(CString path, Plugin* plugins)
 {
 	map<CString, bool> used;
 	CArray<ArchiveType> files;
@@ -680,7 +710,10 @@ void LaunchySmarts::archiveCatalog(CString path)
 		for(vector<FileRecordPtr>::iterator jt = it->second->begin(); jt != it->second->end(); ++jt) {
 			if (used.count(jt->get()->fullPath) == 0) {
 				used[jt->get()->fullPath] = true;
-				ArchiveType at(jt->get()->fullPath, jt->get()->usage);
+				int nametag = 0;	
+				if (jt->get()->owner != 0)
+					int nametag = plugins->GetPluginNameTag(jt->get()->owner);
+				ArchiveType at(jt->get()->fullPath, jt->get()->usage, jt->get()->owner);
 				files.Add(at);
 			}
 		}
