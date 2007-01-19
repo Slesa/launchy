@@ -36,6 +36,12 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 
 [Files]
 Source: ..\Release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
+
+Source: ..\Release\Explory.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+Source: ..\Release\Weby.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+Source: ..\Release\Calcy.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+Source: ..\Release\Foxy.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+
 Source: ..\res\Launchy.ico; DestDir: {app}; Flags: ignoreversion
 Source: ..\license.rtf; DestDir: {app}; Flags: ignoreversion
 Source: ..\Readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
@@ -138,9 +144,7 @@ Source: ..\Utilities\Special Folders\Recycle Bin.lnk; DestDir: {app}\Utilities\S
 Source: ..\Utilities\System Power\System Logoff.lnk; DestDir: {app}\Utilities\System Power\; Flags: ignoreversion
 Source: ..\Utilities\System Power\System Reboot.lnk; DestDir: {app}\Utilities\System Power\; Flags: ignoreversion
 Source: ..\Utilities\System Power\System Shutdown.lnk; DestDir: {app}\Utilities\System Power\; Flags: ignoreversion
-Source: ..\Plugins\Explory.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
-Source: ..\Plugins\Weby.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
-Source: ..\Plugins\Calcy.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]

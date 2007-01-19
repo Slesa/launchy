@@ -8,6 +8,10 @@ Things need to be done:
 . Why does "portable cygwin" have preference over "gmail" when I type "g"?
 . Why does wikipedia not work with queries with spaces like "Wolf Parade"?
 
+. I typed in "weath" and when I hit tab launchy froze so I then typed in 87110 and a few seconds 
+later it gave me the crash dialog.  Why the crash?  Why the long freeze?
+
+
 
 . Every time I use Launchy for the first time it crashes.
  For example... I reboot my computer, wait for everything to load, 
