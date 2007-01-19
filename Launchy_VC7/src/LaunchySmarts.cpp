@@ -94,12 +94,7 @@ template <> void AFXAPI SerializeElements <ArchiveType> ( CArchive& ar,
 
 bool less_than(const shared_ptr<FileRecord> a, const shared_ptr<FileRecord> b)
 {
-	if (a->lowName == L"portable cygwin" && b->lowName == L"gmail") {
-		int x = 3;
-	}
-	if (a->lowName == L"gmail" && b->lowName == L"portable cygwin") {
-		int x = 3;
-	}
+
 	if (a->isHistory) { return true; }
 	if (b->isHistory) { return false; }
 

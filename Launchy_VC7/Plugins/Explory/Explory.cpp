@@ -274,11 +274,7 @@ SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TC
 	// Build the path
 	wstring dirs = L"";
 	wstring path = L"";
-	/*
-	if (NumStrings == 3 && VStrings[2].find(L"buffy") != string::npos) {
-		dirs = dirs;
-	}
-	*/
+
 	// Did we take this string over from a PluginFileOptions?
 	if (VStrings.size() > 0 && VStrings[0].length() > 0 && VStrings[0].at(1) != L':') {
 		dirs += TakeOverPath;
@@ -322,8 +318,8 @@ SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TC
 		wstring tmp = path;
 		if (!ValidPath) {
 			tmp = tmp.substr(0, tmp.rfind(L"\\") + 1);
+			tmp += matches[i];
 		}	
-		tmp += matches[i];
 		results.push_back(makeResult(matches[i], tmp, tmp, NULL));
 	}
 	*NumResults = results.size();
