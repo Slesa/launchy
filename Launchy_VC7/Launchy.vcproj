@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
+			OutputDirectory="bin"
 			IntermediateDirectory="Debug"
 			ConfigurationType="1"
 			UseOfMFC="1"
@@ -20,7 +20,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Boost\include\boost-1_33_1&quot;"
+				AdditionalIncludeDirectories="&quot;C:\Boost\include\boost-1_33_1&quot;;."
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -45,7 +45,8 @@
 				PreprocessorDefinitions="_DEBUG"
 				MkTypLibCompatible="FALSE"/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="copyFiles.bat"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -68,7 +69,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
+			OutputDirectory="bin"
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
 			UseOfMFC="1"
@@ -86,7 +87,7 @@
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
 				OptimizeForWindowsApplication="TRUE"
-				AdditionalIncludeDirectories="&quot;C:\Boost\include\boost-1_33_1&quot;"
+				AdditionalIncludeDirectories="&quot;C:\Boost\include\boost-1_33_1&quot;;."
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="FALSE"
 				RuntimeLibrary="0"
@@ -300,6 +301,9 @@
 			</File>
 			<File
 				RelativePath=".\src\ReadOnlyEdit.h">
+			</File>
+			<File
+				RelativePath=".\resource.h">
 			</File>
 			<File
 				RelativePath=".\src\Resource.h">

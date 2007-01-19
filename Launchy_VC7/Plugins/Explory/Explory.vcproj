@@ -13,7 +13,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="c:\program files\launchy\plugins\"
+			OutputDirectory="bin"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
 			CharacterSet="1">
@@ -64,7 +64,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="c:\program files\Launchy\Plugins\"
+			OutputDirectory="bin"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
 			CharacterSet="1">
