@@ -1,6 +1,5 @@
 Things need to be done:
 . If Launchy starts off the screen, move it!
-. Why isn't explory's '\' being used instead of ' | ' ???
 . When you select a file from the dropdown and hit enter, it appends the filename to the path and blows up
 . When I type in w, pause for the dropdown, then type i it expands "webstats" and appends an i
 . I got a crash once when I typed in "my do" then hit tab for my documents :/  It had been in use for awhile.

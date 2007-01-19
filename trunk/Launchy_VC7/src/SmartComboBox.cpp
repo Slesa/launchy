@@ -311,9 +311,9 @@ void SmartComboBox::OnCbnSelchange()
 
 	
 
-//	this->PostMessage(WM_CHANGE_COMBO_SEL,IDC_Input,(LPARAM)(bool) false);
+	this->PostMessage(WM_CHANGE_COMBO_SEL,IDC_Input,(LPARAM)(bool) false);
 	// If it's closing, we've already taken care of this..
-	if (GetDroppedState()) {
+/*	if (GetDroppedState()) {
 		int sel = m_listbox.GetCurSel();
 
 		if (sel != LB_ERR) {
@@ -323,6 +323,7 @@ void SmartComboBox::OnCbnSelchange()
 			pDlg->smarts->Update(searchTxt,false, data->longpath);
 		}
 	}
+	*/
 }
 
 
@@ -594,11 +595,12 @@ void SmartComboBox::OnCbnCloseup()
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
+	if (!IsWindow(m_edit.m_hWnd)) return;
 	if (!IsWindow(m_listbox.m_hWnd)) return;
-
 //	SetCurSel(-1);
 //	SetEditSel(searchTxt.GetLength(), searchTxt.GetLength());
-
+	ReformatDisplay();
+	ParseSearchTxt();
 /*
 
 	int sel = m_listbox.GetCurSel();
