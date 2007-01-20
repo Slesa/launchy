@@ -1,14 +1,14 @@
 Things need to be done:
-. If Launchy starts off the screen, move it!
-. When you select a file from the dropdown and hit enter, it appends the filename to the path and blows up
-. When I type in w, pause for the dropdown, then type i it expands "webstats" and appends an i
-. I got a crash once when I typed in "my do" then hit tab for my documents :/  It had been in use for awhile.
-. Icons
-. Why does "portable cygwin" have preference over "gmail" when I type "g"?
-. Why does wikipedia not work with queries with spaces like "Wolf Parade"?
+. Explory: If I type c:\dev\ whatever without hitting tab, launchy doesn't know what to do with it :(
 
+. I got a crash once when I typed in "my do" then hit tab for my documents :/  It had been in use for awhile.
 . I typed in "weath" and when I hit tab launchy froze so I then typed in 87110 and a few seconds 
 later it gave me the crash dialog.  Why the crash?  Why the long freeze?
+
+. Icons
+
+. If Launchy starts off the screen, move it!
+
 
 
 

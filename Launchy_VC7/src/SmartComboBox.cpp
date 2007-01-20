@@ -157,7 +157,7 @@ void SmartComboBox::TabSearchTxt()
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
 
-	TabbedMatch = *pDlg->smarts->matches[0].get();
+	TabbedMatch = pDlg->smarts->matches[0];
 
 	SearchStrings.Add(pDlg->smarts->matches[0]->croppedName);
 	searchTxt = L"";
@@ -166,7 +166,6 @@ void SmartComboBox::TabSearchTxt()
 	pDlg->smarts->Update(searchTxt);
 	ReformatDisplay();
 	ParseSearchTxt();
-
 }
 
 void SmartComboBox::DeleteLine()

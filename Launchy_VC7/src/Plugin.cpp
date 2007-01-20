@@ -21,8 +21,8 @@ TCHAR* string2TCHAR(wstring str) {
 	return dest;
 }
 
-unsigned long GenerateNameTag(CString str) {
-    unsigned long hash = 5381;
+int GenerateNameTag(CString str) {
+    int hash = 5381;
 	for(int i = 0; i < str.GetLength(); i++) {
 		hash = ((hash << 5) + hash) + str[i];
 	}
@@ -204,7 +204,7 @@ shared_ptr<vector<FileRecordPtr> > Plugin::GetSearchOptions(int owner)
 			if (pfuncs[i].PluginUpdateSearch == NULL) continue;
 			int NumResults;
 			TCHAR* szStrings = StringArrayToTCHAR(SearchStrings);
-			SearchResult* res = pfuncs[i].PluginFileOptions( TabbedMatch.fullPath, SearchStrings.GetCount(), szStrings, searchTxt, &NumResults);
+			SearchResult* res = pfuncs[i].PluginFileOptions( TabbedMatch->fullPath, SearchStrings.GetCount(), szStrings, searchTxt, &NumResults);
 			free(szStrings);
 			SearchResult* cur = res;
 			for(int j = 0; j < NumResults; j++) {

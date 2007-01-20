@@ -35,12 +35,12 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 
 [Files]
-Source: ..\Release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
+Source: ..\bin\Launchy.exe; DestDir: {app}; Flags: ignoreversion
 
-Source: ..\Release\Explory.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
-Source: ..\Release\Weby.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
-Source: ..\Release\Calcy.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
-Source: ..\Release\Foxy.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+Source: ..\bin\Plugins\Explory.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+Source: ..\bin\Plugins\Weby.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+Source: ..\bin\Plugins\Calcy.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+Source: ..\bin\Plugins\Foxy.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
 
 Source: ..\res\Launchy.ico; DestDir: {app}; Flags: ignoreversion
 Source: ..\license.rtf; DestDir: {app}; Flags: ignoreversion

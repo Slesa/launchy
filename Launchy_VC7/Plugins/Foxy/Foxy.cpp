@@ -254,6 +254,7 @@ SearchResult* PluginGetIdentifiers (int* iNumResults)
 	for(int i = 0; i < BookMarks.size(); i++) {
 		if (BookMarks[i].shortcut != L"") {
 			Shortcuts[BookMarks[i].shortcut] = BookMarks[i].dest;
+			Shortcuts[BookMarks[i].name] = BookMarks[i].dest;
 		} else {
 			Bookmarks[BookMarks[i].name] = BookMarks[i].dest;
 		}
@@ -290,20 +291,23 @@ void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalStr
 
 	wstring fs = FinalString;
 
+	// Doing a search
 	if (NumStrings > 0 && fs != L"") {
 		if (Shortcuts.count(VStrings[0]) != 0) {
-			wstring url = L"";
 			url = Shortcuts[VStrings[0]];
 			boost::wregex reg(L"%s");
-			wstring fs = FinalString;
 			url = boost::regex_replace(url, reg, fs);
 		}
 	}
+
+	// No search text, just go to the main site
 	else if (NumStrings > 0) {
 		if (Bookmarks.count(VStrings[0]) != 0){
 			url = Bookmarks[VStrings[0]];
 		} 	
 	}
+
+	// Just a bookmark
 	else {
 		url = FullPath;
 	}

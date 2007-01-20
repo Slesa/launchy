@@ -56,7 +56,7 @@ CString searchTxt;
 CString searchTxtBak;
 CStringArray SearchStrings;
 int SearchPluginID;
-FileRecord TabbedMatch;
+FileRecordPtr TabbedMatch;
 
 // CLaunchyApp initialization
 

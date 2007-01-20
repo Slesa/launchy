@@ -49,12 +49,7 @@ FileRecord::~FileRecord(void)
 
 void FileRecord::set(CString p, CString type, Launcher* l, int u /* = 0 */)
 {
-/*	if (type == _T(".directory")) {
-		p = p.Mid(0, p.GetLength() - type.GetLength());
-		int x = 3;
-		x = x + 1;
-	}
-	*/
+
 	usage = u;
 	CString fileName;
 	fullPath = p;
