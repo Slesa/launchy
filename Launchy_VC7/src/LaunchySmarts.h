@@ -79,6 +79,7 @@ public:
 	BOOL Match(FileRecordPtr record, CString txt);
 	ExeLauncher exeLauncher;
 	void Launch(void);
+	int LaunchySmarts::FindSearchOwner(int& OwnerType);
 private:
 
 protected:

@@ -373,10 +373,15 @@ void SmartComboBox::OnCbnDropdown()
 
 	for(int i = 0; i < GetCount(); i++) {
 		DropItem* data = (DropItem*) GetItemDataPtr(i);
-		if (data->longpath.Find(_T(".directory")) != -1)
+		if (data->longpath.Find(_T(".directory")) != -1) {
 			data->icon = pDlg->IconInfo.GetFolderIconHandle(false);
-		else
-			data->icon = pDlg->IconInfo.GetIconHandleNoOverlay(data->longpath, false);
+		} else {
+			if (data->owner != -1) {
+				data->icon = pDlg->plugins->GetIcon(data->owner);
+			} else {
+				data->icon = pDlg->IconInfo.GetIconHandleNoOverlay(data->longpath, false);
+			}
+		}			
 	}
 }
 

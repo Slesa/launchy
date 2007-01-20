@@ -111,13 +111,19 @@ unsigned long Plugin::GetPluginNameTag(int id) {
 	return loadedPlugins[id].nametag;
 }
 
+HICON Plugin::GetIcon(int id) {
+	HICON ret;
+	ExtractIconEx(loadedPlugins[id].filename, 0, &ret, NULL, 1);
+
+	return ret;
+}
 
 void Plugin::LoadDlls() {
 	CDiskObject disk;
 	CStringArray files;
 	disk.EnumFilesInDirectoryWithFilter(_T("*.dll"), _T("Plugins/"), files);
 	for(int i = 0; i < files.GetCount(); i++) {
-		CString path = _T("Plugins/") + files[i];
+		CString path = _T("Plugins\\") + files[i];
 		HINSTANCE LoadMe;
 		LoadMe = LoadLibrary(path);
 		 
@@ -130,7 +136,7 @@ void Plugin::LoadDlls() {
 		}
 		struct DLLInstance di;
 		di.handle = LoadMe;
-
+		di.filename = path;
 		
 		PluginFunctions funcs;
 
