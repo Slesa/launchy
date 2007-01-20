@@ -48,7 +48,7 @@ extern CString searchTxt;
 extern CString searchTxtBak;
 
 // The filerecord that was expanded with a "tab"
-extern FileRecord TabbedMatch;
+extern FileRecordPtr TabbedMatch;
 
 // CLaunchyApp:
 // See Launchy.cpp for the implementation of this class

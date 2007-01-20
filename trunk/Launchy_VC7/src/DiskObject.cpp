@@ -1127,7 +1127,7 @@ BOOL CDiskObject::EnumFilesInDirectory( const CString& sourceDirectory, CStringA
 
    ============================================================*/
 {
-	return EnumFilesInDirectoryWithFilter( _T( "*.*" ), sourceDirectory, files, mode );
+	return EnumFilesInDirectoryWithFilter( _T( "*" ), sourceDirectory, files, mode );
 }
 
 BOOL CDiskObject::EnumFilesInDirectoryWithFilter( const CString& strFilter,const CString& sourceDirectory, CStringArray& files, int mode )
@@ -1175,20 +1175,7 @@ BOOL CDiskObject::EnumFilesInDirectoryWithFilter( const CString& strFilter,const
 				if( mode == EF_FULLY_QUALIFIED )
 					file = sourceDirectory + file;
 
-				/*
-					Launchy Doesn't need sorted results!
 
-				// Return the array alphabetically ordered
-				for( int i = 0; i < files.GetSize(); i++ )
-				{
-					if ( files.GetAt( i ) > file )
-					{
-						files.InsertAt( i, file );
-						added = TRUE;
-						break;
-					}
-				}
-				*/
 				if ( !added )
 				{
 					files.Add( file );

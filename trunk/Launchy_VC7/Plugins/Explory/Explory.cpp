@@ -64,10 +64,10 @@ SearchResult* PluginGetIdentifiers (int* iNumResults)
 
 TCHAR* PluginGetRegexs(int* iNumResults)
 {
-
-	*iNumResults = 0;
-	return NULL;
-	
+	vector<wstring> vect;
+//	vect.push_back(L".*\\\\.*");
+	*iNumResults = vect.size();
+	return StringVectorToTCHAR(vect);
 }
 
 
@@ -265,7 +265,8 @@ bool FixPath(wstring& path) {
 	
 }
 
-SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, int* NumResults) {
+SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TCHAR* fs, int* NumResults) {
+	wstring FinalString = fs;
 	vector<wstring> VStrings = TCHARListToVector(NumStrings, Strings);
 
 	wstring lowFinal(FinalString);
@@ -274,6 +275,8 @@ SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TC
 	// Build the path
 	wstring dirs = L"";
 	wstring path = L"";
+
+
 
 	// Did we take this string over from a PluginFileOptions?
 	if (VStrings.size() > 0 && VStrings[0].length() > 0 && VStrings[0].at(1) != L':') {
@@ -290,9 +293,18 @@ SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TC
 		}
 	}
 
+
 	path = dirs;
 	path += FinalString;
 
+	/*
+	// Did this come from a regular expression match?
+	if (lowFinal.rfind(L'\\') != string::npos ){
+		dirs = lowFinal.substr(0, lowFinal.rfind(L'\\')+1);
+		lowFinal = lowFinal.substr(dirs.length());
+		FinalString = lowFinal;
+	}
+*/
 	vector<wstring> matches;
 
 	bool ValidPath = FixPath(path);
@@ -310,7 +322,7 @@ SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TC
 	vector<SearchResult> results;
 	for(int i = 0; i < matches.size(); i++) {
 		if (!ValidPath) {
-			wstring pre = matches[i].substr(0, _tcslen(FinalString));
+			wstring pre = matches[i].substr(0, FinalString.length());
 			transform(pre.begin(), pre.end(), pre.begin(), tolower);
 			if (pre != lowFinal)
 				continue;

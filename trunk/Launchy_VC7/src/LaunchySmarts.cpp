@@ -49,10 +49,10 @@ class ArchiveType : public CObject {
 public:
 	DECLARE_SERIAL( ArchiveType )
 	ArchiveType() {}
-	ArchiveType(CString str, int u, unsigned long n): name(str), usage(u), nametag(n) {}
+	ArchiveType(CString str, int u, int n): name(str), usage(u), nametag(n) {}
 	CString name;
 	int usage;
-	unsigned long nametag;
+	int nametag;
 	void Serialize( CArchive& archive )
 	{
 		// call base class function first
@@ -203,13 +203,16 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 
 	// Scan for files
 	for(int i = 0; i < count; i++) {
-		if (in[i].nametag != 0) {
-//			if (PluginCounts.count(in[i].nametag) == 0) {
-//				PluginCounts[in[i].nametag] = map<CString, int>;
-//			}
+
+
+//		THE INDEXING PROBLEM IS HERE (WHEN THIS IS NOT COMMENTED NOTHING GETS INDEXED
+		if (in[i].nametag != -1) {
 			PluginCounts[in[i].nametag][in[i].name] = in[i].usage;
 			continue;
 		}
+
+
+
 		int lastDot = in[i].name.ReverseFind('.');
 		if (lastDot == -1) continue;
 		tmps = in[i].name.Mid(lastDot);
@@ -224,7 +227,7 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 			rec->setUsage(findCount(bun->smarts, rec->lowName, rec->fullPath));
 
 
-		ArchiveType at(in[i].name, rec->usage, 0);
+		ArchiveType at(in[i].name, rec->usage, -1);
 		out.Add(at);
 		//		if (catalog[rec->lowName] == true) continue;
 		//		catalog[rec->lowName] = true;
@@ -261,6 +264,7 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 		if (rec->usage == 0) {
 			rec->setUsage(findCount(bun->smarts, rec->lowName, rec->fullPath));
 		}
+
 
 		ArchiveType at(rec->fullPath, rec->usage, nametag);
 		out.Add(at);
@@ -342,7 +346,7 @@ UINT ScanStartMenu(LPVOID pParam)
 
 
 	for(int i = 0; i < files.GetSize(); i++) {
-		ArchiveType at(files[i], -1, 0);
+		ArchiveType at(files[i], -1, -1);
 		input.Add(at);
 	}
 
@@ -353,7 +357,7 @@ UINT ScanStartMenu(LPVOID pParam)
 	// Now replace the catalog files
 	bun->smarts->getCatalogLock();
 
-	bun->smarts->charMap = bun->charMap;
+	bun->smarts->charMap = bun->charMap; // DIED ON THIS LINE?  IN A SEP. THREAD (I typed wiki then tab) Seems to have died in ~FileRecord
 	bun->smarts->charUsage = bun->charUsage;
 	bun->smarts->catFiles = bun->catFiles;
 
@@ -612,27 +616,34 @@ void LaunchySmarts::Launch(void)
 	int RegExOwner = plugins->IsSearchOwned(searchTxt);
 
 	if (SearchStrings.GetSize() > 0 && SearchPluginID != -1) {
-		if (matches.size() > 0)
+		if (matches.size() > 0) {
+			matches[0]->setUsage(matches[0]->usage + 1);
 			plugins->Launch(SearchPluginID, matches[0]->fullPath.GetBuffer());
-		else
+		}
+		else {
+			TabbedMatch->setUsage(TabbedMatch->usage + 1);
 			plugins->Launch(SearchPluginID, L"");
+		}
 	}
 
 	// Haven't selected anything after we tabbed on a file/folder, launch matches[0]
 	else if (SearchStrings.GetSize() > 0 && SearchPluginID == -1) {
 		if (matches.size() > 0) {
+			matches[0]->setUsage(matches[0]->usage + 1);
 			exeLauncher.Run(matches[0]);		
 		}
 		else {
-			shared_ptr<FileRecord> tmp(&TabbedMatch);
+			TabbedMatch->setUsage(TabbedMatch->usage + 1);
+			shared_ptr<FileRecord> tmp = TabbedMatch;
 			exeLauncher.Run(tmp);
 		}
 	}
 
 	else if (RegExOwner != -1) {
-		if (matches.size() > 0)
+		if (matches.size() > 0) {
+			matches[0]->setUsage(matches[0]->usage + 1);
 			plugins->Launch(RegExOwner, matches[0]->fullPath.GetBuffer());
-		else
+		} else
 			plugins->Launch(RegExOwner, L"");
 	}
 
@@ -701,14 +712,15 @@ void LaunchySmarts::archiveCatalog(CString path, Plugin* plugins)
 	map<CString, bool> used;
 	CArray<ArchiveType> files;
 
+	//I DON'T SEEM TO PROPERLY RECORD PLUGIN RECORDS
 	for(map<TCHAR, CharSectionPtr>::iterator it = charMap.begin(); it != charMap.end(); ++it) {
 		for(vector<FileRecordPtr>::iterator jt = it->second->begin(); jt != it->second->end(); ++jt) {
 			if (used.count(jt->get()->fullPath) == 0) {
 				used[jt->get()->fullPath] = true;
-				int nametag = 0;	
-				if (jt->get()->owner != 0)
-					int nametag = plugins->GetPluginNameTag(jt->get()->owner);
-				ArchiveType at(jt->get()->fullPath, jt->get()->usage, jt->get()->owner);
+				int nametag = -1;	
+				if (jt->get()->owner != -1) 
+					 nametag = plugins->GetPluginNameTag(jt->get()->owner);
+				ArchiveType at(jt->get()->fullPath, jt->get()->usage, nametag);
 				files.Add(at);
 			}
 		}
