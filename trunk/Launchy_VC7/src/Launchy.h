@@ -23,6 +23,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #pragma once
 
 
+enum {
+	OWNER_LAUNCHY,
+	OWNER_REGEX,
+	OWNER_TABBED,
+	OWNER_MATCH
+};
+
 #ifndef __AFXWIN_H__
 	#error "include 'stdafx.h' before including this file for PCH"
 #endif

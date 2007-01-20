@@ -35,6 +35,7 @@ struct DropItem {
 	HICON icon;
 	CString longpath;
 	CString lesspath;
+	int owner;
 
 	~DropItem() {
 		if (icon != NULL) {

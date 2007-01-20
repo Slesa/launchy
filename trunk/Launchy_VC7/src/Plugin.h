@@ -80,6 +80,7 @@ class Plugin
 		vector<boost::wregex> regexs;
 		CString name;
 		unsigned long nametag;
+		CString filename;
 	};
 
 private:
@@ -97,6 +98,7 @@ public:
 	shared_ptr<vector<FileRecordPtr> > GetSearchOptions(int owner);
 	CString Plugin::GetSeparator(short PluginID);
 	unsigned long Plugin::GetPluginNameTag(int id);
+	HICON Plugin::GetIcon(int id);
 	/*
 
 	LoadDlls(void);

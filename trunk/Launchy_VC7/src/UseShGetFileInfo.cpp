@@ -84,11 +84,12 @@ HIMAGELIST  CUseShGetFileInfo::GetSystemImageListHandle( BOOL bSmallIcon )
 
 int CUseShGetFileInfo::GetFileIconIndex( CString strFileName , BOOL bSmallIcon )
 {
+	DWORD_PTR ret;
 	SHFILEINFO    sfi;
 	
 	if (bSmallIcon)
 	{
-        SHGetFileInfo(
+        ret = SHGetFileInfo(
            (LPCTSTR)strFileName, 
            FILE_ATTRIBUTE_NORMAL,
            &sfi, 
@@ -97,13 +98,15 @@ int CUseShGetFileInfo::GetFileIconIndex( CString strFileName , BOOL bSmallIcon )
 	}
 	else
 	{
-		SHGetFileInfo(
+		ret = SHGetFileInfo(
            (LPCTSTR)strFileName, 
            FILE_ATTRIBUTE_NORMAL,
            &sfi, 
            sizeof(SHFILEINFO), 
            SHGFI_SYSICONINDEX | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES);
 	}
+	if (sfi.iIcon == 3)
+		sfi.iIcon = -1;
 
     return sfi.iIcon;
 	

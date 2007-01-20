@@ -1,0 +1,40 @@
+#ifndef LAUNCHY_PLUGIN_H
+#define LAUNCHY_PLUGIN_H
+
+// Create a Win32 dll
+// Use Unicode Character Set
+
+#include <string>
+#include <vector>
+#include "stdafx.h"
+
+using namespace std;
+
+
+struct SearchResult {
+	TCHAR* DisplayString; // Must be set
+	TCHAR* FullPath; // Can be NULL
+	TCHAR* Location; // Can be NULL
+	HICON DisplayIcon; // Make sure you 0 this on creation!!
+};
+
+
+void FreeSearchResult (SearchResult* sr);
+
+SearchResult makeResult(wstring DisplayString, wstring FullPath, wstring Location, HICON icon);
+SearchResult* ResultVectorToArray(vector<SearchResult> results);
+vector<wstring> TCHARListToVector(int numStrings, const TCHAR* Strings);
+TCHAR* string2TCHAR(wstring str);
+TCHAR* StringVectorToTCHAR( vector<wstring>& Strings);
+unsigned long GenerateID(wstring str);
+
+extern "C" __declspec(dllexport) SearchResult* PluginGetIdentifiers (int* iNumResults);
+extern "C" __declspec(dllexport) SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, int* NumResults);
+extern "C" __declspec(dllexport) SearchResult* PluginFileOptions (const TCHAR* FullPath, int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, int* NumResults);
+extern "C" __declspec(dllexport) void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, const TCHAR* FullPath);
+extern "C" __declspec(dllexport) TCHAR* PluginGetRegexs(int* iNumResults);
+extern "C" __declspec(dllexport) TCHAR* PluginGetSeparator();
+extern "C" __declspec(dllexport) void PluginFreeResults (SearchResult*, int num);
+extern "C" __declspec(dllexport) void PluginFreeStrings (TCHAR* str);
+extern "C" __declspec(dllexport) TCHAR* PluginGetName();
+#endif

@@ -67,6 +67,7 @@ CFoxyApp theApp;
 
 // CFoxyApp initialization
 
+
 BOOL CFoxyApp::InitInstance()
 {
 	CWinApp::InitInstance();
