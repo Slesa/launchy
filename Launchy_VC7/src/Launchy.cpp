@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //#include <vld.h>
 #include "Launchy.h"
 #include "LaunchyDlg.h"
+#include "SingleInstanceApp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -44,6 +45,7 @@ CLaunchyApp::CLaunchyApp()
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 
+
 }
 
 
@@ -60,6 +62,9 @@ FileRecordPtr TabbedMatch;
 
 // CLaunchyApp initialization
 
+
+	CLimitSingleInstance g_SingleInstanceObj(TEXT("Global\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
+
 BOOL CLaunchyApp::InitInstance()
 {
 	// InitCommonControlsEx() is required on Windows XP if an application
@@ -73,12 +78,17 @@ BOOL CLaunchyApp::InitInstance()
 	InitCommonControlsEx(&InitCtrls);
 
 	CWinApp::InitInstance();
+	
 
+    if (g_SingleInstanceObj.IsAnotherInstanceRunning())
+       return FALSE; 
 
 	// Create application mutexes so that installer knows when
 	// Launchy is running
-	CreateMutex(NULL,0,_T("LaunchyMutex"));
-	CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
+	HANDLE m1 = CreateMutex(NULL,0,_T("LaunchyMutex"));
+	HANDLE mg1 = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
+
+
 
 /*	if (!AfxSocketInit())
 	{
@@ -111,6 +121,9 @@ BOOL CLaunchyApp::InitInstance()
 		// TODO: Place code here to handle when the dialog is
 		//  dismissed with Cancel
 	}
+
+	CloseHandle(m1); //Do as late as possible.
+	CloseHandle(mg1);
 
 	// Since the dialog has been closed, return FALSE so that we exit the
 	//  application, rather than start the application's message pump.
