@@ -299,10 +299,13 @@
 				RelativePath=".\src\ReadOnlyEdit.h">
 			</File>
 			<File
+				RelativePath=".\src\Resource.h">
+			</File>
+			<File
 				RelativePath=".\resource.h">
 			</File>
 			<File
-				RelativePath=".\src\Resource.h">
+				RelativePath=".\src\SingleInstanceApp.h">
 			</File>
 			<File
 				RelativePath=".\src\Skin.h">

@@ -489,9 +489,6 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 
 	int OwnerType;
 	int owner = FindSearchOwner(OwnerType);
-	if (searchTxt == L"www") {
-		int x = 3;
-	}
 
 	if (matches.size() > 0) {
 
@@ -511,7 +508,7 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 		}
 		pDlg->Preview.SetWindowText(matches[0]->croppedName);
 	}
-	else if (matches.size() == 0 && OwnerType != OWNER_LAUNCHY) {
+	else if (matches.size() == 0 && OwnerType != OWNER_LAUNCHY && OwnerType != OWNER_OPTIONS) {
 		HICON hNew = pDlg->plugins->GetIcon(owner);
 		HICON h = pDlg->IconPreview.SetIcon(hNew);
 		if (h != hNew) DestroyIcon(h);
@@ -566,21 +563,30 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 int LaunchySmarts::FindSearchOwner(int& OwnerType) {
 	shared_ptr<Plugin> plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
 
-	if (SearchStrings.GetCount() > 0) {
-		OwnerType = OWNER_TABBED;
-		return SearchPluginID;
-	}
+
 	if (matches.size() > 0) {
 		if (matches[0]->owner != -1) {
 			OwnerType = OWNER_MATCH;
 			return matches[0]->owner;
 		}
 	}
+
+	if (SearchStrings.GetCount() > 0 && SearchPluginID != -1) {
+		OwnerType = OWNER_TABBED;
+		return SearchPluginID;
+	}
+
+	if (SearchStrings.GetCount() > 0 && SearchPluginID == -1) {
+		OwnerType = OWNER_OPTIONS;
+		return -1;
+	}
+
 	int owner = plugins->IsSearchOwned(searchTxt);
 	if (owner != -1) {
 		OwnerType = OWNER_REGEX;
 		return owner;
 	}
+
 
 	OwnerType = OWNER_LAUNCHY;
 	return -1;

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Launchy"
-#define MyAppVerName "Launchy 1.0.1"
+#define MyAppVerName "Launchy 1.25 Alpha"
 #define MyAppPublisher "Code Jelly"
 #define MyAppURL "http://www.launchy.net"
 #define MyAppExeName "Launchy.exe"

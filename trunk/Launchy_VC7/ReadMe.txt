@@ -1,11 +1,13 @@
 Things need to be done:
+. typing "my docu" tab "recp" while debugging kills it on the p (that's the first non-matchable letter)
+. my doc <tab> causes some weird icon crash
+
 . Explory: If I type c:\dev\ whatever without hitting tab, launchy doesn't know what to do with it :(
 
 . I got a crash once when I typed in "my do" then hit tab for my documents :/  It had been in use for awhile.
 . I typed in "weath" and when I hit tab launchy froze so I then typed in 87110 and a few seconds 
 later it gave me the crash dialog.  Why the crash?  Why the long freeze?
 
-. Icons
 
 . If Launchy starts off the screen, move it!
 
