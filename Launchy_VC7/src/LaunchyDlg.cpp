@@ -90,6 +90,21 @@ BOOL CLaunchyDlg::OnInitDialog()
 	CDialogSK::OnInitDialog();
 	AfxInitRichEdit();
 
+
+	// Change the directory to Launchy's executable
+	int numArgs;
+	LPWSTR*  strings = CommandLineToArgvW(GetCommandLine(), &numArgs);
+	if (strings == NULL) {
+		AfxMessageBox(L"There was an error with Launchy initialization, quitting");
+		return 0;
+	}
+	CString tmp = strings[0];
+	tmp = tmp.Left(tmp.ReverseFind(L'\\')+1);
+	_wchdir(tmp.GetBuffer());
+	LocalFree(strings);
+
+
+
 	CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
 	// Set the icon for this dialog.  The framework does this automatically
@@ -623,10 +638,24 @@ bool CLaunchyDlg::DoDonate(void)
 	return false;
 }
 
+void CLaunchyDlg::AdjustPostionIfOffscreen(void) {
+	// width
+	int cx = GetSystemMetrics(SM_CXSCREEN);
+	// height
+	int cy = GetSystemMetrics(SM_CYSCREEN);
+	RECT location;
+	GetWindowRect(&location);
+	if (location.right > cx || location.bottom > cy) {
+		if (options == NULL) return;
+		MoveWindow(0, 0, options->skin->backRect.Width(), options->skin->backRect.Height(),1);		
+	}
+}
+
 void CLaunchyDlg::ShowLaunchy(void)
 {
 	this->Visible = true;
-	this->ShowWindows(SW_SHOW);
+	this->AdjustPostionIfOffscreen();
+	this->ShowWindows((bool) SW_SHOW);
 	this->ActivateTopParent();
 	this->InputBox.SetFocus();
 	this->DoDonate();	

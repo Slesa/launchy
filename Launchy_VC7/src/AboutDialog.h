@@ -20,7 +20,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	float fVersion;
+	CString fVersion;
 	afx_msg void OnStnClickedStatic2();
 	afx_msg void OnStnClickedStatic4();
 	afx_msg void OnStnClickedStatic7();

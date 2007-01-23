@@ -48,7 +48,7 @@ SearchResult* PluginGetIdentifiers (int* iNumResults)
 	results.push_back(makeResult(L"Netflix", L"", L"", NULL));
 	results.push_back(makeResult(L"MSDN WebSearch", L"", L"", NULL));
 
-	*iNumResults = results.size();
+	*iNumResults = (int) results.size();
 	return ResultVectorToArray(results);
 }
 
@@ -57,7 +57,7 @@ TCHAR* PluginGetRegexs(int* iNumResults)
 	vector<wstring> vect;
 	vect.push_back(L"^www.*$");
 	vect.push_back(L"^http.*$");
-	*iNumResults = vect.size();
+	*iNumResults = (int) vect.size();
 	return StringVectorToTCHAR(vect);
 }
 

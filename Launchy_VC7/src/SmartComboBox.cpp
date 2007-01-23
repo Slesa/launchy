@@ -603,15 +603,17 @@ void SmartComboBox::OnCbnCloseup()
 	if (!IsWindow(m_listbox.m_hWnd)) return;
 //	SetCurSel(-1);
 //	SetEditSel(searchTxt.GetLength(), searchTxt.GetLength());
+
+	// I don't know why, but if this reformatdisplay isn't here 
+	// as well as below, I get issues with the displayed searchTxt
+	// being replaced by what's selected as the dropdown closes
 	ReformatDisplay();
 	ParseSearchTxt();
-/*
 
 	int sel = m_listbox.GetCurSel();
 	if (sel != LB_ERR) {
 		DropItem* data = (DropItem*) GetItemDataPtr(sel);
 
-		m_listbox.GetText(sel, searchTxt);
 		ReformatDisplay();
 		ParseSearchTxt();
 
@@ -619,10 +621,10 @@ void SmartComboBox::OnCbnCloseup()
 	}
 
 	return;
-*/
-}
-/*
 
+}
+
+/*
 void SmartComboBox::OnDrawSelchange(int itemID) {
 	// If it's closing, we've already taken care of this..
 	if (GetDroppedState()) {

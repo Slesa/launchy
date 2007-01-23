@@ -66,9 +66,12 @@
 			OutputDirectory="..\..\bin\Plugins"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
-			CharacterSet="1">
+			CharacterSet="1"
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
+				FavorSizeOrSpeed="2"
+				OptimizeForProcessor="2"
 				AdditionalIncludeDirectories="../PluginLib/ ; ."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;Weby_EXPORTS"
 				RuntimeLibrary="0"

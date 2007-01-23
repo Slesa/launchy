@@ -263,9 +263,9 @@ VOID CUTF16File::ClearAccumulator()
     m_Accumulator.clear();
 }
 
-LONG CUTF16File::Seek(LONG lOff, UINT nFrom)
+ULONGLONG CUTF16File::Seek(LONG lOff, UINT nFrom)
 {
-    LONG lResult = CStdioFile::Seek( lOff, nFrom );
+    ULONGLONG lResult = CStdioFile::Seek( lOff, nFrom );
 
     ClearAccumulator();
 
@@ -293,6 +293,6 @@ VOID CUTF16File::WriteUnicodeString( LPCWSTR lpsz )
         CFile::Write( static_cast<LPVOID>( &wcBOF ), sizeof( UNICODE_BOM ) );
     }
 
-    CFile::Write( lpsz, wcslen( lpsz ) * sizeof( WCHAR ) );
+    CFile::Write( lpsz, (unsigned int) wcslen( lpsz ) * sizeof( WCHAR ) );
 }
 

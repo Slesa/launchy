@@ -251,7 +251,7 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 	vector<FileRecordPtr> recs = bun->plugins->GetIdentifiers();
 
 	added.RemoveAll();
-	for(int i = 0; i < recs.size(); i++) {
+	for(uint i = 0; i < recs.size(); i++) {
 		FileRecordPtr rec = recs[i];
 		int nametag = bun->plugins->GetPluginNameTag(rec->owner);
 
@@ -531,12 +531,12 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 
 		pDlg->InputBox.m_listbox.ResetContent();
 
-		for(int i = 0; i < oldData.size(); i++) {
+		for(uint i = 0; i < oldData.size(); i++) {
 			delete oldData[i];
 		}
 
-		size_t size = matches.size();
-		for(size_t i = 0; i < size && i < pDlg->options->listLength; i++) {
+		int size = (int) matches.size();
+		for(int i = 0; i < size && i < pDlg->options->listLength; i++) {
 			CString full = matches[i]->fullPath;
 
 
@@ -799,7 +799,7 @@ void LaunchySmarts::archiveCatalog(CString path, Plugin* plugins)
 
 CString LaunchySmarts::GetMatchPath(int sel)
 {
-	if(matches.size() >= sel+1) {
+	if(matches.size() >= (uint) (sel+1)) {
 		return matches[sel]->fullPath;
 	} else {
 		return _T("");

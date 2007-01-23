@@ -93,10 +93,10 @@ public:
 
 	void LoadDlls();
 	vector<FileRecordPtr> Plugin::GetIdentifiers();
-	void Launch(short PluginID, TCHAR* FullPath);
+	void Launch(int PluginID, TCHAR* FullPath);
 	int IsSearchOwned(CString searchTxt);
 	shared_ptr<vector<FileRecordPtr> > GetSearchOptions(int owner);
-	CString Plugin::GetSeparator(short PluginID);
+	CString Plugin::GetSeparator(int PluginID);
 	unsigned long Plugin::GetPluginNameTag(int id);
 	HICON Plugin::GetIcon(int id);
 	/*

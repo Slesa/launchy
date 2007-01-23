@@ -163,7 +163,7 @@ void CIniFile::Reset()
 //returns number of keys currently in the ini
 int CIniFile::GetNumKeys()
 {
-	return keys.GetSize();
+	return (int) keys.GetSize();
 }
 
 //returns number of values stored for specified key, or -1 if key found
@@ -173,7 +173,7 @@ int CIniFile::GetNumValues(CString keyname)
 	if (keynum == -1)
 		return -1;
 	else
-		return keys[keynum].names.GetSize();
+		return (int) keys[keynum].names.GetSize();
 }
 
 //gets value of [keyname] valuename = 
@@ -219,7 +219,7 @@ __time64_t CIniFile::GetValueTime(CString keyname, CString valuename, __time64_t
 
 bool CIniFile::GetValueB(CString keyname, CString valuename, bool def)
 {
-	return GetValueI(keyname, valuename, def);
+	return (bool) GetValueI(keyname, valuename, def);
 }
 
 //gets value of [keyname] valuename = 
@@ -245,7 +245,7 @@ bool CIniFile::SetValue(CString keyname, CString valuename, CString value, bool 
 			return 0; //stop entering this key
 		names.SetSize(names.GetSize()+1);
 		keys.SetSize(keys.GetSize()+1);
-		keynum = names.GetSize()-1;
+		keynum = (int) names.GetSize()-1;
 		names[keynum] = keyname;
 	}
 
@@ -257,7 +257,7 @@ bool CIniFile::SetValue(CString keyname, CString valuename, CString value, bool 
 			return 0;
 		keys[keynum].names.SetSize(keys[keynum].names.GetSize()+1);
 		keys[keynum].values.SetSize(keys[keynum].names.GetSize()+1);
-		valuenum = keys[keynum].names.GetSize()-1;
+		valuenum = (int) keys[keynum].names.GetSize()-1;
 		keys[keynum].names[valuenum] = valuename;
 	}
 	keys[keynum].values[valuenum] = value;

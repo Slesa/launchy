@@ -194,7 +194,7 @@ void LoadBookMarks(wstring filename, vector<BookMark>& marks) {
 	wstring wline;
 
 	boost::wregex regex_url(L"<a href=\"(.*?\")",boost::regex::perl|boost::regex::icase);	
-	boost::wregex regex_urlname(L"\">(.*?)<\/A>", boost::regex::perl|boost::regex::icase);
+	boost::wregex regex_urlname(L"\">(.*?)</A>", boost::regex::perl|boost::regex::icase);
 	boost::wregex regex_shortcut(L"SHORTCUTURL=\"(.*?)\"", boost::regex::perl|boost::regex::icase);
 	boost::wregex regex_postdata(L"POST_DATA", boost::regex::perl|boost::regex::icase);
 
@@ -242,7 +242,7 @@ SearchResult* PluginGetIdentifiers (int* iNumResults)
 
 	vector<BookMark> BookMarks;
 
-	for(int i = 0; i < ProfileDirs.size(); i++) {
+	for(uint i = 0; i < ProfileDirs.size(); i++) {
 		wstring bookmarkfile = dir;
 		bookmarkfile += ProfileDirs[i];
 		bookmarkfile += L"\\bookmarks.html";
@@ -252,17 +252,18 @@ SearchResult* PluginGetIdentifiers (int* iNumResults)
 
 	vector<SearchResult> results;
 
-	for(int i = 0; i < BookMarks.size(); i++) {
+	for(uint i = 0; i < BookMarks.size(); i++) {
 		if (BookMarks[i].shortcut != L"") {
 			Shortcuts[BookMarks[i].shortcut] = BookMarks[i].dest;
 			Shortcuts[BookMarks[i].name] = BookMarks[i].dest;
+			results.push_back(makeResult(BookMarks[i].shortcut, BookMarks[i].dest, L"Firefox Bookmark", NULL));
 		} else {
 			Bookmarks[BookMarks[i].name] = BookMarks[i].dest;
 		}
-		results.push_back(makeResult(BookMarks[i].name, BookMarks[i].dest, L"Firefox Bookmark", NULL));
+		results.push_back(makeResult(BookMarks[i].name, BookMarks[i].dest, L"Firefox Bookmark", NULL));		
 	}
 
-	*iNumResults = results.size();
+	*iNumResults = (int) results.size();
 	return ResultVectorToArray(results);
 }
 

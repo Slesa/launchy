@@ -74,9 +74,13 @@
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
 			UseOfMFC="1"
-			CharacterSet="1">
+			CharacterSet="1"
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
+				FavorSizeOrSpeed="2"
+				OptimizeForProcessor="2"
+				OptimizeForWindowsApplication="FALSE"
 				AdditionalIncludeDirectories="&quot;C:\Boost\include\boost-1_33_1&quot;; &quot;../PluginLib/&quot; ; ."
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
 				RuntimeLibrary="0"

@@ -21,6 +21,7 @@
 #include <iostream>
 #include <string>
 #include "Main.h"
+//#include "bigfp.h"
 
 ////////////////////////////////////////////////////////////////////////////
 using namespace std;
@@ -74,7 +75,7 @@ struct calculator : public grammar<calculator, calc_closure::context_t>
                 |   ('+' >> factor[factor.val = arg1])
                 ;
         }
-
+//		const uint_parser<bigint, 10, 1, -1> bigint_parser;
         typedef rule<ScannerT, calc_closure::context_t> rule_t;
         rule_t expression, term, factor;
         rule<ScannerT> top;

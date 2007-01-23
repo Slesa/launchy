@@ -66,7 +66,7 @@ TCHAR* PluginGetRegexs(int* iNumResults)
 {
 	vector<wstring> vect;
 //	vect.push_back(L".*\\\\.*");
-	*iNumResults = vect.size();
+	*iNumResults = (int) vect.size();
 	return StringVectorToTCHAR(vect);
 }
 
@@ -320,7 +320,7 @@ SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TC
 	}
 
 	vector<SearchResult> results;
-	for(int i = 0; i < matches.size(); i++) {
+	for(uint i = 0; i < matches.size(); i++) {
 		if (!ValidPath) {
 			wstring pre = matches[i].substr(0, FinalString.length());
 			transform(pre.begin(), pre.end(), pre.begin(), tolower);
@@ -334,7 +334,7 @@ SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TC
 		}	
 		results.push_back(makeResult(matches[i], tmp, tmp, NULL));
 	}
-	*NumResults = results.size();
+	*NumResults = (int) results.size();
 	return ResultVectorToArray(results);
 }
 
@@ -345,7 +345,6 @@ SearchResult* PluginFileOptions (const TCHAR* FullPath, int NumStrings, const TC
 		path += L"\\";
 		TakeOverPath = path.substr(0, path.length() - 11);
 		// Looks like we have a directory!
-		int numRes;
 		SearchResult* sr = PluginUpdateSearch(1, TakeOverPath.c_str(), FinalString, NumResults);
 		return sr;	
 	}

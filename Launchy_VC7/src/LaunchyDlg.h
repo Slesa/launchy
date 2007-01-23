@@ -85,6 +85,7 @@ public:
 	afx_msg void OnCbnSelchangeInput();
 //	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 //	afx_msg int OnCharToItem(UINT nChar, CListBox* pListBox, UINT nIndex);
+	void AdjustPostionIfOffscreen(void);
 	SmartComboBox InputBox;
 protected:
 //	virtual void OnCancel();
