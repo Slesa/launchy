@@ -9,6 +9,7 @@
 #include "stdafx.h"
 
 using namespace std;
+typedef unsigned int uint;
 
 
 struct SearchResult {

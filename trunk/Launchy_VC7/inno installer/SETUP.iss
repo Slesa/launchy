@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Launchy"
-#define MyAppVerName "Launchy 1.25 Alpha"
+#define MyAppVerName "Launchy 1.0"
 #define MyAppPublisher "Code Jelly"
 #define MyAppURL "http://www.launchy.net"
 #define MyAppExeName "Launchy.exe"
@@ -45,6 +45,11 @@ Source: ..\bin\Plugins\Foxy.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
 Source: ..\res\Launchy.ico; DestDir: {app}; Flags: ignoreversion
 Source: ..\license.rtf; DestDir: {app}; Flags: ignoreversion
 Source: ..\Readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
+
+Source: ..\Skins\Royale\background.bmp; DestDir: {app}\Skins\Royale\; Flags: ignoreversion
+Source: ..\Skins\Royale\skin.ini; DestDir: {app}\Skins\Royale\; Flags: ignoreversion
+Source: ..\Skins\Royale\default.png; DestDir: {app}\Skins\Royale\; Flags: ignoreversion
+Source: ..\Skins\Royale\Author.txt; DestDir: {app}\Skins\Royale\; Flags: ignoreversion
 
 Source: ..\Skins\Quicksilver\quicksilver.bmp; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion
 Source: ..\Skins\Quicksilver\skin.ini; DestDir: {app}\Skins\Quicksilver\; Flags: ignoreversion

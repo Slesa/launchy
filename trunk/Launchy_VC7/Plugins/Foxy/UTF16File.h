@@ -63,7 +63,7 @@ public:
     virtual LPTSTR  ReadString( LPTSTR lpsz, UINT nMax );
 	virtual VOID	WriteString( LPCTSTR lpsz, BOOL bAsUnicode = FALSE );
 
-    virtual LONG    Seek( LONG lOff, UINT nFrom );
+    virtual ULONGLONG    Seek( LONG lOff, UINT nFrom );
 
     BOOL            IsUnicodeFile( ) { return m_bIsUnicode; }
 

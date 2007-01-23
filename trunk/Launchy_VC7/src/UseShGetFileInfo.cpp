@@ -105,8 +105,9 @@ int CUseShGetFileInfo::GetFileIconIndex( CString strFileName , BOOL bSmallIcon )
            sizeof(SHFILEINFO), 
            SHGFI_SYSICONINDEX | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES);
 	}
-	if (sfi.iIcon == 3)
-		sfi.iIcon = -1;
+	// The following removes the unknown icon
+	//	if (sfi.iIcon == 3)
+	//		sfi.iIcon = -1;
 
     return sfi.iIcon;
 	

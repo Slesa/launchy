@@ -12,7 +12,7 @@
 IMPLEMENT_DYNAMIC(AboutDialog, CDialog)
 AboutDialog::AboutDialog(CWnd* pParent /*=NULL*/)
 	: CDialog(AboutDialog::IDD, pParent)
-	, fVersion(0)
+	, fVersion(LAUNCHY_VERSION_STRING)
 {
 }
 
@@ -40,7 +40,6 @@ BOOL AboutDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	fVersion = ((float)LAUNCHY_VERSION) / 100.0;
 	UpdateData(0);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE

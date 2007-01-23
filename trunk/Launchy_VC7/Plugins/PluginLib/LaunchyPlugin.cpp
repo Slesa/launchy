@@ -21,7 +21,7 @@ TCHAR* string2TCHAR(wstring str) {
 
 unsigned long GenerateID(wstring str) {
     unsigned long hash = 5381;
-	for(int i = 0; i < str.size(); i++) {
+	for(uint i = 0; i < str.size(); i++) {
 		hash = ((hash << 5) + hash) + str[i];
 	}
     return hash;
@@ -54,13 +54,13 @@ SearchResult makeResult(wstring DisplayString, wstring FullPath, wstring Locatio
 
 TCHAR* StringVectorToTCHAR( vector<wstring>& Strings) {
 	int size = 0;
-	for(int i = 0; i < Strings.size(); i++) {
-		size += Strings[i].length() + 1;
+	for(uint i = 0; i < Strings.size(); i++) {
+		size += (int) (Strings[i].length() + 1);
 	}
 	TCHAR* out = (TCHAR*) malloc(sizeof(TCHAR) * size);
 	if (out == NULL) exit(1);
 	TCHAR* cur = out;
-	for(int i = 0; i < Strings.size(); i++) {
+	for(uint i = 0; i < Strings.size(); i++) {
 		_tcscpy(cur, Strings[i].c_str());
 		cur += Strings[i].length()+1;
 	}
@@ -72,7 +72,7 @@ SearchResult* ResultVectorToArray(vector<SearchResult> results) {
 	if(res == NULL) exit(1);
 
 	SearchResult* cur = res;
-	for(int i = 0; i < results.size(); i++) {
+	for(uint i = 0; i < results.size(); i++) {
 		*cur = results[i];
 		cur += 1;
 	}

@@ -301,9 +301,9 @@ void DirectoryChooser::OnLbnSelchangeList1()
 	Directories.GetText(Directories.GetCurSel(), name);
 
 	LocalTypes.ResetContent();
-	for(int i = 0; i < D.size(); i++) {
+	for(uint i = 0; i < D.size(); i++) {
 		if (D[i].dir == name) {
-			for (int j = 0; j < D[i].types.size(); j++) {
+			for (uint j = 0; j < D[i].types.size(); j++) {
 				LocalTypes.AddString(D[i].types[j]);
 			}
 			break;
@@ -321,7 +321,7 @@ void DirectoryChooser::OnBnClickedAddLocalType()
 	CString name;
 	Directories.GetText(Directories.GetCurSel(), name);
 
-	for(int i = 0; i < D.size(); i++) {
+	for(uint i = 0; i < D.size(); i++) {
 		if (D[i].dir == name) {
 			D[i].types.push_back(szLocalType);
 			break;
@@ -352,7 +352,7 @@ void DirectoryChooser::OnBnClickedRemoveLocalType()
 	CString dirname;
 	Directories.GetText(Directories.GetCurSel(), dirname);
 
-	for(int i = 0; i < D.size(); i++) {
+	for(uint i = 0; i < D.size(); i++) {
 		if (D[i].dir == dirname) {
 			for(vector<CString>::iterator it = D[i].types.begin(); it != D[i].types.end(); ) {
 				if (*it == name) {
@@ -380,7 +380,7 @@ void DirectoryChooser::OnBnClickedDefaultLocalType()
 
 	LocalTypes.ResetContent();
 
-	for(int i = 0; i < D.size(); i++) {
+	for(uint i = 0; i < D.size(); i++) {
 		if (D[i].dir == dirname) {
 			D[i].types.clear();
 			break;
