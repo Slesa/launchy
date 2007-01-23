@@ -337,7 +337,6 @@ SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TC
 	*NumResults = (int) results.size();
 	return ResultVectorToArray(results);
 }
-
 SearchResult* PluginFileOptions (const TCHAR* FullPath, int NumStrings, const TCHAR* Strings,const TCHAR* FinalString, int* NumResults) {
 	wstring path = FullPath;
 
