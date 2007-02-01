@@ -89,6 +89,8 @@ BOOL CUTF16File::Open(LPCTSTR lpszFileName,UINT nOpenFlags,CFileException* pErro
 
     bResult = CStdioFile::Open(lpszFileName, nOpenFlags, pError);
 
+	if (!bResult) return bResult;
+
     // We only need the BOM check if reading.
     if( CFile::modeWrite == ( nOpenFlags & CFile::modeWrite ) ) { return bResult; }
 
