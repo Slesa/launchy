@@ -47,6 +47,7 @@ SearchResult* PluginGetIdentifiers (int* iNumResults)
 	results.push_back(makeResult(L"IMDB", L"", L"", NULL));
 	results.push_back(makeResult(L"Netflix", L"", L"", NULL));
 	results.push_back(makeResult(L"MSDN WebSearch", L"", L"", NULL));
+	results.push_back(makeResult(L"E-Mail",L"",L"",NULL));
 
 	*iNumResults = (int) results.size();
 	return ResultVectorToArray(results);
@@ -146,6 +147,10 @@ void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalStr
 		}
 		else if (VStrings[0] == L"MSDN WebSearch") {
 			tmp = L"http://search.msdn.microsoft.com/search/default.aspx?siteId=0&tab=0&query=";
+			tmp += newFS;
+		}
+		else if (VStrings[0] == L"E-Mail") {
+			tmp = L"mailto:";
 			tmp += newFS;
 		}
 		else {
