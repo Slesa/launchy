@@ -83,6 +83,7 @@ bool CIniFile::ReadFile()
 	
 	int curkey = -1, curval = -1;
 
+
 	if ( inifile.Open(path, CFile::modeRead) == 0)
 	{
 		error = "Unable to open ini file.";
