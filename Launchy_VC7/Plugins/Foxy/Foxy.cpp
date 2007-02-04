@@ -190,7 +190,7 @@ void LoadBookMarks(wstring filename, vector<BookMark>& marks) {
 		if(boost::regex_search(line, what, regex_url)) {
 			BookMark mark;
 			mark.dest = what[1];
-			trim_right(mark.dest, L"\"");
+			mark.dest = trim_right(mark.dest, L"\"");
 			if (boost::regex_search(line, what, regex_urlname)) {
 				mark.name = what[1];
 				if (boost::regex_search(line, what, regex_postdata))
