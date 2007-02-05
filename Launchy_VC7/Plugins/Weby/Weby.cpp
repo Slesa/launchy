@@ -35,19 +35,19 @@ bool PluginOwnsSearch (TCHAR* txt)
 SearchResult* PluginGetIdentifiers (int* iNumResults)
 {
 	vector<SearchResult> results;
-	results.push_back(makeResult(L"Google", L"", L"", NULL));
-	results.push_back(makeResult(L"Live Search", L"", L"", NULL));
-	results.push_back(makeResult(L"MSN",L"", L"", NULL));
-	results.push_back(makeResult(L"Yahoo", L"", L"", NULL));
-	results.push_back(makeResult(L"Weather", L"", L"", NULL));
-	results.push_back(makeResult(L"Amazon", L"", L"", NULL));
-	results.push_back(makeResult(L"Wikipedia", L"", L"", NULL));
-	results.push_back(makeResult(L"Dictionary", L"", L"", NULL));
-	results.push_back(makeResult(L"Thesaurus", L"", L"", NULL));
-	results.push_back(makeResult(L"IMDB", L"", L"", NULL));
-	results.push_back(makeResult(L"Netflix", L"", L"", NULL));
-	results.push_back(makeResult(L"MSDN WebSearch", L"", L"", NULL));
-	results.push_back(makeResult(L"E-Mail",L"",L"",NULL));
+	results.push_back(makeResult(L"Google", L"Google.Weby", L"", NULL));
+	results.push_back(makeResult(L"Live Search", L"Live Search.Weby", L"", NULL));
+	results.push_back(makeResult(L"MSN",L"MSN.Weby", L"", NULL));
+	results.push_back(makeResult(L"Yahoo", L"Yahoo.Weby", L"", NULL));
+	results.push_back(makeResult(L"Weather", L"Weather.Weby", L"", NULL));
+	results.push_back(makeResult(L"Amazon", L"Amazon.Weby", L"", NULL));
+	results.push_back(makeResult(L"Wikipedia", L"Wikipedia.Weby", L"", NULL));
+	results.push_back(makeResult(L"Dictionary", L"Dictionary.Weby", L"", NULL));
+	results.push_back(makeResult(L"Thesaurus", L"Thesaurus.Weby", L"", NULL));
+	results.push_back(makeResult(L"IMDB", L"IMDB.Weby", L"", NULL));
+	results.push_back(makeResult(L"Netflix", L"Netflix.Weby", L"", NULL));
+	results.push_back(makeResult(L"MSDN WebSearch", L"MSDN WebSearch.Weby", L"", NULL));
+	results.push_back(makeResult(L"E-Mail",L"E-Mail.Weby",L"",NULL));
 
 	*iNumResults = (int) results.size();
 	return ResultVectorToArray(results);

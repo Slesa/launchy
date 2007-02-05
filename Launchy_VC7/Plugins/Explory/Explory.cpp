@@ -51,7 +51,8 @@ SearchResult* PluginGetIdentifiers (int* iNumResults)
 		wstring tmp;
 		tmp += (TCHAR) i;
 		tmp += L":";
-		results.push_back(makeResult(tmp, L"", L"", NULL));
+		wstring FullPath = tmp + L".Explory";
+		results.push_back(makeResult(tmp, FullPath, L"", NULL));
 	}
 
 	*iNumResults = 26;
