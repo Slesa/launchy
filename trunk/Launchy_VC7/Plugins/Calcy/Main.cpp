@@ -18,6 +18,7 @@
 #include "stdafx.h"
 #include <boost/spirit/core.hpp>
 #include <boost/spirit/attribute.hpp>
+#include <boost/spirit/phoenix/functions.hpp>
 #include <iostream>
 #include <string>
 #include "Main.h"
@@ -44,6 +45,23 @@ struct calc_closure : boost::spirit::closure<calc_closure, double>
 {
     member1 val;
 };
+
+struct pow_
+{
+    template <typename X, typename Y>
+    struct result { typedef X type; };
+
+    template <typename X, typename Y>
+    X operator()(X x, Y y) const
+    {
+        using namespace std;
+        return pow(x, y);
+    }
+};
+
+//  Notice how power(x, y) is lazily implemented using Phoenix function.
+function<pow_> power;
+
 
 struct calculator : public grammar<calculator, calc_closure::context_t>
 {
@@ -84,7 +102,6 @@ struct calculator : public grammar<calculator, calc_closure::context_t>
         start() const { return top; }
     };
 };
-
 
 
 bool DoCalculation(const TCHAR* str, double& result) {
