@@ -1,3 +1,11 @@
+How to fix the startup crash bug:
+. I added a return on all SmartComboBox functions if the inputbox subclass m_hWnds weren't valid
+. On EditChange and EditUpdate I made it showlaunchy, dropdown, come back up, hidelaunchy instead of return
+. That worked but it made launchy dissappear, now I'm trying to ensure that the subclassing happens while
+within the initinstance of LaunchyDlg but that's  not working yet.  Perhaps it should be done from within the smartcombobox 
+when it initializes?  Perhaps onintinstance isn't the proper place to do it.
+
+
 Things need to be done:
 . Selecting a file other than default is not working, such as the Launchy spreadsheet
 

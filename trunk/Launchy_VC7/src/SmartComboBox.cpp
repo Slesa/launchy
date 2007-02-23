@@ -156,8 +156,6 @@ void SmartComboBox::TabSearchTxt()
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
-	if (!IsWindow(m_listbox.m_hWnd)) return;
-	if (!IsWindow(m_edit.m_hWnd)) return;
 
 	TabbedMatch = pDlg->smarts->matches[0];
 
@@ -174,8 +172,6 @@ void SmartComboBox::DeleteLine()
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
-	if (!IsWindow(m_listbox.m_hWnd)) return;
-	if (!IsWindow(m_edit.m_hWnd)) return;
 
 	searchTxt = L"";
 	SearchStrings.RemoveAll();
@@ -189,8 +185,6 @@ void SmartComboBox::DeleteWord()
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
-	if (!IsWindow(m_listbox.m_hWnd)) return;
-	if (!IsWindow(m_edit.m_hWnd)) return;
 
 	if (searchTxt == L"" && SearchStrings.GetCount() > 0) {
 		SearchStrings.RemoveAt(SearchStrings.GetCount()-1);
@@ -221,8 +215,6 @@ void SmartComboBox::ReformatDisplay()
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
-	if (!IsWindow(m_listbox.m_hWnd)) return;
-	if (!IsWindow(m_edit.m_hWnd)) return;
 
 	CString out = L"";
 
@@ -244,8 +236,6 @@ void SmartComboBox::ParseSearchTxt()
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
-	if (!IsWindow(m_listbox.m_hWnd)) return;
-	if (!IsWindow(m_edit.m_hWnd)) return;
 
 	CString sep;
 	if (SearchStrings.GetCount() > 0 && SearchPluginID != -1)
@@ -291,8 +281,6 @@ void SmartComboBox::ParseSearchTxt()
 
 void SmartComboBox::OnCbnEditupdate()
 {
-	if (!IsWindow(m_listbox.m_hWnd)) return;
-	if (!IsWindow(m_edit.m_hWnd)) return;
 
 	m_edit.GetWindowTextW(searchTxt);	
 	ParseSearchTxt();
@@ -310,8 +298,7 @@ void SmartComboBox::OnCbnEditchange()
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
-	if (!IsWindow(m_listbox.m_hWnd)) return;
-	if (!IsWindow(m_edit.m_hWnd)) return;
+
 
 
 	m_edit.GetWindowTextW(typed);
@@ -322,8 +309,7 @@ void SmartComboBox::OnCbnSelchange()
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
-	if (!IsWindow(m_listbox.m_hWnd)) return;
-	if (!IsWindow(m_edit.m_hWnd)) return;
+
 	
 
 	this->PostMessage(WM_CHANGE_COMBO_SEL,IDC_Input,(LPARAM)(bool) false);
@@ -346,8 +332,6 @@ void SmartComboBox::OnCbnDropdown()
 {
 	//	SmartComboBox* pmyComboBox = this;
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
-	if (!IsWindow(m_listbox.m_hWnd)) return;
-	if (!IsWindow(m_edit.m_hWnd)) return;
 //	SetCurSel(-1);
 
 	// Find the longest string in the combo box.
@@ -412,8 +396,6 @@ void SmartComboBox::CleanText(void)
 	if (m_Transparent) {
 		CWnd* pParent = GetParent();
 		if (pParent == NULL) return;
-	if (!IsWindow(m_listbox.m_hWnd)) return;
-	if (!IsWindow(m_edit.m_hWnd)) return;
 		CRect rect;
 		GetWindowRect(rect);
 		pParent->ScreenToClient(rect);
@@ -453,8 +435,6 @@ void SmartComboBox::DoSubclass(void)
 LRESULT SmartComboBox::AfterSelChange(UINT wParam, LONG lParam) {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return true;
-	if (!IsWindow(m_listbox.m_hWnd)) return true;
-	if (!IsWindow(m_edit.m_hWnd)) return true;
 
 	m_edit.GetWindowTextW(searchTxt);
 
@@ -622,8 +602,6 @@ void SmartComboBox::OnCbnCloseup()
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
-	if (!IsWindow(m_edit.m_hWnd)) return;
-	if (!IsWindow(m_listbox.m_hWnd)) return;
 //	SetCurSel(-1);
 //	SetEditSel(searchTxt.GetLength(), searchTxt.GetLength());
 

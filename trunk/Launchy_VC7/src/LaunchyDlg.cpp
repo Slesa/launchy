@@ -139,9 +139,8 @@ BOOL CLaunchyDlg::OnInitDialog()
 	// we have to first paint the controls to make sure the message
 	// mapping is setup before we use the controls.
 
-
-	InputBox.ShowDropDown(true);
-	InputBox.ShowDropDown(false);
+	InputBox.ShowDropDown(1);
+	InputBox.ShowDropDown(0);
 	//	InputBox.DoSubclass();
 
 	if (options->stickyWindow) {
@@ -659,4 +658,9 @@ void CLaunchyDlg::ShowLaunchy(void)
 	this->ActivateTopParent();
 	this->InputBox.SetFocus();
 	this->DoDonate();	
+
+	if (InputBox.m_edit.GetSafeHwnd() == NULL || InputBox.m_listbox.GetSafeHwnd() == NULL) {
+		InputBox.ShowDropDown(1);
+		InputBox.ShowDropDown(0);
+	}
 }
