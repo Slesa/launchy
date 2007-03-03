@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "stdafx.h"
 
 using namespace std;
@@ -28,6 +29,7 @@ vector<wstring> TCHARListToVector(int numStrings, const TCHAR* Strings);
 TCHAR* string2TCHAR(wstring str);
 TCHAR* StringVectorToTCHAR( vector<wstring>& Strings);
 unsigned long GenerateID(wstring str);
+TCHAR* SerializeStringMap(map<wstring,wstring> m);
 
 extern "C" __declspec(dllexport) SearchResult* PluginGetIdentifiers (int* iNumResults);
 extern "C" __declspec(dllexport) SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, int* NumResults);
