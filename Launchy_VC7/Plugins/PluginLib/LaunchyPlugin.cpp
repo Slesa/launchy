@@ -1,6 +1,9 @@
 #include <stdafx.h>
 #include <tchar.h> 
 #include <vector>
+#include <map>
+#include <string>
+
 using namespace std;
 
 #include "LaunchyPlugin.h"
@@ -26,7 +29,6 @@ unsigned long GenerateID(wstring str) {
 	}
     return hash;
 }
-
 
 vector<wstring> TCHARListToVector(int numStrings,  const TCHAR* Strings) {
 	vector<wstring> out;
@@ -77,6 +79,23 @@ SearchResult* ResultVectorToArray(vector<SearchResult> results) {
 		cur += 1;
 	}
 	return res;
+}
+
+TCHAR* SerializeStringMap(map<wstring,wstring> m) {
+	int size = 0;
+	for(map<wstring,wstring>::iterator it = m.begin(); it != m.end(); ++it) {
+		size += (int) it->first.length() + 1;
+		size += (int) it->second.length() + 1;
+	}
+	TCHAR* out = (TCHAR*) malloc(sizeof(TCHAR)* size);
+	TCHAR* cur = out;
+	for(map<wstring,wstring>::iterator it = m.begin(); it != m.end(); ++it) {
+		_tcscpy(cur, it->first.c_str());
+		cur += it->first.length() + 1;
+		_tcscpy(cur, it->second.c_str());
+		cur += it->second.length() + 1;
+	}
+	return out;
 }
 
 void PluginFreeStrings (TCHAR* str) {
