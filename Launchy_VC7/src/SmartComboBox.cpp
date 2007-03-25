@@ -53,10 +53,10 @@ BEGIN_MESSAGE_MAP(SmartComboBox, CComboBox)
 	ON_WM_DRAWITEM_REFLECT()
 
 	ON_CONTROL_REFLECT(CBN_EDITUPDATE, &SmartComboBox::OnCbnEditupdate)
-	//	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnCbnSelchange)
+//	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnSelEndOK)
 	ON_CONTROL_REFLECT(CBN_CLOSEUP, &SmartComboBox::OnCbnCloseup)
 	ON_CONTROL_REFLECT(CBN_EDITCHANGE, &SmartComboBox::OnCbnEditchange)
-	ON_CONTROL_REFLECT(CBN_SELCHANGE, &SmartComboBox::OnCbnSelchange)
+	ON_CONTROL_REFLECT(CBN_SELENDOK, &SmartComboBox::OnSelEndOK)
 	ON_CONTROL_REFLECT(CBN_DROPDOWN, &SmartComboBox::OnCbnDropdown)
 	ON_MESSAGE(WM_CHANGE_COMBO_SEL, &SmartComboBox::AfterSelChange)
 	ON_WM_DRAWITEM()
@@ -293,14 +293,28 @@ void SmartComboBox::OnCbnEditchange()
 	searchPath = pDlg->smarts->GetMatchPath(0);
 }
 
-void SmartComboBox::OnCbnSelchange()
+void SmartComboBox::OnSelEndOK()
 {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
 
-	
 
-	this->PostMessage(WM_CHANGE_COMBO_SEL,IDC_Input,(LPARAM)(bool) false);
+	
+	// Send the CB_GETCURSEL message so that we can get the index
+	GetWindowTextW(searchTxt);
+	int index = this->SendMessage(CB_GETCURSEL);
+	if (index == CB_ERR) 
+		searchTxt = L"";
+	else
+		this->GetLBText(index, searchTxt);	
+
+	ReformatDisplay();
+	ParseSearchTxt();
+	//CleanText();
+
+	pDlg->smarts->Update(searchTxt,false);
+
+//	this->PostMessage(WM_CHANGE_COMBO_SEL,IDC_Input,(LPARAM)(bool) false);
 	// If it's closing, we've already taken care of this..
 /*	if (GetDroppedState()) {
 		int sel = m_listbox.GetCurSel();
@@ -318,6 +332,10 @@ void SmartComboBox::OnCbnSelchange()
 
 void SmartComboBox::OnCbnDropdown()
 {
+	// The following line tells the mouse cursor to pop up
+	// http://support.microsoft.com/kb/326254
+	SendMessage(WM_SETCURSOR,0,0);
+
 	//	SmartComboBox* pmyComboBox = this;
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 //	SetCurSel(-1);
@@ -415,7 +433,13 @@ LRESULT SmartComboBox::AfterSelChange(UINT wParam, LONG lParam) {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return true;
 
-	this->GetWindowTextW(searchTxt);
+	// Send the CB_GETCURSEL message so that we can get the index
+	int index = this->SendMessage(CB_GETCURSEL);
+	if (index == CB_ERR) 
+		searchTxt = L"";
+	else
+		this->GetLBText(index, searchTxt);
+//	this->GetWindowTextW(searchTxt);
 
 	ReformatDisplay();
 	ParseSearchTxt();
