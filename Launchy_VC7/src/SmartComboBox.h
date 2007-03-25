@@ -57,9 +57,7 @@ protected:
 public:
 	void SetTextColor(COLORREF rgb);
 	void SetBackColor(COLORREF rgb);
-//	CEdit m_edit;
-    //CRichEditCtrl      m_edit;
-    //CListBox   m_listbox;
+
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnDestroy();
 	afx_msg void OnCbnEditupdate();
