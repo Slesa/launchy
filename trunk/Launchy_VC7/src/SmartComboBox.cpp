@@ -216,8 +216,8 @@ void SmartComboBox::ReformatDisplay()
 	out += searchTxt;
 	this->SetWindowTextW(out);
 	searchTxt = out;
-	CleanText();
 	SetEditSel(out.GetLength(), out.GetLength());
+	CleanText();
 }
 
 void SmartComboBox::ParseSearchTxt()
@@ -419,7 +419,7 @@ LRESULT SmartComboBox::AfterSelChange(UINT wParam, LONG lParam) {
 
 	ReformatDisplay();
 	ParseSearchTxt();
-	CleanText();
+	//CleanText();
 
 	pDlg->smarts->Update(searchTxt,(bool) lParam);
 

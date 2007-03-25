@@ -290,6 +290,7 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 
 	if(pMsg->message==WM_KEYDOWN)
 	{
+
 		if (GetKeyState(VK_CONTROL) < 0) {
 			// Control is pressed down
 			if (pMsg->wParam==VK_BACK) {	 
@@ -299,13 +300,12 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 		}	
 		
 		else if (pMsg->wParam==VK_DOWN) {
-			InputBox.CleanText();
+			
 			if (!InputBox.GetDroppedState() && InputBox.typed != _T("")) {
 				InputBox.ShowDropDown(true);
 			}
 		} 
 		else if (pMsg->wParam==VK_UP) {
-			InputBox.CleanText();
 			if (!InputBox.GetDroppedState() && InputBox.typed != _T("")) {
 				InputBox.ShowDropDown(true);
 			}
@@ -323,7 +323,6 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 				InputBox.ShowDropDown(false);
 				InputBox.SetEditSel(InputBox.GetWindowTextLengthW(), InputBox.GetWindowTextLengthW());
 			}
-			InputBox.CleanText();
 		}
 		SetTimer(DELAY_TIMER, 1000, NULL);
 		if(pMsg->wParam==VK_RETURN) {
@@ -348,10 +347,13 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 			HideLaunchy();
 			pMsg->wParam = NULL;
 		}
+
+		InputBox.CleanText();
 	} 
 
 	if (pMsg->message == WM_CHAR) {
 		SetTimer(DELAY_TIMER, 1000, NULL);
+		InputBox.CleanText();
 	}
 	return CDialogSK::PreTranslateMessage(pMsg);
 }
