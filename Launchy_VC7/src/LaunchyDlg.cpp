@@ -131,7 +131,6 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 	smarts.reset(new LaunchySmarts());
 
-
 	applySkin();
 
 
@@ -139,8 +138,8 @@ BOOL CLaunchyDlg::OnInitDialog()
 	// we have to first paint the controls to make sure the message
 	// mapping is setup before we use the controls.
 
-	InputBox.ShowDropDown(1);
-	InputBox.ShowDropDown(0);
+//	InputBox.ShowDropDown(1);
+//	InputBox.ShowDropDown(0);
 	//	InputBox.DoSubclass();
 
 	if (options->stickyWindow) {
@@ -363,7 +362,7 @@ void CLaunchyDlg::OnTimer(UINT_PTR nIDEvent)
 
 	if (nIDEvent == DELAY_TIMER) {
 		if (Visible && !InputBox.GetDroppedState() && InputBox.m_edit.GetWindowTextLengthW() > 0 &&
-			InputBox.m_listbox.GetCount() > 1) {
+			InputBox.GetCount() > 1) {
 				InputBox.SetCurSel(-1);
 				InputBox.ShowDropDown(true);
 				//				InputBox.m_edit.SetWindowText(InputBox.typed);
@@ -659,8 +658,4 @@ void CLaunchyDlg::ShowLaunchy(void)
 	this->InputBox.SetFocus();
 	this->DoDonate();	
 
-	if (InputBox.m_edit.GetSafeHwnd() == NULL || InputBox.m_listbox.GetSafeHwnd() == NULL) {
-		InputBox.ShowDropDown(1);
-		InputBox.ShowDropDown(0);
-	}
 }

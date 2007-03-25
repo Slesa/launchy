@@ -19,10 +19,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin_Foxy", "Plugins\Foxy
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin_Wordy", "Plugins\Wordy\Wordy.vcproj", "{BCB8AA16-2406-4953-B77C-BA66EE0C2D82}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -49,10 +45,6 @@ Global
 		{0A276360-1311-4DB9-8759-5209219A091E}.Debug.Build.0 = Debug|Win32
 		{0A276360-1311-4DB9-8759-5209219A091E}.Release.ActiveCfg = Release|Win32
 		{0A276360-1311-4DB9-8759-5209219A091E}.Release.Build.0 = Release|Win32
-		{BCB8AA16-2406-4953-B77C-BA66EE0C2D82}.Debug.ActiveCfg = Debug|Win32
-		{BCB8AA16-2406-4953-B77C-BA66EE0C2D82}.Debug.Build.0 = Debug|Win32
-		{BCB8AA16-2406-4953-B77C-BA66EE0C2D82}.Release.ActiveCfg = Release|Win32
-		{BCB8AA16-2406-4953-B77C-BA66EE0C2D82}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

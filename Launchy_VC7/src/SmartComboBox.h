@@ -58,7 +58,7 @@ public:
 	void SetTextColor(COLORREF rgb);
 	void SetBackColor(COLORREF rgb);
     CRichEditCtrl      m_edit;
-    CListBox   m_listbox;
+    //CListBox   m_listbox;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnDestroy();
 	afx_msg void OnCbnEditupdate();
@@ -99,6 +99,8 @@ public:
 
 	void DoSubclass(void);
 //	virtual BOOL PreTranslateMessage(MSG* pMsg);
+protected:
+	virtual void PreSubclassWindow();
 };
 
 

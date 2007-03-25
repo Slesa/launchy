@@ -529,7 +529,12 @@ void LaunchySmarts::Update(CString txt, bool UpdateDropdown, CString oneTimeHist
 			oldData.push_back((DropItem*) pDlg->InputBox.GetItemDataPtr(i));
 		}
 
-		pDlg->InputBox.m_listbox.ResetContent();
+		// Empty the combo box
+		int count = pDlg->InputBox.GetCount();
+		for(int i = count-1; i >= 0; i--) {
+			pDlg->InputBox.SetItemDataPtr(i, NULL);
+			pDlg->InputBox.DeleteString( i );
+		}
 
 		for(uint i = 0; i < oldData.size(); i++) {
 			delete oldData[i];

@@ -95,12 +95,7 @@ HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		}
 
 	}
-	else if (nCtlColor == CTLCOLOR_LISTBOX)
-	{
-		//ListBox control
-		if (m_listbox.GetSafeHwnd() == NULL)
-			m_listbox.SubclassWindow(pWnd->GetSafeHwnd());
-	}
+
 
 
 	// TODO:  Change any attributes of the DC here
@@ -140,8 +135,7 @@ void SmartComboBox::OnDestroy()
 {
 	if (m_edit.GetSafeHwnd() != NULL)
 		m_edit.UnsubclassWindow();
-	if (m_listbox.GetSafeHwnd() != NULL)
-		m_listbox.UnsubclassWindow();
+
 
 	CComboBox::OnDestroy();
 
@@ -343,13 +337,13 @@ void SmartComboBox::OnCbnDropdown()
 	CString cStr;
 	for (int i=0;i < GetCount();i++)
 	{
-		m_listbox.SetItemHeight(i, 40);
+		this->SetItemHeight(i, 40);
 		//		pmyComboBox->GetLBText( i, str );		
 		//		sz = pDC->GetTextExtent(str);
 		DropItem* d = (DropItem*) GetItemDataPtr(i);
 		sz = pDC->GetTextExtent(d->lesspath);
 
-		m_listbox.GetText(i, cStr);
+		this->GetLBText(i, cStr);
 		sx = pDC->GetOutputTextExtent(cStr);
 
 		if (sz.cx > sx.cx) {
@@ -425,10 +419,7 @@ void SmartComboBox::DoSubclass(void)
 	if (m_edit.GetSafeHwnd() == NULL) {
 		m_edit.SubclassDlgItem( CTLCOLOR_EDIT,this);
 	}
-	//ListBox control
-	if (m_listbox.GetSafeHwnd() == NULL) {
-		m_listbox.SubclassDlgItem(CTLCOLOR_LISTBOX, this);
-	}
+
 }
 
 
@@ -479,7 +470,8 @@ void SmartComboBox::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 	CString strText;
 
 	// Get the item text.
-	m_listbox.GetText((int)lpDrawItemStruct->itemID, strText);
+	
+	this->GetLBText((int)lpDrawItemStruct->itemID, strText);
 	//	AfxMessageBox(strText);
 
 	//Initialize the Item's row
@@ -528,7 +520,7 @@ void SmartComboBox::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 	int iBkMode = dc->SetBkMode(TRANSPARENT);
 
 
-	DropItem* data = (DropItem*) m_listbox.GetItemDataPtr((int) lpDrawItemStruct->itemID);
+	DropItem* data = (DropItem*) this->GetItemDataPtr((int) lpDrawItemStruct->itemID);
 
 
 	CPoint pt(rIcon.left,rIcon.top);
@@ -611,7 +603,7 @@ void SmartComboBox::OnCbnCloseup()
 	ReformatDisplay();
 	ParseSearchTxt();
 
-	int sel = m_listbox.GetCurSel();
+	int sel = this->GetCurSel();
 	if (sel != LB_ERR) {
 		DropItem* data = (DropItem*) GetItemDataPtr(sel);
 
@@ -640,3 +632,9 @@ void SmartComboBox::OnDrawSelchange(int itemID) {
 
 }
 */
+void SmartComboBox::PreSubclassWindow()
+{
+	// TODO: Add your specialized code here and/or call the base class
+	m_edit.SubclassDlgItem(1001, this);
+	CComboBox::PreSubclassWindow();
+}
