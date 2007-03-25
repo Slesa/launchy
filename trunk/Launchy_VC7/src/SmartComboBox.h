@@ -57,7 +57,8 @@ protected:
 public:
 	void SetTextColor(COLORREF rgb);
 	void SetBackColor(COLORREF rgb);
-    CRichEditCtrl      m_edit;
+//	CEdit m_edit;
+    //CRichEditCtrl      m_edit;
     //CListBox   m_listbox;
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnDestroy();
@@ -97,7 +98,6 @@ public:
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
-	void DoSubclass(void);
 //	virtual BOOL PreTranslateMessage(MSG* pMsg);
 protected:
 	virtual void PreSubclassWindow();

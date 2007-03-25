@@ -321,7 +321,7 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 			if (InputBox.GetDroppedState()) {
 				CString typed = InputBox.typed;
 				InputBox.ShowDropDown(false);
-				InputBox.SetEditSel(InputBox.m_edit.GetWindowTextLengthW(), InputBox.m_edit.GetWindowTextLengthW());
+				InputBox.SetEditSel(InputBox.GetWindowTextLengthW(), InputBox.GetWindowTextLengthW());
 			}
 			InputBox.CleanText();
 		}
@@ -361,7 +361,7 @@ void CLaunchyDlg::OnTimer(UINT_PTR nIDEvent)
 	// TODO: Add your message handler code here and/or call default
 
 	if (nIDEvent == DELAY_TIMER) {
-		if (Visible && !InputBox.GetDroppedState() && InputBox.m_edit.GetWindowTextLengthW() > 0 &&
+		if (Visible && !InputBox.GetDroppedState() && InputBox.GetWindowTextLengthW() > 0 &&
 			InputBox.GetCount() > 1) {
 				InputBox.SetCurSel(-1);
 				InputBox.ShowDropDown(true);
