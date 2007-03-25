@@ -83,11 +83,7 @@ HBRUSH SmartComboBox::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 	if (nCtlColor == CTLCOLOR_EDIT)
 	{
-		//[ASCII 160][ASCII 160][ASCII 160]Edit control
-		if (m_edit.GetSafeHwnd() == NULL) {
-			m_edit.SubclassWindow(pWnd->GetSafeHwnd());
-//			m_edit.SetLimitText(512);
-		}
+
 		if (m_Transparent) {
 			CBrush m_Brush;
 			m_Brush.CreateStockObject(HOLLOW_BRUSH);
@@ -133,8 +129,6 @@ void SmartComboBox::SetTextColor(COLORREF rgb)
 
 void SmartComboBox::OnDestroy()
 {
-	if (m_edit.GetSafeHwnd() != NULL)
-		m_edit.UnsubclassWindow();
 
 
 	CComboBox::OnDestroy();
@@ -220,7 +214,7 @@ void SmartComboBox::ReformatDisplay()
 			out += L" | ";
 	}
 	out += searchTxt;
-	m_edit.SetWindowTextW(out);
+	this->SetWindowTextW(out);
 	searchTxt = out;
 	CleanText();
 	SetEditSel(out.GetLength(), out.GetLength());
@@ -276,7 +270,7 @@ void SmartComboBox::ParseSearchTxt()
 void SmartComboBox::OnCbnEditupdate()
 {
 
-	m_edit.GetWindowTextW(searchTxt);	
+	this->GetWindowTextW(searchTxt);	
 	ParseSearchTxt();
 
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
@@ -295,7 +289,7 @@ void SmartComboBox::OnCbnEditchange()
 
 
 
-	m_edit.GetWindowTextW(typed);
+	this->GetWindowTextW(typed);
 	searchPath = pDlg->smarts->GetMatchPath(0);
 }
 
@@ -414,20 +408,14 @@ void SmartComboBox::SetSmallFont(CFont* font, COLORREF rgb)
 	m_FontSmallRGB = rgb;
 }
 
-void SmartComboBox::DoSubclass(void)
-{
-	if (m_edit.GetSafeHwnd() == NULL) {
-		m_edit.SubclassDlgItem( CTLCOLOR_EDIT,this);
-	}
 
-}
 
 
 LRESULT SmartComboBox::AfterSelChange(UINT wParam, LONG lParam) {
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return true;
 
-	m_edit.GetWindowTextW(searchTxt);
+	this->GetWindowTextW(searchTxt);
 
 	ReformatDisplay();
 	ParseSearchTxt();
@@ -635,6 +623,6 @@ void SmartComboBox::OnDrawSelchange(int itemID) {
 void SmartComboBox::PreSubclassWindow()
 {
 	// TODO: Add your specialized code here and/or call the base class
-	m_edit.SubclassDlgItem(1001, this);
+	//m_edit.SubclassDlgItem(1001, this);
 	CComboBox::PreSubclassWindow();
 }
