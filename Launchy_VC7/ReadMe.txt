@@ -1,3 +1,15 @@
+Things for this version:
+. Fill up the textbox with words and then use ctrl+left/right arrow and it scrambles the text as it scrolls
+. Removed startup crash bug
+. Fixed Google not getting selected bug
+. Fixed mouse problems
+
+WHERE I LEFT OFF:
+I was working on adding an always on top toggle.  I've got the option made in Options.cpp and it's 
+also setup in the advanced options dialog.  Just need to actually call setwindowpos to make it happen now.
+See here: http://msdn2.microsoft.com/en-us/library/a1yzfz6d(VS.80).aspx
+
+
 How to fix the startup crash bug:
 . I added a return on all SmartComboBox functions if the inputbox subclass m_hWnds weren't valid
 . On EditChange and EditUpdate I made it showlaunchy, dropdown, come back up, hidelaunchy instead of return
@@ -60,13 +72,6 @@ TODO to finish Google plugin:
 
 
 Where I've left off:
-
-Hmm.  Still have the clone problem.  Need a real fix for this.
-
-Trying to get sticky window to work.  It mostly works except when you start launchy it doesn't 
-show right away and also it's possible to get it to not reset its timer so sometimes the drop list
-won't show.
-
 
 
 Changes since 0.9.6:

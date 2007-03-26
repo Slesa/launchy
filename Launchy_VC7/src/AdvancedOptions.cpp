@@ -30,6 +30,7 @@ void AdvancedOptions::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECK1, cb_sticky);
 	DDX_Text(pDX, IDC_EDIT1, i_listLength);
 	DDX_Text(pDX, IDC_DBEDIT, dbUpdateTime);
+	DDX_Control(pDX, IDC_AOT, cb_aot);
 }
 
 
@@ -54,6 +55,11 @@ BOOL AdvancedOptions::OnInitDialog()
 		cb_sticky.SetCheck(BST_CHECKED);
 	else
 		cb_sticky.SetCheck(BST_UNCHECKED);
+
+	if (ops->aot)
+		cb_aot.SetCheck(BST_CHECKED);
+	else
+		cb_aot.SetCheck(BST_UNCHECKED);
 
 	dbUpdateTime = ops->indexTime;
 	i_listLength = ops->listLength;
@@ -81,5 +87,6 @@ void AdvancedOptions::OnBnClickedOk()
 	}
 
 	ops->stickyWindow = cb_sticky.GetCheck();
+	ops->aot = cb_aot.GetCheck();
 	OnOK();
 }

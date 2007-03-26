@@ -73,6 +73,7 @@ public:
 	bool firstRun;
 	int listLength;
 	bool stickyWindow;
+	bool aot; // always on top
 	int posX;
 	int posY;
 	int ver;

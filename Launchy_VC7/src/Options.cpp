@@ -188,6 +188,7 @@ void Options::ParseIni(void)
 
 	listLength = ini->GetValueI(_T("Advanced"), _T("List Length"), 10);
 	stickyWindow = ini->GetValueB(_T("Advanced"), _T("Sticky Window"), false);
+	aot = ini->GetValueB(_T("Advanced"), _T("Always on Top"), true);
 	indexTime = ini->GetValueI(_T("Advanced"), _T("Index Time"), 20);
 
 	mod_key =  ini->GetValueI(_T("Hotkey"), _T("mod_key"), MOD_ALT);
@@ -220,6 +221,7 @@ void Options::Store(void)
 
 	ini->SetValueI(_T("Advanced"), _T("List Length"),  listLength);
 	ini->SetValueB(_T("Advanced"), _T("Sticky Window"), stickyWindow);
+	ini->SetValueB(_T("Advanced"), _T("Always on Top"), aot);
 	ini->SetValueI(_T("Advanced"), _T("Index Time"), indexTime);
 
 	ini->SetValueI(_T("Hotkey"), _T("mod_key"), mod_key);
