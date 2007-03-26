@@ -27,4 +27,5 @@ public:
 	afx_msg void OnBnClickedOk();
 	int i_listLength;
 	int dbUpdateTime;
+	CButton cb_aot;
 };

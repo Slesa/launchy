@@ -50,6 +50,8 @@
 #define IDC_DBUP2                       1029
 #define IDC_RICHEDIT21                  1030
 #define IDC_COMBO2                      1031
+#define IDC_CHECK2                      1032
+#define IDC_AOT                         1032
 #define ID_SKINS_CUSTOMDIRECTORIES      32771
 #define ID_SKINS_SKINS                  32772
 #define ID_SETTINGS_CUSTOMDIRECTORIES   32773
@@ -69,7 +71,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        156
 #define _APS_NEXT_COMMAND_VALUE         32786
-#define _APS_NEXT_CONTROL_VALUE         1032
+#define _APS_NEXT_CONTROL_VALUE         1033
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
