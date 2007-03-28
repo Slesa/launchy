@@ -429,6 +429,8 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		AdvancedOptions dlg;
 		dlg.DoModal();
 		options->Store();
+		// Apply any changes to the windows, such as always on top
+		this->applySkin();
 	}
 
 	else if (selection == ID_SETTINGS_REBUILD) {
@@ -448,6 +450,9 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 void CLaunchyDlg::applySkin()
 {
+	RECT previousPos;
+	this->GetWindowRect(&previousPos);
+
 	if (options->skin == NULL) {
 		options->SetSkin(_T("Default"));
 		if (options->skin == NULL) {
@@ -502,8 +507,10 @@ void CLaunchyDlg::applySkin()
 		ShowWindows(IsWindowVisible() != 0);
 	}
 
-
-	MoveWindow(options->posX, options->posY, options->skin->backRect.Width(), options->skin->backRect.Height(),1);
+	if (previousPos.top != 0 || previousPos.left != 0)
+		MoveWindow(previousPos.left, previousPos.top, options->skin->backRect.Width(), options->skin->backRect.Height(),1);
+	else
+		MoveWindow(options->posX, options->posY, options->skin->backRect.Width(), options->skin->backRect.Height(),1);
 	InputBox.MoveWindow(options->skin->inputRect,1);
 	Preview.MoveWindow(options->skin->resultRect,1);
 	IconPreview.MoveWindow(options->skin->iconRect,1);
@@ -606,6 +613,9 @@ void CLaunchyDlg::applySkin()
 
 	IconPreview.m_GrabBkgnd = true;
 
+	// Set always on top or not
+	this->SetWindowLayer(options->aot);
+
 	RedrawWindow();
 
 
@@ -659,5 +669,17 @@ void CLaunchyDlg::ShowLaunchy(void)
 	this->ActivateTopParent();
 	this->InputBox.SetFocus();
 	this->DoDonate();	
+}
 
+void CLaunchyDlg::SetWindowLayer(bool AlwaysOnTop) {
+	RECT r;
+	this->GetWindowRect(&r);
+
+	if (AlwaysOnTop) {
+		this->SetWindowPos(&CWnd::wndTopMost, r.left, r.top, r.right - r.left, r.bottom - r.top, SWP_NOMOVE | SWP_NOREPOSITION);
+		border.SetWindowPos(&CWnd::wndTopMost, r.left + options->skin->alphaRect.left, r.top + options->skin->alphaRect.top, r.right, r.bottom, SWP_NOMOVE | SWP_NOREPOSITION);
+	} else {
+		this->SetWindowPos(&CWnd::wndNoTopMost, r.left, r.top, r.right - r.left, r.bottom - r.top, SWP_NOMOVE | SWP_NOREPOSITION);
+		border.SetWindowPos(&CWnd::wndNoTopMost, r.left + options->skin->alphaRect.left, r.top + options->skin->alphaRect.top, r.right, r.bottom, SWP_NOMOVE | SWP_NOREPOSITION);
+	}
 }

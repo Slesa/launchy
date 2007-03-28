@@ -87,6 +87,7 @@ void AdvancedOptions::OnBnClickedOk()
 	}
 
 	ops->stickyWindow = cb_sticky.GetCheck();
+
 	ops->aot = cb_aot.GetCheck();
 	OnOK();
 }

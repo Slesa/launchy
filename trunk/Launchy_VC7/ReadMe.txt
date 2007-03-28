@@ -1,13 +1,15 @@
 Things for this version:
+New Features:
+. Added AlwaysOnTop Toggle
+
+Bug Fixes:
 . Fill up the textbox with words and then use ctrl+left/right arrow and it scrambles the text as it scrolls
 . Removed startup crash bug
 . Fixed Google not getting selected bug
 . Fixed mouse problems
+. Launchy no longer jumps to original position when skins are changed
 
 WHERE I LEFT OFF:
-I was working on adding an always on top toggle.  I've got the option made in Options.cpp and it's 
-also setup in the advanced options dialog.  Just need to actually call setwindowpos to make it happen now.
-See here: http://msdn2.microsoft.com/en-us/library/a1yzfz6d(VS.80).aspx
 
 
 How to fix the startup crash bug:
