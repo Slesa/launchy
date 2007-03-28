@@ -87,3 +87,12 @@ TCHAR* PluginGetName() {
 	wstring tmp = L"Calcy";
 	return string2TCHAR(tmp);
 }
+
+TCHAR* PluginGetDescription() {
+	wstring tmp = L"A simple calculator utility";
+	return string2TCHAR(tmp);
+}
+
+void PluginClose() {
+	return;
+}

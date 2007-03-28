@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "AboutDialog.h"
 #include ".\launchydlg.h"
 #include "plugin.h"
+#include "PluginDialog.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -412,6 +413,15 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		applySkin();
 		options->Store();
 	}
+	else if (selection == ID_SETTINGS_PLUGINS) {
+		// We may have unloaded a dll responsible for the currently displayed launchy query, 
+		// So we need to clear the current entry!
+
+		this->ClearEntry();
+		CPluginDialog dlg;
+		dlg.DoModal();
+		options->Store();
+	}
 	else if (selection == ID_SETTINGS_HOTKEY) {
 		CHotkeyDialog dlg;
 		dlg.DoModal();
@@ -655,7 +665,7 @@ void CLaunchyDlg::AdjustPostionIfOffscreen(void) {
 	int cy = GetSystemMetrics(SM_CYSCREEN);
 	RECT location;
 	GetWindowRect(&location);
-	if (location.right > cx || location.bottom > cy) {
+	if (location.left > cx || location.top > cy) {
 		if (options == NULL) return;
 		MoveWindow(0, 0, options->skin->backRect.Width(), options->skin->backRect.Height(),1);		
 	}
@@ -669,6 +679,10 @@ void CLaunchyDlg::ShowLaunchy(void)
 	this->ActivateTopParent();
 	this->InputBox.SetFocus();
 	this->DoDonate();	
+}
+
+void CLaunchyDlg::ClearEntry(void) {
+	InputBox.DeleteLine();
 }
 
 void CLaunchyDlg::SetWindowLayer(bool AlwaysOnTop) {

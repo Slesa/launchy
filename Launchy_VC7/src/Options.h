@@ -120,4 +120,5 @@ public:
 
 
 
+	bool LoadPlugin(CString PluginName);
 };

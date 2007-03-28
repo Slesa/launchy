@@ -12,6 +12,7 @@
 #define IDD_ALPHA_BORDER                151
 #define IDD_ADVANCED_DIALOG             154
 #define IDD_ABOUT                       155
+#define IDD_PLUGINS_DIALOG              156
 #define IDC_COMBO1                      1000
 #define IDC_Input                       1000
 #define IDC_MOD_COMBO                   1000
@@ -50,8 +51,10 @@
 #define IDC_DBUP2                       1029
 #define IDC_RICHEDIT21                  1030
 #define IDC_COMBO2                      1031
-#define IDC_CHECK2                      1032
 #define IDC_AOT                         1032
+#define IDC_BUTTON1                     1033
+#define IDC_OPTIONS                     1033
+#define IDC_PLUGINLIST                  1034
 #define ID_SKINS_CUSTOMDIRECTORIES      32771
 #define ID_SKINS_SKINS                  32772
 #define ID_SETTINGS_CUSTOMDIRECTORIES   32773
@@ -64,14 +67,15 @@
 #define ID_SETTINGS_REBUILD             32781
 #define ID_SETTINGS_ADVANCED            32783
 #define ID_SETTINGS_ABOUT               32785
+#define ID_SETTINGS_PLUGINS             32787
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        156
-#define _APS_NEXT_COMMAND_VALUE         32786
-#define _APS_NEXT_CONTROL_VALUE         1033
+#define _APS_NEXT_RESOURCE_VALUE        157
+#define _APS_NEXT_COMMAND_VALUE         32788
+#define _APS_NEXT_CONTROL_VALUE         1035
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
