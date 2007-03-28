@@ -390,3 +390,12 @@ TCHAR* PluginGetName() {
 	wstring tmp = L"Explory";
 	return string2TCHAR(tmp);
 }
+
+TCHAR* PluginGetDescription() {
+	wstring tmp = L"File explorer for Launchy";
+	return string2TCHAR(tmp);
+}
+
+void PluginClose() {
+	return;
+}

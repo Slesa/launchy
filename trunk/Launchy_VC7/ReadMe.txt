@@ -1,4 +1,13 @@
-Things for this version:
+Features to complete before release:
+. Add options support for plugins
+. Add plugins dialog with enable/disable and options button
+. Make magic word plugin
+. Plugin SDK Package
+. Make plugin section on the webpage
+. Don't want to see launchy flash up on startup
+. Reload list of DLL's in the directory when you go to "Plugins"
+
+
 New Features:
 . Added AlwaysOnTop Toggle
 
@@ -8,8 +17,14 @@ Bug Fixes:
 . Fixed Google not getting selected bug
 . Fixed mouse problems
 . Launchy no longer jumps to original position when skins are changed
+. Fixed the problem with launchy in the corner of the screen moving elsewhere on reload
 
 WHERE I LEFT OFF:
+The plugin dialog is almost done.. except for the hard part: live update of plugins.  It's probably a really bad idea
+to allow dynamic loading/unloading of plugins but I think it's what users would expect.  So, take a look at void Plugin::ReloadPlugins(map<CString, bool> ids) {
+next time you get back to the code.
+
+
 
 
 How to fix the startup crash bug:

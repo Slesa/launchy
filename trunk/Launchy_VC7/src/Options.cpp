@@ -173,6 +173,11 @@ CString SerializeDirArray(vector<DirOptions> input) {
 	return output;
 }
 
+bool Options::LoadPlugin(CString PluginName)
+{
+	return  ini->GetValueB(_T("Plugins"), PluginName, true);
+}
+
 void Options::ParseIni(void)
 {
 	CString DefaultDirs;
@@ -235,8 +240,13 @@ void Options::Store(void)
 
 	ini->SetValueTime(_T("Launchy Information"), _T("InstallTime"), installTime.GetTime());
 
+	shared_ptr<Plugin> plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
 
-
+	if (plugins != NULL) {
+		for(int i = 0; i < plugins->allPlugins.size(); i++) {
+			ini->SetValueB(_T("Plugins"), plugins->allPlugins[i].name, plugins->allPlugins[i].loaded);
+		}
+	}
 	ini->WriteFile();
 }
 

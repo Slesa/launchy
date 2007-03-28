@@ -4,6 +4,7 @@
 #include "Launchy.h"
 #include "LaunchyDlg.h"
 #include "LaunchySmarts.h"
+#include "LaunchyDlg.h"
 
 
 void FreeSearchResult (SearchResult* sr) {
@@ -119,6 +120,8 @@ HICON Plugin::GetIcon(int id) {
 }
 
 void Plugin::LoadDlls() {
+	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+
 	CDiskObject disk;
 	CStringArray files;
 	disk.EnumFilesInDirectoryWithFilter(_T("*.dll"), _T("Plugins/"), files);
@@ -137,6 +140,8 @@ void Plugin::LoadDlls() {
 		struct DLLInstance di;
 		di.handle = LoadMe;
 		di.filename = path;
+		di.description = L"";
+		di.name = L"";
 		
 		PluginFunctions funcs;
 
@@ -150,6 +155,10 @@ void Plugin::LoadDlls() {
 		funcs.PluginFreeStrings = (PLUGINFREESTRINGS)GetProcAddress(LoadMe,"PluginFreeStrings");
 		funcs.PluginGetSeparator = (PLUGINGETSEPARATOR)GetProcAddress(LoadMe, "PluginGetSeparator");
 		funcs.PluginGetName = (PLUGINGETNAME)GetProcAddress(LoadMe, "PluginGetName");
+		funcs.PluginGetDescription = (PLUGINGETDESCRIPTION)GetProcAddress(LoadMe, "PluginGetDescription");
+		funcs.PluginCallOptionsDlg = (PLUGINCALLOPTIONSDLG)GetProcAddress(LoadMe, "PluginCallOptionsDlg");
+		funcs.PluginClose = (PLUGINCLOSE)GetProcAddress(LoadMe, "PluginClose");
+
 		pfuncs.push_back(funcs);
 
 		if (funcs.PluginGetName != NULL) {
@@ -157,11 +166,84 @@ void Plugin::LoadDlls() {
 			di.name = tmpName;
 			funcs.PluginFreeStrings(tmpName);
 			di.nametag = GenerateNameTag(di.name);
-
 		}
+
+		if (funcs.PluginGetDescription != NULL) {
+			TCHAR* tmpDescr = funcs.PluginGetDescription();
+			di.description = tmpDescr;
+			funcs.PluginFreeStrings(tmpDescr);
+		}
+
+		DLLProperties prop;
+
+		if (funcs.PluginCallOptionsDlg != NULL) 
+			prop.hasOptionsDlg = true;
+		else
+			prop.hasOptionsDlg = false;
+
+		if (ops->LoadPlugin(di.name)) {
+			loadedPlugins.push_back(di);
+			prop.loaded = true;
+		} else {
+			FreeLibrary(LoadMe);
+			prop.loaded = false;
+		}
+		prop.name = di.name;
+		prop.filename = path;
+		prop.description = di.description;
+		allPlugins.push_back(prop);
 		
-		loadedPlugins.push_back(di);
 	}
+}
+
+
+void Plugin::ReloadPlugins(map<CString, bool> ids) {
+	// First turn off any running plugins that should no longer be
+//	for(int i = 0; i < loadedPlugins.size(); i++) {
+		// This is rather tricky because I use the vector id in loadedPlugins
+		// as the general id that Launchy uses, which is bad when I remove it from loadedPlugins!
+/*
+	Steps:
+		0) Ensure that the launchy selection does not depend on the dll	
+		1) Send the close message to the dll
+		2) Remove everything from the database that references the plugin
+		3) Remove the regular expression matches for the plugin
+		4) Unload the dll
+		5) Remove the dll from loadedPlugins
+		6) Set loaded to false in DllProperties
+
+	}
+
+	// Next turn on plugins that should now be running but were not before
+		1) Load the dll w/ same functions as the LoadDlls (e.g. load the reg expressions and identifiers and crap)
+		2) Add to loadedPlugins
+		3) Set loaded to true in DllProperties
+*/
+}
+
+
+void Plugin::CallOptionsDlg(const DLLProperties & props) {
+	if (props.loaded) {
+		// Find the dll in the loaded list and call its funcs
+		for(int i = 0; i < loadedPlugins.size(); i++) {
+			if (loadedPlugins[i].name == props.name) {
+				if (pfuncs[i].PluginCallOptionsDlg == NULL)
+					return;
+				pfuncs[i].PluginCallOptionsDlg();
+				break;
+			}
+		}
+		return;
+	}
+
+	// Okay this DLL isn't loaded, need to load it up and call it
+	HINSTANCE LoadMe;
+	LoadMe = LoadLibrary(props.filename);
+	if (LoadMe == 0) return;
+	PLUGINCALLOPTIONSDLG PluginCallOptionsDlg = (PLUGINCALLOPTIONSDLG)GetProcAddress(LoadMe, "PluginCallOptionsDlg");
+	if (PluginCallOptionsDlg != NULL)
+		PluginCallOptionsDlg();
+	FreeLibrary(LoadMe);
 }
 
 vector<FileRecordPtr> Plugin::GetIdentifiers() {

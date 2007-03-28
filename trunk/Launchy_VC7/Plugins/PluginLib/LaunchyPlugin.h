@@ -40,4 +40,7 @@ extern "C" __declspec(dllexport) TCHAR* PluginGetSeparator();
 extern "C" __declspec(dllexport) void PluginFreeResults (SearchResult*, int num);
 extern "C" __declspec(dllexport) void PluginFreeStrings (TCHAR* str);
 extern "C" __declspec(dllexport) TCHAR* PluginGetName();
+extern "C" __declspec(dllexport) TCHAR* PluginGetDescription();
+extern "C" __declspec(dllexport) void PluginClose();
+//extern "C" __declspec(dllexport) void PluginCallOptionsDlg();
 #endif

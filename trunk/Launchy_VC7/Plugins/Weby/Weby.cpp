@@ -183,3 +183,12 @@ TCHAR* PluginGetName() {
 	wstring tmp = L"Weby";
 	return string2TCHAR(tmp);
 }
+
+TCHAR* PluginGetDescription() {
+	wstring tmp = L"Launches url's and common websites";
+	return string2TCHAR(tmp);
+}
+
+void PluginClose() {
+	return;
+}

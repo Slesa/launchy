@@ -198,7 +198,13 @@
 				RelativePath=".\src\Options.cpp">
 			</File>
 			<File
+				RelativePath=".\options.cpp">
+			</File>
+			<File
 				RelativePath=".\src\Plugin.cpp">
+			</File>
+			<File
+				RelativePath=".\src\PluginDialog.cpp">
 			</File>
 			<File
 				RelativePath=".\src\ReadOnlyEdit.cpp">
@@ -293,16 +299,19 @@
 				RelativePath=".\src\Plugin.h">
 			</File>
 			<File
+				RelativePath=".\src\PluginDialog.h">
+			</File>
+			<File
 				RelativePath=".\src\QArray.h">
 			</File>
 			<File
 				RelativePath=".\src\ReadOnlyEdit.h">
 			</File>
 			<File
-				RelativePath=".\src\Resource.h">
+				RelativePath=".\resource.h">
 			</File>
 			<File
-				RelativePath=".\resource.h">
+				RelativePath=".\src\Resource.h">
 			</File>
 			<File
 				RelativePath=".\src\SingleInstanceApp.h">

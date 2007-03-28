@@ -323,3 +323,12 @@ TCHAR* PluginGetName() {
 	wstring tmp = L"Foxy";
 	return string2TCHAR(tmp);
 }
+
+TCHAR* PluginGetDescription() {
+	wstring tmp = L"Loads Firefox Bookmarks and Quick Searches";
+	return string2TCHAR(tmp);
+}
+
+void PluginClose() {
+	return;
+}

@@ -203,6 +203,19 @@ BEGIN
                     12,SS_NOTIFY
 END
 
+IDD_PLUGINS_DIALOG DIALOGEX 0, 0, 354, 237
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Launchy Plugin Options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,274,216,50,14
+    LISTBOX         IDC_PLUGINLIST,7,7,247,223,LBS_SORT | LBS_OWNERDRAWFIXED | 
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "Plugin Options",IDC_OPTIONS,276,104,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -306,6 +319,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 157
     END
+
+    IDD_PLUGINS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 347
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 230
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -329,10 +350,12 @@ BEGIN
     POPUP "Launchy Settings"
     BEGIN
         MENUITEM "Skins",                       ID_SETTINGS_SKINS
+        MENUITEM "Plugins",                     ID_SETTINGS_PLUGINS
+        MENUITEM SEPARATOR
         MENUITEM "Directories",                 ID_SETTINGS_DIRECTORIES
-        MENUITEM "Rebuild Index",               ID_SETTINGS_REBUILD
         MENUITEM "Hotkey",                      ID_SETTINGS_HOTKEY
         MENUITEM "Advanced",                    ID_SETTINGS_ADVANCED
+        MENUITEM "Rebuild Index",               ID_SETTINGS_REBUILD
         MENUITEM SEPARATOR
         MENUITEM "About",                       ID_SETTINGS_ABOUT
         MENUITEM "Exit",                        ID_EXIT

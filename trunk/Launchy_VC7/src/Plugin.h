@@ -43,6 +43,7 @@ struct IndexItem {
 };
 
 
+
 typedef vector<SearchResult> SearchResults;
 typedef vector<IndexItem> IndexItems;
 
@@ -57,6 +58,9 @@ typedef void (* PLUGINFREERESULTS) ( SearchResult*, int);
 typedef void (* PLUGINFREESTRINGS) ( TCHAR* );
 typedef TCHAR* (* PLUGINGETSEPARATOR) (void);
 typedef TCHAR* (* PLUGINGETNAME) (void);
+typedef TCHAR* (* PLUGINGETDESCRIPTION) (void);
+typedef void (* PLUGINCALLOPTIONSDLG) (void);
+typedef void (* PLUGINCLOSE) (void);
 
 struct PluginFunctions {
 	PLUGINGETREGEXS PluginGetRegexs;
@@ -69,8 +73,18 @@ struct PluginFunctions {
 	PLUGINFREESTRINGS PluginFreeStrings;
 	PLUGINGETSEPARATOR PluginGetSeparator;
 	PLUGINGETNAME PluginGetName;
+	PLUGINGETDESCRIPTION PluginGetDescription;
+	PLUGINCALLOPTIONSDLG PluginCallOptionsDlg;
+	PLUGINCLOSE PluginClose;
 };
 
+struct DLLProperties {
+	CString name;
+	CString filename;
+	CString description;
+	bool loaded;
+	bool hasOptionsDlg;
+};
 
 
 class Plugin
@@ -81,6 +95,7 @@ class Plugin
 		CString name;
 		unsigned long nametag;
 		CString filename;
+		CString description;
 	};
 
 private:
@@ -88,6 +103,8 @@ private:
 	vector<DLLInstance> loadedPlugins;
 	void LoadRegExs();
 public:
+	
+	vector<DLLProperties> allPlugins;
 	Plugin(void);
 	~Plugin(void);
 
@@ -99,6 +116,8 @@ public:
 	CString Plugin::GetSeparator(int PluginID);
 	unsigned long Plugin::GetPluginNameTag(int id);
 	HICON Plugin::GetIcon(int id);
+	void CallOptionsDlg(const DLLProperties &);
+	void ReloadPlugins(map<CString, bool> ids);
 	/*
 
 	LoadDlls(void);
