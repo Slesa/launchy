@@ -105,4 +105,5 @@ public:
 	void HideLaunchy(void);
 	bool DoDonate(void);
 	void ShowLaunchy(void);
+	void CLaunchyDlg::SetWindowLayer(bool AlwaysOnTop);
 };
