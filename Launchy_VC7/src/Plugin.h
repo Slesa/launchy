@@ -117,7 +117,6 @@ public:
 	unsigned long Plugin::GetPluginNameTag(int id);
 	HICON Plugin::GetIcon(int id);
 	void CallOptionsDlg(const DLLProperties &);
-	void ReloadPlugins(map<CString, bool> ids);
 	/*
 
 	LoadDlls(void);

@@ -159,7 +159,6 @@ void Plugin::LoadDlls() {
 		funcs.PluginCallOptionsDlg = (PLUGINCALLOPTIONSDLG)GetProcAddress(LoadMe, "PluginCallOptionsDlg");
 		funcs.PluginClose = (PLUGINCLOSE)GetProcAddress(LoadMe, "PluginClose");
 
-		pfuncs.push_back(funcs);
 
 		if (funcs.PluginGetName != NULL) {
 			TCHAR* tmpName = funcs.PluginGetName();
@@ -182,7 +181,8 @@ void Plugin::LoadDlls() {
 			prop.hasOptionsDlg = false;
 
 		if (ops->LoadPlugin(di.name)) {
-			loadedPlugins.push_back(di);
+			loadedPlugins.push_back(di);		
+			pfuncs.push_back(funcs);
 			prop.loaded = true;
 		} else {
 			FreeLibrary(LoadMe);
@@ -197,29 +197,6 @@ void Plugin::LoadDlls() {
 }
 
 
-void Plugin::ReloadPlugins(map<CString, bool> ids) {
-	// First turn off any running plugins that should no longer be
-//	for(int i = 0; i < loadedPlugins.size(); i++) {
-		// This is rather tricky because I use the vector id in loadedPlugins
-		// as the general id that Launchy uses, which is bad when I remove it from loadedPlugins!
-/*
-	Steps:
-		0) Ensure that the launchy selection does not depend on the dll	
-		1) Send the close message to the dll
-		2) Remove everything from the database that references the plugin
-		3) Remove the regular expression matches for the plugin
-		4) Unload the dll
-		5) Remove the dll from loadedPlugins
-		6) Set loaded to false in DllProperties
-
-	}
-
-	// Next turn on plugins that should now be running but were not before
-		1) Load the dll w/ same functions as the LoadDlls (e.g. load the reg expressions and identifiers and crap)
-		2) Add to loadedPlugins
-		3) Set loaded to true in DllProperties
-*/
-}
 
 
 void Plugin::CallOptionsDlg(const DLLProperties & props) {

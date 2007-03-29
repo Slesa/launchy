@@ -56,6 +56,7 @@ CLaunchyDlg::CLaunchyDlg(CWnd* pParent /*=NULL*/)
 
 	m_FontInput = NULL;
 	m_FontResult = NULL;
+	ShowLaunchyAtStart = false;
 }
 
 void CLaunchyDlg::DoDataExchange(CDataExchange* pDX)
@@ -92,6 +93,8 @@ BOOL CLaunchyDlg::OnInitDialog()
 	AfxInitRichEdit();
 
 
+
+
 	// Change the directory to Launchy's executable
 	int numArgs;
 	LPWSTR*  strings = CommandLineToArgvW(GetCommandLine(), &numArgs);
@@ -99,6 +102,15 @@ BOOL CLaunchyDlg::OnInitDialog()
 		AfxMessageBox(L"There was an error with Launchy initialization, quitting");
 		return 0;
 	}
+	if (numArgs == 2) {
+		CString arg1;
+		arg1 = strings[1];		
+		if (arg1 == L"/wait")
+			ShowLaunchyAtStart = true;
+	}
+
+
+
 	CString tmp = strings[0];
 	tmp = tmp.Left(tmp.ReverseFind(L'\\')+1);
 	_wchdir(tmp.GetBuffer());
@@ -143,7 +155,7 @@ BOOL CLaunchyDlg::OnInitDialog()
 //	InputBox.ShowDropDown(0);
 	//	InputBox.DoSubclass();
 
-	if (options->stickyWindow) {
+	if (options->stickyWindow || ShowLaunchyAtStart) {
 		//		HideLaunchy();
 		ShowLaunchy();
 	}
@@ -159,6 +171,7 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 	if (options->indexTime != 0)
 		SetTimer(UPDATE_TIMER, 60000, NULL);
+
 
 
 	initialized = true;
@@ -237,9 +250,10 @@ void CLaunchyDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 			lpwndpos->flags &= ~SWP_SHOWWINDOW;
 		} else {	
 			// If after oninitdialog, only hide if supposed to
-			if (!options->stickyWindow) {
+			if (options != NULL && !options->stickyWindow && !ShowLaunchyAtStart) {
 				lpwndpos->flags &= ~SWP_SHOWWINDOW;		
 			}
+
 		}
 	}
 

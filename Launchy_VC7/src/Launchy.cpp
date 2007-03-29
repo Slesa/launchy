@@ -80,7 +80,24 @@ BOOL CLaunchyApp::InitInstance()
 	CWinApp::InitInstance();
 	
 
-    if (g_SingleInstanceObj.IsAnotherInstanceRunning())
+	int numArgs;
+	LPWSTR*  strings = CommandLineToArgvW(GetCommandLine(), &numArgs);
+	bool waited = false;
+
+
+
+	if (numArgs >= 2) {
+		CString arg1 = strings[1];
+
+		if (arg1 == L"/wait") {
+			// Another instance of Launchy is closing, wait to go any further
+			WaitForSingleObject(g_SingleInstanceObj.m_hMutex, INFINITE);
+			waited = true;
+		}
+	}
+
+
+    if (!waited && g_SingleInstanceObj.IsAnotherInstanceRunning())
        return FALSE; 
 
 	// Create application mutexes so that installer knows when

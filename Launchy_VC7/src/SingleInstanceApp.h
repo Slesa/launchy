@@ -7,7 +7,7 @@
 //where this code came from.
 class CLimitSingleInstance
 {
-protected:
+public:
   DWORD  m_dwLastError;
   HANDLE m_hMutex;
 
