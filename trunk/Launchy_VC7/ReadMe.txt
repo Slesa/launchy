@@ -1,15 +1,15 @@
 Features to complete before release:
 . Add options support for plugins
-. Add plugins dialog with enable/disable and options button
 . Make magic word plugin
 . Plugin SDK Package
 . Make plugin section on the webpage
 . Don't want to see launchy flash up on startup
-. Reload list of DLL's in the directory when you go to "Plugins"
 
 
 New Features:
 . Added AlwaysOnTop Toggle
+. Add plugins dialog with enable/disable and options button
+
 
 Bug Fixes:
 . Fill up the textbox with words and then use ctrl+left/right arrow and it scrambles the text as it scrolls

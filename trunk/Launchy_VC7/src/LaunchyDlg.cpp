@@ -687,12 +687,12 @@ void CLaunchyDlg::AdjustPostionIfOffscreen(void) {
 
 void CLaunchyDlg::ShowLaunchy(void)
 {
-	this->Visible = true;
+	this->DoDonate();	
 	this->AdjustPostionIfOffscreen();
+	this->Visible = true;
 	this->ShowWindows((bool) SW_SHOW);
 	this->ActivateTopParent();
 	this->InputBox.SetFocus();
-	this->DoDonate();	
 }
 
 void CLaunchyDlg::ClearEntry(void) {
