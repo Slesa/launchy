@@ -119,7 +119,7 @@ HICON Plugin::GetIcon(int id) {
 	return ret;
 }
 
-void Plugin::LoadDlls() {
+void Plugin::LoadDlls(bool FirstLoad /* = true */) {
 	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
 	CDiskObject disk;
@@ -167,6 +167,14 @@ void Plugin::LoadDlls() {
 			di.nametag = GenerateNameTag(di.name);
 		}
 
+		// Do we already know about this plugin? If so, continue
+		bool seenThisInstance = false;
+		for(int j = 0; j < allPlugins.size(); j++) {
+			if (di.name == allPlugins[j].name) {
+				seenThisInstance = true;	
+			}
+		}
+
 		if (funcs.PluginGetDescription != NULL) {
 			TCHAR* tmpDescr = funcs.PluginGetDescription();
 			di.description = tmpDescr;
@@ -180,7 +188,7 @@ void Plugin::LoadDlls() {
 		else
 			prop.hasOptionsDlg = false;
 
-		if (ops->LoadPlugin(di.name)) {
+		if (!seenThisInstance && FirstLoad && ops->LoadPlugin(di.name)) {
 			loadedPlugins.push_back(di);		
 			pfuncs.push_back(funcs);
 			prop.loaded = true;
@@ -188,11 +196,13 @@ void Plugin::LoadDlls() {
 			FreeLibrary(LoadMe);
 			prop.loaded = false;
 		}
-		prop.name = di.name;
-		prop.filename = path;
-		prop.description = di.description;
-		allPlugins.push_back(prop);
-		
+
+		if (!seenThisInstance) {
+			prop.name = di.name;
+			prop.filename = path;
+			prop.description = di.description;
+			allPlugins.push_back(prop);
+		}		
 	}
 }
 
