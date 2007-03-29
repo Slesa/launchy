@@ -74,14 +74,42 @@ void CPluginDialog::OnBnClickedOk()
 	shared_ptr<Plugin> plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
 	if (plugins == NULL) return;
 
-	// Make a list of the turned on plugins and tell the plugin manager to update
-	map<CString,bool> ids;
+	// Tell the plugin manager of the 
+	int changes = 0;
 	for(int i = 0; i < PluginList.GetCount(); i++) {
-		ids[plugins->allPlugins[i].name] = PluginList.GetCheck(i);
+		if (PluginList.GetCheck(i) != plugins->allPlugins[i].loaded)
+			changes++;
+		plugins->allPlugins[i].loaded = PluginList.GetCheck(i);
 	}
 
-	plugins->ReloadPlugins(ids);
+	if (changes > 0) {
 
+		AfxMessageBox(L"Launchy will now be restarted to apply the plugin changes you have made");
+
+		// Load a new Launchy
+		int numArgs;
+		LPWSTR*  strings = CommandLineToArgvW(GetCommandLine(), &numArgs);
+
+
+		SHELLEXECUTEINFO ShExecInfo;
+
+		ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+		ShExecInfo.fMask = NULL;
+		ShExecInfo.hwnd = NULL;
+		ShExecInfo.lpVerb = NULL;
+		ShExecInfo.lpFile = strings[0];
+		ShExecInfo.lpParameters = L"/wait";
+		ShExecInfo.lpDirectory = NULL;
+		ShExecInfo.nShow = SW_NORMAL;
+		ShExecInfo.hInstApp = NULL;
+
+		BOOL ret = ShellExecuteEx(&ShExecInfo);	
+
+
+		// Close this Launchy
+        ASSERT(AfxGetApp()->m_pMainWnd != NULL);
+        AfxGetApp()->m_pMainWnd->PostMessage(WM_CLOSE); 
+	}
 	OnOK();
 }
 

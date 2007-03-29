@@ -205,7 +205,6 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 	for(int i = 0; i < count; i++) {
 
 
-//		THE INDEXING PROBLEM IS HERE (WHEN THIS IS NOT COMMENTED NOTHING GETS INDEXED
 		if (in[i].nametag != -1) {
 			PluginCounts[in[i].nametag][in[i].name] = in[i].usage;
 			continue;
@@ -246,12 +245,13 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 			}
 		}
 	}
-
+/*
 	// Add the plugin names
 	vector<FileRecordPtr> recs = bun->plugins->GetIdentifiers();
 
 	added.RemoveAll();
 	for(uint i = 0; i < recs.size(); i++) {
+		
 		FileRecordPtr rec = recs[i];
 		int nametag = bun->plugins->GetPluginNameTag(rec->owner);
 
@@ -284,6 +284,7 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 			}
 		}
 	}
+	*/
 }
 
 
