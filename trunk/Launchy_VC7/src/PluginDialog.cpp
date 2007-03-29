@@ -52,6 +52,7 @@ BOOL CPluginDialog::OnInitDialog()
 
 	shared_ptr<Plugin> plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
 	if (plugins == NULL) return true;
+	plugins->LoadDlls(false);
 	PluginList.ResetContent();
 	PluginList.SetCheckStyle( BS_AUTOCHECKBOX  );
 

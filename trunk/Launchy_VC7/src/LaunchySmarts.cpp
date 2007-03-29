@@ -245,7 +245,7 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 			}
 		}
 	}
-/*
+
 	// Add the plugin names
 	vector<FileRecordPtr> recs = bun->plugins->GetIdentifiers();
 
@@ -284,7 +284,7 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 			}
 		}
 	}
-	*/
+	
 }
 
 

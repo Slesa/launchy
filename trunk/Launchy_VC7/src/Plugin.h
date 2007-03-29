@@ -108,7 +108,7 @@ public:
 	Plugin(void);
 	~Plugin(void);
 
-	void LoadDlls();
+	void LoadDlls(bool FirstLoad = true);
 	vector<FileRecordPtr> Plugin::GetIdentifiers();
 	void Launch(int PluginID, TCHAR* FullPath);
 	int IsSearchOwned(CString searchTxt);
