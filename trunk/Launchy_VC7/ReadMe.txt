@@ -4,6 +4,8 @@ Features to complete before release:
 . Plugin SDK Package
 . Make plugin section on the webpage
 . Don't want to see launchy flash up on startup
+. When plugin closes grab the storage options
+. Fix the always on top for plugin option dialogs & launchy
 
 
 New Features:

@@ -107,6 +107,9 @@ public:
 	//returns number of values stored for specified key
 	int GetNumValues(CString keyname);
 
+	//returns the i'th keyname and value
+	void GetIthKeyValue(CString keyname, int i, CString& valuename, CString& value);
+
 	//gets value of [keyname] valuename = 
 	//overloaded to return CString, int, and double,
 	//returns "", or 0 if key/value not found.  Sets error member to show problem

@@ -399,3 +399,20 @@ TCHAR* PluginGetDescription() {
 void PluginClose() {
 	return;
 }
+
+
+void PluginInitialize() {
+	return;
+}
+
+void PluginSaveOptions() {
+	return;
+}
+
+void PluginCallOptionsDlg() {
+	return;
+}
+
+bool PluginHasOptionsDlg() {
+	return false;
+}

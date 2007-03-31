@@ -61,6 +61,11 @@ typedef TCHAR* (* PLUGINGETNAME) (void);
 typedef TCHAR* (* PLUGINGETDESCRIPTION) (void);
 typedef void (* PLUGINCALLOPTIONSDLG) (void);
 typedef void (* PLUGINCLOSE) (void);
+typedef void (* PLUGININITIALIZE) (void);
+typedef void (* PLUGINGETSTORAGE) (int* NumItems, TCHAR** ItemNames, TCHAR** ItemValues);
+typedef void (* PLUGINSETSTORAGE) (int NumItems, TCHAR* ItemNames, TCHAR* ItemValues);
+typedef bool (* PLUGINHASOPTIONSDLG) (void);
+
 
 struct PluginFunctions {
 	PLUGINGETREGEXS PluginGetRegexs;
@@ -69,13 +74,17 @@ struct PluginFunctions {
 	PLUGINFILEOPTIONS PluginFileOptions;
 	PLUGINDOACTION PluginDoAction;
 	PLUGINGETIDENTIFIERS PluginGetIdentifiers;
+	PLUGINGETSTORAGE PluginGetStorage;
+	PLUGINSETSTORAGE PluginSetStorage;
 	PLUGINFREERESULTS PluginFreeResults;
 	PLUGINFREESTRINGS PluginFreeStrings;
 	PLUGINGETSEPARATOR PluginGetSeparator;
 	PLUGINGETNAME PluginGetName;
 	PLUGINGETDESCRIPTION PluginGetDescription;
 	PLUGINCALLOPTIONSDLG PluginCallOptionsDlg;
+	PLUGININITIALIZE PluginInitialize;
 	PLUGINCLOSE PluginClose;
+	PLUGINHASOPTIONSDLG PluginHasOptionsDlg;
 };
 
 struct DLLProperties {
@@ -85,6 +94,7 @@ struct DLLProperties {
 	bool loaded;
 	bool hasOptionsDlg;
 };
+
 
 
 class Plugin
@@ -117,6 +127,8 @@ public:
 	unsigned long Plugin::GetPluginNameTag(int id);
 	HICON Plugin::GetIcon(int id);
 	void CallOptionsDlg(const DLLProperties &);
+	void Plugin::GetStorage(int id);
+	void SendStorage(CString PluginName, PLUGINSETSTORAGE);
 	/*
 
 	LoadDlls(void);

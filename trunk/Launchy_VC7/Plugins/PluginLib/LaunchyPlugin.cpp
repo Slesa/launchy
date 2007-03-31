@@ -3,10 +3,13 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
 #include "LaunchyPlugin.h"
+
+map<wstring,wstring> Storage;
 
 void FreeSearchResult (SearchResult* sr) {
 	free(sr->DisplayString);
@@ -109,4 +112,68 @@ void PluginFreeResults (SearchResult* sr, int num) {
 		FreeSearchResult(cur);
 		cur++;
 	}
+}
+
+
+// Storage interface with Launchy executable
+void PluginSetStorage(int NumItems, TCHAR* ItemNames, TCHAR* ItemValues) {
+	Storage.clear();
+	vector<wstring> names = TCHARListToVector(NumItems, ItemNames);
+	vector<wstring> values = TCHARListToVector(NumItems, ItemValues);
+
+	for(int i = 0; i < NumItems; i++) {
+		Storage[names[i]] = values[i];
+	}
+}
+
+// Storage interface with Launchy executable
+void PluginGetStorage(int* NumItems, TCHAR** ItemNames, TCHAR** ItemValues) {
+	// Have the plugin store its options
+	PluginSaveOptions();
+
+	map<wstring,wstring>::iterator it;
+	vector<wstring> names;
+	vector<wstring> values;
+	for(it = Storage.begin(); it != Storage.end(); ++it) {
+		names.push_back(it->first);
+		values.push_back(it->second);
+	}
+
+	*NumItems = names.size();
+	*ItemNames = StringVectorToTCHAR(names);
+	*ItemValues = StringVectorToTCHAR(values);
+}
+
+void StoreString(wstring name, wstring value) {
+	Storage[name] = value;
+}
+
+wstring RetrieveString(wstring name) {
+	return Storage[name];
+}
+
+void StoreInt(wstring name, int value) {
+	wostringstream ss;
+	ss << value;
+	Storage[name] = ss.str();
+}
+
+int RetrieveInt(wstring name) {
+	wistringstream ss(Storage[name]);
+	int out;
+	ss >> out;
+	return out;
+}
+
+void StoreFloat(wstring name, float value) {
+	wostringstream ss;
+	ss << value;
+	Storage[name] = ss.str();
+}
+
+float RetrieveFloat(wstring name) {
+	wistringstream ss(Storage[name]);
+	float out;
+	ss >> out;
+	return out;
 }

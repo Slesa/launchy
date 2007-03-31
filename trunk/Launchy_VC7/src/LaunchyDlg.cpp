@@ -268,6 +268,7 @@ void CLaunchyDlg::OnClose()
 {
 	// Must close smarts before options!  
 	smarts.reset();
+	plugins.reset();
 	options.reset();
 	//	border.OnClose();
 	// TODO: Add your message handler code here and/or call default
