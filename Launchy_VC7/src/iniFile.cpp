@@ -341,6 +341,14 @@ int CIniFile::FindKey(CString keyname)
 	return keynum;
 }
 
+//returns the i'th keyname and value
+void CIniFile::GetIthKeyValue(CString keyname, int i, CString& valuename, CString& value) {
+	int keyid = FindKey(keyname);
+	valuename = keys[keyid].names[i];
+	value = keys[keyid].values[i];
+	return;
+}
+
 //returns index of specified value, in the specified key, or -1 if not found
 int CIniFile::FindValue(int keynum, CString valuename)
 {

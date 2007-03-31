@@ -46,6 +46,8 @@ TCHAR* StringArrayToTCHAR( CStringArray& Strings) {
 	return out;
 }
 
+
+
 vector<wstring> TCHARListToVector(int numStrings,  const TCHAR* Strings) {
 	vector<wstring> out;
 	const TCHAR* cur = Strings;
@@ -64,12 +66,17 @@ Plugin::Plugin(void)
 
 Plugin::~Plugin(void)
 {
-	pfuncs.clear();
 
 	for(uint i = 0; i < loadedPlugins.size(); i++) {
+		if (pfuncs[i].PluginGetStorage != NULL)
+			GetStorage(i);
+		if (pfuncs[i].PluginClose != NULL)
+			pfuncs[i].PluginClose();
 		FreeLibrary(loadedPlugins[i].handle);
 	}
 	loadedPlugins.clear();
+	pfuncs.clear();
+
 }
 
 void Plugin::LoadRegExs() 
@@ -119,6 +126,26 @@ HICON Plugin::GetIcon(int id) {
 	return ret;
 }
 
+void Plugin::SendStorage(CString PluginName, PLUGINSETSTORAGE PluginSetStorage) {
+	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	// Send the plugin its storage
+	CStringArray valuenames, values;
+	int numValues = ops->ini->GetNumValues(PluginName);
+	for(int i = 0; i < numValues; i++) {
+		CString valuename, value;
+		ops->ini->GetIthKeyValue(PluginName, i, valuename, value);
+		valuenames.Add(valuename);
+		values.Add(value);
+	}
+	TCHAR* szValueNames = StringArrayToTCHAR(valuenames);
+	TCHAR* szValues = StringArrayToTCHAR(values);
+	PluginSetStorage(numValues, szValueNames, szValues);
+	free(szValueNames);
+	free(szValues);
+
+
+}
+
 void Plugin::LoadDlls(bool FirstLoad /* = true */) {
 	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 
@@ -158,6 +185,10 @@ void Plugin::LoadDlls(bool FirstLoad /* = true */) {
 		funcs.PluginGetDescription = (PLUGINGETDESCRIPTION)GetProcAddress(LoadMe, "PluginGetDescription");
 		funcs.PluginCallOptionsDlg = (PLUGINCALLOPTIONSDLG)GetProcAddress(LoadMe, "PluginCallOptionsDlg");
 		funcs.PluginClose = (PLUGINCLOSE)GetProcAddress(LoadMe, "PluginClose");
+		funcs.PluginGetStorage = (PLUGINGETSTORAGE)GetProcAddress(LoadMe, "PluginGetStorage");
+		funcs.PluginSetStorage = (PLUGINSETSTORAGE)GetProcAddress(LoadMe, "PluginSetStorage");
+		funcs.PluginInitialize = (PLUGININITIALIZE)GetProcAddress(LoadMe, "PluginInitialize");
+		funcs.PluginHasOptionsDlg = (PLUGINHASOPTIONSDLG)GetProcAddress(LoadMe, "PluginHasOptionsDlg");
 
 
 		if (funcs.PluginGetName != NULL) {
@@ -167,6 +198,7 @@ void Plugin::LoadDlls(bool FirstLoad /* = true */) {
 			di.nametag = GenerateNameTag(di.name);
 		}
 
+
 		// Do we already know about this plugin? If so, continue
 		bool seenThisInstance = false;
 		for(int j = 0; j < allPlugins.size(); j++) {
@@ -174,6 +206,14 @@ void Plugin::LoadDlls(bool FirstLoad /* = true */) {
 				seenThisInstance = true;	
 			}
 		}
+
+
+		if (!seenThisInstance && funcs.PluginGetName != NULL && funcs.PluginSetStorage != NULL) {
+			SendStorage(di.name, funcs.PluginSetStorage);
+		}
+
+		if (!seenThisInstance && funcs.PluginInitialize)
+			funcs.PluginInitialize();
 
 		if (funcs.PluginGetDescription != NULL) {
 			TCHAR* tmpDescr = funcs.PluginGetDescription();
@@ -183,13 +223,12 @@ void Plugin::LoadDlls(bool FirstLoad /* = true */) {
 
 		DLLProperties prop;
 
-		if (funcs.PluginCallOptionsDlg != NULL) 
-			prop.hasOptionsDlg = true;
-		else
-			prop.hasOptionsDlg = false;
+		prop.hasOptionsDlg = false;
+		if (funcs.PluginHasOptionsDlg != NULL) 
+			prop.hasOptionsDlg = funcs.PluginHasOptionsDlg;
 
 		if (!seenThisInstance && FirstLoad && ops->LoadPlugin(di.name)) {
-			loadedPlugins.push_back(di);		
+			loadedPlugins.push_back(di);
 			pfuncs.push_back(funcs);
 			prop.loaded = true;
 		} else {
@@ -228,9 +267,55 @@ void Plugin::CallOptionsDlg(const DLLProperties & props) {
 	LoadMe = LoadLibrary(props.filename);
 	if (LoadMe == 0) return;
 	PLUGINCALLOPTIONSDLG PluginCallOptionsDlg = (PLUGINCALLOPTIONSDLG)GetProcAddress(LoadMe, "PluginCallOptionsDlg");
-	if (PluginCallOptionsDlg != NULL)
-		PluginCallOptionsDlg();
+	PLUGINSETSTORAGE PluginSetStorage = (PLUGINSETSTORAGE)GetProcAddress(LoadMe, "PluginSetStorage");
+	PLUGINGETNAME PluginGetName = (PLUGINGETNAME)GetProcAddress(LoadMe, "PluginGetName");
+	PLUGINFREESTRINGS PluginFreeStrings = (PLUGINFREESTRINGS)GetProcAddress(LoadMe,"PluginFreeStrings");
+	PLUGININITIALIZE PluginInitialize = (PLUGININITIALIZE)GetProcAddress(LoadMe,"PluginInitialize");
+	PLUGINHASOPTIONSDLG PluginHasOptionsDlg = (PLUGINHASOPTIONSDLG)GetProcAddress(LoadMe, "PluginHasOptionsDlg");
+	bool hasOptionsDlg = false;
+	if (PluginHasOptionsDlg != NULL) 
+		hasOptionsDlg = PluginHasOptionsDlg;
+
+	if (hasOptionsDlg) {
+		// Give the plugin its options
+		if (PluginGetName != NULL && PluginSetStorage != NULL) {
+			TCHAR* tmpName = PluginGetName();
+			CString name = tmpName;
+			PluginFreeStrings(tmpName);
+			SendStorage(name, PluginSetStorage);
+		}
+		if (PluginInitialize)
+			PluginInitialize();
+
+		// Call up the options dialog
+		if (PluginCallOptionsDlg != NULL)
+			PluginCallOptionsDlg();
+	}
 	FreeLibrary(LoadMe);
+}
+
+void Plugin::GetStorage(int id) {
+	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+	if (ops == NULL) return;
+
+	int numResults = 0;
+	TCHAR* Names = NULL;
+	TCHAR* Values = NULL;
+
+
+	pfuncs[id].PluginGetStorage(&numResults, &Names, &Values);
+
+	vector<wstring> vNames = TCHARListToVector(numResults, Names);
+	vector<wstring> vValues = TCHARListToVector(numResults, Values);
+	pfuncs[id].PluginFreeStrings(Names);
+	pfuncs[id].PluginFreeStrings(Values);
+
+	if (vNames.size() != vValues.size() || vNames.size() != numResults) 
+		return;
+
+	for(int i = 0; i < numResults; i++) {
+		ops->ini->SetValue(loadedPlugins[id].name, vNames[i].c_str(), vValues[i].c_str());
+	}
 }
 
 vector<FileRecordPtr> Plugin::GetIdentifiers() {
@@ -257,6 +342,12 @@ vector<FileRecordPtr> Plugin::GetIdentifiers() {
 			cur++;
 		}
 		pfuncs[i].PluginFreeResults(res, NumResults);
+	
+
+		// Now get the storage items
+		if (pfuncs[i].PluginGetStorage != NULL) {
+			GetStorage(i);
+		}
 	}
 
 	return PluginRecords;
@@ -346,3 +437,5 @@ CString Plugin::GetSeparator(int PluginID)
 	pfuncs[PluginID].PluginFreeStrings(sep);
 	return tmp;
 }
+
+
