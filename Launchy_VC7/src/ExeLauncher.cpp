@@ -30,7 +30,7 @@ ExeLauncher::~ExeLauncher(void)
 {
 }
 
-void ExeLauncher::Run(FileRecordPtr file)
+void ExeLauncher::Run(FileRecordPtr file, CString  args)
 {
 //	HINSTANCE res =	ShellExecuteEx(NULL, _T("open"),file.fullPath, _T(""), _T(""), SW_SHOW);
 //	CString str;
@@ -43,6 +43,7 @@ void ExeLauncher::Run(FileRecordPtr file)
 	}
 
 
+
 	SHELLEXECUTEINFO ShExecInfo;
 
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -50,7 +51,7 @@ void ExeLauncher::Run(FileRecordPtr file)
 	ShExecInfo.hwnd = NULL;
 	ShExecInfo.lpVerb = NULL;
 	ShExecInfo.lpFile = exec;
-	ShExecInfo.lpParameters = NULL;
+	ShExecInfo.lpParameters = args;
 	ShExecInfo.lpDirectory = file->GetDirectory();
 	ShExecInfo.nShow = SW_NORMAL;
 	ShExecInfo.hInstApp = NULL;

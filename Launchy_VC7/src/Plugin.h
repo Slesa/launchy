@@ -4,6 +4,7 @@
 #include <map>
 #include <boost/regex.hpp>
 #include "FileRecord.h"
+#include "Options.h"
 
 using namespace std;
 
@@ -119,7 +120,7 @@ public:
 	~Plugin(void);
 
 	void LoadDlls(bool FirstLoad = true);
-	vector<FileRecordPtr> Plugin::GetIdentifiers();
+	vector<FileRecordPtr> Plugin::GetIdentifiers(Options*);
 	void Launch(int PluginID, TCHAR* FullPath);
 	int IsSearchOwned(CString searchTxt);
 	shared_ptr<vector<FileRecordPtr> > GetSearchOptions(int owner);
@@ -127,7 +128,7 @@ public:
 	unsigned long Plugin::GetPluginNameTag(int id);
 	HICON Plugin::GetIcon(int id);
 	void CallOptionsDlg(const DLLProperties &);
-	void Plugin::GetStorage(int id);
+	void Plugin::GetStorage(int id, Options*);
 	void SendStorage(CString PluginName, PLUGINSETSTORAGE);
 	/*
 

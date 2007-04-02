@@ -19,7 +19,7 @@
 
 HINSTANCE hInstance;
 
-vector<cmd> Commands;
+map<wstring,wstring> Commands;
 
 using namespace std;
 BOOL APIENTRY DllMain( HINSTANCE hModule, 
@@ -51,11 +51,11 @@ bool PluginOwnsSearch (TCHAR* txt)
 
 SearchResult* PluginGetIdentifiers (int* iNumResults)
 {
-
-
 	vector<SearchResult> results;
 
-
+	for(map<wstring,wstring>::iterator it = Commands.begin(); it != Commands.end(); ++it) {
+		results.push_back(makeResult(it->first, it->first, L"Runner Command", NULL));
+	}
 	*iNumResults = (int) results.size();
 	return ResultVectorToArray(results);
 }
@@ -78,12 +78,7 @@ SearchResult* PluginFileOptions (const TCHAR* FullPath, int NumStrings, const TC
 	return NULL;
 }
 
-
-void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, const TCHAR* FullPath) {
-
-	
-}
-void Split(wstring str, vector<wstring>& tokens, const TCHAR delim = ' ') {
+ void Split(wstring str, vector<wstring>& tokens, const TCHAR delim = ' ') {
 	if (str.size() == 0) return;
 	int start = 0;
 	for(uint i = 0; i < str.size(); i++) {
@@ -97,6 +92,50 @@ void Split(wstring str, vector<wstring>& tokens, const TCHAR delim = ' ') {
 		tokens.push_back(str.substr(start, str.size()-start));
 	}
 }
+
+void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, const TCHAR* FullPath) {
+	vector<wstring> VStrings = TCHARListToVector(NumStrings, Strings);
+	VStrings.push_back(FinalString);
+//	wstring lowFinal(FinalString);
+//	transform(lowFinal.begin(), lowFinal.end(), lowFinal.begin(), tolower);
+
+	if (VStrings.size() <= 1) {
+		return;
+	}
+
+	if (Commands.count(VStrings[0]) == 0) return;
+
+	wstring format = Commands[VStrings[0]];
+	if (format == L"") return;
+
+
+	vector<wstring> split;
+	Split(format, split, L'$');
+
+	wstring finalString = split[0];
+
+	for(int i = 1; i < split.size(); i++) {
+		if (split[i][0] - L'0' == i && VStrings.size() >= i+1) {
+			finalString += VStrings[i];
+		}
+		finalString += split[i].substr(1);
+	}
+
+	SHELLEXECUTEINFO ShExecInfo;
+	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+	ShExecInfo.fMask = NULL;
+	ShExecInfo.hwnd = NULL;
+	ShExecInfo.lpVerb = NULL;
+	ShExecInfo.lpFile = finalString.c_str();
+	ShExecInfo.lpParameters = NULL;
+	ShExecInfo.lpDirectory = NULL;
+	ShExecInfo.nShow = SW_NORMAL;
+	ShExecInfo.hInstApp = NULL;
+
+	BOOL ret = ShellExecuteEx(&ShExecInfo);	
+	return;
+}
+
 
 
 TCHAR* PluginGetSeparator() {
@@ -118,20 +157,20 @@ void PluginInitialize() {
 	vector<wstring> names;
 	Split(RetrieveString(L"COMMAND_NAMES"), names, L';');
 	for(int i = 0; i < names.size(); i++) {
-		cmd c;
-		c.name = names[i];
-		c.format = RetrieveString(names[i]);
-		Commands.push_back(c);
+		Commands[names[i]] = RetrieveString(names[i]);
 	}
 }
 
 void PluginSaveOptions() {
 	wstring names = L"";
-	for(int i = 0; i < Commands.size(); i++) {
-		names += Commands[i].name;
-		if (i != Commands.size() - 1)
+
+	for(map<wstring,wstring>::iterator it = Commands.begin(); it != Commands.end(); ++it) {
+		names += it->first;
+		map<wstring,wstring>::iterator itmp = it;
+		itmp++;
+		if (itmp != Commands.end())
 			names += L";";
-		StoreString(Commands[i].name, Commands[i].format);
+		StoreString(it->first, it->second);
 	}
 	StoreString(L"COMMAND_NAMES", names);
 	return;

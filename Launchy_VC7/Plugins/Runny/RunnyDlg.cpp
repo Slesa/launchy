@@ -7,22 +7,32 @@
 using namespace std;
 
 void AddString(HWND hwnd) {
-    int len = GetWindowTextLength(GetDlgItem(hwnd, IDC_EDIT)) + 1;
-    if(len > 0)
+    int nlen = GetWindowTextLength(GetDlgItem(hwnd, IDC_ENAME)) + 1;
+	int clen = GetWindowTextLength(GetDlgItem(hwnd, IDC_ECOMMAND)) + 1;
+
+	if(nlen > 0 && clen > 0)
     {
-		TCHAR* buff = (TCHAR*) malloc(sizeof(TCHAR) * len);
-		GetDlgItemText(hwnd, IDC_EDIT, buff, len);
+		TCHAR* buff = (TCHAR*) malloc(sizeof(TCHAR) * nlen);
+		GetDlgItemText(hwnd, IDC_ENAME, buff, nlen);
 
-		wstring tmp = buff;
+		wstring name = buff;
 		free(buff);
-		if (tmp == L"" || tmp.find(L"|") == string::npos) {
-			MessageBox(hwnd, L"The proper format of a Runny command is \"<command name> | <program to run>\"", L"Error in command", MB_OK);
-			return;
-		}
 
-		SendDlgItemMessage(hwnd, IDC_LIST, LB_ADDSTRING, 0, (LPARAM) tmp.c_str());
+
+		buff = (TCHAR*) malloc(sizeof(TCHAR) * clen);
+		GetDlgItemText(hwnd, IDC_ECOMMAND, buff, clen);
+
+		wstring command = buff;
+		free(buff);
+
+		wstring combined = name;
+		combined += L" | ";
+		combined += command;
+
+		SendDlgItemMessage(hwnd, IDC_LIST, LB_ADDSTRING, 0, (LPARAM) combined.c_str());
     }
-	SetDlgItemText(hwnd, IDC_EDIT, L"");
+	SetDlgItemText(hwnd, IDC_ENAME, L"");
+	SetDlgItemText(hwnd, IDC_ECOMMAND, L"");
 }
 
 void RemoveString(HWND hwnd) {
@@ -35,10 +45,10 @@ void RemoveString(HWND hwnd) {
 void OnInitDialog(HWND hwnd) {
 
 	// Add all of the strings
-	for(int i = 0; i < Commands.size(); i++) {
-		wstring tmp = Commands[i].name;
+	for(map<wstring,wstring>::iterator it = Commands.begin(); it != Commands.end(); ++it) {
+		wstring tmp = it->first;
 		tmp += L" | ";
-		tmp += Commands[i].format;
+		tmp += it->second;
 		SendDlgItemMessage(hwnd, IDC_LIST, LB_ADDSTRING, 0, (LPARAM) tmp.c_str());
 	}
 }
@@ -63,10 +73,8 @@ void StoreCommands(HWND hwnd) {
 
 		int sepPos = str.find(L"|", 0);
 		if (sepPos == string::npos) continue;
-		cmd c;
-		c.name = TrimSides(str.substr(0, sepPos));
-		c.format = TrimSides(str.substr(sepPos + 1));
-		Commands.push_back(c);
+		Commands[TrimSides(str.substr(0,sepPos))] = TrimSides(str.substr(sepPos + 1));
+
 	}
 }
 

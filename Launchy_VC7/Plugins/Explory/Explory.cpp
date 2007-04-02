@@ -353,9 +353,12 @@ SearchResult* PluginFileOptions (const TCHAR* FullPath, int NumStrings, const TC
 		TCHAR strworkdir[MAX_PATH];
 		TCHAR strlnkdesc[INFOTIPSIZE];
 		if (SUCCEEDED(ResolveShortcut(FullPath, strfilepath, strlnkdesc, strworkdir))) {
-			TakeOverPath = strfilepath;
-			SearchResult* sr = PluginUpdateSearch(1, strfilepath, FinalString, NumResults);
-			return sr;
+			// Is it pointing to a directory or a file?
+			if (DirectoryExists(strfilepath)) {
+				TakeOverPath = strfilepath;
+				SearchResult* sr = PluginUpdateSearch(1, strfilepath, FinalString, NumResults);
+				return sr;
+			}
 		}
 	}
 	*NumResults = 0;

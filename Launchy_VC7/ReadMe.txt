@@ -1,16 +1,15 @@
 Features to complete before release:
-. Add options support for plugins
-. Make magic word plugin
 . Plugin SDK Package
 . Make plugin section on the webpage
 . Don't want to see launchy flash up on startup
-. When plugin closes grab the storage options
 . Fix the always on top for plugin option dialogs & launchy
-
 
 New Features:
 . Added AlwaysOnTop Toggle
 . Add plugins dialog with enable/disable and options button
+. Runny plugin
+. Command line arguments
+. Options support for plugins
 
 
 Bug Fixes:

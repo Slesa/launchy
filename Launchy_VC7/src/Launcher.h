@@ -34,5 +34,5 @@ public:
 	Launcher(void);
 	~Launcher(void);
 	virtual void Run(FileRecordPtr
-		file) = 0;
+		file, CString) = 0;
 };

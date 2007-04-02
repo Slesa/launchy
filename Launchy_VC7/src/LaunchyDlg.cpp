@@ -327,7 +327,7 @@ BOOL CLaunchyDlg::PreTranslateMessage(MSG* pMsg)
 			}
 		}
 		else if (pMsg->wParam==VK_TAB) {
-			if (smarts->matches.size() > 0 && searchTxt != L"")
+			if ( searchTxt != L"")
 				InputBox.TabSearchTxt();
 			return true;
 		}
@@ -436,6 +436,7 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		CPluginDialog dlg;
 		dlg.DoModal();
 		options->Store();
+		smarts->LoadCatalog();
 	}
 	else if (selection == ID_SETTINGS_HOTKEY) {
 		CHotkeyDialog dlg;
@@ -446,8 +447,8 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	else if (selection == ID_SETTINGS_DIRECTORIES) {
 		DirectoryChooser dlg;
 		dlg.DoModal();
-		smarts->LoadCatalog();
 		options->Store();
+		smarts->LoadCatalog();
 	}
 
 	else if (selection == ID_SETTINGS_ADVANCED) {

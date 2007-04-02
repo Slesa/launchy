@@ -13,9 +13,5 @@
 #include "LaunchyPlugin.h"
 
 
-struct cmd {
-	wstring name;
-	wstring format;
-};
 
-extern vector<cmd> Commands;
+extern map<wstring,wstring> Commands;

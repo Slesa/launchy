@@ -67,12 +67,22 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION |
 CAPTION "Runny Options"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,158,220,50,14
-    LISTBOX         IDC_LIST,19,17,338,146,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
-                    WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_EDIT,19,174,338,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "Add",IDC_BADD,81,192,50,14
-    PUSHBUTTON      "Remove",IDC_BREMOVE,227,192,50,14
+    EDITTEXT        IDC_ENAME,22,176,71,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ECOMMAND,109,176,248,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Add",IDC_BADD,21,197,50,14
+    DEFPUSHBUTTON   "OK",IDOK,21,220,50,14
+    LISTBOX         IDC_LIST,19,17,338,146,LBS_SORT | LBS_HASSTRINGS | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL
+    PUSHBUTTON      "Remove",IDC_BREMOVE,84,197,50,14,NOT WS_TABSTOP
+    LTEXT           "Command Name:",IDC_STATIC,22,168,55,8
+    LTEXT           "Execute:",IDC_STATIC,109,168,30,8
+    LTEXT           "Use $1 $2 etc. to mark places where your input will go",
+                    IDC_STATIC,166,214,174,8
+    LTEXT           "E.g. Name = email  Execute = mailto: $1",IDC_STATIC,166,
+                    224,130,8
+    LTEXT           "Quick Help:",IDC_STATIC,166,194,37,8
+    LTEXT           "Write a command name and an executable path",IDC_STATIC,
+                    166,204,154,8
 END
 
 

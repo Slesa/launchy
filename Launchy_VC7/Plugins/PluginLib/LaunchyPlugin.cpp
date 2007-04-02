@@ -149,6 +149,10 @@ void StoreString(wstring name, wstring value) {
 }
 
 wstring RetrieveString(wstring name) {
+	if (Storage.count(name) == 0) {
+		return L"";
+	}
+
 	return Storage[name];
 }
 
@@ -158,7 +162,13 @@ void StoreInt(wstring name, int value) {
 	Storage[name] = ss.str();
 }
 
-int RetrieveInt(wstring name) {
+int RetrieveInt(wstring name, bool& exists) {
+	exists = true;
+	if (Storage.count(name) == 0) {
+		exists = false;
+		return -1;
+	}
+
 	wistringstream ss(Storage[name]);
 	int out;
 	ss >> out;
@@ -171,7 +181,12 @@ void StoreFloat(wstring name, float value) {
 	Storage[name] = ss.str();
 }
 
-float RetrieveFloat(wstring name) {
+float RetrieveFloat(wstring name, bool& exists) {
+	exists = true;
+	if (Storage.count(name) == 0) {
+		exists = false;
+		return 0.0;
+	}
 	wistringstream ss(Storage[name]);
 	float out;
 	ss >> out;
