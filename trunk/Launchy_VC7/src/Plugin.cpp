@@ -66,10 +66,10 @@ Plugin::Plugin(void)
 
 Plugin::~Plugin(void)
 {
-
+	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
 	for(uint i = 0; i < loadedPlugins.size(); i++) {
 		if (pfuncs[i].PluginGetStorage != NULL)
-			GetStorage(i);
+			GetStorage(i, ops.get());
 		if (pfuncs[i].PluginClose != NULL)
 			pfuncs[i].PluginClose();
 		FreeLibrary(loadedPlugins[i].handle);
@@ -225,7 +225,7 @@ void Plugin::LoadDlls(bool FirstLoad /* = true */) {
 
 		prop.hasOptionsDlg = false;
 		if (funcs.PluginHasOptionsDlg != NULL) 
-			prop.hasOptionsDlg = funcs.PluginHasOptionsDlg;
+			prop.hasOptionsDlg = funcs.PluginHasOptionsDlg();
 
 		if (!seenThisInstance && FirstLoad && ops->LoadPlugin(di.name)) {
 			loadedPlugins.push_back(di);
@@ -294,9 +294,9 @@ void Plugin::CallOptionsDlg(const DLLProperties & props) {
 	FreeLibrary(LoadMe);
 }
 
-void Plugin::GetStorage(int id) {
-	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
-	if (ops == NULL) return;
+void Plugin::GetStorage(int id, Options* ops) {
+//	shared_ptr<Options> ops = ((CLaunchyDlg*)AfxGetMainWnd())->options;
+//	if (ops == NULL) return;
 
 	int numResults = 0;
 	TCHAR* Names = NULL;
@@ -318,7 +318,7 @@ void Plugin::GetStorage(int id) {
 	}
 }
 
-vector<FileRecordPtr> Plugin::GetIdentifiers() {
+vector<FileRecordPtr> Plugin::GetIdentifiers(Options* ops) {
 	vector<FileRecordPtr> PluginRecords;
 	for(uint i = 0; i < loadedPlugins.size(); i++) {
 		if (pfuncs[i].PluginGetIdentifiers == NULL)
@@ -346,7 +346,7 @@ vector<FileRecordPtr> Plugin::GetIdentifiers() {
 
 		// Now get the storage items
 		if (pfuncs[i].PluginGetStorage != NULL) {
-			GetStorage(i);
+			GetStorage(i, ops);
 		}
 	}
 

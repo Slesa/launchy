@@ -36,9 +36,9 @@ TCHAR* SerializeStringMap(map<wstring,wstring> m);
 void StoreString(wstring name, wstring value);
 wstring RetrieveString(wstring name);
 void StoreInt(wstring name, int value);
-int RetrieveInt(wstring name);
+int RetrieveInt(wstring name, bool& exists);
 void StoreFloat(wstring name, float value);
-float RetrieveFloat(wstring name);
+float RetrieveFloat(wstring name, bool& exists);
 
 
 extern "C" __declspec(dllexport) SearchResult* PluginGetIdentifiers (int* iNumResults);

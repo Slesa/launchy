@@ -247,7 +247,7 @@ void ScanFiles(CArray<ArchiveType>& in, ScanBundle* bun, CArray<ArchiveType>& ou
 	}
 
 	// Add the plugin names
-	vector<FileRecordPtr> recs = bun->plugins->GetIdentifiers();
+	vector<FileRecordPtr> recs = bun->plugins->GetIdentifiers(bun->ops);
 
 	added.RemoveAll();
 	for(uint i = 0; i < recs.size(); i++) {
@@ -570,6 +570,7 @@ int LaunchySmarts::FindSearchOwner(int& OwnerType) {
 	shared_ptr<Plugin> plugins = ((CLaunchyDlg*)AfxGetMainWnd())->plugins;
 
 
+	// Is the top match a plugin identifier?
 	if (matches.size() > 0) {
 		if (matches[0]->owner != -1) {
 			OwnerType = OWNER_MATCH;
@@ -577,17 +578,20 @@ int LaunchySmarts::FindSearchOwner(int& OwnerType) {
 		}
 	}
 
+	// This was tabbed and owned by a plugin
 	if (SearchStrings.GetCount() > 0 && SearchPluginID != -1) {
 		OwnerType = OWNER_TABBED;
 		return SearchPluginID;
 	}
 
+	// Tabbed and owned by Launchy
 	if (SearchStrings.GetCount() > 0 && SearchPluginID == -1) {
 		OwnerType = OWNER_OPTIONS;
 		return -1;
 	}
 
 	int owner = plugins->IsSearchOwned(searchTxt);
+
 	if (owner != -1) {
 		OwnerType = OWNER_REGEX;
 		return owner;
@@ -681,12 +685,12 @@ void LaunchySmarts::Launch(void)
 	else if (SearchStrings.GetSize() > 0 && SearchPluginID == -1) {
 		if (matches.size() > 0) {
 			matches[0]->setUsage(matches[0]->usage + 1);
-			exeLauncher.Run(matches[0]);		
+			exeLauncher.Run(matches[0], L"");		
 		}
 		else {
 			TabbedMatch->setUsage(TabbedMatch->usage + 1);
 			shared_ptr<FileRecord> tmp = TabbedMatch;
-			exeLauncher.Run(tmp);
+			exeLauncher.Run(tmp, searchTxt);
 		}
 	}
 
@@ -700,7 +704,7 @@ void LaunchySmarts::Launch(void)
 
 	else if(matches.size() > 0) {
 		matches[0]->setUsage(matches[0]->usage + 1);
-		exeLauncher.Run(matches[0]);
+		exeLauncher.Run(matches[0], L"");
 	}
 }
 

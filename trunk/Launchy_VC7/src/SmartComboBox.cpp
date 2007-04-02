@@ -145,11 +145,19 @@ void SmartComboBox::TabSearchTxt()
 	CLaunchyDlg* pDlg = (CLaunchyDlg*) AfxGetMainWnd();
 	if (pDlg == NULL) return;
 
-	TabbedMatch = pDlg->smarts->matches[0];
+	if (pDlg->smarts->matches.size() > 0) {
 
-	SearchStrings.Add(pDlg->smarts->matches[0]->croppedName);
+		TabbedMatch = pDlg->smarts->matches[0];
+
+		SearchStrings.Add(pDlg->smarts->matches[0]->croppedName);
+		SearchPluginID = pDlg->smarts->matches[0]->owner;
+	} else {
+//		return;
+		if (SearchStrings.GetCount() == 0) return;
+		SearchStrings.Add(searchTxt);
+	}
 	searchTxt = L"";
-	SearchPluginID = pDlg->smarts->matches[0]->owner;
+
 	ShowDropDown(false);
 	pDlg->smarts->Update(searchTxt);
 	ReformatDisplay();
