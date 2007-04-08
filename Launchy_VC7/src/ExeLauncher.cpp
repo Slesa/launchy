@@ -51,7 +51,11 @@ void ExeLauncher::Run(FileRecordPtr file, CString  args)
 	ShExecInfo.hwnd = NULL;
 	ShExecInfo.lpVerb = NULL;
 	ShExecInfo.lpFile = exec;
-	ShExecInfo.lpParameters = args;
+	if (args != L"") {
+		ShExecInfo.lpParameters = args;
+	} else {
+		ShExecInfo.lpParameters = NULL;
+	}
 	ShExecInfo.lpDirectory = file->GetDirectory();
 	ShExecInfo.nShow = SW_NORMAL;
 	ShExecInfo.hInstApp = NULL;

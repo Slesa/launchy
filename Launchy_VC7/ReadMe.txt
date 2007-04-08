@@ -1,8 +1,9 @@
 Features to complete before release:
 . Plugin SDK Package
 . Make plugin section on the webpage
-. Don't want to see launchy flash up on startup
-. Fix the always on top for plugin option dialogs & launchy
+. add .* for directory options
+. Set the options dialog parent correctly
+. Make the x buttons close the dialogs
 
 New Features:
 . Added AlwaysOnTop Toggle
@@ -12,13 +13,15 @@ New Features:
 . Options support for plugins
 
 
-Bug Fixes:
+Bug Fixes/Improvements:
 . Fill up the textbox with words and then use ctrl+left/right arrow and it scrambles the text as it scrolls
 . Removed startup crash bug
 . Fixed Google not getting selected bug
 . Fixed mouse problems
 . Launchy no longer jumps to original position when skins are changed
 . Fixed the problem with launchy in the corner of the screen moving elsewhere on reload
+. Calculator took priority over filenames with numbers, fixed
+. Launchy no longer flashes on screen when starting up
 
 WHERE I LEFT OFF:
 The plugin dialog is almost done.. except for the hard part: live update of plugins.  It's probably a really bad idea

@@ -201,7 +201,7 @@ void PluginSaveOptions() {
 	return;
 }
 
-void PluginCallOptionsDlg() {
+void PluginCallOptionsDlg(HWND parent) {
 	return;
 }
 

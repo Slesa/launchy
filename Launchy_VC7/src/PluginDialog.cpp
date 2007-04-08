@@ -121,7 +121,7 @@ void CPluginDialog::OnBnClickedOptions()
 
 	int id = PluginList.GetCurSel();
 	if (id == LB_ERR) return;
-	plugins->CallOptionsDlg(plugins->allPlugins[id]);
+	plugins->CallOptionsDlg(plugins->allPlugins[id], this->GetSafeHwnd());
 }
 
 void CPluginDialog::OnSelChange()

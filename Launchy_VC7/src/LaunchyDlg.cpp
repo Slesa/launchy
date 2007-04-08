@@ -89,9 +89,12 @@ END_MESSAGE_MAP()
 
 BOOL CLaunchyDlg::OnInitDialog()
 {
-	CDialogSK::OnInitDialog();
+
 	AfxInitRichEdit();
 
+	ShowWindows(false);
+
+	CDialogSK::OnInitDialog();
 
 
 
@@ -479,6 +482,7 @@ void CLaunchyDlg::applySkin()
 	RECT previousPos;
 	this->GetWindowRect(&previousPos);
 
+
 	if (options->skin == NULL) {
 		options->SetSkin(_T("Default"));
 		if (options->skin == NULL) {
@@ -524,6 +528,8 @@ void CLaunchyDlg::applySkin()
 		if (!border.inuse) {
 			int ret = border.Create(IDD_ALPHA_BORDER, this);
 		}
+		
+		border.ShowWindow(false);
 		border.SetImage(options->skin->alphaBorderFile);
 		border.inuse = true;
 
@@ -533,13 +539,7 @@ void CLaunchyDlg::applySkin()
 		ShowWindows(IsWindowVisible() != 0);
 	}
 
-	if (previousPos.top != 0 || previousPos.left != 0)
-		MoveWindow(previousPos.left, previousPos.top, options->skin->backRect.Width(), options->skin->backRect.Height(),1);
-	else
-		MoveWindow(options->posX, options->posY, options->skin->backRect.Width(), options->skin->backRect.Height(),1);
-	InputBox.MoveWindow(options->skin->inputRect,1);
-	Preview.MoveWindow(options->skin->resultRect,1);
-	IconPreview.MoveWindow(options->skin->iconRect,1);
+
 
 
 	//	InputBox.SetFont(options->skin->m_FontInput,1);
@@ -642,7 +642,17 @@ void CLaunchyDlg::applySkin()
 	// Set always on top or not
 	this->SetWindowLayer(options->aot);
 
+	if (previousPos.top != 0 || previousPos.left != 0)
+		MoveWindow(previousPos.left, previousPos.top, options->skin->backRect.Width(), options->skin->backRect.Height(),1);
+	else
+		MoveWindow(options->posX, options->posY, options->skin->backRect.Width(), options->skin->backRect.Height(),1);
+	InputBox.MoveWindow(options->skin->inputRect,1);
+	Preview.MoveWindow(options->skin->resultRect,1);
+	IconPreview.MoveWindow(options->skin->iconRect,1);	
+	
 	RedrawWindow();
+
+
 
 
 }
