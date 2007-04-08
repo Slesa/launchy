@@ -60,7 +60,7 @@ typedef void (* PLUGINFREESTRINGS) ( TCHAR* );
 typedef TCHAR* (* PLUGINGETSEPARATOR) (void);
 typedef TCHAR* (* PLUGINGETNAME) (void);
 typedef TCHAR* (* PLUGINGETDESCRIPTION) (void);
-typedef void (* PLUGINCALLOPTIONSDLG) (void);
+typedef void (* PLUGINCALLOPTIONSDLG) (HWND);
 typedef void (* PLUGINCLOSE) (void);
 typedef void (* PLUGININITIALIZE) (void);
 typedef void (* PLUGINGETSTORAGE) (int* NumItems, TCHAR** ItemNames, TCHAR** ItemValues);
@@ -127,7 +127,7 @@ public:
 	CString Plugin::GetSeparator(int PluginID);
 	unsigned long Plugin::GetPluginNameTag(int id);
 	HICON Plugin::GetIcon(int id);
-	void CallOptionsDlg(const DLLProperties &);
+	void CallOptionsDlg(const DLLProperties &, HWND);
 	void Plugin::GetStorage(int id, Options*);
 	void SendStorage(CString PluginName, PLUGINSETSTORAGE);
 	/*

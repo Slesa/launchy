@@ -53,7 +53,7 @@ extern "C" __declspec(dllexport) TCHAR* PluginGetName();
 extern "C" __declspec(dllexport) TCHAR* PluginGetDescription();
 extern "C" __declspec(dllexport) void PluginInitialize();
 extern "C" __declspec(dllexport) void PluginClose();
-extern "C" __declspec(dllexport) void PluginCallOptionsDlg();
+extern "C" __declspec(dllexport) void PluginCallOptionsDlg(HWND hwnd);
 extern "C" __declspec(dllexport) void PluginGetStorage(int* NumItems, TCHAR** ItemNames, TCHAR** ItemValues);
 extern "C" __declspec(dllexport) void PluginSetStorage(int NumItems, TCHAR* ItemNames, TCHAR* ItemValues);
 extern "C" __declspec(dllexport) bool PluginHasOptionsDlg(void);

@@ -248,14 +248,14 @@ void Plugin::LoadDlls(bool FirstLoad /* = true */) {
 
 
 
-void Plugin::CallOptionsDlg(const DLLProperties & props) {
+void Plugin::CallOptionsDlg(const DLLProperties & props, HWND wnd) {
 	if (props.loaded) {
 		// Find the dll in the loaded list and call its funcs
 		for(int i = 0; i < loadedPlugins.size(); i++) {
 			if (loadedPlugins[i].name == props.name) {
 				if (pfuncs[i].PluginCallOptionsDlg == NULL)
 					return;
-				pfuncs[i].PluginCallOptionsDlg();
+				pfuncs[i].PluginCallOptionsDlg(wnd);
 				break;
 			}
 		}
@@ -289,7 +289,7 @@ void Plugin::CallOptionsDlg(const DLLProperties & props) {
 
 		// Call up the options dialog
 		if (PluginCallOptionsDlg != NULL)
-			PluginCallOptionsDlg();
+			PluginCallOptionsDlg(wnd);
 	}
 	FreeLibrary(LoadMe);
 }

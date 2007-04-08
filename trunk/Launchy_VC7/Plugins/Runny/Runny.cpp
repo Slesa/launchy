@@ -186,6 +186,6 @@ bool PluginHasOptionsDlg() {
 	return true;
 }
 
-void PluginCallOptionsDlg() {
-	DialogBox(hInstance, MAKEINTRESOURCE(IDD_OPTIONS), NULL, OptionsDlgProc);
+void PluginCallOptionsDlg(HWND parent) {
+	DialogBox(hInstance, MAKEINTRESOURCE(IDD_OPTIONS), parent, OptionsDlgProc);
 }

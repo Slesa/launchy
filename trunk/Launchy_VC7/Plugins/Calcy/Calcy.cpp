@@ -46,7 +46,7 @@ SearchResult* PluginGetIdentifiers (int* iNumResults)
 TCHAR* PluginGetRegexs(int* iNumResults)
 {
 	*iNumResults = 1;
-	wstring regex = L"[\\d\\s\\-\\+\\*\\/\\(\\)\\.]+";
+	wstring regex = L".*[\\-\\+\\*\\/]+[\\d\\s\\-\\+\\*\\/\\(\\)\\.]+";
 	return string2TCHAR(regex);
 }
 
@@ -106,7 +106,7 @@ void PluginSaveOptions() {
 	return;
 }
 
-void PluginCallOptionsDlg() {
+void PluginCallOptionsDlg(HWND parent) {
 	return;
 }
 
