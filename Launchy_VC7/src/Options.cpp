@@ -193,6 +193,7 @@ void Options::ParseIni(void)
 
 	listLength = ini->GetValueI(_T("Advanced"), _T("List Length"), 10);
 	stickyWindow = ini->GetValueB(_T("Advanced"), _T("Sticky Window"), false);
+	chkupdate = ini->GetValueB(_T("Advanced"), _T("Check For Updates"), true);
 	aot = ini->GetValueB(_T("Advanced"), _T("Always on Top"), false);
 	indexTime = ini->GetValueI(_T("Advanced"), _T("Index Time"), 20);
 
@@ -226,6 +227,7 @@ void Options::Store(void)
 
 	ini->SetValueI(_T("Advanced"), _T("List Length"),  listLength);
 	ini->SetValueB(_T("Advanced"), _T("Sticky Window"), stickyWindow);
+	ini->SetValueB(_T("Advanced"), _T("Check For Updates"), chkupdate);
 	ini->SetValueB(_T("Advanced"), _T("Always on Top"), aot);
 	ini->SetValueI(_T("Advanced"), _T("Index Time"), indexTime);
 

@@ -326,7 +326,7 @@ UINT ScanStartMenu(LPVOID pParam)
 			CString tmps = tmpFiles[j].Mid(lastDot);
 			tmps.MakeLower();
 
-			if (globalTypeMap[tmps] || localTypeMap[tmps]) {
+			if (globalTypeMap[tmps] || localTypeMap[tmps] || globalTypeMap[L".*"] || localTypeMap[L".*"]) {
 				files.Add(tmpFiles[j]);
 			}
 		}

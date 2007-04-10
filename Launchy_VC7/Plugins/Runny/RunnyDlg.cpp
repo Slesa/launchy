@@ -10,7 +10,7 @@ void AddString(HWND hwnd) {
     int nlen = GetWindowTextLength(GetDlgItem(hwnd, IDC_ENAME)) + 1;
 	int clen = GetWindowTextLength(GetDlgItem(hwnd, IDC_ECOMMAND)) + 1;
 
-	if(nlen > 0 && clen > 0)
+	if(nlen > 1 && clen > 1)
     {
 		TCHAR* buff = (TCHAR*) malloc(sizeof(TCHAR) * nlen);
 		GetDlgItemText(hwnd, IDC_ENAME, buff, nlen);
@@ -31,6 +31,7 @@ void AddString(HWND hwnd) {
 
 		SendDlgItemMessage(hwnd, IDC_LIST, LB_ADDSTRING, 0, (LPARAM) combined.c_str());
     }
+
 	SetDlgItemText(hwnd, IDC_ENAME, L"");
 	SetDlgItemText(hwnd, IDC_ECOMMAND, L"");
 }
@@ -98,6 +99,9 @@ BOOL CALLBACK OptionsDlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 					break;
 				case IDC_BREMOVE:
 					RemoveString(hwnd);
+					break;
+				case IDCANCEL:
+					EndDialog(hwnd, IDOK);
 					break;
             }
         break;

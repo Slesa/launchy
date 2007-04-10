@@ -28,4 +28,5 @@ public:
 	int i_listLength;
 	int dbUpdateTime;
 	CButton cb_aot;
+	CButton cb_update;
 };

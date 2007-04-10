@@ -61,7 +61,7 @@ IDI_ICON1               ICON                    "fox.ico"
 // Dialog
 //
 
-IDD_OPTIONS DIALOGEX 0, 0, 379, 241
+IDD_OPTIONS DIALOGEX 0, 0, 379, 254
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
     WS_SYSMENU
 CAPTION "Runny Options"
@@ -69,20 +69,21 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_ENAME,22,176,71,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_ECOMMAND,109,176,248,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "Add",IDC_BADD,21,197,50,14
-    DEFPUSHBUTTON   "OK",IDOK,21,220,50,14
+    PUSHBUTTON      "Add",IDC_BADD,76,194,50,9
+    DEFPUSHBUTTON   "OK",IDOK,21,233,50,14
     LISTBOX         IDC_LIST,19,17,338,146,LBS_SORT | LBS_HASSTRINGS | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL
-    PUSHBUTTON      "Remove",IDC_BREMOVE,84,197,50,14,NOT WS_TABSTOP
+    PUSHBUTTON      "Remove",IDC_BREMOVE,76,203,50,9,NOT WS_TABSTOP
     LTEXT           "Command Name:",IDC_STATIC,22,168,55,8
     LTEXT           "Execute:",IDC_STATIC,109,168,30,8
     LTEXT           "Use $1 $2 etc. to mark places where your input will go",
-                    IDC_STATIC,166,214,174,8
-    LTEXT           "E.g. Name = email  Execute = mailto: $1",IDC_STATIC,166,
-                    224,130,8
-    LTEXT           "Quick Help:",IDC_STATIC,166,194,37,8
+                    IDC_STATIC,177,217,174,8
+    LTEXT           "E.g. Name = email  Execute = mailto: $1",IDC_STATIC,177,
+                    226,130,8
     LTEXT           "Write a command name and an executable path",IDC_STATIC,
-                    166,204,154,8
+                    177,206,154,8
+    PUSHBUTTON      "Cancel",IDCANCEL,85,233,50,14
+    GROUPBOX        "Help",IDC_STATIC,170,196,185,43
 END
 
 
@@ -99,7 +100,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 372
         TOPMARGIN, 7
-        BOTTOMMARGIN, 234
+        BOTTOMMARGIN, 247
     END
 END
 #endif    // APSTUDIO_INVOKED

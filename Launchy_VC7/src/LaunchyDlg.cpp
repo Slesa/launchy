@@ -32,6 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include ".\launchydlg.h"
 #include "plugin.h"
 #include "PluginDialog.h"
+#include <afxinet.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -57,6 +58,7 @@ CLaunchyDlg::CLaunchyDlg(CWnd* pParent /*=NULL*/)
 	m_FontInput = NULL;
 	m_FontResult = NULL;
 	ShowLaunchyAtStart = false;
+	ShowingDialog = false;
 }
 
 void CLaunchyDlg::DoDataExchange(CDataExchange* pDX)
@@ -82,7 +84,22 @@ BEGIN_MESSAGE_MAP(CLaunchyDlg, CDialogSK)
 	ON_MESSAGE(LAUNCHY_DB_DONE, OnDBDone)
 END_MESSAGE_MAP()
 
+UINT CheckForUpdate (LPVOID pParam) { 
+	CInternetSession session;
+	CHttpFile* file = reinterpret_cast<CHttpFile*>( session.OpenURL( L"http://www.launchy.net/version.html"));
+	DWORD infocode;
+	file->QueryInfoStatusCode(infocode);
+	if (infocode != 200) return 0;
+	char* buff = (char*) malloc(sizeof(char) * 256);
+	file->Read(buff,10);
+	int latest = atoi(buff);
+	free(buff);
 
+	if (LAUNCHY_VERSION < latest) {
+		AfxMessageBox(L"A new version of Launchy is available.\n\nYou can download it at http://www.launchy.net/");
+	}
+	return 0;
+}
 
 
 // CLaunchyDlg message handlers
@@ -177,6 +194,11 @@ BOOL CLaunchyDlg::OnInitDialog()
 
 
 
+
+	if (options->chkupdate)
+		AfxBeginThread(CheckForUpdate, NULL, THREAD_PRIORITY_IDLE);
+
+
 	initialized = true;
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -226,6 +248,7 @@ LRESULT CLaunchyDlg::OnHotKey(WPARAM wParam, LPARAM lParam) {
 			this->Visible = false;
 			atLaunch = false;
 		}
+		if (ShowingDialog) return 1;
 		if (options->stickyWindow) {
 			this->ShowLaunchy();
 		} else {
@@ -269,6 +292,8 @@ void CLaunchyDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 
 void CLaunchyDlg::OnClose()
 {
+	// Save our settings before the database
+	options->Store();
 	// Must close smarts before options!  
 	smarts.reset();
 	plugins.reset();
@@ -427,7 +452,9 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 	if (selection == ID_SETTINGS_SKINS) {
 		SkinChooser dlg;
+		ShowingDialog = true;
 		dlg.DoModal();
+		ShowingDialog = false;
 		applySkin();
 		options->Store();
 	}
@@ -437,26 +464,34 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 		this->ClearEntry();
 		CPluginDialog dlg;
+		ShowingDialog = true;
 		dlg.DoModal();
+		ShowingDialog = false;
 		options->Store();
 		smarts->LoadCatalog();
 	}
 	else if (selection == ID_SETTINGS_HOTKEY) {
 		CHotkeyDialog dlg;
+		ShowingDialog = true;
 		dlg.DoModal();
+		ShowingDialog = false;
 		options->Store();
 	}
 
 	else if (selection == ID_SETTINGS_DIRECTORIES) {
+		ShowingDialog = true;
 		DirectoryChooser dlg;
 		dlg.DoModal();
+		ShowingDialog = false;
 		options->Store();
 		smarts->LoadCatalog();
 	}
 
 	else if (selection == ID_SETTINGS_ADVANCED) {
 		AdvancedOptions dlg;
+		ShowingDialog = true;
 		dlg.DoModal();
+		ShowingDialog = false;
 		options->Store();
 		// Apply any changes to the windows, such as always on top
 		this->applySkin();
@@ -468,7 +503,9 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 
 	else if (selection == ID_SETTINGS_ABOUT) {
 		AboutDialog dlg;
+		ShowingDialog = true;
 		dlg.DoModal();
+		ShowingDialog = false;
 	}
 
 

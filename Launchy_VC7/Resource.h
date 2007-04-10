@@ -52,8 +52,9 @@
 #define IDC_RICHEDIT21                  1030
 #define IDC_COMBO2                      1031
 #define IDC_AOT                         1032
-#define IDC_BUTTON1                     1033
 #define IDC_OPTIONS                     1033
+#define IDC_AOT2                        1033
+#define IDC_UPDATES                     1033
 #define IDC_PLUGINLIST                  1034
 #define ID_SKINS_CUSTOMDIRECTORIES      32771
 #define ID_SKINS_SKINS                  32772

@@ -68,8 +68,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 typedef unsigned int uint;
-#define LAUNCHY_VERSION 110
-#define LAUNCHY_VERSION_STRING L"1.1.0"
+#define LAUNCHY_VERSION 125
+#define LAUNCHY_VERSION_STRING L"1.25"
 
 #define LAUNCHY_DB_DONE (WM_APP + 1)
 #define UWM_SELECTION_CHANGED (WM_APP+2)
