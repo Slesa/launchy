@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Options.h"
 #include "smartcombobox.h"
 #include "LaunchySmarts.h"
-#include "Resource.h"
+#include "../Resource.h"
 #include "TransparentStatic2.h"
 #include "AlphaBorder.h"
 #include "Plugin.h"
@@ -61,6 +61,7 @@ protected:
 	HICON m_hIcon;
 	BOOL initialized;
 	BOOL atLaunch;
+	BOOL ShowingDialog;
 	BOOL Visible;
 	// Generated message map functions
 	virtual BOOL OnInitDialog();

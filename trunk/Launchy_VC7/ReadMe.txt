@@ -1,9 +1,7 @@
 Features to complete before release:
 . Plugin SDK Package
 . Make plugin section on the webpage
-. add .* for directory options
-. Set the options dialog parent correctly
-. Make the x buttons close the dialogs
+. Control Panel plugin
 
 New Features:
 . Added AlwaysOnTop Toggle
@@ -11,6 +9,8 @@ New Features:
 . Runny plugin
 . Command line arguments
 . Options support for plugins
+. Added .* as a filetype
+. Launchy update notification
 
 
 Bug Fixes/Improvements:

@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "stdafx.h"
+//#include "stdafx.h"
 
 using namespace std;
 typedef unsigned int uint;
