@@ -85,19 +85,50 @@ BEGIN_MESSAGE_MAP(CLaunchyDlg, CDialogSK)
 END_MESSAGE_MAP()
 
 UINT CheckForUpdate (LPVOID pParam) { 
-	CInternetSession session;
-	CHttpFile* file = reinterpret_cast<CHttpFile*>( session.OpenURL( L"http://www.launchy.net/version.html"));
-	DWORD infocode;
-	file->QueryInfoStatusCode(infocode);
-	if (infocode != 200) return 0;
-	char* buff = (char*) malloc(sizeof(char) * 256);
-	file->Read(buff,10);
-	int latest = atoi(buff);
-	free(buff);
 
-	if (LAUNCHY_VERSION < latest) {
-		AfxMessageBox(L"A new version of Launchy is available.\n\nYou can download it at http://www.launchy.net/");
+	CInternetSession session;
+	CHttpFile* file = NULL;
+	CHttpConnection* pServer = NULL;
+
+	try {
+
+		CHttpFile* file = reinterpret_cast<CHttpFile*>( session.OpenURL( L"http://www.launchy.net/version.html"));
+		DWORD infocode;
+		file->QueryInfoStatusCode(infocode);
+		if (infocode != 200) return 0;
+		char* buff = (char*) malloc(sizeof(char) * 256);
+		file->Read(buff,10);
+		int latest = atoi(buff);
+		free(buff);
+
+		if (LAUNCHY_VERSION < latest) {
+			AfxMessageBox(L"A new version of Launchy is available.\n\nYou can download it at http://www.launchy.net/");
+		}
+
+		delete file;
+		file = NULL;
+
+
+		// Now get the stats
+		//http://m1.webstats.motigo.com/n?id=AEJV3A4l/cDSX3qBPvhGeIRGerIg
+		CHttpConnection* pServer = NULL;
+		pServer = session.GetHttpConnection(L"m1.webstats.motigo.com");
+
+		file = pServer->OpenRequest(NULL, 
+			L"n?id=AEJV3A4l/cDSX3qBPvhGeIRGerIg",
+			L"http://www.launchy.net/stats2.html");
+
+		CString szHeaders = L"Accept: image/gif, text/plain, text/html, text/htm\r\n";
+		file->AddRequestHeaders(szHeaders);
+		file->SendRequest();
+
+	} 	catch (CInternetException* pEx)
+	{
 	}
+	if (file != NULL) delete file;
+	if (pServer != NULL) delete pServer;
+
+	
 	return 0;
 }
 

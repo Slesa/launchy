@@ -1,7 +1,9 @@
 Features to complete before release:
 . Plugin SDK Package
 . Make plugin section on the webpage
-. Control Panel plugin
+x . Control Panel plugin
+. Fix up explory so that you don't have to keep hitting tabs
+. Add google analytics to update check
 
 New Features:
 . Added AlwaysOnTop Toggle
