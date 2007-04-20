@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Launchy"
-#define MyAppVerName "Launchy 1.0"
+#define MyAppVerName "Launchy 1.25"
 #define MyAppPublisher "Code Jelly"
 #define MyAppURL "http://www.launchy.net"
 #define MyAppExeName "Launchy.exe"
@@ -41,6 +41,8 @@ Source: ..\bin\Plugins\Explory.dll; DestDir: {app}\Plugins\; Flags: ignoreversio
 Source: ..\bin\Plugins\Weby.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
 Source: ..\bin\Plugins\Calcy.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
 Source: ..\bin\Plugins\Foxy.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+Source: ..\bin\Plugins\Runny.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
+Source: ..\bin\Plugins\Controly.dll; DestDir: {app}\Plugins\; Flags: ignoreversion
 
 Source: ..\res\Launchy.ico; DestDir: {app}; Flags: ignoreversion
 Source: ..\license.rtf; DestDir: {app}; Flags: ignoreversion
@@ -107,37 +109,6 @@ Source: ..\Skins\Black Glass\skin.ini; DestDir: {app}\Skins\Black Glass\; Flags:
 Source: ..\Skins\Black Glass\border.png; DestDir: {app}\Skins\Black Glass\; Flags: ignoreversion
 Source: ..\Skins\Black Glass\Author.txt; DestDir: {app}\Skins\Black Glass\; Flags: ignoreversion
 
-
-Source: ..\Utilities\Control Panel\Accessibility Options.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Add Hardware.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Add or Remove Programs.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Administrative Tools.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Automatic Updates.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Date and Time.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Display.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Folder Options.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Fonts.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Game Controllers.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Internet Options.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Keyboard.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Mouse.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Network Connections.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Network Setup Wizard.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Phone and Modem Options.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Portable Media Devices.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Power Options.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Printers and Faxes.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Regional and Language Options.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Scanners and Cameras.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Scheduled Tasks.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Security Center.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Sounds and Audio Devices.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Speech.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\System.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Taskbar and Start Menu.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\User Accounts.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Windows Firewall.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
-Source: ..\Utilities\Control Panel\Wireless Network Setup Wizard.lnk; DestDir: {app}\Utilities\Control Panel\; Flags: ignoreversion
 Source: ..\Utilities\Special Folders\C Drive.lnk; DestDir: {app}\Utilities\Special Folders\; Flags: ignoreversion
 Source: ..\Utilities\Special Folders\Control Panel.lnk; DestDir: {app}\Utilities\Special Folders\; Flags: ignoreversion
 Source: ..\Utilities\Special Folders\My Computer.lnk; DestDir: {app}\Utilities\Special Folders\; Flags: ignoreversion

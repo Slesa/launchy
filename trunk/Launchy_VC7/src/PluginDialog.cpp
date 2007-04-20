@@ -107,9 +107,10 @@ void CPluginDialog::OnBnClickedOk()
 		BOOL ret = ShellExecuteEx(&ShExecInfo);	
 
 
-		// Close this Launchy
-        ASSERT(AfxGetApp()->m_pMainWnd != NULL);
-        AfxGetApp()->m_pMainWnd->PostMessage(WM_CLOSE); 
+	((CLaunchyDlg*)AfxGetMainWnd())->options->Store();
+	((CLaunchyDlg*)AfxGetMainWnd())->EndDialog(1);
+    //    ASSERT(AfxGetApp()->m_pMainWnd != NULL);
+    //    AfxGetApp()->m_pMainWnd->PostMessage(WM_CLOSE); 
 	}
 	OnOK();
 }

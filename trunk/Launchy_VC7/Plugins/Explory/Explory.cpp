@@ -66,7 +66,7 @@ SearchResult* PluginGetIdentifiers (int* iNumResults)
 TCHAR* PluginGetRegexs(int* iNumResults)
 {
 	vector<wstring> vect;
-//	vect.push_back(L".*\\\\.*");
+	vect.push_back(L".*\\\\.*");
 	*iNumResults = (int) vect.size();
 	return StringVectorToTCHAR(vect);
 }
@@ -270,6 +270,7 @@ SearchResult* PluginUpdateSearch (int NumStrings, const TCHAR* Strings, const TC
 	wstring FinalString = fs;
 	vector<wstring> VStrings = TCHARListToVector(NumStrings, Strings);
 
+
 	wstring lowFinal(FinalString);
 	transform(lowFinal.begin(), lowFinal.end(), lowFinal.begin(), tolower);
 
@@ -364,6 +365,7 @@ SearchResult* PluginFileOptions (const TCHAR* FullPath, int NumStrings, const TC
 	*NumResults = 0;
 	return NULL;	
 }
+
 	
 
 void PluginDoAction (int NumStrings, const TCHAR* Strings, const TCHAR* FinalString, const TCHAR* FullPath) {
