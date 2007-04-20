@@ -157,6 +157,7 @@ LaunchySmarts::LaunchySmarts(void)
 
 
 	catFiles = 0;
+
 	LoadFirstTime();
 }
 
@@ -368,6 +369,7 @@ UINT ScanStartMenu(LPVOID pParam)
 
 	bun->smarts->releaseCatalogLock();
 	::PostMessage(bun->dlg, LAUNCHY_DB_DONE, (WPARAM)0, (LPARAM)0);
+
 	delete bun;
 
 

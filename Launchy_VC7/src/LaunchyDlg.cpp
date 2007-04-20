@@ -116,7 +116,7 @@ UINT CheckForUpdate (LPVOID pParam) {
 
 		file = pServer->OpenRequest(NULL, 
 			L"n?id=AEJV3A4l/cDSX3qBPvhGeIRGerIg",
-			L"http://www.launchy.net/stats2.html");
+			L"http://www.launchy.net/stats.html");
 
 		CString szHeaders = L"Accept: image/gif, text/plain, text/html, text/htm\r\n";
 		file->AddRequestHeaders(szHeaders);
@@ -323,6 +323,8 @@ void CLaunchyDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 
 void CLaunchyDlg::OnClose()
 {
+	// Wait for all threads to finish 
+
 	// Save our settings before the database
 	options->Store();
 	// Must close smarts before options!  
@@ -498,7 +500,6 @@ void CLaunchyDlg::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		ShowingDialog = true;
 		dlg.DoModal();
 		ShowingDialog = false;
-		options->Store();
 		smarts->LoadCatalog();
 	}
 	else if (selection == ID_SETTINGS_HOTKEY) {

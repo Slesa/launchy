@@ -205,7 +205,7 @@ TCHAR* PluginGetName() {
 }
 
 TCHAR* PluginGetDescription() {
-	wstring tmp = L"Launches Control Panel Applications";
+	wstring tmp = L"Indexes Control Panel Applications";
 	return string2TCHAR(tmp);
 }
 
