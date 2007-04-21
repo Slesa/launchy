@@ -1,0 +1,48 @@
+<title>Launchy 1.25 API Documentation</title>
+<h2> Launchy 1.25 API Documentation</h2>
+<h3> Overview </h3>
+<a href="#design">Launchy Plugin Design</a><br>
+<a href="#gettingstarted">Geting Started</a><br>
+<a href="doxydoc/LaunchyPlugin_8h.html">Function Definitions and Docs</a><br>
+
+<h3><a name="design">Design</a></h3>
+By itself, Launchy can only index regular windows files such as mp3's, documents, links etc.  There are infinitely more things that the simple Launchy interface could be used for, e.g. as a calculator, browser launcher, directory walker, etc.<p>
+
+Launchy's interface is broken down into a user input window and a program output window.  As the user enters input, the items are matched against Launchy's index of objects and the best matching object's display name is displayed in the output window.  If the user presses the enter key then the object is launched by the object's owner. If the user presses the TAB key then the owner is asked to provide a new set of objects.<p>
+
+Plugins can claim ownership of objects in 3 ways:<br>
+1) The plugin can directly add owned objects to Launchy's index (see the PluginGetIdentifiers function)<br>
+2) The plugin can claim ownership of all user input that matches a regular expression (PluginGetRegexs)<br>
+3) The plugin can claim ownership of an object owned by Launchy once the user has hit TAB (PluginFileOptions)<br>
+<p>
+
+As an example of type 1 ownership, the Weby plugin adds "Google", "Amazon", etc. to Launchy's index.  As an example of type 2 ownership, the Weby plugin owns all user input that contains "www" or "http".  As an example of 3, the Explory plugin claims ownership of all .lnk files that point to directories once they have been tabbed.  For instance, if you type "my documen" and hit tab, Explory will take over ownership of that object.<p>
+
+The owner of an object or user input is responsible for adding content (if necessary) when the user presses the TAB key and for performing some action when the user hits the enter key.<p>
+
+An example of adding content as the user types after hitting the TAB key are file and directory names in Explory.  Example actions are launching web browsers, music players, and applications.<p>
+
+
+
+
+
+
+<h3><a name="gettingstarted">Getting Started</a></h3>
+Necessary Files:<br>
+<a href="LaunchyPlugin.h">LaunchyPlugin.h</a><br>
+<a href="LaunchyPlugin.cpp">LaunchyPlugin.cpp</a><p>
+Optional Blank Plugin Project:<br>
+<a href="BlankPlugin.zip">Blank Plugin</a><p>
+Example Plugin:<br>
+<a href="Weby.zip">Weby</a><p>
+
+A plugin is a Win32 DLL file that implements each of the event handlers.  The interfaces for each necessary handler are described in the <a href=doxydoc/LaunchyPlugin_8h.html">Function Definitions and Docs</a> section and each event function begins with the word "Plugin".  Each DLL must include the LaunchyPlugin.h and LaunchyPlugin.cpp files.  Therefore the DLL must be written in C++ and not C.  The plugin must use UNICODE characters and it should statically link all necessary libraries.<p>
+
+A template Visual Studio 2005 program is listed above as "Blank Plugin".  Also, there is a sample plugin provided called Weby.  For more example plugins download the Launchy source code from SVN on the SourceForge page.<p>
+
+The LaunchyPlugin.h defines a number of helper functions that you will likely find useful in your module so it is highly recommended that you review the <a href=doxydoc/LaunchyPlugin_8h.html">Function Definitions and Docs</a> section carefully.<p> 
+
+
+
+
+
