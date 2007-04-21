@@ -18,6 +18,10 @@ void FreeSearchResult (SearchResult* sr) {
 	DestroyIcon(sr->DisplayIcon);
 }
 
+/// <summary>
+/// Blah Blah blah
+/// </summary>
+/// <param name="str">Use this str</param>
 TCHAR* string2TCHAR(wstring str) {
 	TCHAR* dest = (TCHAR*) malloc(sizeof(TCHAR) * (str.length() + 1));
 	if (dest == NULL) exit(1);

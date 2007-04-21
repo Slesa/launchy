@@ -2,6 +2,15 @@ Features to complete before release:
 . Plugin SDK Package
 . Make plugin section on the webpage
 . Add the chinese character stuff from Bborn
+. Add foxy profile location finder stuff from launchy patches page on sf
+. Tab in dropdown menu doesn't select current item
+
+
+
+
+
+
+
 
 New Features:
 . Added AlwaysOnTop Toggle
