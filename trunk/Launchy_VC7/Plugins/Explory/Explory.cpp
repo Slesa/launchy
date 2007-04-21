@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include <Shlobj.h>
 #include <crtdbg.h>
+#include <atlbase.h>
 #include <atldef.h>
 #include <atlconv.h>
 
