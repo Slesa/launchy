@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include ".\launchysmarts.h"
 #include <boost/regex.hpp>
 #include "Plugin.h"
+#include "Oleacc.h"
 //#define SECURITY_WIN32 1
 //#include <Security.h>
 
@@ -816,4 +817,346 @@ CString LaunchySmarts::GetMatchPath(int sel)
 	} else {
 		return _T("");
 	}
+}
+
+
+// Iterate the top-level windows. Encapsulates ::EnumWindows.
+class CWindowIterator {
+protected:
+   HWND* m_hwnds;          // array of hwnds for this PID
+   DWORD m_nAlloc;         // size of array
+   DWORD m_count;          // number of HWNDs found
+   DWORD m_current;        // current HWND
+   static BOOL CALLBACK EnumProc(HWND hwnd, LPARAM lp);
+   // virtual enumerator
+   virtual BOOL OnEnumProc(HWND hwnd);
+   // override to filter different kinds of windows
+   virtual BOOL OnWindow(HWND hwnd) {return TRUE;}
+public:
+   CWindowIterator(DWORD nAlloc=1024);
+   ~CWindowIterator();
+   
+   DWORD GetCount() { return m_count; }
+   HWND First();
+   HWND Next() {
+      return m_hwnds && m_current < m_count ? m_hwnds[m_current++] : NULL;
+   }
+};
+
+// Iterate the top-level windows in a process.
+class CMainWindowIterator : public CWindowIterator  {
+protected:
+   DWORD m_pid;                     // process id
+   virtual BOOL OnWindow(HWND hwnd);
+public:
+   CMainWindowIterator(DWORD pid, DWORD nAlloc=1024);
+   ~CMainWindowIterator();
+};
+
+
+CWindowIterator::CWindowIterator(DWORD nAlloc)
+{
+   assert(nAlloc>0);
+   m_current = m_count = 0;
+   m_hwnds = new HWND [nAlloc];
+   m_nAlloc = nAlloc;
+}
+
+CWindowIterator::~CWindowIterator()
+{
+   delete [] m_hwnds;
+}
+
+HWND CWindowIterator::First()
+{
+   ::EnumWindows(EnumProc, (LPARAM)this);
+   m_current = 0;
+   return Next();
+}
+
+// Static proc passes to virtual fn.
+BOOL CALLBACK CWindowIterator::EnumProc(HWND hwnd, LPARAM lp)
+{
+   return ((CWindowIterator*)lp)->OnEnumProc(hwnd);
+}
+
+// Virtual proc: add HWND to array if OnWindow says OK
+BOOL CWindowIterator::OnEnumProc(HWND hwnd)
+{
+   if (OnWindow(hwnd)) {
+      if (m_count < m_nAlloc)
+         m_hwnds[m_count++] = hwnd;
+   }
+   return TRUE; // keep looking
+}
+
+CMainWindowIterator::CMainWindowIterator(DWORD pid, DWORD nAlloc)
+   : CWindowIterator(nAlloc)
+{
+   m_pid = pid;
+}
+
+CMainWindowIterator::~CMainWindowIterator()
+{
+}
+
+// virtual override: is this window a main window of my process?
+BOOL CMainWindowIterator::OnWindow(HWND hwnd)
+{
+   if (GetWindowLong(hwnd,GWL_STYLE) & WS_VISIBLE) {
+      DWORD pidwin;
+      GetWindowThreadProcessId(hwnd, &pidwin);
+      if (pidwin==m_pid)
+         return TRUE;
+   }
+   return FALSE;
+}
+/*
+void LaunchySmarts::SetActiveProgram(CWnd* wnd)
+{
+	if (wnd == m_lastWnd)
+		return;
+	m_lastWnd = wnd;
+	menuRecords.clear();
+
+	DWORD pid;
+	GetWindowThreadProcessId(wnd->m_hWnd,&pid);
+	CMainWindowIterator itw(pid);
+	HMENU menu = NULL;
+	for (HWND hwnd = itw.First(); hwnd; hwnd=itw.Next()) {
+		menu = GetMenu(hwnd);
+		if (menu != NULL && GetMenuItemCount(menu) > 0)
+			break;
+	}
+	if (menu == NULL)
+		return;
+	CMenu cmenu;
+	cmenu.Attach(menu);
+
+	uint count = cmenu.GetMenuItemCount();
+	for(int i = 0; i < count; i++) {
+		CString tmp;
+		cmenu.GetMenuString(i,tmp,MF_BYPOSITION);
+		AfxMessageBox(tmp);
+	}
+	
+	cmenu.Detach();
+
+}
+*/
+
+/*
+//  GetUIElementName()
+UINT GetUIElementName(IAccessible* pacc, VARIANT* pvarChild,
+                      LPTSTR lpszName, UINT cchName)
+{
+    HRESULT hr;
+    BSTR bstrName;
+
+    *lpszName = 0;
+    bstrName = NULL;
+
+    hr = pacc->get_accName(*pvarChild, &bstrName);
+
+    if (hr == S_OK && bstrName)
+    {
+        WideCharToMultiByte(CP_ACP, 0, bstrName, -1,
+                            lpszName, cchName, NULL, NULL);
+        SysFreeString(bstrName);
+    }
+    else
+        lstrcpyn(lpszName, "unknown name", cchName);
+
+    return(lstrlen(lpszName));
+}
+//  GetUIElementRole()
+UINT GetUIElementRole(IAccessible* pacc, VARIANT* pvarChild,
+ LPTSTR lpszRole, UINT cchRole, DWORD* dwRole)
+{
+    HRESULT hr;
+    VARIANT varRetVal;
+
+    *lpszRole = 0;
+
+    VariantInit(&varRetVal);
+
+    hr = pacc->get_accRole(*pvarChild, &varRetVal);
+
+    if (hr == S_OK && varRetVal.vt == VT_I4)
+    {
+        GetRoleText(varRetVal.lVal, lpszRole, cchRole);
+        *dwRole = varRetVal.lVal;
+    }
+    else
+        lstrcpyn(lpszRole, "unknown role", cchRole);
+
+    VariantClear(&varRetVal);
+
+    return(lstrlen(lpszRole));
+}
+
+//  GetUIElementState()
+UINT GetUIElementState(IAccessible* pacc, VARIANT* pvarChild,
+                       LPTSTR lpszState, UINT cchState, DWORD* dwState)
+{
+    HRESULT hr;
+    VARIANT varRetVal;
+
+    *lpszState = 0;
+
+    VariantInit(&varRetVal);
+
+    if(S_OK != (hr = pacc->get_accState(*pvarChild, &varRetVal)))
+        return(0);
+
+    DWORD dwStateBit;
+    UINT cChars = 0;     // number of characters in the lpszState string
+    UINT cCount = 32;    // number of bits
+
+    if (varRetVal.vt == VT_I4)
+    {
+        *dwState = varRetVal.lVal;
+
+        // Treat the "normal" state (varRetVal.vt = 0) separately
+        if(varRetVal.vt == 0)
+        {
+            GetStateText(0, lpszState, cChars);
+        }
+        else
+        {
+            // Convert state flags to comma separated list.
+            for(dwStateBit = 1; cCount; cCount--, dwStateBit <<= 1)
+            {
+                if (varRetVal.lVal & dwStateBit)
+                {
+                    cChars += GetStateText(dwStateBit, lpszState +
+                                           cChars, cchState - cChars);
+                    if(cchState > cChars)
+                        *(lpszState + cChars++) = ',';
+                    else
+                        break;
+                }
+
+            }
+            if(cChars > 1)
+                *(lpszState + cChars - 1) = '\0';
+        }
+    }
+
+    VariantClear(&varRetVal);
+
+    return(lstrlen(lpszState));
+}
+*/
+/*
+bool PrintMenuItems(IAccessible* msaa, VARIANT varChild) {
+	if( varChild.vt != VT_I4 )
+	{
+		//str << TEXT("[Error: Non-I4 ChildID - vt=") << varChild << TEXT("]");
+		return FALSE;
+	}
+	// Non-zero means we are over something not a container.
+	if( varChild.lVal != 0 )
+	{
+		return TRUE;
+	}
+
+
+	long cChildren = 0;
+	HRESULT hr = pAcc->get_accChildCount( & cChildren );
+	if( FAILED( hr ) )
+	{
+		//str << WriteError( hr, TEXT("accChildCount") );
+		return FALSE;
+	}
+	if( cChildren == 0 )
+	{
+		//str << TEXT("Container has no children");
+		return TRUE;
+	}
+	// Allocate memory for the array of child variant
+	VARIANT * pavarChildren = new VARIANT [cChildren];
+	if( ! pavarChildren )
+	{
+		//str << TEXT("[Error: no memory - new returned NULL]");
+		return FALSE;
+	}
+
+	long cObtained = 0;
+	hr = AccessibleChildren( pAcc, 0L, cChildren, pavarChildren, & cObtained );
+	BOOL fError = FALSE;
+	if( hr != S_OK )
+	{
+		//str << WriteError( hr, TEXT("AccessibleChildren") );
+		fError = TRUE;
+	}
+	else if( cObtained != cChildren)
+	{
+		//str << TEXT("[Error: Accessible children mismatch: expected=") << cChildren
+		// << TEXT(" vs got=") << cObtained << TEXT("]");
+		fError = TRUE;
+	}
+
+	for( int i = 0 ; i < cChildren ; i++ )
+	{
+		VARIANT * pVarChild = & pavarChildren[ i ];
+		if( pvarChild->vt == VT_I4 )
+		{
+			if( pvarChild->lVal == CHILDID_SELF )
+			{
+				// No normalization necessary...
+			}
+			else {
+				// Do processing *here*
+			}
+		}
+		else if( pvarChild->vt == VT_DISPATCH )
+		{
+			return Object_IDispatchToIAccessible( pvarChild->pdispVal, ppAccOut, pvarChildOut);
+		}
+		else
+		{
+			//str << TEXT("Unknown variant type");
+			return FALSE;
+		}
+
+	}
+}
+*/
+
+void LaunchySmarts::SetActiveProgram(CWnd* wnd)
+{
+	return;
+	/*
+	if (wnd == m_lastWnd)
+		return;
+	m_lastWnd = wnd;
+	menuRecords.clear();
+
+	DWORD pid;
+//	GetWindowThreadProcessId(wnd->m_hWnd,&pid);
+//	CMainWindowIterator itw(pid);
+	HMENU menu = NULL;
+//	for (HWND hwnd = itw.First(); hwnd; hwnd=itw.Next()) {
+		IAccessible* msaa;
+		if (AccessibleObjectFromWindow(wnd->m_hWnd, OBJID_MENU, IID_IAccessible, (void**) &msaa) != S_OK) {
+			return;
+		}
+		long numChildren;
+		msaa->get_accChildCount(&numChildren);
+		if (numChildren == 0) {
+			// Okay we've got to get the whole window's object and parse through that
+			if (AccessibleObjectFromWindow(wnd->m_hWnd, OBJID_WINDOW, IID_IAccessible, (void**) &msaa) != S_OK) {
+				return;
+			}
+		}
+
+//		PrintMenuItems(msaa, numChildren);
+//		msaa->get_accChildCount(&numChildren);
+		CString out = L"";
+		out.Format(L"%d",numChildren);
+		AfxMessageBox(out);
+
+//	}		
+*/
 }
