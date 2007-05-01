@@ -331,6 +331,7 @@ void CLaunchyDlg::OnClose()
 	smarts.reset();
 	plugins.reset();
 	options.reset();
+	CoUninitialize();
 	//	border.OnClose();
 	// TODO: Add your message handler code here and/or call default
 	CDialogSK::OnClose();
@@ -768,6 +769,8 @@ void CLaunchyDlg::AdjustPostionIfOffscreen(void) {
 
 void CLaunchyDlg::ShowLaunchy(void)
 {
+	m_Foreground = GetForegroundWindow();
+	smarts->SetActiveProgram(m_Foreground);
 	this->DoDonate();	
 	this->AdjustPostionIfOffscreen();
 	this->Visible = true;

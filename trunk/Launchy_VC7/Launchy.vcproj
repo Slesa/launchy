@@ -1,200 +1,139 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="7.10"
 	Name="Launchy"
 	ProjectGUID="{0F712363-FE44-450E-A219-BC25D0B749FE}"
-	Keyword="MFCProj"
-	>
+	Keyword="MFCProj">
 	<Platforms>
 		<Platform
-			Name="Win32"
-		/>
+			Name="Win32"/>
 	</Platforms>
-	<ToolFiles>
-	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="bin"
 			IntermediateDirectory="Debug"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="1"
-			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="false"
-			/>
+			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;C:\Boost\include\boost-1_33_1&quot;;."
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
-				MinimalRebuild="true"
+				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="0"
-				TreatWChar_tAsBuiltInType="true"
+				TreatWChar_tAsBuiltInType="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="4"
-			/>
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"
-				AdditionalIncludeDirectories="$(IntDir)"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/VERBOSE:LIB"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="C:\Boost\lib"
-				GenerateDebugInformation="true"
+				GenerateDebugInformation="TRUE"
 				SubSystem="2"
-				TargetMachine="1"
-			/>
+				TargetMachine="1"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="FALSE"/>
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPreBuildEventTool"/>
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreLinkEventTool"/>
 			<Tool
-				Name="VCFxCopTool"
-			/>
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="$(IntDir)"/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
+				Name="VCXMLDataGeneratorTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="bin"
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="1"
 			UseOfATL="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="false"
-			/>
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
-				EnableIntrinsicFunctions="true"
-				FavorSizeOrSpeed="2"
-				OmitFramePointers="true"
-				EnableFiberSafeOptimizations="true"
+				EnableIntrinsicFunctions="TRUE"
+				OmitFramePointers="TRUE"
+				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="2"
+				OptimizeForWindowsApplication="TRUE"
 				AdditionalIncludeDirectories="&quot;C:\Boost\include\boost-1_33_1&quot;;."
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
-				MinimalRebuild="false"
+				MinimalRebuild="FALSE"
 				RuntimeLibrary="0"
-				TreatWChar_tAsBuiltInType="true"
+				TreatWChar_tAsBuiltInType="TRUE"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
-			/>
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="C:\Boost\lib"
+				IgnoreAllDefaultLibraries="FALSE"
+				IgnoreDefaultLibraryNames=""
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="FALSE"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
 				Culture="1033"
 				AdditionalIncludeDirectories="$(IntDir)"
-				ResourceOutputFileName="$(IntDir)/$(InputName).res"
-			/>
+				ResourceOutputFileName="$(IntDir)/$(InputName).res"/>
 			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCLinkerTool"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories="C:\Boost\lib"
-				IgnoreAllDefaultLibraries="false"
-				IgnoreDefaultLibraryNames=""
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				TargetMachine="1"
-			/>
+				Name="VCXMLDataGeneratorTool"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCWebDeploymentTool"/>
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -203,346 +142,252 @@
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
-			>
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\src\AboutDialog.cpp"
-				>
+				RelativePath=".\src\AboutDialog.cpp">
 			</File>
 			<File
-				RelativePath=".\src\AdvancedOptions.cpp"
-				>
+				RelativePath=".\src\AdvancedOptions.cpp">
 			</File>
 			<File
-				RelativePath=".\src\AlphaBorder.cpp"
-				>
+				RelativePath=".\src\AlphaBorder.cpp">
 			</File>
 			<File
-				RelativePath=".\src\CArchiveEx.cpp"
-				>
+				RelativePath=".\src\CArchiveEx.cpp">
 			</File>
 			<File
-				RelativePath=".\src\CDialogSK.cpp"
-				>
+				RelativePath=".\src\CDialogSK.cpp">
 			</File>
 			<File
-				RelativePath=".\src\DirectoryChooser.cpp"
-				>
+				RelativePath=".\src\DirectoryChooser.cpp">
 			</File>
 			<File
-				RelativePath=".\src\DiskObject.cpp"
-				>
+				RelativePath=".\src\DiskObject.cpp">
 			</File>
 			<File
-				RelativePath=".\src\ExeLauncher.cpp"
-				>
+				RelativePath=".\src\ExeLauncher.cpp">
 			</File>
 			<File
-				RelativePath=".\src\FileRecord.cpp"
-				>
+				RelativePath=".\src\FileRecord.cpp">
 			</File>
 			<File
-				RelativePath=".\src\HotkeyDialog.cpp"
-				>
+				RelativePath=".\src\HotkeyDialog.cpp">
 			</File>
 			<File
-				RelativePath=".\src\iniFile.cpp"
-				>
+				RelativePath=".\src\iniFile.cpp">
 			</File>
 			<File
-				RelativePath=".\src\Launcher.cpp"
-				>
+				RelativePath=".\src\Launcher.cpp">
 			</File>
 			<File
-				RelativePath=".\src\Launchy.cpp"
-				>
+				RelativePath=".\src\Launchy.cpp">
 			</File>
 			<File
-				RelativePath=".\src\LaunchyDir.cpp"
-				>
+				RelativePath=".\src\LaunchyDir.cpp">
 			</File>
 			<File
-				RelativePath=".\src\LaunchyDlg.cpp"
-				>
+				RelativePath=".\src\LaunchyDlg.cpp">
 			</File>
 			<File
-				RelativePath=".\src\LaunchySmarts.cpp"
-				>
+				RelativePath=".\src\LaunchySmarts.cpp">
 			</File>
 			<File
-				RelativePath=".\src\OpaqueListBox.cpp"
-				>
+				RelativePath=".\src\OpaqueListBox.cpp">
 			</File>
 			<File
-				RelativePath=".\src\Options.cpp"
-				>
+				RelativePath=".\src\Options.cpp">
 			</File>
 			<File
-				RelativePath=".\src\Plugin.cpp"
-				>
+				RelativePath=".\src\Plugin.cpp">
 			</File>
 			<File
-				RelativePath=".\src\PluginDialog.cpp"
-				>
+				RelativePath=".\src\PluginDialog.cpp">
 			</File>
 			<File
-				RelativePath=".\src\ReadOnlyEdit.cpp"
-				>
+				RelativePath=".\src\ReadOnlyEdit.cpp">
 			</File>
 			<File
-				RelativePath=".\src\Skin.cpp"
-				>
+				RelativePath=".\src\Skin.cpp">
 			</File>
 			<File
-				RelativePath=".\src\SmartComboBox.cpp"
-				>
+				RelativePath=".\src\SmartComboBox.cpp">
 				<FileConfiguration
-					Name="Debug|Win32"
-					>
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\src\stdafx.cpp"
-				>
+				RelativePath=".\src\stdafx.cpp">
 			</File>
 			<File
-				RelativePath=".\src\TransparentStatic2.cpp"
-				>
+				RelativePath=".\src\TransparentStatic2.cpp">
 			</File>
 			<File
-				RelativePath=".\src\TypeEdit.cpp"
-				>
+				RelativePath=".\src\TypeEdit.cpp">
 			</File>
 			<File
-				RelativePath=".\src\UseShGetFileInfo.cpp"
-				>
+				RelativePath=".\src\UseShGetFileInfo.cpp">
 			</File>
 			<File
-				RelativePath=".\src\UTF16File.cpp"
-				>
+				RelativePath=".\src\UTF16File.cpp">
 			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
-				RelativePath=".\src\AboutDialog.h"
-				>
+				RelativePath=".\src\AboutDialog.h">
 			</File>
 			<File
-				RelativePath=".\src\AdvancedOptions.h"
-				>
+				RelativePath=".\src\AdvancedOptions.h">
 			</File>
 			<File
-				RelativePath=".\src\AlphaBorder.h"
-				>
+				RelativePath=".\src\AlphaBorder.h">
 			</File>
 			<File
-				RelativePath=".\src\CArchiveEx.h"
-				>
+				RelativePath=".\src\CArchiveEx.h">
 			</File>
 			<File
-				RelativePath=".\src\CDialogSK.h"
-				>
+				RelativePath=".\src\CDialogSK.h">
 			</File>
 			<File
-				RelativePath=".\src\DirectoryChooser.h"
-				>
+				RelativePath=".\src\DirectoryChooser.h">
 			</File>
 			<File
-				RelativePath=".\src\DiskObject.h"
-				>
+				RelativePath=".\src\DiskObject.h">
 			</File>
 			<File
-				RelativePath=".\src\ExeLauncher.h"
-				>
+				RelativePath=".\src\ExeLauncher.h">
 			</File>
 			<File
-				RelativePath=".\src\FileRecord.h"
-				>
+				RelativePath=".\src\FileRecord.h">
 			</File>
 			<File
-				RelativePath=".\src\HotkeyDialog.h"
-				>
+				RelativePath=".\src\HotkeyDialog.h">
 			</File>
 			<File
-				RelativePath=".\src\iniFile.h"
-				>
+				RelativePath=".\src\iniFile.h">
 			</File>
 			<File
-				RelativePath=".\src\Launcher.h"
-				>
+				RelativePath=".\src\Launcher.h">
 			</File>
 			<File
-				RelativePath=".\src\Launchy.h"
-				>
+				RelativePath=".\src\Launchy.h">
 			</File>
 			<File
-				RelativePath=".\src\LaunchyDir.h"
-				>
+				RelativePath=".\src\LaunchyDir.h">
 			</File>
 			<File
-				RelativePath=".\src\LaunchyDlg.h"
-				>
+				RelativePath=".\src\LaunchyDlg.h">
 			</File>
 			<File
-				RelativePath=".\src\LaunchySmarts.h"
-				>
+				RelativePath=".\src\LaunchySmarts.h">
 			</File>
 			<File
-				RelativePath=".\src\OpaqueListBox.h"
-				>
+				RelativePath=".\src\OpaqueListBox.h">
 			</File>
 			<File
-				RelativePath=".\src\Options.h"
-				>
+				RelativePath=".\src\Options.h">
 			</File>
 			<File
-				RelativePath=".\src\Plugin.h"
-				>
+				RelativePath=".\src\Plugin.h">
 			</File>
 			<File
-				RelativePath=".\src\PluginDialog.h"
-				>
+				RelativePath=".\src\PluginDialog.h">
 			</File>
 			<File
-				RelativePath=".\src\QArray.h"
-				>
+				RelativePath=".\src\QArray.h">
 			</File>
 			<File
-				RelativePath=".\src\ReadOnlyEdit.h"
-				>
+				RelativePath=".\src\ReadOnlyEdit.h">
 			</File>
 			<File
-				RelativePath=".\resource.h"
-				>
+				RelativePath=".\resource.h">
 			</File>
 			<File
-				RelativePath=".\src\Resource.h"
-				>
+				RelativePath=".\src\Resource.h">
 			</File>
 			<File
-				RelativePath=".\src\SingleInstanceApp.h"
-				>
+				RelativePath=".\src\SingleInstanceApp.h">
 			</File>
 			<File
-				RelativePath=".\src\Skin.h"
-				>
+				RelativePath=".\src\Skin.h">
 			</File>
 			<File
-				RelativePath=".\src\SkinChooser.cpp"
-				>
+				RelativePath=".\src\SkinChooser.cpp">
 			</File>
 			<File
-				RelativePath=".\src\SkinChooser.h"
-				>
+				RelativePath=".\src\SkinChooser.h">
 			</File>
 			<File
-				RelativePath=".\src\SmartComboBox.h"
-				>
+				RelativePath=".\src\SmartComboBox.h">
 			</File>
 			<File
-				RelativePath=".\src\stdafx.h"
-				>
+				RelativePath=".\src\stdafx.h">
 			</File>
 			<File
-				RelativePath=".\src\TransparentStatic2.h"
-				>
+				RelativePath=".\src\TransparentStatic2.h">
 			</File>
 			<File
-				RelativePath=".\src\TypeEdit.h"
-				>
+				RelativePath=".\src\TypeEdit.h">
 			</File>
 			<File
-				RelativePath=".\src\UseShGetFileInfo.h"
-				>
+				RelativePath=".\src\UseShGetFileInfo.h">
 			</File>
 			<File
-				RelativePath=".\src\UTF16File.h"
-				>
+				RelativePath=".\src\UTF16File.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
-			>
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
 			<File
-				RelativePath=".\res\bitmap1.bmp"
-				>
+				RelativePath=".\res\bitmap1.bmp">
 			</File>
 			<File
-				RelativePath=".\res\bkgd2.bmp"
-				>
+				RelativePath=".\res\bkgd2.bmp">
 			</File>
 			<File
-				RelativePath=".\res\launchy.bmp"
-				>
+				RelativePath=".\res\launchy.bmp">
 			</File>
 			<File
-				RelativePath=".\res\Launchy.ico"
-				>
+				RelativePath=".\res\Launchy.ico">
 			</File>
 			<File
-				RelativePath=".\Launchy.rc"
-				>
+				RelativePath=".\Launchy.rc">
 			</File>
 			<File
-				RelativePath=".\res\Launchy.rc2"
-				>
+				RelativePath=".\res\Launchy.rc2">
 			</File>
 		</Filter>
 		<Filter
 			Name="zlib"
-			>
+			Filter="">
 			<File
-				RelativePath=".\src\zlib\zlib.lib"
-				>
+				RelativePath=".\src\zlib\zlib.lib">
 			</File>
 		</Filter>
 		<Filter
 			Name="Plugins"
-			>
+			Filter="">
 		</Filter>
 		<File
-			RelativePath=".\Plugins\Calcy\Calcy.sln"
-			>
+			RelativePath=".\Plugins\Calcy\Calcy.sln">
 		</File>
 		<File
-			RelativePath=".\res\Launchy.manifest"
-			>
-			<FileConfiguration
-				Name="Debug|Win32"
-				ExcludedFromBuild="true"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
-				ExcludedFromBuild="true"
-				>
-				<Tool
-					Name="VCCustomBuildTool"
-				/>
-			</FileConfiguration>
+			RelativePath=".\res\Launchy.manifest">
 		</File>
 		<File
-			RelativePath=".\ReadMe.txt"
-			>
+			RelativePath=".\ReadMe.txt">
 		</File>
 	</Files>
 	<Globals>
 		<Global
 			Name="RESOURCE_FILE"
-			Value="Launchy.rc"
-		/>
+			Value="Launchy.rc"/>
 	</Globals>
 </VisualStudioProject>

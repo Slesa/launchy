@@ -81,7 +81,8 @@ public:
 	void Launch(void);
 	int LaunchySmarts::FindSearchOwner(int& OwnerType);
 private:
-
+	CWnd* m_lastWnd;
+	vector<FileRecord> menuRecords;
 protected:
 	void RemoveDuplicates(void);
 public:
@@ -94,4 +95,5 @@ public:
 	void archiveCatalog(CString path, Plugin*);
 	CString lastUpdateTxt;
 	CString GetMatchPath(int sel);
+	void SetActiveProgram(CWnd* wnd);
 };

@@ -63,6 +63,7 @@ protected:
 	BOOL atLaunch;
 	BOOL ShowingDialog;
 	BOOL Visible;
+	CWnd* m_Foreground;
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();

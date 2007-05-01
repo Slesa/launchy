@@ -1,13 +1,18 @@
+Where I left off:
+I was working on LaunchySmarts SetActiveProgram function for finding the menu bar of the top app
+
 Features to complete before release:
 . Plugin SDK Package
 . Make plugin section on the webpage
 . Add the chinese character stuff from Bborn
 . Add foxy profile location finder stuff from launchy patches page on sf
 . Tab in dropdown menu doesn't select current item
-
-
-
-
+. Alt+F4 crashes launchy
+. c: won't launch c: now, need c:\
+. Runny doesn't run cmd applications, e.g. 'cmd | blah' doens't run blah
+. Controly crashes some guys computer
+. Make a open with / open containing folder plugin
+. When you type 'amazon' or 'weather' w/out hitting tab and hit enter it doesn't work
 
 
 
