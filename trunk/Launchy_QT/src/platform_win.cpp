@@ -2,6 +2,7 @@
 #include "globals.h"
 #include "main.h"
 #include <QKeyEvent>
+#include <QDir>
 
 BOOL GetShellDir(int iType, QString& szPath)
 {
@@ -31,7 +32,7 @@ BOOL GetShellDir(int iType, QString& szPath)
 }
 
 QIcon WinIconProvider::icon(const QFileInfo& info) const {
-	HICON hico = GetIconHandleNoOverlay(info.filePath(), false);
+	HICON hico = GetIconHandleNoOverlay(QDir::toNativeSeparators(info.filePath()), false);
 	QPixmap qpix = convertHIconToPixmap(hico);
 	DeleteObject(hico);
 	return qpix;

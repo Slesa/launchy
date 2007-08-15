@@ -108,6 +108,7 @@ private:
 public:
 	PlatformImp() : PlatformBase() 		
 	{
+		//CoInitializeEx(NULL,COINIT_MULTITHREADED);
 		alpha = NULL; 
 		icons = (QFileIconProvider*) new WinIconProvider();
 

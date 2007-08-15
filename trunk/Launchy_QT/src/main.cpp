@@ -375,7 +375,7 @@ QIcon MyWidget::getIcon(CatItem & item) {
 		QDir dir(item.fullPath);
 		if (dir.exists())
 			return platform.icons->icon(QFileIconProvider::Folder);
-		return platform.icons->icon(item.fullPath);
+		return platform.icons->icon(QDir::toNativeSeparators(item.fullPath));
 	}
 	else
 		return searchResults[0].icon;
