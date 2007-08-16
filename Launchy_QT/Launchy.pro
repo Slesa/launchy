@@ -1,5 +1,5 @@
 TEMPLATE	= app
-CONFIG		+= qt_warn
+CONFIG		+= qt_warn 
 QT			+= network
 TARGET		= Launchy
 FORMS		= options.ui
@@ -25,7 +25,7 @@ win32 {
 }
 
 win32:debug {
-	CONFIG += console 
+%	CONFIG += console 
 	DESTDIR = ../debug/
 }
 

@@ -1,6 +1,6 @@
 Currently working on: 
 
-In XP, icons don't show up
+
 
 Trying to stylize the scrollbar is difficult
 
@@ -19,7 +19,7 @@ Todo:
 . Make sure gSearchTxt is set before sort
 
 KNOWN PROBLEMS:
-
+Icons don't show up if wrong color setting (16-bit)
 
 LAPTOP CHANGES:
 1) Set global main window variable in constructor of main 

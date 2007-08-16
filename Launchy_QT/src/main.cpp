@@ -320,12 +320,13 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 					path += "/";
 				} else if (info.isDir()) {
 					path = searchResults[0].fullPath;
-					path += "/";
+					if (!path.endsWith("/") && !path.endsWith("\\"))
+						path += "/";
 				} else if (info.isFile()) {
 					path = searchResults[0].fullPath;
-				}else {
+				} else {
 					path = input->text();
-					path += "/";
+					path += "/";				
 				}
 				input->setText(QDir::toNativeSeparators(path));
 			} 
@@ -361,11 +362,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 			}
 		}
 		
-	}
-
-
-
-	
+	}	
 }
 
 
@@ -671,6 +668,7 @@ void MyWidget::mouseMoveEvent(QMouseEvent *e)
 	move(p);
 	platform.MoveAlphaBorder(p);
 	showAlternatives(false);
+	input->setFocus();
 }
 
 void MyWidget::contextMenuEvent(QContextMenuEvent *event) {
@@ -696,6 +694,8 @@ void MyWidget::menuOptions() {
 		connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		gBuilder->start(QThread::IdlePriority);
 	}
+	input->activateWindow();
+	input->setFocus();
 }
 
 void MyWidget::shouldDonate() {
@@ -718,7 +718,8 @@ void MyWidget::showLaunchy() {
 	show();
 	platform.ShowAlphaBorder();
 
-	activateWindow();
+	input->activateWindow();
+//	activateWindow();
 	input->selectAll();
 	input->setFocus();
 }
