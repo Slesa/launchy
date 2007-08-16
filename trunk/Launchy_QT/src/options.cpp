@@ -103,6 +103,12 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 			catDirectories->setCurrentRow(0);
 
 		tabWidget->setCurrentIndex(0);
+
+		catProgress->setRange(0,100);
+
+		if (gBuilder != NULL) {
+			connect(gBuilder, SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
+		}
 }
 
 
@@ -147,11 +153,7 @@ void OptionsDlg::accept() {
 		gSettings->setValue("indexExes", memDirs[i].indexExe);
 		gSettings->setValue("depth", memDirs[i].depth);
 	}
-	catProgress->setRange(0,100);
 
-	if (gBuilder != NULL) {
-		connect(gBuilder, SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
-	}
 	gSettings->endArray();
 
 
@@ -166,6 +168,19 @@ void OptionsDlg::catProgressUpdated(float val) {
 void OptionsDlg::catRescanClicked(bool val) {
 	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
 	if (main == NULL) return;
+
+	// Apply Directory Options
+	gSettings->beginWriteArray("directories");
+	for(int i = 0; i < memDirs.count(); ++i) {
+		gSettings->setArrayIndex(i);
+		gSettings->setValue("name", memDirs[i].name);
+		gSettings->setValue("types", memDirs[i].types);
+		gSettings->setValue("indexDirs", memDirs[i].indexDirs);
+		gSettings->setValue("indexExes", memDirs[i].indexExe);
+		gSettings->setValue("depth", memDirs[i].depth);
+	}
+
+	gSettings->endArray();
 
 	if (gBuilder == NULL) {
 		gBuilder = new CatBuilder(false);

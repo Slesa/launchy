@@ -192,6 +192,10 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath="..\Launchy.pro"
+			>
+		</File>
+		<File
 			RelativePath="..\readme.txt"
 			>
 		</File>

@@ -45,7 +45,7 @@ HIMAGELIST WinIconProvider::GetSystemImageListHandle( bool bSmallIcon )
 
 	QString winpath;
 	GetShellDir(CSIDL_WINDOWS, winpath);
-	QString windrive = winpath.mid(0,3);
+	QString windrive = QDir::toNativeSeparators(winpath.mid(0,3));
 	if (bSmallIcon)
 	{
 		hSystemImageList = 
