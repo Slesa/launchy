@@ -80,7 +80,7 @@ MyWidget::MyWidget(QWidget *parent)
 		gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy.net", "Launchy");
 
 	// Load the plugins
-	pluginManager.loadPlugins();
+	plugins.loadPlugins();
 
 	// Load the skin
 	applySkin(qApp->applicationDirPath() + "/Skins/" + gSettings->value("GenOps/skin", "Default").toString());
@@ -264,6 +264,23 @@ void MyWidget::inputKeyPressEvent(QKeyEvent* key) {
 	}
 }
 
+void MyWidget::parseInput(QString text) {
+	QStringList spl = text.split("|");
+	if (spl.count() < inputData.count()) {
+		inputData = inputData.mid(0, spl.count());
+	}
+	for(int i = 0; i < inputData.size(); i++) {
+		if (inputData[i].getText() != spl[i]) {
+			inputData = inputData.mid(0, i);
+			break;
+		}
+	}
+	for(int i = inputData.count(); i < spl.count(); i++) {
+		InputData data(spl[i]);
+		inputData.push_back(data);
+	}
+}
+
 void MyWidget::keyPressEvent(QKeyEvent* key) {
 	
 	if (key->key() == Qt::Key_Escape) {
@@ -326,7 +343,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 					path = searchResults[0].fullPath;
 				} else {
 					path = input->text();
-					path += "/";				
+					path += " | ";	
 				}
 				input->setText(QDir::toNativeSeparators(path));
 			} 
@@ -337,8 +354,13 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 		alternatives->hide();
 		dropTimer->stop();
 		dropTimer->start(1000);
+
+		QString inText = input->text();
+		parseInput(inText);
+
 		if (input->text() != "") {
-			gSearchTxt = input->text();
+			if (inputData.count() == 0) return;
+			gSearchTxt = inputData.last().getText();
 			searchResults.clear();
 			if (catalog != NULL) {
 				catalog->searchCatalogs(gSearchTxt, searchResults);
@@ -347,15 +369,27 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 				// Is it a file?
 				if (gSearchTxt.contains("\\") || gSearchTxt.contains("/")) {
 					searchFiles(gSearchTxt, searchResults);
+					inputData.last().setLabel(LABEL_FILE);
 				}
 			}
+
+			plugins.getLabels(&inputData);
+			plugins.getResults(&inputData, &searchResults);
+//			sortResults(searchResults);
+
+
 			input->clear();
-			input->insert(gSearchTxt);
+			input->insert(inText);
+
 			if (searchResults.count() > 0) {
+				qDebug() << searchResults[0].shortName;
+
 				QIcon icon = getIcon(searchResults[0]);
 
 				licon->setPixmap(icon.pixmap(QSize(32,32), QIcon::Normal, QIcon::On));
 				output->setText(searchResults[0].shortName);
+				inputData.last().setTopResult(searchResults[0]);
+
 			} else {
 				licon->clear();
 				output->clear();

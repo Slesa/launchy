@@ -65,6 +65,7 @@ signals:
 };
 
 
+
 class MyWidget : public QWidget
 {
 	Q_OBJECT  // Enable signals and slots
@@ -87,7 +88,8 @@ public:
 	Catalog* catalog;
 	CatBuilder* catBuilder;
 	QList<CatItem> searchResults;
-	PluginHandler pluginManager;
+	QList<InputData> inputData;
+	PluginHandler plugins;
 	bool visible;
 	bool alwaysShowLaunchy;
 	bool menuOpen;
@@ -108,7 +110,7 @@ public:
 	void showAlternatives(bool show=true);
 	void launchObject(int obj);
 	void searchFiles(const QString & input, QList<CatItem>& searchResults);
-
+	void parseInput(QString text);
 
 private:
     QHttp *http;
