@@ -4,6 +4,7 @@
 #include <QPluginLoader>
 #include <QHash>
 #include "plugin_interface.h"
+#include "catalog.h"
 
 class PluginHandler {
 public:
@@ -19,13 +20,14 @@ public:
 	};
 
 public:
-	QHash<int, PluginInfo> plugins;
+	QHash<uint, PluginInfo> plugins;
 
 	PluginHandler();
 	~PluginHandler();
 
 	void loadPlugins();
-
+	void getLabels(QList<InputData>* id);
+	void getResults(QList<InputData>* id, QList<CatItem>* results);
 };
 
 

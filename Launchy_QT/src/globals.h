@@ -10,6 +10,8 @@
 #define LAUNCHY_VERSION_STRING "2.0"
 
 
+#define LABEL_FILE 0
+
 extern QWidget* gMainWidget;
 extern QSettings* gSettings;
 extern TypeRegistrar* gTypes;
@@ -17,4 +19,8 @@ extern CatBuilder* gBuilder;
 
 
 extern QString gSearchTxt;
+
+
+
+
 #endif

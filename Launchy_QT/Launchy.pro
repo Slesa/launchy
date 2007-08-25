@@ -1,9 +1,10 @@
 TEMPLATE	= app
-CONFIG		+= qt_warn 
+CONFIG		+= qt_warn release
 QT			+= network
 TARGET		= Launchy
 FORMS		= options.ui
 VPATH		+= src/
+
 SOURCES		= main.cpp globals.cpp platform_base_hotkey.cpp \ 
 			  options.cpp catalog.cpp catalog_builder.cpp \ 
 			  types.cpp dsingleapplication.cpp plugin_handler.cpp
@@ -25,7 +26,7 @@ win32 {
 }
 
 win32:debug {
-%	CONFIG += console 
+	CONFIG += console 
 	DESTDIR = ../debug/
 }
 

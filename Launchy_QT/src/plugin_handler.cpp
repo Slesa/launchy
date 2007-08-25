@@ -5,8 +5,25 @@
 #include "globals.h"
 #include "main.h"
 
+
 PluginHandler::PluginHandler() {
 
+}
+
+void PluginHandler::getLabels(QList<InputData>* id) 
+{
+	if (id->count() == 0) return;
+	foreach(PluginInfo info, plugins) {
+		info.obj->msg(MSG_GET_LABELS, (void*) id);
+	}
+}
+
+void PluginHandler::getResults(QList<InputData>* id, QList<CatItem>* results)
+{
+	if (id->count() == 0) return;
+	foreach(PluginInfo info, plugins) {
+		info.obj->msg(MSG_GET_RESULTS, (void*) id, (void*) results);
+	}
 }
 
 void PluginHandler::loadPlugins() {
@@ -29,20 +46,17 @@ void PluginHandler::loadPlugins() {
 		QObject *plugin = loader.instance();
 		if (plugin) {
 			PluginInterface *plug = qobject_cast<PluginInterface *>(plugin);
-			bool handled = false;
-			QVariant nameV = plug->msg(MSG_GET_NAME, handled);
 			QString name;
-			if (handled)
-				name = nameV.toString();
+			bool handled = plug->msg(MSG_GET_NAME, (QObject*) &name);
 
 			if (handled && (!loadable.contains(name) || loadable[name])) {
-				int hashID = qHash(name);
+				uint hashID = qHash(name);
 				PluginInfo info;
 				info.name = name;
 				info.obj = plug;
 				info.path = pluginsDir.absoluteFilePath(fileName);
-				if (!plugins.contains(qHash(name))) {
-					plugins[qHash(name)] = info;
+				if (!plugins.contains(hashID)) {
+					plugins[hashID] = info;
 				}
 			} else {
 				// unload

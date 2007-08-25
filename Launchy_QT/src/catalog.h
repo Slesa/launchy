@@ -8,6 +8,7 @@
 #include <QHash>
 #include <QDataStream>
 #include <QDir>
+#include <QSet>
 
 class CatItem {
 public:
@@ -18,6 +19,7 @@ public:
 	QIcon icon;
 	int usage;
 	void* data;
+	int id;
 
 	CatItem() {}
 
@@ -42,6 +44,14 @@ public:
 
 	CatItem(QString full, QString shortN) 
 		: fullPath(full), shortName(shortN) 
+	{
+		lowName = shortName.toLower();
+		data = NULL;
+		usage = 0;
+	}
+
+	CatItem(QString full, QString shortN, uint i_d) 
+		: id(i_d), fullPath(full), shortName(shortN)
 	{
 		lowName = shortName.toLower();
 		data = NULL;
@@ -87,8 +97,25 @@ public:
 			return false;
 		return labels.at(num);
 	}
+};
 
 
+class InputData 
+{
+private:
+	QString text;
+	QSet<uint> labels;
+	CatItem topResult;
+public:
+	QSet<uint> & getLabels() { return labels; }
+	void setLabel(uint l) { labels.insert(l); }
+	bool hasLabel(uint l) { return labels.contains(l); }
+	QString & getText() { return text; }
+	void setText(QString t) { text = t; }
+	CatItem & getTopResult() { return topResult; }
+	void setTopResult(CatItem sr) { topResult = sr; }
+	InputData() {}
+	InputData(QString str) : text(str) {}
 };
 
 bool CatLess (CatItem* left, CatItem* right); 

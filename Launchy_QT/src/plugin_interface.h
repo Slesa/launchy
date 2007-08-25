@@ -1,5 +1,8 @@
 #ifndef PLUGIN_INTERFACE_H
 #define PLUGIN_INTERFACE_H
+
+#include <QObject>
+#include "catalog.h"
 /*
 typedef TCHAR* (* PLUGINGETREGEXS) (int*);
 typedef IndexItems (* PLUGINGETINDEXITEMS) (void);
@@ -22,6 +25,11 @@ typedef void (* PLUGINGETSTORAGE) (int* NumItems, TCHAR** ItemNames, TCHAR** Ite
 typedef void (* PLUGINSETSTORAGE) (int NumItems, TCHAR* ItemNames, TCHAR* ItemValues);
 typedef bool (* PLUGINHASOPTIONSDLG) (void);
 */
+#define MSG_GET_NAME 0
+#define MSG_GET_LABELS 1
+#define MSG_GET_RESULTS 2
+
+/*
 #define MSG_APPLY_LABELS 0			// label an item
 #define MSG_GET_CATALOG_ITEMS 1		// get global catalog items
 #define MSG_PERFORM_SEARCH 2		// get search results for an object
@@ -32,13 +40,13 @@ typedef bool (* PLUGINHASOPTIONSDLG) (void);
 #define MSG_HAS_OPTIONS_DLG 7		// does the plugin have an options dialog?
 #define MSG_GET_STORAGE 8			// launchy stores the plugin's QHash<QString,QVariant> to disk
 #define MSG_GET_NAME 9
-
+*/
 
 class PluginInterface
 {
 public:
-	virtual ~PluginInterface() = 0;
-	virtual QVariant msg(int msgId, bool & handled, QObject* wParam = NULL, QObject* lParam = NULL) = 0;
+	virtual ~PluginInterface() {};
+	virtual bool msg(int msgId, void* wParam = NULL, void* lParam = NULL) = 0;
 };
 
  Q_DECLARE_INTERFACE(PluginInterface,
