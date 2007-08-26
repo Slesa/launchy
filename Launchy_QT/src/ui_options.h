@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'options.ui'
 **
-** Created: Sun Aug 5 14:30:46 2007
+** Created: Sun Aug 26 15:20:14 2007
 **      by: Qt User Interface Compiler version 4.3.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -78,6 +78,9 @@ public:
     QSpinBox *catDepth;
     QLabel *label_10;
     QWidget *tab_4;
+    QListWidget *plugList;
+    QLabel *label_11;
+    QGroupBox *plugBox;
 
     void setupUi(QDialog *OptionsDlg)
     {
@@ -238,13 +241,23 @@ public:
     tabWidget->addTab(tab_2, QString());
     tab_4 = new QWidget();
     tab_4->setObjectName(QString::fromUtf8("tab_4"));
+    plugList = new QListWidget(tab_4);
+    plugList->setObjectName(QString::fromUtf8("plugList"));
+    plugList->setGeometry(QRect(10, 30, 101, 251));
+    plugList->setSelectionRectVisible(false);
+    label_11 = new QLabel(tab_4);
+    label_11->setObjectName(QString::fromUtf8("label_11"));
+    label_11->setGeometry(QRect(20, 10, 79, 16));
+    plugBox = new QGroupBox(tab_4);
+    plugBox->setObjectName(QString::fromUtf8("plugBox"));
+    plugBox->setGeometry(QRect(130, 10, 351, 271));
     tabWidget->addTab(tab_4, QString());
 
     retranslateUi(OptionsDlg);
     QObject::connect(buttonBox, SIGNAL(accepted()), OptionsDlg, SLOT(accept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), OptionsDlg, SLOT(reject()));
 
-    tabWidget->setCurrentIndex(0);
+    tabWidget->setCurrentIndex(3);
 
 
     QMetaObject::connectSlotsByName(OptionsDlg);
@@ -285,6 +298,8 @@ public:
     catCheckBinaries->setText(QApplication::translate("OptionsDlg", "Executables", 0, QApplication::UnicodeUTF8));
     label_10->setText(QApplication::translate("OptionsDlg", "Depth:", 0, QApplication::UnicodeUTF8));
     tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("OptionsDlg", "Catalog", 0, QApplication::UnicodeUTF8));
+    label_11->setText(QApplication::translate("OptionsDlg", "Available Plugins", 0, QApplication::UnicodeUTF8));
+    plugBox->setTitle(QApplication::translate("OptionsDlg", "Plugin Options", 0, QApplication::UnicodeUTF8));
     tabWidget->setTabText(tabWidget->indexOf(tab_4), QApplication::translate("OptionsDlg", "Plugins", 0, QApplication::UnicodeUTF8));
     Q_UNUSED(OptionsDlg);
     } // retranslateUi

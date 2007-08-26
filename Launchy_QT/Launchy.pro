@@ -2,9 +2,9 @@ TEMPLATE	= app
 CONFIG		+= qt_warn release
 QT			+= network
 TARGET		= Launchy
-FORMS		= options.ui
 VPATH		+= src/
 
+FORMS		= ../src/options.ui
 SOURCES		= main.cpp globals.cpp platform_base_hotkey.cpp \ 
 			  options.cpp catalog.cpp catalog_builder.cpp \ 
 			  dsingleapplication.cpp plugin_handler.cpp
