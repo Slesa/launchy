@@ -5,22 +5,27 @@
 #include <QHash>
 #include "plugin_interface.h"
 #include "catalog.h"
+#include "plugin_info.h"
+
+struct PluginInfo {
+	uint id;
+	QString name;
+	QString path;
+	PluginInterface* obj;
+	bool loaded;
+
+	~PluginInfo() {
+		QPluginLoader loader(path);
+		loader.unload();
+	}
+};
+
 
 class PluginHandler {
-public:
-	struct PluginInfo {
-		QString name;
-		QString path;
-		PluginInterface* obj;
-
-		~PluginInfo() {
-			QPluginLoader loader(path);
-			loader.unload();
-		}
-	};
-
-public:
+private:
 	QHash<uint, PluginInfo> plugins;
+
+public:
 
 	PluginHandler();
 	~PluginHandler();
@@ -30,6 +35,7 @@ public:
 	void getResults(QList<InputData>* id, QList<CatItem>* results);
 	void getCatalogs(QList<CatItem>* items);
 	void execute(QList<InputData>*, CatItem*);
+	QHash<uint, PluginInfo> & getPlugins() { return plugins; }
 };
 
 

@@ -14,7 +14,8 @@ void PluginHandler::getLabels(QList<InputData>* id)
 {
 	if (id->count() == 0) return;
 	foreach(PluginInfo info, plugins) {
-		info.obj->msg(MSG_GET_LABELS, (void*) id);
+		if (info.loaded)
+			info.obj->msg(MSG_GET_LABELS, (void*) id);
 	}
 }
 
@@ -22,20 +23,25 @@ void PluginHandler::getResults(QList<InputData>* id, QList<CatItem>* results)
 {
 	if (id->count() == 0) return;
 	foreach(PluginInfo info, plugins) {
-		info.obj->msg(MSG_GET_RESULTS, (void*) id, (void*) results);
+		if (info.loaded)
+			info.obj->msg(MSG_GET_RESULTS, (void*) id, (void*) results);
 	}
 }
 
 void PluginHandler::getCatalogs(QList<CatItem>* items) {
 	foreach(PluginInfo info, plugins) {
-		info.obj->msg(MSG_GET_CATALOG, (void*) items);
+		if (info.loaded)
+			info.obj->msg(MSG_GET_CATALOG, (void*) items);
 	}
 }
 
 void PluginHandler::execute(QList<InputData>* id, CatItem* result) {
 	if (!plugins.contains(result->id)) return;
+	if (!plugins[result->id].loaded) return;
 	plugins[result->id].obj->msg(MSG_LAUNCH_ITEM, (void*) id, (void*) result);
 }
+
+
 
 void PluginHandler::loadPlugins() {
 	// Get the list of loadable plugins
@@ -56,22 +62,29 @@ void PluginHandler::loadPlugins() {
 		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader.instance();
 		if (plugin) {
+
 			PluginInterface *plug = qobject_cast<PluginInterface *>(plugin);
+			plug->settings = &gSettings;
+			PluginInfo info;
 			uint id;
 			bool handled = plug->msg(MSG_GET_ID, (void*) &id);
 
+			info.id = id;
+			QString name;
+			plug->msg(MSG_GET_NAME, (void*) &name);
+			info.name = name;
+			info.obj = plug;
+			info.path = pluginsDir.absoluteFilePath(fileName);
+
 			if (handled && (!loadable.contains(id) || loadable[id])) {
-				PluginInfo info;
-//				info.name = name;
-				info.obj = plug;
-				info.path = pluginsDir.absoluteFilePath(fileName);
-				if (!plugins.contains(id)) {
-					plugins[id] = info;
-				}
+				info.loaded = true;
+				plug->msg(MSG_INIT);
 			} else {
-				// unload
+				info.loaded = false;
 				loader.unload();
 			}
+			plugins[id] = info;
+
 		}
 	}	
 }

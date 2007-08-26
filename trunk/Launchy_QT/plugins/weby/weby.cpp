@@ -1,43 +1,103 @@
 #include "weby.h"
-#include <QtCore>
+#include <QtGui>
 #include <QUrl>
 
 
-void runProgram(QString file, QString args) {
-#ifdef WIN32
-	SHELLEXECUTEINFO ShExecInfo;
+void WebyPlugin::init()
+{
+	QSettings* set = *settings;
+	if ( set->value("weby/version", 0.0).toDouble() == 0.0 ) {
+		set->beginWriteArray("weby/sites");
+		set->setArrayIndex(0);
+		set->setValue("name", "Google");
+		set->setValue("base", "http://www.google.com/");
+		set->setValue("query", "search?q=");
 
-	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
-	ShExecInfo.fMask = NULL;
-	ShExecInfo.hwnd = NULL;
-	ShExecInfo.lpVerb = NULL;
-	ShExecInfo.lpFile = (LPCTSTR) (file).utf16();
-	if (args != "") {
-		ShExecInfo.lpParameters = (LPCTSTR) args.utf16();
-	} else {
-		ShExecInfo.lpParameters = NULL;
+		set->setArrayIndex(1);
+		set->setValue("name", "Live Search");
+		set->setValue("base", "http://search.live.com/");
+		set->setValue("query", "results.aspx?q=");
+
+		set->setArrayIndex(2);
+		set->setValue("name", "Yahoo");
+		set->setValue("base", "http://search.yahoo.com/");
+		set->setValue("query", "search?p=");
+
+		set->setArrayIndex(3);
+		set->setValue("name", "MSN");
+		set->setValue("base", "http://search.msn.com/");
+		set->setValue("query", "results.aspx?q=");
+
+		set->setArrayIndex(4);
+		set->setValue("name", "Weather");
+		set->setValue("base", "http://www.weather.com/");
+		set->setValue("query", "weather/local/");	
+
+		set->setArrayIndex(5);
+		set->setValue("name", "Amazon");
+		set->setValue("base", "http://www.amazon.com/");
+		set->setValue("query", "gp/search/?keywords=");
+
+		set->setArrayIndex(6);
+		set->setValue("name", "YouTube");
+		set->setValue("base", "http://www.youtube.com/");
+		set->setValue("query", "results?search_query=");
+
+		set->setArrayIndex(7);
+		set->setValue("name", "Wikipedia");
+		set->setValue("base", "http://www.wikipedia.com/");
+		set->setValue("query", "wiki/Special:Search?search=");
+
+		set->setArrayIndex(8);
+		set->setValue("name", "Dictionary");
+		set->setValue("base", "http://www.dictionary.com/");
+		set->setValue("query", "browse/");		
+
+		set->setArrayIndex(9);
+		set->setValue("name", "Thesaurus");
+		set->setValue("base", "http://www.thesaurus.com/");
+		set->setValue("query", "browse/");		
+
+		set->setArrayIndex(10);
+		set->setValue("name", "Netflix");
+		set->setValue("base", "http://www.netflix.com/");
+		set->setValue("query", "Search?v1=");		
+
+		set->setArrayIndex(11);
+		set->setValue("name", "MSDN");
+		set->setValue("base", "http://search.msdn.microsoft.com/");
+		set->setValue("query", "search/default.aspx?siteId=0&tab=0&query=");
+
+		set->setArrayIndex(11);
+		set->setValue("name", "E-Mail");
+		set->setValue("base", "mailto:");
+		set->setValue("query", "");
+
+		set->endArray();
 	}
-	ShExecInfo.lpDirectory = NULL;
-	ShExecInfo.nShow = SW_NORMAL;
-	ShExecInfo.hInstApp = NULL;
+	set->setValue("weby/version", 2.0);
 
-	BOOL ret = ShellExecuteEx(&ShExecInfo);	
-#endif
-
-#ifdef OSX_BUILD
-
-#endif
-
-#ifdef KDE_BUILD
-
-#endif
-
+	// Read in the array of websites
+	int count = set->beginReadArray("weby/sites");
+	for(int i = 0; i < count; ++i) {
+		set->setArrayIndex(i);
+		WebySite s;
+		s.base = set->value("base").toString();
+		s.name = set->value("name").toString();
+		s.query = set->value("query").toString();
+		sites.push_back(s);
+	}
+	set->endArray();
 }
-
 
 void WebyPlugin::getID(uint* id)
 {
 	*id = HASH_WEBY;
+}
+
+void WebyPlugin::getName(QString* str)
+{
+	*str = "Weby";
 }
 
 void WebyPlugin::getLabels(QList<InputData>* id)
@@ -76,20 +136,9 @@ void WebyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 
 void WebyPlugin::getCatalog(QList<CatItem>* items)
 {
-	items->push_back(CatItem("Google.weby", "Google", HASH_WEBY));
-	items->push_back(CatItem("Live Search.weby", "Live Search", HASH_WEBY));
-	items->push_back(CatItem("MSN.weby", "MSN", HASH_WEBY));
-	items->push_back(CatItem("Yahoo.weby", "Yahoo", HASH_WEBY));
-	items->push_back(CatItem("Weather.weby", "Weather", HASH_WEBY));
-	items->push_back(CatItem("Amazon.weby", "Amazon", HASH_WEBY));
-	items->push_back(CatItem("YouTube.weby", "YouTube", HASH_WEBY));
-	items->push_back(CatItem("Wikipedia.weby", "Wikipedia", HASH_WEBY));
-	items->push_back(CatItem("Dictionary.weby", "Dictionary", HASH_WEBY));
-	items->push_back(CatItem("Thesaurus.weby", "Thesaurus", HASH_WEBY));
-	items->push_back(CatItem("IMDB.weby", "IMDB", HASH_WEBY));
-	items->push_back(CatItem("Netflix.weby", "Netflix", HASH_WEBY));
-	items->push_back(CatItem("MSDN.weby", "MSDN", HASH_WEBY));
-	items->push_back(CatItem("E-Mail.weby", "E-Mail", HASH_WEBY));
+	foreach(WebySite site, sites) {
+		items->push_back(CatItem(site.name + ".weby", site.name, HASH_WEBY));
+	}
 }
 
 void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
@@ -102,93 +151,47 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 		args = id->last().getText();
 		item = &id->first().getTopResult();
 	}
-	if (item->shortName == "Google") {
-		file = "http://www.google.com/";
-		if (args != "")
-			file += "search?q=" + args;
+	bool found = false;
+	foreach(WebySite site, sites) {
+		if (item->shortName == site.name) {
+			found = true;
+			file = site.base;
+			if (args != "")
+				file += site.query + args;
+			break;
+		}
 	}
-	else if (item->shortName == "Live Search") {
-		file = "http://search.live.com/";
-		if (args != "")
-			file += "results.aspx?q=" + args;
-	}
-	else if (item->shortName == "Yahoo") {
-		file = "http://search.yahoo.com/";
-		if (args != "")
-			file += "search?p=" + args;
-	}
-	else if (item->shortName == "MSN") {
-		file = "http://search.msn.com/";
-		if (args != "")
-			file += "results.aspx?q=" + args;
-	}
-	else if (item->shortName == "Weather") {
-		file = "http://www.weather.com/";
-		if (args != "")
-			file += "weather/local/" + args;
-	}
-	else if (item->shortName == "Amazon") {
-		file = "http://www.amazon.com/";
-		if (args != "")
-			file += "gp/search/?keywords=" + args;
-	}
-	else if (item->shortName == "YouTube") {
-		file = "http://www.youtube.com/";
-		if (args != "")
-			file += "results?search_query=" + args;
-	}
-	else if (item->shortName == "Wikipedia") {
-		file = "http://www.wikipedia.com/";
-		if (args != "")
-			file += "wiki/Special:Search?search=" + args;
-	}
-	else if (item->shortName == "Dictionary") {
-		file = "http://www.dictionary.com/";
-		if (args != "")
-			file += "browse/" + args;
-	}
-	else if (item->shortName == "Thesaurus") {
-		file = "http://www.thesaurus.com/";
-		if (args != "")
-			file += "browse/" + args;
-	}
-	else if (item->shortName == "IMDB") {
-		file = "http://www.imdb.com/";
-		if (args != "")
-			file += "find?q=" + args;
-	}
-	else if (item->shortName == "Netflix") {
-		file = "http://www.netflix.com/";
-		if (args != "")
-			file += "Search?v1=" + args;
-	}
-	else if (item->shortName == "MSDN") {
-		file = "http://search.msdn.microsoft.com/";
-		if (args != "")
-			file += "search/default.aspx?siteId=0&tab=0&query=" + args;
-	}
-	else if (item->shortName == "E-Mail")
-		file = "mailto:" + args;
-	else  {
+
+	if (!found)
 		file = item->shortName;	
-	}
 
 	QUrl url(file);
 	runProgram(url.toEncoded(), "");
 }
 
+void WebyPlugin::doDialog(QWidget* parent) {
+
+}
 
 bool WebyPlugin::msg(int msgId, void* wParam, void* lParam)
 {
 	bool handled = false;
 	switch (msgId)
-	{
+	{		
+		case MSG_INIT:
+			init();
+			handled = true;
+			break;
 		case MSG_GET_LABELS:
 			getLabels((QList<InputData>*) wParam);
 			handled = true;
 			break;
 		case MSG_GET_ID:
 			getID((uint*) wParam);
+			handled = true;
+			break;
+		case MSG_GET_NAME:
+			getName((QString*) wParam);
 			handled = true;
 			break;
 		case MSG_GET_RESULTS:
@@ -203,6 +206,12 @@ bool WebyPlugin::msg(int msgId, void* wParam, void* lParam)
 			launchItem((QList<InputData>*) wParam, (CatItem*) lParam);
 			handled = true;
 			break;
+		case MSG_HAS_DIALOG:
+			handled = true;
+			break;
+		case MSG_DO_DIALOG:
+			doDialog((QWidget*) wParam);
+
 		default:
 			break;
 	}

@@ -784,6 +784,8 @@ void MyWidget::hideLaunchy() {
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
+	QStringList args = qApp->arguments();
+
 	QCoreApplication::setApplicationName("Launchy");
 	QCoreApplication::setOrganizationDomain("launchy.net");
 

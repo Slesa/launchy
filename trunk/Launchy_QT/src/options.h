@@ -31,6 +31,7 @@ QList<int> iMetaKeys;
 QList<int> iActionKeys;
 OptionsDlg(QWidget* parent = 0);
 QList<Directory> memDirs;
+QList<QPair<QString, uint> > pluginNames;
 
 public slots:
 	void accept();

@@ -111,6 +111,7 @@ public:
 	void launchObject(int obj);
 	void searchFiles(const QString & input, QList<CatItem>& searchResults);
 	void parseInput(QString text);
+	void resetLaunchy();
 
 private:
     QHttp *http;

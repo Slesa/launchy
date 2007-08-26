@@ -127,7 +127,7 @@
     </rect>
    </property>
    <property name="currentIndex" >
-    <number>0</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="tab" >
     <attribute name="title" >
@@ -587,6 +587,45 @@
     <attribute name="title" >
      <string>Plugins</string>
     </attribute>
+    <widget class="QListWidget" name="plugList" >
+     <property name="geometry" >
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>101</width>
+       <height>251</height>
+      </rect>
+     </property>
+     <property name="selectionRectVisible" >
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11" >
+     <property name="geometry" >
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>79</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text" >
+      <string>Available Plugins</string>
+     </property>
+    </widget>
+    <widget class="QGroupBox" name="plugBox" >
+     <property name="geometry" >
+      <rect>
+       <x>130</x>
+       <y>10</y>
+       <width>351</width>
+       <height>271</height>
+      </rect>
+     </property>
+     <property name="title" >
+      <string>Plugin Options</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

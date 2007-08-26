@@ -73,6 +73,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\plugin_interface.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\plugin_interface.h"
 				>
 			</File>

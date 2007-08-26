@@ -1,6 +1,7 @@
 #include "options.h"
 #include "main.h"
 #include "globals.h"
+#include "plugin_handler.h"
 #include <QSettings>
 #include <QDir>
 #include <QPixmap>
@@ -102,13 +103,30 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		if (catDirectories->count() > 0)
 			catDirectories->setCurrentRow(0);
 
-		tabWidget->setCurrentIndex(0);
+
 
 		catProgress->setRange(0,100);
 
 		if (gBuilder != NULL) {
 			connect(gBuilder, SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
 		}
+
+		// Load up the plugins		
+		main->plugins.loadPlugins();
+		foreach(PluginInfo info, main->plugins.getPlugins()) {
+			plugList->addItem(info.name);
+			QListWidgetItem* item = plugList->item(plugList->count()-1);
+			item->setData(3, info.id);
+			item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+			if (info.loaded)
+				item->setCheckState(Qt::Checked);
+			else
+				item->setCheckState(Qt::Unchecked);
+		}
+		if (plugList->count() > 0) {
+			plugList->setCurrentRow(0);
+		}
+		tabWidget->setCurrentIndex(0);
 }
 
 
@@ -156,6 +174,34 @@ void OptionsDlg::accept() {
 
 	gSettings->endArray();
 
+
+	// Compare the checks to the plugins
+	QHash<uint, PluginInfo> plugins = main->plugins.getPlugins();
+	bool changed = false;
+
+	gSettings->beginWriteArray("plugins");
+
+	for(int i = 0; i < plugList->count(); i++) {
+		QListWidgetItem* item = plugList->item(i);
+		gSettings->setArrayIndex(i);
+		gSettings->setValue("id", item->data(3).toUInt());
+		if (item->checkState() == Qt::Checked) {
+			gSettings->setValue("load", true);
+			if (!plugins[item->data(3).toUInt()].loaded)
+				changed = true;
+		}
+		else {
+			gSettings->setValue("load", false);
+			if (plugins[item->data(3).toUInt()].loaded)
+				changed = true;
+		}
+
+	}
+	gSettings->endArray();
+
+	if (changed) {
+		main->plugins.loadPlugins();
+	}
 
 	QDialog::accept();
 }
