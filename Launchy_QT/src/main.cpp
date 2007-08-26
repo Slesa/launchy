@@ -74,8 +74,8 @@ MyWidget::MyWidget(QWidget *parent)
 
 
 	// Load settings
-	if (QFile::exists(qApp->applicationDirPath() + "/Launchy.ini")) 
-		gSettings = new QSettings(qApp->applicationDirPath() + "/Launchy.ini", QSettings::IniFormat); 
+	if (QFile::exists(qApp->applicationDirPath() + "/config.ini")) 
+		gSettings = new QSettings(qApp->applicationDirPath() + "/config.ini", QSettings::IniFormat); 
 	else
 		gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy.net", "Launchy");
 
@@ -125,10 +125,9 @@ MyWidget::MyWidget(QWidget *parent)
 		 updateTimer->start(60000);
 
 
-	gTypes = new TypeRegistrar();
 
 	// Load the catalog
-	gBuilder = new CatBuilder(true);
+	gBuilder = new CatBuilder(true, &plugins);
 	connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 	gBuilder->start();
 
@@ -181,7 +180,10 @@ void MyWidget::showAlternatives(bool show) {
 
 
 void MyWidget::launchObject(int obj) {
-	platform.Execute(searchResults[obj].fullPath, "");
+	if (searchResults[obj].id == HASH_LAUNCHY)
+		platform.Execute(searchResults[obj].fullPath, "");
+	else
+		plugins.execute(&inputData, &searchResults[obj]);
 	catalog->incrementUsage(searchResults[obj]);
 }
 
@@ -265,7 +267,7 @@ void MyWidget::inputKeyPressEvent(QKeyEvent* key) {
 }
 
 void MyWidget::parseInput(QString text) {
-	QStringList spl = text.split("|");
+	QStringList spl = text.split(" | ");
 	if (spl.count() < inputData.count()) {
 		inputData = inputData.mid(0, spl.count());
 	}
@@ -331,21 +333,25 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 			if (searchResults.count() > 0) {
 				QString path = "";
 				QFileInfo info(searchResults[0].fullPath);
-				if (!info.exists()) return;
+//				if (!info.exists()) return;
 				if (info.isSymLink()) {
 					path = info.symLinkTarget();
 					path += "/";
+					path = QDir::toNativeSeparators(path);
 				} else if (info.isDir()) {
 					path = searchResults[0].fullPath;
 					if (!path.endsWith("/") && !path.endsWith("\\"))
 						path += "/";
+					path = QDir::toNativeSeparators(path);
 				} else if (info.isFile()) {
 					path = searchResults[0].fullPath;
 				} else {
 					path = input->text();
-					path += " | ";	
+					if (key->key() == Qt::Key_Tab) {
+						path += " | ";	
+					}
 				}
-				input->setText(QDir::toNativeSeparators(path));
+				input->setText(path);
 			} 
 		} else {
 			key->ignore();	
@@ -382,7 +388,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 			input->insert(inText);
 
 			if (searchResults.count() > 0) {
-				qDebug() << searchResults[0].shortName;
+//				qDebug() << searchResults[0].shortName;
 
 				QIcon icon = getIcon(searchResults[0]);
 
@@ -498,12 +504,17 @@ void MyWidget::updateVersion(int oldVersion) {
 		gSettings->setValue("donateTime", QDateTime::currentDateTime().addDays(21));
 		gSettings->setValue("version", LAUNCHY_VERSION);
 	}
+	if (oldVersion < 200) {
+		QFile oldDB(qApp->applicationDirPath() + "/Launchy.db");
+		oldDB.remove();
+		oldDB.close();
+	}
 }
 
 void MyWidget::updateTimeout() {
 	// Perform the database update
 	if (gBuilder == NULL) {
-		gBuilder = new CatBuilder(false);
+		gBuilder = new CatBuilder(false, &plugins);
 		gBuilder->setPreviousCatalog(catalog);
 		connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		gBuilder->start(QThread::IdlePriority);
@@ -543,11 +554,10 @@ MyWidget::~MyWidget() {
 	dest = dest.mid(0, lastSlash);
 	dest += "/Launchy.db";
 
-	CatBuilder builder(catalog);
+	CatBuilder builder(catalog, &plugins);
 	builder.storeCatalog(dest);
 	delete updateTimer;
 	delete dropTimer;
-	delete gTypes;
 }
 
 void MyWidget::MoveFromAlpha(QPoint pos) {
@@ -573,23 +583,23 @@ void MyWidget::setAlwaysTop(bool alwaysTop) {
 		
 }
 void MyWidget::setPortable(bool portable) {
-	if (portable && gSettings->fileName().compare(qApp->applicationDirPath() + "/Launchy.ini", Qt::CaseInsensitive) != 0) {
+	if (portable && gSettings->fileName().compare(qApp->applicationDirPath() + "/config.ini", Qt::CaseInsensitive) != 0) {
 		QString oldName = gSettings->fileName();
 		delete gSettings;
 
 		// Copy the old settings
 		QFile oldSet(oldName);
-		oldSet.copy(qApp->applicationDirPath() + "/Launchy.ini");
+		oldSet.copy(qApp->applicationDirPath() + "/config.ini");
 		oldSet.close();
 
 		QFile oldDB(oldName.mid(0,oldName.lastIndexOf("/")) + "/Launchy.db");
 		oldDB.copy(qApp->applicationDirPath() + "/Launchy.db");
 		oldDB.close();
 
-		gSettings = new QSettings(qApp->applicationDirPath() + "/Launchy.ini", QSettings::IniFormat); 
+		gSettings = new QSettings(qApp->applicationDirPath() + "/config.ini", QSettings::IniFormat); 
 
 	}
-	else if (!portable && gSettings->fileName().compare(qApp->applicationDirPath() + "/Launchy.ini", Qt::CaseInsensitive) == 0) {
+	else if (!portable && gSettings->fileName().compare(qApp->applicationDirPath() + "/config.ini", Qt::CaseInsensitive) == 0) {
 		delete gSettings;
 		gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy.net", "Launchy");
 		QString newName = gSettings->fileName();
@@ -601,7 +611,7 @@ void MyWidget::setPortable(bool portable) {
 		newF.close();
 
 		// Copy the local ini + db files to the users section
-		QFile oldSet(qApp->applicationDirPath() + "/Launchy.ini");
+		QFile oldSet(qApp->applicationDirPath() + "/config.ini");
 		oldSet.copy(newName);
 		oldSet.remove();
 		oldSet.close();
@@ -723,7 +733,7 @@ void MyWidget::menuOptions() {
 	ops.exec();
 	// Perform the database update
 	if (gBuilder == NULL) {
-		gBuilder = new CatBuilder(false);
+		gBuilder = new CatBuilder(false, &plugins);
 		gBuilder->setPreviousCatalog(catalog);
 		connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		gBuilder->start(QThread::IdlePriority);

@@ -28,6 +28,8 @@ public:
 	void loadPlugins();
 	void getLabels(QList<InputData>* id);
 	void getResults(QList<InputData>* id, QList<CatItem>* results);
+	void getCatalogs(QList<CatItem>* items);
+	void execute(QList<InputData>*, CatItem*);
 };
 
 

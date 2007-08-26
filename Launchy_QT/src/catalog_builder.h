@@ -1,6 +1,7 @@
 #ifndef CATALOG_BUILDER
 #define CATALOG_BUILDER
 #include "catalog.h"
+#include "plugin_handler.h"
 #include <QThread>
 
 class CatBuilder : public QThread
@@ -11,6 +12,7 @@ private:
 	bool buildFromStorage;
 	Catalog* cat;
 	Catalog* curcat;
+	PluginHandler* plugins;
 	QHash<QString, bool> indexed;
 
 public:
@@ -24,8 +26,8 @@ public:
 
 
 	Catalog* getCatalog() { return cat; }
-	CatBuilder(bool fromArchive);
-	CatBuilder(Catalog* catalog) : buildFromStorage(false), cat(catalog) {}
+	CatBuilder(bool fromArchive, PluginHandler* plugs);
+	CatBuilder(Catalog* catalog, PluginHandler* plugs) : plugins(plugs), buildFromStorage(false), cat(catalog) {}
 	void run();
 
 signals:
