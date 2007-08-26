@@ -1,5 +1,5 @@
 Currently working on: 
-
+Working on the plugin dialog box.  Currently getting options.cpp to call plugins.doDialog on plugin selection change (pluginChanged)
 
 
 Trying to stylize the scrollbar is difficult

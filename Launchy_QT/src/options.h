@@ -47,6 +47,7 @@ public slots:
 	void catDepthChanged(int);
 	void catProgressUpdated(float);
 	void catRescanClicked(bool);
+	void pluginChanged(int row);
 };
 
 
