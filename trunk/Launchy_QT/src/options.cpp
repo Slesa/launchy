@@ -112,6 +112,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		}
 
 		// Load up the plugins		
+		connect(plugList, SIGNAL(currentRowChanged(int)), this, SLOT(pluginChanged(int)));
 		main->plugins.loadPlugins();
 		foreach(PluginInfo info, main->plugins.getPlugins()) {
 			plugList->addItem(info.name);
@@ -126,6 +127,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		if (plugList->count() > 0) {
 			plugList->setCurrentRow(0);
 		}
+
 		tabWidget->setCurrentIndex(0);
 }
 
@@ -204,6 +206,12 @@ void OptionsDlg::accept() {
 	}
 
 	QDialog::accept();
+}
+
+void OptionsDlg::pluginChanged(int row) {
+	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
+	if (main == NULL) return;
+	main->plugins.doDialog(
 }
 
 void OptionsDlg::catProgressUpdated(float val) {
