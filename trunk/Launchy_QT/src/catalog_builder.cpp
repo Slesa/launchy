@@ -7,8 +7,8 @@
 #include <QFile>
 #include <QDataStream>
 
-CatBuilder::CatBuilder(bool fromArchive) :
-  buildFromStorage(fromArchive), curcat(NULL)
+CatBuilder::CatBuilder(bool fromArchive, PluginHandler* plugs) :
+  buildFromStorage(fromArchive), curcat(NULL), plugins(plugs)
 {
 	if (gSettings->value("GenOps/fastindexer",false).toBool())
 		cat = (Catalog*) new FastCatalog();
@@ -59,6 +59,16 @@ void CatBuilder::buildCatalog() {
 		QString cur = memDirs[i].name;
 		indexDirectory(memDirs[i].name, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth);
 	}
+	
+	QList<CatItem> pitems;
+	plugins->getCatalogs(&pitems);
+	foreach(CatItem item, pitems) {
+		if (curcat != NULL) {
+			item.usage = curcat->getUsage(item.fullPath);
+		}
+		cat->addItem(item);
+	}
+
 	emit(catalogIncrement(0.0));
 }
 
@@ -76,14 +86,11 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 			indexDirectory(dir + "/" + dirs[i], filters, fdirs, fbin, depth-1);
 		}
 	}
-	int lStore = gTypes->getType("store");
+
 	if (fdirs) {
-		int dInt = gTypes->getType("directory");
 		for(int i = 0; i < dirs.count(); ++i) {
 			if (!indexed.contains(dir + "/" + dirs[i])) {
 				CatItem item(dir + "/" + dirs[i]);
-				item.setLabel(dInt, true);
-				item.setLabel(lStore, true);
 				if (curcat != NULL)
 					item.usage = curcat->getUsage(item.fullPath);
 				cat->addItem(item);
@@ -93,12 +100,9 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 	}
 	if (fbin) {
 		QStringList bins = qd.entryList(QDir::Files | QDir::Executable);
-		int bInt = gTypes->getType("executable");
 		for(int i = 0; i < bins.count(); ++i) {
 			if (!indexed.contains(dir + "/" + bins[i])) {
 				CatItem item(dir + "/" + bins[i]);
-				item.setLabel(bInt, true);
-				item.setLabel(lStore, true);
 				if (curcat != NULL)
 					item.usage = curcat->getUsage(item.fullPath);
 				cat->addItem(item);
@@ -110,7 +114,6 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 	for(int i = 0; i < files.count(); ++i) {
 		if (!indexed.contains(dir + "/" + files[i])) {
 			CatItem item(dir + "/" + files[i]);
-			item.setLabel(lStore, true);
 			if (curcat != NULL)
 				item.usage = curcat->getUsage(item.fullPath);
 			cat->addItem(item);
@@ -149,11 +152,9 @@ void CatBuilder::storeCatalog(QString dest) {
 	QDataStream out(&ba, QIODevice::ReadWrite); 
 	out.setVersion(QDataStream::Qt_4_2);
 
-	int storeLabel = gTypes->getType("store");
 	for(int i = 0; i < this->cat->count(); i++) {
 		CatItem item = cat->getItem(i);
-		if (item.hasLabel(storeLabel))
-			out << item;
+		out << item;
 	}
 
 	// Zip the archive

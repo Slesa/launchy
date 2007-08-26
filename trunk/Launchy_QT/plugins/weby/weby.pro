@@ -6,6 +6,13 @@
  SOURCES       = weby.cpp
  TARGET		   = weby
  
+ win32 {
+	LIBS += shell32.lib
+%	LIBS += user32.lib
+%	LIBS += Gdi32.lib
+%	LIBS += comctl32.lib
+}
+ 
  *:debug {
 	DESTDIR = ../../debug/plugins/
  }

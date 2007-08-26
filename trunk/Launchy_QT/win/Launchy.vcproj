@@ -167,15 +167,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\catalog_builder.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\types.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\types.h"
+				RelativePath="..\src\catalog_builder.h"
 				>
 			</File>
 		</Filter>

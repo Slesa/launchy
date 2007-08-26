@@ -26,15 +26,26 @@ void PluginHandler::getResults(QList<InputData>* id, QList<CatItem>* results)
 	}
 }
 
+void PluginHandler::getCatalogs(QList<CatItem>* items) {
+	foreach(PluginInfo info, plugins) {
+		info.obj->msg(MSG_GET_CATALOG, (void*) items);
+	}
+}
+
+void PluginHandler::execute(QList<InputData>* id, CatItem* result) {
+	if (!plugins.contains(result->id)) return;
+	plugins[result->id].obj->msg(MSG_LAUNCH_ITEM, (void*) id, (void*) result);
+}
+
 void PluginHandler::loadPlugins() {
 	// Get the list of loadable plugins
-	QHash<QString,bool> loadable;
+	QHash<uint,bool> loadable;
 	int size = gSettings->beginReadArray("plugins");
 	for(int i = 0; i < size; ++i) {
 		gSettings->setArrayIndex(i);
-		QString name = gSettings->value("name").toString();
+		uint id = gSettings->value("id").toUInt();
 		bool toLoad = gSettings->value("load").toBool();
-		loadable[name] = toLoad;
+		loadable[id] = toLoad;
 	}
 	gSettings->endArray();
 
@@ -46,17 +57,16 @@ void PluginHandler::loadPlugins() {
 		QObject *plugin = loader.instance();
 		if (plugin) {
 			PluginInterface *plug = qobject_cast<PluginInterface *>(plugin);
-			QString name;
-			bool handled = plug->msg(MSG_GET_NAME, (QObject*) &name);
+			uint id;
+			bool handled = plug->msg(MSG_GET_ID, (void*) &id);
 
-			if (handled && (!loadable.contains(name) || loadable[name])) {
-				uint hashID = qHash(name);
+			if (handled && (!loadable.contains(id) || loadable[id])) {
 				PluginInfo info;
-				info.name = name;
+//				info.name = name;
 				info.obj = plug;
 				info.path = pluginsDir.absoluteFilePath(fileName);
-				if (!plugins.contains(hashID)) {
-					plugins[hashID] = info;
+				if (!plugins.contains(id)) {
+					plugins[id] = info;
 				}
 			} else {
 				// unload

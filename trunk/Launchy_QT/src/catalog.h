@@ -15,7 +15,6 @@ public:
 	QString fullPath;
 	QString shortName;
 	QString lowName;
-	QBitArray labels;
 	QIcon icon;
 	int usage;
 	void* data;
@@ -39,6 +38,7 @@ public:
 		lowName = shortName.toLower();
 		data = NULL;
 		usage = 0;
+		id = 0;
 	}
 	
 
@@ -48,6 +48,7 @@ public:
 		lowName = shortName.toLower();
 		data = NULL;
 		usage = 0;
+		id = 0;
 	}
 
 	CatItem(QString full, QString shortN, uint i_d) 
@@ -62,20 +63,20 @@ public:
 		fullPath = s.fullPath;
 		shortName = s.shortName;
 		lowName = s.lowName;
-		labels = s.labels;
 		icon = s.icon;
 		usage = s.usage;
 		data = s.data;
+		id = s.id;
 	}
 
 	CatItem& operator=( const CatItem &s ) {
 		fullPath = s.fullPath;
 		shortName = s.shortName;
 		lowName = s.lowName;
-		labels = s.labels;
 		icon = s.icon;
 		usage = s.usage;
 		data = s.data;
+		id = s.id;
 		return *this;
 	}
 
@@ -85,18 +86,6 @@ public:
 		return false;
 	}
 
-	void setLabel(int num, bool val) {
-		if (num+1 > labels.size()) {
-			labels.resize(num+1);
-		}
-		labels.setBit(num, val);
-	}
-
-	bool hasLabel(int num) {
-		if (num > labels.size())
-			return false;
-		return labels.at(num);
-	}
 };
 
 
@@ -107,12 +96,12 @@ private:
 	QSet<uint> labels;
 	CatItem topResult;
 public:
-	QSet<uint> & getLabels() { return labels; }
+	QSet<uint>  getLabels() { return labels; }
 	void setLabel(uint l) { labels.insert(l); }
 	bool hasLabel(uint l) { return labels.contains(l); }
-	QString & getText() { return text; }
+	QString  getText() { return text; }
 	void setText(QString t) { text = t; }
-	CatItem & getTopResult() { return topResult; }
+	CatItem  getTopResult() { return topResult; }
 	void setTopResult(CatItem sr) { topResult = sr; }
 	InputData() {}
 	InputData(QString str) : text(str) {}
@@ -124,9 +113,9 @@ inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.fullPath;
 	out << item.shortName;
 	out << item.lowName;
-	out << item.labels;
 	out << item.icon;
 	out << item.usage;
+	out << item.id;
 	return out;
 }
 
@@ -134,9 +123,9 @@ inline QDataStream &operator>>(QDataStream &in, CatItem &item) {
 	in >> item.fullPath;
 	in >> item.shortName;
 	in >> item.lowName;
-	in >> item.labels;
 	in >> item.icon;
 	in >> item.usage;
+	in >> item.id;
 	return in;
 }
 

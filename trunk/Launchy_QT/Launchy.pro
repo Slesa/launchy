@@ -7,11 +7,11 @@ VPATH		+= src/
 
 SOURCES		= main.cpp globals.cpp platform_base_hotkey.cpp \ 
 			  options.cpp catalog.cpp catalog_builder.cpp \ 
-			  types.cpp dsingleapplication.cpp plugin_handler.cpp
+			  dsingleapplication.cpp plugin_handler.cpp
 HEADERS		= platform_util.h platform_base.h globals.h \
 			  globals.h main.h platform_base_hottrigger.h \ 
 			  platform_base_hotkey.h catalog.h \
-			  catalog_builder.h types.h dsingleapplication.h \ 
+			  catalog_builder.h dsingleapplication.h \ 
 			  plugin_interface.h plugin_handler.h options.h
 ICON		= Launchy.ico
 
@@ -26,7 +26,7 @@ win32 {
 }
 
 win32:debug {
-	CONFIG += console 
+%	CONFIG += console 
 	DESTDIR = ../debug/
 }
 

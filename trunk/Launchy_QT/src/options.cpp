@@ -183,7 +183,7 @@ void OptionsDlg::catRescanClicked(bool val) {
 	gSettings->endArray();
 
 	if (gBuilder == NULL) {
-		gBuilder = new CatBuilder(false);
+		gBuilder = new CatBuilder(false, &main->plugins);
 		gBuilder->setPreviousCatalog(main->catalog);
 		connect(gBuilder, SIGNAL(catalogFinished()), main, SLOT(catalogBuilt()));
 		connect(gBuilder, SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
