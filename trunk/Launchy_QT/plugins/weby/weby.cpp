@@ -1,6 +1,8 @@
-#include "weby.h"
 #include <QtGui>
 #include <QUrl>
+
+#include "weby.h"
+#include "gui.h"
 
 
 void WebyPlugin::init()
@@ -170,7 +172,15 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 }
 
 void WebyPlugin::doDialog(QWidget* parent) {
+	if (gui != NULL) return;
+	gui = new Gui(parent);
+	gui->show();
+}
 
+void WebyPlugin::endDialog() {
+	if (gui != NULL)
+		delete gui;
+	gui = NULL;
 }
 
 bool WebyPlugin::msg(int msgId, void* wParam, void* lParam)
@@ -211,6 +221,8 @@ bool WebyPlugin::msg(int msgId, void* wParam, void* lParam)
 			break;
 		case MSG_DO_DIALOG:
 			doDialog((QWidget*) wParam);
+		case MSG_END_DIALOG:
+			endDialog();
 
 		default:
 			break;

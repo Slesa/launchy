@@ -1,6 +1,6 @@
 #ifndef WEBY_H
 #define WEBY_H
-
+#include "gui.h"
 
 
 #include "plugin_interface.h"
@@ -20,8 +20,12 @@ class WebyPlugin : public QObject, public PluginInterface
 	uint HASH_WEBSITE;
 	uint HASH_WEBY;
 	QList<WebySite> sites;
+
+private:
+	Gui* gui;
 public:
 	WebyPlugin() {
+		gui = NULL;
 		HASH_WEBSITE = qHash(QString("website"));
 		HASH_WEBY = qHash(QString("weby"));
 	}
@@ -35,6 +39,7 @@ public:
 	void getCatalog(QList<CatItem>* items);
 	void launchItem(QList<InputData>*, CatItem*);
 	void doDialog(QWidget* parent);
+	void endDialog();
 	void init();
 };
 

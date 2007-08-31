@@ -30,6 +30,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 	: QDialog(parent) 
 {
 		setupUi(this);
+		curPlugin = -1;
 
 		MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
 
@@ -149,7 +150,15 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 
 		tabWidget->setCurrentIndex(0);
 }
-
+OptionsDlg::~OptionsDlg() {
+	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
+	if (main == NULL) return;
+	// Close any current plugin dialogs
+	if (curPlugin > 0) {
+		QListWidgetItem* item = plugList->item(curPlugin);
+		main->plugins.endDialog(item->data(3).toUInt());
+	}
+}
 
 void OptionsDlg::accept() {
 	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
@@ -230,7 +239,18 @@ void OptionsDlg::accept() {
 void OptionsDlg::pluginChanged(int row) {
 	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
 	if (main == NULL) return;
-	main->plugins.doDialog(
+
+	// Close any current plugin dialogs
+	if (curPlugin > 0) {
+		QListWidgetItem* item = plugList->item(curPlugin);
+		main->plugins.endDialog(item->data(3).toUInt());
+	}
+
+	// Open the new plugin dialog
+	curPlugin = row;
+	if (row < 0) return;
+	QListWidgetItem* item = plugList->item(row);
+	main->plugins.doDialog(plugBox, item->data(3).toUInt());
 }
 
 void OptionsDlg::catProgressUpdated(float val) {

@@ -1,8 +1,12 @@
 Currently working on: 
-Working on the plugin dialog box.  Currently getting options.cpp to call plugins.doDialog on plugin selection change (pluginChanged)
+
+Make sure that when you move from one plugin to the next that the old dialog gets closed.
+
+Why does the database keep getting rebuilt?
 
 when there are no suggested results, run them as arguments to the first thing
 
+When a db is done building, redo the search on the current text
 
 Trying to stylize the scrollbar is difficult
 

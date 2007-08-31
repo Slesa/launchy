@@ -3,7 +3,7 @@ CONFIG		+= qt_warn release
 QT			+= network
 TARGET		= Launchy
 VPATH		+= src/
-
+UI_DIR		= ../src/
 FORMS		= ../src/options.ui
 SOURCES		= main.cpp globals.cpp platform_base_hotkey.cpp \ 
 			  options.cpp catalog.cpp catalog_builder.cpp \ 
@@ -26,7 +26,7 @@ win32 {
 }
 
 win32:debug {
-%	CONFIG += console 
+	CONFIG += console 
 	DESTDIR = ../debug/
 }
 

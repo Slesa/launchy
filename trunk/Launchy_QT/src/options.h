@@ -42,6 +42,9 @@ class OptionsDlg : public QDialog, private Ui::OptionsDlg
 {
   Q_OBJECT
 
+private:
+	int curPlugin;
+
 public:
 
 QStringList metaKeys;
@@ -49,6 +52,7 @@ QStringList actionKeys;
 QList<int> iMetaKeys;
 QList<int> iActionKeys;
 OptionsDlg(QWidget* parent = 0);
+~OptionsDlg();
 QList<Directory> memDirs;
 QList<QPair<QString, uint> > pluginNames;
 
