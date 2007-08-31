@@ -55,6 +55,7 @@ public:
 	void getCatalogs(QList<CatItem>* items);
 	void execute(QList<InputData>*, CatItem*);
 	void doDialog(QWidget* parent, uint id);
+	void endDialog(uint id);
 	QHash<uint, PluginInfo> & getPlugins() { return plugins; }
 };
 

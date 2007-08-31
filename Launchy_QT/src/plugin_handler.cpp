@@ -66,6 +66,12 @@ void PluginHandler::doDialog(QWidget* parent, uint id) {
 	plugins[id].obj->msg(MSG_DO_DIALOG, (void*) parent);
 }
 
+void PluginHandler::endDialog(uint id) {
+	if (!plugins.contains(id)) return;
+	if (!plugins[id].loaded) return;
+	plugins[id].obj->msg(MSG_END_DIALOG);
+}
+
 void PluginHandler::loadPlugins() {
 	// Get the list of loadable plugins
 	QHash<uint,bool> loadable;

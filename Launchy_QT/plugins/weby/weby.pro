@@ -2,8 +2,10 @@
  CONFIG       += plugin release
  VPATH 		  += ../../src/
  INCLUDEPATH += ../../src/
- HEADERS       = plugin_interface.h weby.h
- SOURCES       = plugin_interface.cpp weby.cpp
+ UI_DIR		   = ../../plugins/weby/
+ FORMS		   = dlg.ui
+ HEADERS       = plugin_interface.h weby.h gui.h
+ SOURCES       = plugin_interface.cpp weby.cpp gui.cpp
  TARGET		   = weby
  
  win32 {
