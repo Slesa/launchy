@@ -66,10 +66,10 @@ void PluginHandler::doDialog(QWidget* parent, uint id) {
 	plugins[id].obj->msg(MSG_DO_DIALOG, (void*) parent);
 }
 
-void PluginHandler::endDialog(uint id) {
+void PluginHandler::endDialog(uint id, bool accept) {
 	if (!plugins.contains(id)) return;
 	if (!plugins[id].loaded) return;
-	plugins[id].obj->msg(MSG_END_DIALOG);
+	plugins[id].obj->msg(MSG_END_DIALOG, (void*) accept);
 }
 
 void PluginHandler::loadPlugins() {

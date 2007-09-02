@@ -153,11 +153,12 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 OptionsDlg::~OptionsDlg() {
 	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
 	if (main == NULL) return;
+
 	// Close any current plugin dialogs
-	if (curPlugin > 0) {
-		QListWidgetItem* item = plugList->item(curPlugin);
-		main->plugins.endDialog(item->data(3).toUInt());
-	}
+//	if (curPlugin >= 0) {
+//		QListWidgetItem* item = plugList->item(curPlugin);
+//		main->plugins.endDialog(item->data(3).toUInt());
+//	}
 }
 
 void OptionsDlg::accept() {
@@ -233,6 +234,11 @@ void OptionsDlg::accept() {
 		main->plugins.loadPlugins();
 	}
 
+	if (curPlugin >= 0) {
+		QListWidgetItem* item = plugList->item(curPlugin);
+		main->plugins.endDialog(item->data(3).toUInt(), true);
+	}
+
 	QDialog::accept();
 }
 
@@ -241,9 +247,9 @@ void OptionsDlg::pluginChanged(int row) {
 	if (main == NULL) return;
 
 	// Close any current plugin dialogs
-	if (curPlugin > 0) {
+	if (curPlugin >= 0) {
 		QListWidgetItem* item = plugList->item(curPlugin);
-		main->plugins.endDialog(item->data(3).toUInt());
+		main->plugins.endDialog(item->data(3).toUInt(), true);
 	}
 
 	// Open the new plugin dialog
@@ -358,6 +364,7 @@ void OptionsDlg::catDirMinusClicked(bool c) {
 
 void OptionsDlg::skinChanged(const QString newSkin) {
 	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
+	if (main == NULL) return;
 
 	// Load up the author file
 	QFile author(qApp->applicationDirPath() + "/Skins/" + newSkin + "/Author.txt"); 
@@ -392,6 +399,12 @@ void OptionsDlg::skinChanged(const QString newSkin) {
 }
 
 void OptionsDlg::reject() {
+	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
+	if (main == NULL) return;
 
+	if (curPlugin >= 0) {
+		QListWidgetItem* item = plugList->item(curPlugin);
+		main->plugins.endDialog(item->data(3).toUInt(), false);
+	}
 	QDialog::reject();
 }

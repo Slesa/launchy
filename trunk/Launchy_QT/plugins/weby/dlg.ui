@@ -5,47 +5,104 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>351</width>
-    <height>271</height>
+    <width>354</width>
+    <height>270</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Form</string>
   </property>
-  <widget class="QListWidget" name="listWidget" >
+  <widget class="QLabel" name="label" >
+   <property name="geometry" >
+    <rect>
+     <x>90</x>
+     <y>10</y>
+     <width>187</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Weby - Launch your favorite websites!</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="booksFirefox" >
    <property name="geometry" >
     <rect>
      <x>10</x>
-     <y>10</y>
-     <width>311</width>
-     <height>201</height>
+     <y>30</y>
+     <width>111</width>
+     <height>18</height>
     </rect>
    </property>
+   <property name="text" >
+    <string>Firefox Bookmarks</string>
+   </property>
   </widget>
-  <widget class="QPushButton" name="pushButton" >
+  <widget class="QCheckBox" name="booksIE" >
    <property name="geometry" >
     <rect>
-     <x>40</x>
+     <x>10</x>
+     <y>50</y>
+     <width>161</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Internet Explorer Bookmarks</string>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="table" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>80</y>
+     <width>331</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="columnCount" >
+    <number>3</number>
+   </property>
+   <column>
+    <property name="text" >
+     <string>Name</string>
+    </property>
+   </column>
+   <column>
+    <property name="text" >
+     <string>URL</string>
+    </property>
+   </column>
+   <column>
+    <property name="text" >
+     <string>Query</string>
+    </property>
+   </column>
+  </widget>
+  <widget class="QPushButton" name="tableNew" >
+   <property name="geometry" >
+    <rect>
+     <x>50</x>
      <y>240</y>
      <width>75</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text" >
-    <string>PushButton</string>
+    <string>New website</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2" >
+  <widget class="QPushButton" name="tableRemove" >
    <property name="geometry" >
     <rect>
-     <x>160</x>
+     <x>200</x>
      <y>240</y>
      <width>75</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text" >
-    <string>PushButton</string>
+    <string>Remove site</string>
    </property>
   </widget>
  </widget>

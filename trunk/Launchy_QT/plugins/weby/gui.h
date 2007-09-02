@@ -21,16 +21,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define GUI_H
 
 #include "ui_dlg.h"
+#include "globals.h"
 //#include <QDialog>
+
 
 class Gui : public QWidget, private Ui::Dlg
 {
-  Q_OBJECT
+	
 
+  Q_OBJECT
+private:
+	QList<WebySite> sites;
 public:
-	Gui(QWidget* parent) : QWidget(parent){
-		setupUi(this);
-	}
+	Gui(QWidget* parent);
+	void writeOptions();
+
+public slots:
+	void newRow();
+	void remRow();
 };
 
 #endif 

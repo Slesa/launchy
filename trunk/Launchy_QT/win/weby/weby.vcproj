@@ -60,6 +60,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\plugins\weby\globals.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\plugins\weby\gui.cpp"
 			>
 		</File>

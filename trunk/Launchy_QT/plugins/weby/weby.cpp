@@ -4,9 +4,13 @@
 #include "weby.h"
 #include "gui.h"
 
+WebyPlugin* gWebyInstance = NULL;
 
 void WebyPlugin::init()
 {
+	if (gWebyInstance == NULL)
+		gWebyInstance = this;
+
 	QSettings* set = *settings;
 	if ( set->value("weby/version", 0.0).toDouble() == 0.0 ) {
 		set->beginWriteArray("weby/sites");
@@ -80,6 +84,7 @@ void WebyPlugin::init()
 	set->setValue("weby/version", 2.0);
 
 	// Read in the array of websites
+	sites.clear();
 	int count = set->beginReadArray("weby/sites");
 	for(int i = 0; i < count; ++i) {
 		set->setArrayIndex(i);
@@ -177,7 +182,11 @@ void WebyPlugin::doDialog(QWidget* parent) {
 	gui->show();
 }
 
-void WebyPlugin::endDialog() {
+void WebyPlugin::endDialog(bool accept) {
+	if (accept) {
+		gui->writeOptions();
+		init();
+	}
 	if (gui != NULL)
 		delete gui;
 	gui = NULL;
@@ -221,8 +230,10 @@ bool WebyPlugin::msg(int msgId, void* wParam, void* lParam)
 			break;
 		case MSG_DO_DIALOG:
 			doDialog((QWidget*) wParam);
+			break;
 		case MSG_END_DIALOG:
-			endDialog();
+			endDialog((bool) wParam);
+			break;
 
 		default:
 			break;

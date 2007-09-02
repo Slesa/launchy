@@ -18,3 +18,60 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include "gui.h"
+#include "weby.h"
+
+
+Gui::Gui(QWidget* parent) 
+	: QWidget(parent)
+{
+	setupUi(this);
+	QSettings* settings = *gWebyInstance->settings;
+	if (settings == NULL) return;
+	booksFirefox->setChecked(settings->value("weby/firefox", true).toBool());
+	booksIE->setChecked(settings->value("weby/ie", true).toBool());
+	
+	// Read in the array of websites from options
+	table->setSortingEnabled(false);
+	int count = settings->beginReadArray("weby/sites");
+	table->setRowCount(count);
+	for(int i = 0; i < count; ++i) {
+		settings->setArrayIndex(i);
+		table->setItem(i, 0, new QTableWidgetItem(settings->value("name").toString()));
+		table->setItem(i, 1, new QTableWidgetItem(settings->value("base").toString()));
+		table->setItem(i, 2, new QTableWidgetItem(settings->value("query").toString()));
+	}
+	settings->endArray();
+	table->setSortingEnabled(true);
+
+	connect(tableNew, SIGNAL(clicked(bool)), this, SLOT(newRow(void)));
+	connect(tableRemove, SIGNAL(clicked(bool)), this, SLOT(remRow(void)));
+}
+
+void Gui::writeOptions()
+{
+	QSettings* settings = *gWebyInstance->settings;
+	if (settings == NULL) return;
+	settings->setValue("weby/firefox", booksFirefox->isChecked());
+	settings->setValue("weby/ie", booksIE->isChecked());
+
+	settings->beginWriteArray("weby/sites");
+	for(int i = 0; i < table->rowCount(); ++i) {
+		settings->setArrayIndex(i);
+		settings->setValue("name", table->item(i, 0)->text());
+		settings->setValue("base", table->item(i, 1)->text());
+		settings->setValue("query", table->item(i, 2)->text());
+	}
+	settings->endArray();
+}
+
+void Gui::newRow() 
+{
+	table->insertRow(table->rowCount());
+	table->setCurrentCell(table->rowCount()-1, 0);
+}
+
+void Gui::remRow()
+{
+	if (table->currentRow() != -1)
+		table->removeRow(table->currentRow());
+}
