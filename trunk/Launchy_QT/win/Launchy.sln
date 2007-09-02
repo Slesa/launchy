@@ -2,7 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Launchy", "Launchy.vcproj", "{DB63F725-9F43-48AE-A254-41A4DEC71AA0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "weby", "weby\weby.vcproj", "{4537EEC0-8AF8-4BD3-9A78-4C1A34297045}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_weby", "weby\weby.vcproj", "{4537EEC0-8AF8-4BD3-9A78-4C1A34297045}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_calcy", "calcy\calcy.vcproj", "{E1BBAB43-BCF7-45DE-843E-F91C92131610}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +20,10 @@ Global
 		{4537EEC0-8AF8-4BD3-9A78-4C1A34297045}.Debug|Win32.Build.0 = Debug|Win32
 		{4537EEC0-8AF8-4BD3-9A78-4C1A34297045}.Release|Win32.ActiveCfg = Release|Win32
 		{4537EEC0-8AF8-4BD3-9A78-4C1A34297045}.Release|Win32.Build.0 = Release|Win32
+		{E1BBAB43-BCF7-45DE-843E-F91C92131610}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E1BBAB43-BCF7-45DE-843E-F91C92131610}.Debug|Win32.Build.0 = Debug|Win32
+		{E1BBAB43-BCF7-45DE-843E-F91C92131610}.Release|Win32.ActiveCfg = Release|Win32
+		{E1BBAB43-BCF7-45DE-843E-F91C92131610}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
