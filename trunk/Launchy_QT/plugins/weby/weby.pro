@@ -20,5 +20,6 @@
  }
  *:release {
 	DESTDIR = ../../release/plugins/
+	QMAKE_CXXFLAGS += /Ox /Ob2 /Oi /Oy /GT /GA  /WX
  }
 

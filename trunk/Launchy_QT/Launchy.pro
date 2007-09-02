@@ -17,6 +17,7 @@ ICON		= Launchy.ico
 
 
 win32 {
+	RC_FILE = win/launchy.rc
 	SOURCES += platform_win.cpp platform_win_hotkey.cpp
 	HEADERS += platform_win.h platform_win_hotkey.h
 	LIBS += shell32.lib
@@ -26,7 +27,7 @@ win32 {
 }
 
 win32:debug {
-	%CONFIG += console 
+	CONFIG += console 
 	DESTDIR = ../debug/
 }
 

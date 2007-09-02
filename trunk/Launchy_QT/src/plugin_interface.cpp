@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "plugin_interface.h"
 
 void runProgram(QString file, QString args) {
-#ifdef WIN32
+#ifdef Q_WS_WIN
 	SHELLEXECUTEINFO ShExecInfo;
 
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -39,11 +39,11 @@ void runProgram(QString file, QString args) {
 	BOOL ret = ShellExecuteEx(&ShExecInfo);	
 #endif
 
-#ifdef OSX_BUILD
+#ifdef Q_WS_MAC
 
 #endif
 
-#ifdef KDE_BUILD
+#ifdef Q_WS_X11
 
 #endif
 

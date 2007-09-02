@@ -8,5 +8,10 @@ struct WebySite {
 	QString query;
 };
 
+struct Bookmark {
+	QString url;
+	QString shortcut;
+	QString name;
+};
 
 #endif

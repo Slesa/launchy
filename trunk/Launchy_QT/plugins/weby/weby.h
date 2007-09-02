@@ -17,6 +17,7 @@ public:
 	uint HASH_WEBSITE;
 	uint HASH_WEBY;
 	QList<WebySite> sites;
+	QList<Bookmark> marks;
 
 private:
 	Gui* gui;
@@ -38,6 +39,12 @@ public:
 	void doDialog(QWidget* parent);
 	void endDialog(bool accept);
 	void init();
+	QString getFirefoxPath();
+	void indexFirefox(QString path, QList<CatItem>* items);
+	QString getIcon();
+#ifdef Q_WS_WIN
+	void indexIE(QString path, QList<CatItem>* items);
+#endif
 };
 
 extern WebyPlugin* gWebyInstance;
