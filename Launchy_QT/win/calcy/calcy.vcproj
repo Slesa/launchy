@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="plug_weby"
-	ProjectGUID="{4537EEC0-8AF8-4BD3-9A78-4C1A34297045}"
-	RootNamespace="weby"
+	Name="plug_calcy"
+	ProjectGUID="{E1BBAB43-BCF7-45DE-843E-F91C92131610}"
+	RootNamespace="calcy"
 	Keyword="MakeFileProj"
 	>
 	<Platforms>
@@ -23,10 +23,10 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="%QTDIR%\bin\qmake ..\..\plugins\weby\weby.pro&#x0D;&#x0A;nmake debug"
-				ReBuildCommandLine="%QTDIR%\bin\qmake ..\..\plugins\weby\weby.pro&#x0D;&#x0A;nmake debug-clean&#x0D;&#x0A;nmake debug"
-				CleanCommandLine="%QTDIR%\bin\qmake ..\..\plugins\weby\weby.pro&#x0D;&#x0A;nmake debug-clean"
-				Output="weby.exe"
+				BuildCommandLine="%QTDIR%\bin\qmake ..\..\plugins\calcy\calcy.pro&#x0D;&#x0A;nmake debug"
+				ReBuildCommandLine="%QTDIR%\bin\qmake ..\..\plugins\calcy\calcy.pro&#x0D;&#x0A;nmake debug-clean&#x0D;&#x0A;nmake debug"
+				CleanCommandLine="%QTDIR%\bin\qmake ..\..\plugins\calcy\calcy.pro&#x0D;&#x0A;nmake debug-clean"
+				Output="calcy.exe"
 				PreprocessorDefinitions="WIN32;_DEBUG"
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -43,10 +43,10 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="%QTDIR%\bin\qmake ..\..\plugins\weby\weby.pro&#x0D;&#x0A;nmake release"
-				ReBuildCommandLine="%QTDIR%\bin\qmake ..\..\plugins\weby\weby.pro&#x0D;&#x0A;nmake release-clean&#x0D;&#x0A;nmake release"
-				CleanCommandLine="%QTDIR%\bin\qmake ..\..\plugins\weby\weby.pro&#x0D;&#x0A;nmake release-clean"
-				Output="weby.exe"
+				BuildCommandLine="%QTDIR%\bin\qmake ..\..\plugins\calcy\calcy.pro&#x0D;&#x0A;nmake release"
+				ReBuildCommandLine="%QTDIR%\bin\qmake ..\..\plugins\calcy\calcy.pro&#x0D;&#x0A;nmake release-clean&#x0D;&#x0A;nmake release"
+				CleanCommandLine="%QTDIR%\bin\qmake ..\..\plugins\calcy\calcy.pro&#x0D;&#x0A;nmake release-clean"
+				Output="calcy.exe"
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				IncludeSearchPath=""
 				ForcedIncludes=""
@@ -60,31 +60,19 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\plugins\weby\globals.h"
+			RelativePath="..\..\plugins\calcy\calcy.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\plugins\weby\gui.cpp"
+			RelativePath="..\..\plugins\calcy\calcy.h"
 			>
 		</File>
 		<File
-			RelativePath="..\..\plugins\weby\gui.h"
+			RelativePath="..\..\plugins\calcy\calcy.pro"
 			>
 		</File>
 		<File
 			RelativePath=".\readme.txt"
-			>
-		</File>
-		<File
-			RelativePath="..\..\plugins\weby\weby.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\..\plugins\weby\weby.h"
-			>
-		</File>
-		<File
-			RelativePath="..\..\plugins\weby\weby.pro"
 			>
 		</File>
 	</Files>

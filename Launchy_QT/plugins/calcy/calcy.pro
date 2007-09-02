@@ -2,11 +2,11 @@
  CONFIG       += plugin release
  VPATH 		  += ../../src/
  INCLUDEPATH += ../../src/
- UI_DIR		   = ../../plugins/weby/
- FORMS		   = dlg.ui
- HEADERS       = plugin_interface.h weby.h gui.h globals.h
- SOURCES       = plugin_interface.cpp weby.cpp gui.cpp
- TARGET		   = weby
+ INCLUDEPATH += c:/boost/
+ UI_DIR		   = ../../plugins/calcy/
+ HEADERS       = plugin_interface.h calcy.h 
+ SOURCES       = plugin_interface.cpp calcy.cpp 
+ TARGET		   = calcy
  
  win32 {
 	LIBS += shell32.lib
