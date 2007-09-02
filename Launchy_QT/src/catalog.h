@@ -34,7 +34,7 @@ public:
 	QString fullPath;
 	QString shortName;
 	QString lowName;
-	QIcon icon;
+	QString icon;
 	int usage;
 	void* data;
 	int id;
@@ -72,6 +72,14 @@ public:
 
 	CatItem(QString full, QString shortN, uint i_d) 
 		: id(i_d), fullPath(full), shortName(shortN)
+	{
+		lowName = shortName.toLower();
+		data = NULL;
+		usage = 0;
+	}
+
+	CatItem(QString full, QString shortN, uint i_d, QString iconPath) 
+		: id(i_d), fullPath(full), shortName(shortN), icon(iconPath)
 	{
 		lowName = shortName.toLower();
 		data = NULL;

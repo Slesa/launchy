@@ -434,7 +434,7 @@ QIcon MyWidget::getIcon(CatItem & item) {
 		return platform.icons->icon(QDir::toNativeSeparators(item.fullPath));
 	}
 	else
-		return searchResults[0].icon;
+		return platform.icons->icon(QDir::toNativeSeparators(item.icon));
 }
 
 void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults) {
@@ -814,6 +814,7 @@ int main(int argc, char *argv[])
 //		instance.sendMessage( "Hey, i'm the other instance" );
 		return 0;
 	}
+
 
 
 

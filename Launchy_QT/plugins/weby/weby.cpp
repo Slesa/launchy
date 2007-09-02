@@ -1,5 +1,14 @@
 #include <QtGui>
 #include <QUrl>
+#include <QFile>
+#include <QRegExp>
+
+#ifdef Q_WS_WIN
+#include <windows.h>
+#include <shlobj.h>
+#include <tchar.h>
+
+#endif
 
 #include "weby.h"
 #include "gui.h"
@@ -10,6 +19,8 @@ void WebyPlugin::init()
 {
 	if (gWebyInstance == NULL)
 		gWebyInstance = this;
+
+
 
 	QSettings* set = *settings;
 	if ( set->value("weby/version", 0.0).toDouble() == 0.0 ) {
@@ -131,13 +142,136 @@ void WebyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 	if (id->last().hasLabel(HASH_WEBSITE)) {
 		QString & text = id->last().getText();
 		// This is a website, create an entry for it
-		results->push_front(CatItem(text + ".weby", text, HASH_WEBY));
+		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
 	}
 
 	if (id->count() > 1 && id->first().getTopResult().id == HASH_WEBY) {
 		QString & text = id->last().getText();
 		// This is user search text, create an entry for it
-		results->push_front(CatItem(text + ".weby", text, HASH_WEBY));
+		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
+	}
+}
+
+#ifdef Q_WS_WIN
+BOOL GetShellDir(int iType, QString& szPath)
+{
+	QString tmpp = "shell32.dll";
+	HINSTANCE hInst = ::LoadLibrary( (LPCTSTR) tmpp.utf16() );
+	if ( NULL == hInst )
+	{
+		return FALSE;
+	}
+
+	HRESULT (__stdcall *pfnSHGetFolderPath)( HWND, int, HANDLE, DWORD, LPWSTR );
+
+
+	pfnSHGetFolderPath = reinterpret_cast<HRESULT (__stdcall *)( HWND, int, HANDLE, DWORD, LPWSTR )>( GetProcAddress( hInst,"SHGetFolderPathW" ) );
+
+	if ( NULL == pfnSHGetFolderPath )
+	{
+		FreeLibrary( hInst ); // <-- here
+		return FALSE;
+	}
+
+	TCHAR tmp[_MAX_PATH];
+	HRESULT hRet = pfnSHGetFolderPath( NULL, iType, NULL, 0, tmp );
+	szPath = QString::fromUtf16((const ushort*)tmp);
+	FreeLibrary( hInst ); // <-- and here
+	return TRUE;
+	return 0;
+}
+
+void WebyPlugin::indexIE(QString path, QList<CatItem>* items)
+{
+	QDir qd(path);
+	QString dir = qd.absolutePath();
+	QStringList dirs = qd.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+
+	for (int i = 0; i < dirs.count(); ++i) {
+		QString cur = dirs[i];
+		if (cur.contains(".lnk")) continue;
+		indexIE(dir + "/" + dirs[i],items);
+	}	
+
+	QStringList files = qd.entryList(QStringList("*.url"), QDir::Files, QDir::Unsorted);
+	for(int i = 0; i < files.count(); ++i) {
+		items->push_back(CatItem(dir + "/" + files[i], files[i].mid(0,files[i].size()-4)));
+	}
+}
+#endif
+
+QString WebyPlugin::getFirefoxPath()
+{
+	QString path;
+	QString iniPath;
+	QString appData;
+
+#ifdef Q_WS_WIN
+	GetShellDir(CSIDL_APPDATA, appData);
+	iniPath = appData + "/Mozilla/Firefox/profiles.ini";
+#endif
+
+	QFile file(iniPath);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+		return "";
+	bool isRel = false;
+	while (!file.atEnd()) {
+		QString line = file.readLine();
+		if (line.contains("IsRelative")) {
+			QStringList spl = line.split("=");
+			isRel = spl[1].toInt();
+		}
+		if (line.contains("Path")) {
+			QStringList spl = line.split("=");
+			if (isRel)
+				path = appData + "/Mozilla/Firefox/" + spl[1].mid(0,spl[1].count()-1) + "/bookmarks.html" ;
+			else
+				path = spl[1].mid(0,spl[1].count()-1);
+			break;
+		}
+	} 	
+
+	return path;
+}
+
+QString WebyPlugin::getIcon()
+{
+#ifdef Q_WS_WIN
+	return qApp->applicationDirPath() + "/plugins/icons/weby.ico";
+#endif
+}
+
+void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
+{
+	QFile file(path);
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+		return;
+
+	marks.clear();
+
+	QRegExp regex_url("<a href=\"([^\"]*)\"", Qt::CaseInsensitive);
+	QRegExp regex_urlname("\">([^<]*)</A>", Qt::CaseInsensitive);
+	QRegExp regex_shortcut("SHORTCUTURL=\"([^\"]*)\"");
+	QRegExp regex_postdata("POST_DATA", Qt::CaseInsensitive);
+
+	while (!file.atEnd()) {
+		QString line = file.readLine();
+		if (regex_url.indexIn(line) != -1) {
+			Bookmark mark;
+			mark.url = regex_url.cap(1);
+
+			if (regex_urlname.indexIn(line) != -1) {
+				mark.name = regex_urlname.cap(1);
+				if (regex_postdata.indexIn(line) != -1) continue;
+				if (regex_shortcut.indexIn(line) != -1) {
+					mark.shortcut = regex_shortcut.cap(1);
+					marks.push_back(mark);
+					items->push_back(CatItem(mark.url + ".shortcut", mark.shortcut, HASH_WEBY, getIcon()));
+				} else {
+					items->push_back(CatItem(mark.url, mark.name, 0, getIcon()));
+				}	
+			}			
+		}
 	}
 }
 
@@ -145,6 +279,18 @@ void WebyPlugin::getCatalog(QList<CatItem>* items)
 {
 	foreach(WebySite site, sites) {
 		items->push_back(CatItem(site.name + ".weby", site.name, HASH_WEBY));
+	}
+
+#ifdef Q_WS_WIN
+	if ((*settings)->value("weby/ie", true).toBool()) {
+		QString path;
+		GetShellDir(CSIDL_FAVORITES, path);
+		indexIE(path, items);
+	}
+#endif
+	if ((*settings)->value("weby/firefox", true).toBool()) {
+		QString path = getFirefoxPath();
+		indexFirefox(path, items);
 	}
 }
 
@@ -158,20 +304,27 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 		args = id->last().getText();
 		item = &id->first().getTopResult();
 	}
-	bool found = false;
-	foreach(WebySite site, sites) {
-		if (item->shortName == site.name) {
-			found = true;
-			file = site.base;
-			if (args != "")
-				file += site.query + args;
-			break;
-		}
+
+	// Is it a Firefox shortcut?
+	if (item->fullPath.contains(".shortcut")) {
+		file = item->fullPath.mid(0, item->fullPath.count()-9);
+		file.replace("%s", args);
 	}
+	else { // It's a user-specific site
+		bool found = false;
+		foreach(WebySite site, sites) {
+			if (item->shortName == site.name) {
+				found = true;
+				file = site.base;
+				if (args != "")
+					file += site.query + args;
+				break;
+			}
+		}
 
-	if (!found)
-		file = item->shortName;	
-
+		if (!found)
+			file = item->shortName;	
+	}
 	QUrl url(file);
 	runProgram(url.toEncoded(), "");
 }

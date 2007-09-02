@@ -89,7 +89,7 @@
     </rect>
    </property>
    <property name="text" >
-    <string>New website</string>
+    <string>+</string>
    </property>
   </widget>
   <widget class="QPushButton" name="tableRemove" >
@@ -102,7 +102,7 @@
     </rect>
    </property>
    <property name="text" >
-    <string>Remove site</string>
+    <string>-</string>
    </property>
   </widget>
  </widget>
