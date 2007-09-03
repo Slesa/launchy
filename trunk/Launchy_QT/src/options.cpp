@@ -249,7 +249,7 @@ void OptionsDlg::pluginItemChanged(QListWidgetItem* iz) {
 	if (row == -1) return;
 
 	// Close any current plugin dialogs
-	if (curPlugin >= 0) {
+	 if (curPlugin >= 0) {
 		QListWidgetItem* item = plugList->item(curPlugin);
 		main->plugins.endDialog(item->data(3).toUInt(), true);
 	}

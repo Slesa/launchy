@@ -104,7 +104,7 @@ void calcyPlugin::getID(uint* id)
 
 void calcyPlugin::getName(QString* str)
 {
-	*str = "calcy";
+	*str = "Calcy";
 }
 
 void calcyPlugin::getLabels(QList<InputData>* id)
