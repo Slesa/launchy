@@ -6,6 +6,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_weby", "weby\weby.vcpr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_calcy", "calcy\calcy.vcproj", "{E1BBAB43-BCF7-45DE-843E-F91C92131610}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_controly", "controly\controly.vcproj", "{E03E4829-E43C-4843-BEAA-905C3186F277}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -24,6 +26,10 @@ Global
 		{E1BBAB43-BCF7-45DE-843E-F91C92131610}.Debug|Win32.Build.0 = Debug|Win32
 		{E1BBAB43-BCF7-45DE-843E-F91C92131610}.Release|Win32.ActiveCfg = Release|Win32
 		{E1BBAB43-BCF7-45DE-843E-F91C92131610}.Release|Win32.Build.0 = Release|Win32
+		{E03E4829-E43C-4843-BEAA-905C3186F277}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E03E4829-E43C-4843-BEAA-905C3186F277}.Debug|Win32.Build.0 = Debug|Win32
+		{E03E4829-E43C-4843-BEAA-905C3186F277}.Release|Win32.ActiveCfg = Release|Win32
+		{E03E4829-E43C-4843-BEAA-905C3186F277}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
