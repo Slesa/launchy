@@ -337,41 +337,22 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 		}
 
 	}
-	/*
-	else if (key->key() == Qt::Key_Left ||
-		key->key() == Qt::Key_Right) {
-		key->ignore();
-	}
-	*/
+
 	else if (key->key() == Qt::Key_Up) {
 		// Prevent alternatives from being hidden on up key
 	}
 
 	else {
-		if (key->key() == Qt::Key_Tab || key->key() == Qt::Key_Backslash || key->key() == Qt::Key_Slash) {
-			if (searchResults.count() > 0) {
-				QString path = "";
-				QFileInfo info(searchResults[0].fullPath);
-//				if (!info.exists()) return;
-				if (info.isSymLink()) {
-					path = info.symLinkTarget();
-					path += "/";
-					path = QDir::toNativeSeparators(path);
-				} else if (info.isDir()) {
-					path = searchResults[0].fullPath;
-					if (!path.endsWith("/") && !path.endsWith("\\"))
-						path += "/";
-					path = QDir::toNativeSeparators(path);
-				} else if (info.isFile()) {
-					path = searchResults[0].fullPath;
+		if (key->key() == Qt::Key_Tab) {
+			if (inputData.count() > 0 && searchResults.count() > 0) {
+				// If it's an incomplete file, complete it
+				if (inputData.last().hasLabel(LABEL_FILE) &&input->text().compare(  QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0) {
+					QString path = searchResults[0].fullPath;					
+					input->setText(QDir::toNativeSeparators(path));
 				} else {
-					path = input->text();
-					if (key->key() == Qt::Key_Tab) {
-						path += " | ";	
-					}
+					input->setText(input->text() + " | ");
 				}
-				input->setText(path);
-			} 
+			}
 		} else {
 			key->ignore();	
 		}
@@ -396,23 +377,29 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 					searchFiles(gSearchTxt, searchResults);
 					inputData.last().setLabel(LABEL_FILE);
 				}
-			}
+			} 
+			if (searchResults.count() != 0)
+				inputData.last().setTopResult(searchResults[0]);
 
 			plugins.getLabels(&inputData);
 			plugins.getResults(&inputData, &searchResults);
-//			sortResults(searchResults);
+			qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
+			//			sortResults(searchResults);
 
 
 			input->clear();
 			input->insert(inText);
 
 			if (searchResults.count() > 0) {
-//				qDebug() << searchResults[0].shortName;
-
 				QIcon icon = getIcon(searchResults[0]);
 
 				licon->setPixmap(icon.pixmap(QSize(32,32), QIcon::Normal, QIcon::On));
 				output->setText(searchResults[0].shortName);
+
+				// Did the plugin take control of the input?
+				if (inputData.last().getID() != 0)
+					searchResults[0].id = inputData.last().getID();
+
 				inputData.last().setTopResult(searchResults[0]);
 
 			} else {
@@ -453,12 +440,14 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 
 	// Okay, we have a directory, find files that match "file"
 	QDir qd(dir);
-	qDebug() << dir;
-	qDebug() << file;
 	QStringList ilist = qd.entryList(QStringList(file + "*"), QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
 	foreach(QString inf, ilist) {
 		if (inf.mid(0, file.count()).compare(file,  Qt::CaseInsensitive) == 0) {
-			CatItem item(qd.absolutePath() + "/" +  inf);
+			QString fp = qd.absolutePath() + "/" + inf;
+			QFileInfo in(fp);
+			if (in.isDir())
+				fp += "/";
+			CatItem item(fp, inf);
 			searchResults.push_back(item);
 		}
 	}

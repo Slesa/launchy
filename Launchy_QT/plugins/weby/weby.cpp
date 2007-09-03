@@ -322,8 +322,12 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 			}
 		}
 
-		if (!found)
+		if (!found) {
 			file = item->shortName;	
+			if (!file.contains("http://")) {
+				file = "http://" + file;
+			}
+		}
 	}
 	QUrl url(file);
 	runProgram(url.toEncoded(), "");

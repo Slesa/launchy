@@ -18,27 +18,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include "gui.h"
-#include "weby.h"
+#include "runner.h"
 
 
 Gui::Gui(QWidget* parent) 
 	: QWidget(parent)
 {
 	setupUi(this);
-	QSettings* settings = *gWebyInstance->settings;
+	QSettings* settings = *grunnerInstance->settings;
 	if (settings == NULL) return;
-	booksFirefox->setChecked(settings->value("weby/firefox", true).toBool());
-	booksIE->setChecked(settings->value("weby/ie", true).toBool());
+
 	
 	// Read in the array of websites from options
 	table->setSortingEnabled(false);
-	int count = settings->beginReadArray("weby/sites");
+	int count = settings->beginReadArray("runner/cmds");
 	table->setRowCount(count);
 	for(int i = 0; i < count; ++i) {
 		settings->setArrayIndex(i);
 		table->setItem(i, 0, new QTableWidgetItem(settings->value("name").toString()));
-		table->setItem(i, 1, new QTableWidgetItem(settings->value("base").toString()));
-		table->setItem(i, 2, new QTableWidgetItem(settings->value("query").toString()));
+		table->setItem(i, 1, new QTableWidgetItem(settings->value("file").toString()));
+		table->setItem(i, 2, new QTableWidgetItem(settings->value("args").toString()));
 	}
 	settings->endArray();
 	table->setSortingEnabled(true);
@@ -49,22 +48,20 @@ Gui::Gui(QWidget* parent)
 
 void Gui::writeOptions()
 {
-	QSettings* settings = *gWebyInstance->settings;
+	QSettings* settings = *grunnerInstance->settings;
 	if (settings == NULL) return;
-	settings->setValue("weby/firefox", booksFirefox->isChecked());
-	settings->setValue("weby/ie", booksIE->isChecked());
 
-	settings->beginWriteArray("weby/sites");
+	settings->beginWriteArray("runner/cmds");
 	for(int i = 0; i < table->rowCount(); ++i) {
 		if (table->item(i,0) == NULL || table->item(i,1) == NULL) continue;
 		if (table->item(i,0)->text() == "" || table->item(i,1)->text() == "") continue;
 		settings->setArrayIndex(i);
 		settings->setValue("name", table->item(i, 0)->text());
-		settings->setValue("base", table->item(i, 1)->text());
+		settings->setValue("file", table->item(i, 1)->text());
 		if (table->item(i,2) == NULL)
-			settings->setValue("query", "");
+			settings->setValue("args", "");
 		else
-			settings->setValue("query", table->item(i, 2)->text());
+			settings->setValue("args", table->item(i, 2)->text());
 	}
 	settings->endArray();
 }
