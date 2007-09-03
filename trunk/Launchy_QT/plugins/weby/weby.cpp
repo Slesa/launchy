@@ -340,8 +340,9 @@ void WebyPlugin::endDialog(bool accept) {
 		gui->writeOptions();
 		init();
 	}
-	if (gui != NULL)
+	if (gui != NULL) 
 		delete gui;
+	
 	gui = NULL;
 }
 

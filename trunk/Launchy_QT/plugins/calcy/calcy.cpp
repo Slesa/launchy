@@ -124,8 +124,9 @@ void calcyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 {
 	if (id->last().hasLabel(HASH_CALCY)) {
 		QString & text = id->last().getText();
-		double res;
-		DoCalculation(text, res);
+		double res = 0.0;
+		if (!DoCalculation(text, res))
+			return;
 		QString szRes = QString::number(res);
 		results->push_front(CatItem(szRes + ".calcy", szRes, HASH_CALCY, getIcon()));
 	}
