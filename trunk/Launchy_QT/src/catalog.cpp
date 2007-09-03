@@ -23,6 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <QtAlgorithms>
 
+bool CatLessNoPtr (CatItem & a, CatItem & b) {
+	return CatLess(&a, &b);
+}
+
 bool CatLess (CatItem* a, CatItem* b)  {
 /*
 	if (a->isHistory) { return true; }
@@ -72,6 +76,7 @@ bool CatLess (CatItem* a, CatItem* b)  {
 		return true;
 	return false;
 }
+
 
 void FastCatalog::addItem(CatItem item) {
 	catList.push_back(item);

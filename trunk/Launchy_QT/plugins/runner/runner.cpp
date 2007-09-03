@@ -1,0 +1,186 @@
+#include <QtGui>
+#include <QUrl>
+#include <QFile>
+#include <QRegExp>
+
+#ifdef Q_WS_WIN
+#include <windows.h>
+#include <shlobj.h>
+#include <tchar.h>
+
+#endif
+
+#include "runner.h"
+#include "gui.h"
+
+runnerPlugin* grunnerInstance = NULL;
+
+void runnerPlugin::init()
+{
+	if (grunnerInstance == NULL)
+		grunnerInstance = this;
+
+	QSettings* set = *settings;
+	cmds.clear();
+
+	if ( set->value("runner/version", 0.0).toDouble() == 0.0 ) {
+		set->beginWriteArray("runner/cmds");
+		set->setArrayIndex(0);
+		set->setValue("name", "cmd");
+		set->setValue("file", "C:\\Windows\\System32\\cmd.exe");
+		set->setValue("args", "/K $$");
+		set->endArray();
+	}
+	set->setValue("runner/version", 2.0);
+
+	// Read in the array of websites
+
+	int count = set->beginReadArray("runner/cmds");
+	for(int i = 0; i < count; ++i) {
+		set->setArrayIndex(i);
+		runnerCmd cmd;
+		cmd.file = set->value("file").toString();
+		cmd.name = set->value("name").toString();
+		cmd.args = set->value("args").toString();
+		cmds.push_back(cmd);
+	}
+	set->endArray();
+}
+
+void runnerPlugin::getID(uint* id)
+{
+	*id = HASH_runner;
+}
+
+void runnerPlugin::getName(QString* str)
+{
+	*str = "Runner";
+}
+
+
+QString runnerPlugin::getIcon()
+{
+#ifdef Q_WS_WIN
+	return qApp->applicationDirPath() + "/plugins/icons/runner.ico";
+#endif
+}
+
+void runnerPlugin::getCatalog(QList<CatItem>* items)
+{
+	foreach(runnerCmd cmd, cmds) {
+		items->push_back(CatItem(cmd.file + "%%%" + cmd.args, cmd.name, HASH_runner));
+	}
+}
+
+
+void runnerPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
+{
+	if (id->count() > 1 && id->first().getTopResult().id == HASH_runner) {
+		QString & text = id->last().getText();
+		// This is user search text, create an entry for it
+		results->push_front(CatItem(text + ".runner", text, HASH_runner, getIcon()));
+	}
+}
+
+void runnerPlugin::launchItem(QList<InputData>* id, CatItem* item)
+{
+	QString file = "";
+	QString args = "";
+
+	CatItem* base = &id->first().getTopResult();
+
+	file = base->fullPath;
+
+	// Replace the $'s with arguments
+	QStringList spl = file.split("$$");
+
+	file = spl[0];
+	for(int i = 1; i < spl.size(); ++i) {
+		if (id->count() >= i+1) { 
+//			const InputData* ij = &id->at(i);
+			CatItem* it = &((InputData)id->at(i)).getTopResult();
+			file += it->shortName;
+		}
+		file += spl[i];
+	}
+
+	// Split the command from the arguments
+	spl = file.split("%%%");
+
+	file = spl[0];
+	if (spl.count() > 0)
+		args = spl[1];
+
+
+
+	if (file.contains("http://")) {
+		QUrl url(file);
+		file = url.toEncoded();
+	}
+	runProgram(file, args);
+}
+
+void runnerPlugin::doDialog(QWidget* parent) {
+	if (gui != NULL) return;
+	gui = new Gui(parent);
+	gui->show();
+}
+
+void runnerPlugin::endDialog(bool accept) {
+	if (accept) {
+		gui->writeOptions();
+		init();
+	}
+	if (gui != NULL) 
+		delete gui;
+	
+	gui = NULL;
+}
+
+bool runnerPlugin::msg(int msgId, void* wParam, void* lParam)
+{
+	bool handled = false;
+	switch (msgId)
+	{		
+		case MSG_INIT:
+			init();
+			handled = true;
+			break;
+		case MSG_GET_ID:
+			getID((uint*) wParam);
+			handled = true;
+			break;
+		case MSG_GET_NAME:
+			getName((QString*) wParam);
+			handled = true;
+			break;
+		case MSG_GET_CATALOG:
+			getCatalog((QList<CatItem>*) wParam);
+			handled = true;
+			break;
+		case MSG_GET_RESULTS:
+			getResults((QList<InputData>*) wParam, (QList<CatItem>*) lParam);
+			handled = true;
+			break;
+		case MSG_LAUNCH_ITEM:
+			launchItem((QList<InputData>*) wParam, (CatItem*) lParam);
+			handled = true;
+			break;
+		case MSG_HAS_DIALOG:
+			handled = true;
+			break;
+		case MSG_DO_DIALOG:
+			doDialog((QWidget*) wParam);
+			break;
+		case MSG_END_DIALOG:
+			endDialog((bool) wParam);
+			break;
+
+		default:
+			break;
+	}
+		
+	return handled;
+}
+
+Q_EXPORT_PLUGIN2(runner, runnerPlugin) 

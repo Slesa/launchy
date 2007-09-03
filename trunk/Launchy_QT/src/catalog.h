@@ -116,25 +116,31 @@ public:
 };
 
 
+
 class InputData 
 {
 private:
 	QString text;
 	QSet<uint> labels;
 	CatItem topResult;
+	uint id;
 public:
 	QSet<uint>  getLabels() { return labels; }
 	void setLabel(uint l) { labels.insert(l); }
 	bool hasLabel(uint l) { return labels.contains(l); }
+
+	void setID(uint i) { id = i; }
+	uint getID() { return id; }
 	QString  getText() { return text; }
 	void setText(QString t) { text = t; }
-	CatItem  getTopResult() { return topResult; }
+	CatItem&  getTopResult() { return topResult; }
 	void setTopResult(CatItem sr) { topResult = sr; }
-	InputData() {}
-	InputData(QString str) : text(str) {}
+	InputData() { id = 0; }
+	InputData(QString str) : text(str) { id = 0;}
 };
 
 bool CatLess (CatItem* left, CatItem* right); 
+bool CatLessNoPtr (CatItem & a, CatItem & b);
 
 inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.fullPath;
