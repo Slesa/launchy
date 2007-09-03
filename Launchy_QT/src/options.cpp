@@ -133,6 +133,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 
 		// Load up the plugins		
 		connect(plugList, SIGNAL(currentRowChanged(int)), this, SLOT(pluginChanged(int)));
+		connect(plugList, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(pluginItemChanged(QListWidgetItem*)));
 		main->plugins.loadPlugins();
 		foreach(PluginInfo info, main->plugins.getPlugins()) {
 			plugList->addItem(info.name);
@@ -192,7 +193,7 @@ void OptionsDlg::accept() {
 		main->setSkin(skinList->currentItem()->text());
 	}
 	
-	// Apply Directory Options
+/*	// Apply Directory Options
 	gSettings->beginWriteArray("directories");
 	for(int i = 0; i < memDirs.count(); ++i) {
 		gSettings->setArrayIndex(i);
@@ -210,30 +211,11 @@ void OptionsDlg::accept() {
 	QHash<uint, PluginInfo> plugins = main->plugins.getPlugins();
 	bool changed = false;
 
-	gSettings->beginWriteArray("plugins");
-
-	for(int i = 0; i < plugList->count(); i++) {
-		QListWidgetItem* item = plugList->item(i);
-		gSettings->setArrayIndex(i);
-		gSettings->setValue("id", item->data(3).toUInt());
-		if (item->checkState() == Qt::Checked) {
-			gSettings->setValue("load", true);
-			if (!plugins[item->data(3).toUInt()].loaded)
-				changed = true;
-		}
-		else {
-			gSettings->setValue("load", false);
-			if (plugins[item->data(3).toUInt()].loaded)
-				changed = true;
-		}
-
-	}
-	gSettings->endArray();
 
 	if (changed) {
 		main->plugins.loadPlugins();
 	}
-
+*/
 	if (curPlugin >= 0) {
 		QListWidgetItem* item = plugList->item(curPlugin);
 		main->plugins.endDialog(item->data(3).toUInt(), true);
@@ -257,6 +239,44 @@ void OptionsDlg::pluginChanged(int row) {
 	if (row < 0) return;
 	QListWidgetItem* item = plugList->item(row);
 	main->plugins.doDialog(plugBox, item->data(3).toUInt());
+}
+
+void OptionsDlg::pluginItemChanged(QListWidgetItem* iz) {
+
+	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
+	if (main == NULL) return;
+	int row = plugList->currentRow();
+	if (row == -1) return;
+
+	// Close any current plugin dialogs
+	if (curPlugin >= 0) {
+		QListWidgetItem* item = plugList->item(curPlugin);
+		main->plugins.endDialog(item->data(3).toUInt(), true);
+	}
+
+	// Write out the new config
+	gSettings->beginWriteArray("plugins");
+	for(int i = 0; i < plugList->count(); i++) {
+		QListWidgetItem* item = plugList->item(i);
+		gSettings->setArrayIndex(i);
+		gSettings->setValue("id", item->data(3).toUInt());
+		if (item->checkState() == Qt::Checked) {
+			gSettings->setValue("load", true);
+		}
+		else {
+			gSettings->setValue("load", false);
+		}
+	}
+	gSettings->endArray();
+
+	// Reload the plugins
+	main->plugins.loadPlugins();
+
+	// If enabled, reload the dialog
+	if (iz->checkState() == Qt::Checked) {
+		main->plugins.doDialog(plugBox, iz->data(3).toUInt());
+	}
+
 }
 
 void OptionsDlg::catProgressUpdated(float val) {

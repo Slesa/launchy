@@ -34,6 +34,7 @@ private:
 	QList<WebySite> sites;
 public:
 	Gui(QWidget* parent);
+	~Gui() { this->hide(); }
 	void writeOptions();
 
 public slots:
