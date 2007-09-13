@@ -131,7 +131,7 @@ public:
 	void searchFiles(const QString & input, QList<CatItem>& searchResults);
 	void parseInput(QString text);
 	void resetLaunchy();
-
+	void applySkin2(QString directory);
 private:
     QHttp *http;
     QBuffer *verBuffer;

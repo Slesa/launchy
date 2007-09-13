@@ -9,98 +9,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>520</width>
-    <height>371</height>
+    <width>582</width>
+    <height>379</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Launchy options</string>
   </property>
-  <widget class="QLineEdit" name="lineEdit" >
-   <property name="geometry" >
-    <rect>
-     <x>30</x>
-     <y>130</y>
-     <width>41</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2" >
-   <property name="geometry" >
-    <rect>
-     <x>80</x>
-     <y>140</y>
-     <width>131</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>(0 for no dropdown menu)</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit_2" >
-   <property name="geometry" >
-    <rect>
-     <x>30</x>
-     <y>170</y>
-     <width>41</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4" >
-   <property name="geometry" >
-    <rect>
-     <x>80</x>
-     <y>170</y>
-     <width>162</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>Minutes between catalog updates</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label" >
-   <property name="geometry" >
-    <rect>
-     <x>80</x>
-     <y>130</y>
-     <width>112</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>Number of results in list</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3" >
-   <property name="geometry" >
-    <rect>
-     <x>80</x>
-     <y>180</y>
-     <width>141</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>(0 for manual updates only)</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_13" >
-   <property name="geometry" >
-    <rect>
-     <x>290</x>
-     <y>90</y>
-     <width>46</width>
-     <height>14</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>Skin Title:</string>
-   </property>
-  </widget>
   <widget class="QDialogButtonBox" name="buttonBox" >
    <property name="geometry" >
     <rect>
@@ -122,12 +37,12 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>501</width>
+     <width>561</width>
      <height>321</height>
     </rect>
    </property>
    <property name="currentIndex" >
-    <number>3</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab" >
     <attribute name="title" >
@@ -263,7 +178,7 @@
     <widget class="QGroupBox" name="groupBox_3" >
      <property name="geometry" >
       <rect>
-       <x>270</x>
+       <x>300</x>
        <y>20</y>
        <width>221</width>
        <height>71</height>
@@ -369,7 +284,7 @@
     <widget class="QLabel" name="skinPreview" >
      <property name="geometry" >
       <rect>
-       <x>10</x>
+       <x>40</x>
        <y>140</y>
        <width>481</width>
        <height>151</height>
@@ -394,7 +309,7 @@
      <property name="geometry" >
       <rect>
        <x>10</x>
-       <y>240</y>
+       <y>244</y>
        <width>91</width>
        <height>23</height>
       </rect>
@@ -408,7 +323,7 @@
       <rect>
        <x>10</x>
        <y>270</y>
-       <width>481</width>
+       <width>529</width>
        <height>20</height>
       </rect>
      </property>
@@ -424,7 +339,7 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>361</width>
+       <width>401</width>
        <height>211</height>
       </rect>
      </property>
@@ -449,7 +364,7 @@
        <rect>
         <x>10</x>
         <y>20</y>
-        <width>341</width>
+        <width>381</width>
         <height>151</height>
        </rect>
       </property>
@@ -471,7 +386,7 @@
     <widget class="QGroupBox" name="groupBox_2" >
      <property name="geometry" >
       <rect>
-       <x>390</x>
+       <x>440</x>
        <y>10</y>
        <width>101</width>
        <height>251</height>
@@ -582,6 +497,19 @@
       </property>
      </widget>
     </widget>
+    <widget class="QLabel" name="catSize" >
+     <property name="geometry" >
+      <rect>
+       <x>225</x>
+       <y>252</y>
+       <width>118</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text" >
+      <string>Indexing 0 items</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_4" >
     <attribute name="title" >
@@ -618,7 +546,7 @@
       <rect>
        <x>130</x>
        <y>10</y>
-       <width>351</width>
+       <width>411</width>
        <height>271</height>
       </rect>
      </property>
@@ -629,6 +557,7 @@
    </widget>
   </widget>
  </widget>
+ <includes/>
  <resources/>
  <connections>
   <connection>
@@ -664,4 +593,21 @@
    </hints>
   </connection>
  </connections>
+ <designerdata>
+  <property name="gridDeltaX" >
+   <number>3</number>
+  </property>
+  <property name="gridDeltaY" >
+   <number>4</number>
+  </property>
+  <property name="gridSnapX" >
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY" >
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible" >
+   <bool>false</bool>
+  </property>
+ </designerdata>
 </ui>

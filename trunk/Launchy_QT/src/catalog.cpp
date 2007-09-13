@@ -174,6 +174,25 @@ void Catalog::searchCatalogs(QString txt, QList<CatItem> & out) {
 }
 
 
+void Catalog::checkHistory(QString txt, QList<CatItem> & list)
+{
+	// Check for history matches
+	QString location = "History/" + txt;
+	QStringList hist;
+	hist = gSettings->value(location, hist).toStringList();
+	if(hist.count() == 2) {
+		for(int i = 0; i < list.count(); i++) {
+			if (list[i].lowName == hist[0] &&
+				list[i].fullPath == hist[1]) {
+				CatItem tmp = list[i];
+				list.removeAt(i);
+				list.push_front(tmp);
+			}
+		}
+	}
+}
+
+
 QList<CatItem*> FastCatalog::search(QString searchTxt) {
 	QList<CatItem*> ret;
 	if (searchTxt == "") return ret;

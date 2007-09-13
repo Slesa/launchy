@@ -174,6 +174,8 @@ public:
 	void searchCatalogs(QString, QList<CatItem> & );
 	virtual void incrementUsage(const CatItem& item) = 0;
 	virtual int getUsage(const QString& path) = 0;
+	void checkHistory(QString txt, QList<CatItem> & list);
+
 private:	
 	virtual QList<CatItem*> search(QString) = 0;
 

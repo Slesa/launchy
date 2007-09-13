@@ -38,6 +38,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QFileIconProvider>
 #include <windows.h>
 #include <shlobj.h>
+//#include <stdlib.h>
+//#include <stdio.h>
 #include <TCHAR.h>
 #include <QT>
 #include <QIcon>
@@ -124,6 +126,7 @@ private:
 	HWND hotkeyWnd;
 	HANDLE m1, mg1;
 	HDC hDC;
+	QString lastImageName;
 public:
 	PlatformImp() : PlatformBase() 		
 	{
@@ -135,6 +138,31 @@ public:
 		// Launchy is running
 		m1 = CreateMutex(NULL,0,_T("LaunchyMutex"));
 		mg1 = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
+
+
+/*
+	   TCHAR* libvar;
+	   size_t requiredSize;
+
+	   _tgetenv_s( &requiredSize, NULL, 0, L"PATH");
+	   requiredSize += 128;
+
+
+	   libvar = (TCHAR*) malloc(requiredSize * sizeof(TCHAR));
+	   if (!libvar)
+	   {
+		  printf("Failed to allocate memory!\n");
+		  exit(1);
+	   }
+
+	   _tgetenv_s( &requiredSize, libvar, requiredSize, L"PATH" );
+	   _tcscat(libvar, L";c:\\program files\\launchyqt\\");
+	   _tputenv_s(L"PATH", libvar);
+		_tgetenv_s( &requiredSize, NULL, 0, L"PATH");
+		_tgetenv_s(&requiredSize, libvar, requiredSize, L"PATH");
+		qDebug() << QString::fromUtf16((const ushort*) libvar);
+
+	   free(libvar); */
 	}
 	~PlatformImp() {
 		if (icons != NULL)
@@ -175,6 +203,11 @@ public:
 
 	// Alpha border functions	
 	bool CreateAlphaBorder(QWidget* w, QString ImageName) { 
+		if (ImageName == "")
+			ImageName = lastImageName;
+		if (!QFile::exists(ImageName)) 
+			return false;
+
 		if (alpha != NULL) {
 			// Save the position
 			RECT r;
@@ -182,7 +215,7 @@ public:
 			DestroyAlphaBorder();
 			alpha = new QLaunchyAlphaBorder(w);
 			alpha->SetImage(ImageName);
-			QRect rect(0,0,500,100);
+			QRect rect(r.left, r.top, r.right, r.bottom);
 			alpha->setGeometry(rect);
 			alpha->show();
 
@@ -190,12 +223,16 @@ public:
 			alpha = new QLaunchyAlphaBorder(w);
 			alpha->SetImage(ImageName);
 		}
+		lastImageName = ImageName;
 		return true;
 	}
 	void DestroyAlphaBorder() { delete alpha; alpha = NULL; return;}
 	void MoveAlphaBorder(QPoint pos) { if (alpha != NULL) alpha->RepositionWindow(pos); }
 	void HideAlphaBorder() { if (alpha != NULL) alpha->hide(); }
-	void ShowAlphaBorder() { if (alpha != NULL) alpha->show(); }
+	void ShowAlphaBorder() {
+		if (alpha != NULL) 
+			alpha->show(); 
+	}
 
 
 

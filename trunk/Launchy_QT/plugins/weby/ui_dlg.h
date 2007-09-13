@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dlg.ui'
 **
-** Created: Mon Sep 3 11:48:53 2007
+** Created: Sun Sep 9 18:36:37 2007
 **      by: Qt User Interface Compiler version 4.3.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -34,12 +34,12 @@ public:
     {
     if (Dlg->objectName().isEmpty())
         Dlg->setObjectName(QString::fromUtf8("Dlg"));
-    QSize size(354, 270);
+    QSize size(411, 271);
     size = size.expandedTo(Dlg->minimumSizeHint());
     Dlg->resize(size);
     label = new QLabel(Dlg);
     label->setObjectName(QString::fromUtf8("label"));
-    label->setGeometry(QRect(90, 10, 187, 16));
+    label->setGeometry(QRect(120, 10, 187, 16));
     booksFirefox = new QCheckBox(Dlg);
     booksFirefox->setObjectName(QString::fromUtf8("booksFirefox"));
     booksFirefox->setGeometry(QRect(10, 30, 111, 18));
@@ -48,14 +48,14 @@ public:
     booksIE->setGeometry(QRect(10, 50, 161, 18));
     table = new QTableWidget(Dlg);
     table->setObjectName(QString::fromUtf8("table"));
-    table->setGeometry(QRect(10, 80, 331, 151));
+    table->setGeometry(QRect(10, 80, 391, 151));
     table->setColumnCount(3);
     tableNew = new QPushButton(Dlg);
     tableNew->setObjectName(QString::fromUtf8("tableNew"));
     tableNew->setGeometry(QRect(50, 240, 75, 23));
     tableRemove = new QPushButton(Dlg);
     tableRemove->setObjectName(QString::fromUtf8("tableRemove"));
-    tableRemove->setGeometry(QRect(200, 240, 75, 23));
+    tableRemove->setGeometry(QRect(280, 240, 75, 23));
 
     retranslateUi(Dlg);
 

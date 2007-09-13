@@ -1,10 +1,10 @@
 Currently working on: 
 
-Add open with support
+Seems like the database is getting hosed every now and then, "webstats" loses its count from time to time
+
+Add "open with" support
 
 Are the files being written/read in unicode?  Check on firefox bookmarks too.
-
-When I type in say "c:\dev\big" and try to use the dropdown to complete it it doesn't do anything on the top item
 
 when there are no suggested results, run them as arguments to the first thing
 
@@ -13,6 +13,10 @@ When a db is done building, redo the search on the current text
 Trying to stylize the scrollbar is difficult
 
 If you simply go to "switch user" and then come back in, the alpha border is fucked.  I tried recalling UpdateLayeredWindow and that didn't really help.  Reapplying the entire skin does work though.  WTF?
+
+Playing with the options tab on xp machine caused crashes when the plugins weren't loaded
+
+Rescanning the database caused the rescan to freeze at around 76%, couldn't do any more scans after that
 
 Allow for caps in input letters
 

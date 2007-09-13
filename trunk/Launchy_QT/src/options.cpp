@@ -126,9 +126,12 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 
 
 		catProgress->setRange(0,100);
+		if (main->catalog != NULL)
+			catSize->setText(tr("Index has ") + QString::number(main->catalog->count()) + tr(" items"));
 
 		if (gBuilder != NULL) {
 			connect(gBuilder, SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
+			connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		}
 
 		// Load up the plugins		
@@ -283,7 +286,11 @@ void OptionsDlg::catProgressUpdated(float val) {
 	int x = val;
 	catProgress->setValue(val);
 }
-
+void OptionsDlg::catalogBuilt() {
+	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
+	if (main->catalog != NULL)
+		catSize->setText(tr("Index has ") + QString::number(main->catalog->count()) + tr(" items"));
+}
 void OptionsDlg::catRescanClicked(bool val) {
 	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
 	if (main == NULL) return;
@@ -305,6 +312,7 @@ void OptionsDlg::catRescanClicked(bool val) {
 		gBuilder = new CatBuilder(false, &main->plugins);
 		gBuilder->setPreviousCatalog(main->catalog);
 		connect(gBuilder, SIGNAL(catalogFinished()), main, SLOT(catalogBuilt()));
+		connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		connect(gBuilder, SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
 		gBuilder->start(QThread::IdlePriority);
 	}
@@ -338,6 +346,8 @@ void OptionsDlg::catDirPlusClicked(bool c) {
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Select a directory"),
                                                  "",
                                                  QFileDialog::ShowDirsOnly);
+	if (dir == "")
+		return;
 	QString nativeDir = QDir::toNativeSeparators(dir);
 	Directory tmp;
 	tmp.name = nativeDir;

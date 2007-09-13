@@ -69,6 +69,7 @@ public slots:
 	void catTypesExeChanged(int);
 	void catDepthChanged(int);
 	void catProgressUpdated(float);
+	void catalogBuilt();
 	void catRescanClicked(bool);
 	void pluginChanged(int row);
 	void pluginItemChanged(QListWidgetItem* state);

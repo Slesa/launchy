@@ -109,15 +109,14 @@ void calcyPlugin::getName(QString* str)
 
 void calcyPlugin::getLabels(QList<InputData>* id)
 {
+	if (id->count() > 0)
+		return;
 	// Apply a "website" label if we think it's a website
 	QString & text = id->last().getText();
 	QRegExp reg(".*[\\-\\+\\*\\/]+[\\d\\s\\-\\+\\*\\/\\(\\)\\.]+");
 	if (reg.indexIn(text) != -1) {
 		id->last().setLabel(HASH_CALCY);
 	}
-
-		
-	
 }
 
 void calcyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
