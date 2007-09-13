@@ -109,7 +109,7 @@ void calcyPlugin::getName(QString* str)
 
 void calcyPlugin::getLabels(QList<InputData>* id)
 {
-	if (id->count() > 0)
+	if (id->count() > 1)
 		return;
 	// Apply a "website" label if we think it's a website
 	QString & text = id->last().getText();

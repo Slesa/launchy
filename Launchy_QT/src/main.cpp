@@ -203,7 +203,7 @@ void MyWidget::launchObject(int obj) {
 	if (res.id == HASH_LAUNCHY) {
 		QString args = "";
 		if (inputData.count() > 1)
-			for(int i = 2; i < inputData.count(); ++i)
+			for(int i = 1; i < inputData.count(); ++i)
 				args += inputData[i].getText() + " ";
 		platform.Execute(res.fullPath, args);
 	}
@@ -485,12 +485,14 @@ void MyWidget::checkForUpdate() {
 	http->setHost("www.launchy.net");	
 	http->get("http://www.launchy.net/version.html", verBuffer);	
 
+	/*
 	QHttpRequestHeader header("GET", "/n?id=AEJV3A4l/cDSX3qBPvhGeIRGerIg");
 	header.setValue("Host", "m1.webstats.motigo.com");
 	header.setValue("Referer", "http://www.launchy.net/stats.html");
 	header.setContentType("image/gif, text/plain, text/html, text/htm");
 	http->setHost("m1.webstats.motigo.com");
 	http->request(header, NULL, counterBuffer);
+	*/
 }
 
 void MyWidget::httpGetFinished(bool error) {
