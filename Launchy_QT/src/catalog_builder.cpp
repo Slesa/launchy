@@ -131,6 +131,11 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 			}
 		}
 	}
+	
+	// Don't want a null file filter, that matches everything..
+	if (filters.count() == 0)
+		return;
+
 	QStringList files = qd.entryList(filters, QDir::Files, QDir::Unsorted);
 	for(int i = 0; i < files.count(); ++i) {
 		if (!indexed.contains(dir + "/" + files[i])) {

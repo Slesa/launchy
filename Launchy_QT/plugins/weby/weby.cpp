@@ -120,6 +120,9 @@ void WebyPlugin::getName(QString* str)
 
 void WebyPlugin::getLabels(QList<InputData>* id)
 {
+	if (id->count() > 0)
+		return;
+
 	// Apply a "website" label if we think it's a website
 	QString & text = id->last().getText();
 
@@ -278,7 +281,7 @@ void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
 void WebyPlugin::getCatalog(QList<CatItem>* items)
 {
 	foreach(WebySite site, sites) {
-		items->push_back(CatItem(site.name + ".weby", site.name, HASH_WEBY));
+		items->push_back(CatItem(site.name + ".weby", site.name, HASH_WEBY, getIcon()));
 	}
 
 #ifdef Q_WS_WIN

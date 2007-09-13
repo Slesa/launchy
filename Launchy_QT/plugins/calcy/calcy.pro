@@ -9,6 +9,7 @@
  TARGET		   = calcy
  
  win32 {
+	CONFIG += embed_manifest_dll
 	LIBS += shell32.lib
 %	LIBS += user32.lib
 %	LIBS += Gdi32.lib
@@ -20,6 +21,6 @@
  }
  *:release {
 	DESTDIR = ../../release/plugins/
-	QMAKE_CXXFLAGS += /Ox /Ob2 /Oi /Oy /GT /GA  /WX
+	%QMAKE_CXXFLAGS += /Ox /Ob2 /Oi /Oy /GT /GA  /WX
  }
 

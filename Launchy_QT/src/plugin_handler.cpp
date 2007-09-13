@@ -87,17 +87,23 @@ void PluginHandler::loadPlugins() {
 	// Load up the plugins in the plugins/ directory
 	QDir pluginsDir = QDir(qApp->applicationDirPath() + "/plugins/");
 	foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+/*		qDebug() << fileName;
+		QString f = QDir::toNativeSeparators(pluginsDir.absoluteFilePath(fileName));
+		HINSTANCE loadme = LoadLibrary((LPCTSTR) f.utf16());
+		if (loadme == NULL)
+			qDebug() << GetLastError();
+
+		FreeLibrary(loadme); */
 		if (!QLibrary::isLibrary(fileName)) continue;
 		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+//		QPluginLoader loader(fileName);
 		QObject *plugin = loader.instance();
 		if (plugin) {
-
 			PluginInterface *plug = qobject_cast<PluginInterface *>(plugin);
 			plug->settings = &gSettings;
 			PluginInfo info;
 			uint id;
 			bool handled = plug->msg(MSG_GET_ID, (void*) &id);
-
 			info.id = id;
 			QString name;
 			plug->msg(MSG_GET_NAME, (void*) &name);
@@ -113,7 +119,6 @@ void PluginHandler::loadPlugins() {
 				loader.unload();
 			}
 			plugins[id] = info;
-
 		}
 	}	
 }

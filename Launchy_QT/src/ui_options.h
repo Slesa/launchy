@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'options.ui'
 **
-** Created: Mon Sep 3 14:47:18 2007
+** Created: Wed Sep 12 20:35:33 2007
 **      by: Qt User Interface Compiler version 4.3.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -31,13 +31,6 @@
 class Ui_OptionsDlg
 {
 public:
-    QLineEdit *lineEdit;
-    QLabel *label_2;
-    QLineEdit *lineEdit_2;
-    QLabel *label_4;
-    QLabel *label;
-    QLabel *label_3;
-    QLabel *label_13;
     QDialogButtonBox *buttonBox;
     QTabWidget *tabWidget;
     QWidget *tab;
@@ -77,6 +70,7 @@ public:
     QCheckBox *catCheckBinaries;
     QSpinBox *catDepth;
     QLabel *label_10;
+    QLabel *catSize;
     QWidget *tab_4;
     QListWidget *plugList;
     QLabel *label_11;
@@ -87,30 +81,9 @@ public:
     if (OptionsDlg->objectName().isEmpty())
         OptionsDlg->setObjectName(QString::fromUtf8("OptionsDlg"));
     OptionsDlg->setWindowModality(Qt::NonModal);
-    QSize size(520, 371);
+    QSize size(582, 379);
     size = size.expandedTo(OptionsDlg->minimumSizeHint());
     OptionsDlg->resize(size);
-    lineEdit = new QLineEdit(OptionsDlg);
-    lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
-    lineEdit->setGeometry(QRect(30, 130, 41, 20));
-    label_2 = new QLabel(OptionsDlg);
-    label_2->setObjectName(QString::fromUtf8("label_2"));
-    label_2->setGeometry(QRect(80, 140, 131, 16));
-    lineEdit_2 = new QLineEdit(OptionsDlg);
-    lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
-    lineEdit_2->setGeometry(QRect(30, 170, 41, 20));
-    label_4 = new QLabel(OptionsDlg);
-    label_4->setObjectName(QString::fromUtf8("label_4"));
-    label_4->setGeometry(QRect(80, 170, 162, 16));
-    label = new QLabel(OptionsDlg);
-    label->setObjectName(QString::fromUtf8("label"));
-    label->setGeometry(QRect(80, 130, 112, 16));
-    label_3 = new QLabel(OptionsDlg);
-    label_3->setObjectName(QString::fromUtf8("label_3"));
-    label_3->setGeometry(QRect(80, 180, 141, 16));
-    label_13 = new QLabel(OptionsDlg);
-    label_13->setObjectName(QString::fromUtf8("label_13"));
-    label_13->setGeometry(QRect(290, 90, 46, 14));
     buttonBox = new QDialogButtonBox(OptionsDlg);
     buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
     buttonBox->setGeometry(QRect(350, 340, 161, 32));
@@ -118,7 +91,7 @@ public:
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok);
     tabWidget = new QTabWidget(OptionsDlg);
     tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
-    tabWidget->setGeometry(QRect(10, 10, 501, 321));
+    tabWidget->setGeometry(QRect(10, 10, 561, 321));
     tab = new QWidget();
     tab->setObjectName(QString::fromUtf8("tab"));
     genAlwaysShow = new QCheckBox(tab);
@@ -154,7 +127,7 @@ public:
     genAlwaysTop->setGeometry(QRect(10, 60, 101, 18));
     groupBox_3 = new QGroupBox(tab);
     groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
-    groupBox_3->setGeometry(QRect(270, 20, 221, 71));
+    groupBox_3->setGeometry(QRect(300, 20, 221, 71));
     genModifierBox = new QComboBox(groupBox_3);
     genModifierBox->setObjectName(QString::fromUtf8("genModifierBox"));
     genModifierBox->setGeometry(QRect(10, 30, 91, 22));
@@ -183,7 +156,7 @@ public:
     skinList->setGeometry(QRect(10, 30, 131, 101));
     skinPreview = new QLabel(Skins);
     skinPreview->setObjectName(QString::fromUtf8("skinPreview"));
-    skinPreview->setGeometry(QRect(10, 140, 481, 151));
+    skinPreview->setGeometry(QRect(40, 140, 481, 151));
     skinPreview->setScaledContents(false);
     skinPreview->setAlignment(Qt::AlignCenter);
     tabWidget->addTab(Skins, QString());
@@ -191,27 +164,27 @@ public:
     tab_2->setObjectName(QString::fromUtf8("tab_2"));
     catRescan = new QPushButton(tab_2);
     catRescan->setObjectName(QString::fromUtf8("catRescan"));
-    catRescan->setGeometry(QRect(10, 240, 91, 23));
+    catRescan->setGeometry(QRect(10, 244, 91, 23));
     catProgress = new QProgressBar(tab_2);
     catProgress->setObjectName(QString::fromUtf8("catProgress"));
-    catProgress->setGeometry(QRect(10, 270, 481, 20));
+    catProgress->setGeometry(QRect(10, 270, 529, 20));
     catProgress->setTextVisible(false);
     catProgress->setOrientation(Qt::Horizontal);
     groupBox = new QGroupBox(tab_2);
     groupBox->setObjectName(QString::fromUtf8("groupBox"));
-    groupBox->setGeometry(QRect(10, 10, 361, 211));
+    groupBox->setGeometry(QRect(10, 10, 401, 211));
     catDirMinus = new QPushButton(groupBox);
     catDirMinus->setObjectName(QString::fromUtf8("catDirMinus"));
     catDirMinus->setGeometry(QRect(180, 180, 75, 23));
     catDirectories = new QListWidget(groupBox);
     catDirectories->setObjectName(QString::fromUtf8("catDirectories"));
-    catDirectories->setGeometry(QRect(10, 20, 341, 151));
+    catDirectories->setGeometry(QRect(10, 20, 381, 151));
     catDirPlus = new QPushButton(groupBox);
     catDirPlus->setObjectName(QString::fromUtf8("catDirPlus"));
     catDirPlus->setGeometry(QRect(90, 180, 75, 23));
     groupBox_2 = new QGroupBox(tab_2);
     groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
-    groupBox_2->setGeometry(QRect(390, 10, 101, 251));
+    groupBox_2->setGeometry(QRect(440, 10, 101, 251));
     catTypesMinus = new QPushButton(groupBox_2);
     catTypesMinus->setObjectName(QString::fromUtf8("catTypesMinus"));
     catTypesMinus->setGeometry(QRect(10, 160, 81, 16));
@@ -238,6 +211,9 @@ public:
     label_10 = new QLabel(groupBox_2);
     label_10->setObjectName(QString::fromUtf8("label_10"));
     label_10->setGeometry(QRect(10, 220, 41, 21));
+    catSize = new QLabel(tab_2);
+    catSize->setObjectName(QString::fromUtf8("catSize"));
+    catSize->setGeometry(QRect(225, 252, 118, 16));
     tabWidget->addTab(tab_2, QString());
     tab_4 = new QWidget();
     tab_4->setObjectName(QString::fromUtf8("tab_4"));
@@ -250,14 +226,14 @@ public:
     label_11->setGeometry(QRect(20, 10, 79, 16));
     plugBox = new QGroupBox(tab_4);
     plugBox->setObjectName(QString::fromUtf8("plugBox"));
-    plugBox->setGeometry(QRect(130, 10, 351, 271));
+    plugBox->setGeometry(QRect(130, 10, 411, 271));
     tabWidget->addTab(tab_4, QString());
 
     retranslateUi(OptionsDlg);
     QObject::connect(buttonBox, SIGNAL(accepted()), OptionsDlg, SLOT(accept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), OptionsDlg, SLOT(reject()));
 
-    tabWidget->setCurrentIndex(3);
+    tabWidget->setCurrentIndex(2);
 
 
     QMetaObject::connectSlotsByName(OptionsDlg);
@@ -266,11 +242,6 @@ public:
     void retranslateUi(QDialog *OptionsDlg)
     {
     OptionsDlg->setWindowTitle(QApplication::translate("OptionsDlg", "Launchy options", 0, QApplication::UnicodeUTF8));
-    label_2->setText(QApplication::translate("OptionsDlg", "(0 for no dropdown menu)", 0, QApplication::UnicodeUTF8));
-    label_4->setText(QApplication::translate("OptionsDlg", "Minutes between catalog updates", 0, QApplication::UnicodeUTF8));
-    label->setText(QApplication::translate("OptionsDlg", "Number of results in list", 0, QApplication::UnicodeUTF8));
-    label_3->setText(QApplication::translate("OptionsDlg", "(0 for manual updates only)", 0, QApplication::UnicodeUTF8));
-    label_13->setText(QApplication::translate("OptionsDlg", "Skin Title:", 0, QApplication::UnicodeUTF8));
     genAlwaysShow->setText(QApplication::translate("OptionsDlg", "Always display Launchy window?", 0, QApplication::UnicodeUTF8));
     label_5->setText(QApplication::translate("OptionsDlg", "Minutes between catalog updates", 0, QApplication::UnicodeUTF8));
     label_6->setText(QApplication::translate("OptionsDlg", "(1 for no dropdown menu)", 0, QApplication::UnicodeUTF8));
@@ -297,6 +268,7 @@ public:
     catCheckDirs->setText(QApplication::translate("OptionsDlg", "Directories", 0, QApplication::UnicodeUTF8));
     catCheckBinaries->setText(QApplication::translate("OptionsDlg", "Executables", 0, QApplication::UnicodeUTF8));
     label_10->setText(QApplication::translate("OptionsDlg", "Depth:", 0, QApplication::UnicodeUTF8));
+    catSize->setText(QApplication::translate("OptionsDlg", "Indexing 0 items", 0, QApplication::UnicodeUTF8));
     tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("OptionsDlg", "Catalog", 0, QApplication::UnicodeUTF8));
     label_11->setText(QApplication::translate("OptionsDlg", "Available Plugins", 0, QApplication::UnicodeUTF8));
     plugBox->setTitle(QApplication::translate("OptionsDlg", "Plugin Options", 0, QApplication::UnicodeUTF8));

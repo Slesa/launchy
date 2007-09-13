@@ -129,7 +129,7 @@ MyWidget::MyWidget(QWidget *parent)
 
 
 	// Set the hotkey
-	int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::ControlModifier).toInt();
+	int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::AltModifier).toInt();
 	int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
 	setHotkey(curMeta, curAction);
 
@@ -199,11 +199,17 @@ void MyWidget::showAlternatives(bool show) {
 
 
 void MyWidget::launchObject(int obj) {
-	if (searchResults[obj].id == HASH_LAUNCHY)
-		platform.Execute(searchResults[obj].fullPath, "");
+	CatItem res = inputData[0].getTopResult();
+	if (res.id == HASH_LAUNCHY) {
+		QString args = "";
+		if (inputData.count() > 1)
+			for(int i = 2; i < inputData.count(); ++i)
+				args += inputData[i].getText() + " ";
+		platform.Execute(res.fullPath, args);
+	}
 	else
-		plugins.execute(&inputData, &searchResults[obj]);
-	catalog->incrementUsage(searchResults[obj]);
+		plugins.execute(&inputData, &res);
+	catalog->incrementUsage(res);
 }
 
 void MyWidget::focusOutEvent ( QFocusEvent * evt) {
@@ -241,7 +247,7 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 		
 		if (searchResults.count() > 0) {
 			int row = alternatives->currentRow();
-			if (row > 0) {
+			if (row > -1) {
 				QString location = "History/" + input->text();
 				QStringList hist;
 				hist << searchResults[row].lowName << 
@@ -312,14 +318,8 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 		if (dropTimer->isActive())
 			dropTimer->stop();
 		hideLaunchy();
-		if (searchResults.count() > 0) {
-			if (alternatives->isVisible()) {
-				launchObject(alternatives->currentRow());
-			} else {
-				launchObject(0);
-			}
-		}
-		
+		if (searchResults.count() > 0 || inputData.count() > 1) 
+			launchObject(0);				
 	}
 
 	else if (key->key() == Qt::Key_Down) {
@@ -365,11 +365,15 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 		parseInput(inText);
 
 		if (input->text() != "") {
+			if (catalog == NULL) return;
 			if (inputData.count() == 0) return;
+
 			gSearchTxt = inputData.last().getText();
 			searchResults.clear();
+
 			if (catalog != NULL) {
-				catalog->searchCatalogs(gSearchTxt, searchResults);
+				if (inputData.count() <= 1)
+					catalog->searchCatalogs(gSearchTxt, searchResults);
 			}
 			if (searchResults.count() == 0) {
 				// Is it a file?
@@ -384,6 +388,8 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 			plugins.getLabels(&inputData);
 			plugins.getResults(&inputData, &searchResults);
 			qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
+			catalog->checkHistory(gSearchTxt, searchResults);
+
 			//			sortResults(searchResults);
 
 
@@ -488,6 +494,7 @@ void MyWidget::checkForUpdate() {
 }
 
 void MyWidget::httpGetFinished(bool error) {
+
 	if (!error) {
 		QString str(verBuffer->data());
 		int ver = str.toInt();
@@ -495,10 +502,12 @@ void MyWidget::httpGetFinished(bool error) {
 			QMessageBox::information(this, tr("A new version of Launchy is available"), 
 				tr("A new version of Launchy is available.\n\nYou can download it at http://www.launchy.net/"));
 		}
+		if (http != NULL)
+			delete http;
+		http = NULL;
 	}
 	verBuffer->close();
 	counterBuffer->close();
-	delete http;
 	delete verBuffer;
 	delete counterBuffer;
 }
@@ -708,6 +717,8 @@ void MyWidget::applySkin(QString directory) {
 	}
 }
 
+
+
 void MyWidget::mousePressEvent(QMouseEvent *e)
 {
 	moveStartPoint = e->pos();
@@ -768,13 +779,15 @@ void MyWidget::showLaunchy() {
 	visible = true;
 	alternatives->hide();
 	show();
-	platform.ShowAlphaBorder();
-
+	// This gets around the weird Vista bug
+	// where the alpha border would dissappear
+	// on sleep or user switch
+	platform.CreateAlphaBorder(this, "");
 	input->activateWindow();
-//	activateWindow();
 	input->selectAll();
 	input->setFocus();
 }
+
 
 void MyWidget::hideLaunchy() {
 	if (dropTimer != NULL && dropTimer->isActive())
@@ -792,6 +805,7 @@ void MyWidget::hideLaunchy() {
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
+
 	QStringList args = qApp->arguments();
 
 	QCoreApplication::setApplicationName("Launchy");

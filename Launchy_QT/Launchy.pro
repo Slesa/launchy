@@ -32,6 +32,7 @@ win32:debug {
 }
 
 win32:release {
+	CONFIG += embed_manifest_exe
 	DESTDIR = ../release/
-	QMAKE_CXXFLAGS += /Ox /Ob2 /Oi /Oy /GT /GA  /WX
+	%QMAKE_CXXFLAGS += /Ox /Ob2 /Oi /Oy /GT /GA  /WX
 }

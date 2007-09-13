@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dlg.ui'
 **
-** Created: Mon Sep 3 11:49:07 2007
+** Created: Sun Sep 9 18:36:29 2007
 **      by: Qt User Interface Compiler version 4.3.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -32,25 +32,25 @@ public:
     {
     if (Dlg->objectName().isEmpty())
         Dlg->setObjectName(QString::fromUtf8("Dlg"));
-    QSize size(354, 273);
+    QSize size(411, 271);
     size = size.expandedTo(Dlg->minimumSizeHint());
     Dlg->resize(size);
     label = new QLabel(Dlg);
     label->setObjectName(QString::fromUtf8("label"));
-    label->setGeometry(QRect(90, 10, 187, 16));
+    label->setGeometry(QRect(120, 10, 187, 16));
     table = new QTableWidget(Dlg);
     table->setObjectName(QString::fromUtf8("table"));
-    table->setGeometry(QRect(10, 30, 331, 181));
+    table->setGeometry(QRect(10, 30, 391, 181));
     table->setColumnCount(3);
     tableNew = new QPushButton(Dlg);
     tableNew->setObjectName(QString::fromUtf8("tableNew"));
     tableNew->setGeometry(QRect(40, 220, 75, 23));
     tableRemove = new QPushButton(Dlg);
     tableRemove->setObjectName(QString::fromUtf8("tableRemove"));
-    tableRemove->setGeometry(QRect(220, 220, 75, 23));
+    tableRemove->setGeometry(QRect(290, 220, 75, 23));
     label_2 = new QLabel(Dlg);
     label_2->setObjectName(QString::fromUtf8("label_2"));
-    label_2->setGeometry(QRect(40, 250, 281, 21));
+    label_2->setGeometry(QRect(80, 250, 281, 21));
 
     retranslateUi(Dlg);
 
