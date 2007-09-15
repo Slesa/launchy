@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading ui file 'options.ui'
 **
-** Created: Wed Sep 12 20:35:33 2007
-**      by: Qt User Interface Compiler version 4.3.0
+** Created: Sat Sep 15 16:22:31 2007
+**      by: Qt User Interface Compiler version 4.3.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 ********************************************************************************/
@@ -81,9 +81,7 @@ public:
     if (OptionsDlg->objectName().isEmpty())
         OptionsDlg->setObjectName(QString::fromUtf8("OptionsDlg"));
     OptionsDlg->setWindowModality(Qt::NonModal);
-    QSize size(582, 379);
-    size = size.expandedTo(OptionsDlg->minimumSizeHint());
-    OptionsDlg->resize(size);
+    OptionsDlg->resize(582, 379);
     buttonBox = new QDialogButtonBox(OptionsDlg);
     buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
     buttonBox->setGeometry(QRect(350, 340, 161, 32));

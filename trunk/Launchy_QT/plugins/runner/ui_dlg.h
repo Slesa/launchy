@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dlg.ui'
 **
-** Created: Sun Sep 9 18:36:29 2007
-**      by: Qt User Interface Compiler version 4.3.0
+** Created: Sat Sep 15 16:20:39 2007
+**      by: Qt User Interface Compiler version 4.3.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 ********************************************************************************/
@@ -32,9 +32,7 @@ public:
     {
     if (Dlg->objectName().isEmpty())
         Dlg->setObjectName(QString::fromUtf8("Dlg"));
-    QSize size(411, 271);
-    size = size.expandedTo(Dlg->minimumSizeHint());
-    Dlg->resize(size);
+    Dlg->resize(411, 271);
     label = new QLabel(Dlg);
     label->setObjectName(QString::fromUtf8("label"));
     label->setGeometry(QRect(120, 10, 187, 16));

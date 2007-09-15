@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "gui.h"
 #include "runner.h"
-
+#include <QHeaderView>
 
 Gui::Gui(QWidget* parent) 
 	: QWidget(parent)
@@ -29,6 +29,10 @@ Gui::Gui(QWidget* parent)
 	if (settings == NULL) return;
 
 	
+	// Stretch the last column of the table
+	table->horizontalHeader()->setStretchLastSection(true);
+//	table->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch); //  column 0
+
 	// Read in the array of websites from options
 	table->setSortingEnabled(false);
 	int count = settings->beginReadArray("runner/cmds");

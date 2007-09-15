@@ -19,6 +19,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "gui.h"
 #include "weby.h"
+#include <QHeaderView>
+
+#define ROW_HEIGHT 40
 
 
 Gui::Gui(QWidget* parent) 
@@ -30,6 +33,12 @@ Gui::Gui(QWidget* parent)
 	booksFirefox->setChecked(settings->value("weby/firefox", true).toBool());
 	booksIE->setChecked(settings->value("weby/ie", true).toBool());
 	
+
+
+	// Stretch the last column of the table
+	table->horizontalHeader()->setStretchLastSection(true);
+//	table->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch); //  column 0
+
 	// Read in the array of websites from options
 	table->setSortingEnabled(false);
 	int count = settings->beginReadArray("weby/sites");
@@ -39,9 +48,12 @@ Gui::Gui(QWidget* parent)
 		table->setItem(i, 0, new QTableWidgetItem(settings->value("name").toString()));
 		table->setItem(i, 1, new QTableWidgetItem(settings->value("base").toString()));
 		table->setItem(i, 2, new QTableWidgetItem(settings->value("query").toString()));
+//		table->verticalHeader()->resizeSection(i, ROW_HEIGHT);
 	}
 	settings->endArray();
 	table->setSortingEnabled(true);
+
+
 
 	connect(tableNew, SIGNAL(clicked(bool)), this, SLOT(newRow(void)));
 	connect(tableRemove, SIGNAL(clicked(bool)), this, SLOT(remRow(void)));

@@ -560,7 +560,7 @@ void MyWidget::onHotKey() {
 
 void MyWidget::closeEvent(QCloseEvent *event) {
 	gSettings->setValue("Display/pos", pos());
-
+	gSettings->sync();
 	qApp->quit();
 	event->accept();
 }
@@ -815,18 +815,11 @@ int main(int argc, char *argv[])
 
 	DSingleApplication instance( "LAUNCHY" );
 
-	if ( instance.isRunning() ) {
-//		instance.sendMessage( "Hey, i'm the other instance" );
+	if ( instance.isRunning() )
 		return 0;
-	}
-
-
-
 
 	MyWidget widget;
 	widget.setObjectName("main");
-
-
 
 	return app.exec();
 } 

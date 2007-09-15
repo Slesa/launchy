@@ -167,6 +167,7 @@ OptionsDlg::~OptionsDlg() {
 
 void OptionsDlg::accept() {
 	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
+
 	// Save General Options
 	gSettings->setValue("GenOps/alwaysshow", genAlwaysShow->isChecked());
 	gSettings->setValue("GenOps/alwaystop", genAlwaysTop->isChecked());
@@ -196,7 +197,7 @@ void OptionsDlg::accept() {
 		main->setSkin(skinList->currentItem()->text());
 	}
 	
-/*	// Apply Directory Options
+	// Apply Directory Options
 	gSettings->beginWriteArray("directories");
 	for(int i = 0; i < memDirs.count(); ++i) {
 		gSettings->setArrayIndex(i);
@@ -218,7 +219,7 @@ void OptionsDlg::accept() {
 	if (changed) {
 		main->plugins.loadPlugins();
 	}
-*/
+
 	if (curPlugin >= 0) {
 		QListWidgetItem* item = plugList->item(curPlugin);
 		main->plugins.endDialog(item->data(3).toUInt(), true);
