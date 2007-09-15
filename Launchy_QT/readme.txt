@@ -31,4 +31,10 @@ Todo:
 
 KNOWN PROBLEMS:
 Icons don't show up if wrong color setting (16-bit)
+Options not being saved on laptop
+
+
+
+XP issue:
+I've installed the vc_redist.. so the SXS for the VC runtime is there.. and still plugins won't load.  Is it a QT issue then?
 

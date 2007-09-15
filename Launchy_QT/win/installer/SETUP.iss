@@ -36,6 +36,7 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 
 [Files]
 Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
 
 ; Plugins
 Source: ..\..\release\plugins\weby.dll; DestDir: {app}\plugins\; Flags: ignoreversion
@@ -67,9 +68,9 @@ Source: ..\..\skins\default\style.qss; DestDir: {app}\skins\default\; Flags: ign
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtGui4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtNetwork4.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\msvcp80.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\msvcr80.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\Microsoft.VC80.CRT.manifest; DestDir: {app}; Flags: ignoreversion
+Source: ..\msvcp80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
+Source: ..\msvcr80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
+Source: ..\Microsoft.VC80.CRT.manifest; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 
 Source: ..\Utilities\Special Folders\C Drive.lnk; DestDir: {app}\Utilities\Special Folders\; Flags: ignoreversion
 Source: ..\Utilities\Special Folders\Control Panel.lnk; DestDir: {app}\Utilities\Special Folders\; Flags: ignoreversion

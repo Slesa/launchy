@@ -75,6 +75,7 @@ void PluginHandler::endDialog(uint id, bool accept) {
 void PluginHandler::loadPlugins() {
 	// Get the list of loadable plugins
 	QHash<uint,bool> loadable;
+
 	int size = gSettings->beginReadArray("plugins");
 	for(int i = 0; i < size; ++i) {
 		gSettings->setArrayIndex(i);
@@ -85,18 +86,11 @@ void PluginHandler::loadPlugins() {
 	gSettings->endArray();
 
 	// Load up the plugins in the plugins/ directory
-	QDir pluginsDir = QDir(qApp->applicationDirPath() + "/plugins/");
+	QDir pluginsDir(qApp->applicationDirPath());
+	pluginsDir.cd("plugins");
 	foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-/*		qDebug() << fileName;
-		QString f = QDir::toNativeSeparators(pluginsDir.absoluteFilePath(fileName));
-		HINSTANCE loadme = LoadLibrary((LPCTSTR) f.utf16());
-		if (loadme == NULL)
-			qDebug() << GetLastError();
-
-		FreeLibrary(loadme); */
 		if (!QLibrary::isLibrary(fileName)) continue;
 		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-//		QPluginLoader loader(fileName);
 		QObject *plugin = loader.instance();
 		if (plugin) {
 			PluginInterface *plug = qobject_cast<PluginInterface *>(plugin);

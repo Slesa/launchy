@@ -33,8 +33,8 @@ void runnerPlugin::init()
 	}
 	set->setValue("runner/version", 2.0);
 
-	// Read in the array of websites
 
+	// Read in the array of websites
 	int count = set->beginReadArray("runner/cmds");
 	for(int i = 0; i < count; ++i) {
 		set->setArrayIndex(i);
