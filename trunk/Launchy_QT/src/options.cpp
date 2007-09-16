@@ -24,6 +24,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QSettings>
 #include <QDir>
 #include <QPixmap>
+#include <QBitmap>
+#include <QPainter>
 #include <QFileDialog>
 
 OptionsDlg::OptionsDlg(QWidget * parent)
@@ -33,7 +35,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		curPlugin = -1;
 
 		MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
-
+		if (main == NULL) return;
 
 		// Load General Options
 		genAlwaysShow->setChecked(gSettings->value("GenOps/alwaysshow", false).toBool());
@@ -167,6 +169,8 @@ OptionsDlg::~OptionsDlg() {
 
 void OptionsDlg::accept() {
 	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
+	if (main == NULL) return;
+	if (gSettings == NULL) return;
 
 	// Save General Options
 	gSettings->setValue("GenOps/alwaysshow", genAlwaysShow->isChecked());
@@ -225,6 +229,7 @@ void OptionsDlg::accept() {
 		main->plugins.endDialog(item->data(3).toUInt(), true);
 	}
 
+	gSettings->sync();
 	QDialog::accept();
 }
 
@@ -415,10 +420,34 @@ void OptionsDlg::skinChanged(const QString newSkin) {
 		line = in.readLine();
 	} 
 	authorInfo->setText(total);
+	author.close();
 
+	// Set the image preview
 	QPixmap pix;
+	QString sDir(qApp->applicationDirPath() + "/skins/" + newSkin + "/");
 
-	if (pix.load(qApp->applicationDirPath() + "/Skins/" + newSkin + "/Preview.png")) {
+	if (pix.load(sDir + "background.png")) {
+		pix.setMask(QPixmap(sDir + "mask.png"));
+
+		
+		if (main->platform.SupportsAlphaBorder()) {
+			// Compose the alpha image with the background
+			QImage sourceImage(pix.toImage());
+			QImage destinationImage(sDir + "alpha.png");
+			QImage resultImage(destinationImage.size(), QImage::Format_ARGB32_Premultiplied);
+
+			QPainter painter(&resultImage);
+			painter.setCompositionMode(QPainter::CompositionMode_Source);
+			painter.fillRect(resultImage.rect(), Qt::transparent);
+			painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+			painter.drawImage(0, 0, sourceImage);
+			painter.drawImage(0, 0, destinationImage);
+
+			painter.end();
+
+			pix = QPixmap::fromImage(resultImage);
+		} 
+
 		QPixmap scaled;
 		scaled = pix.scaled(skinPreview->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 		skinPreview->setPixmap(scaled);
@@ -426,7 +455,6 @@ void OptionsDlg::skinChanged(const QString newSkin) {
 		skinPreview->clear();
 	}
 
-	author.close();
 }
 
 void OptionsDlg::reject() {

@@ -702,14 +702,14 @@ void MyWidget::applySkin(QString directory) {
 	}
 	
 	// Set the background image
-	if (QFile::exists(directory + "/background.bmp")) {
-		QPixmap image(directory + "/background.bmp");
+	if (QFile::exists(directory + "/background.png")) {
+		QPixmap image(directory + "/background.png");
 		label->setPixmap(image);
 	}
 
 	// Set the background mask
-	if (QFile::exists(directory + "/mask.bmp")) {
-		QPixmap image(directory + "/mask.bmp");
+	if (QFile::exists(directory + "/mask.png")) {
+		QPixmap image(directory + "/mask.png");
 		setMask(image);
 	}
 

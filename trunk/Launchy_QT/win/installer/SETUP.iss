@@ -58,10 +58,9 @@ Source: ..\..\readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
 ; Skins
 Source: ..\..\skins\default\alpha.png; DestDir: {app}\skins\default\; Flags: ignoreversion
 Source: ..\..\skins\default\author.txt; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\default\background.bmp; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\default\mask.bmp; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\default\background.png; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\default\mask.png; DestDir: {app}\skins\default\; Flags: ignoreversion
 Source: ..\..\skins\default\pos.txt; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\default\preview.png; DestDir: {app}\skins\default\; Flags: ignoreversion
 Source: ..\..\skins\default\style.qss; DestDir: {app}\skins\default\; Flags: ignoreversion
 
 ; Libs
