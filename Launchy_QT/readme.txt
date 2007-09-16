@@ -1,8 +1,6 @@
 To deal with for alpha release:
 . Seems like DB isn't always saved correctly (webstats)
-. Changing skins in options (then cancel I guess?) causes the alpha border to move
-. Add %s to weby for custom searches
-
+. Explory doesn't seem to see hidden files and dirs
 
 Currently working on: 
 

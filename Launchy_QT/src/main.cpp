@@ -443,7 +443,11 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 
 	// Okay, we have a directory, find files that match "file"
 	QDir qd(dir);
-	QStringList ilist = qd.entryList(QStringList(file + "*"), QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
+	QStringList ilist;
+	if (gSettings->value("GenOps/showHiddenFiles", false).toBool())
+		ilist = qd.entryList(QStringList(file + "*"), QDir::Hidden | QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
+	else
+		ilist = qd.entryList(QStringList(file + "*"), QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
 	foreach(QString inf, ilist) {
 		if (inf.mid(0, file.count()).compare(file,  Qt::CaseInsensitive) == 0) {
 			QString fp = qd.absolutePath() + "/" + inf;

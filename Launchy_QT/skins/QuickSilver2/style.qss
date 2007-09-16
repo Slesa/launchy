@@ -7,7 +7,7 @@ QLineEdit#input {
 }
 
 QListWidget#alternatives {
-	font:  16px "Lucida Sans";
+	font:  14px "Lucida Sans";
 	border-width: 0px;
 	background-color: rgb(255,255,255);
 	border-style: solid;

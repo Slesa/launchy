@@ -190,7 +190,7 @@ public:
 		GetShellDir(CSIDL_STARTMENU, ret);		
 		tmp.name = ret;
 		list.append(tmp);
-		tmp.name = "Utilities/";
+		tmp.name = "Utilities\\";
 		tmp.indexDirs = true;
 		list.append(tmp);
 		return list;

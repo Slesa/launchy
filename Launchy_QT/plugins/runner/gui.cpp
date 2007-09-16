@@ -21,6 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "runner.h"
 #include <QHeaderView>
 
+#define ROW_PADDING 6
+
 Gui::Gui(QWidget* parent) 
 	: QWidget(parent)
 {
@@ -42,6 +44,7 @@ Gui::Gui(QWidget* parent)
 		table->setItem(i, 0, new QTableWidgetItem(settings->value("name").toString()));
 		table->setItem(i, 1, new QTableWidgetItem(settings->value("file").toString()));
 		table->setItem(i, 2, new QTableWidgetItem(settings->value("args").toString()));
+		table->verticalHeader()->resizeSection(i, table->verticalHeader()->fontMetrics().height() + ROW_PADDING);
 	}
 	settings->endArray();
 	table->setSortingEnabled(true);
@@ -74,6 +77,7 @@ void Gui::newRow()
 {
 	table->insertRow(table->rowCount());
 	table->setCurrentCell(table->rowCount()-1, 0);
+	table->verticalHeader()->resizeSection(table->rowCount()-1, table->verticalHeader()->fontMetrics().height() + ROW_PADDING);
 }
 
 void Gui::remRow()

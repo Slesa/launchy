@@ -28,67 +28,67 @@ void WebyPlugin::init()
 		set->setArrayIndex(0);
 		set->setValue("name", "Google");
 		set->setValue("base", "http://www.google.com/");
-		set->setValue("query", "search?q=");
+		set->setValue("query", "search?q=%s");
 
 		set->setArrayIndex(1);
 		set->setValue("name", "Live Search");
 		set->setValue("base", "http://search.live.com/");
-		set->setValue("query", "results.aspx?q=");
+		set->setValue("query", "results.aspx?q=%s");
 
 		set->setArrayIndex(2);
 		set->setValue("name", "Yahoo");
 		set->setValue("base", "http://search.yahoo.com/");
-		set->setValue("query", "search?p=");
+		set->setValue("query", "search?p=%s");
 
 		set->setArrayIndex(3);
 		set->setValue("name", "MSN");
 		set->setValue("base", "http://search.msn.com/");
-		set->setValue("query", "results.aspx?q=");
+		set->setValue("query", "results.aspx?q=%s");
 
 		set->setArrayIndex(4);
 		set->setValue("name", "Weather");
 		set->setValue("base", "http://www.weather.com/");
-		set->setValue("query", "weather/local/");	
+		set->setValue("query", "weather/local/%s");	
 
 		set->setArrayIndex(5);
 		set->setValue("name", "Amazon");
 		set->setValue("base", "http://www.amazon.com/");
-		set->setValue("query", "gp/search/?keywords=");
+		set->setValue("query", "gp/search/?keywords=%s");
 
 		set->setArrayIndex(6);
 		set->setValue("name", "YouTube");
 		set->setValue("base", "http://www.youtube.com/");
-		set->setValue("query", "results?search_query=");
+		set->setValue("query", "results?search_query=%s");
 
 		set->setArrayIndex(7);
 		set->setValue("name", "Wikipedia");
 		set->setValue("base", "http://www.wikipedia.com/");
-		set->setValue("query", "wiki/Special:Search?search=");
+		set->setValue("query", "wiki/Special:Search?search=%s");
 
 		set->setArrayIndex(8);
 		set->setValue("name", "Dictionary");
 		set->setValue("base", "http://www.dictionary.com/");
-		set->setValue("query", "browse/");		
+		set->setValue("query", "browse/%s");		
 
 		set->setArrayIndex(9);
 		set->setValue("name", "Thesaurus");
 		set->setValue("base", "http://www.thesaurus.com/");
-		set->setValue("query", "browse/");		
+		set->setValue("query", "browse/%s");		
 
 		set->setArrayIndex(10);
 		set->setValue("name", "Netflix");
 		set->setValue("base", "http://www.netflix.com/");
-		set->setValue("query", "Search?v1=");		
+		set->setValue("query", "Search?v1=%s");		
 
 		set->setArrayIndex(11);
 		set->setValue("name", "MSDN");
 		set->setValue("base", "http://search.msdn.microsoft.com/");
-		set->setValue("query", "search/default.aspx?siteId=0&tab=0&query=");
+		set->setValue("query", "search/default.aspx?siteId=0&tab=0&query=%s");
 
 		set->setArrayIndex(11);
 		set->setValue("name", "E-Mail");
 		set->setValue("base", "mailto:");
-		set->setValue("query", "");
+		set->setValue("query", "%s");
 
 		set->endArray();
 	}
@@ -319,8 +319,11 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 			if (item->shortName == site.name) {
 				found = true;
 				file = site.base;
-				if (args != "")
-					file += site.query + args;
+				if (args != "") {
+					QString tmp = site.query;
+					tmp.replace("%s", args);
+					file += tmp;
+				}
 				break;
 			}
 		}

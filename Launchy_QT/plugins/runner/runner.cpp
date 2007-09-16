@@ -68,7 +68,7 @@ QString runnerPlugin::getIcon()
 void runnerPlugin::getCatalog(QList<CatItem>* items)
 {
 	foreach(runnerCmd cmd, cmds) {
-		items->push_back(CatItem(cmd.file + "%%%" + cmd.args, cmd.name, HASH_runner));
+		items->push_back(CatItem(cmd.file + "%%%" + cmd.args, cmd.name, HASH_runner, getIcon()));
 	}
 }
 
