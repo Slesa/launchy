@@ -202,6 +202,7 @@ public:
 	void RemoveFromNotificationArea() {};
 
 	// Alpha border functions	
+	bool SupportsAlphaBorder() { return true; }
 	bool CreateAlphaBorder(QWidget* w, QString ImageName) { 
 		if (ImageName == "")
 			ImageName = lastImageName;
