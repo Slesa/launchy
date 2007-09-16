@@ -1,6 +1,7 @@
 To deal with for alpha release:
-. Seems like DB isn't always saved correctly (webstats)
-. Explory doesn't seem to see hidden files and dirs
+
+
+
 
 Currently working on: 
 
@@ -16,13 +17,10 @@ When a db is done building, redo the search on the current text
 
 Trying to stylize the scrollbar is difficult
 
-If you simply go to "switch user" and then come back in, the alpha border is fucked.  I tried recalling UpdateLayeredWindow and that didn't really help.  Reapplying the entire skin does work though.  WTF?
-
 Playing with the options tab on xp machine caused crashes when the plugins weren't loaded
 
 Rescanning the database caused the rescan to freeze at around 76%, couldn't do any more scans after that
 
-Allow for caps in input letters
 
 Memory leaks?
 

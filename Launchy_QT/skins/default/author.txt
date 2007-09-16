@@ -1,4 +1,4 @@
-Skin Title: Launchy Default
+Skin Title: Mercury
 
 Author: Josh Karlin and Juan Ignacio Serra
 

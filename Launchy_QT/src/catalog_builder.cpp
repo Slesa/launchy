@@ -37,7 +37,7 @@ CatBuilder::CatBuilder(bool fromArchive, PluginHandler* plugs) :
 		cat = (Catalog*) new SlowCatalog();
 }
 
-  void CatBuilder::run() {
+void CatBuilder::run() {
 	QString dest = gSettings->fileName();
 	int lastSlash = dest.lastIndexOf(QLatin1Char('/'));
 	if (lastSlash == -1)
@@ -76,7 +76,7 @@ void CatBuilder::buildCatalog() {
 	}
 
 	for(int i = 0; i < memDirs.count(); ++i) {
-		emit(catalogIncrement(100.0 * (float)i / (float) memDirs.count()));
+		emit(catalogIncrement(100.0 * (float)(i+1) / (float) memDirs.count()));
 		QString cur = memDirs[i].name;
 		indexDirectory(memDirs[i].name, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth);
 	}
