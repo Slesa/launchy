@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "weby.h"
 #include <QHeaderView>
 
-#define ROW_HEIGHT 40
+#define ROW_PADDING 6
 
 
 Gui::Gui(QWidget* parent) 
@@ -43,12 +43,13 @@ Gui::Gui(QWidget* parent)
 	table->setSortingEnabled(false);
 	int count = settings->beginReadArray("weby/sites");
 	table->setRowCount(count);
+
 	for(int i = 0; i < count; ++i) {
 		settings->setArrayIndex(i);
 		table->setItem(i, 0, new QTableWidgetItem(settings->value("name").toString()));
 		table->setItem(i, 1, new QTableWidgetItem(settings->value("base").toString()));
 		table->setItem(i, 2, new QTableWidgetItem(settings->value("query").toString()));
-//		table->verticalHeader()->resizeSection(i, ROW_HEIGHT);
+		table->verticalHeader()->resizeSection(i, table->verticalHeader()->fontMetrics().height() + ROW_PADDING);
 	}
 	settings->endArray();
 	table->setSortingEnabled(true);
@@ -85,6 +86,7 @@ void Gui::newRow()
 {
 	table->insertRow(table->rowCount());
 	table->setCurrentCell(table->rowCount()-1, 0);
+	table->verticalHeader()->resizeSection(table->rowCount()-1, table->verticalHeader()->fontMetrics().height() + ROW_PADDING);
 }
 
 void Gui::remRow()

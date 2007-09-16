@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'options.ui'
 **
-** Created: Sun Sep 16 11:09:30 2007
+** Created: Sun Sep 16 13:15:30 2007
 **      by: Qt User Interface Compiler version 4.3.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -34,21 +34,25 @@ public:
     QDialogButtonBox *buttonBox;
     QTabWidget *tabWidget;
     QWidget *tab;
-    QCheckBox *genAlwaysShow;
-    QLabel *label_5;
-    QLineEdit *genUpMinutes;
-    QLabel *label_6;
-    QLabel *label_7;
-    QLabel *label_8;
-    QCheckBox *genPortable;
-    QLineEdit *genNumResults;
-    QCheckBox *genUpdateCheck;
-    QCheckBox *genAlwaysTop;
     QGroupBox *groupBox_3;
     QComboBox *genModifierBox;
     QComboBox *genKeyBox;
+    QGroupBox *groupBox_4;
+    QCheckBox *genAlwaysShow;
+    QCheckBox *genAlwaysTop;
+    QLineEdit *genNumResults;
+    QLabel *label_8;
     QCheckBox *genHideFocus;
+    QLabel *label_6;
+    QGroupBox *groupBox_5;
+    QLineEdit *genUpMinutes;
+    QLabel *label_5;
     QCheckBox *genFastIndex;
+    QLabel *label_7;
+    QGroupBox *groupBox_6;
+    QCheckBox *genUpdateCheck;
+    QCheckBox *genPortable;
+    QCheckBox *genShowHidden;
     QWidget *Skins;
     QLabel *label_9;
     QLabel *authorInfo;
@@ -92,37 +96,6 @@ public:
     tabWidget->setGeometry(QRect(10, 10, 561, 321));
     tab = new QWidget();
     tab->setObjectName(QString::fromUtf8("tab"));
-    genAlwaysShow = new QCheckBox(tab);
-    genAlwaysShow->setObjectName(QString::fromUtf8("genAlwaysShow"));
-    genAlwaysShow->setGeometry(QRect(10, 40, 191, 18));
-    label_5 = new QLabel(tab);
-    label_5->setObjectName(QString::fromUtf8("label_5"));
-    label_5->setGeometry(QRect(60, 180, 162, 21));
-    genUpMinutes = new QLineEdit(tab);
-    genUpMinutes->setObjectName(QString::fromUtf8("genUpMinutes"));
-    genUpMinutes->setGeometry(QRect(10, 180, 41, 20));
-    label_6 = new QLabel(tab);
-    label_6->setObjectName(QString::fromUtf8("label_6"));
-    label_6->setGeometry(QRect(60, 160, 131, 16));
-    label_7 = new QLabel(tab);
-    label_7->setObjectName(QString::fromUtf8("label_7"));
-    label_7->setGeometry(QRect(60, 200, 141, 16));
-    label_8 = new QLabel(tab);
-    label_8->setObjectName(QString::fromUtf8("label_8"));
-    label_8->setGeometry(QRect(60, 140, 112, 21));
-    genPortable = new QCheckBox(tab);
-    genPortable->setObjectName(QString::fromUtf8("genPortable"));
-    genPortable->setGeometry(QRect(10, 20, 151, 18));
-    genNumResults = new QLineEdit(tab);
-    genNumResults->setObjectName(QString::fromUtf8("genNumResults"));
-    genNumResults->setGeometry(QRect(10, 140, 41, 20));
-    genUpdateCheck = new QCheckBox(tab);
-    genUpdateCheck->setObjectName(QString::fromUtf8("genUpdateCheck"));
-    genUpdateCheck->setGeometry(QRect(10, 80, 121, 18));
-    genAlwaysTop = new QCheckBox(tab);
-    genAlwaysTop->setObjectName(QString::fromUtf8("genAlwaysTop"));
-    genAlwaysTop->setEnabled(false);
-    genAlwaysTop->setGeometry(QRect(10, 60, 101, 18));
     groupBox_3 = new QGroupBox(tab);
     groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
     groupBox_3->setGeometry(QRect(300, 20, 221, 71));
@@ -132,12 +105,55 @@ public:
     genKeyBox = new QComboBox(groupBox_3);
     genKeyBox->setObjectName(QString::fromUtf8("genKeyBox"));
     genKeyBox->setGeometry(QRect(130, 30, 81, 22));
-    genHideFocus = new QCheckBox(tab);
+    groupBox_4 = new QGroupBox(tab);
+    groupBox_4->setObjectName(QString::fromUtf8("groupBox_4"));
+    groupBox_4->setGeometry(QRect(10, 20, 211, 131));
+    genAlwaysShow = new QCheckBox(groupBox_4);
+    genAlwaysShow->setObjectName(QString::fromUtf8("genAlwaysShow"));
+    genAlwaysShow->setGeometry(QRect(10, 20, 191, 18));
+    genAlwaysTop = new QCheckBox(groupBox_4);
+    genAlwaysTop->setObjectName(QString::fromUtf8("genAlwaysTop"));
+    genAlwaysTop->setEnabled(false);
+    genAlwaysTop->setGeometry(QRect(10, 60, 101, 18));
+    genNumResults = new QLineEdit(groupBox_4);
+    genNumResults->setObjectName(QString::fromUtf8("genNumResults"));
+    genNumResults->setGeometry(QRect(10, 90, 41, 20));
+    label_8 = new QLabel(groupBox_4);
+    label_8->setObjectName(QString::fromUtf8("label_8"));
+    label_8->setGeometry(QRect(60, 90, 112, 21));
+    genHideFocus = new QCheckBox(groupBox_4);
     genHideFocus->setObjectName(QString::fromUtf8("genHideFocus"));
-    genHideFocus->setGeometry(QRect(10, 100, 191, 18));
-    genFastIndex = new QCheckBox(tab);
+    genHideFocus->setGeometry(QRect(10, 40, 191, 18));
+    label_6 = new QLabel(groupBox_4);
+    label_6->setObjectName(QString::fromUtf8("label_6"));
+    label_6->setGeometry(QRect(60, 110, 131, 16));
+    groupBox_5 = new QGroupBox(tab);
+    groupBox_5->setObjectName(QString::fromUtf8("groupBox_5"));
+    groupBox_5->setGeometry(QRect(300, 120, 231, 81));
+    genUpMinutes = new QLineEdit(groupBox_5);
+    genUpMinutes->setObjectName(QString::fromUtf8("genUpMinutes"));
+    genUpMinutes->setGeometry(QRect(10, 20, 41, 20));
+    label_5 = new QLabel(groupBox_5);
+    label_5->setObjectName(QString::fromUtf8("label_5"));
+    label_5->setGeometry(QRect(60, 20, 162, 21));
+    genFastIndex = new QCheckBox(groupBox_5);
     genFastIndex->setObjectName(QString::fromUtf8("genFastIndex"));
-    genFastIndex->setGeometry(QRect(10, 120, 211, 18));
+    genFastIndex->setGeometry(QRect(10, 58, 211, 18));
+    label_7 = new QLabel(groupBox_5);
+    label_7->setObjectName(QString::fromUtf8("label_7"));
+    label_7->setGeometry(QRect(60, 40, 141, 16));
+    groupBox_6 = new QGroupBox(tab);
+    groupBox_6->setObjectName(QString::fromUtf8("groupBox_6"));
+    groupBox_6->setGeometry(QRect(10, 170, 201, 81));
+    genUpdateCheck = new QCheckBox(groupBox_6);
+    genUpdateCheck->setObjectName(QString::fromUtf8("genUpdateCheck"));
+    genUpdateCheck->setGeometry(QRect(10, 20, 171, 18));
+    genPortable = new QCheckBox(groupBox_6);
+    genPortable->setObjectName(QString::fromUtf8("genPortable"));
+    genPortable->setGeometry(QRect(10, 60, 151, 18));
+    genShowHidden = new QCheckBox(groupBox_6);
+    genShowHidden->setObjectName(QString::fromUtf8("genShowHidden"));
+    genShowHidden->setGeometry(QRect(10, 40, 191, 18));
     tabWidget->addTab(tab, QString());
     Skins = new QWidget();
     Skins->setObjectName(QString::fromUtf8("Skins"));
@@ -231,7 +247,7 @@ public:
     QObject::connect(buttonBox, SIGNAL(accepted()), OptionsDlg, SLOT(accept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), OptionsDlg, SLOT(reject()));
 
-    tabWidget->setCurrentIndex(2);
+    tabWidget->setCurrentIndex(0);
 
 
     QMetaObject::connectSlotsByName(OptionsDlg);
@@ -240,17 +256,21 @@ public:
     void retranslateUi(QDialog *OptionsDlg)
     {
     OptionsDlg->setWindowTitle(QApplication::translate("OptionsDlg", "Launchy options", 0, QApplication::UnicodeUTF8));
-    genAlwaysShow->setText(QApplication::translate("OptionsDlg", "Always display Launchy window?", 0, QApplication::UnicodeUTF8));
-    label_5->setText(QApplication::translate("OptionsDlg", "Minutes between catalog updates", 0, QApplication::UnicodeUTF8));
-    label_6->setText(QApplication::translate("OptionsDlg", "(1 for no dropdown menu)", 0, QApplication::UnicodeUTF8));
-    label_7->setText(QApplication::translate("OptionsDlg", "(0 for manual updates only)", 0, QApplication::UnicodeUTF8));
-    label_8->setText(QApplication::translate("OptionsDlg", "Number of results in list", 0, QApplication::UnicodeUTF8));
-    genPortable->setText(QApplication::translate("OptionsDlg", "Portable mode? (USB stick)", 0, QApplication::UnicodeUTF8));
-    genUpdateCheck->setText(QApplication::translate("OptionsDlg", "Check for updates?", 0, QApplication::UnicodeUTF8));
-    genAlwaysTop->setText(QApplication::translate("OptionsDlg", "Always on top?", 0, QApplication::UnicodeUTF8));
     groupBox_3->setTitle(QApplication::translate("OptionsDlg", "Launchy Hotkey", 0, QApplication::UnicodeUTF8));
-    genHideFocus->setText(QApplication::translate("OptionsDlg", "Hide Launchy when it loses focus?", 0, QApplication::UnicodeUTF8));
+    groupBox_4->setTitle(QApplication::translate("OptionsDlg", "User Interface", 0, QApplication::UnicodeUTF8));
+    genAlwaysShow->setText(QApplication::translate("OptionsDlg", "Always display Launchy window", 0, QApplication::UnicodeUTF8));
+    genAlwaysTop->setText(QApplication::translate("OptionsDlg", "Always on top", 0, QApplication::UnicodeUTF8));
+    label_8->setText(QApplication::translate("OptionsDlg", "Number of results in list", 0, QApplication::UnicodeUTF8));
+    genHideFocus->setText(QApplication::translate("OptionsDlg", "Hide Launchy when it loses focus", 0, QApplication::UnicodeUTF8));
+    label_6->setText(QApplication::translate("OptionsDlg", "(1 for no dropdown menu)", 0, QApplication::UnicodeUTF8));
+    groupBox_5->setTitle(QApplication::translate("OptionsDlg", "Performance", 0, QApplication::UnicodeUTF8));
+    label_5->setText(QApplication::translate("OptionsDlg", "Minutes between catalog updates", 0, QApplication::UnicodeUTF8));
     genFastIndex->setText(QApplication::translate("OptionsDlg", "Use fast indexer? (uses more memory)", 0, QApplication::UnicodeUTF8));
+    label_7->setText(QApplication::translate("OptionsDlg", "(0 for manual updates only)", 0, QApplication::UnicodeUTF8));
+    groupBox_6->setTitle(QApplication::translate("OptionsDlg", "System Options", 0, QApplication::UnicodeUTF8));
+    genUpdateCheck->setText(QApplication::translate("OptionsDlg", "Check for updates on startup", 0, QApplication::UnicodeUTF8));
+    genPortable->setText(QApplication::translate("OptionsDlg", "Portable mode (USB stick)", 0, QApplication::UnicodeUTF8));
+    genShowHidden->setText(QApplication::translate("OptionsDlg", "Show hidden files in browse mode", 0, QApplication::UnicodeUTF8));
     tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("OptionsDlg", "General", 0, QApplication::UnicodeUTF8));
     label_9->setText(QApplication::translate("OptionsDlg", "Select a Skin", 0, QApplication::UnicodeUTF8));
     authorInfo->setText(QString());

@@ -44,6 +44,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		genHideFocus->setChecked(gSettings->value("GenOps/hideiflostfocus", true).toBool());
 		genFastIndex->setChecked(gSettings->value("GenOps/fastindexer",false).toBool());
 		genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
+		genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
 		genUpMinutes->setText(gSettings->value("GenOps/updatetimer", "10").toString());
 		genNumResults->setText(gSettings->value("GenOps/numresults", "10").toString());
 
@@ -179,6 +180,7 @@ void OptionsDlg::accept() {
 	gSettings->setValue("GenOps/updatecheck", genUpdateCheck->isChecked());
 	gSettings->setValue("GenOps/hideiflostfocus", genHideFocus->isChecked());
 	gSettings->setValue("GenOps/fastindexer", genFastIndex->isChecked());
+	gSettings->setValue("GenOps/showHiddenFiles", genShowHidden->isChecked());
 	gSettings->setValue("GenOps/updatetimer", genUpMinutes->text());
 	gSettings->setValue("GenOps/numresults", genNumResults->text());
 	gSettings->setValue("GenOps/hotkeyModifier", iMetaKeys[genModifierBox->currentIndex()]);
