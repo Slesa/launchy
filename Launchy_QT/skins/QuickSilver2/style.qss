@@ -1,0 +1,23 @@
+QLineEdit#input {
+	font:  16px "Lucida Sans";
+	border-width: 0px;
+	background-color: rgb(255,255,255);
+	border-style: solid;
+	color: black;
+}
+
+QListWidget#alternatives {
+	font:  16px "Lucida Sans";
+	border-width: 0px;
+	background-color: rgb(255,255,255);
+	border-style: solid;
+	color: black;
+}
+
+QLineEdit#output {
+	font:  14px "Lucida Sans";
+	border-width: 0px;
+	background-color: rgba(255,255,255,0%);
+	border-style: solid;
+	color: black;
+}

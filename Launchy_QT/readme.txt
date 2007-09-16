@@ -1,12 +1,7 @@
 To deal with for alpha release:
-. Crashes in options screen (check everywhere for NULL pointers)
-. Compose screenshot from mask and pics
 . Seems like DB isn't always saved correctly (webstats)
 . Changing skins in options (then cancel I guess?) causes the alpha border to move
-. Use the old Launchy folder, not launchy.net
-
-
-
+. Add %s to weby for custom searches
 
 
 Currently working on: 

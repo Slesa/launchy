@@ -77,7 +77,6 @@ MyWidget::MyWidget(QWidget *parent)
 	alternatives->setObjectName("alternatives");
 	alternatives->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	alternatives->setTextElideMode(Qt::ElideLeft);
-//	alternatives->setViewMode(QListView::IconMode);
 	alternatives->setWindowFlags(Qt::Window | Qt::Tool | Qt::FramelessWindowHint);
 	altScroll = alternatives->verticalScrollBar();
 	altScroll->setObjectName("altScroll");
@@ -86,8 +85,6 @@ MyWidget::MyWidget(QWidget *parent)
 	connect(alternatives, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(altKeyPressEvent(QKeyEvent*)));
 	connect(alternatives, SIGNAL(focusOut(QFocusEvent*)), this, SLOT(focusOutEvent(QFocusEvent*)));
 	licon = new QLabel(label);
-//	QIcon icon = platform.GetIcon("vc70.idb");	
-//	licon->setPixmap(icon.pixmap(QSize(32,32), QIcon::Normal, QIcon::On));
 
 
 
@@ -96,7 +93,11 @@ MyWidget::MyWidget(QWidget *parent)
 	if (QFile::exists(qApp->applicationDirPath() + "/config.ini")) 
 		gSettings = new QSettings(qApp->applicationDirPath() + "/config.ini", QSettings::IniFormat); 
 	else
-		gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy.net", "Launchy");
+		gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
+
+	// If this is the first time running or a new version, call updateVersion
+	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION)
+	updateVersion(gSettings->value("version", 0).toInt());
 
 	// Load the plugins
 	plugins.loadPlugins();
@@ -108,10 +109,6 @@ MyWidget::MyWidget(QWidget *parent)
 	QPoint x = gSettings->value("Display/pos", QPoint(0,0)).toPoint();
 	move(x);
 	platform.MoveAlphaBorder(x);
-
-	// If this is the first time running or a new version, call updateVersion
-	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION)
-	updateVersion(gSettings->value("version", 0).toInt());
 
 	// Set the general options
 	setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool());
@@ -519,14 +516,40 @@ void MyWidget::setSkin(QString name) {
 }
 
 void MyWidget::updateVersion(int oldVersion) {
-	if (oldVersion < LAUNCHY_VERSION) {
-		gSettings->setValue("donateTime", QDateTime::currentDateTime().addDays(21));
-		gSettings->setValue("version", LAUNCHY_VERSION);
-	}
 	if (oldVersion < 200) {
+		// We've completely changed the database and ini between 1.25 and 2.0
+		// Erase all of the old information
+		QString origFile = gSettings->fileName();
+		delete gSettings;
+
+		gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
+		QString permFile = gSettings->fileName();
+		delete gSettings;
+
+		QFile oldIniPerm(permFile);
+		oldIniPerm.remove();
+		oldIniPerm.close();
+
+		QDir d(permFile);
+		d.cdUp();
+		QFile oldDbPerm(d.absoluteFilePath("Launchy.db"));
+		oldDbPerm.remove();
+		oldDbPerm.close();
+
 		QFile oldDB(qApp->applicationDirPath() + "/Launchy.db");
 		oldDB.remove();
 		oldDB.close();
+
+		QFile oldIni(qApp->applicationDirPath() + "/Launchy.ini");
+		oldIni.remove();
+		oldIni.close();
+
+		gSettings = new QSettings(origFile, QSettings::IniFormat);
+	}
+
+	if (oldVersion < LAUNCHY_VERSION) {
+		gSettings->setValue("donateTime", QDateTime::currentDateTime().addDays(21));
+		gSettings->setValue("version", LAUNCHY_VERSION);
 	}
 }
 
@@ -620,7 +643,7 @@ void MyWidget::setPortable(bool portable) {
 	}
 	else if (!portable && gSettings->fileName().compare(qApp->applicationDirPath() + "/config.ini", Qt::CaseInsensitive) == 0) {
 		delete gSettings;
-		gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy.net", "Launchy");
+		gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
 		QString newName = gSettings->fileName();
 		delete gSettings;
 
@@ -641,7 +664,7 @@ void MyWidget::setPortable(bool portable) {
 		oldDB.close();
 
 		// Load up the user section ini file
-		gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy.net", "Launchy");
+		gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
 
 	}
 }
@@ -811,7 +834,7 @@ int main(int argc, char *argv[])
 	QStringList args = qApp->arguments();
 
 	QCoreApplication::setApplicationName("Launchy");
-	QCoreApplication::setOrganizationDomain("launchy.net");
+	QCoreApplication::setOrganizationDomain("Launchy");
 
 	DSingleApplication instance( "LAUNCHY" );
 
