@@ -589,19 +589,15 @@ void MyWidget::closeEvent(QCloseEvent *event) {
 	gSettings->setValue("Display/pos", pos());
 	gSettings->sync();
 	qApp->quit();
+
+	QDir dest(gSettings->fileName());
+	dest.cdUp();
+	CatBuilder builder(catalog, &plugins);
+	builder.storeCatalog(dest.absoluteFilePath("Launchy.db"));
 	event->accept();
 }
 
 MyWidget::~MyWidget() {
-	QString dest = gSettings->fileName();
-	int lastSlash = dest.lastIndexOf(QLatin1Char('/'));
-	if (lastSlash == -1)
-		return;
-	dest = dest.mid(0, lastSlash);
-	dest += "/Launchy.db";
-
-	CatBuilder builder(catalog, &plugins);
-	builder.storeCatalog(dest);
 	delete updateTimer;
 	delete dropTimer;
 }

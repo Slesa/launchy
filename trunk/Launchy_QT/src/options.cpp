@@ -201,6 +201,8 @@ void OptionsDlg::accept() {
 	if (skinList->currentItem()->text() != prevSkinName) {
 		gSettings->setValue("GenOps/skin", skinList->currentItem()->text());
 		main->setSkin(skinList->currentItem()->text());
+		main->hideLaunchy();
+		main->showLaunchy();
 	}
 	
 	// Apply Directory Options

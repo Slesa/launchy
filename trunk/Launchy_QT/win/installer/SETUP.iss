@@ -63,6 +63,20 @@ Source: ..\..\skins\default\mask.png; DestDir: {app}\skins\default\; Flags: igno
 Source: ..\..\skins\default\pos.txt; DestDir: {app}\skins\default\; Flags: ignoreversion
 Source: ..\..\skins\default\style.qss; DestDir: {app}\skins\default\; Flags: ignoreversion
 
+Source: ..\..\skins\Quicksilver2\alpha.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
+Source: ..\..\skins\Quicksilver2\author.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
+Source: ..\..\skins\Quicksilver2\background.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
+Source: ..\..\skins\Quicksilver2\mask.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
+Source: ..\..\skins\Quicksilver2\pos.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
+Source: ..\..\skins\Quicksilver2\style.qss; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
+
+Source: ..\..\skins\Black Glass\alpha.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black Glass\author.txt; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black Glass\background.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black Glass\mask.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black Glass\pos.txt; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black Glass\style.qss; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+
 ; Libs
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtGui4.dll; DestDir: {app}; Flags: ignoreversion
