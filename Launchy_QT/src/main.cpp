@@ -96,8 +96,11 @@ MyWidget::MyWidget(QWidget *parent)
 		gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
 
 	// If this is the first time running or a new version, call updateVersion
-	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION)
-	updateVersion(gSettings->value("version", 0).toInt());
+	bool showLaunchyFirstTime = false;
+	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION) {
+		updateVersion(gSettings->value("version", 0).toInt());
+		showLaunchyFirstTime = true;
+	}
 
 	// Load the plugins
 	plugins.loadPlugins();
@@ -149,8 +152,11 @@ MyWidget::MyWidget(QWidget *parent)
 
 	//	setTabOrder(combo, combo);
 	
-
-	showLaunchy();
+	if (showLaunchyFirstTime)
+		showLaunchy();
+	else
+		hideLaunchy();
+//	hideLaunchy();
 }
 
 
@@ -305,6 +311,8 @@ void MyWidget::parseInput(QString text) {
 	}
 }
 
+
+
 void MyWidget::keyPressEvent(QKeyEvent* key) {
 	
 	if (key->key() == Qt::Key_Escape) {
@@ -372,6 +380,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 				if (inputData.count() <= 1)
 					catalog->searchCatalogs(gSearchTxt, searchResults);
 			}
+			
 			if (searchResults.count() == 0) {
 				// Is it a file?
 				if (gSearchTxt.contains("\\") || gSearchTxt.contains("/")) {
@@ -379,6 +388,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 					inputData.last().setLabel(LABEL_FILE);
 				}
 			} 
+			
 			if (searchResults.count() != 0)
 				inputData.last().setTopResult(searchResults[0]);
 
@@ -430,6 +440,10 @@ QIcon MyWidget::getIcon(CatItem & item) {
 void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults) {
 	// Split the string on the last slash
 	QString path = QDir::fromNativeSeparators(gSearchTxt);
+
+	// Network searches are too slow
+	if (path.startsWith("//")) return;
+
 	QString dir, file;
 	dir = path.mid(0,path.lastIndexOf("/"));
 	file = path.mid(path.lastIndexOf("/")+1);
@@ -440,6 +454,7 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 		CatItem item(dir + "/");
 		searchResults.push_back(item);
 	}	
+
 
 	// Okay, we have a directory, find files that match "file"
 	QDir qd(dir);

@@ -130,5 +130,5 @@ Type: files; Name: {app}\{#MyAppUrlName}
 
 
 [Messages]
-SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close all instances of it now (bring Launchy forward and type Alt+F4), then click OK to continue, or Cancel to exit.
-;WelcomeLabel2=!!!!!!READ THIS!!!!!!  You MUST close and uninstall any previous versions of Launchy before running this installer!
+SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close and uninstall Launchy now (bring Launchy forward and type Alt+F4), then click OK to continue, or Cancel to exit.
+;WelcomeLabel2=!!!!!!READ THIS!!!!!!  You should close and uninstall any previous versions of Launchy before running this installer!

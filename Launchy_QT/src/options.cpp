@@ -198,7 +198,8 @@ void OptionsDlg::accept() {
 	
 	// Apply Skin Options
 	QString prevSkinName = gSettings->value("GenOps/skin", "Default").toString();
-	if (skinList->currentItem()->text() != prevSkinName) {
+	
+	if (skinList->currentRow() >= 0 && skinList->currentItem()->text() != prevSkinName) {
 		gSettings->setValue("GenOps/skin", skinList->currentItem()->text());
 		main->setSkin(skinList->currentItem()->text());
 		main->hideLaunchy();
