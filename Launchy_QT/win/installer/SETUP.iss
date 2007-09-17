@@ -114,8 +114,10 @@ Name: {group}\Readme.pdf; Filename: {app}\Readme.pdf; WorkingDir: {app}
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
 
+
 [UninstallDelete]
 Type: files; Name: {app}\{#MyAppUrlName}
+
 
 ;[Code]
 ;procedure DeinitializeUninstall();
