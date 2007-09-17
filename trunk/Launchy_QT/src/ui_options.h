@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'options.ui'
 **
-** Created: Sun Sep 16 13:15:30 2007
+** Created: Sun Sep 16 20:13:17 2007
 **      by: Qt User Interface Compiler version 4.3.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!

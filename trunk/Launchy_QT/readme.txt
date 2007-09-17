@@ -1,4 +1,11 @@
-To deal with for alpha release:
+For beta release:
+. Add thanks to Tyler for graphics stuff in change log
+. Tyler's new skin
+. Plugin event of Launchy coming forward.  Plugins should be allowed to provide search results at that time.
+. Append to file plugin or .bat file or something
+
+Crashes:
+. I crashed Launchy by adding qt4.3.1\bin, checking "Executables" and hitting "ok"
 
 
 
@@ -10,10 +17,6 @@ Seems like the database is getting hosed every now and then, "webstats" loses it
 Add "open with" support
 
 Are the files being written/read in unicode?  Check on firefox bookmarks too.
-
-when there are no suggested results, run them as arguments to the first thing
-
-When a db is done building, redo the search on the current text
 
 Trying to stylize the scrollbar is difficult
 
