@@ -62,6 +62,14 @@ MyWidget::MyWidget(QWidget *parent)
 	hideLaunchy();
 	label = new QLabel(this);
 
+	opsButton = new QPushButton(label);
+	opsButton->setObjectName("opsButton");
+	connect(opsButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
+
+	closeButton = new QPushButton(label);
+	closeButton->setObjectName("closeButton");
+	connect(closeButton, SIGNAL(pressed()), this, SLOT(close()));
+
 
 	output = new QLineEdit(label);
 	output->setAlignment(Qt::AlignHCenter);
@@ -380,14 +388,14 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 				if (inputData.count() <= 1)
 					catalog->searchCatalogs(gSearchTxt, searchResults);
 			}
-			
+			/*
 			if (searchResults.count() == 0) {
 				// Is it a file?
 				if (gSearchTxt.contains("\\") || gSearchTxt.contains("/")) {
 					searchFiles(gSearchTxt, searchResults);
 					inputData.last().setLabel(LABEL_FILE);
 				}
-			} 
+			} */
 			
 			if (searchResults.count() != 0)
 				inputData.last().setTopResult(searchResults[0]);
@@ -395,6 +403,11 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 			plugins.getLabels(&inputData);
 			plugins.getResults(&inputData, &searchResults);
 			qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
+				// Is it a file?
+				if (gSearchTxt.contains("\\") || gSearchTxt.contains("/")) {
+					searchFiles(gSearchTxt, searchResults);
+					inputData.last().setLabel(LABEL_FILE);
+				}
 			catalog->checkHistory(gSearchTxt, searchResults);
 
 			//			sortResults(searchResults);
@@ -697,6 +710,10 @@ void MyWidget::setNumResults(int) {
 
 void MyWidget::applySkin(QString directory) {
 
+	// Hide the buttons by default
+	closeButton->hide();
+	opsButton->hide();
+
 	// Set positions
 	if (QFile::exists(directory + "/pos.txt")) {
 		QFile file(directory + "/pos.txt");
@@ -722,6 +739,14 @@ void MyWidget::applySkin(QString directory) {
 						label->setGeometry(rect);	
 					else if (spl.at(0).trimmed().compare("icon", Qt::CaseInsensitive) == 0) 
 						licon->setGeometry(rect);
+					else if (spl.at(0).trimmed().compare("optionsbutton", Qt::CaseInsensitive) == 0) {
+						opsButton->setGeometry(rect);
+						opsButton->show();
+					}
+					else if (spl.at(0).trimmed().compare("closebutton", Qt::CaseInsensitive) == 0) {
+						closeButton->setGeometry(rect);
+						closeButton->show();
+					}
 				}
 				
 			}			
@@ -773,6 +798,8 @@ void MyWidget::mouseMoveEvent(QMouseEvent *e)
 	showAlternatives(false);
 	input->setFocus();
 }
+
+
 
 void MyWidget::contextMenuEvent(QContextMenuEvent *event) {
 	QMenu menu(this);

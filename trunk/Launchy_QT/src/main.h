@@ -99,6 +99,8 @@ public:
 	QLineEdit *output;
 	QCharLineEdit *input;
 	QCharListWidget *alternatives;
+	QPushButton *opsButton;
+	QPushButton *closeButton;
 	QRect altRect;
 	QLabel * licon;
 	QTimer* updateTimer;

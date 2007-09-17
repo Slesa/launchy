@@ -4,6 +4,13 @@ For beta release:
 . Plugin event of Launchy coming forward.  Plugins should be allowed to provide search results at that time.
 . Append to file plugin or .bat file or something
 
+
+For next alpha:
+. Expand on links, e.g. my documents in explory
+//. Maybe alphabetize lists of files?  Hmm
+. Controly is too strict
+
+
 Crashes:
 . I crashed Launchy by adding qt4.3.1\bin, checking "Executables" and hitting "ok"
 

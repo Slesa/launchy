@@ -85,11 +85,17 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
 		QString skinName = gSettings->value("GenOps/skin", "Default").toString();
 		connect(skinList, SIGNAL(currentTextChanged(const QString)), this, SLOT(skinChanged(const QString)));
+		int skinRow = 0;
 		foreach(QString d, dirs) {
+			QFile f(dir.absolutePath() + "/" + d + "/pos.txt");
+			// Only look for 2.0+ skins
+			if (!f.exists()) continue;
+
 			skinList->addItem(d);
 			if (skinName == d)
-				skinList->setCurrentRow(skinList->count()-1);
+				skinRow = skinList->count() - 1;
 		}
+		skinList->setCurrentRow(skinRow);
 
 		// Load the directories and types
 		connect(catDirectories, SIGNAL(currentRowChanged(int)), this, SLOT(dirChanged(int)));
@@ -129,8 +135,13 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 
 
 		catProgress->setRange(0,100);
-		if (main->catalog != NULL)
-			catSize->setText(tr("Index has ") + QString::number(main->catalog->count()) + tr(" items"));
+		if (main->catalog != NULL) {
+			QString txt = tr("Index has ");
+			txt += QString::number(main->catalog->count());
+			txt += tr(" items");
+			catSize->setText(txt);
+
+		}
 
 		if (gBuilder != NULL) {
 			connect(gBuilder, SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
