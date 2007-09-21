@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "platform_util.h"
 #include "catalog.h"
 #include "catalog_builder.h"
+#include "icon_delegate.h"
 
 
 class QCharLineEdit : public QLineEdit
@@ -115,6 +116,9 @@ public:
 	bool alwaysShowLaunchy;
 	bool menuOpen;
 	
+	IconDelegate* listDelegate;
+	QAbstractItemDelegate * defaultDelegate;
+
 	QIcon getIcon(CatItem & item);
 	void mousePressEvent(QMouseEvent *e);
 	void mouseMoveEvent(QMouseEvent *e);
@@ -127,6 +131,7 @@ public:
 	void updateVersion(int oldVersion);
 	void checkForUpdate();
 	void shouldDonate();
+	void setCondensed(int condensed);
 	void setHotkey(int, int);
 	void showAlternatives(bool show=true);
 	void launchObject(int obj);

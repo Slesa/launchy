@@ -91,6 +91,14 @@
 			Name="Gui"
 			>
 			<File
+				RelativePath="..\src\icon_delegate.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\icon_delegate.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\main.cpp"
 				>
 			</File>

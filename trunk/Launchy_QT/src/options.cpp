@@ -45,6 +45,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		genFastIndex->setChecked(gSettings->value("GenOps/fastindexer",false).toBool());
 		genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
 		genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
+		genCondensed->setChecked(gSettings->value("GenOps/condensedView",false).toBool());
 		genUpMinutes->setText(gSettings->value("GenOps/updatetimer", "10").toString());
 		genNumResults->setText(gSettings->value("GenOps/numresults", "10").toString());
 
@@ -87,7 +88,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		connect(skinList, SIGNAL(currentTextChanged(const QString)), this, SLOT(skinChanged(const QString)));
 		int skinRow = 0;
 		foreach(QString d, dirs) {
-			QFile f(dir.absolutePath() + "/" + d + "/pos.txt");
+			QFile f(dir.absolutePath() + "/" + d + "/misc.txt");
 			// Only look for 2.0+ skins
 			if (!f.exists()) continue;
 
@@ -155,7 +156,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		foreach(PluginInfo info, main->plugins.getPlugins()) {
 			plugList->addItem(info.name);
 			QListWidgetItem* item = plugList->item(plugList->count()-1);
-			item->setData(3, info.id);
+			item->setData(Qt::UserRole, info.id);
 			item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 			if (info.loaded)
 				item->setCheckState(Qt::Checked);
@@ -192,6 +193,7 @@ void OptionsDlg::accept() {
 	gSettings->setValue("GenOps/hideiflostfocus", genHideFocus->isChecked());
 	gSettings->setValue("GenOps/fastindexer", genFastIndex->isChecked());
 	gSettings->setValue("GenOps/showHiddenFiles", genShowHidden->isChecked());
+	gSettings->setValue("GenOps/condensedView", genCondensed->isChecked());
 	gSettings->setValue("GenOps/updatetimer", genUpMinutes->text());
 	gSettings->setValue("GenOps/numresults", genNumResults->text());
 	gSettings->setValue("GenOps/hotkeyModifier", iMetaKeys[genModifierBox->currentIndex()]);
@@ -205,7 +207,7 @@ void OptionsDlg::accept() {
 	main->setUpdateTimer(genUpMinutes->text().toInt());
 	main->setNumResults(genNumResults->text().toInt());
 	main->setHotkey(iMetaKeys[genModifierBox->currentIndex()], iActionKeys[genKeyBox->currentIndex()]);
-
+	main->setCondensed(genCondensed->isChecked());
 	
 	// Apply Skin Options
 	QString prevSkinName = gSettings->value("GenOps/skin", "Default").toString();
@@ -242,7 +244,7 @@ void OptionsDlg::accept() {
 
 	if (curPlugin >= 0) {
 		QListWidgetItem* item = plugList->item(curPlugin);
-		main->plugins.endDialog(item->data(3).toUInt(), true);
+		main->plugins.endDialog(item->data(Qt::UserRole).toUInt(), true);
 	}
 
 	gSettings->sync();
@@ -256,14 +258,14 @@ void OptionsDlg::pluginChanged(int row) {
 	// Close any current plugin dialogs
 	if (curPlugin >= 0) {
 		QListWidgetItem* item = plugList->item(curPlugin);
-		main->plugins.endDialog(item->data(3).toUInt(), true);
+		main->plugins.endDialog(item->data(Qt::UserRole).toUInt(), true);
 	}
 
 	// Open the new plugin dialog
 	curPlugin = row;
 	if (row < 0) return;
 	QListWidgetItem* item = plugList->item(row);
-	main->plugins.doDialog(plugBox, item->data(3).toUInt());
+	main->plugins.doDialog(plugBox, item->data(Qt::UserRole).toUInt());
 }
 
 void OptionsDlg::pluginItemChanged(QListWidgetItem* iz) {
@@ -276,7 +278,7 @@ void OptionsDlg::pluginItemChanged(QListWidgetItem* iz) {
 	// Close any current plugin dialogs
 	 if (curPlugin >= 0) {
 		QListWidgetItem* item = plugList->item(curPlugin);
-		main->plugins.endDialog(item->data(3).toUInt(), true);
+		main->plugins.endDialog(item->data(Qt::UserRole).toUInt(), true);
 	}
 
 	// Write out the new config
@@ -284,7 +286,7 @@ void OptionsDlg::pluginItemChanged(QListWidgetItem* iz) {
 	for(int i = 0; i < plugList->count(); i++) {
 		QListWidgetItem* item = plugList->item(i);
 		gSettings->setArrayIndex(i);
-		gSettings->setValue("id", item->data(3).toUInt());
+		gSettings->setValue("id", item->data(Qt::UserRole).toUInt());
 		if (item->checkState() == Qt::Checked) {
 			gSettings->setValue("load", true);
 		}
@@ -299,7 +301,7 @@ void OptionsDlg::pluginItemChanged(QListWidgetItem* iz) {
 
 	// If enabled, reload the dialog
 	if (iz->checkState() == Qt::Checked) {
-		main->plugins.doDialog(plugBox, iz->data(3).toUInt());
+		main->plugins.doDialog(plugBox, iz->data(Qt::UserRole).toUInt());
 	}
 
 }
@@ -479,7 +481,7 @@ void OptionsDlg::reject() {
 
 	if (curPlugin >= 0) {
 		QListWidgetItem* item = plugList->item(curPlugin);
-		main->plugins.endDialog(item->data(3).toUInt(), false);
+		main->plugins.endDialog(item->data(Qt::UserRole).toUInt(), false);
 	}
 	QDialog::reject();
 }

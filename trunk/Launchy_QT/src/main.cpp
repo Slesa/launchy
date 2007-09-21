@@ -37,6 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QTimer>
 #include <QDateTime>
 
+#include "icon_delegate.h"
 #include "main.h"
 #include "globals.h"
 #include "options.h"
@@ -81,17 +82,9 @@ MyWidget::MyWidget(QWidget *parent)
 	connect(input, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(inputKeyPressEvent(QKeyEvent*)));
 	connect(input, SIGNAL(focusOut(QFocusEvent*)), this, SLOT(focusOutEvent(QFocusEvent*)));
 
-	alternatives = new QCharListWidget(this);
-	alternatives->setObjectName("alternatives");
-	alternatives->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	alternatives->setTextElideMode(Qt::ElideLeft);
-	alternatives->setWindowFlags(Qt::Window | Qt::Tool | Qt::FramelessWindowHint);
-	altScroll = alternatives->verticalScrollBar();
-	altScroll->setObjectName("altScroll");
 
-//	combo->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
-	connect(alternatives, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(altKeyPressEvent(QKeyEvent*)));
-	connect(alternatives, SIGNAL(focusOut(QFocusEvent*)), this, SLOT(focusOutEvent(QFocusEvent*)));
+
+
 	licon = new QLabel(label);
 
 
@@ -109,6 +102,21 @@ MyWidget::MyWidget(QWidget *parent)
 		updateVersion(gSettings->value("version", 0).toInt());
 		showLaunchyFirstTime = true;
 	}
+
+	alternatives = new QCharListWidget(this);
+	listDelegate = new IconDelegate(this);
+	defaultDelegate = alternatives->itemDelegate();
+	setCondensed(gSettings->value("GenOps/condensedView", false).toBool());
+	alternatives->setObjectName("alternatives");
+	alternatives->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	alternatives->setTextElideMode(Qt::ElideLeft);
+	alternatives->setWindowFlags(Qt::Window | Qt::Tool | Qt::FramelessWindowHint);
+	altScroll = alternatives->verticalScrollBar();
+	altScroll->setObjectName("altScroll");
+//	combo->setSizeAdjustPolicy(QComboBox::AdjustToContentsOnFirstShow);
+	connect(alternatives, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(altKeyPressEvent(QKeyEvent*)));
+	connect(alternatives, SIGNAL(focusOut(QFocusEvent*)), this, SLOT(focusOutEvent(QFocusEvent*)));
+
 
 	// Load the plugins
 	plugins.loadPlugins();
@@ -167,7 +175,15 @@ MyWidget::MyWidget(QWidget *parent)
 //	hideLaunchy();
 }
 
-
+void MyWidget::setCondensed(int condensed) {
+	if (alternatives == NULL || listDelegate == NULL || defaultDelegate == NULL)
+		return;
+	if (condensed) 
+		alternatives->setItemDelegate(defaultDelegate);
+	else 
+		alternatives->setItemDelegate(listDelegate);
+		
+}
 void MyWidget::setHotkey(int meta, int key) {
 	QKeySequence keys = QKeySequence(meta + key);
 	platform.SetHotkey(keys, this, SLOT(onHotKey()));
@@ -197,8 +213,11 @@ void MyWidget::showAlternatives(bool show) {
 			QFileInfo fileInfo(searchResults[i].fullPath);
 
 			QIcon icon = getIcon(searchResults[i]);
-			QListWidgetItem *item=new QListWidgetItem(icon, QDir::toNativeSeparators(searchResults[i].fullPath),alternatives,0);
-			qDebug () << searchResults[i].lowName;
+			QListWidgetItem * item = new QListWidgetItem(icon, QDir::toNativeSeparators(searchResults[i].fullPath), alternatives);
+//			QListWidgetItem *item = new QListWidgetItem(alternatives);
+			item->setData(ROLE_FULL, QDir::toNativeSeparators(searchResults[i].fullPath));
+			item->setData(ROLE_SHORT, searchResults[i].shortName);
+			item->setData(ROLE_ICON, icon);
 			alternatives->addItem(item);
 			alternatives->setFocus();
 		}
@@ -297,7 +316,8 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 void MyWidget::inputKeyPressEvent(QKeyEvent* key) {
 	if (key->key() == Qt::Key_Tab) {
 		keyPressEvent(key);
-	} else {
+	} 	
+	else {
 		key->ignore();
 	}
 }
@@ -341,19 +361,20 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 			showAlternatives();
 		}
 		if (alternatives->isVisible() && this->isActiveWindow()) {
-			alternatives->activateWindow();
-
 			alternatives->setFocus();
 			if (alternatives->count() > 0) {
 				alternatives->setCurrentRow(0);
 			}
-		}
 
+			alternatives->activateWindow();
+
+		}
 	}
 
 	else if (key->key() == Qt::Key_Up) {
 		// Prevent alternatives from being hidden on up key
 	}
+
 
 	else {
 		if (key->key() == Qt::Key_Tab) {
@@ -403,11 +424,11 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 			plugins.getLabels(&inputData);
 			plugins.getResults(&inputData, &searchResults);
 			qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
-				// Is it a file?
-				if (gSearchTxt.contains("\\") || gSearchTxt.contains("/")) {
-					searchFiles(gSearchTxt, searchResults);
-					inputData.last().setLabel(LABEL_FILE);
-				}
+			// Is it a file?
+			if (gSearchTxt.contains("\\") || gSearchTxt.contains("/")) {
+				searchFiles(gSearchTxt, searchResults);
+				inputData.last().setLabel(LABEL_FILE);
+			}
 			catalog->checkHistory(gSearchTxt, searchResults);
 
 			//			sortResults(searchResults);
@@ -714,20 +735,23 @@ void MyWidget::applySkin(QString directory) {
 	closeButton->hide();
 	opsButton->hide();
 
+	if (listDelegate == NULL) return;
+
 	// Set positions
-	if (QFile::exists(directory + "/pos.txt")) {
-		QFile file(directory + "/pos.txt");
+	if (QFile::exists(directory + "/misc.txt")) {
+		QFile file(directory + "/misc.txt");
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {	
 			QTextStream in(&file);
 			while (!in.atEnd()) {
 				QString line = in.readLine();
+				if (line.startsWith(";")) continue;
 				QStringList spl = line.split("=");
 				if (spl.size() == 2) {
 					QStringList sizes = spl.at(1).trimmed().split(",");
 					QRect rect;
 					if (sizes.size() == 4) {
 						rect.setRect(sizes[0].toInt(), sizes[1].toInt(), sizes[2].toInt(), sizes[3].toInt());
-					} else continue;
+					} 
 
 					if (spl.at(0).trimmed().compare("input", Qt::CaseInsensitive) == 0) 
 						input->setGeometry(rect);
@@ -747,6 +771,16 @@ void MyWidget::applySkin(QString directory) {
 						closeButton->setGeometry(rect);
 						closeButton->show();
 					}
+					else if (spl.at(0).trimmed().compare("dropPathColor", Qt::CaseInsensitive) == 0)
+						listDelegate->setColor(spl.at(1));
+					else if (spl.at(0).trimmed().compare("dropPathFamily", Qt::CaseInsensitive) == 0)
+						listDelegate->setFamily(spl.at(1));
+					else if (spl.at(0).trimmed().compare("dropPathSize", Qt::CaseInsensitive) == 0)
+						listDelegate->setSize(spl.at(1).toInt());
+					else if (spl.at(0).trimmed().compare("dropPathWeight", Qt::CaseInsensitive) == 0)
+						listDelegate->setWeight(spl.at(1).toInt());
+					else if (spl.at(0).trimmed().compare("dropPathItalics", Qt::CaseInsensitive) == 0)
+						listDelegate->setItalics(spl.at(1).toInt());
 				}
 				
 			}			
@@ -779,6 +813,7 @@ void MyWidget::applySkin(QString directory) {
 	// Set the alpha background
 	if (QFile::exists(directory + "/alpha.png")) {
 		platform.CreateAlphaBorder(this, directory + "/alpha.png");
+		platform.MoveAlphaBorder(pos());
 	}
 }
 
@@ -814,9 +849,11 @@ void MyWidget::contextMenuEvent(QContextMenuEvent *event) {
 
 
 void MyWidget::menuOptions() {
+	alternatives->hide();
 	OptionsDlg ops(this);
 	ops.setObjectName("options");
 	ops.exec();
+
 	// Perform the database update
 	if (gBuilder == NULL) {
 		gBuilder = new CatBuilder(false, &plugins);

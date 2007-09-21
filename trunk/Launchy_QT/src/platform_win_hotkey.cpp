@@ -205,6 +205,7 @@ GlobalShortcutManager::KeyTrigger::Impl::qt_vk_table[] = {
         { Qt::Key_Direction_L, 0 },
         { Qt::Key_Direction_R, 0 },
 
+
         { Qt::Key_unknown,     0 },
 };
 

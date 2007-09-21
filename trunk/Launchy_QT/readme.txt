@@ -3,6 +3,19 @@ For beta release:
 . Tyler's new skin
 . Plugin event of Launchy coming forward.  Plugins should be allowed to provide search results at that time.
 . Append to file plugin or .bat file or something
+. Add extra characters for hotkey
+. Use environment variables and use them by default in Launchy (for runner's cmd too)
+
+Low priority:
+. Allow multiple directory selection for file extensions
+. Can get rid of extra data in alternatives item's if I clear the items after options exits
+
+
+
+Done?
+. Make sure skin and alpha are always together (seem to separate at launch)
+. Use old style dropdown
+
 
 
 For next alpha:

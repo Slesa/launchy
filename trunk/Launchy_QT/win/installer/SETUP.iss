@@ -60,21 +60,21 @@ Source: ..\..\skins\default\alpha.png; DestDir: {app}\skins\default\; Flags: ign
 Source: ..\..\skins\default\author.txt; DestDir: {app}\skins\default\; Flags: ignoreversion
 Source: ..\..\skins\default\background.png; DestDir: {app}\skins\default\; Flags: ignoreversion
 Source: ..\..\skins\default\mask.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\default\pos.txt; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\default\misc.txt; DestDir: {app}\skins\default\; Flags: ignoreversion
 Source: ..\..\skins\default\style.qss; DestDir: {app}\skins\default\; Flags: ignoreversion
 
 Source: ..\..\skins\Quicksilver2\alpha.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\..\skins\Quicksilver2\author.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\..\skins\Quicksilver2\background.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\..\skins\Quicksilver2\mask.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
-Source: ..\..\skins\Quicksilver2\pos.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
+Source: ..\..\skins\Quicksilver2\misc.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\..\skins\Quicksilver2\style.qss; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 
 Source: ..\..\skins\Black Glass\alpha.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black Glass\author.txt; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black Glass\background.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black Glass\mask.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
-Source: ..\..\skins\Black Glass\pos.txt; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black Glass\misc.txt; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black Glass\style.qss; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 
 ; Libs

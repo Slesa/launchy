@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'options.ui'
 **
-** Created: Sun Sep 16 20:50:43 2007
+** Created: Thu Sep 20 22:34:46 2007
 **      by: Qt User Interface Compiler version 4.3.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -44,6 +44,7 @@ public:
     QLabel *label_8;
     QCheckBox *genHideFocus;
     QLabel *label_6;
+    QCheckBox *genCondensed;
     QGroupBox *groupBox_5;
     QLineEdit *genUpMinutes;
     QLabel *label_5;
@@ -98,7 +99,7 @@ public:
     tab->setObjectName(QString::fromUtf8("tab"));
     groupBox_3 = new QGroupBox(tab);
     groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
-    groupBox_3->setGeometry(QRect(300, 20, 221, 71));
+    groupBox_3->setGeometry(QRect(280, 20, 221, 71));
     genModifierBox = new QComboBox(groupBox_3);
     genModifierBox->setObjectName(QString::fromUtf8("genModifierBox"));
     genModifierBox->setGeometry(QRect(10, 30, 91, 22));
@@ -107,7 +108,7 @@ public:
     genKeyBox->setGeometry(QRect(130, 30, 81, 22));
     groupBox_4 = new QGroupBox(tab);
     groupBox_4->setObjectName(QString::fromUtf8("groupBox_4"));
-    groupBox_4->setGeometry(QRect(10, 20, 211, 131));
+    groupBox_4->setGeometry(QRect(10, 20, 251, 161));
     genAlwaysShow = new QCheckBox(groupBox_4);
     genAlwaysShow->setObjectName(QString::fromUtf8("genAlwaysShow"));
     genAlwaysShow->setGeometry(QRect(10, 20, 191, 18));
@@ -117,19 +118,22 @@ public:
     genAlwaysTop->setGeometry(QRect(10, 60, 101, 18));
     genNumResults = new QLineEdit(groupBox_4);
     genNumResults->setObjectName(QString::fromUtf8("genNumResults"));
-    genNumResults->setGeometry(QRect(10, 90, 41, 20));
+    genNumResults->setGeometry(QRect(10, 110, 41, 20));
     label_8 = new QLabel(groupBox_4);
     label_8->setObjectName(QString::fromUtf8("label_8"));
-    label_8->setGeometry(QRect(60, 90, 112, 21));
+    label_8->setGeometry(QRect(60, 110, 137, 21));
     genHideFocus = new QCheckBox(groupBox_4);
     genHideFocus->setObjectName(QString::fromUtf8("genHideFocus"));
     genHideFocus->setGeometry(QRect(10, 40, 191, 18));
     label_6 = new QLabel(groupBox_4);
     label_6->setObjectName(QString::fromUtf8("label_6"));
-    label_6->setGeometry(QRect(60, 110, 131, 16));
+    label_6->setGeometry(QRect(60, 130, 131, 16));
+    genCondensed = new QCheckBox(groupBox_4);
+    genCondensed->setObjectName(QString::fromUtf8("genCondensed"));
+    genCondensed->setGeometry(QRect(10, 80, 191, 18));
     groupBox_5 = new QGroupBox(tab);
     groupBox_5->setObjectName(QString::fromUtf8("groupBox_5"));
-    groupBox_5->setGeometry(QRect(300, 120, 231, 81));
+    groupBox_5->setGeometry(QRect(280, 120, 271, 81));
     genUpMinutes = new QLineEdit(groupBox_5);
     genUpMinutes->setObjectName(QString::fromUtf8("genUpMinutes"));
     genUpMinutes->setGeometry(QRect(10, 20, 41, 20));
@@ -144,7 +148,7 @@ public:
     label_7->setGeometry(QRect(60, 40, 141, 16));
     groupBox_6 = new QGroupBox(tab);
     groupBox_6->setObjectName(QString::fromUtf8("groupBox_6"));
-    groupBox_6->setGeometry(QRect(10, 170, 201, 81));
+    groupBox_6->setGeometry(QRect(10, 190, 251, 81));
     genUpdateCheck = new QCheckBox(groupBox_6);
     genUpdateCheck->setObjectName(QString::fromUtf8("genUpdateCheck"));
     genUpdateCheck->setGeometry(QRect(10, 20, 171, 18));
@@ -260,9 +264,10 @@ public:
     groupBox_4->setTitle(QApplication::translate("OptionsDlg", "User Interface", 0, QApplication::UnicodeUTF8));
     genAlwaysShow->setText(QApplication::translate("OptionsDlg", "Always display Launchy window", 0, QApplication::UnicodeUTF8));
     genAlwaysTop->setText(QApplication::translate("OptionsDlg", "Always on top", 0, QApplication::UnicodeUTF8));
-    label_8->setText(QApplication::translate("OptionsDlg", "Number of results in list", 0, QApplication::UnicodeUTF8));
+    label_8->setText(QApplication::translate("OptionsDlg", "Number of suggestions in list", 0, QApplication::UnicodeUTF8));
     genHideFocus->setText(QApplication::translate("OptionsDlg", "Hide Launchy when it loses focus", 0, QApplication::UnicodeUTF8));
     label_6->setText(QApplication::translate("OptionsDlg", "(1 for no dropdown menu)", 0, QApplication::UnicodeUTF8));
+    genCondensed->setText(QApplication::translate("OptionsDlg", "Condense suggestion list", 0, QApplication::UnicodeUTF8));
     groupBox_5->setTitle(QApplication::translate("OptionsDlg", "Performance", 0, QApplication::UnicodeUTF8));
     label_5->setText(QApplication::translate("OptionsDlg", "Minutes between catalog updates", 0, QApplication::UnicodeUTF8));
     genFastIndex->setText(QApplication::translate("OptionsDlg", "Use fast indexer? (uses more memory)", 0, QApplication::UnicodeUTF8));
