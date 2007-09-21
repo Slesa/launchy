@@ -1,0 +1,5 @@
+Building on WINDOWS:
+
+Requirements: 
+1) Visual Studio 2005 w/ SP1
+2) QT 
