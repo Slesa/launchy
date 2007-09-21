@@ -109,6 +109,11 @@ void WebyPlugin::init()
 		set->setValue("base", "mailto:");
 		set->setValue("query", "%s");
 
+		set->setArrayIndex(12);
+		set->setValue("name", "IMDB");
+		set->setValue("base", "http://www.imdb.com");
+		set->setValue("query", "find?s=all&q=%s");
+
 		set->endArray();
 	}
 	set->setValue("weby/version", 2.0);
