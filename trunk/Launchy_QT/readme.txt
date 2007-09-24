@@ -2,18 +2,33 @@ For beta release:
 . Add thanks to Tyler for graphics stuff in change log
 . Tyler's new skin
 . Plugin event of Launchy coming forward.  Plugins should be allowed to provide search results at that time.
-. Append to file plugin or .bat file or something
-. Add extra characters for hotkey
+
 . Use environment variables and use them by default in Launchy (for runner's cmd too)
+. Make sure skin and alpha are always together (seem to separate at launch)
+. Unicode in Foxy reads
+
+
+
 
 Low priority:
 . Allow multiple directory selection for file extensions
 . Can get rid of extra data in alternatives item's if I clear the items after options exits
+. Append to file plugin or .bat file or something
 
 
 
-Done?
-. Make sure skin and alpha are always together (seem to separate at launch)
+Done for alpha 4:
+. Convert ".mp3" into "*.mp3"
+. resize options dialog?
+. version information
+. Add extra characters for hotkey
+. Fix hotkeys which weren't working
+. Fast indexer causes duplicates?
+. 16bit icon support
+
+
+
+Done for alpha 3:
 . Use old style dropdown
 
 

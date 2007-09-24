@@ -98,18 +98,29 @@ private:
         {
                 int code = ks;
 
+				// JK: I had to put the code -='s here and comment out code &= 0xffff 
+				// to correctly identify the action key
+
                 UINT mod = 0;
-                if (code & Qt::META)
+				if (code & Qt::META) {
                         mod |= MOD_WIN;
-                if (code & Qt::SHIFT)
+						code -= Qt::META;
+				}
+				if (code & Qt::SHIFT) {
                         mod |= MOD_SHIFT;
-                if (code & Qt::CTRL)
+						code -= Qt::SHIFT;
+				}
+				if (code & Qt::CTRL) {
                         mod |= MOD_CONTROL;
-                if (code & Qt::ALT)
+						code -= Qt::CTRL;
+				}
+				if (code & Qt::ALT) {
                         mod |= MOD_ALT;
+						code -= Qt::ALT;
+				}
 
                 UINT key = 0;
-                code &= 0xffff;
+//                code &= 0xffff;
                 if (code >= 0x20 && code <= 0x7f)
                         key = code;
                 else {
@@ -204,7 +215,6 @@ GlobalShortcutManager::KeyTrigger::Impl::qt_vk_table[] = {
         { Qt::Key_Help,        0 },
         { Qt::Key_Direction_L, 0 },
         { Qt::Key_Direction_R, 0 },
-
 
         { Qt::Key_unknown,     0 },
 };

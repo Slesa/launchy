@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QUrl>
 #include <QFile>
 #include <QRegExp>
+#include <QTextCodec>
 
 #ifdef Q_WS_WIN
 #include <windows.h>
@@ -280,6 +281,7 @@ void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
 	QRegExp regex_urlname("\">([^<]*)</A>", Qt::CaseInsensitive);
 	QRegExp regex_shortcut("SHORTCUTURL=\"([^\"]*)\"");
 	QRegExp regex_postdata("POST_DATA", Qt::CaseInsensitive);
+	QRegExp regex_locale("LAST_CHARSET=\"([^\"]*)\"");
 
 	while (!file.atEnd()) {
 		QString line = file.readLine();
@@ -289,6 +291,13 @@ void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
 
 			if (regex_urlname.indexIn(line) != -1) {
 				mark.name = regex_urlname.cap(1);
+
+				if (regex_locale.indexIn(line) != -1) {
+					QString locale = regex_locale.cap(1);
+					QTextCodec* qtcodec = QTextCodec::codecForName(locale.toUtf8());
+					if (qtcodec != NULL)
+						mark.name = qtcodec->toUnicode(mark.name.toUtf8());
+				}
 				if (regex_postdata.indexIn(line) != -1) continue;
 				if (regex_shortcut.indexIn(line) != -1) {
 					mark.shortcut = regex_shortcut.cap(1);
@@ -301,6 +310,14 @@ void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
 		}
 	}
 }
+
+
+/*
+QString string = fileName();//fileName() returns a chinese filename
+                QTextCodec* gbk_codec = QTextCodec::codecForName("GB2312");
+                QString gbk_string = gbk_codec->toUnicode(string);
+                QLabel *label = new QLabel(gbk_string);
+*/
 
 void WebyPlugin::getCatalog(QList<CatItem>* items)
 {
@@ -363,10 +380,10 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 	runProgram(url.toEncoded(), "");
 }
 
-void WebyPlugin::doDialog(QWidget* parent) {
+void WebyPlugin::doDialog(QWidget* parent, QWidget** newDlg) {
 	if (gui != NULL) return;
 	gui = new Gui(parent);
-	gui->show();
+	*newDlg = gui;
 }
 
 void WebyPlugin::endDialog(bool accept) {
@@ -417,7 +434,7 @@ bool WebyPlugin::msg(int msgId, void* wParam, void* lParam)
 			handled = true;
 			break;
 		case MSG_DO_DIALOG:
-			doDialog((QWidget*) wParam);
+			doDialog((QWidget*) wParam, (QWidget**) lParam);
 			break;
 		case MSG_END_DIALOG:
 			endDialog((bool) wParam);

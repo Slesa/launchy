@@ -57,10 +57,19 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 			tr("End") << tr("Pause") << tr("Print") << tr("Up") << tr("Down") <<tr("Left") << tr("Right") << tr("F1") <<
 			tr("F2") << tr("F3") << tr("F4") << tr("F5") << tr("F6") << tr("F7") << tr("F8") << tr("F9") << tr("F10") <<
 			tr("F11") << tr("F12") << tr("F13");
+
+
+		for(int i = 'A'; i <= 'Z'; i++) 
+			actionKeys << QString(QChar(i));
+		
 		iActionKeys << Qt::Key_Space << Qt::Key_Tab << Qt::Key_Backspace << Qt::Key_Enter << Qt::Key_Escape << Qt::Key_Home <<
 			Qt::Key_End << Qt::Key_Pause << Qt::Key_Print << Qt::Key_Up << Qt::Key_Down << Qt::Key_Left << Qt::Key_Right << Qt::Key_F1 <<
 			Qt::Key_F2 << Qt::Key_F3 << Qt::Key_F4 << Qt::Key_F5 << Qt::Key_F6 << Qt::Key_F7 << Qt::Key_F8 << Qt::Key_F9 << Qt::Key_F10 <<
 			Qt::Key_F11 << Qt::Key_F12 << Qt::Key_F13;
+
+		for(int i = 'A'; i <= 'Z'; i++) 
+			iActionKeys << i;
+		
 
 		// Find the current hotkey
 		QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier +  Qt::Key_Space)).value<QKeySequence>();
@@ -74,10 +83,9 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		}
 		for(int i = 0; i < actionKeys.count(); ++i) {
 			genKeyBox->addItem(actionKeys[i]);
-			if (iActionKeys[i] == curMeta) 
+			if (iActionKeys[i] == curAction) 
 				genKeyBox->setCurrentIndex(i);
 		}
-
 
 
 
@@ -97,6 +105,8 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 				skinRow = skinList->count() - 1;
 		}
 		skinList->setCurrentRow(skinRow);
+		connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+
 
 		// Load the directories and types
 		connect(catDirectories, SIGNAL(currentRowChanged(int)), this, SLOT(dirChanged(int)));
@@ -166,6 +176,8 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		if (plugList->count() > 0) {
 			plugList->setCurrentRow(0);
 		}
+
+		aboutVer->setText(QString("This is Launchy version ") + QString(LAUNCHY_VERSION_STRING));
 
 		tabWidget->setCurrentIndex(0);
 }
@@ -251,9 +263,24 @@ void OptionsDlg::accept() {
 	QDialog::accept();
 }
 
+void OptionsDlg::tabChanged(int tab) {
+	// Redraw the current skin
+	// (necessary because of dialog resizing issues)
+	if (tabWidget->currentWidget()->objectName() == "Skins") {
+		int row = skinList->currentRow();
+		skinList->setCurrentRow(-1);
+		skinList->setCurrentRow(row);
+	}
+}
+
 void OptionsDlg::pluginChanged(int row) {
 	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
 	if (main == NULL) return;
+
+	if (plugBox->layout() != NULL)
+		for(int i = 1; i < plugBox->layout()->count(); i++) 
+			plugBox->layout()->removeItem(plugBox->layout()->itemAt(i));
+
 
 	// Close any current plugin dialogs
 	if (curPlugin >= 0) {
@@ -263,9 +290,15 @@ void OptionsDlg::pluginChanged(int row) {
 
 	// Open the new plugin dialog
 	curPlugin = row;
-	if (row < 0) return;
+	if (row < 0) return;	
 	QListWidgetItem* item = plugList->item(row);
-	main->plugins.doDialog(plugBox, item->data(Qt::UserRole).toUInt());
+	QWidget* win = main->plugins.doDialog(plugBox, item->data(Qt::UserRole).toUInt());
+
+	if (win != NULL) {
+		if (plugBox->layout() != NULL)
+			plugBox->layout()->addWidget(win);
+		win->show();
+	}
 }
 
 void OptionsDlg::pluginItemChanged(QListWidgetItem* iz) {
@@ -386,6 +419,8 @@ void OptionsDlg::catTypesPlusClicked(bool c) {
 	if (catDirectories->currentRow() == -1) return;
 	QString txt = catTypeEdit->text();
 	if (txt == "") return;
+	if (txt.startsWith("."))
+		txt = "*" + txt;
 	catTypes->addItem(txt);
 	memDirs[catDirectories->currentRow()].types << txt;
 	catTypeEdit->clear();

@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "plugin_interface.h"
 #include "catalog.h"
 #include "plugin_info.h"
+#include <QLayout>
 
 struct PluginInfo {
 	uint id;
@@ -54,7 +55,7 @@ public:
 	void getResults(QList<InputData>* id, QList<CatItem>* results);
 	void getCatalogs(QList<CatItem>* items);
 	void execute(QList<InputData>*, CatItem*);
-	void doDialog(QWidget* parent, uint id);
+	QWidget* doDialog(QWidget* parent, uint id);
 	void endDialog(uint id, bool accept);
 	QHash<uint, PluginInfo> & getPlugins() { return plugins; }
 };

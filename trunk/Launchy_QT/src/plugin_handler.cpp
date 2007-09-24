@@ -60,10 +60,12 @@ void PluginHandler::execute(QList<InputData>* id, CatItem* result) {
 	plugins[result->id].obj->msg(MSG_LAUNCH_ITEM, (void*) id, (void*) result);
 }
 
-void PluginHandler::doDialog(QWidget* parent, uint id) {
-	if (!plugins.contains(id)) return;
-	if (!plugins[id].loaded) return;
-	plugins[id].obj->msg(MSG_DO_DIALOG, (void*) parent);
+QWidget* PluginHandler::doDialog(QWidget* parent, uint id) {
+	if (!plugins.contains(id)) return NULL;
+	if (!plugins[id].loaded) return NULL;
+	QWidget* newBox = NULL;
+	plugins[id].obj->msg(MSG_DO_DIALOG, (void*) parent, (void*) &newBox);
+	return newBox;
 }
 
 void PluginHandler::endDialog(uint id, bool accept) {

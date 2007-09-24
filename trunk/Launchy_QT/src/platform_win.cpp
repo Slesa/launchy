@@ -220,67 +220,71 @@ QString WinIconProvider::GetFileType(QString strFileName)
 }
 QPixmap WinIconProvider::convertHIconToPixmap( const HICON icon) const
 {
-	bool foundAlpha = false;
-	HDC screenDevice = qt_win_display_dc();
-	HDC hdc = CreateCompatibleDC(screenDevice);
+    bool foundAlpha = false;
+    HDC screenDevice = qt_win_display_dc();
+    HDC hdc = CreateCompatibleDC(screenDevice);
 
-	ICONINFO iconinfo;
-	GetIconInfo(icon, &iconinfo); //x and y Hotspot describes the icon center
+    ICONINFO iconinfo;
+    GetIconInfo(icon, &iconinfo); //x and y Hotspot describes the icon center
 
-	//create image
-	HBITMAP winBitmap = CreateBitmap(iconinfo.xHotspot * 2, iconinfo.yHotspot * 2, 1, 32, 0);
-	HGDIOBJ oldhdc = SelectObject(hdc, winBitmap);
-	DrawIconEx( hdc, 0, 0, icon, iconinfo.xHotspot * 2, iconinfo.yHotspot * 2, 0, 0, DI_NORMAL);
-	QPixmap::HBitmapFormat alphaType = QPixmap::PremultipliedAlpha;
+    BITMAPINFOHEADER bitmapInfo;
+    bitmapInfo.biSize        = sizeof(BITMAPINFOHEADER);
+    bitmapInfo.biWidth       = iconinfo.xHotspot * 2;
+    bitmapInfo.biHeight      = iconinfo.yHotspot * 2;
+    bitmapInfo.biPlanes      = 1;
+    bitmapInfo.biBitCount    = 32;
+    bitmapInfo.biCompression = BI_RGB;
+    bitmapInfo.biSizeImage   = 0;
+    bitmapInfo.biXPelsPerMeter = 0;
+    bitmapInfo.biYPelsPerMeter = 0;
+    bitmapInfo.biClrUsed       = 0;
+    bitmapInfo.biClrImportant  = 0;
+    DWORD* bits;
 
-	BITMAP bitmapData;
-	GetObject(iconinfo.hbmColor, sizeof(BITMAP), &bitmapData);
+    HBITMAP winBitmap = CreateDIBSection(hdc, (BITMAPINFO*)&bitmapInfo, DIB_RGB_COLORS, (VOID**)&bits, NULL, 0);
+    HGDIOBJ oldhdc = (HBITMAP)SelectObject(hdc, winBitmap);
+    DrawIconEx( hdc, 0, 0, icon, iconinfo.xHotspot * 2, iconinfo.yHotspot * 2, 0, 0, DI_NORMAL);
 
-	QPixmap iconpixmap = QPixmap::fromWinHBITMAP(winBitmap, alphaType);
-	QImage img = iconpixmap.toImage();
+    QPixmap::HBitmapFormat alphaType = QPixmap::PremultipliedAlpha;
+    QPixmap iconpixmap = QPixmap::fromWinHBITMAP(winBitmap, alphaType);
+    QImage img = iconpixmap.toImage();
 
-	if ( bitmapData.bmBitsPixel == 32 ) { //only check 32 bit images for alpha
-		for (int y = 0 ; y < iconpixmap.height() && !foundAlpha ; y++) {
-			QRgb *scanLine= reinterpret_cast<QRgb *>(img.scanLine(y));
-			for (int x = 0; x < img.width() ; x++) {
-				if (qAlpha(scanLine[x]) != 0) {
-					foundAlpha = true;
-					break;
-				}
-			}
-		}
-	}
+    for (int y = 0 ; y < iconpixmap.height() && !foundAlpha ; y++) {
+        QRgb *scanLine= reinterpret_cast<QRgb *>(img.scanLine(y));
+        for (int x = 0; x < img.width() ; x++) {
+            if (qAlpha(scanLine[x]) != 0) {
+                foundAlpha = true;
+                break;
+            }
+        }
+    }
 
-	if (!foundAlpha) {
-		//If no alpha was found, we use the mask to set alpha values
-		HBITMAP winMask = CreateBitmap(iconinfo.xHotspot * 2, iconinfo.yHotspot * 2, 1, 32, 0);
-		SelectObject(hdc, winMask);
-		DrawIconEx( hdc, 0, 0, icon, iconinfo.xHotspot * 2, iconinfo.yHotspot * 2, 0, 0, DI_MASK);
+    if (!foundAlpha) {
+        //If no alpha was found, we use the mask to set alpha values
+        DrawIconEx( hdc, 0, 0, icon, iconinfo.xHotspot * 2, iconinfo.yHotspot * 2, 0, 0, DI_MASK);
+        QPixmap maskPixmap = QPixmap::fromWinHBITMAP(winBitmap, alphaType);
+        QImage mask = maskPixmap.toImage();
 
-		QPixmap maskPixmap = QPixmap::fromWinHBITMAP(winMask, alphaType);
-		QImage mask = maskPixmap.toImage();
+        for (int y = 0 ; y< iconpixmap.height() ; y++){
+            QRgb *scanlineImage = reinterpret_cast<QRgb *>(img.scanLine(y));
+            QRgb *scanlineMask = reinterpret_cast<QRgb *>(mask.scanLine(y));
+            for (int x = 0; x < img.width() ; x++){
+                if (qRed(scanlineMask[x]) != 0)
+                    scanlineImage[x] = 0; //mask out this pixel
+                else
+                    scanlineImage[x] |= 0xff000000; // set the alpha channel to 255
+            }
+        }
+    }
 
-		for (int y = 0 ; y< iconpixmap.height() ; y++){
-			QRgb *scanlineImage = reinterpret_cast<QRgb *>(img.scanLine(y));
-			QRgb *scanlineMask = reinterpret_cast<QRgb *>(mask.scanLine(y));
-			for (int x = 0; x < img.width() ; x++){
-				if (qRed(scanlineMask[x]) != 0)
-					scanlineImage[x] = 0; //mask out this pixel
-				else
-					scanlineImage[x] |= 0xff000000; // set the alpha channel to 255
-			}
-		}
-		DeleteObject(winMask);
-	}
+    //dispose resources created by iconinfo call
+    DeleteObject(iconinfo.hbmMask);
+    DeleteObject(iconinfo.hbmColor);
 
-	//dispose resources created by iconinfo call
-	DeleteObject(iconinfo.hbmMask);
-	DeleteObject(iconinfo.hbmColor);
-
-	SelectObject(hdc, oldhdc); //restore state
-	DeleteDC(hdc);
-	DeleteObject(winBitmap);
-	return QPixmap::fromImage(img);
+    SelectObject(hdc, oldhdc); //restore state
+    DeleteObject(winBitmap);
+    DeleteDC(hdc);
+    return QPixmap::fromImage(img);
 }
 
 

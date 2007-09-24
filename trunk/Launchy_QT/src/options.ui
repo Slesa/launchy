@@ -9,619 +9,951 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>582</width>
-    <height>379</height>
+    <width>566</width>
+    <height>453</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Launchy options</string>
   </property>
-  <widget class="QDialogButtonBox" name="buttonBox" >
-   <property name="geometry" >
-    <rect>
-     <x>350</x>
-     <y>340</y>
-     <width>161</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="orientation" >
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons" >
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
-  <widget class="QTabWidget" name="tabWidget" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>561</width>
-     <height>321</height>
-    </rect>
-   </property>
-   <property name="currentIndex" >
-    <number>0</number>
-   </property>
-   <widget class="QWidget" name="tab" >
-    <attribute name="title" >
-     <string>General</string>
-    </attribute>
-    <widget class="QGroupBox" name="groupBox_3" >
-     <property name="geometry" >
-      <rect>
-       <x>280</x>
-       <y>20</y>
-       <width>221</width>
-       <height>71</height>
-      </rect>
+  <layout class="QVBoxLayout" >
+   <item>
+    <layout class="QHBoxLayout" />
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="currentIndex" >
+      <number>4</number>
      </property>
-     <property name="title" >
-      <string>Launchy Hotkey</string>
-     </property>
-     <widget class="QComboBox" name="genModifierBox" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>91</width>
-        <height>22</height>
-       </rect>
-      </property>
+     <widget class="QWidget" name="tab" >
+      <attribute name="title" >
+       <string>General</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QGroupBox" name="groupBox_4" >
+           <property name="title" >
+            <string>User Interface</string>
+           </property>
+           <layout class="QVBoxLayout" >
+            <item>
+             <widget class="QCheckBox" name="genAlwaysShow" >
+              <property name="text" >
+               <string>Always display Launchy window</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="genHideFocus" >
+              <property name="text" >
+               <string>Hide Launchy when it loses focus</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="genAlwaysTop" >
+              <property name="enabled" >
+               <bool>false</bool>
+              </property>
+              <property name="text" >
+               <string>Always on top</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="genCondensed" >
+              <property name="text" >
+               <string>Condense suggestion list</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" >
+              <item>
+               <widget class="QLabel" name="label_8" >
+                <property name="text" >
+                 <string>Number of alternate suggestions</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>16</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="genNumResults" />
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" >
+              <item>
+               <widget class="QLabel" name="label" >
+                <property name="text" >
+                 <string>Hotkey:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QComboBox" name="genModifierBox" />
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QComboBox" name="genKeyBox" />
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>41</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" >
+           <item>
+            <widget class="QGroupBox" name="groupBox_6" >
+             <property name="title" >
+              <string>System Options</string>
+             </property>
+             <layout class="QVBoxLayout" >
+              <item>
+               <widget class="QCheckBox" name="genUpdateCheck" >
+                <property name="text" >
+                 <string>Check for updates on startup</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="genShowHidden" >
+                <property name="text" >
+                 <string>Show hidden files in browse mode</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="genPortable" >
+                <property name="text" >
+                 <string>Portable mode (USB stick)</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>41</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QGroupBox" name="groupBox_5" >
+           <property name="title" >
+            <string>Performance</string>
+           </property>
+           <layout class="QVBoxLayout" >
+            <item>
+             <layout class="QHBoxLayout" >
+              <item>
+               <widget class="QLabel" name="label_5" >
+                <property name="text" >
+                 <string>Minutes between catalog updates</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="genUpMinutes" />
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_7" >
+              <property name="text" >
+               <string>(0 for manual updates only)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="genFastIndex" >
+              <property name="text" >
+               <string>Use fast indexer? (uses more memory)</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>41</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </widget>
-     <widget class="QComboBox" name="genKeyBox" >
-      <property name="geometry" >
-       <rect>
-        <x>130</x>
-        <y>30</y>
-        <width>81</width>
-        <height>22</height>
-       </rect>
-      </property>
+     <widget class="QWidget" name="Skins" >
+      <attribute name="title" >
+       <string>Skins</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QGroupBox" name="groupBox_3" >
+           <property name="minimumSize" >
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize" >
+            <size>
+             <width>160</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="title" >
+            <string>Select a skin</string>
+           </property>
+           <layout class="QHBoxLayout" >
+            <item>
+             <widget class="QListWidget" name="skinList" >
+              <property name="maximumSize" >
+               <size>
+                <width>150</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_8" >
+           <property name="minimumSize" >
+            <size>
+             <width>300</width>
+             <height>166</height>
+            </size>
+           </property>
+           <property name="title" >
+            <string>Author information</string>
+           </property>
+           <layout class="QVBoxLayout" >
+            <item>
+             <widget class="QLabel" name="authorInfo" >
+              <property name="text" >
+               <string/>
+              </property>
+              <property name="scaledContents" >
+               <bool>true</bool>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_9" >
+         <property name="minimumSize" >
+          <size>
+           <width>0</width>
+           <height>150</height>
+          </size>
+         </property>
+         <property name="title" >
+          <string>Skin preview</string>
+         </property>
+         <layout class="QVBoxLayout" >
+          <item>
+           <widget class="QLabel" name="skinPreview" >
+            <property name="text" >
+             <string/>
+            </property>
+            <property name="scaledContents" >
+             <bool>false</bool>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2" >
+      <attribute name="title" >
+       <string>Catalog</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <layout class="QVBoxLayout" >
+           <item>
+            <widget class="QGroupBox" name="groupBox_2" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize" >
+              <size>
+               <width>115</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="title" >
+              <string>File Types</string>
+             </property>
+             <layout class="QVBoxLayout" >
+              <item>
+               <widget class="QListWidget" name="catTypes" >
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize" >
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="catTypeEdit" >
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize" >
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="catTypesPlus" >
+                <property name="maximumSize" >
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text" >
+                 <string>+</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="catTypesMinus" >
+                <property name="text" >
+                 <string>-</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="catCheckBinaries" >
+                <property name="text" >
+                 <string>Executables</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="catCheckDirs" >
+                <property name="text" >
+                 <string>Directories</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" >
+                <item>
+                 <widget class="QLabel" name="label_10" >
+                  <property name="text" >
+                   <string>Depth:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSpinBox" name="catDepth" >
+                  <property name="maximum" >
+                   <number>100000</number>
+                  </property>
+                  <property name="value" >
+                   <number>100</number>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" >
+           <item>
+            <widget class="QGroupBox" name="groupBox" >
+             <property name="title" >
+              <string>Directories</string>
+             </property>
+             <layout class="QVBoxLayout" >
+              <item>
+               <widget class="QListWidget" name="catDirectories" />
+              </item>
+              <item>
+               <layout class="QHBoxLayout" >
+                <item>
+                 <spacer>
+                  <property name="orientation" >
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" >
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="catDirPlus" >
+                  <property name="text" >
+                   <string>+</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer>
+                  <property name="orientation" >
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" >
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="catDirMinus" >
+                  <property name="text" >
+                   <string>-</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer>
+                  <property name="orientation" >
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" >
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" >
+         <item>
+          <layout class="QHBoxLayout" >
+           <item>
+            <widget class="QPushButton" name="catRescan" >
+             <property name="text" >
+              <string>Rescan Catalog</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="catSize" >
+             <property name="text" >
+              <string>Indexing 0 items</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QProgressBar" name="catProgress" >
+           <property name="textVisible" >
+            <bool>false</bool>
+           </property>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_4" >
+      <attribute name="title" >
+       <string>Plugins</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QGroupBox" name="groupBox_7" >
+           <property name="maximumSize" >
+            <size>
+             <width>141</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="title" >
+            <string>Available plugins</string>
+           </property>
+           <layout class="QVBoxLayout" >
+            <item>
+             <widget class="QListWidget" name="plugList" >
+              <property name="selectionRectVisible" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="plugBox" >
+           <property name="title" >
+            <string>Plugin options</string>
+           </property>
+           <layout class="QVBoxLayout" >
+            <item>
+             <spacer>
+              <property name="orientation" >
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" >
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3" >
+      <attribute name="title" >
+       <string>About Launchy</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="aboutVer" >
+           <property name="font" >
+            <font>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text" >
+            <string/>
+           </property>
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2" >
+           <property name="text" >
+            <string>Launchy's official homepage is http://www.launchy.net/</string>
+           </property>
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+           <property name="openExternalLinks" >
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer>
+           <property name="orientation" >
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" >
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_4" >
-     <property name="geometry" >
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>251</width>
-       <height>161</height>
-      </rect>
-     </property>
-     <property name="title" >
-      <string>User Interface</string>
-     </property>
-     <widget class="QCheckBox" name="genAlwaysShow" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>191</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Always display Launchy window</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="genAlwaysTop" >
-      <property name="enabled" >
-       <bool>false</bool>
-      </property>
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>60</y>
-        <width>101</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Always on top</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="genNumResults" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>110</y>
-        <width>41</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_8" >
-      <property name="geometry" >
-       <rect>
-        <x>60</x>
-        <y>110</y>
-        <width>137</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Number of suggestions in list</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="genHideFocus" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>40</y>
-        <width>191</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Hide Launchy when it loses focus</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_6" >
-      <property name="geometry" >
-       <rect>
-        <x>60</x>
-        <y>130</y>
-        <width>131</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>(1 for no dropdown menu)</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="genCondensed" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>80</y>
-        <width>191</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Condense suggestion list</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_5" >
-     <property name="geometry" >
-      <rect>
-       <x>280</x>
-       <y>120</y>
-       <width>271</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="title" >
-      <string>Performance</string>
-     </property>
-     <widget class="QLineEdit" name="genUpMinutes" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>41</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_5" >
-      <property name="geometry" >
-       <rect>
-        <x>60</x>
-        <y>20</y>
-        <width>162</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Minutes between catalog updates</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="genFastIndex" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>58</y>
-        <width>211</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Use fast indexer? (uses more memory)</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_7" >
-      <property name="geometry" >
-       <rect>
-        <x>60</x>
-        <y>40</y>
-        <width>141</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>(0 for manual updates only)</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_6" >
-     <property name="geometry" >
-      <rect>
-       <x>10</x>
-       <y>190</y>
-       <width>251</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="title" >
-      <string>System Options</string>
-     </property>
-     <widget class="QCheckBox" name="genUpdateCheck" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>171</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Check for updates on startup</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="genPortable" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>60</y>
-        <width>151</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Portable mode (USB stick)</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="genShowHidden" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>40</y>
-        <width>191</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Show hidden files in browse mode</string>
-      </property>
-     </widget>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="Skins" >
-    <attribute name="title" >
-     <string>Skins</string>
-    </attribute>
-    <widget class="QLabel" name="label_9" >
-     <property name="geometry" >
-      <rect>
-       <x>40</x>
-       <y>10</y>
-       <width>61</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text" >
-      <string>Select a Skin</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="authorInfo" >
-     <property name="geometry" >
-      <rect>
-       <x>160</x>
-       <y>30</y>
-       <width>321</width>
-       <height>101</height>
-      </rect>
-     </property>
-     <property name="text" >
-      <string/>
-     </property>
-     <property name="scaledContents" >
-      <bool>true</bool>
-     </property>
-     <property name="alignment" >
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-    </widget>
-    <widget class="QListWidget" name="skinList" >
-     <property name="geometry" >
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>131</width>
-       <height>101</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="skinPreview" >
-     <property name="geometry" >
-      <rect>
-       <x>40</x>
-       <y>140</y>
-       <width>481</width>
-       <height>151</height>
-      </rect>
-     </property>
-     <property name="text" >
-      <string/>
-     </property>
-     <property name="scaledContents" >
-      <bool>false</bool>
-     </property>
-     <property name="alignment" >
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tab_2" >
-    <attribute name="title" >
-     <string>Catalog</string>
-    </attribute>
-    <widget class="QPushButton" name="catRescan" >
-     <property name="geometry" >
-      <rect>
-       <x>10</x>
-       <y>244</y>
-       <width>91</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text" >
-      <string>Rescan Catalog</string>
-     </property>
-    </widget>
-    <widget class="QProgressBar" name="catProgress" >
-     <property name="geometry" >
-      <rect>
-       <x>10</x>
-       <y>270</y>
-       <width>529</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="textVisible" >
-      <bool>false</bool>
-     </property>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-    <widget class="QGroupBox" name="groupBox" >
-     <property name="geometry" >
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>401</width>
-       <height>211</height>
-      </rect>
-     </property>
-     <property name="title" >
-      <string>Directories</string>
-     </property>
-     <widget class="QPushButton" name="catDirMinus" >
-      <property name="geometry" >
-       <rect>
-        <x>180</x>
-        <y>180</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>-</string>
-      </property>
-     </widget>
-     <widget class="QListWidget" name="catDirectories" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>381</width>
-        <height>151</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="catDirPlus" >
-      <property name="geometry" >
-       <rect>
-        <x>90</x>
-        <y>180</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>+</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_2" >
-     <property name="geometry" >
-      <rect>
-       <x>440</x>
-       <y>10</y>
-       <width>101</width>
-       <height>251</height>
-      </rect>
-     </property>
-     <property name="title" >
-      <string>File Types</string>
-     </property>
-     <widget class="QPushButton" name="catTypesMinus" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>160</y>
-        <width>81</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>-</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="catTypeEdit" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>110</y>
-        <width>81</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="catTypesPlus" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>140</y>
-        <width>81</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>+</string>
-      </property>
-     </widget>
-     <widget class="QListWidget" name="catTypes" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>81</width>
-        <height>91</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="catCheckDirs" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>200</y>
-        <width>81</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Directories</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="catCheckBinaries" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>180</y>
-        <width>81</width>
-        <height>18</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Executables</string>
-      </property>
-     </widget>
-     <widget class="QSpinBox" name="catDepth" >
-      <property name="geometry" >
-       <rect>
-        <x>50</x>
-        <y>220</y>
-        <width>42</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="maximum" >
-       <number>100000</number>
-      </property>
-      <property name="value" >
-       <number>100</number>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_10" >
-      <property name="geometry" >
-       <rect>
-        <x>10</x>
-        <y>220</y>
-        <width>41</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text" >
-       <string>Depth:</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QLabel" name="catSize" >
-     <property name="geometry" >
-      <rect>
-       <x>225</x>
-       <y>252</y>
-       <width>118</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text" >
-      <string>Indexing 0 items</string>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tab_4" >
-    <attribute name="title" >
-     <string>Plugins</string>
-    </attribute>
-    <widget class="QListWidget" name="plugList" >
-     <property name="geometry" >
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>101</width>
-       <height>251</height>
-      </rect>
-     </property>
-     <property name="selectionRectVisible" >
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_11" >
-     <property name="geometry" >
-      <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>79</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text" >
-      <string>Available Plugins</string>
-     </property>
-    </widget>
-    <widget class="QGroupBox" name="plugBox" >
-     <property name="geometry" >
-      <rect>
-       <x>130</x>
-       <y>10</y>
-       <width>411</width>
-       <height>271</height>
-      </rect>
-     </property>
-     <property name="title" >
-      <string>Plugin Options</string>
-     </property>
-    </widget>
-   </widget>
-  </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox" >
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="standardButtons" >
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
+ <tabstops>
+  <tabstop>genAlwaysShow</tabstop>
+  <tabstop>genHideFocus</tabstop>
+  <tabstop>genAlwaysTop</tabstop>
+  <tabstop>genCondensed</tabstop>
+  <tabstop>genNumResults</tabstop>
+  <tabstop>genModifierBox</tabstop>
+  <tabstop>genKeyBox</tabstop>
+  <tabstop>genUpdateCheck</tabstop>
+  <tabstop>genShowHidden</tabstop>
+  <tabstop>genPortable</tabstop>
+  <tabstop>genUpMinutes</tabstop>
+  <tabstop>genFastIndex</tabstop>
+  <tabstop>skinList</tabstop>
+  <tabstop>catRescan</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>catDirMinus</tabstop>
+  <tabstop>catDirectories</tabstop>
+  <tabstop>catDirPlus</tabstop>
+  <tabstop>catTypesMinus</tabstop>
+  <tabstop>catTypeEdit</tabstop>
+  <tabstop>catTypesPlus</tabstop>
+  <tabstop>catTypes</tabstop>
+  <tabstop>catCheckDirs</tabstop>
+  <tabstop>catCheckBinaries</tabstop>
+  <tabstop>catDepth</tabstop>
+  <tabstop>plugList</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -631,8 +963,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>510</x>
-     <y>340</y>
+     <x>169</x>
+     <y>533</y>
     </hint>
     <hint type="destinationlabel" >
      <x>157</x>
@@ -647,8 +979,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>510</x>
-     <y>340</y>
+     <x>169</x>
+     <y>533</y>
     </hint>
     <hint type="destinationlabel" >
      <x>286</x>
