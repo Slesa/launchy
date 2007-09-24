@@ -55,6 +55,7 @@ OptionsDlg(QWidget* parent = 0);
 ~OptionsDlg();
 QList<Directory> memDirs;
 QList<QPair<QString, uint> > pluginNames;
+QVBoxLayout* pluginLayout;
 
 public slots:
 	void accept();
@@ -73,6 +74,7 @@ public slots:
 	void catRescanClicked(bool);
 	void pluginChanged(int row);
 	void pluginItemChanged(QListWidgetItem* state);
+	void tabChanged(int tab);
 };
 
 

@@ -12,99 +12,138 @@
   <property name="windowTitle" >
    <string>Form</string>
   </property>
-  <widget class="QLabel" name="label" >
-   <property name="geometry" >
-    <rect>
-     <x>120</x>
-     <y>10</y>
-     <width>187</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>Weby - Launch your favorite websites!</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="booksFirefox" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>30</y>
-     <width>111</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>Firefox Bookmarks</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="booksIE" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>50</y>
-     <width>161</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>Internet Explorer Bookmarks</string>
-   </property>
-  </widget>
-  <widget class="QTableWidget" name="table" >
-   <property name="geometry" >
-    <rect>
-     <x>10</x>
-     <y>80</y>
-     <width>391</width>
-     <height>151</height>
-    </rect>
-   </property>
-   <property name="columnCount" >
-    <number>3</number>
-   </property>
-   <column>
-    <property name="text" >
-     <string>Name</string>
-    </property>
-   </column>
-   <column>
-    <property name="text" >
-     <string>URL</string>
-    </property>
-   </column>
-   <column>
-    <property name="text" >
-     <string>Query</string>
-    </property>
-   </column>
-  </widget>
-  <widget class="QPushButton" name="tableNew" >
-   <property name="geometry" >
-    <rect>
-     <x>50</x>
-     <y>240</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>+</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="tableRemove" >
-   <property name="geometry" >
-    <rect>
-     <x>280</x>
-     <y>240</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>-</string>
-   </property>
-  </widget>
+  <layout class="QVBoxLayout" >
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label" >
+       <property name="text" >
+        <string>Weby - Launch your favorite websites!</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="booksFirefox" >
+     <property name="text" >
+      <string>Firefox Bookmarks</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="booksIE" >
+     <property name="text" >
+      <string>Internet Explorer Bookmarks</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="table" >
+     <property name="columnCount" >
+      <number>3</number>
+     </property>
+     <column>
+      <property name="text" >
+       <string>Name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text" >
+       <string>URL</string>
+      </property>
+     </column>
+     <column>
+      <property name="text" >
+       <string>Query</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="tableNew" >
+       <property name="text" >
+        <string>+</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="tableRemove" >
+       <property name="text" >
+        <string>-</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" >
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

@@ -54,7 +54,7 @@ public:
 	void getCatalog(QList<CatItem>* items);
 	void getResults(QList<InputData>* id, QList<CatItem>* results);
 	void launchItem(QList<InputData>*, CatItem*);
-	void doDialog(QWidget* parent);
+	void doDialog(QWidget* parent, QWidget**);
 	void endDialog(bool accept);
 	void getLabels(QList<InputData>* id);
 	void init();

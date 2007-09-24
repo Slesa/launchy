@@ -83,7 +83,8 @@ void FastCatalog::addItem(CatItem item) {
 	int index = catList.count() - 1;
 	CatItem* pCatItem = &catList[index];
 	foreach(QChar c, item.lowName) {
-		catIndex[c].push_back(pCatItem);
+		if (catIndex[c].count() == 0 || catIndex[c].last() != pCatItem)
+			catIndex[c].push_back(pCatItem);
 	}
 }
 

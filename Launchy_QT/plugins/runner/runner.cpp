@@ -139,10 +139,10 @@ void runnerPlugin::launchItem(QList<InputData>* id, CatItem* item)
 	runProgram(file, args);
 }
 
-void runnerPlugin::doDialog(QWidget* parent) {
+void runnerPlugin::doDialog(QWidget* parent, QWidget** newDlg) {
 	if (gui != NULL) return;
 	gui = new Gui(parent);
-	gui->show();
+	*newDlg = gui;
 }
 
 void runnerPlugin::endDialog(bool accept) {
@@ -189,7 +189,7 @@ bool runnerPlugin::msg(int msgId, void* wParam, void* lParam)
 			handled = true;
 			break;
 		case MSG_DO_DIALOG:
-			doDialog((QWidget*) wParam);
+			doDialog((QWidget*) wParam, (QWidget**) lParam);
 			break;
 		case MSG_END_DIALOG:
 			endDialog((bool) wParam);
