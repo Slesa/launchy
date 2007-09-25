@@ -112,7 +112,7 @@ void WebyPlugin::init()
 
 		set->setArrayIndex(12);
 		set->setValue("name", "IMDB");
-		set->setValue("base", "http://www.imdb.com");
+		set->setValue("base", "http://www.imdb.com/");
 		set->setValue("query", "find?s=all&q=%s");
 
 		set->endArray();

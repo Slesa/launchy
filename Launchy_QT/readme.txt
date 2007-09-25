@@ -1,8 +1,19 @@
 For beta release:
 . Add thanks to Tyler for graphics stuff in change log
 . Tyler's new skin
-. Plugin event of Launchy coming forward.  Plugins should be allowed to provide search results at that time.
 
+
+Low priority:
+. Allow multiple directory selection for file extensions
+. Can get rid of extra data in alternatives item's if I clear the items after options exits
+. Append to file plugin or .bat file or something
+. Control+Enter to complete website
+. Confirmation on Alt+F4
+. Launchy commands inline (e.g. rescan/add dir/exit)
+
+
+For next alpha:
+. Plugin event of Launchy coming forward.  Plugins should be allowed to provide search results at that time.
 . Use environment variables and use them by default in Launchy (for runner's cmd too)
 . Make sure skin and alpha are always together (seem to separate at launch)
 . Unicode in Foxy reads
@@ -10,11 +21,13 @@ For beta release:
 
 
 
-Low priority:
-. Allow multiple directory selection for file extensions
-. Can get rid of extra data in alternatives item's if I clear the items after options exits
-. Append to file plugin or .bat file or something
-
+Done for alpha 5:
+. Controly should pick up more items now
+. Starting path of application is its home directory
+. Errors hidden on appliation launches
+. Alternate search options now get selected correctly
+. After catalog update, update current search result
+. Can edit input
 
 
 Done for alpha 4:
@@ -25,8 +38,6 @@ Done for alpha 4:
 . Fix hotkeys which weren't working
 . Fast indexer causes duplicates?
 . 16bit icon support
-
-
 
 Done for alpha 3:
 . Use old style dropdown

@@ -24,7 +24,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QHash>
 #include "plugin_interface.h"
 #include "catalog.h"
-#include "plugin_info.h"
 #include <QLayout>
 
 struct PluginInfo {

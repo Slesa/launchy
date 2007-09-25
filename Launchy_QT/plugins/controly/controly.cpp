@@ -80,24 +80,24 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 			continue;
 		}
 		LONG nInitResult = cpla(hwnd, CPL_INIT, 0, 0); 
-		if (nInitResult == 0) {
+/*		if (nInitResult == 0) {
 			cpla(hwnd,CPL_STOP, 0, 0);
 			cpla(hwnd, CPL_EXIT, 0, 0);
 			FreeLibrary(LoadMe);			
 			continue;
 		}
-
+*/
 		LONG NumberOfApplets = cpla(hwnd, CPL_GETCOUNT, 0, 0);
 		for(int j = 0; j < NumberOfApplets; j++) {
 			CPLINFO info;
 			if (cpla(hwnd, CPL_INQUIRE, j, (LPARAM) &info) != 0)
 			{	
-				break;
+//				break;
 			}
 			TCHAR CPName[32];
 			if (0 == LoadString(LoadMe, info.idName, CPName, 32) )
 			{
-				break;	
+//				break;	
 			}			
 			items->push_back(CatItem(path, QString::fromUtf16((const ushort*)CPName), 0, getIcon()));			
 		}
