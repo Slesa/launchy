@@ -331,16 +331,18 @@ void PlatformImp::Execute(QString path, QString args) {
 	SHELLEXECUTEINFO ShExecInfo;
 
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
-	ShExecInfo.fMask = NULL;
+	ShExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
 	ShExecInfo.hwnd = NULL;
-	ShExecInfo.lpVerb = NULL;
+	ShExecInfo.lpVerb = (LPCTSTR) L"open";
 	ShExecInfo.lpFile = (LPCTSTR) (path).utf16();
 	if (args != "") {
 		ShExecInfo.lpParameters = (LPCTSTR) args.utf16();
 	} else {
 		ShExecInfo.lpParameters = NULL;
 	}
-	ShExecInfo.lpDirectory = NULL;
+	QDir dir(path);
+	dir.cdUp();
+	ShExecInfo.lpDirectory = (LPCTSTR)QDir::toNativeSeparators(dir.absolutePath()).utf16();
 	ShExecInfo.nShow = SW_NORMAL;
 	ShExecInfo.hInstApp = NULL;
 

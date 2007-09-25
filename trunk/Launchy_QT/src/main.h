@@ -139,6 +139,8 @@ public:
 	void parseInput(QString text);
 	void resetLaunchy();
 	void applySkin2(QString directory);
+	void updateDisplay();
+	void searchOnInput();
 private:
     QHttp *http;
     QBuffer *verBuffer;

@@ -18,21 +18,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "plugin_interface.h"
 
-void runProgram(QString file, QString args) {
+void runProgram(QString path, QString args) {
 #ifdef Q_WS_WIN
 	SHELLEXECUTEINFO ShExecInfo;
 
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
-	ShExecInfo.fMask = NULL;
+	ShExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
 	ShExecInfo.hwnd = NULL;
-	ShExecInfo.lpVerb = NULL;
-	ShExecInfo.lpFile = (LPCTSTR) (file).utf16();
+	ShExecInfo.lpVerb = (LPCTSTR) L"open";
+	ShExecInfo.lpFile = (LPCTSTR) (path).utf16();
 	if (args != "") {
 		ShExecInfo.lpParameters = (LPCTSTR) args.utf16();
 	} else {
 		ShExecInfo.lpParameters = NULL;
 	}
-	ShExecInfo.lpDirectory = NULL;
+	QDir dir(path);
+	dir.cdUp();
+	ShExecInfo.lpDirectory = (LPCTSTR)QDir::toNativeSeparators(dir.absolutePath()).utf16();
 	ShExecInfo.nShow = SW_NORMAL;
 	ShExecInfo.hInstApp = NULL;
 

@@ -285,19 +285,11 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 				gSettings->setValue(location, hist);
 
 				CatItem tmp = searchResults[row];
-				searchResults.clear();
-				searchResults.push_back(tmp);
-				QIcon icon = getIcon(searchResults[0]);
-
-				input->clear();
-				input->insert(QDir::toNativeSeparators(tmp.fullPath));
-				licon->setPixmap(icon.pixmap(QSize(32,32), QIcon::Normal, QIcon::On));
-				output->setText(searchResults[0].shortName);
+				searchResults[row] = searchResults[0];
+				searchResults[0] = tmp;
+				updateDisplay();
 				alternatives->hide();
 			}
-
-			//	hideLaunchy();
-		//	launchObject(row);
 		}
 
 	}
@@ -399,65 +391,58 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 		parseInput(inText);
 
 		if (input->text() != "") {
-			if (catalog == NULL) return;
-			if (inputData.count() == 0) return;
+			searchOnInput();
+			updateDisplay();
 
-			gSearchTxt = inputData.last().getText();
-			searchResults.clear();
-
-			if (catalog != NULL) {
-				if (inputData.count() <= 1)
-					catalog->searchCatalogs(gSearchTxt, searchResults);
-			}
-			/*
-			if (searchResults.count() == 0) {
-				// Is it a file?
-				if (gSearchTxt.contains("\\") || gSearchTxt.contains("/")) {
-					searchFiles(gSearchTxt, searchResults);
-					inputData.last().setLabel(LABEL_FILE);
-				}
-			} */
-			
-			if (searchResults.count() != 0)
-				inputData.last().setTopResult(searchResults[0]);
-
-			plugins.getLabels(&inputData);
-			plugins.getResults(&inputData, &searchResults);
-			qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
-			// Is it a file?
-			if (gSearchTxt.contains("\\") || gSearchTxt.contains("/")) {
-				searchFiles(gSearchTxt, searchResults);
-				inputData.last().setLabel(LABEL_FILE);
-			}
-			catalog->checkHistory(gSearchTxt, searchResults);
-
-			//			sortResults(searchResults);
-
-
-			input->clear();
-			input->insert(inText);
-
-			if (searchResults.count() > 0) {
-				QIcon icon = getIcon(searchResults[0]);
-
-				licon->setPixmap(icon.pixmap(QSize(32,32), QIcon::Normal, QIcon::On));
-				output->setText(searchResults[0].shortName);
-
-				// Did the plugin take control of the input?
-				if (inputData.last().getID() != 0)
-					searchResults[0].id = inputData.last().getID();
-
-				inputData.last().setTopResult(searchResults[0]);
-
-			} else {
-				licon->clear();
-				output->clear();
-			}
 		}
 		
 	}	
 }
 
+void MyWidget::searchOnInput() {
+	if (catalog == NULL) return;
+	if (inputData.count() == 0) return;
+	
+	gSearchTxt = inputData.last().getText();
+	searchResults.clear();
+
+	if (catalog != NULL) {
+		if (inputData.count() <= 1)
+			catalog->searchCatalogs(gSearchTxt, searchResults);
+	}
+
+	if (searchResults.count() != 0)
+		inputData.last().setTopResult(searchResults[0]);
+
+	plugins.getLabels(&inputData);
+	plugins.getResults(&inputData, &searchResults);
+	qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
+	// Is it a file?
+	if (gSearchTxt.contains("\\") || gSearchTxt.contains("/")) {
+		searchFiles(gSearchTxt, searchResults);
+		inputData.last().setLabel(LABEL_FILE);
+	}
+	catalog->checkHistory(gSearchTxt, searchResults);
+}
+
+void MyWidget::updateDisplay() {
+	if (searchResults.count() > 0) {
+		QIcon icon = getIcon(searchResults[0]);
+
+		licon->setPixmap(icon.pixmap(QSize(32,32), QIcon::Normal, QIcon::On));
+		output->setText(searchResults[0].shortName);
+
+		// Did the plugin take control of the input?
+		if (inputData.last().getID() != 0)
+			searchResults[0].id = inputData.last().getID();
+
+		inputData.last().setTopResult(searchResults[0]);
+
+	} else {
+		licon->clear();
+		output->clear();
+	}	
+}
 
 QIcon MyWidget::getIcon(CatItem & item) {
 
@@ -519,8 +504,10 @@ void MyWidget::catalogBuilt() {
 	gBuilder->wait();
 	delete gBuilder;
 	gBuilder = NULL;
-	qDebug() << "The catalog is built, need to re-search input text" << catalog->count();
+//	qDebug() << "The catalog is built, need to re-search input text" << catalog->count();
 	//todo Do a search here of the current input text
+	searchOnInput();
+	updateDisplay();
 }
 
 void MyWidget::checkForUpdate() {
