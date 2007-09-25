@@ -77,8 +77,8 @@ void CatBuilder::buildCatalog() {
 
 	for(int i = 0; i < memDirs.count(); ++i) {
 		emit(catalogIncrement(100.0 * (float)(i+1) / (float) memDirs.count()));
-		QString cur = memDirs[i].name;
-		indexDirectory(memDirs[i].name, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth);
+		QString cur = main->platform.expandEnvironmentVars(memDirs[i].name);
+		indexDirectory(cur, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth);
 	}
 	
 	QList<CatItem> pitems;

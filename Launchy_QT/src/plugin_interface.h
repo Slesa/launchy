@@ -52,7 +52,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MSG_DO_DIALOG 7
 #define MSG_GET_NAME 8
 #define MSG_END_DIALOG 9
-
+#define MSG_LAUNCHY_SHOW 10
+#define MSG_LAUNCHY_HIDE 11
 
 class PluginInterface
 {

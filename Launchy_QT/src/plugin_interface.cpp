@@ -25,7 +25,7 @@ void runProgram(QString path, QString args) {
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
 	ShExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
 	ShExecInfo.hwnd = NULL;
-	ShExecInfo.lpVerb = (LPCTSTR) L"open";
+	ShExecInfo.lpVerb = NULL;
 	ShExecInfo.lpFile = (LPCTSTR) (path).utf16();
 	if (args != "") {
 		ShExecInfo.lpParameters = (LPCTSTR) args.utf16();

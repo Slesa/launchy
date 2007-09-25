@@ -42,6 +42,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "globals.h"
 #include "options.h"
 #include "dsingleapplication.h"
+#include "plugin_interface.h"
 
 
 
@@ -235,7 +236,7 @@ void MyWidget::launchObject(int obj) {
 		if (inputData.count() > 1)
 			for(int i = 1; i < inputData.count(); ++i)
 				args += inputData[i].getText() + " ";
-		platform.Execute(res.fullPath, args);
+		runProgram(res.fullPath, args);
 	}
 	else
 		plugins.execute(&inputData, &res);
@@ -614,8 +615,9 @@ void MyWidget::dropTimeout() {
 }
 
 void MyWidget::onHotKey() {
-	if (visible)
+	if (visible) {
 		hideLaunchy();
+	}
 	else {
 		showLaunchy();
 	}
@@ -859,7 +861,7 @@ void MyWidget::shouldDonate() {
 	gSettings->setValue("donateTime", donateTime);
 
 	if (donateTime <= time) {
-		platform.Execute("http://www.launchy.net/donate.html", "");
+		runProgram("http://www.launchy.net/donate.html", "");
 		QDateTime def;
 		gSettings->setValue("donateTime", def);
 	}
@@ -877,6 +879,8 @@ void MyWidget::showLaunchy() {
 	input->activateWindow();
 	input->selectAll();
 	input->setFocus();
+	// Let the plugins know
+	plugins.showLaunchy();
 }
 
 
@@ -889,6 +893,8 @@ void MyWidget::hideLaunchy() {
 	if (alternatives != NULL)
 		alternatives->hide();
 	platform.HideAlphaBorder();
+	// Let the plugins know
+	plugins.hideLaunchy();
 }
 
 

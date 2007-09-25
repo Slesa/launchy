@@ -50,6 +50,8 @@ public:
 	~PluginHandler();
 
 	void loadPlugins();
+	void showLaunchy();
+	void hideLaunchy();
 	void getLabels(QList<InputData>* id);
 	void getResults(QList<InputData>* id, QList<CatItem>* results);
 	void getCatalogs(QList<CatItem>* items);

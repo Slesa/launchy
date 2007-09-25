@@ -45,8 +45,8 @@ public:
 	virtual QList<Directory> GetInitialDirs() = 0;
 	virtual void AddToNotificationArea() = 0;
 	virtual void RemoveFromNotificationArea() = 0;
-	virtual void Execute(QString path, QString args) = 0;
-
+//	virtual void Execute(QString path, QString args) = 0;
+	virtual QString expandEnvironmentVars(QString) = 0;
 
 	QKeySequence oldKey;
 

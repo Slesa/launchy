@@ -281,10 +281,9 @@ void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
 	QRegExp regex_urlname("\">([^<]*)</A>", Qt::CaseInsensitive);
 	QRegExp regex_shortcut("SHORTCUTURL=\"([^\"]*)\"");
 	QRegExp regex_postdata("POST_DATA", Qt::CaseInsensitive);
-	QRegExp regex_locale("LAST_CHARSET=\"([^\"]*)\"");
 
 	while (!file.atEnd()) {
-		QString line = file.readLine();
+		QString line = QString::fromUtf8(file.readLine());
 		if (regex_url.indexIn(line) != -1) {
 			Bookmark mark;
 			mark.url = regex_url.cap(1);
@@ -292,12 +291,6 @@ void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
 			if (regex_urlname.indexIn(line) != -1) {
 				mark.name = regex_urlname.cap(1);
 
-				if (regex_locale.indexIn(line) != -1) {
-					QString locale = regex_locale.cap(1);
-					QTextCodec* qtcodec = QTextCodec::codecForName(locale.toUtf8());
-					if (qtcodec != NULL)
-						mark.name = qtcodec->toUnicode(mark.name.toUtf8());
-				}
 				if (regex_postdata.indexIn(line) != -1) continue;
 				if (regex_shortcut.indexIn(line) != -1) {
 					mark.shortcut = regex_shortcut.cap(1);
