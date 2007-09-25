@@ -197,7 +197,8 @@ public:
 	}
 
 
-	void Execute(QString path, QString args);
+//	void Execute(QString path, QString args);
+	QString expandEnvironmentVars(QString);
 	void AddToNotificationArea() {};
 	void RemoveFromNotificationArea() {};
 
@@ -216,9 +217,11 @@ public:
 			DestroyAlphaBorder();
 			alpha = new QLaunchyAlphaBorder(w);
 			alpha->SetImage(ImageName);
-			QRect rect(r.left, r.top, r.right, r.bottom);
-			alpha->setGeometry(rect);
-			alpha->show();
+			//QRect rect(r.left, r.top, r.right, r.bottom);
+			//alpha->setGeometry(rect);
+			QPoint pos(r.left, r.top);
+			alpha->RepositionWindow(pos);
+ 			alpha->show();
 
 		} else {
 			alpha = new QLaunchyAlphaBorder(w);

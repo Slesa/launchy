@@ -8,7 +8,7 @@ FORMS		= ../src/options.ui
 SOURCES		= main.cpp globals.cpp platform_base_hotkey.cpp \ 
 			  options.cpp catalog.cpp catalog_builder.cpp \ 
 			  dsingleapplication.cpp plugin_handler.cpp \
-			  icon_delegate.cpp
+			  icon_delegate.cpp plugin_interface.cpp
 HEADERS		= platform_util.h platform_base.h globals.h \
 			  globals.h main.h platform_base_hottrigger.h \ 
 			  platform_base_hotkey.h catalog.h \
@@ -21,10 +21,10 @@ ICON		= Launchy.ico
 win32 {
 	RC_FILE = win/launchy.rc
 	SOURCES += platform_win.cpp platform_win_hotkey.cpp
-	HEADERS += platform_win.h platform_win_hotkey.h
+	HEADERS += platform_win.h 
 	LIBS += shell32.lib
 	LIBS += user32.lib
-	LIBS += Gdi32.lib
+	LIBS += gdi32.lib
 	LIBS += comctl32.lib
 }
 

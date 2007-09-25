@@ -5,7 +5,7 @@ For beta release:
 
 Low priority:
 . Allow multiple directory selection for file extensions
-. Can get rid of extra data in alternatives item's if I clear the items after options exits
+. Can get rid of extra data (e.g. icon info) in alternatives item's if I clear the items after options exits
 . Append to file plugin or .bat file or something
 . Control+Enter to complete website
 . Confirmation on Alt+F4
@@ -13,11 +13,8 @@ Low priority:
 
 
 For next alpha:
-. Plugin event of Launchy coming forward.  Plugins should be allowed to provide search results at that time.
-. Use environment variables and use them by default in Launchy (for runner's cmd too)
+. Use environment variables and use them by default in Launchy (for runner's cmd too) (can use them but no gui way to add them)
 . Make sure skin and alpha are always together (seem to separate at launch)
-. Unicode in Foxy reads
-
 
 
 
@@ -28,6 +25,8 @@ Done for alpha 5:
 . Alternate search options now get selected correctly
 . After catalog update, update current search result
 . Can edit input
+. Plugin event of Launchy showing/hiding
+. Unicode in Foxy reads
 
 
 Done for alpha 4:

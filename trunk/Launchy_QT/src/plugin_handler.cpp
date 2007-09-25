@@ -29,6 +29,22 @@ PluginHandler::PluginHandler() {
 
 }
 
+void PluginHandler::showLaunchy()
+{
+	foreach(PluginInfo info, plugins) {
+		if (info.loaded)
+			info.obj->msg(MSG_LAUNCHY_SHOW);
+	}
+}
+
+void PluginHandler::hideLaunchy()
+{
+	foreach(PluginInfo info, plugins) {
+		if (info.loaded)
+			info.obj->msg(MSG_LAUNCHY_HIDE);
+	}
+}
+
 void PluginHandler::getLabels(QList<InputData>* id) 
 {
 	if (id->count() == 0) return;

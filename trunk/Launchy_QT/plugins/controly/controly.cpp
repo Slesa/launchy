@@ -65,45 +65,64 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 	}
 	QString buff = QString::fromUtf16((const ushort*) infoBuf);
 	QDir qd(buff);
-	QString dir = qd.absolutePath();
 
 	QStringList files = qd.entryList(QStringList("*.cpl"), QDir::Files, QDir::Unsorted);
 	foreach(QString file, files) {
-		QString path = dir + "/" + file;
-		HINSTANCE LoadMe;
-		LoadMe = LoadLibrary((LPCTSTR) path.utf16());
-		if (LoadMe == 0) continue;
-//		QString cpl = "CPlApplet";
-		APPLET_PROC cpla = (APPLET_PROC)GetProcAddress(LoadMe, "CPlApplet");
-		if (cpla == NULL) {
-			FreeLibrary(LoadMe);
-			continue;
+		QString path = QDir::toNativeSeparators(qd.absoluteFilePath(file));
+
+		union { 
+			NEWCPLINFOA NewCplInfoA;
+			NEWCPLINFOW NewCplInfoW; 
+		} Newcpl;
+	    
+		HINSTANCE hLib; // Library Handle to *.cpl file
+		APPLET_PROC CplCall; // Pointer to CPlApplet() function
+		LONG i;
+	    
+		// -------------------
+		if (!(hLib = LoadLibrary((LPCTSTR) path.utf16()))) 
+			continue ;	
+		if (!(CplCall=(APPLET_PROC)GetProcAddress(hLib,"CPlApplet")))
+		{
+			FreeLibrary(hLib);        
+			continue ;
 		}
-		LONG nInitResult = cpla(hwnd, CPL_INIT, 0, 0); 
-/*		if (nInitResult == 0) {
-			cpla(hwnd,CPL_STOP, 0, 0);
-			cpla(hwnd, CPL_EXIT, 0, 0);
-			FreeLibrary(LoadMe);			
-			continue;
-		}
-*/
-		LONG NumberOfApplets = cpla(hwnd, CPL_GETCOUNT, 0, 0);
-		for(int j = 0; j < NumberOfApplets; j++) {
-			CPLINFO info;
-			if (cpla(hwnd, CPL_INQUIRE, j, (LPARAM) &info) != 0)
-			{	
-//				break;
+	    
+		// -------------------
+		CplCall(NULL, CPL_INIT,0,0); // Init the *.cpl file
+	    
+		for (i=0;i<CplCall(NULL,CPL_GETCOUNT,0,0);i++)
+		{	        
+			Newcpl.NewCplInfoA.dwSize = 0;
+			Newcpl.NewCplInfoA.dwFlags = 0;
+			CplCall(NULL,CPL_NEWINQUIRE,i,(long)&Newcpl);
+	        
+			if (Newcpl.NewCplInfoA.dwSize == sizeof(NEWCPLINFOW))
+			{   // Case #1, CPL_NEWINQUIRE has returned an Unicode String
+				items->push_back(CatItem(path, QString::fromUtf16((const ushort*)Newcpl.NewCplInfoW.szName), 0, getIcon()));
 			}
-			TCHAR CPName[32];
-			if (0 == LoadString(LoadMe, info.idName, CPName, 32) )
-			{
-//				break;	
-			}			
-			items->push_back(CatItem(path, QString::fromUtf16((const ushort*)CPName), 0, getIcon()));			
-		}
-		cpla(hwnd,CPL_STOP, 0, 0);
-		cpla(hwnd, CPL_EXIT, 0, 0);
-		FreeLibrary(LoadMe);
+			else 
+			{   // Case #2, CPL_NEWINQUIRE has returned an ANSI String
+				if (Newcpl.NewCplInfoA.dwSize != sizeof(NEWCPLINFOA))
+				{
+					// Case #3, CPL_NEWINQUIRE failed to return a string
+					//    Get the string from the *.cpl Resource instead
+					CPLINFO CInfo;
+	                
+					CplCall(NULL,CPL_INQUIRE,i,(long)&CInfo);				
+					LoadStringA(hLib,CInfo.idName,
+						Newcpl.NewCplInfoA.szName,32);
+				}
+//				wchar_t	tmpString[32];
+//				MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, Newcpl.NewCplInfoA.szName, 32, tmpString, 32);
+				items->push_back(CatItem(path, QString(Newcpl.NewCplInfoA.szName), 0, getIcon()));
+			}
+		} // for
+	    
+		CplCall(NULL,CPL_EXIT,0,0);
+	    
+		// -------------------
+		FreeLibrary(hLib);        
 	}
 }
 #endif
