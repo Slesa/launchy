@@ -315,6 +315,17 @@ void QLaunchyAlphaBorder::SetImage(QString name)
 	DeleteObject(bmp);
 	DeleteDC(hDC);
 }
+void QLaunchyAlphaBorder::SetAlphaOpacity(double trans)
+{ 
+
+//	HDC hDC = 
+//	if (alpha != NULL) alpha->setWindowOpacity(trans); 
+	BLENDFUNCTION bf = { AC_SRC_OVER, 0, (int) (trans * 255.0), AC_SRC_ALPHA };
+	BOOL bRet= UpdateLayeredWindow(winId(), NULL, NULL, NULL, NULL,
+		NULL, 0, &bf, ULW_ALPHA);
+}
+
+
 void QLaunchyAlphaBorder::mouseMoveEvent(QMouseEvent *e)
 {
 	QPoint p = e->globalPos();

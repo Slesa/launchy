@@ -115,6 +115,7 @@ public:
 	}
 
 	void QLaunchyAlphaBorder::mouseMoveEvent(QMouseEvent *e);
+	void SetAlphaOpacity(double trans);
 
 };
 
@@ -221,7 +222,7 @@ public:
 			//alpha->setGeometry(rect);
 			QPoint pos(r.left, r.top);
 			alpha->RepositionWindow(pos);
- 			alpha->show();
+// 			alpha->show();
 
 		} else {
 			alpha = new QLaunchyAlphaBorder(w);
@@ -237,7 +238,7 @@ public:
 		if (alpha != NULL) 
 			alpha->show(); 
 	}
-	void SetAlphaOpacity(double trans) { if (alpha != NULL) alpha->setWindowOpacity(trans); }
+	void SetAlphaOpacity(double trans) { if (alpha != NULL) alpha->SetAlphaOpacity(trans); }
 
 
 };
