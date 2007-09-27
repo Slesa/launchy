@@ -316,7 +316,8 @@ void MyWidget::inputKeyPressEvent(QKeyEvent* key) {
 }
 
 void MyWidget::parseInput(QString text) {
-	QStringList spl = text.split(" | ");
+//	QStringList spl = text.split(" | ");
+	QStringList spl = text.split(QString(" ") + QChar(0x25ba) + QString(" "));
 	if (spl.count() < inputData.count()) {
 		inputData = inputData.mid(0, spl.count());
 	}
@@ -372,12 +373,21 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 	else {
 		if (key->key() == Qt::Key_Tab) {
 			if (inputData.count() > 0 && searchResults.count() > 0) {
-				// If it's an incomplete file, complete it
-				if (inputData.last().hasLabel(LABEL_FILE) &&input->text().compare(  QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0) {
-					QString path = searchResults[0].fullPath;					
+				// If it's an incomplete file or dir, complete it
+				QFileInfo info(searchResults[0].fullPath);
+
+				if ((inputData.last().hasLabel(LABEL_FILE) || info.isDir())
+					&& input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
+				{
+					QString path;
+					if (info.isSymLink())
+						path = info.symLinkTarget() + QDir::toNativeSeparators("/");
+					else
+						path= searchResults[0].fullPath;					
 					input->setText(QDir::toNativeSeparators(path));
 				} else {
-					input->setText(input->text() + " | ");
+					// Looking for a plugin
+					input->setText(input->text() + " " + QChar(0x25ba) + " ");
 				}
 			}
 		} else {
@@ -888,13 +898,22 @@ void MyWidget::hideLaunchy() {
 	if (dropTimer != NULL && dropTimer->isActive())
 		dropTimer->stop();
 	if (alwaysShowLaunchy) return;
+	
+	platform.HideAlphaBorder();
+	for(int i = 0; i < 10000; i++) {
+		double trans = 1.0 - ((double) i / 10000.0);
+		this->setWindowOpacity(trans);
+//		platform.SetAlphaOpacity(trans);
+	}
 	visible = false;
 	hide();
 	if (alternatives != NULL)
 		alternatives->hide();
-	platform.HideAlphaBorder();
 	// Let the plugins know
+
 	plugins.hideLaunchy();
+	setWindowOpacity(1.0);
+//	platform.SetAlphaOpacity(1.0);
 }
 
 

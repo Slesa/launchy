@@ -15,8 +15,12 @@ Low priority:
 For next alpha:
 . Use environment variables and use them by default in Launchy (for runner's cmd too) (can use them but no gui way to add them)
 . Make sure skin and alpha are always together (seem to separate at launch)
+. Why isn't recycle bin and stuff showing up?
+. Make enter launch alternate item and tab should add " | "
 
-
+Done for alpha 6:
+. Completes folders (e.g. my documents) into paths
+. Changed " | " to unicode arrow
 
 Done for alpha 5:
 . Controly should pick up more items now

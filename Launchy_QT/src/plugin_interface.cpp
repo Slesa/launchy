@@ -33,7 +33,9 @@ void runProgram(QString path, QString args) {
 		ShExecInfo.lpParameters = NULL;
 	}
 	QDir dir(path);
-	dir.cdUp();
+	QFileInfo info(path);
+	if (!info.isDir() && info.isFile())
+		dir.cdUp();
 	ShExecInfo.lpDirectory = (LPCTSTR)QDir::toNativeSeparators(dir.absolutePath()).utf16();
 	ShExecInfo.nShow = SW_NORMAL;
 	ShExecInfo.hInstApp = NULL;
