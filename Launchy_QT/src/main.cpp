@@ -625,7 +625,7 @@ void MyWidget::dropTimeout() {
 }
 
 void MyWidget::onHotKey() {
-	if (visible) {
+	if (isVisible()) {
 		hideLaunchy();
 	}
 	else {
@@ -658,7 +658,7 @@ void MyWidget::MoveFromAlpha(QPoint pos) {
 
 void MyWidget::setAlwaysShow(bool alwaysShow) {
 	alwaysShowLaunchy = alwaysShow;
-	if (!visible  && alwaysShow)
+	if (!isVisible()  && alwaysShow)
 		showLaunchy();
 }
 
@@ -879,13 +879,24 @@ void MyWidget::shouldDonate() {
 
 void MyWidget::showLaunchy() {
 	shouldDonate();
-	visible = true;
 	alternatives->hide();
-	show();
 	// This gets around the weird Vista bug
 	// where the alpha border would dissappear
 	// on sleep or user switch
 	platform.CreateAlphaBorder(this, "");
+//	this->setWindowOpacity(0.0);
+//	platform.SetAlphaOpacity(0.0);
+	show();
+	platform.ShowAlphaBorder();
+
+/*	for(int i = 0; i < 7500; i++) {
+		double trans = ((double) i / 7500);
+		this->setWindowOpacity(trans);
+		platform.SetAlphaOpacity(trans);
+	}
+*/
+
+
 	input->activateWindow();
 	input->selectAll();
 	input->setFocus();
@@ -899,21 +910,21 @@ void MyWidget::hideLaunchy() {
 		dropTimer->stop();
 	if (alwaysShowLaunchy) return;
 	
-	platform.HideAlphaBorder();
-	for(int i = 0; i < 10000; i++) {
-		double trans = 1.0 - ((double) i / 10000.0);
-		this->setWindowOpacity(trans);
-//		platform.SetAlphaOpacity(trans);
-	}
-	visible = false;
-	hide();
 	if (alternatives != NULL)
 		alternatives->hide();
-	// Let the plugins know
 
-	plugins.hideLaunchy();
+	for(int i = 0; i < 7500; i++) {
+		double trans = 1.0 - ((double) i / 7500.0);
+		this->setWindowOpacity(trans);
+		platform.SetAlphaOpacity(trans);
+	}
+	hide();
+	platform.HideAlphaBorder();
 	setWindowOpacity(1.0);
-//	platform.SetAlphaOpacity(1.0);
+	platform.SetAlphaOpacity(1.0);
+
+	// let the plugins know
+	plugins.hideLaunchy();
 }
 
 

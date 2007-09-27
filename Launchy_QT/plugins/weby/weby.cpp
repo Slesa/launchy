@@ -118,7 +118,7 @@ void WebyPlugin::init()
 		set->setArrayIndex(13);
 		set->setValue("name", "Maps");
 		set->setValue("base", "http://maps.google.com/");
-		set->setValue("maps?f=q&hl=en&geocode=&q=%s&ie=UTF8&z=12&iwloc=addr&om=1");
+		set->setValue("query", "maps?f=q&hl=en&geocode=&q=%s&ie=UTF8&z=12&iwloc=addr&om=1");
 		set->endArray();
 	}
 	set->setValue("weby/version", 2.0);
