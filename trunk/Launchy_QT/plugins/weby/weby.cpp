@@ -83,7 +83,7 @@ void WebyPlugin::init()
 		set->setArrayIndex(7);
 		set->setValue("name", "Wikipedia");
 		set->setValue("base", "http://www.wikipedia.com/");
-		set->setValue("query", "wiki/Special:Search?search=%s");
+		set->setValue("query", "wiki/Special:Search?search=%s&go=Go");
 
 		set->setArrayIndex(8);
 		set->setValue("name", "Dictionary");
@@ -115,6 +115,10 @@ void WebyPlugin::init()
 		set->setValue("base", "http://www.imdb.com/");
 		set->setValue("query", "find?s=all&q=%s");
 
+		set->setArrayIndex(13);
+		set->setValue("name", "Maps");
+		set->setValue("base", "http://maps.google.com/");
+		set->setValue("maps?f=q&hl=en&geocode=&q=%s&ie=UTF8&z=12&iwloc=addr&om=1");
 		set->endArray();
 	}
 	set->setValue("weby/version", 2.0);

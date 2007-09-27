@@ -237,7 +237,7 @@ public:
 		if (alpha != NULL) 
 			alpha->show(); 
 	}
-
+	void SetAlphaOpacity(double trans) { if (alpha != NULL) alpha->setWindowOpacity(trans); }
 
 
 };

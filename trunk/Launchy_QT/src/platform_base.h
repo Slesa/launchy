@@ -65,6 +65,7 @@ public:
 	virtual void MoveAlphaBorder(QPoint pos) { return; }
 	virtual void HideAlphaBorder() { return; }
 	virtual void ShowAlphaBorder() { return; }
+	virtual void SetAlphaOpacity(double) { return; }
 
 
 };
