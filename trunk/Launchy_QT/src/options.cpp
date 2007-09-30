@@ -47,8 +47,13 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
 		genCondensed->setChecked(gSettings->value("GenOps/condensedView",false).toBool());
 		genUpMinutes->setText(gSettings->value("GenOps/updatetimer", "10").toString());
+		genMaxViewable->setText(gSettings->value("GenOps/numviewable", "4").toString());
 		genNumResults->setText(gSettings->value("GenOps/numresults", "10").toString());
+		genOpaqueness->setValue(gSettings->value("GenOps/opaqueness", 100).toInt());
+		genFadeIn->setValue(gSettings->value("GenOps/fadein", 0).toInt());
+		genFadeOut->setValue(gSettings->value("GenOps/fadeout", 20).toInt());
 
+		connect(genOpaqueness, SIGNAL(sliderMoved(int)), main, SLOT(setOpaqueness(int)));
 
 		metaKeys << tr("Alt") << tr("Win") << tr("Shift") << tr("Control");
 		iMetaKeys << Qt::AltModifier << Qt::MetaModifier << Qt::ShiftModifier << Qt::ControlModifier;
@@ -207,9 +212,13 @@ void OptionsDlg::accept() {
 	gSettings->setValue("GenOps/showHiddenFiles", genShowHidden->isChecked());
 	gSettings->setValue("GenOps/condensedView", genCondensed->isChecked());
 	gSettings->setValue("GenOps/updatetimer", genUpMinutes->text());
+	gSettings->setValue("GenOps/numviewable", genMaxViewable->text());
 	gSettings->setValue("GenOps/numresults", genNumResults->text());
 	gSettings->setValue("GenOps/hotkeyModifier", iMetaKeys[genModifierBox->currentIndex()]);
 	gSettings->setValue("GenOps/hotkeyAction", iActionKeys[genKeyBox->currentIndex()]);
+	gSettings->setValue("GenOps/opaqueness", genOpaqueness->value());
+	gSettings->setValue("GenOps/fadein", genFadeIn->value());
+	gSettings->setValue("GenOps/fadeout", genFadeOut->value());
 
 	// Apply General Options	
 	main->setAlwaysShow(genAlwaysShow->isChecked());
@@ -218,8 +227,12 @@ void OptionsDlg::accept() {
 	main->setUpdateCheck(genUpdateCheck->isChecked());
 	main->setUpdateTimer(genUpMinutes->text().toInt());
 	main->setNumResults(genNumResults->text().toInt());
+	main->setNumViewable(genMaxViewable->text().toInt());
 	main->setHotkey(iMetaKeys[genModifierBox->currentIndex()], iActionKeys[genKeyBox->currentIndex()]);
 	main->setCondensed(genCondensed->isChecked());
+	main->setOpaqueness(genOpaqueness->value());
+	main->setFadeTimes(genFadeIn->value(), genFadeOut->value());
+
 	
 	// Apply Skin Options
 	QString prevSkinName = gSettings->value("GenOps/skin", "Default").toString();

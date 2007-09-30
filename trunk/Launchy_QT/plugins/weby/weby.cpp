@@ -82,8 +82,8 @@ void WebyPlugin::init()
 
 		set->setArrayIndex(7);
 		set->setValue("name", "Wikipedia");
-		set->setValue("base", "http://www.wikipedia.com/");
-		set->setValue("query", "wiki/Special:Search?search=%s&go=Go");
+		set->setValue("base", "http://en.wikipedia.com/");
+		set->setValue("query", "wiki/Special:Search?search=%s&fulltext=Search");
 
 		set->setArrayIndex(8);
 		set->setValue("name", "Dictionary");

@@ -23,7 +23,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab" >
       <attribute name="title" >
@@ -33,48 +33,249 @@
        <item>
         <layout class="QHBoxLayout" >
          <item>
-          <widget class="QGroupBox" name="groupBox_4" >
+          <layout class="QVBoxLayout" >
+           <item>
+            <widget class="QGroupBox" name="groupBox_4" >
+             <property name="title" >
+              <string>User Interface</string>
+             </property>
+             <layout class="QVBoxLayout" >
+              <item>
+               <widget class="QCheckBox" name="genAlwaysShow" >
+                <property name="text" >
+                 <string>Always display Launchy window</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="genHideFocus" >
+                <property name="text" >
+                 <string>Hide Launchy when it loses focus</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="genAlwaysTop" >
+                <property name="enabled" >
+                 <bool>false</bool>
+                </property>
+                <property name="text" >
+                 <string>Always on top</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="genCondensed" >
+                <property name="text" >
+                 <string>Condense suggestion list</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" >
+                <item>
+                 <widget class="QLabel" name="label" >
+                  <property name="text" >
+                   <string>Hotkey:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer>
+                  <property name="orientation" >
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" >
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="genModifierBox" />
+                </item>
+                <item>
+                 <spacer>
+                  <property name="orientation" >
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" >
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="genKeyBox" />
+                </item>
+                <item>
+                 <spacer>
+                  <property name="orientation" >
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" >
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation" >
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" >
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBox_10" >
            <property name="title" >
-            <string>User Interface</string>
+            <string>Gui</string>
            </property>
            <layout class="QVBoxLayout" >
             <item>
-             <widget class="QCheckBox" name="genAlwaysShow" >
-              <property name="text" >
-               <string>Always display Launchy window</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" >
+              <item>
+               <widget class="QLabel" name="label_6" >
+                <property name="text" >
+                 <string>Opaqueness</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSlider" name="genOpaqueness" >
+                <property name="maximum" >
+                 <number>100</number>
+                </property>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
-             <widget class="QCheckBox" name="genHideFocus" >
-              <property name="text" >
-               <string>Hide Launchy when it loses focus</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" >
+              <item>
+               <widget class="QLabel" name="label_3" >
+                <property name="text" >
+                 <string>Fade in time</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSlider" name="genFadeIn" >
+                <property name="maximum" >
+                 <number>1000</number>
+                </property>
+                <property name="singleStep" >
+                 <number>10</number>
+                </property>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
-             <widget class="QCheckBox" name="genAlwaysTop" >
-              <property name="enabled" >
-               <bool>false</bool>
-              </property>
-              <property name="text" >
-               <string>Always on top</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" >
+              <item>
+               <widget class="QLabel" name="label_4" >
+                <property name="text" >
+                 <string>Fade out time</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSlider" name="genFadeOut" >
+                <property name="maximum" >
+                 <number>1000</number>
+                </property>
+                <property name="singleStep" >
+                 <number>10</number>
+                </property>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="tickPosition" >
+                 <enum>QSlider::NoTicks</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
-             <widget class="QCheckBox" name="genCondensed" >
-              <property name="text" >
-               <string>Condense suggestion list</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" >
+              <item>
+               <widget class="QLabel" name="label_9" >
+                <property name="text" >
+                 <string>Simultaneously visible alternate suggestions</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>16</width>
+                  <height>16</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="genMaxViewable" >
+                <property name="maximumSize" >
+                 <size>
+                  <width>40</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" >
+                 <size>
+                  <width>16</width>
+                  <height>16</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
             </item>
             <item>
              <layout class="QHBoxLayout" >
               <item>
                <widget class="QLabel" name="label_8" >
                 <property name="text" >
-                 <string>Number of alternate suggestions</string>
+                 <string>Max. number of alternate suggestions</string>
                 </property>
                </widget>
               </item>
@@ -92,63 +293,14 @@
                </spacer>
               </item>
               <item>
-               <widget class="QLineEdit" name="genNumResults" />
-              </item>
-              <item>
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" >
+               <widget class="QLineEdit" name="genNumResults" >
+                <property name="maximumSize" >
                  <size>
                   <width>40</width>
-                  <height>20</height>
+                  <height>16777215</height>
                  </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" >
-              <item>
-               <widget class="QLabel" name="label" >
-                <property name="text" >
-                 <string>Hotkey:</string>
                 </property>
                </widget>
-              </item>
-              <item>
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" >
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QComboBox" name="genModifierBox" />
-              </item>
-              <item>
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" >
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QComboBox" name="genKeyBox" />
               </item>
               <item>
                <spacer>
@@ -168,76 +320,44 @@
            </layout>
           </widget>
          </item>
-         <item>
-          <spacer>
-           <property name="orientation" >
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" >
-            <size>
-             <width>41</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" >
-           <item>
-            <widget class="QGroupBox" name="groupBox_6" >
-             <property name="title" >
-              <string>System Options</string>
-             </property>
-             <layout class="QVBoxLayout" >
-              <item>
-               <widget class="QCheckBox" name="genUpdateCheck" >
-                <property name="text" >
-                 <string>Check for updates on startup</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="genShowHidden" >
-                <property name="text" >
-                 <string>Show hidden files in browse mode</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="genPortable" >
-                <property name="text" >
-                 <string>Portable mode (USB stick)</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>41</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
         </layout>
        </item>
        <item>
         <layout class="QHBoxLayout" >
          <item>
-          <widget class="QGroupBox" name="groupBox_5" >
+          <widget class="QGroupBox" name="groupBox_6" >
            <property name="title" >
-            <string>Performance</string>
+            <string>System Options</string>
            </property>
            <layout class="QVBoxLayout" >
+            <item>
+             <widget class="QCheckBox" name="genUpdateCheck" >
+              <property name="text" >
+               <string>Check for updates on startup</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="genShowHidden" >
+              <property name="text" >
+               <string>Show hidden files in browse mode</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="genPortable" >
+              <property name="text" >
+               <string>Portable mode (USB stick)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="genFastIndex" >
+              <property name="text" >
+               <string>Use fast indexer? (uses more memory)</string>
+              </property>
+             </widget>
+            </item>
             <item>
              <layout class="QHBoxLayout" >
               <item>
@@ -248,7 +368,21 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="genUpMinutes" />
+               <widget class="QLineEdit" name="genUpMinutes" >
+                <property name="maximumSize" >
+                 <size>
+                  <width>40</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_7" >
+                <property name="text" >
+                 <string>(0 for manual updates only)</string>
+                </property>
+               </widget>
               </item>
               <item>
                <spacer>
@@ -257,27 +391,13 @@
                 </property>
                 <property name="sizeHint" >
                  <size>
-                  <width>40</width>
+                  <width>31</width>
                   <height>20</height>
                  </size>
                 </property>
                </spacer>
               </item>
              </layout>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_7" >
-              <property name="text" >
-               <string>(0 for manual updates only)</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="genFastIndex" >
-              <property name="text" >
-               <string>Use fast indexer? (uses more memory)</string>
-              </property>
-             </widget>
             </item>
            </layout>
           </widget>
@@ -304,8 +424,8 @@
          </property>
          <property name="sizeHint" >
           <size>
-           <width>20</width>
-           <height>41</height>
+           <width>524</width>
+           <height>16</height>
           </size>
          </property>
         </spacer>
@@ -487,7 +607,7 @@
                 <property name="maximumSize" >
                  <size>
                   <width>16777215</width>
-                  <height>16777215</height>
+                  <height>16</height>
                  </size>
                 </property>
                 <property name="text" >
@@ -497,6 +617,12 @@
               </item>
               <item>
                <widget class="QPushButton" name="catTypesMinus" >
+                <property name="maximumSize" >
+                 <size>
+                  <width>16777215</width>
+                  <height>16</height>
+                 </size>
+                </property>
                 <property name="text" >
                  <string>-</string>
                 </property>

@@ -61,7 +61,7 @@ MyWidget::MyWidget(QWidget *parent)
 	alwaysShowLaunchy = false;
 
 
-	hideLaunchy();
+//	hideLaunchy();
 	label = new QLabel(this);
 
 	opsButton = new QPushButton(label);
@@ -200,6 +200,7 @@ void MyWidget::showAlternatives(bool show) {
 	QRect n = altRect;
 	n.translate(pos());
 	alternatives->setGeometry(n);
+
 	if (show) {
 		//alternatives->clear();
 		int num = alternatives->count();
@@ -223,7 +224,15 @@ void MyWidget::showAlternatives(bool show) {
 			alternatives->setFocus();
 		}
 
-			alternatives->show();
+		if (alternatives->count() > 0) {
+			int numViewable = gSettings->value("GenOps/numviewable", "4").toInt();
+			QRect r = alternatives->geometry();
+			int min = alternatives->count() < numViewable ? alternatives->count() : numViewable;
+			r.setHeight(min * alternatives->sizeHintForRow(0));
+			alternatives->setGeometry(r);
+		}
+
+		alternatives->show();
 
 	}
 }
@@ -258,22 +267,6 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 	}
 	if (key->key() == Qt::Key_Up) {key->ignore();}
 	else if (key->key() == Qt::Key_Down) {key->ignore();}
-	/*
-	else if (key->key() == Qt::Key_Backslash || key->key() == Qt::Key_Slash) {
-		int row = alternatives->currentRow();
-		CatItem tmp = searchResults[row];
-		searchResults.clear();
-		searchResults.push_back(tmp);
-		QIcon icon = getIcon(searchResults[0]);
-
-		licon->setPixmap(icon.pixmap(QSize(32,32), QIcon::Normal, QIcon::On));
-		output->setText(searchResults[0].shortName);
-		input->setText(QDir::toNativeSeparators(searchResults[0].fullPath + "/"));
-		alternatives->hide();
-		this->activateWindow();
-		input->setFocus();
-	}
-	*/
 	else if (key->key() == Qt::Key_Return || key->key() == Qt::Key_Enter || key->key() == Qt::Key_Tab) {
 		
 		if (searchResults.count() > 0) {
@@ -290,9 +283,19 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 				searchResults[0] = tmp;
 				updateDisplay();
 				alternatives->hide();
+
+				if (key->key() == Qt::Key_Tab) {
+					doTab();
+					parseInput(input->text());
+					searchOnInput();
+					updateDisplay();
+					dropTimer->stop();
+					dropTimer->start(1000);
+				} else {
+					doEnter();
+				}
 			}
 		}
-
 	}
 	else {
 		alternatives->hide();
@@ -333,7 +336,47 @@ void MyWidget::parseInput(QString text) {
 	}
 }
 
+// Print all of the input up to the last entry
+QString MyWidget::printInput() {
+	QString res = "";
+	for(int i = 0; i < inputData.count()-1; ++i) {
+		res += inputData[i].getText();
+		if (i+2 >= inputData.count())
+			res += QString(" ") + QChar(0x25ba) + QString(" ");
+	}
+	return res;
+}
 
+void MyWidget::doTab() 
+{
+	if (inputData.count() > 0 && searchResults.count() > 0) {
+		// If it's an incomplete file or dir, complete it
+		QFileInfo info(searchResults[0].fullPath);
+
+		if ((inputData.last().hasLabel(LABEL_FILE) || info.isDir())
+			&& input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
+		{
+			QString path;
+			if (info.isSymLink())
+				path = info.symLinkTarget() + QDir::toNativeSeparators("/");
+			else
+				path= searchResults[0].fullPath;					
+			input->setText(printInput() + QDir::toNativeSeparators(path));
+		} else {
+			// Looking for a plugin
+			input->setText(input->text() + " " + QChar(0x25ba) + " ");
+		}
+	}
+}
+
+void MyWidget::doEnter()
+{
+	if (dropTimer->isActive())
+		dropTimer->stop();
+	hideLaunchy();
+	if (searchResults.count() > 0 || inputData.count() > 1) 
+		launchObject(0);	
+}
 
 void MyWidget::keyPressEvent(QKeyEvent* key) {
 	
@@ -342,11 +385,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 	}
 
 	else if (key->key() == Qt::Key_Return) {
-		if (dropTimer->isActive())
-			dropTimer->stop();
-		hideLaunchy();
-		if (searchResults.count() > 0 || inputData.count() > 1) 
-			launchObject(0);				
+		doEnter();			
 	}
 
 	else if (key->key() == Qt::Key_Down) {
@@ -372,24 +411,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 
 	else {
 		if (key->key() == Qt::Key_Tab) {
-			if (inputData.count() > 0 && searchResults.count() > 0) {
-				// If it's an incomplete file or dir, complete it
-				QFileInfo info(searchResults[0].fullPath);
-
-				if ((inputData.last().hasLabel(LABEL_FILE) || info.isDir())
-					&& input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
-				{
-					QString path;
-					if (info.isSymLink())
-						path = info.symLinkTarget() + QDir::toNativeSeparators("/");
-					else
-						path= searchResults[0].fullPath;					
-					input->setText(QDir::toNativeSeparators(path));
-				} else {
-					// Looking for a plugin
-					input->setText(input->text() + " " + QChar(0x25ba) + " ");
-				}
-			}
+			doTab();
 		} else {
 			key->ignore();	
 		}
@@ -404,7 +426,6 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 		if (input->text() != "") {
 			searchOnInput();
 			updateDisplay();
-
 		}
 		
 	}	
@@ -716,6 +737,7 @@ void MyWidget::setPortable(bool portable) {
 
 	}
 }
+
 void MyWidget::setUpdateCheck(bool) {
 
 }
@@ -726,7 +748,22 @@ void MyWidget::setNumResults(int) {
 
 }
 
+void MyWidget::setFadeTimes(int in, int out)
+{
+	
+}
 
+void MyWidget::setNumViewable(int val)
+{
+}
+
+void MyWidget::setOpaqueness(int val)
+{
+	double max = (double) val;
+	max /= 100.0;
+	this->setWindowOpacity(max);
+	platform.SetAlphaOpacity(max);
+}
 
 void MyWidget::applySkin(QString directory) {
 
@@ -877,33 +914,63 @@ void MyWidget::shouldDonate() {
 	}
 }
 
+void MyWidget::fadeIn() {
+	this->setWindowOpacity(0.0);
+	platform.SetAlphaOpacity(0.0);
+
+	show();
+	platform.ShowAlphaBorder();
+
+	int time = gSettings->value("GenOps/fadein", 0).toInt();
+	double delay = ((double) time) / (1.0 / 0.05);
+
+	double max = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
+	max /= 100.0;
+
+
+	for(double i = 0.0; i < max + 0.05; i += 0.05) {
+		this->setWindowOpacity(i);
+		platform.SetAlphaOpacity(i);
+		Sleeper::msleep(delay);
+	}
+
+	return;
+}
+
+
+
+
 void MyWidget::showLaunchy() {
 	shouldDonate();
 	alternatives->hide();
+
 	// This gets around the weird Vista bug
 	// where the alpha border would dissappear
 	// on sleep or user switch
 	platform.CreateAlphaBorder(this, "");
-//	this->setWindowOpacity(0.0);
-//	platform.SetAlphaOpacity(0.0);
-	show();
-	platform.ShowAlphaBorder();
 
-/*	for(int i = 0; i < 7500; i++) {
-		double trans = ((double) i / 7500);
-		this->setWindowOpacity(trans);
-		platform.SetAlphaOpacity(trans);
-	}
-*/
-
+	fadeIn();
 
 	input->activateWindow();
 	input->selectAll();
 	input->setFocus();
+
 	// Let the plugins know
 	plugins.showLaunchy();
 }
 
+void MyWidget::fadeOut() {
+	int time = gSettings->value("GenOps/fadeout", 0).toInt();
+	double delay = ((double) time) / (1.0 / 0.05);
+
+	for(double i = 1.0; i > -0.05; i -= 0.05) {
+		this->setWindowOpacity(i);
+		platform.SetAlphaOpacity(i);
+		Sleeper::msleep(delay);
+	}
+
+	return;
+}
 
 void MyWidget::hideLaunchy() {
 	if (dropTimer != NULL && dropTimer->isActive())
@@ -913,15 +980,10 @@ void MyWidget::hideLaunchy() {
 	if (alternatives != NULL)
 		alternatives->hide();
 
-	for(int i = 0; i < 7500; i++) {
-		double trans = 1.0 - ((double) i / 7500.0);
-		this->setWindowOpacity(trans);
-		platform.SetAlphaOpacity(trans);
-	}
+	fadeOut();
+
 	hide();
 	platform.HideAlphaBorder();
-	setWindowOpacity(1.0);
-	platform.SetAlphaOpacity(1.0);
 
 	// let the plugins know
 	plugins.hideLaunchy();

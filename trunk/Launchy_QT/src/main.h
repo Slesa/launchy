@@ -35,6 +35,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "catalog_builder.h"
 #include "icon_delegate.h"
 
+class Sleeper : public QThread
+{
+	public:
+		static void sleep(unsigned long secs)
+		{
+			QThread::sleep(secs);
+		}
+		static void msleep(unsigned long msecs) 
+		{
+			QThread::msleep(msecs);
+		}
+		static void usleep(unsigned long usecs) 
+		{
+			QThread::usleep(usecs);
+		}
+};
 
 class QCharLineEdit : public QLineEdit
 {
@@ -141,6 +157,13 @@ public:
 	void applySkin2(QString directory);
 	void updateDisplay();
 	void searchOnInput();
+	void fadeIn();
+	void fadeOut();
+
+	void doTab();
+	void doEnter();
+	void setNumViewable(int val);
+	QString printInput();
 private:
     QHttp *http;
     QBuffer *verBuffer;
@@ -165,6 +188,8 @@ public slots:
 	void altKeyPressEvent(QKeyEvent* key);
 	void altIndexChanged(int index);
 	void focusOutEvent(QFocusEvent* evt);
+	void setFadeTimes(int, int);
+	void setOpaqueness(int val);
 };
 
 #endif
