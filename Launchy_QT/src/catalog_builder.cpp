@@ -119,6 +119,7 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 			}
 		}
 	}
+
 	if (fbin) {
 		QStringList bins = qd.entryList(QDir::Files | QDir::Executable);
 		for(int i = 0; i < bins.count(); ++i) {
@@ -136,7 +137,7 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 	if (filters.count() == 0)
 		return;
 
-	QStringList files = qd.entryList(filters, QDir::Files, QDir::Unsorted);
+	QStringList files = qd.entryList(filters, QDir::Files | QDir::System, QDir::Unsorted );
 	for(int i = 0; i < files.count(); ++i) {
 		if (!indexed.contains(dir + "/" + files[i])) {
 			CatItem item(dir + "/" + files[i]);

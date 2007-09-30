@@ -15,12 +15,18 @@ Low priority:
 For next alpha:
 . Use environment variables and use them by default in Launchy (for runner's cmd too) (can use them but no gui way to add them)
 . Make sure skin and alpha are always together (seem to separate at launch)
-. Why isn't recycle bin and stuff showing up?
-. Make enter launch alternate item and tab should add " | "
+
 
 Done for alpha 6:
 . Completes folders (e.g. my documents) into paths
 . Changed " | " to unicode arrow
+. Wikipedia entry fixed for new installations
+. Fade in / out
+. User adjustable opaqueness
+. Enter and tab work as expected in the dropdown menu
+. Adjustable dropdown length
+. Recycle bin and other system folders now show up
+
 
 Done for alpha 5:
 . Controly should pick up more items now
@@ -47,25 +53,10 @@ Done for alpha 3:
 
 
 
-For next alpha:
-. Expand on links, e.g. my documents in explory
-//. Maybe alphabetize lists of files?  Hmm
-. Controly is too strict
-
-
-Crashes:
-. I crashed Launchy by adding qt4.3.1\bin, checking "Executables" and hitting "ok"
-
-
-
 
 Currently working on: 
 
-Seems like the database is getting hosed every now and then, "webstats" loses its count from time to time
-
 Add "open with" support
-
-Are the files being written/read in unicode?  Check on firefox bookmarks too.
 
 Trying to stylize the scrollbar is difficult
 
@@ -76,7 +67,6 @@ Rescanning the database caused the rescan to freeze at around 76%, couldn't do a
 
 Memory leaks?
 
-
 Why does Qt::WindowStaysOnTopHint cause the program to close?
 
 Todo:
@@ -84,11 +74,5 @@ Todo:
 . Make sure gSearchTxt is set before sort
 
 KNOWN PROBLEMS:
-Icons don't show up if wrong color setting (16-bit)
 Options not being saved on laptop
-
-
-
-XP issue:
-I've installed the vc_redist.. so the SXS for the VC runtime is there.. and still plugins won't load.  Is it a QT issue then?
 
