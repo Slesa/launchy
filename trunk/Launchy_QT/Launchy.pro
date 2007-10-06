@@ -7,12 +7,12 @@ UI_DIR		= ../src/
 FORMS		= ../src/options.ui
 SOURCES		= main.cpp globals.cpp platform_base_hotkey.cpp \ 
 			  options.cpp catalog.cpp catalog_builder.cpp \ 
-			  dsingleapplication.cpp plugin_handler.cpp \
+			   plugin_handler.cpp \
 			  icon_delegate.cpp plugin_interface.cpp
 HEADERS		= platform_util.h platform_base.h globals.h \
 			  globals.h main.h platform_base_hottrigger.h \ 
 			  platform_base_hotkey.h catalog.h \
-			  catalog_builder.h dsingleapplication.h \ 
+			  catalog_builder.h  \ 
 			  plugin_interface.h plugin_handler.h options.h \
 			  icon_delegate.h
 ICON		= Launchy.ico
@@ -37,3 +37,9 @@ win32:release {
 	CONFIG += embed_manifest_exe
 	DESTDIR = ../release/
 }
+
+x11 {
+	SOURCES += dsingleapplication.cpp
+	HEADERS += dsingleapplication.h
+}
+
