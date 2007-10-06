@@ -47,6 +47,7 @@ public:
 	virtual void RemoveFromNotificationArea() = 0;
 //	virtual void Execute(QString path, QString args) = 0;
 	virtual QString expandEnvironmentVars(QString) = 0;
+	virtual bool isAlreadyRunning() = 0;
 
 	QKeySequence oldKey;
 

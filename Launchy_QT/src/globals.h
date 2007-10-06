@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "catalog_builder.h"
 
 #define LAUNCHY_VERSION 198
-#define LAUNCHY_VERSION_STRING "2.0 Alpha 6"
+#define LAUNCHY_VERSION_STRING "2.0 Alpha 7"
 
 #define HASH_LAUNCHY 0
 #define LABEL_FILE 0
@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern QWidget* gMainWidget;
 extern QSettings* gSettings;
 extern CatBuilder* gBuilder;
-
+extern QString gNativeSep;
 
 extern QString gSearchTxt;
 

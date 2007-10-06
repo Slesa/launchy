@@ -55,7 +55,36 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 BOOL GetShellDir(int iType, QString& szPath);
 
 
+class LimitSingleInstance
+{
+public:
+  DWORD  m_dwLastError;
+  HANDLE m_hMutex;
 
+public:
+  LimitSingleInstance(TCHAR *strMutexName)
+  {
+    //Make sure that you use a name that is unique for this application otherwise
+    //two apps may think they are the same if they are using same name for
+    //3rd parm to CreateMutex
+    m_hMutex = CreateMutex(NULL, FALSE, strMutexName); //do early
+    m_dwLastError = GetLastError(); //save for use later...
+  }
+   
+  ~LimitSingleInstance() 
+  {
+    if (m_hMutex)  //Do not forget to close handles.
+    {
+       CloseHandle(m_hMutex); //Do as late as possible.
+       m_hMutex = NULL; //Good habit to be in.
+    }
+  }
+
+  BOOL IsAnotherInstanceRunning() 
+  {
+    return (ERROR_ALREADY_EXISTS == m_dwLastError);
+  }
+};
 
 class WinIconProvider : QFileIconProvider
 {
@@ -128,10 +157,14 @@ private:
 	HANDLE m1, mg1;
 	HDC hDC;
 	QString lastImageName;
+	LimitSingleInstance* instance;
 public:
 	PlatformImp() : PlatformBase() 		
 	{
+		instance = new LimitSingleInstance(TEXT("Global\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
+		
 		//CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+
 		alpha = NULL; 
 		icons = (QFileIconProvider*) new WinIconProvider();
 
@@ -170,6 +203,7 @@ public:
 			delete icons;
 		CloseHandle(m1);
 		CloseHandle(mg1);
+		delete instance;
 
 	}
 	// Mandatory functions
@@ -237,6 +271,9 @@ public:
 	void ShowAlphaBorder() {
 		if (alpha != NULL) 
 			alpha->show(); 
+	}
+	bool isAlreadyRunning() {
+		return instance->IsAnotherInstanceRunning();
 	}
 	void SetAlphaOpacity(double trans) { if (alpha != NULL) alpha->SetAlphaOpacity(trans); }
 

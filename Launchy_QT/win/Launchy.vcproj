@@ -183,18 +183,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="Etc"
-			>
-			<File
-				RelativePath="..\src\dsingleapplication.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\dsingleapplication.h"
-				>
-			</File>
-		</Filter>
 		<File
 			RelativePath="..\Launchy.pro"
 			>

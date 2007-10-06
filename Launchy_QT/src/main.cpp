@@ -36,6 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QSettings>
 #include <QTimer>
 #include <QDateTime>
+#include <QDesktopWidget>
 
 #include "icon_delegate.h"
 #include "main.h"
@@ -50,6 +51,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 MyWidget::MyWidget(QWidget *parent)
 :  updateTimer(NULL), dropTimer(NULL), alternatives(NULL), QWidget(parent,Qt::Tool | Qt::FramelessWindowHint /*,Qt::Popup*/)
 {
+	if (platform.isAlreadyRunning())
+		exit(1);
+
+
+
 	gMainWidget = this;
 	menuOpen = false;
 	gSearchTxt = "";
@@ -199,6 +205,7 @@ void MyWidget::showAlternatives(bool show) {
 		return;
 	QRect n = altRect;
 	n.translate(pos());
+
 	alternatives->setGeometry(n);
 
 	if (show) {
@@ -223,14 +230,21 @@ void MyWidget::showAlternatives(bool show) {
 			alternatives->addItem(item);
 			alternatives->setFocus();
 		}
-
 		if (alternatives->count() > 0) {
 			int numViewable = gSettings->value("GenOps/numviewable", "4").toInt();
-			QRect r = alternatives->geometry();
+			//QRect r = alternatives->geometry();
 			int min = alternatives->count() < numViewable ? alternatives->count() : numViewable;
-			r.setHeight(min * alternatives->sizeHintForRow(0));
-			alternatives->setGeometry(r);
+			n.setHeight(min * alternatives->sizeHintForRow(0));
+
+			altRect.setHeight(n.height());
+
+			// Is there room for the dropdown box?
+			if (n.y() + n.height() > qApp->desktop()->height()) {
+				n.moveTop(pos().y() + input->pos().y() - n.height());
+			}
+			alternatives->setGeometry(n);
 		}
+
 
 		alternatives->show();
 
@@ -360,7 +374,7 @@ void MyWidget::doTab()
 			if (info.isSymLink())
 				path = info.symLinkTarget() + QDir::toNativeSeparators("/");
 			else
-				path= searchResults[0].fullPath;					
+				path = searchResults[0].fullPath;
 			input->setText(printInput() + QDir::toNativeSeparators(path));
 		} else {
 			// Looking for a plugin
@@ -373,9 +387,10 @@ void MyWidget::doEnter()
 {
 	if (dropTimer->isActive())
 		dropTimer->stop();
-	hideLaunchy();
 	if (searchResults.count() > 0 || inputData.count() > 1) 
 		launchObject(0);	
+	hideLaunchy();
+
 }
 
 void MyWidget::keyPressEvent(QKeyEvent* key) {
@@ -384,7 +399,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 			hideLaunchy();
 	}
 
-	else if (key->key() == Qt::Key_Return) {
+	else if (key->key() == Qt::Key_Return || key->key() == Qt::Key_Enter) {
 		doEnter();			
 	}
 
@@ -449,6 +464,7 @@ void MyWidget::searchOnInput() {
 	plugins.getLabels(&inputData);
 	plugins.getResults(&inputData, &searchResults);
 	qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
+
 	// Is it a file?
 	if (gSearchTxt.contains("\\") || gSearchTxt.contains("/")) {
 		searchFiles(gSearchTxt, searchResults);
@@ -511,9 +527,9 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 	QDir qd(dir);
 	QStringList ilist;
 	if (gSettings->value("GenOps/showHiddenFiles", false).toBool())
-		ilist = qd.entryList(QStringList(file + "*"), QDir::Hidden | QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
+		ilist = qd.entryList(QStringList(file + "*"), QDir::Hidden | QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot, QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
 	else
-		ilist = qd.entryList(QStringList(file + "*"), QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
+		ilist = qd.entryList(QStringList(file + "*"), QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot, QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
 	foreach(QString inf, ilist) {
 		if (inf.mid(0, file.count()).compare(file,  Qt::CaseInsensitive) == 0) {
 			QString fp = qd.absolutePath() + "/" + inf;
@@ -924,11 +940,18 @@ void MyWidget::fadeIn() {
 	int time = gSettings->value("GenOps/fadein", 0).toInt();
 	double delay = ((double) time) / (1.0 / 0.05);
 
+
 	double max = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
 	max /= 100.0;
 
+	if (time == 0) {
+		this->setWindowOpacity(max);
+		platform.SetAlphaOpacity(max);
+		return;
+	}
 
-	for(double i = 0.0; i < max + 0.05; i += 0.05) {
+
+	for(double i = 0.0; i < max + 0.01; i += 0.05) {
 		this->setWindowOpacity(i);
 		platform.SetAlphaOpacity(i);
 		Sleeper::msleep(delay);
@@ -943,12 +966,12 @@ void MyWidget::fadeIn() {
 void MyWidget::showLaunchy() {
 	shouldDonate();
 	alternatives->hide();
-
+	
 	// This gets around the weird Vista bug
 	// where the alpha border would dissappear
 	// on sleep or user switch
 	platform.CreateAlphaBorder(this, "");
-
+	platform.MoveAlphaBorder(pos());
 	fadeIn();
 
 	input->activateWindow();
@@ -961,9 +984,12 @@ void MyWidget::showLaunchy() {
 
 void MyWidget::fadeOut() {
 	int time = gSettings->value("GenOps/fadeout", 0).toInt();
+	if (time == 0) return;
 	double delay = ((double) time) / (1.0 / 0.05);
+	double max = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
 
-	for(double i = 1.0; i > -0.05; i -= 0.05) {
+
+	for(double i = max/100.0; i > -0.01; i -= 0.05) {
 		this->setWindowOpacity(i);
 		platform.SetAlphaOpacity(i);
 		Sleeper::msleep(delay);
@@ -1000,10 +1026,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setApplicationName("Launchy");
 	QCoreApplication::setOrganizationDomain("Launchy");
 
-	DSingleApplication instance( "LAUNCHY" );
 
-	if ( instance.isRunning() )
-		return 0;
 
 	MyWidget widget;
 	widget.setObjectName("main");

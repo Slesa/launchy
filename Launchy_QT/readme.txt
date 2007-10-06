@@ -4,17 +4,27 @@ For beta release:
 
 
 Low priority:
-. Allow multiple directory selection for file extensions
 . Can get rid of extra data (e.g. icon info) in alternatives item's if I clear the items after options exits
 . Append to file plugin or .bat file or something
-. Control+Enter to complete website
 . Confirmation on Alt+F4
 . Launchy commands inline (e.g. rescan/add dir/exit)
 
 
 For next alpha:
 . Use environment variables and use them by default in Launchy (for runner's cmd too) (can use them but no gui way to add them)
+
+
+
+
+Done for alpha 7:
+. Use mutex for running launchy, instead of network code 
+. Fix animation problems
+. Enter key works for launching
+. Add .weby to weby sites
+. Alternatives should display above the program if no room below
 . Make sure skin and alpha are always together (seem to separate at launch)
+. Sorts by directory names first
+
 
 
 Done for alpha 6:
