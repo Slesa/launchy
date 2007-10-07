@@ -70,10 +70,10 @@ void PluginHandler::getCatalogs(QList<CatItem>* items) {
 	}
 }
 
-void PluginHandler::execute(QList<InputData>* id, CatItem* result) {
-	if (!plugins.contains(result->id)) return;
-	if (!plugins[result->id].loaded) return;
-	plugins[result->id].obj->msg(MSG_LAUNCH_ITEM, (void*) id, (void*) result);
+int PluginHandler::execute(QList<InputData>* id, CatItem* result) {
+	if (!plugins.contains(result->id)) return 0;
+	if (!plugins[result->id].loaded) return 0;
+	return plugins[result->id].obj->msg(MSG_LAUNCH_ITEM, (void*) id, (void*) result);
 }
 
 QWidget* PluginHandler::doDialog(QWidget* parent, uint id) {

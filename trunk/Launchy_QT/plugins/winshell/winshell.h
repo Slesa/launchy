@@ -47,7 +47,7 @@ public:
 		HASH_FILE = qHash(QString("file"));
 	}
 	~winshellPlugin() {}
-	bool msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
+	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
 
 	void getID(uint*);
 	void getName(QString*);

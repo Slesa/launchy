@@ -156,7 +156,7 @@ void runnerPlugin::endDialog(bool accept) {
 	gui = NULL;
 }
 
-bool runnerPlugin::msg(int msgId, void* wParam, void* lParam)
+int runnerPlugin::msg(int msgId, void* wParam, void* lParam)
 {
 	bool handled = false;
 	switch (msgId)

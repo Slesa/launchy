@@ -263,8 +263,33 @@ void MyWidget::launchObject(int obj) {
 				args += inputData[i].getText() + " ";
 		runProgram(res.fullPath, args);
 	}
-	else
-		plugins.execute(&inputData, &res);
+	else {
+		int ops = plugins.execute(&inputData, &res);
+		if (ops > 1) {
+			switch (ops)
+			{
+				case MSG_CONTROL_EXIT:
+					close();
+					break;
+				case MSG_CONTROL_OPTIONS:
+					menuOpen = true;
+					menuOptions();
+					menuOpen = false;
+					break;
+				case MSG_CONTROL_REBUILD:
+					// Perform the database update
+					if (gBuilder == NULL) {
+						gBuilder = new CatBuilder(false, &plugins);
+						gBuilder->setPreviousCatalog(catalog);
+						connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+						gBuilder->start(QThread::IdlePriority);
+					}
+					break;
+				default:
+					break;
+			}
+		}
+	}
 	catalog->incrementUsage(res);
 }
 
@@ -390,7 +415,7 @@ void MyWidget::doEnter()
 	if (dropTimer->isActive())
 		dropTimer->stop();
 	if (searchResults.count() > 0 || inputData.count() > 1) 
-		launchObject(0);	
+		launchObject(0);
 	hideLaunchy();
 
 }
@@ -444,7 +469,6 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 			searchOnInput();
 			updateDisplay();
 		}
-		
 	}	
 }
 
@@ -903,6 +927,7 @@ void MyWidget::contextMenuEvent(QContextMenuEvent *event) {
 
 
 void MyWidget::menuOptions() {
+	
 	alternatives->hide();
 	OptionsDlg ops(this);
 	ops.setObjectName("options");
@@ -916,7 +941,7 @@ void MyWidget::menuOptions() {
 		gBuilder->start(QThread::IdlePriority);
 	}
 	input->activateWindow();
-	input->setFocus();
+	input->setFocus();	
 }
 
 void MyWidget::shouldDonate() {
@@ -1048,8 +1073,6 @@ void MyWidget::hideLaunchy() {
 
 	if (isVisible())
 		fadeOut();
-
-
 
 	// let the plugins know
 	plugins.hideLaunchy();

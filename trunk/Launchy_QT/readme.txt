@@ -15,12 +15,14 @@ For next alpha:
 . Esc from dropdown should only exit dropdown, not hide launchy
 . Launchy index/options/exit
 . Fix animation problem
-. Thread animation
 . Fix Launchy detached window problem
 
 
 Done for alpha 8:
 . Fix font support for arrow problem?
+. Thread animation
+
+
 
 Done for alpha 7:
 . Use mutex for running launchy, instead of network code 

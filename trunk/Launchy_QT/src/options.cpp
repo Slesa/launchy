@@ -534,5 +534,6 @@ void OptionsDlg::reject() {
 		QListWidgetItem* item = plugList->item(curPlugin);
 		main->plugins.endDialog(item->data(Qt::UserRole).toUInt(), false);
 	}
+
 	QDialog::reject();
 }
