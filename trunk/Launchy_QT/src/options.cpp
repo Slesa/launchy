@@ -456,10 +456,12 @@ void OptionsDlg::catDepthChanged(int d) {
 }
 void OptionsDlg::catDirMinusClicked(bool c) {
 	int row = catDirectories->currentRow();
-	memDirs.removeAt(row);
 	
 	catDirectories->takeItem(row);
 	catTypes->clear();
+
+	memDirs.removeAt(row);
+
 
 	if (catDirectories->count() > 0)
 		catDirectories->setCurrentRow(catDirectories->count() - 1);
