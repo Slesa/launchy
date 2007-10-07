@@ -394,7 +394,7 @@ void WebyPlugin::endDialog(bool accept) {
 	gui = NULL;
 }
 
-bool WebyPlugin::msg(int msgId, void* wParam, void* lParam)
+int WebyPlugin::msg(int msgId, void* wParam, void* lParam)
 {
 	bool handled = false;
 	switch (msgId)

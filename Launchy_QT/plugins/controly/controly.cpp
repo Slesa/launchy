@@ -131,31 +131,62 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 
 void controlyPlugin::getCatalog(QList<CatItem>* items) {
 	getApps(items);
+	CatItem tmp = CatItem("Launchy.controly", "Launchy", HASH_controly, getIcon());
+	tmp.usage = 5000;
+	items->push_back(tmp); 
 }
 
-
-bool controlyPlugin::msg(int msgId, void* wParam, void* lParam)
+void controlyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 {
-	bool handled = false;
+	if (id->count() < 2) return;
+	if (id->first().getTopResult().id == HASH_controly) {
+		results->push_back(CatItem("Launchy.options", "Options", HASH_controly, getIcon()));		
+		results->push_back(CatItem("Launchy.reindex", "Rebuild Index", HASH_controly, getIcon()));
+		results->push_back(CatItem("Launchy.exit", "Exit", HASH_controly, getIcon()));
+	}	
+}
+
+int controlyPlugin::launchItem(QList<InputData>* id, CatItem* item)
+{
+	if (id->count() < 2) return 1;
+	CatItem last = id->last().getTopResult();
+	if (last.shortName == "Options")
+		return MSG_CONTROL_OPTIONS;
+	else if (last.shortName == "Rebuild Index")
+		return MSG_CONTROL_REBUILD;
+	else if (last.shortName == "Exit")
+		return MSG_CONTROL_EXIT;
+	return 1;
+
+}
+int controlyPlugin::msg(int msgId, void* wParam, void* lParam)
+{
+	int handled = 0;
 	switch (msgId)
 	{		
 		case MSG_INIT:
 			init();
-			handled = true;
+			handled = 1;
 			break;
 		case MSG_GET_ID:
 			getID((uint*) wParam);
-			handled = true;
+			handled = 1;
 			break;
 		case MSG_GET_NAME:
 			getName((QString*) wParam);
-			handled = true;
+			handled = 1;
 			break;
 		case MSG_GET_CATALOG:
 			getCatalog((QList<CatItem>*) wParam);
-			handled = true;
+			handled = 1;
 			break;
-
+		case MSG_GET_RESULTS:
+			getResults((QList<InputData>*) wParam, (QList<CatItem>*) lParam);
+			handled = 1;
+			break;
+		case MSG_LAUNCH_ITEM:
+			handled = launchItem((QList<InputData>*) wParam, (CatItem*) lParam);
+			break;
 		default:
 			break;
 	}

@@ -195,7 +195,7 @@ void winshellPlugin::endDialog(bool accept) {
 	gui = NULL;
 }
 
-bool winshellPlugin::msg(int msgId, void* wParam, void* lParam)
+int winshellPlugin::msg(int msgId, void* wParam, void* lParam)
 {
 	bool handled = false;
 	switch (msgId)

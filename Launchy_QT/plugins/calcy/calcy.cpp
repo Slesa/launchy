@@ -132,8 +132,8 @@ void calcyPlugin::getLabels(QList<InputData>* id)
 		return;
 	// Apply a "website" label if we think it's a website
 	QString & text = id->last().getText();
-	QRegExp reg(".*[\\-\\+\\*\\/]+[\\d\\s\\-\\+\\*\\/\\(\\)\\.]+");
-	if (reg.indexIn(text) != -1) {
+	
+	if (reg->indexIn(text) != -1) {
 		id->last().setLabel(HASH_CALCY);
 	}
 }
@@ -161,7 +161,7 @@ QString calcyPlugin::getIcon()
 
 
 
-bool calcyPlugin::msg(int msgId, void* wParam, void* lParam)
+int calcyPlugin::msg(int msgId, void* wParam, void* lParam)
 {
 	bool handled = false;
 	switch (msgId)

@@ -47,7 +47,7 @@ public:
 		HASH_WEBY = qHash(QString("weby"));
 	}
 	~WebyPlugin() {}
-	bool msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
+	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
 
 	void getLabels(QList<InputData>*);
 	void getID(uint*);
