@@ -5,14 +5,14 @@
 
 
 QLineEdit#input {
-	font:  13px "Lucida Sans";
+	font:  13px "Verdana";
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
 	color: white;
 }
 QLineEdit#output {
-	font:  13px "Lucida Sans";
+	font:  13px "Verdana";
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
@@ -27,7 +27,7 @@ QPushButton#closeButton {
 }
 
 QListWidget#alternatives {
-	font:  13px "Lucida Sans";
+	font:  13px "Verdana";
 	background-color: black;
 	color: white;
 	border-style: solid;

@@ -35,22 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "catalog_builder.h"
 #include "icon_delegate.h"
 
-class Sleeper : public QThread
-{
-	public:
-		static void sleep(unsigned long secs)
-		{
-			QThread::sleep(secs);
-		}
-		static void msleep(unsigned long msecs) 
-		{
-			QThread::msleep(msecs);
-		}
-		static void usleep(unsigned long usecs) 
-		{
-			QThread::usleep(usecs);
-		}
-};
+
 
 class QCharLineEdit : public QLineEdit
 {
@@ -100,7 +85,25 @@ signals:
 	void focusOut(QFocusEvent* evt);
 };
 
-
+class Fader : public QThread
+{
+	Q_OBJECT
+private:
+	bool keepRunning;
+	bool fadeType;
+public:
+	Fader(QObject* parent = NULL)
+		: QThread(parent), keepRunning(true) {}
+	~Fader() {}
+	void stop() { keepRunning = false; }
+	void run();
+	void fadeIn();
+	void fadeOut();
+	void setFadeType(bool type) { fadeType = type; }
+signals:
+	void fadeLevel(double);
+	void finishedFade(double);
+};
 
 class MyWidget : public QWidget
 {
@@ -108,8 +111,10 @@ class MyWidget : public QWidget
 public:
 
 
+
 	MyWidget(QWidget *parent = 0);
 	~MyWidget();
+	Fader* fader;
 	QPoint moveStartPoint;
 	PlatformImp platform;	
 	QLabel* label;
@@ -163,6 +168,7 @@ public:
 	void doTab();
 	void doEnter();
 	void setNumViewable(int val);
+	QChar sepChar();
 	QString printInput();
 private:
     QHttp *http;
@@ -190,6 +196,8 @@ public slots:
 	void focusOutEvent(QFocusEvent* evt);
 	void setFadeTimes(int, int);
 	void setOpaqueness(int val);
+	void setFadeLevel(double);
+	void finishedFade(double d);
 };
 
 #endif

@@ -54,7 +54,9 @@ MyWidget::MyWidget(QWidget *parent)
 	if (platform.isAlreadyRunning())
 		exit(1);
 
-
+	fader = new Fader(this);
+	connect(fader, SIGNAL(fadeLevel(double)), this, SLOT(setFadeLevel(double)));
+	connect(fader, SIGNAL(finishedFade(double)), this, SLOT(finishedFade(double)));
 
 	gMainWidget = this;
 	menuOpen = false;
@@ -334,7 +336,7 @@ void MyWidget::inputKeyPressEvent(QKeyEvent* key) {
 
 void MyWidget::parseInput(QString text) {
 //	QStringList spl = text.split(" | ");
-	QStringList spl = text.split(QString(" ") + QChar(0x25ba) + QString(" "));
+	QStringList spl = text.split(QString(" ") + sepChar() + QString(" "));
 	if (spl.count() < inputData.count()) {
 		inputData = inputData.mid(0, spl.count());
 	}
@@ -356,7 +358,7 @@ QString MyWidget::printInput() {
 	for(int i = 0; i < inputData.count()-1; ++i) {
 		res += inputData[i].getText();
 		if (i+2 >= inputData.count())
-			res += QString(" ") + QChar(0x25ba) + QString(" ");
+			res += QString(" ") + sepChar() + QString(" ");
 	}
 	return res;
 }
@@ -378,7 +380,7 @@ void MyWidget::doTab()
 			input->setText(printInput() + QDir::toNativeSeparators(path));
 		} else {
 			// Looking for a plugin
-			input->setText(input->text() + " " + QChar(0x25ba) + " ");
+			input->setText(input->text() + " " + sepChar() + " ");
 		}
 	}
 }
@@ -930,36 +932,83 @@ void MyWidget::shouldDonate() {
 	}
 }
 
-void MyWidget::fadeIn() {
-	this->setWindowOpacity(0.0);
-	platform.SetAlphaOpacity(0.0);
-
-	show();
-	platform.ShowAlphaBorder();
+void Fader::fadeIn() {
 
 	int time = gSettings->value("GenOps/fadein", 0).toInt();
 	double delay = ((double) time) / (1.0 / 0.05);
-
 
 	double max = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
 	max /= 100.0;
 
 	if (time == 0) {
-		this->setWindowOpacity(max);
-		platform.SetAlphaOpacity(max);
+		emit fadeLevel(max);
+		emit finishedFade(max);
 		return;
 	}
 
-
-	for(double i = 0.0; i < max + 0.01; i += 0.05) {
-		this->setWindowOpacity(i);
-		platform.SetAlphaOpacity(i);
-		Sleeper::msleep(delay);
+	for(double i = 0.0; i < max + 0.01 && keepRunning; i += 0.05) {
+		emit fadeLevel(i);
+		msleep(delay);
 	}
+	emit fadeLevel(max);
+	emit finishedFade(max);
+	return;
+}
+
+void Fader::fadeOut() {
+	int time = gSettings->value("GenOps/fadeout", 0).toInt();
+	if (time == 0) {
+		emit fadeLevel(0.0);
+		emit finishedFade(0.0);
+	}
+	double delay = ((double) time) / (1.0 / 0.05);
+	double max = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
+
+	for(double i = max/100.0; i > -0.01 && keepRunning; i -= 0.05) {
+		emit fadeLevel(i);
+		msleep(delay);
+	}
+	emit fadeLevel(0.0);
+	emit finishedFade(0.0);
 
 	return;
 }
 
+void Fader::run() {
+	keepRunning = true;
+	if (fadeType)
+		fadeIn();
+	else
+		fadeOut();
+}
+
+void MyWidget::setFadeLevel(double d) {
+	this->setWindowOpacity(d);
+	platform.SetAlphaOpacity(d);
+}
+
+void MyWidget::finishedFade(double d) {
+	if (d == 0.0) {
+		hide();
+		platform.HideAlphaBorder();
+	}
+}
+
+void MyWidget::fadeIn() {
+	if (fader->isRunning())
+		fader->stop();
+	while(fader->isRunning()) {}
+	fader->setFadeType(true);
+	fader->start();
+}
+
+void MyWidget::fadeOut() {
+	if (fader->isRunning())
+		fader->stop();
+	while(fader->isRunning()) {}
+	fader->setFadeType(false);
+	fader->start();
+}
 
 
 
@@ -972,6 +1021,11 @@ void MyWidget::showLaunchy() {
 	// on sleep or user switch
 	platform.CreateAlphaBorder(this, "");
 	platform.MoveAlphaBorder(pos());
+
+	setFadeLevel(0.0);
+	this->show();
+	platform.ShowAlphaBorder();
+
 	fadeIn();
 
 	input->activateWindow();
@@ -982,21 +1036,7 @@ void MyWidget::showLaunchy() {
 	plugins.showLaunchy();
 }
 
-void MyWidget::fadeOut() {
-	int time = gSettings->value("GenOps/fadeout", 0).toInt();
-	if (time == 0) return;
-	double delay = ((double) time) / (1.0 / 0.05);
-	double max = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
 
-
-	for(double i = max/100.0; i > -0.01; i -= 0.05) {
-		this->setWindowOpacity(i);
-		platform.SetAlphaOpacity(i);
-		Sleeper::msleep(delay);
-	}
-
-	return;
-}
 
 void MyWidget::hideLaunchy() {
 	if (dropTimer != NULL && dropTimer->isActive())
@@ -1006,17 +1046,24 @@ void MyWidget::hideLaunchy() {
 	if (alternatives != NULL)
 		alternatives->hide();
 
-	fadeOut();
+	if (isVisible())
+		fadeOut();
 
-	hide();
-	platform.HideAlphaBorder();
+
 
 	// let the plugins know
 	plugins.hideLaunchy();
 }
 
 
-
+QChar MyWidget::sepChar() {
+	QFontMetrics met = input->fontMetrics();
+	QChar arrow(0x25ba);
+	if (met.inFont(arrow))
+		return arrow;
+	else
+		return QChar('|');
+}
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
