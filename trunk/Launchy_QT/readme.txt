@@ -7,13 +7,9 @@ Low priority:
 . Can get rid of extra data (e.g. icon info) in alternatives item's if I clear the items after options exits
 . Append to file plugin or .bat file or something
 . Confirmation on Alt+F4
-. Launchy commands inline (e.g. rescan/add dir/exit)
 
 
 For next alpha:
-. Use environment variables and use them by default in Launchy (for runner's cmd too) (can use them but no gui way to add them)
-. Esc from dropdown should only exit dropdown, not hide launchy
-. Launchy index/options/exit
 . Fix animation problem
 . Fix Launchy detached window problem
 
@@ -21,7 +17,10 @@ For next alpha:
 Done for alpha 8:
 . Fix font support for arrow problem?
 . Thread animation
-
+. Launchy index/options/exit
+. Esc from dropdown works correctly now
+. Can now edit directories by double clicking them 
+. Can use environment variables in directories
 
 
 Done for alpha 7:

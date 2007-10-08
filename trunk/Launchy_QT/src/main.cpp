@@ -423,6 +423,9 @@ void MyWidget::doEnter()
 void MyWidget::keyPressEvent(QKeyEvent* key) {
 	
 	if (key->key() == Qt::Key_Escape) {
+		if (alternatives->isVisible())
+			alternatives->hide();
+		else
 			hideLaunchy();
 	}
 
