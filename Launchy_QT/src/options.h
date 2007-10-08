@@ -75,6 +75,7 @@ public slots:
 	void pluginChanged(int row);
 	void pluginItemChanged(QListWidgetItem* state);
 	void tabChanged(int tab);
+	void catDirTextChanged(QListWidgetItem * item );
 };
 
 

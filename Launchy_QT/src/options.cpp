@@ -123,6 +123,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		connect(catCheckBinaries, SIGNAL(stateChanged(int)), this, SLOT(catTypesExeChanged(int)));
 		connect(catDepth, SIGNAL(valueChanged(int)),this, SLOT(catDepthChanged(int)));
 		connect(catRescan, SIGNAL(clicked(bool)), this, SLOT(catRescanClicked(bool)));
+		connect(catDirectories, SIGNAL(itemChanged(QListWidgetItem *)), this, SLOT(catDirTextChanged(QListWidgetItem* )));
 
 		int size = gSettings->beginReadArray("directories");
 		for(int i = 0; i < size; ++i) {
@@ -144,6 +145,8 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 
 		for(int i = 0; i < memDirs.count(); ++i) {
 			catDirectories->addItem(memDirs[i].name);
+			QListWidgetItem* it = catDirectories->item(i);
+			it->setFlags(it->flags() | Qt::ItemIsEditable);
 		}
 		if (catDirectories->count() > 0)
 			catDirectories->setCurrentRow(0);
@@ -390,15 +393,21 @@ void OptionsDlg::catRescanClicked(bool val) {
 
 void OptionsDlg::catTypesDirChanged(int state) {
 	int row = catDirectories->currentRow();
+	if (row == -1) return;
 	memDirs[row].indexDirs = catCheckDirs->isChecked();
 }
 
 void OptionsDlg::catTypesExeChanged(int state) {
 	int row = catDirectories->currentRow();
+	if (row == -1) return;
 	memDirs[row].indexExe = catCheckBinaries->isChecked();
 }
 
-
+void OptionsDlg::catDirTextChanged( QListWidgetItem * item ) {
+	int row = catDirectories->currentRow();
+	if (row == -1) return;
+	memDirs[row].name = item->text();
+}
 
 void OptionsDlg::dirChanged(int row) {
 	if (row == -1) return;
@@ -426,6 +435,8 @@ void OptionsDlg::catDirPlusClicked(bool c) {
 
 	catTypes->clear();
 	catDirectories->addItem(nativeDir);
+	QListWidgetItem* it = catDirectories->item(catDirectories->count()-1);
+	it->setFlags(it->flags() | Qt::ItemIsEditable);
 	catDirectories->setCurrentRow(catDirectories->count()-1);
 }
 
