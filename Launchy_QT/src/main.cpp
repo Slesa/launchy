@@ -406,6 +406,8 @@ void MyWidget::doTab()
 		} else {
 			// Looking for a plugin
 			input->setText(input->text() + " " + sepChar() + " ");
+			inputData.last().setText(printInput() + searchResults[0].shortName);
+			input->setText(printInput() + searchResults[0].shortName + " " + sepChar() + " ");
 		}
 	}
 }
@@ -465,8 +467,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 		dropTimer->stop();
 		dropTimer->start(1000);
 
-		QString inText = input->text();
-		parseInput(inText);
+		parseInput(input->text());
 
 		if (input->text() != "") {
 			searchOnInput();
@@ -1048,6 +1049,7 @@ void MyWidget::showLaunchy() {
 	// where the alpha border would dissappear
 	// on sleep or user switch
 	platform.CreateAlphaBorder(this, "");
+//	qDebug() << pos().x() << pos().y();
 	platform.MoveAlphaBorder(pos());
 
 	setFadeLevel(0.0);
