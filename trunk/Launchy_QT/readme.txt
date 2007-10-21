@@ -12,6 +12,10 @@ Low priority:
 For next alpha:
 . Fix animation problem
 . Fix Launchy detached window problem
+. Debug controly version to find out which dll is causing problems
+
+Done for alpha 9:
+. Expand to short name on tab
 
 
 Done for alpha 8:
