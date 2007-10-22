@@ -974,38 +974,34 @@ void MyWidget::shouldDonate() {
 void Fader::fadeIn() {
 
 	int time = gSettings->value("GenOps/fadein", 0).toInt();
-	double delay = ((double) time) / (1.0 / 0.05);
+	double end = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
+	end /= 100.0;
+	if (time != 0) {
+		double delay = ((double) time) / (end / 0.05);
 
-	double max = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
-	max /= 100.0;
-
-	if (time == 0) {
-		emit fadeLevel(max);
-		emit finishedFade(max);
-		return;
+		for(double i = 0.0; i < end + 0.01 && keepRunning; i += 0.05) {
+			emit fadeLevel(i);
+			msleep(delay);
+		}
 	}
-
-	for(double i = 0.0; i < max + 0.01 && keepRunning; i += 0.05) {
-		emit fadeLevel(i);
-		msleep(delay);
-	}
-	emit fadeLevel(max);
-	emit finishedFade(max);
+	emit fadeLevel(end);
+	emit finishedFade(end);
 	return;
 }
 
 void Fader::fadeOut() {
 	int time = gSettings->value("GenOps/fadeout", 0).toInt();
-	if (time == 0) {
-		emit fadeLevel(0.0);
-		emit finishedFade(0.0);
-	}
-	double delay = ((double) time) / (1.0 / 0.05);
-	double max = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
 
-	for(double i = max/100.0; i > -0.01 && keepRunning; i -= 0.05) {
-		emit fadeLevel(i);
-		msleep(delay);
+	if(time != 0) {
+		double start = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
+		start /= 100.0;
+		double delay = ((double) time) / (start / 0.05);
+
+
+		for(double i = start; i > -0.01 && keepRunning; i -= 0.05) {
+			emit fadeLevel(i);
+			msleep(delay);
+		}
 	}
 	emit fadeLevel(0.0);
 	emit finishedFade(0.0);

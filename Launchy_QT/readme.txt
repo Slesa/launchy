@@ -18,7 +18,8 @@ Done for alpha 9:
 . Fixed split windows problem
 . Fixed problem with adding directories
 . Runner no longer appends ".runner"
-. Searching 
+. Possibly fixed remaining fade glitch
+
 
 
 Done for alpha 8:
