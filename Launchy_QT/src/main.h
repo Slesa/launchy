@@ -170,6 +170,7 @@ public:
 	void setNumViewable(int val);
 	QChar sepChar();
 	QString printInput();
+	void printGeometry();
 private:
     QHttp *http;
     QBuffer *verBuffer;

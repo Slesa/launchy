@@ -322,8 +322,14 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 				CatItem tmp = searchResults[row];
 				searchResults[row] = searchResults[0];
 				searchResults[0] = tmp;
+
 				updateDisplay();
+
+				inputData.last().setText(searchResults[0].fullPath);
+				input->setText(printInput() + searchResults[0].fullPath);
+
 				alternatives->hide();
+
 
 				if (key->key() == Qt::Key_Tab) {
 					doTab();
@@ -333,6 +339,7 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 					dropTimer->stop();
 					dropTimer->start(1000);
 				} else {
+
 					doEnter();
 				}
 			}
@@ -406,7 +413,7 @@ void MyWidget::doTab()
 		} else {
 			// Looking for a plugin
 			input->setText(input->text() + " " + sepChar() + " ");
-			inputData.last().setText(printInput() + searchResults[0].shortName);
+			inputData.last().setText(searchResults[0].shortName);
 			input->setText(printInput() + searchResults[0].shortName + " " + sepChar() + " ");
 		}
 	}
@@ -548,7 +555,7 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 	if (!info.isDir()) return;
 
 	if (file == "") {
-		CatItem item(dir + "/");
+		CatItem item(QDir::toNativeSeparators(dir + "/"));
 		searchResults.push_back(item);
 	}	
 
@@ -566,7 +573,7 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 			QFileInfo in(fp);
 			if (in.isDir())
 				fp += "/";
-			CatItem item(fp, inf);
+			CatItem item(QDir::toNativeSeparators(fp), inf);
 			searchResults.push_back(item);
 		}
 	}
@@ -841,8 +848,10 @@ void MyWidget::applySkin(QString directory) {
 						output->setGeometry(rect);
 					else if (spl.at(0).trimmed().compare("alternatives", Qt::CaseInsensitive) == 0)
 						altRect = rect;
-					else if (spl.at(0).trimmed().compare("boundary", Qt::CaseInsensitive) == 0) 
+					else if (spl.at(0).trimmed().compare("boundary", Qt::CaseInsensitive) == 0) {
+						setGeometry(rect);
 						label->setGeometry(rect);	
+					}
 					else if (spl.at(0).trimmed().compare("icon", Qt::CaseInsensitive) == 0) 
 						licon->setGeometry(rect);
 					else if (spl.at(0).trimmed().compare("optionsbutton", Qt::CaseInsensitive) == 0) {
@@ -897,6 +906,7 @@ void MyWidget::applySkin(QString directory) {
 		platform.CreateAlphaBorder(this, directory + "/alpha.png");
 		platform.MoveAlphaBorder(pos());
 	}
+	
 }
 
 
@@ -1049,7 +1059,6 @@ void MyWidget::showLaunchy() {
 	// where the alpha border would dissappear
 	// on sleep or user switch
 	platform.CreateAlphaBorder(this, "");
-//	qDebug() << pos().x() << pos().y();
 	platform.MoveAlphaBorder(pos());
 
 	setFadeLevel(0.0);
@@ -1083,6 +1092,14 @@ void MyWidget::hideLaunchy() {
 	plugins.hideLaunchy();
 }
 
+void MyWidget::printGeometry() {
+	QPoint p = pos();
+	qDebug() << p;
+	QRect r = geometry();
+	qDebug() << r;
+
+
+}
 
 QChar MyWidget::sepChar() {
 	QFontMetrics met = input->fontMetrics();

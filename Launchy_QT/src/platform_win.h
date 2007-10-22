@@ -240,6 +240,7 @@ public:
 	// Alpha border functions	
 	bool SupportsAlphaBorder() { return true; }
 	bool CreateAlphaBorder(QWidget* w, QString ImageName) { 
+		if (w == NULL) return false;
 		if (ImageName == "")
 			ImageName = lastImageName;
 		if (!QFile::exists(ImageName)) 
@@ -247,15 +248,16 @@ public:
 
 		if (alpha != NULL) {
 			// Save the position
-			RECT r;
-			GetWindowRect(alpha->winId(), &r);
+//			RECT r;
+//			GetWindowRect(alpha->winId(), &r);
 			DestroyAlphaBorder();
 			alpha = new QLaunchyAlphaBorder(w);
 			alpha->SetImage(ImageName);
+			alpha->setGeometry(w->geometry());
 			//QRect rect(r.left, r.top, r.right, r.bottom);
 			//alpha->setGeometry(rect);
-			QPoint pos(r.left, r.top);
-			alpha->RepositionWindow(pos);
+//			QPoint pos(r.left, r.top);
+//			alpha->RepositionWindow(pos);
 // 			alpha->show();
 
 		} else {

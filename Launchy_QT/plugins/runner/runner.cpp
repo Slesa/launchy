@@ -97,7 +97,7 @@ void runnerPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 	if (id->count() > 1 && id->first().getTopResult().id == HASH_runner) {
 		QString & text = id->last().getText();
 		// This is user search text, create an entry for it
-		results->push_front(CatItem(text + ".runner", text, HASH_runner, getIcon()));
+		results->push_front(CatItem(text, text, HASH_runner, getIcon()));
 	}
 }
 
@@ -118,7 +118,7 @@ void runnerPlugin::launchItem(QList<InputData>* id, CatItem* item)
 		if (id->count() >= i+1) { 
 //			const InputData* ij = &id->at(i);
 			CatItem* it = &((InputData)id->at(i)).getTopResult();
-			file += it->shortName;
+			file += it->fullPath;
 		}
 		file += spl[i];
 	}
