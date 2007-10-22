@@ -33,7 +33,6 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 {
 		setupUi(this);
 		curPlugin = -1;
-
 		MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
 		if (main == NULL) return;
 
@@ -406,6 +405,8 @@ void OptionsDlg::catTypesExeChanged(int state) {
 void OptionsDlg::catDirTextChanged( QListWidgetItem * item ) {
 	int row = catDirectories->currentRow();
 	if (row == -1) return;
+	if (item != catDirectories->item(row))
+		return;		
 	memDirs[row].name = item->text();
 }
 
