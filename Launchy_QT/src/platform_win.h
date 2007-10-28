@@ -252,12 +252,13 @@ public:
 //			GetWindowRect(alpha->winId(), &r);
 			DestroyAlphaBorder();
 			alpha = new QLaunchyAlphaBorder(w);
+//			alpha->hide();
 			alpha->SetImage(ImageName);
 			alpha->setGeometry(w->geometry());
 			//QRect rect(r.left, r.top, r.right, r.bottom);
 			//alpha->setGeometry(rect);
 //			QPoint pos(r.left, r.top);
-//			alpha->RepositionWindow(pos);
+			alpha->RepositionWindow(w->pos());
 // 			alpha->show();
 
 		} else {

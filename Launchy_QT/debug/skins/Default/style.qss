@@ -18,12 +18,11 @@ QLineEdit#output {
 	border-style: solid;
 	color: white;
 }
-
-QPushButton#opsButton {
-	image: url(skins/default/upButton.png);
-}
-QPushButton#closeButton {
-	image: url(skins/default/closeButton.png);
+QScrollBar::handle:vertical {
+	width: 3px;
+	height: 3px;
+	background: pink;
+	image: url(down_arrow.png);
 }
 
 QListWidget#alternatives {

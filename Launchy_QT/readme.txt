@@ -1,17 +1,42 @@
 For beta release:
-. Add thanks to Tyler for graphics stuff in change log
-. Tyler's new skin
+
 
 
 Low priority:
 . Can get rid of extra data (e.g. icon info) in alternatives item's if I clear the items after options exits
 . Append to file plugin or .bat file or something
 . Confirmation on Alt+F4
+. Recompile 4.3.2 to include more options
 
 
-For next alpha:
-. Fix animation problem
+2.0+:
+. Add memory for runny/launchy (rebuild/exit/etc..)
+. Add a plugin for open with etc..
+
+
+For beta:
 . Debug controly version to find out which dll is causing problems
+. Remove debug messages from controly
+. Add thanks to Tyler for graphics stuff in change log
+. Tyler's new skin
+. Revert to old documentation system but update it
+. Fix the "Launchy | Rebuild" not being the first option, e.g. launchy the program is the first option for "Launchy"
+. win+d when options screen is up makes it hard to get launchy back
+
+
+Done for beta 1:
+. If hotkey pressed to hide Launchy when options are open, Launchy would close when you exited the options dialog.  Fixed.
+. Added tooltips for alternative items
+. Bring the font back?  Greek fonts seem to have problems
+. If skin doesn't exist, use default
+. Changing skins reset position (fixed)
+. Dropdown is also transparent
+. Double click runs item
+
+
+
+
+
 
 Done for alpha 9:
 . Expand to short name on tab

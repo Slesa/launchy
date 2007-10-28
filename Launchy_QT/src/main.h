@@ -70,11 +70,16 @@ public:
 	QCharListWidget(QWidget* parent = 0) : 
 		QListWidget(parent) 
 		{
+			setAttribute(Qt::WA_AlwaysShowToolTips);
 		}
 		void keyPressEvent(QKeyEvent* key) {
 			emit keyPressed(key);
 			QListWidget::keyPressEvent(key);
 			key->ignore();
+		}
+		void mouseDoubleClickEvent( QMouseEvent * event  ) {
+			QKeyEvent key(QEvent::KeyPress, Qt::Key_Enter, NULL);
+			emit keyPressed(&key);
 		}
 		void focusOutEvent ( QFocusEvent * evt) {
 			emit focusOut(evt);
@@ -147,8 +152,8 @@ public:
 	void applySkin(QString);
 	void contextMenuEvent(QContextMenuEvent *event);
 	void closeEvent(QCloseEvent *event);
-	void showLaunchy();
-	void hideLaunchy();
+	void showLaunchy(bool now = false);
+	void hideLaunchy(bool now = false);
 	void updateVersion(int oldVersion);
 	void checkForUpdate();
 	void shouldDonate();
