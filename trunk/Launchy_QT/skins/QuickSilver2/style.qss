@@ -1,5 +1,5 @@
 QLineEdit#input {
-	font:  14px "Lucida Sans";
+	font:  14px "Verdana";
 	border-width: 0px;
 	background-color: rgb(255,255,255);
 	border-style: solid;
@@ -7,7 +7,7 @@ QLineEdit#input {
 }
 
 QListWidget#alternatives {
-	font:  12px "Lucida Sans";
+	font:  12px "Verdana";
 	border-width: 0px;
 	background-color: rgb(255,255,255);
 	border-style: solid;
@@ -15,7 +15,7 @@ QListWidget#alternatives {
 }
 
 QLineEdit#output {
-	font:  12px "Lucida Sans";
+	font:  12px "Verdana";
 	border-width: 0px;
 	background-color: rgba(255,255,255,0%);
 	border-style: solid;

@@ -82,9 +82,13 @@ qDebug() << "1. Opening library";
 		// -------------------
 		if (!(hLib = LoadLibrary((LPCTSTR) path.utf16()))) 
 			continue ;	
+qDebug() << "1.5 Calling GetProcAddress";	   
+
 		if (!(CplCall=(APPLET_PROC)GetProcAddress(hLib,"CPlApplet")))
 		{
+qDebug() << "1.6 Calling Free Library";
 			FreeLibrary(hLib);        
+qDebug() << "1.7 Library Freed";
 			continue ;
 		}
 qDebug() << "2. Opened library";	    
@@ -151,9 +155,20 @@ void controlyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 {
 	if (id->count() < 2) return;
 	if (id->first().getTopResult().id == HASH_controly) {
-		results->push_back(CatItem("Launchy.options", "Options", HASH_controly, getIcon()));		
-		results->push_back(CatItem("Launchy.reindex", "Rebuild Index", HASH_controly, getIcon()));
-		results->push_back(CatItem("Launchy.exit", "Exit", HASH_controly, getIcon()));
+		QSettings* set = *settings;
+		if (set == NULL) return;
+
+		CatItem tmp = CatItem("Launchy.options", "Options", HASH_controly, getIcon());
+//		tmp.usage = set->value("controly/OptionsCount",0).toInt();
+		results->push_back(tmp);
+
+		tmp = CatItem("Launchy.reindex", "Rebuild Index", HASH_controly, getIcon());
+//		tmp.usage = set->value("controly/RebuildCount",0).toInt();
+		results->push_back(tmp);
+
+		tmp = CatItem("Launchy.exit", "Exit", HASH_controly, getIcon());
+//		tmp.usage = set->value("controly/ExitCount",0).toInt();
+		results->push_back(tmp);
 	}	
 }
 
@@ -161,12 +176,20 @@ int controlyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 {
 	if (id->count() < 2) return 1;
 	CatItem last = id->last().getTopResult();
-	if (last.shortName == "Options")
+	QSettings* set = *settings;
+	if (set == NULL) return 1;
+	if (last.shortName == "Options") {
+//		set->setValue("controly/OptionsCount", set->value("controly/OptionsCount",0).toInt() + 1);
 		return MSG_CONTROL_OPTIONS;
-	else if (last.shortName == "Rebuild Index")
+	}
+	else if (last.shortName == "Rebuild Index") {
+//		set->setValue("controly/RebuildCount", set->value("controly/RebuildCount",0).toInt() + 1);
 		return MSG_CONTROL_REBUILD;
-	else if (last.shortName == "Exit")
+	}
+	else if (last.shortName == "Exit") {
+//		set->setValue("controly/ExitCount", set->value("controly/ExitCount",0).toInt() + 1);
 		return MSG_CONTROL_EXIT;
+	}
 	return 1;
 
 }

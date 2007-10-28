@@ -51,6 +51,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 MyWidget::MyWidget(QWidget *parent)
 :  updateTimer(NULL), dropTimer(NULL), alternatives(NULL), QWidget(parent,Qt::Tool | Qt::FramelessWindowHint /*,Qt::Popup*/)
 {
+//	setAttribute(Qt::WA_DeleteOnClose);
+	setAttribute(Qt::WA_AlwaysShowToolTips);
 	if (platform.isAlreadyRunning())
 		exit(1);
 
@@ -74,10 +76,12 @@ MyWidget::MyWidget(QWidget *parent)
 
 	opsButton = new QPushButton(label);
 	opsButton->setObjectName("opsButton");
+	opsButton->setToolTip(tr("Launchy Options"));
 	connect(opsButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
 
 	closeButton = new QPushButton(label);
 	closeButton->setObjectName("closeButton");
+	closeButton->setToolTip(tr("Close Launchy"));
 	connect(closeButton, SIGNAL(pressed()), this, SLOT(close()));
 
 
@@ -229,6 +233,7 @@ void MyWidget::showAlternatives(bool show) {
 			item->setData(ROLE_FULL, QDir::toNativeSeparators(searchResults[i].fullPath));
 			item->setData(ROLE_SHORT, searchResults[i].shortName);
 			item->setData(ROLE_ICON, icon);
+			item->setToolTip(QDir::toNativeSeparators(searchResults[i].fullPath));
 			alternatives->addItem(item);
 			alternatives->setFocus();
 		}
@@ -246,8 +251,9 @@ void MyWidget::showAlternatives(bool show) {
 			}
 			alternatives->setGeometry(n);
 		}
-
-
+		double opaqueness = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
+		opaqueness /= 100.0;
+		alternatives->setWindowOpacity(opaqueness);
 		alternatives->show();
 
 	}
@@ -637,7 +643,15 @@ void MyWidget::httpGetFinished(bool error) {
 }
 
 void MyWidget::setSkin(QString name) {
+	bool wasShowing = isVisible();
+	QPoint p = pos();
+	hideLaunchy(true);
 	applySkin(qApp->applicationDirPath() + "/Skins/" + name);
+	move(p);
+	platform.MoveAlphaBorder(p);
+	platform.ShowAlphaBorder();
+	if (wasShowing)
+		showLaunchy(true);
 }
 
 void MyWidget::updateVersion(int oldVersion) {
@@ -699,6 +713,7 @@ void MyWidget::dropTimeout() {
 }
 
 void MyWidget::onHotKey() {
+	if (menuOpen) return;
 	if (isVisible()) {
 		hideLaunchy();
 	}
@@ -710,13 +725,13 @@ void MyWidget::onHotKey() {
 void MyWidget::closeEvent(QCloseEvent *event) {
 	gSettings->setValue("Display/pos", pos());
 	gSettings->sync();
-	qApp->quit();
 
 	QDir dest(gSettings->fileName());
 	dest.cdUp();
 	CatBuilder builder(catalog, &plugins);
 	builder.storeCatalog(dest.absoluteFilePath("Launchy.db"));
 	event->accept();
+	qApp->quit();
 }
 
 MyWidget::~MyWidget() {
@@ -825,6 +840,11 @@ void MyWidget::applySkin(QString directory) {
 	opsButton->hide();
 
 	if (listDelegate == NULL) return;
+
+	// Use default skin if this one doesn't exist
+	if (!QFile::exists(directory + "/misc.txt")) 
+		directory = qApp->applicationDirPath() + "/Skins/Default/";
+	
 
 	// Set positions
 	if (QFile::exists(directory + "/misc.txt")) {
@@ -1047,7 +1067,7 @@ void MyWidget::fadeOut() {
 
 
 
-void MyWidget::showLaunchy() {
+void MyWidget::showLaunchy(bool now) {
 	shouldDonate();
 	alternatives->hide();
 	
@@ -1061,7 +1081,13 @@ void MyWidget::showLaunchy() {
 	this->show();
 	platform.ShowAlphaBorder();
 
-	fadeIn();
+	if (!now) {
+		fadeIn();
+	} else {
+		double end = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
+		end /= 100.0;
+		setFadeLevel(end);
+	}
 
 	input->activateWindow();
 	input->selectAll();
@@ -1073,7 +1099,9 @@ void MyWidget::showLaunchy() {
 
 
 
-void MyWidget::hideLaunchy() {
+void MyWidget::hideLaunchy(bool now) {
+	if (!isVisible())
+		return;
 	if (dropTimer != NULL && dropTimer->isActive())
 		dropTimer->stop();
 	if (alwaysShowLaunchy) return;
@@ -1081,8 +1109,14 @@ void MyWidget::hideLaunchy() {
 	if (alternatives != NULL)
 		alternatives->hide();
 
-	if (isVisible())
-		fadeOut();
+	if (isVisible()) {
+		if (!now)
+			fadeOut();
+		else {
+			setFadeLevel(0.0);
+			finishedFade(0.0);
+		}
+	}
 
 	// let the plugins know
 	plugins.hideLaunchy();
