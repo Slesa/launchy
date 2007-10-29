@@ -11,8 +11,11 @@ IconDelegate::IconDelegate(QObject *parent)
 void IconDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 						 const QModelIndex &index) const
 {
-	if (option.state & QStyle::State_Selected)
+	painter->save();
+	if (option.state & QStyle::State_Selected) {
 		painter->fillRect(option.rect, option.palette.highlight());
+		painter->setPen(option.palette.color(QPalette::HighlightedText));
+	}
 
 	QRect iconRect = option.rect;
 	iconRect.setWidth(32);
@@ -27,11 +30,15 @@ void IconDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 	longRect.setLeft(longRect.left() + 50);
 	longRect.setTop(longRect.top() + fontHeight);
 
-	painter->save();
+
 
 	painter->drawText(shortRect,Qt::AlignTop, index.data(ROLE_SHORT).toString());
 
-	painter->setPen(color);
+	if (option.state & QStyle::State_Selected)
+		painter->setPen(hicolor);
+	else
+		painter->setPen(color);
+
 	painter->setFont(QFont(family, size, weight, italics));
 
 	QString full = index.data(ROLE_FULL).toString();
