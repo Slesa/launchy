@@ -12,6 +12,7 @@ class IconDelegate : public QAbstractItemDelegate
 
 private:
 	QColor color;
+	QColor hicolor;
 	QString family;
 	int size;
 	int weight;
@@ -27,14 +28,16 @@ public:
 	QSize sizeHint(const QStyleOptionViewItem &option,
 		const QModelIndex &index ) const;
 
-	void setColor(QString line) {
+	void setColor(QString line, bool hi = false) {
 		if (!line.contains(","))
 			color = QColor(line);
 
 		QStringList spl = line.split(",");
 		if (spl.count() != 3) return;
-
-		color = QColor(spl.at(0).toInt(), spl.at(1).toInt(), spl.at(2).toInt());
+		if (!hi)
+			color = QColor(spl.at(0).toInt(), spl.at(1).toInt(), spl.at(2).toInt());
+		else
+			hicolor = QColor(spl.at(0).toInt(), spl.at(1).toInt(), spl.at(2).toInt());
 	}
 
 	void setFamily(QString fam) { family = fam; }

@@ -71,6 +71,7 @@ public:
 		QListWidget(parent) 
 		{
 			setAttribute(Qt::WA_AlwaysShowToolTips);
+			setAlternatingRowColors(true);
 		}
 		void keyPressEvent(QKeyEvent* key) {
 			emit keyPressed(key);

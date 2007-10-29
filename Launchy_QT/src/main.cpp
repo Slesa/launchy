@@ -884,6 +884,8 @@ void MyWidget::applySkin(QString directory) {
 					}
 					else if (spl.at(0).trimmed().compare("dropPathColor", Qt::CaseInsensitive) == 0)
 						listDelegate->setColor(spl.at(1));
+					else if (spl.at(0).trimmed().compare("dropPathSelColor", Qt::CaseInsensitive) == 0)
+						listDelegate->setColor(spl.at(1),true);
 					else if (spl.at(0).trimmed().compare("dropPathFamily", Qt::CaseInsensitive) == 0)
 						listDelegate->setFamily(spl.at(1));
 					else if (spl.at(0).trimmed().compare("dropPathSize", Qt::CaseInsensitive) == 0)
