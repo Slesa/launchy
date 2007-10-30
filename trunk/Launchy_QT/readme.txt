@@ -32,7 +32,7 @@ Done for beta 1:
 . Changing skins reset position (fixed)
 . Dropdown is also transparent
 . Double click runs item
-
+. Right click on output area opens popup menu
 
 
 

@@ -85,10 +85,11 @@ MyWidget::MyWidget(QWidget *parent)
 	connect(closeButton, SIGNAL(pressed()), this, SLOT(close()));
 
 
-	output = new QLineEdit(label);
+	output = new QLineEditMenu(label);
 	output->setAlignment(Qt::AlignHCenter);
 	output->setReadOnly(true);
 	output->setObjectName("output");
+	connect(output, SIGNAL(menuEvent(QContextMenuEvent*)), this, SLOT(menuEvent(QContextMenuEvent*)));
 
 	input = new QCharLineEdit(label);
 	input->setObjectName("input");
@@ -204,6 +205,10 @@ void MyWidget::setHotkey(int meta, int key) {
 
 void MyWidget::altIndexChanged(int index) {
 
+}
+
+void MyWidget::menuEvent(QContextMenuEvent* evt) {
+	contextMenuEvent(evt);
 }
 
 void MyWidget::showAlternatives(bool show) {
@@ -713,7 +718,10 @@ void MyWidget::dropTimeout() {
 }
 
 void MyWidget::onHotKey() {
-	if (menuOpen) return;
+	if (menuOpen) {
+		showLaunchy();
+		return;
+	} 
 	if (isVisible()) {
 		hideLaunchy();
 	}

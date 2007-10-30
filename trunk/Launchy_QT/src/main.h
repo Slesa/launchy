@@ -35,7 +35,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "catalog_builder.h"
 #include "icon_delegate.h"
 
-
+class QLineEditMenu : public QLineEdit
+{
+	Q_OBJECT
+public:
+	QLineEditMenu(QWidget* parent = 0) :
+	QLineEdit(parent) {}
+	void contextMenuEvent(QContextMenuEvent *evt) {
+		emit menuEvent(evt);
+	}
+signals:
+	void menuEvent(QContextMenuEvent*);
+};
 
 class QCharLineEdit : public QLineEdit
 {
@@ -58,6 +69,15 @@ public:
 		void focusOutEvent ( QFocusEvent * evt) {
 			emit focusOut(evt);
 		}
+		/*
+		void mouseReleaseEvent(QMouseEvent* e)
+			{
+				if (event->button() & RightButton) {
+					QContextMenuEvent
+					emit contextMenuEvent
+				}
+			}
+			*/
 signals:
 	void keyPressed(QKeyEvent*);
 	void focusOut(QFocusEvent* evt);
@@ -124,7 +144,7 @@ public:
 	QPoint moveStartPoint;
 	PlatformImp platform;	
 	QLabel* label;
-	QLineEdit *output;
+	QLineEditMenu *output;
 	QCharLineEdit *input;
 	QCharListWidget *alternatives;
 	QPushButton *opsButton;
@@ -205,6 +225,7 @@ public slots:
 	void setOpaqueness(int val);
 	void setFadeLevel(double);
 	void finishedFade(double d);
+	void menuEvent(QContextMenuEvent*);
 };
 
 #endif
