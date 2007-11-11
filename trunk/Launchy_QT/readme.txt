@@ -19,10 +19,8 @@ For beta:
 . Remove debug messages from controly
 . Add thanks to Tyler for graphics stuff in change log
 . Tyler's new skin
-. Revert to old documentation system but update it
-. Fix the "Launchy | Rebuild" not being the first option, e.g. launchy the program is the first option for "Launchy"
-. win+d when options screen is up makes it hard to get launchy back
-
+. Hitting tab from the dropdown when selecting a file should extend the file
+. If there is no text, clear the icon
 
 Done for beta 1:
 . If hotkey pressed to hide Launchy when options are open, Launchy would close when you exited the options dialog.  Fixed.

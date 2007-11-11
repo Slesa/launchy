@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QSettings>
 #include "catalog_builder.h"
 
-#define LAUNCHY_VERSION 198
-#define LAUNCHY_VERSION_STRING "2.0 Alpha 9"
+#define LAUNCHY_VERSION 199
+#define LAUNCHY_VERSION_STRING "2.0 Beta 1"
 
 #define HASH_LAUNCHY 0
 #define LABEL_FILE 0
