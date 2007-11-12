@@ -1,3 +1,7 @@
+.QWidget {
+
+}
+
 
 
 QLineEdit#input {
@@ -24,7 +28,6 @@ QScrollBar::handle:vertical {
 QListWidget#alternatives {
 	font:  13px "Verdana";
 	background-color: black;
-	alternate-background-color: black;
 	color: white;
 	border-style: solid;
 	border-width: 0px;
