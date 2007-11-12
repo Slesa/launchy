@@ -15,12 +15,15 @@ Low priority:
 
 
 For beta:
-. Debug controly version to find out which dll is causing problems
-. Remove debug messages from controly
-. Add thanks to Tyler for graphics stuff in change log
-. Tyler's new skin
-. Hitting tab from the dropdown when selecting a file should extend the file
-. If there is no text, clear the icon
+Easy stuff -
+	. Add thanks to Tyler for graphics stuff in change log
+	. Tyler's new skin
+	. Remove debug messages from controly
+
+Hard stuff -
+	. Debug controly version to find out which dll is causing problems
+	. Hitting tab from the dropdown when selecting a file should extend the file
+
 
 Done for beta 1:
 . If hotkey pressed to hide Launchy when options are open, Launchy would close when you exited the options dialog.  Fixed.
@@ -31,9 +34,9 @@ Done for beta 1:
 . Dropdown is also transparent
 . Double click runs item
 . Right click on output area opens popup menu
-
-
-
+. Fixed a GDI resource leak
+. If there is no text, clear the icon
+. Thanks to Tyler Sticka for Launchy's beautiful new skin and icon!
 
 
 Done for alpha 9:

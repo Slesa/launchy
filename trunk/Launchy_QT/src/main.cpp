@@ -487,10 +487,8 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 
 		parseInput(input->text());
 
-		if (input->text() != "") {
-			searchOnInput();
-			updateDisplay();
-		}
+		searchOnInput();
+		updateDisplay();
 	}	
 }
 
@@ -524,7 +522,6 @@ void MyWidget::searchOnInput() {
 void MyWidget::updateDisplay() {
 	if (searchResults.count() > 0) {
 		QIcon icon = getIcon(searchResults[0]);
-
 		licon->setPixmap(icon.pixmap(QSize(32,32), QIcon::Normal, QIcon::On));
 		output->setText(searchResults[0].shortName);
 

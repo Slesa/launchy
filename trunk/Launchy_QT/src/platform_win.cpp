@@ -53,7 +53,8 @@ BOOL GetShellDir(int iType, QString& szPath)
 QIcon WinIconProvider::icon(const QFileInfo& info) const {
 	HICON hico = GetIconHandleNoOverlay(QDir::toNativeSeparators(info.filePath()), false);
 	QPixmap qpix = convertHIconToPixmap(hico);
-	DeleteObject(hico);
+//	qpix.fromWinHBITMAP(hico, QPixmap::PremultipliedAlpha);
+	qDebug() << DestroyIcon(hico);
 	return qpix;
 }
 
