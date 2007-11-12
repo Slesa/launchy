@@ -1,0 +1,82 @@
+QPushButton#opsButton{
+    border: none;
+    background: url(skins/tyler/opsButton.png);
+}
+
+QPushButton#opsButton:pressed {
+    border: none;
+    background-image: url(skins/tyler/opsButtonPressed.png); 
+}
+
+QPushButton#closeButton{
+    border: none;
+    background: url(skins/tyler/closeButton.png);
+}
+
+QPushButton#closeButton:pressed {
+    border: none;
+    background-image: url(skins/tyler/closeButtonPressed.png); 
+}
+
+QLineEdit#input { 
+    font:  12px "Verdana";
+    border-width: 0px;
+    background-color: rgba(0,244,120,0%);
+    border-style: solid;
+    color: #666666;
+}
+QLineEdit#output {
+    font:  12px "Verdana"; 
+    border-width: 0px;
+    background-color: rgba(0,244,120,0%);
+    border-style: solid;
+    color: white;
+    text-align:center;
+}
+
+
+QListWidget#alternatives {
+	color:#3c3c3c;
+	font:  12px "Verdana"; 
+    alternate-background-color: rgb(217,217,217);
+    background: white;
+	selection-background-color: rgb(68,124,184);
+	selection-color: white;
+    border: none; 
+}
+
+QScrollBar#altScroll:vertical {
+	image: url(skins/tyler/scroller-back.png); 
+    width: 16px; 
+    margin: 16px 0px 16px 0px; 
+}
+ 
+
+QScrollBar#altScroll::handle:vertical {
+    image: url(skins/tyler/scroller.png);
+}
+
+
+QScrollBar#altScroll::sub-line:vertical {
+    width: 16px;
+    height: 16px;
+    subcontrol-position: top;
+    subcontrol-origin: margin; 
+    image: url(skins/tyler/scrollUp.png); 	
+}
+
+QScrollBar#altScroll::add-page:vertical {
+    background: url(skins/tyler/scrollBack.png);
+}
+
+QScrollBar#altScroll::sub-page:vertical {
+    background: url(skins/tyler/scrollBack.png); 	
+}
+
+QScrollBar#altScroll::add-line:vertical { 
+    width: 16px;
+    height: 16px; 
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;        
+    image: url(skins/tyler/scrollDown.png);
+}

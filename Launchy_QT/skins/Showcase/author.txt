@@ -1,0 +1,7 @@
+Skin Title: Showcase
+
+Author:	Tyler Sticka, WWW.tylersticka.com
+
+Version: 0.7
+
+Date: 10/28/2007
