@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QString>
 #include <QFile>
 #include <QTextStream>
+#include <QTime>
 #include "controly.h"
 
 #ifdef Q_WS_WIN
@@ -46,6 +47,16 @@ void controlyPlugin::getName(QString* str)
 	*str = "Controly";
 }
 
+void log(QString str) {
+	return;
+	QFile file("debug.txt");
+	file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
+	QTextStream out(&file);
+	out << "[" << QTime::currentTime().toString() << "] ";
+	out << str;
+	file.close();
+}
+
 QString controlyPlugin::getIcon()
 {
 #ifdef Q_WS_WIN
@@ -57,7 +68,7 @@ QString controlyPlugin::getIcon()
 
 
 void controlyPlugin::getApps(QList<CatItem>* items) {
-
+	int a = 0;
 	HWND hwnd = NULL;
 	// Get the control panel applications
 	TCHAR  infoBuf[32767];
@@ -67,15 +78,12 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 	QString buff = QString::fromUtf16((const ushort*) infoBuf);
 	QDir qd(buff);
 
-     QFile file("debug.txt");
-     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-         return;
-	QTextStream out(&file);
 
 	QStringList files = qd.entryList(QStringList("*.cpl"), QDir::Files, QDir::Unsorted);
 	foreach(QString file, files) {
 		QString path = QDir::toNativeSeparators(qd.absoluteFilePath(file));
-out << "\nOpening file " << path << "\n";
+		log("\n");
+		log("Opening file " + path + "\n");
 		union { 
 			NEWCPLINFOA NewCplInfoA;
 			NEWCPLINFOW NewCplInfoW; 
@@ -84,66 +92,73 @@ out << "\nOpening file " << path << "\n";
 		HINSTANCE hLib; // Library Handle to *.cpl file
 		APPLET_PROC CplCall; // Pointer to CPlApplet() function
 		LONG i;
-out << "1. Opening library\n";	   
+		log("1. Opening library\n");
 		// -------------------
 		if (!(hLib = LoadLibrary((LPCTSTR) path.utf16()))) 
 			continue ;	
-out << "1.5 Calling GetProcAddress\n";	   
+
+		
+		log("1.5 Calling GetProcAddress\n");	   
 
 		if (!(CplCall=(APPLET_PROC)GetProcAddress(hLib,"CPlApplet")))
 		{
-out << "1.6 Calling Free Library\n";
+log("1.6 Calling Free Library\n");
 			FreeLibrary(hLib);        
-out << "1.7 Library Freed\n";
+log("1.7 Library Freed\n");
 			continue ;
 		}
-out << "2. Opened library\n";	    
+log("2. Opened library\n");	    
 		// -------------------
-		CplCall(NULL, CPL_INIT,0,0); // Init the *.cpl file
-out << "3. Ran CPL_INIT\n";
+		a = CplCall(NULL, CPL_INIT,0,0); // Init the *.cpl file
+		log(QString::number(a) + "\n");
+log("3. Ran CPL_INIT\n");
 
 		for (i=0;i<CplCall(NULL,CPL_GETCOUNT,0,0);i++)
 		{	        
-out << "4. Entering loop\n";
+log("4. Entering loop\n");
 			Newcpl.NewCplInfoA.dwSize = 0;
 			Newcpl.NewCplInfoA.dwFlags = 0;
-			CplCall(NULL,CPL_NEWINQUIRE,i,(long)&Newcpl);
-out << "5. Called CPL_NEWINQUIRE\n";
+			a = CplCall(NULL,CPL_NEWINQUIRE,i,(long)&Newcpl);
+			log(QString::number(a) + "\n");
+log("5. Called CPL_NEWINQUIRE\n");
 			if (Newcpl.NewCplInfoA.dwSize == sizeof(NEWCPLINFOW))
 			{
-out << "6. Case 1\n";
+log("6. Case 1\n");
 				// Case #1, CPL_NEWINQUIRE has returned an Unicode String
 				items->push_back(CatItem(path, QString::fromUtf16((const ushort*)Newcpl.NewCplInfoW.szName), 0, getIcon()));
 			}
 			else 
 			{
-				out << "6. Case 2\n";
+				log("6. Case 2\n");
 				// Case #2, CPL_NEWINQUIRE has returned an ANSI String
 				if (Newcpl.NewCplInfoA.dwSize != sizeof(NEWCPLINFOA))
 				{
 					// Case #3, CPL_NEWINQUIRE failed to return a string
 					//    Get the string from the *.cpl Resource instead
 					CPLINFO CInfo;
-	                out << "7. Long option\n";
-					CplCall(NULL,CPL_INQUIRE,i,(long)&CInfo);				
-					out << "8. Called, loading string\n";
+	                log("7. Long option\n");
+					a = CplCall(NULL,CPL_INQUIRE,i,(long)&CInfo);
+					log(QString::number(a) + "\n");
+					log("8. Called, loading string\n");
 					LoadStringA(hLib,CInfo.idName,
 						Newcpl.NewCplInfoA.szName,32);
-					out << "9. String loaded\n";
+					log("9. String loaded\n");
 				}
 //				wchar_t	tmpString[32];
 //				MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, Newcpl.NewCplInfoA.szName, 32, tmpString, 32);
-				out << "10. Pushing back item\n";
+				log("10. Pushing back item\n");
 				items->push_back(CatItem(path, QString(Newcpl.NewCplInfoA.szName), 0, getIcon()));
 			}
 		} // for
 	    
-		out << "11. Calling CPL_EXIT\n";
-		CplCall(NULL,CPL_EXIT,0,0);
-	    out << "12. Exited, freeing library..\n";
+		log("11. Calling CPL_EXIT\n");
+		a = CplCall(NULL,CPL_EXIT,0,0);
+		log(QString::number(a) + "\n");
+	    log("12. Exited, freeing library..\n");
 		// -------------------
-		FreeLibrary(hLib);        
-		out << "13. Freed!  All is well\n";
+		a = FreeLibrary(hLib);        
+		log(QString::number(a) + "\n");
+		log("13. Freed!  All is well\n");
 	}
 }
 #endif

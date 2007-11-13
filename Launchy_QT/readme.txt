@@ -16,14 +16,16 @@ Low priority:
 
 For beta:
 Easy stuff -
-	. Add thanks to Tyler for graphics stuff in change log
-	. Tyler's new skin
+	. Add thanks to Tyler for graphics stuff in manual
 	. Remove debug messages from controly
 
 Hard stuff -
 	. Debug controly version to find out which dll is causing problems
 	. Hitting tab from the dropdown when selecting a file should extend the file
-
+	. Fix scrollbar in Showcase
+	
+Medium stuff -
+	. Save relative location on screen, not pixels
 
 Done for beta 1:
 . If hotkey pressed to hide Launchy when options are open, Launchy would close when you exited the options dialog.  Fixed.

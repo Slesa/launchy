@@ -56,12 +56,12 @@ Source: ..\..\license.txt; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
 
 ; Skins
-Source: ..\..\skins\default\alpha.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\default\author.txt; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\default\background.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\default\mask.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\default\misc.txt; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\default\style.qss; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Mercury\alpha.png; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
+Source: ..\..\skins\Mercury\author.txt; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
+Source: ..\..\skins\Mercury\background.png; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
+Source: ..\..\skins\Mercury\mask.png; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
+Source: ..\..\skins\Mercury\misc.txt; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
+Source: ..\..\skins\Mercury\style.qss; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
 
 Source: ..\..\skins\Quicksilver2\alpha.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\..\skins\Quicksilver2\author.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
@@ -76,6 +76,23 @@ Source: ..\..\skins\Black Glass\background.png; DestDir: {app}\skins\Black Glass
 Source: ..\..\skins\Black Glass\mask.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black Glass\misc.txt; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black Glass\style.qss; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+
+Source: ..\..\skins\Default\alpha.png; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\author.txt; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\background.png; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\closeButton.png; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\closeButtonPressed.png; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\mask.png; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\misc.txt; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\opsButton.png; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\opsButtonPressed.png; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\scrollBack.png; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\scrollDown.png; DestDir: {app}\skins\default\; Flags: ignoreversion
+;Source: ..\..\skins\Default\scroller.png; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\scrollUp.png; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\style.qss; DestDir: {app}\skins\default\; Flags: ignoreversion
+
+
 
 ; Libs
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
