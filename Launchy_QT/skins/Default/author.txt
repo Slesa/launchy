@@ -1,7 +1,7 @@
-Skin Title: Showcase
+Spotlight (Version 1.0)
+By Tyler Sticka » www.tylersticka.com
 
-Author:	Tyler Sticka, WWW.tylersticka.com
+Latest Revision: 11/12/2007
 
-Version: 0.7
-
-Date: 10/28/2007
+Thanks to Josh Karlin and Peter Wooley
+for assistance and inspiration!

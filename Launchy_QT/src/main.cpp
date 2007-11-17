@@ -139,7 +139,7 @@ MyWidget::MyWidget(QWidget *parent)
 	applySkin(qApp->applicationDirPath() + "/Skins/" + gSettings->value("GenOps/skin", "Default").toString());
 
 	// Move to saved position
-	QPoint x = gSettings->value("Display/pos", QPoint(0,0)).toPoint();
+	QPoint x = loadPosition(); //gSettings->value("Display/relpos", QPoint(0,0)).toPoint();
 	move(x);
 	platform.MoveAlphaBorder(x);
 
@@ -694,7 +694,39 @@ void MyWidget::updateVersion(int oldVersion) {
 	}
 }
 
+QPair<double,double> MyWidget::relativePos() {
+	QPoint p = pos();
+	QPair<double,double> relPos;
+	relPos.first = (double) p.x() / (double) qApp->desktop()->width();
+	relPos.second = (double) p.y() / (double) qApp->desktop()->height();
+	return relPos;
+}
+
+QPoint MyWidget::absolutePos(QPair<double,double> relPos) {
+	QPoint absPos;
+	absPos.setX(relPos.first * (double) qApp->desktop()->width());
+	absPos.setY(relPos.second * (double) qApp->desktop()->height());
+	return absPos;
+}
+
+QPoint MyWidget::loadPosition() {
+	QPair<double,double> rpos;
+	rpos.first = gSettings->value("Display/rposX", 0.0).toDouble();
+	rpos.second = gSettings->value("Display/rposY", 0.0).toDouble();
+	return absolutePos(rpos);
+}
+
+void MyWidget::savePosition() {
+	QPair<double,double> rpos = relativePos();
+	gSettings->setValue("Display/rposX", rpos.first);
+	gSettings->setValue("Display/rposY", rpos.second);
+}
+
 void MyWidget::updateTimeout() {
+	// Save the settings periodically
+	savePosition();
+	gSettings->sync();
+
 	// Perform the database update
 	if (gBuilder == NULL) {
 		gBuilder = new CatBuilder(false, &plugins);
@@ -728,8 +760,10 @@ void MyWidget::onHotKey() {
 }
 
 void MyWidget::closeEvent(QCloseEvent *event) {
-	gSettings->setValue("Display/pos", pos());
+//	gSettings->setValue("Display/pos", relativePosition());
+	savePosition();
 	gSettings->sync();
+
 
 	QDir dest(gSettings->fileName());
 	dest.cdUp();
@@ -951,6 +985,7 @@ void MyWidget::mouseMoveEvent(QMouseEvent *e)
 	platform.MoveAlphaBorder(p);
 	showAlternatives(false);
 	input->setFocus();
+
 }
 
 
@@ -1081,6 +1116,7 @@ void MyWidget::showLaunchy(bool now) {
 	// This gets around the weird Vista bug
 	// where the alpha border would dissappear
 	// on sleep or user switch
+	move(loadPosition());
 	platform.CreateAlphaBorder(this, "");
 	platform.MoveAlphaBorder(pos());
 
@@ -1109,6 +1145,7 @@ void MyWidget::showLaunchy(bool now) {
 void MyWidget::hideLaunchy(bool now) {
 	if (!isVisible())
 		return;
+	savePosition();
 	if (dropTimer != NULL && dropTimer->isActive())
 		dropTimer->stop();
 	if (alwaysShowLaunchy) return;
