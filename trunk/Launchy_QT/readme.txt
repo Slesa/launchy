@@ -18,11 +18,12 @@ For beta:
 Easy stuff -
 	. Add thanks to Tyler for graphics stuff in manual
 	. Remove debug messages from controly
+	. Update file properties (version info)
+	. Escape '#' char for web searches? Replace # with %23
 
 Hard stuff -
 	. Debug controly version to find out which dll is causing problems
 	. Hitting tab from the dropdown when selecting a file should extend the file
-	. Fix scrollbar in Showcase
 	
 Medium stuff -
 	. Save relative location on screen, not pixels
@@ -39,7 +40,7 @@ Done for beta 1:
 . Fixed a GDI resource leak
 . If there is no text, clear the icon
 . Thanks to Tyler Sticka for Launchy's beautiful new skin and icon!
-
+. Position is saved relative to screen resolution, and saved periodically in case of fast reboot
 
 Done for alpha 9:
 . Expand to short name on tab
