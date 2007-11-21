@@ -413,7 +413,7 @@ void MyWidget::doTab()
 		QFileInfo info(searchResults[0].fullPath);
 
 		if ((inputData.last().hasLabel(LABEL_FILE) || info.isDir())
-			&& input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
+		)//	&& input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
 		{
 			QString path;
 			if (info.isSymLink())
