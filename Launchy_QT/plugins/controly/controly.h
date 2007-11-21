@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef controly_H
 #define controly_H
 
+#include <QHash>
 #include "plugin_interface.h"
 
 
@@ -32,6 +33,7 @@ class controlyPlugin : public QObject, public PluginInterface
 
 public:
 	uint HASH_controly;
+	QHash<QString, QString> cache;
 
 public:
 	controlyPlugin() {

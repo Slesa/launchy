@@ -373,6 +373,7 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 			}
 		}
 	}
+//	file = file.replace("#", "%23");
 	QUrl url(file);
 	runProgram(url.toEncoded(), "");
 }

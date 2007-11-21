@@ -1,34 +1,17 @@
-For beta release:
-
-
-
-Low priority:
-. Can get rid of extra data (e.g. icon info) in alternatives item's if I clear the items after options exits
-. Append to file plugin or .bat file or something
-. Confirmation on Alt+F4
-. Recompile 4.3.2 to include more options
-
-
 2.0+:
 . Add memory for runny/launchy (rebuild/exit/etc..)
 . Add a plugin for open with etc..
 
 
-For beta:
+For 2.0 Final:
 Easy stuff -
-	. Add thanks to Tyler for graphics stuff in manual
-	. Remove debug messages from controly
-	. Update file properties (version info)
-	. Escape '#' char for web searches? Replace # with %23
-
+	. Add thanks to Tyler for graphics stuff on webpage
 Hard stuff -
-	. Debug controly version to find out which dll is causing problems
 	. Hitting tab from the dropdown when selecting a file should extend the file
 	
-Medium stuff -
-	. Save relative location on screen, not pixels
 
 Done for beta 1:
+. Thanks to Tyler Sticka for Launchy's beautiful new skin and icon!
 . If hotkey pressed to hide Launchy when options are open, Launchy would close when you exited the options dialog.  Fixed.
 . Added tooltips for alternative items
 . Bring the font back?  Greek fonts seem to have problems
@@ -39,8 +22,8 @@ Done for beta 1:
 . Right click on output area opens popup menu
 . Fixed a GDI resource leak
 . If there is no text, clear the icon
-. Thanks to Tyler Sticka for Launchy's beautiful new skin and icon!
 . Position is saved relative to screen resolution, and saved periodically in case of fast reboot
+. Controly caches names, hopefully will prevent crashes from repeat scans
 
 Done for alpha 9:
 . Expand to short name on tab
