@@ -7,7 +7,6 @@ For 2.0 Final:
 Easy stuff -
 	. Add thanks to Tyler for graphics stuff on webpage
 Hard stuff -
-	. Hitting tab from the dropdown when selecting a file should extend the file
 	
 
 Done for beta 1:
@@ -24,6 +23,7 @@ Done for beta 1:
 . If there is no text, clear the icon
 . Position is saved relative to screen resolution, and saved periodically in case of fast reboot
 . Controly caches names, hopefully will prevent crashes from repeat scans
+. Hitting tab from the dropdown when selecting a file should extend the file
 
 Done for alpha 9:
 . Expand to short name on tab
