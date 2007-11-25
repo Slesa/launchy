@@ -41,25 +41,25 @@ public:
 
 	CatItem() {}
 
-	
-	CatItem(QString full) 
+
+	CatItem(QString full, bool isDir = false) 
 		: fullPath(full) {
-
-		int last = fullPath.lastIndexOf("/");
-		if (last == -1) {
+			int last = fullPath.lastIndexOf("/");
+			if (last == -1) {
 				shortName = fullPath;
-		
-		} else {
-			shortName = fullPath.mid(last+1);
-			shortName = shortName.mid(0,shortName.lastIndexOf("."));
-		}
 
-		lowName = shortName.toLower();
-		data = NULL;
-		usage = 0;
-		id = 0;
+			} else {
+				shortName = fullPath.mid(last+1);
+				if (!isDir)
+					shortName = shortName.mid(0,shortName.lastIndexOf("."));
+			}
+
+			lowName = shortName.toLower();
+			data = NULL;
+			usage = 0;
+			id = 0;
 	}
-	
+
 
 	CatItem(QString full, QString shortN) 
 		: fullPath(full), shortName(shortN) 

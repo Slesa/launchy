@@ -572,10 +572,11 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 	QDir qd(dir);
 	QStringList ilist;
 	if (gSettings->value("GenOps/showHiddenFiles", false).toBool())
-		ilist = qd.entryList(QStringList(file + "*"), QDir::Hidden | QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot, QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
+		ilist = qd.entryList(QStringList(file + "*"), QDir::Hidden | QDir::AllDirs | QDir::Files, QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
 	else
-		ilist = qd.entryList(QStringList(file + "*"), QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot, QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
+		ilist = qd.entryList(QStringList(file + "*"), QDir::AllDirs | QDir::Files , QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
 	foreach(QString inf, ilist) {
+		if (inf.startsWith(".")) continue;
 		if (inf.mid(0, file.count()).compare(file,  Qt::CaseInsensitive) == 0) {
 			QString fp = qd.absolutePath() + "/" + inf;
 			QFileInfo in(fp);

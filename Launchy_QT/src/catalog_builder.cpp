@@ -98,10 +98,11 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 //	dir = QDir::toNativeSeparators(dir);
 	QDir qd(dir);
 	dir = qd.absolutePath();
-	QStringList dirs = qd.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+	QStringList dirs = qd.entryList(QDir::AllDirs);
 
 	if (depth > 0) {
 		for (int i = 0; i < dirs.count(); ++i) {
+			if (dirs[i].startsWith(".")) continue;
 			QString cur = dirs[i];
 			if (cur.contains(".lnk")) continue;
 			indexDirectory(dir + "/" + dirs[i], filters, fdirs, fbin, depth-1);
@@ -110,8 +111,9 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 
 	if (fdirs) {
 		for(int i = 0; i < dirs.count(); ++i) {
+			if (dirs[i].startsWith(".")) continue;
 			if (!indexed.contains(dir + "/" + dirs[i])) {
-				CatItem item(dir + "/" + dirs[i]);
+				CatItem item(dir + "/" + dirs[i], true);
 				if (curcat != NULL)
 					item.usage = curcat->getUsage(item.fullPath);
 				cat->addItem(item);
@@ -122,9 +124,10 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 		// Grab any shortcut directories 
 		// This is to work around a QT weirdness that treats shortcuts to directories as actual directories
 		for(int i = 0; i < dirs.count(); ++i) {
+			if (dirs[i].startsWith(".")) continue;
 			if (dirs[i].endsWith(".lnk",Qt::CaseInsensitive)) {
 				if (!indexed.contains(dir + "/" + dirs[i])) {
-					CatItem item(dir + "/" + dirs[i]);
+					CatItem item(dir + "/" + dirs[i], true);
 					if (curcat != NULL)
 						item.usage = curcat->getUsage(item.fullPath);
 					cat->addItem(item);
