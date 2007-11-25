@@ -118,7 +118,23 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 				indexed[dir + "/" + dirs[i]] = true;
 			}
 		}
+	} else {
+		// Grab any shortcut directories 
+		// This is to work around a QT weirdness that treats shortcuts to directories as actual directories
+		for(int i = 0; i < dirs.count(); ++i) {
+			if (dirs[i].endsWith(".lnk",Qt::CaseInsensitive)) {
+				if (!indexed.contains(dir + "/" + dirs[i])) {
+					CatItem item(dir + "/" + dirs[i]);
+					if (curcat != NULL)
+						item.usage = curcat->getUsage(item.fullPath);
+					cat->addItem(item);
+					indexed[dir + "/" + dirs[i]] = true;
+				}
+			}
+		}
 	}
+
+	
 
 	if (fbin) {
 		QStringList bins = qd.entryList(QDir::Files | QDir::Executable);
