@@ -6,8 +6,15 @@
 For 2.0 Final:
 Easy stuff -
 	. Add thanks to Tyler for graphics stuff on webpage
+	. Add thanks to testers
 Hard stuff -
 	
+For Beta 2:
+	. 
+	
+Done for beta 2:
+. Shortcuts to directories are treated as normal files
+
 
 Done for beta 1:
 . Thanks to Tyler Sticka for Launchy's beautiful new skin and icon!
