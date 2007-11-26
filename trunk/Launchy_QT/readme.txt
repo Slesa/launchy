@@ -14,7 +14,7 @@ For Beta 2:
 	
 Done for beta 2:
 . Shortcuts to directories are treated as normal files
-
+. Undid relative positioning
 
 Done for beta 1:
 . Thanks to Tyler Sticka for Launchy's beautiful new skin and icon!

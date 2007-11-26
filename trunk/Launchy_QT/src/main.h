@@ -190,10 +190,10 @@ public:
 	void searchOnInput();
 	void fadeIn();
 	void fadeOut();
-	QPair<double,double> relativePos();
-	QPoint absolutePos(QPair<double,double> relPos);
-	QPoint loadPosition();
-	void savePosition();
+//	QPair<double,double> relativePos();
+//	QPoint absolutePos(QPair<double,double> relPos);
+	QPoint loadPosition() { return gSettings->value("Display/pos", QPoint(0,0)).toPoint(); }
+	void savePosition() { gSettings->setValue("Display/pos", pos()); }
 	void doTab();
 	void doEnter();
 	void setNumViewable(int val);
