@@ -695,6 +695,7 @@ void MyWidget::updateVersion(int oldVersion) {
 	}
 }
 
+/*
 QPair<double,double> MyWidget::relativePos() {
 	QPoint p = pos();
 	QPair<double,double> relPos;
@@ -722,6 +723,8 @@ void MyWidget::savePosition() {
 	gSettings->setValue("Display/rposX", rpos.first);
 	gSettings->setValue("Display/rposY", rpos.second);
 }
+*/
+
 
 void MyWidget::updateTimeout() {
 	// Save the settings periodically
