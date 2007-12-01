@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'options.ui'
 **
-** Created: Wed Nov 21 15:53:59 2007
+** Created: Sat Dec 1 15:10:37 2007
 **      by: Qt User Interface Compiler version 4.3.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -48,6 +48,7 @@ public:
     QCheckBox *genHideFocus;
     QCheckBox *genAlwaysTop;
     QCheckBox *genCondensed;
+    QCheckBox *genCenter;
     QHBoxLayout *hboxLayout2;
     QLabel *label;
     QSpacerItem *spacerItem;
@@ -211,6 +212,11 @@ public:
     genCondensed->setObjectName(QString::fromUtf8("genCondensed"));
 
     vboxLayout3->addWidget(genCondensed);
+
+    genCenter = new QCheckBox(groupBox_4);
+    genCenter->setObjectName(QString::fromUtf8("genCenter"));
+
+    vboxLayout3->addWidget(genCenter);
 
     hboxLayout2 = new QHBoxLayout();
     hboxLayout2->setObjectName(QString::fromUtf8("hboxLayout2"));
@@ -827,6 +833,7 @@ public:
     genHideFocus->setText(QApplication::translate("OptionsDlg", "Hide Launchy when it loses focus", 0, QApplication::UnicodeUTF8));
     genAlwaysTop->setText(QApplication::translate("OptionsDlg", "Always on top", 0, QApplication::UnicodeUTF8));
     genCondensed->setText(QApplication::translate("OptionsDlg", "Condense suggestion list", 0, QApplication::UnicodeUTF8));
+    genCenter->setText(QApplication::translate("OptionsDlg", "Always center Launchy", 0, QApplication::UnicodeUTF8));
     label->setText(QApplication::translate("OptionsDlg", "Hotkey:", 0, QApplication::UnicodeUTF8));
     groupBox_10->setTitle(QApplication::translate("OptionsDlg", "Gui", 0, QApplication::UnicodeUTF8));
     label_6->setText(QApplication::translate("OptionsDlg", "Opaqueness", 0, QApplication::UnicodeUTF8));

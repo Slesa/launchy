@@ -77,20 +77,20 @@ Source: ..\..\skins\Black Glass\mask.png; DestDir: {app}\skins\Black Glass\; Fla
 Source: ..\..\skins\Black Glass\misc.txt; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black Glass\style.qss; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 
-Source: ..\..\skins\Default\alpha.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\Default\author.txt; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\Default\background.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\Default\closeButton.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\Default\closeButtonPressed.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\Default\mask.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\Default\misc.txt; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\Default\opsButton.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\Default\opsButtonPressed.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\Default\scrollBack.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\Default\scrollDown.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-;Source: ..\..\skins\Default\scroller.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\Default\scrollUp.png; DestDir: {app}\skins\default\; Flags: ignoreversion
-Source: ..\..\skins\Default\style.qss; DestDir: {app}\skins\default\; Flags: ignoreversion
+Source: ..\..\skins\Default\alpha.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\author.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\background.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\closeButton.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\closeButtonPressed.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\mask.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\misc.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\opsButton.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\opsButtonPressed.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\scrollBack.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\scrollDown.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+;Source: ..\..\skins\Default\scroller.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\scrollUp.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\style.qss; DestDir: {app}\skins\Default\; Flags: ignoreversion
 
 
 
@@ -129,7 +129,7 @@ Name: {commonstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir:
 Name: {group}\Readme.pdf; Filename: {app}\Readme.pdf; WorkingDir: {app}
 
 [Run]
-Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
+Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent runasoriginaluser
 
 
 [UninstallDelete]
