@@ -228,6 +228,12 @@ public:
 		tmp.name = "Utilities\\";
 		tmp.indexDirs = true;
 		list.append(tmp);
+
+
+		Directory tmp2;
+		tmp2.name = "%appdata%\\Microsoft\\Internet Explorer\\Quick Launch";
+		tmp2.types << "*.*";
+		list.append(tmp2);
 		return list;
 	}
 

@@ -41,6 +41,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		genAlwaysTop->setChecked(gSettings->value("GenOps/alwaystop", false).toBool());
 		genPortable->setChecked(gSettings->value("GenOps/isportable", false).toBool());
 		genHideFocus->setChecked(gSettings->value("GenOps/hideiflostfocus", true).toBool());
+		genCenter->setChecked(gSettings->value("GenOps/alwayscenter", false).toBool());
 		genFastIndex->setChecked(gSettings->value("GenOps/fastindexer",false).toBool());
 		genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
 		genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
@@ -51,7 +52,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		genOpaqueness->setValue(gSettings->value("GenOps/opaqueness", 100).toInt());
 		genFadeIn->setValue(gSettings->value("GenOps/fadein", 0).toInt());
 		genFadeOut->setValue(gSettings->value("GenOps/fadeout", 20).toInt());
-
+		
 		connect(genOpaqueness, SIGNAL(sliderMoved(int)), main, SLOT(setOpaqueness(int)));
 
 		metaKeys << tr("Alt") << tr("Win") << tr("Shift") << tr("Control");
@@ -105,7 +106,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 			if (!f.exists()) continue;
 
 			skinList->addItem(d);
-			if (skinName == d)
+			if (skinName.compare(d, Qt::CaseInsensitive) == 0)
 				skinRow = skinList->count() - 1;
 		}
 		skinList->setCurrentRow(skinRow);
@@ -161,10 +162,12 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 
 		}
 
+		/* This is dangerous without a lock
 		if (gBuilder != NULL) {
 			connect(gBuilder, SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
 			connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		}
+		*/
 
 		// Load up the plugins		
 		connect(plugList, SIGNAL(currentRowChanged(int)), this, SLOT(pluginChanged(int)));
@@ -210,6 +213,7 @@ void OptionsDlg::accept() {
 	gSettings->setValue("GenOps/isportable", genPortable->isChecked());
 	gSettings->setValue("GenOps/updatecheck", genUpdateCheck->isChecked());
 	gSettings->setValue("GenOps/hideiflostfocus", genHideFocus->isChecked());
+	gSettings->setValue("GenOps/alwayscenter", genCenter->isChecked());
 	gSettings->setValue("GenOps/fastindexer", genFastIndex->isChecked());
 	gSettings->setValue("GenOps/showHiddenFiles", genShowHidden->isChecked());
 	gSettings->setValue("GenOps/condensedView", genCondensed->isChecked());

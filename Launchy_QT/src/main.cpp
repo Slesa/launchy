@@ -320,7 +320,6 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 	if (key->key() == Qt::Key_Up) {key->ignore();}
 	else if (key->key() == Qt::Key_Down) {key->ignore();}
 	else if (key->key() == Qt::Key_Return || key->key() == Qt::Key_Enter || key->key() == Qt::Key_Tab) {
-		
 		if (searchResults.count() > 0) {
 			int row = alternatives->currentRow();
 			if (row > -1) {
@@ -336,9 +335,12 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 
 				updateDisplay();
 
-				inputData.last().setText(searchResults[0].fullPath);
-				input->setText(printInput() + searchResults[0].fullPath);
-
+				/* This seems to be unnecessary
+				if (key->key() == Qt::Key_Tab) {
+					inputData.last().setText(searchResults[0].fullPath);
+					input->setText(printInput() + searchResults[0].fullPath);
+				}
+				*/
 				alternatives->hide();
 
 
@@ -350,7 +352,6 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 					dropTimer->stop();
 					dropTimer->start(1000);
 				} else {
-
 					doEnter();
 				}
 			}
@@ -710,14 +711,19 @@ QPoint MyWidget::absolutePos(QPair<double,double> relPos) {
 	absPos.setY(relPos.second * (double) qApp->desktop()->height());
 	return absPos;
 }
+*/
 
 QPoint MyWidget::loadPosition() {
-	QPair<double,double> rpos;
-	rpos.first = gSettings->value("Display/rposX", 0.0).toDouble();
-	rpos.second = gSettings->value("Display/rposY", 0.0).toDouble();
-	return absolutePos(rpos);
+	if (gSettings->value("GenOps/alwayscenter", false).toBool()) {
+		QPoint p;
+		QRect r = geometry();
+		p.setX(qApp->desktop()->width()/2.0 - r.width() / 2.0);
+		p.setY(qApp->desktop()->height()/2.0 - r.height() / 2.0);
+		return p;
+	} 
+	return gSettings->value("Display/pos", QPoint(0,0)).toPoint();
 }
-
+/*
 void MyWidget::savePosition() {
 	QPair<double,double> rpos = relativePos();
 	gSettings->setValue("Display/rposX", rpos.first);

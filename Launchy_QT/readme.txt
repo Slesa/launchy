@@ -10,11 +10,15 @@ Easy stuff -
 Hard stuff -
 	
 For Beta 2:
-	. 
+	. Fix controly problem
 	
 Done for beta 2:
 . Shortcuts to directories are treated as normal files
 . Undid relative positioning
+. Wrong skin would periodically get selected
+. Always center Launchy setting added (allows you to move it but will recenter every time you hit the hotkey)
+. Fixed skin color problem in dropdown box
+. Installer is more Vista friendly for non-admin users
 
 Done for beta 1:
 . Thanks to Tyler Sticka for Launchy's beautiful new skin and icon!
