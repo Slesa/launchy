@@ -19,6 +19,7 @@ Done for beta 2:
 . Always center Launchy setting added (allows you to move it but will recenter every time you hit the hotkey)
 . Fixed skin color problem in dropdown box
 . Installer is more Vista friendly for non-admin users
+. Launchy would crash if you hit hotkey a few times while options dlg was open, if you use the options button instead of the menu.  Fixed.
 
 Done for beta 1:
 . Thanks to Tyler Sticka for Launchy's beautiful new skin and icon!
