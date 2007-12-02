@@ -62,6 +62,7 @@ MyWidget::MyWidget(QWidget *parent)
 
 	gMainWidget = this;
 	menuOpen = false;
+	optionsOpen = false;
 	gSearchTxt = "";
 	gBuilder = NULL;
 	catalog = NULL;
@@ -283,9 +284,7 @@ void MyWidget::launchObject(int obj) {
 					close();
 					break;
 				case MSG_CONTROL_OPTIONS:
-					menuOpen = true;
 					menuOptions();
-					menuOpen = false;
 					break;
 				case MSG_CONTROL_REBUILD:
 					// Perform the database update
@@ -307,7 +306,7 @@ void MyWidget::launchObject(int obj) {
 void MyWidget::focusOutEvent ( QFocusEvent * evt) {
 	if (evt->reason() == Qt::ActiveWindowFocusReason) {
 		if (gSettings->value("GenOps/hideiflostfocus", true).toBool())
-			if (!this->isActiveWindow() && !alternatives->isActiveWindow() && !menuOpen)
+			if (!this->isActiveWindow() && !alternatives->isActiveWindow() && !optionsOpen)
 				hideLaunchy();
 	}
 }
@@ -757,7 +756,7 @@ void MyWidget::dropTimeout() {
 }
 
 void MyWidget::onHotKey() {
-	if (menuOpen) {
+	if (menuOpen || optionsOpen) {
 		showLaunchy();
 		return;
 	} 
@@ -1013,8 +1012,9 @@ void MyWidget::contextMenuEvent(QContextMenuEvent *event) {
 
 
 void MyWidget::menuOptions() {
-	
+	dropTimer->stop();
 	alternatives->hide();
+	optionsOpen = true;
 	OptionsDlg ops(this);
 	ops.setObjectName("options");
 	ops.exec();
@@ -1028,6 +1028,7 @@ void MyWidget::menuOptions() {
 	}
 	input->activateWindow();
 	input->setFocus();	
+	optionsOpen = false;
 }
 
 void MyWidget::shouldDonate() {
@@ -1122,7 +1123,6 @@ void MyWidget::fadeOut() {
 void MyWidget::showLaunchy(bool now) {
 	shouldDonate();
 	alternatives->hide();
-	
 	// This gets around the weird Vista bug
 	// where the alpha border would dissappear
 	// on sleep or user switch

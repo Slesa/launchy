@@ -162,7 +162,8 @@ public:
 	bool visible;
 	bool alwaysShowLaunchy;
 	bool menuOpen;
-	
+	bool optionsOpen;
+
 	IconDelegate* listDelegate;
 	QAbstractItemDelegate * defaultDelegate;
 
