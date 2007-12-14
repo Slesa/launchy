@@ -141,11 +141,12 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 							cache[file] = QString(Newcpl.NewCplInfoA.szName);
 						}
 					} // for
-
+					CplCall(NULL,CPL_EXIT,0,0);
 				}
-				CplCall(NULL,CPL_EXIT,0,0);
+				
 			}
-			FreeLibrary(hLib);
+			if (hLib != NULL)
+				FreeLibrary(hLib);
 		} 
 	}
 }
