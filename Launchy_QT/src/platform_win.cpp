@@ -43,7 +43,7 @@ BOOL GetShellDir(int iType, QString& szPath)
 	}
 
 	TCHAR tmp[_MAX_PATH];
-	HRESULT hRet = pfnSHGetFolderPath( NULL, iType, NULL, 0, tmp );
+	pfnSHGetFolderPath( NULL, iType, NULL, 0, tmp );
 	szPath = QString::fromUtf16((const ushort*)tmp);
 	FreeLibrary( hInst ); // <-- and here
 	return TRUE;
@@ -54,7 +54,7 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const {
 	HICON hico = GetIconHandleNoOverlay(QDir::toNativeSeparators(info.filePath()), false);
 	QPixmap qpix = convertHIconToPixmap(hico);
 //	qpix.fromWinHBITMAP(hico, QPixmap::PremultipliedAlpha);
-	qDebug() << DestroyIcon(hico);
+	DestroyIcon(hico);
 	return qpix;
 }
 
@@ -305,12 +305,11 @@ void QLaunchyAlphaBorder::SetImage(QString name)
 	SelectObject(hDC, bmp);
 
 
-	POINT pt={0, 0};
 	SIZE sz = {image.width(), image.height()};
 	POINT ptSource = {0};
 	BLENDFUNCTION bf = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
 
-	BOOL bRet= UpdateLayeredWindow(winId(), NULL, NULL, &sz, hDC,
+	UpdateLayeredWindow(winId(), NULL, NULL, &sz, hDC,
 		&ptSource, 0, &bf, ULW_ALPHA);
 
 	DeleteObject(bmp);
@@ -322,7 +321,7 @@ void QLaunchyAlphaBorder::SetAlphaOpacity(double trans)
 //	HDC hDC = 
 //	if (alpha != NULL) alpha->setWindowOpacity(trans); 
 	BLENDFUNCTION bf = { AC_SRC_OVER, 0, (int) (trans * 255.0), AC_SRC_ALPHA };
-	BOOL bRet= UpdateLayeredWindow(winId(), NULL, NULL, NULL, NULL,
+	UpdateLayeredWindow(winId(), NULL, NULL, NULL, NULL,
 		NULL, 0, &bf, ULW_ALPHA);
 }
 

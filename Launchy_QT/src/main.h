@@ -62,6 +62,7 @@ public:
 		}
 		// This is how you pick up the tab key
 		bool focusNextPrevChild(bool next) {
+			next = next; // Remove compiler warning
 			QKeyEvent key(QEvent::KeyPress, Qt::Key_Tab, NULL);
 			emit keyPressed(&key);
 			return true;
@@ -99,6 +100,7 @@ public:
 			key->ignore();
 		}
 		void mouseDoubleClickEvent( QMouseEvent * event  ) {
+			event = event; // Remove compiler warning
 			QKeyEvent key(QEvent::KeyPress, Qt::Key_Enter, NULL);
 			emit keyPressed(&key);
 		}
@@ -182,7 +184,7 @@ public:
 	void setCondensed(int condensed);
 	void setHotkey(int, int);
 	void showAlternatives(bool show=true);
-	void launchObject(int obj);
+	void launchObject();
 	void searchFiles(const QString & input, QList<CatItem>& searchResults);
 	void parseInput(QString text);
 	void resetLaunchy();
@@ -197,10 +199,8 @@ public:
 	void savePosition() { gSettings->setValue("Display/pos", pos()); }
 	void doTab();
 	void doEnter();
-	void setNumViewable(int val);
 	QChar sepChar();
 	QString printInput();
-	void printGeometry();
 private:
     QHttp *http;
     QBuffer *verBuffer;
@@ -214,18 +214,13 @@ public slots:
 	void setAlwaysShow(bool);
 	void setAlwaysTop(bool);
 	void setPortable(bool);
-	void setUpdateCheck(bool);
-	void setUpdateTimer(int);
-	void setNumResults(int);
 	void setSkin(QString);
 	void httpGetFinished(bool result);
 	void catalogBuilt();
 	void keyPressEvent(QKeyEvent*);
 	void inputKeyPressEvent(QKeyEvent* key);
 	void altKeyPressEvent(QKeyEvent* key);
-	void altIndexChanged(int index);
 	void focusOutEvent(QFocusEvent* evt);
-	void setFadeTimes(int, int);
 	void setOpaqueness(int val);
 	void setFadeLevel(double);
 	void finishedFade(double d);

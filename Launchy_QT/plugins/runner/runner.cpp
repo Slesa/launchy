@@ -103,6 +103,8 @@ void runnerPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 
 void runnerPlugin::launchItem(QList<InputData>* id, CatItem* item)
 {
+	item = item; // Compiler warning
+
 	QString file = "";
 	QString args = "";
 

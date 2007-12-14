@@ -21,6 +21,7 @@ Done for beta 2:
 . Fixed skin color problem in dropdown box
 . Installer is more Vista friendly for non-admin users
 . Launchy would crash if you hit hotkey a few times while options dlg was open, if you use the options button instead of the menu.  Fixed.
+. At least some crashes due to controly are fixed (e.g. windows 2003 netsetup.cpl)
 
 Done for beta 1:
 . Thanks to Tyler Sticka for Launchy's beautiful new skin and icon!

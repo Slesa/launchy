@@ -61,9 +61,9 @@ public:
 
 	// Alpha border functions	
 	virtual bool SupportsAlphaBorder() { return false; }
-	virtual bool CreateAlphaBorder(WId id, QString ImageName) { return false; }
+	virtual bool CreateAlphaBorder(QWidget* w, QString ImageName) { w = w; ImageName = ImageName; return false; }
 	virtual void DestroyAlphaBorder() { return; }
-	virtual void MoveAlphaBorder(QPoint pos) { return; }
+	virtual void MoveAlphaBorder(QPoint pos) { pos = pos; return; }
 	virtual void HideAlphaBorder() { return; }
 	virtual void ShowAlphaBorder() { return; }
 	virtual void SetAlphaOpacity(double) { return; }

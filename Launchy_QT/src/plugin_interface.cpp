@@ -40,7 +40,7 @@ void runProgram(QString path, QString args) {
 	ShExecInfo.nShow = SW_NORMAL;
 	ShExecInfo.hInstApp = NULL;
 
-	BOOL ret = ShellExecuteEx(&ShExecInfo);	
+	ShellExecuteEx(&ShExecInfo);	
 #endif
 
 #ifdef Q_WS_MAC

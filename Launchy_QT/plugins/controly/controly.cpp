@@ -74,7 +74,6 @@ QString controlyPlugin::getIcon()
 
 void controlyPlugin::getApps(QList<CatItem>* items) {
 	int a = 0;
-	HWND hwnd = NULL;
 	// Get the control panel applications
 	TCHAR  infoBuf[32767];
 	if (!GetSystemDirectory(infoBuf, 32767)) {
@@ -183,6 +182,7 @@ void controlyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 
 int controlyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 {
+	item = item; // Compiler warning
 	if (id->count() < 2) return 1;
 	CatItem last = id->last().getTopResult();
 	QSettings* set = *settings;
