@@ -10,7 +10,6 @@ Easy stuff -
 Hard stuff -
 	
 For Beta 2:
-	. Fix controly problem
 	. Sometimes when I hit the options button it crashes
 	
 Done for beta 2:
