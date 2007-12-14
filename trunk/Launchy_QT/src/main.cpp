@@ -865,8 +865,10 @@ void MyWidget::applySkin(QString directory) {
 	if (listDelegate == NULL) return;
 
 	// Use default skin if this one doesn't exist
-	if (!QFile::exists(directory + "/misc.txt")) 
+	if (!QFile::exists(directory + "/misc.txt"))  {
 		directory = qApp->applicationDirPath() + "/Skins/Default/";
+		gSettings->setValue("GenOps/skin", "Default");
+	}
 	
 
 	// Set positions
