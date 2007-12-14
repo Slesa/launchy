@@ -29,7 +29,7 @@ win32 {
 }
 
 win32:debug {
-%	CONFIG += console 
+	%CONFIG += console 
 	DESTDIR = ../debug/
 }
 
