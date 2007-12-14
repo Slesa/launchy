@@ -144,6 +144,7 @@ void Move(QString f1, QString f2) {
 
 void winshellPlugin::launchItem(QList<InputData>* id, CatItem* item)
 {
+	item = item; // Compiler Warning
 	QString file;
 	QString args;
 	

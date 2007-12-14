@@ -230,14 +230,10 @@ void OptionsDlg::accept() {
 	main->setAlwaysShow(genAlwaysShow->isChecked());
 	main->setAlwaysTop(genAlwaysTop->isChecked());
 	main->setPortable(genPortable->isChecked());
-	main->setUpdateCheck(genUpdateCheck->isChecked());
-	main->setUpdateTimer(genUpMinutes->text().toInt());
-	main->setNumResults(genNumResults->text().toInt());
-	main->setNumViewable(genMaxViewable->text().toInt());
 	main->setHotkey(iMetaKeys[genModifierBox->currentIndex()], iActionKeys[genKeyBox->currentIndex()]);
 	main->setCondensed(genCondensed->isChecked());
 	main->setOpaqueness(genOpaqueness->value());
-	main->setFadeTimes(genFadeIn->value(), genFadeOut->value());
+
 
 	
 	// Apply Skin Options
@@ -281,6 +277,7 @@ void OptionsDlg::accept() {
 }
 
 void OptionsDlg::tabChanged(int tab) {
+	tab = tab; // Compiler warning
 	// Redraw the current skin
 	// (necessary because of dialog resizing issues)
 	if (tabWidget->currentWidget()->objectName() == "Skins") {
@@ -357,7 +354,6 @@ void OptionsDlg::pluginItemChanged(QListWidgetItem* iz) {
 }
 
 void OptionsDlg::catProgressUpdated(float val) {
-	int x = val;
 	catProgress->setValue(val);
 }
 void OptionsDlg::catalogBuilt() {
@@ -366,6 +362,7 @@ void OptionsDlg::catalogBuilt() {
 		catSize->setText(tr("Index has ") + QString::number(main->catalog->count()) + tr(" items"));
 }
 void OptionsDlg::catRescanClicked(bool val) {
+	val = val; // Compiler warning
 	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
 	if (main == NULL) return;
 
@@ -393,12 +390,14 @@ void OptionsDlg::catRescanClicked(bool val) {
 }
 
 void OptionsDlg::catTypesDirChanged(int state) {
+	state = state; // Compiler warning
 	int row = catDirectories->currentRow();
 	if (row == -1) return;
 	memDirs[row].indexDirs = catCheckDirs->isChecked();
 }
 
 void OptionsDlg::catTypesExeChanged(int state) {
+	state = state; // Compiler warning
 	int row = catDirectories->currentRow();
 	if (row == -1) return;
 	memDirs[row].indexExe = catCheckBinaries->isChecked();
@@ -425,6 +424,7 @@ void OptionsDlg::dirChanged(int row) {
 };
 
 void OptionsDlg::catDirPlusClicked(bool c) {
+	c = c; // Compiler warning
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Select a directory"),
                                                  "",
                                                  QFileDialog::ShowDirsOnly );
@@ -444,6 +444,7 @@ void OptionsDlg::catDirPlusClicked(bool c) {
 }
 
 void OptionsDlg::catTypesPlusClicked(bool c) {
+	c = c; // Compiler warning
 	if (catDirectories->currentRow() == -1) return;
 	QString txt = catTypeEdit->text();
 	if (txt == "") return;
@@ -455,6 +456,7 @@ void OptionsDlg::catTypesPlusClicked(bool c) {
 }
 
 void OptionsDlg::catTypesMinusClicked(bool c) {
+	c = c; // Compiler warning
 	int row = catTypes->currentRow();
 	int dirRow = catDirectories->currentRow();
 	if (row == -1 || dirRow == -1) return;
@@ -469,6 +471,7 @@ void OptionsDlg::catDepthChanged(int d) {
 		memDirs[row].depth = d;
 }
 void OptionsDlg::catDirMinusClicked(bool c) {
+	c = c; // Compiler warning
 	int row = catDirectories->currentRow();
 	
 	catDirectories->takeItem(row);

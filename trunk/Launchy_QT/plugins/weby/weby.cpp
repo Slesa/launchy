@@ -206,7 +206,7 @@ BOOL GetShellDir(int iType, QString& szPath)
 	}
 
 	TCHAR tmp[_MAX_PATH];
-	HRESULT hRet = pfnSHGetFolderPath( NULL, iType, NULL, 0, tmp );
+	pfnSHGetFolderPath( NULL, iType, NULL, 0, tmp );
 	szPath = QString::fromUtf16((const ushort*)tmp);
 	FreeLibrary( hInst ); // <-- and here
 	return TRUE;

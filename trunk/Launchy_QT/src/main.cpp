@@ -148,9 +148,6 @@ MyWidget::MyWidget(QWidget *parent)
 	setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool());
 	setAlwaysTop(gSettings->value("GenOps/alwaystop", false).toBool());
 	setPortable(gSettings->value("GenOps/isportable", false).toBool());
-	setUpdateCheck(gSettings->value("GenOps/updatecheck", true).toBool());
-	setUpdateTimer(gSettings->value("GenOps/updatetimer", "10").toInt());
-	setNumResults(gSettings->value("GenOps/numresults", "10").toInt());
 
 
 	// Check for udpates?
@@ -202,10 +199,6 @@ void MyWidget::setCondensed(int condensed) {
 void MyWidget::setHotkey(int meta, int key) {
 	QKeySequence keys = QKeySequence(meta + key);
 	platform.SetHotkey(keys, this, SLOT(onHotKey()));
-}
-
-void MyWidget::altIndexChanged(int index) {
-
 }
 
 void MyWidget::menuEvent(QContextMenuEvent* evt) {
@@ -266,7 +259,7 @@ void MyWidget::showAlternatives(bool show) {
 }
 
 
-void MyWidget::launchObject(int obj) {
+void MyWidget::launchObject() {
 	CatItem res = inputData[0].getTopResult();
 	if (res.id == HASH_LAUNCHY) {
 		QString args = "";
@@ -435,7 +428,7 @@ void MyWidget::doEnter()
 	if (dropTimer->isActive())
 		dropTimer->stop();
 	if (searchResults.count() > 0 || inputData.count() > 1) 
-		launchObject(0);
+		launchObject();
 	hideLaunchy();
 
 }
@@ -551,7 +544,7 @@ QIcon MyWidget::getIcon(CatItem & item) {
 
 void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults) {
 	// Split the string on the last slash
-	QString path = QDir::fromNativeSeparators(gSearchTxt);
+	QString path = QDir::fromNativeSeparators(input);
 
 	// Network searches are too slow
 	if (path.startsWith("//")) return;
@@ -854,24 +847,6 @@ void MyWidget::setPortable(bool portable) {
 	}
 }
 
-void MyWidget::setUpdateCheck(bool) {
-
-}
-void MyWidget::setUpdateTimer(int) {
-
-}
-void MyWidget::setNumResults(int) {
-
-}
-
-void MyWidget::setFadeTimes(int in, int out)
-{
-	
-}
-
-void MyWidget::setNumViewable(int val)
-{
-}
 
 void MyWidget::setOpaqueness(int val)
 {
@@ -1176,14 +1151,6 @@ void MyWidget::hideLaunchy(bool now) {
 	plugins.hideLaunchy();
 }
 
-void MyWidget::printGeometry() {
-	QPoint p = pos();
-	qDebug() << p;
-	QRect r = geometry();
-	qDebug() << r;
-
-
-}
 
 QChar MyWidget::sepChar() {
 	QFontMetrics met = input->fontMetrics();
