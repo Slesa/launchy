@@ -145,8 +145,7 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 				}
 				
 			}
-			if (hLib != NULL)
-				FreeLibrary(hLib);
+			FreeLibrary(hLib);
 		} 
 	}
 }
