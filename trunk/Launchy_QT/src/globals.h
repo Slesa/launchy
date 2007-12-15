@@ -37,7 +37,6 @@ extern QString gNativeSep;
 
 extern QString gSearchTxt;
 
-
-
+void log(QString str);
 
 #endif

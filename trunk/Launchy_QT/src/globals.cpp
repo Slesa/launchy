@@ -19,9 +19,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "globals.h"
 #include <QDir>
+#include <QFile>
+#include <QDateTime>
+#include <QTextStream>
 
 QWidget* gMainWidget;
 QSettings* gSettings;
 QString gSearchTxt;
 CatBuilder* gBuilder;
 QString gNativeSep = QDir::toNativeSeparators("/");
+
+void log(QString str) 
+{
+
+	QFile file("log.txt");
+	file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
+	QTextStream os(&file);
+	os <<"[";
+	os << QDateTime::currentDateTime().toString("hh:mm:ss");
+	os << "] " << str << "\n";
+}
