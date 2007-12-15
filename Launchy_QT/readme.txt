@@ -7,6 +7,7 @@ For 2.0 Final:
 Easy stuff -
 	. Add thanks to Tyler for graphics stuff on webpage
 	. Add thanks to testers
+	. Take log messages out of options button press
 Hard stuff -
 	
 For Beta 2:

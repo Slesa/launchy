@@ -588,6 +588,7 @@ void MyWidget::catalogBuilt() {
 		delete catalog;
 	}
 	catalog = gBuilder->getCatalog();
+
 	gBuilder->wait();
 	delete gBuilder;
 	gBuilder = NULL;
@@ -741,6 +742,7 @@ void MyWidget::updateTimeout() {
 	updateTimer->stop();
 	if (time != 0)
 		updateTimer->start(time * 60000);
+
 }
 
 void MyWidget::dropTimeout() {
@@ -989,13 +991,16 @@ void MyWidget::contextMenuEvent(QContextMenuEvent *event) {
 
 
 void MyWidget::menuOptions() {
+//log("a");
 	dropTimer->stop();
 	alternatives->hide();
 	optionsOpen = true;
+//log("b");
 	OptionsDlg ops(this);
+//log("c");
 	ops.setObjectName("options");
 	ops.exec();
-
+//log("d");
 	// Perform the database update
 	if (gBuilder == NULL) {
 		gBuilder = new CatBuilder(false, &plugins);
@@ -1003,9 +1008,11 @@ void MyWidget::menuOptions() {
 		connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		gBuilder->start(QThread::IdlePriority);
 	}
+//log("e");
 	input->activateWindow();
 	input->setFocus();	
 	optionsOpen = false;
+//log("f");
 }
 
 void MyWidget::shouldDonate() {
