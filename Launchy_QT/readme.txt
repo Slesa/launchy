@@ -9,6 +9,11 @@ Easy stuff -
 	. Add thanks to testers
 	. Take log messages out of options button press
 Hard stuff -
+
+For Beta 3:
+	. Added leal's patch for character input
+	. Fixed tab order
+	. Shortcuts to directories no longer have .lnk in their names
 	
 For Beta 2:
 	. Sometimes when I hit the options button it crashes
