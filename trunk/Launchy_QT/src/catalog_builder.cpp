@@ -113,7 +113,10 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 		for(int i = 0; i < dirs.count(); ++i) {
 			if (dirs[i].startsWith(".")) continue;
 			if (!indexed.contains(dir + "/" + dirs[i])) {
-				CatItem item(dir + "/" + dirs[i], true);
+				bool isShortcut = dirs[i].endsWith(".lnk", Qt::CaseInsensitive);
+
+					
+				CatItem item(dir + "/" + dirs[i], !isShortcut);
 				if (curcat != NULL)
 					item.usage = curcat->getUsage(item.fullPath);
 				cat->addItem(item);
