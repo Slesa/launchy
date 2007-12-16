@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading ui file 'options.ui'
 **
-** Created: Fri Dec 14 22:19:57 2007
-**      by: Qt User Interface Compiler version 4.3.2
+** Created: Sun Dec 16 14:24:04 2007
+**      by: Qt User Interface Compiler version 4.3.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 ********************************************************************************/
@@ -791,35 +791,40 @@ public:
     QWidget::setTabOrder(genAlwaysShow, genHideFocus);
     QWidget::setTabOrder(genHideFocus, genAlwaysTop);
     QWidget::setTabOrder(genAlwaysTop, genCondensed);
-    QWidget::setTabOrder(genCondensed, genNumResults);
-    QWidget::setTabOrder(genNumResults, genModifierBox);
+    QWidget::setTabOrder(genCondensed, genCenter);
+    QWidget::setTabOrder(genCenter, genModifierBox);
     QWidget::setTabOrder(genModifierBox, genKeyBox);
     QWidget::setTabOrder(genKeyBox, genUpdateCheck);
     QWidget::setTabOrder(genUpdateCheck, genShowHidden);
     QWidget::setTabOrder(genShowHidden, genPortable);
-    QWidget::setTabOrder(genPortable, genUpMinutes);
-    QWidget::setTabOrder(genUpMinutes, genFastIndex);
-    QWidget::setTabOrder(genFastIndex, skinList);
-    QWidget::setTabOrder(skinList, catRescan);
-    QWidget::setTabOrder(catRescan, tabWidget);
-    QWidget::setTabOrder(tabWidget, catDirMinus);
-    QWidget::setTabOrder(catDirMinus, catDirectories);
-    QWidget::setTabOrder(catDirectories, catDirPlus);
-    QWidget::setTabOrder(catDirPlus, catTypesMinus);
-    QWidget::setTabOrder(catTypesMinus, catTypeEdit);
+    QWidget::setTabOrder(genPortable, genFastIndex);
+    QWidget::setTabOrder(genFastIndex, genUpMinutes);
+    QWidget::setTabOrder(genUpMinutes, genOpaqueness);
+    QWidget::setTabOrder(genOpaqueness, genFadeIn);
+    QWidget::setTabOrder(genFadeIn, genFadeOut);
+    QWidget::setTabOrder(genFadeOut, genMaxViewable);
+    QWidget::setTabOrder(genMaxViewable, genNumResults);
+    QWidget::setTabOrder(genNumResults, catTypes);
+    QWidget::setTabOrder(catTypes, catTypeEdit);
     QWidget::setTabOrder(catTypeEdit, catTypesPlus);
-    QWidget::setTabOrder(catTypesPlus, catTypes);
-    QWidget::setTabOrder(catTypes, catCheckDirs);
-    QWidget::setTabOrder(catCheckDirs, catCheckBinaries);
-    QWidget::setTabOrder(catCheckBinaries, catDepth);
-    QWidget::setTabOrder(catDepth, plugList);
-    QWidget::setTabOrder(plugList, buttonBox);
+    QWidget::setTabOrder(catTypesPlus, catTypesMinus);
+    QWidget::setTabOrder(catTypesMinus, catCheckBinaries);
+    QWidget::setTabOrder(catCheckBinaries, catCheckDirs);
+    QWidget::setTabOrder(catCheckDirs, catDepth);
+    QWidget::setTabOrder(catDepth, catDirectories);
+    QWidget::setTabOrder(catDirectories, catDirPlus);
+    QWidget::setTabOrder(catDirPlus, catDirMinus);
+    QWidget::setTabOrder(catDirMinus, catRescan);
+    QWidget::setTabOrder(catRescan, skinList);
+    QWidget::setTabOrder(skinList, plugList);
+    QWidget::setTabOrder(plugList, tabWidget);
+    QWidget::setTabOrder(tabWidget, buttonBox);
 
     retranslateUi(OptionsDlg);
     QObject::connect(buttonBox, SIGNAL(accepted()), OptionsDlg, SLOT(accept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), OptionsDlg, SLOT(reject()));
 
-    tabWidget->setCurrentIndex(0);
+    tabWidget->setCurrentIndex(4);
 
 
     QMetaObject::connectSlotsByName(OptionsDlg);

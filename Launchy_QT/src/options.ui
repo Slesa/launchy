@@ -23,7 +23,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="tab" >
       <attribute name="title" >
@@ -1063,28 +1063,33 @@
   <tabstop>genHideFocus</tabstop>
   <tabstop>genAlwaysTop</tabstop>
   <tabstop>genCondensed</tabstop>
-  <tabstop>genNumResults</tabstop>
+  <tabstop>genCenter</tabstop>
   <tabstop>genModifierBox</tabstop>
   <tabstop>genKeyBox</tabstop>
   <tabstop>genUpdateCheck</tabstop>
   <tabstop>genShowHidden</tabstop>
   <tabstop>genPortable</tabstop>
-  <tabstop>genUpMinutes</tabstop>
   <tabstop>genFastIndex</tabstop>
-  <tabstop>skinList</tabstop>
-  <tabstop>catRescan</tabstop>
-  <tabstop>tabWidget</tabstop>
-  <tabstop>catDirMinus</tabstop>
-  <tabstop>catDirectories</tabstop>
-  <tabstop>catDirPlus</tabstop>
-  <tabstop>catTypesMinus</tabstop>
+  <tabstop>genUpMinutes</tabstop>
+  <tabstop>genOpaqueness</tabstop>
+  <tabstop>genFadeIn</tabstop>
+  <tabstop>genFadeOut</tabstop>
+  <tabstop>genMaxViewable</tabstop>
+  <tabstop>genNumResults</tabstop>
+  <tabstop>catTypes</tabstop>
   <tabstop>catTypeEdit</tabstop>
   <tabstop>catTypesPlus</tabstop>
-  <tabstop>catTypes</tabstop>
-  <tabstop>catCheckDirs</tabstop>
+  <tabstop>catTypesMinus</tabstop>
   <tabstop>catCheckBinaries</tabstop>
+  <tabstop>catCheckDirs</tabstop>
   <tabstop>catDepth</tabstop>
+  <tabstop>catDirectories</tabstop>
+  <tabstop>catDirPlus</tabstop>
+  <tabstop>catDirMinus</tabstop>
+  <tabstop>catRescan</tabstop>
+  <tabstop>skinList</tabstop>
   <tabstop>plugList</tabstop>
+  <tabstop>tabWidget</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>

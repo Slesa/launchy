@@ -53,6 +53,7 @@ MyWidget::MyWidget(QWidget *parent)
 {
 //	setAttribute(Qt::WA_DeleteOnClose);
 	setAttribute(Qt::WA_AlwaysShowToolTips);
+	setAttribute(Qt::WA_InputMethodEnabled);
 	if (platform.isAlreadyRunning())
 		exit(1);
 
@@ -96,6 +97,7 @@ MyWidget::MyWidget(QWidget *parent)
 	input->setObjectName("input");
 	connect(input, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(inputKeyPressEvent(QKeyEvent*)));
 	connect(input, SIGNAL(focusOut(QFocusEvent*)), this, SLOT(focusOutEvent(QFocusEvent*)));
+	connect(input, SIGNAL(inputMethod(QInputMethodEvent*)), this, SLOT(inputMethodEvent(QInputMethodEvent*)));
 
 
 
@@ -474,15 +476,25 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 			key->ignore();	
 		}
 
-		alternatives->hide();
-		dropTimer->stop();
-		dropTimer->start(1000);
+		processKey();
 
-		parseInput(input->text());
-
-		searchOnInput();
-		updateDisplay();
 	}	
+}
+
+
+void MyWidget::processKey() {
+	alternatives->hide();
+	dropTimer->stop();
+	dropTimer->start(1000);
+
+	parseInput(input->text());
+
+	searchOnInput();
+	updateDisplay();
+}
+
+void MyWidget::inputMethodEvent(QInputMethodEvent *e) {
+	processKey();
 }
 
 void MyWidget::searchOnInput() {

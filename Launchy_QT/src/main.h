@@ -70,6 +70,13 @@ public:
 		void focusOutEvent ( QFocusEvent * evt) {
 			emit focusOut(evt);
 		}
+
+		void inputMethodEvent(QInputMethodEvent *e) {
+			QLineEdit::inputMethodEvent(e);
+			if (e->commitString() != "") {
+				emit inputMethod(e);
+			}
+		}
 		/*
 		void mouseReleaseEvent(QMouseEvent* e)
 			{
@@ -82,6 +89,7 @@ public:
 signals:
 	void keyPressed(QKeyEvent*);
 	void focusOut(QFocusEvent* evt);
+	void inputMethod(QInputMethodEvent *e);
 };
 
 class QCharListWidget : public QListWidget
@@ -201,6 +209,7 @@ public:
 	void doEnter();
 	QChar sepChar();
 	QString printInput();
+	void processKey();
 private:
     QHttp *http;
     QBuffer *verBuffer;
@@ -217,6 +226,7 @@ public slots:
 	void setSkin(QString);
 	void httpGetFinished(bool result);
 	void catalogBuilt();
+	void inputMethodEvent(QInputMethodEvent* e);
 	void keyPressEvent(QKeyEvent*);
 	void inputKeyPressEvent(QKeyEvent* key);
 	void altKeyPressEvent(QKeyEvent* key);
