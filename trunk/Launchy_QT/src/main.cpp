@@ -301,8 +301,9 @@ void MyWidget::launchObject() {
 void MyWidget::focusOutEvent ( QFocusEvent * evt) {
 	if (evt->reason() == Qt::ActiveWindowFocusReason) {
 		if (gSettings->value("GenOps/hideiflostfocus", true).toBool())
-			if (!this->isActiveWindow() && !alternatives->isActiveWindow() && !optionsOpen)
+			if (!this->isActiveWindow() && !alternatives->isActiveWindow() && !optionsOpen) {
 				hideLaunchy();
+			}
 	}
 }
 
@@ -494,6 +495,7 @@ void MyWidget::processKey() {
 }
 
 void MyWidget::inputMethodEvent(QInputMethodEvent *e) {
+	e = e; // Warning removal
 	processKey();
 }
 
@@ -664,7 +666,7 @@ void MyWidget::setSkin(QString name) {
 }
 
 void MyWidget::updateVersion(int oldVersion) {
-	if (oldVersion < 200) {
+	if (oldVersion < 199) {
 		// We've completely changed the database and ini between 1.25 and 2.0
 		// Erase all of the old information
 		QString origFile = gSettings->fileName();
@@ -1003,16 +1005,12 @@ void MyWidget::contextMenuEvent(QContextMenuEvent *event) {
 
 
 void MyWidget::menuOptions() {
-//log("a");
 	dropTimer->stop();
 	alternatives->hide();
 	optionsOpen = true;
-//log("b");
 	OptionsDlg ops(this);
-//log("c");
 	ops.setObjectName("options");
 	ops.exec();
-//log("d");
 	// Perform the database update
 	if (gBuilder == NULL) {
 		gBuilder = new CatBuilder(false, &plugins);
@@ -1020,11 +1018,9 @@ void MyWidget::menuOptions() {
 		connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		gBuilder->start(QThread::IdlePriority);
 	}
-//log("e");
 	input->activateWindow();
 	input->setFocus();	
 	optionsOpen = false;
-//log("f");
 }
 
 void MyWidget::shouldDonate() {

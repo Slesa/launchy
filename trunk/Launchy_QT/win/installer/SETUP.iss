@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Launchy"
-#define MyAppVerName "Launchy 1.99"
+#define MyAppVerName "Launchy 2.0"
 #define MyAppPublisher "Code Jelly"
 #define MyAppURL "http://www.launchy.net"
 #define MyAppExeName "Launchy.exe"
@@ -42,7 +42,7 @@ Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\plugins\weby.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 Source: ..\..\release\plugins\calcy.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 Source: ..\..\release\plugins\runner.dll; DestDir: {app}\plugins\; Flags: ignoreversion
-Source: ..\..\release\plugins\controly.dll; DestDir: {app}\plugins\; Flags: ignoreversion
+;Source: ..\..\release\plugins\controly.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 
 ; Plugin icons
 Source: ..\..\plugins\weby\weby.ico; DestDir: {app}\plugins\icons\; Flags: ignoreversion
@@ -92,7 +92,20 @@ Source: ..\..\skins\Default\scrollDown.png; DestDir: {app}\skins\Default\; Flags
 Source: ..\..\skins\Default\scrollUp.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
 Source: ..\..\skins\Default\style.qss; DestDir: {app}\skins\Default\; Flags: ignoreversion
 
-
+Source: ..\..\skins\Spotlight Wide\alpha.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight Wide\author.txt; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight Wide\background.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight Wide\closeButton.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight Wide\closeButtonPressed.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight Wide\mask.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight Wide\misc.txt; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight Wide\opsButton.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight Wide\opsButtonPressed.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight Wide\scrollBack.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight Wide\scrollDown.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+;Source: ..\..\skins\Default\scroller.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight Wide\scrollUp.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight Wide\style.qss; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 
 ; Libs
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
