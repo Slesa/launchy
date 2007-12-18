@@ -209,7 +209,7 @@ void CatBuilder::storeCatalog(QString dest) {
 	// Zip the archive
 	QFile file(dest);
 	if (!file.open(QIODevice::WriteOnly)) {
-		qDebug() << "Could not open database for writing";
+	    //		qDebug() << "Could not open database for writing";
 	}
 	file.write(qCompress(ba));
 }

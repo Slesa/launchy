@@ -38,8 +38,8 @@ win32:release {
 	DESTDIR = ../release/
 }
 
-x11 {
-	SOURCES += dsingleapplication.cpp
-	HEADERS += dsingleapplication.h
+unix {
+	SOURCES += dsingleapplication.cpp platform_x11_hotkey.cpp
+	HEADERS += dsingleapplication.h platform_x11.h
 }
 

@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "catalog.h"
 #include "catalog_builder.h"
 #include "icon_delegate.h"
+#include "globals.h"
 
 class QLineEditMenu : public QLineEdit
 {
@@ -156,13 +157,15 @@ public:
 	QLabel* label;
 	QLineEditMenu *output;
 	QCharLineEdit *input;
+	QTimer* updateTimer;
+	QTimer* dropTimer;
 	QCharListWidget *alternatives;
 	QPushButton *opsButton;
 	QPushButton *closeButton;
 	QRect altRect;
 	QLabel * licon;
-	QTimer* updateTimer;
-	QTimer* dropTimer;
+
+
 	QScrollBar* altScroll;
 	Catalog* catalog;
 	CatBuilder* catBuilder;
@@ -180,7 +183,7 @@ public:
 	QIcon getIcon(CatItem & item);
 	void mousePressEvent(QMouseEvent *e);
 	void mouseMoveEvent(QMouseEvent *e);
-	void MyWidget::MoveFromAlpha(QPoint pos);
+	void MoveFromAlpha(QPoint pos);
 	void applySkin(QString);
 	void contextMenuEvent(QContextMenuEvent *event);
 	void closeEvent(QCloseEvent *event);

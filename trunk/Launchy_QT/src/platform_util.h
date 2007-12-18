@@ -22,16 +22,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "platform_base.h"
 
-#ifdef WIN32
+#ifdef Q_WS_WIN
 #include "platform_win.h"
 #endif
 
-#ifdef OSX_BUILD
+#ifdef Q_WS_MAC
 #include "platform_osx.h"
 #endif
 
-#ifdef KDE_BUILD
-#include "platform_kde.h"
+#ifdef Q_WS_X11
+#include "platform_x11.h"
 #endif
 
 #endif
