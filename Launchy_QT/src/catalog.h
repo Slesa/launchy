@@ -31,13 +31,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 class CatItem {
 public:
+    int id;
 	QString fullPath;
 	QString shortName;
 	QString lowName;
 	QString icon;
 	int usage;
 	void* data;
-	int id;
+	
 
 	CatItem() {}
 

@@ -28,10 +28,11 @@ class CatBuilder : public QThread
 	Q_OBJECT
 
 private:
-	bool buildFromStorage;
-	Catalog* cat;
+
 	Catalog* curcat;
 	PluginHandler* plugins;
+	bool buildFromStorage;
+	Catalog* cat;
 	QHash<QString, bool> indexed;
 
 public:

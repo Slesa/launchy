@@ -139,6 +139,7 @@ MyWidget::MyWidget(QWidget *parent)
 	plugins.loadPlugins();
 
 	// Load the skin
+	qDebug() << qApp->applicationDirPath() + "/Skins/";
 	applySkin(qApp->applicationDirPath() + "/Skins/" + gSettings->value("GenOps/skin", "Default").toString());
 
 	// Move to saved position
@@ -654,9 +655,11 @@ void MyWidget::httpGetFinished(bool error) {
 }
 
 void MyWidget::setSkin(QString name) {
+
 	bool wasShowing = isVisible();
 	QPoint p = pos();
 	hideLaunchy(true);
+
 	applySkin(qApp->applicationDirPath() + "/Skins/" + name);
 	move(p);
 	platform.MoveAlphaBorder(p);

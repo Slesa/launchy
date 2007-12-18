@@ -19,7 +19,7 @@
  */
 
 #include "platform_base_hotkey.h"
-#include "platform_Base_hottrigger.h"
+#include "platform_base_hottrigger.h"
 
 #include <QWidget>
 #include <QX11Info>
