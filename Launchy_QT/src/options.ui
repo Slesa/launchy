@@ -23,7 +23,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab" >
       <attribute name="title" >
@@ -155,78 +155,78 @@
          <item>
           <widget class="QGroupBox" name="groupBox_10" >
            <property name="title" >
-            <string>Gui</string>
+            <string>GUI</string>
            </property>
            <layout class="QVBoxLayout" >
             <item>
              <layout class="QHBoxLayout" >
               <item>
-               <widget class="QLabel" name="label_6" >
-                <property name="text" >
-                 <string>Opaqueness</string>
-                </property>
-               </widget>
+               <layout class="QVBoxLayout" >
+                <item>
+                 <widget class="QLabel" name="label_6" >
+                  <property name="text" >
+                   <string>Opaqueness</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_3" >
+                  <property name="text" >
+                   <string>Fade in time</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_4" >
+                  <property name="text" >
+                   <string>Fade out time</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
               <item>
-               <widget class="QSlider" name="genOpaqueness" >
-                <property name="maximum" >
-                 <number>100</number>
-                </property>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" >
-              <item>
-               <widget class="QLabel" name="label_3" >
-                <property name="text" >
-                 <string>Fade in time</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QSlider" name="genFadeIn" >
-                <property name="maximum" >
-                 <number>1000</number>
-                </property>
-                <property name="singleStep" >
-                 <number>10</number>
-                </property>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" >
-              <item>
-               <widget class="QLabel" name="label_4" >
-                <property name="text" >
-                 <string>Fade out time</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QSlider" name="genFadeOut" >
-                <property name="maximum" >
-                 <number>1000</number>
-                </property>
-                <property name="singleStep" >
-                 <number>10</number>
-                </property>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="tickPosition" >
-                 <enum>QSlider::NoTicks</enum>
-                </property>
-               </widget>
+               <layout class="QVBoxLayout" >
+                <item>
+                 <widget class="QSlider" name="genOpaqueness" >
+                  <property name="maximum" >
+                   <number>100</number>
+                  </property>
+                  <property name="orientation" >
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSlider" name="genFadeIn" >
+                  <property name="maximum" >
+                   <number>1000</number>
+                  </property>
+                  <property name="singleStep" >
+                   <number>10</number>
+                  </property>
+                  <property name="orientation" >
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSlider" name="genFadeOut" >
+                  <property name="maximum" >
+                   <number>1000</number>
+                  </property>
+                  <property name="singleStep" >
+                   <number>10</number>
+                  </property>
+                  <property name="orientation" >
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="tickPosition" >
+                   <enum>QSlider::NoTicks</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
              </layout>
             </item>
@@ -360,8 +360,11 @@
             </item>
             <item>
              <widget class="QCheckBox" name="genFastIndex" >
+              <property name="enabled" >
+               <bool>false</bool>
+              </property>
               <property name="text" >
-               <string>Use fast indexer? (uses more memory)</string>
+               <string>Use testing indexer?</string>
               </property>
              </widget>
             </item>

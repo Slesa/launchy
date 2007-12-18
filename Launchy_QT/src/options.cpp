@@ -31,12 +31,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 OptionsDlg::OptionsDlg(QWidget * parent)
 	: QDialog(parent) 
 {
-//log("1");
 		setupUi(this);
 		curPlugin = -1;
 		MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
 		if (main == NULL) return;
-//log("2");
 		// Load General Options
 		genAlwaysShow->setChecked(gSettings->value("GenOps/alwaysshow", false).toBool());
 		genAlwaysTop->setChecked(gSettings->value("GenOps/alwaystop", false).toBool());
@@ -53,9 +51,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		genOpaqueness->setValue(gSettings->value("GenOps/opaqueness", 100).toInt());
 		genFadeIn->setValue(gSettings->value("GenOps/fadein", 0).toInt());
 		genFadeOut->setValue(gSettings->value("GenOps/fadeout", 20).toInt());
-//log("3");		
 		connect(genOpaqueness, SIGNAL(sliderMoved(int)), main, SLOT(setOpaqueness(int)));
-//log("4");
 		metaKeys << tr("Alt") << tr("Win") << tr("Shift") << tr("Control");
 		iMetaKeys << Qt::AltModifier << Qt::MetaModifier << Qt::ShiftModifier << Qt::ControlModifier;
 
@@ -67,7 +63,6 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 
 		for(int i = 'A'; i <= 'Z'; i++) 
 			actionKeys << QString(QChar(i));
-//log("5");		
 		iActionKeys << Qt::Key_Space << Qt::Key_Tab << Qt::Key_Backspace << Qt::Key_Enter << Qt::Key_Escape << Qt::Key_Home <<
 			Qt::Key_End << Qt::Key_Pause << Qt::Key_Print << Qt::Key_Up << Qt::Key_Down << Qt::Key_Left << Qt::Key_Right << Qt::Key_F1 <<
 			Qt::Key_F2 << Qt::Key_F3 << Qt::Key_F4 << Qt::Key_F5 << Qt::Key_F6 << Qt::Key_F7 << Qt::Key_F8 << Qt::Key_F9 << Qt::Key_F10 <<
@@ -81,7 +76,6 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier +  Qt::Key_Space)).value<QKeySequence>();
 		int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::AltModifier).toInt();
 		int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
-//log("6");
 		for(int i = 0; i < metaKeys.count(); ++i) {
 			genModifierBox->addItem(metaKeys[i]);
 			if (iMetaKeys[i] == curMeta) 
@@ -93,7 +87,6 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 				genKeyBox->setCurrentIndex(i);
 		}
 
-//log("7");
 
 		// Load up the skins list
 		QDir dir(qApp->applicationDirPath() + "/Skins/");
@@ -113,7 +106,6 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		skinList->setCurrentRow(skinRow);
 		connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 
-//log("8");
 		// Load the directories and types
 		connect(catDirectories, SIGNAL(currentRowChanged(int)), this, SLOT(dirChanged(int)));
 		connect(catDirPlus, SIGNAL(clicked(bool)), this, SLOT(catDirPlusClicked(bool)));
@@ -125,7 +117,6 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		connect(catDepth, SIGNAL(valueChanged(int)),this, SLOT(catDepthChanged(int)));
 		connect(catRescan, SIGNAL(clicked(bool)), this, SLOT(catRescanClicked(bool)));
 		connect(catDirectories, SIGNAL(itemChanged(QListWidgetItem *)), this, SLOT(catDirTextChanged(QListWidgetItem* )));
-//log("9");
 		int size = gSettings->beginReadArray("directories");
 		for(int i = 0; i < size; ++i) {
 			gSettings->setArrayIndex(i);
@@ -138,12 +129,10 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 			memDirs.append(tmp);
 		}
 		gSettings->endArray();
-//log("10");
 		if (memDirs.count() == 0) {
 			memDirs = main->platform.GetInitialDirs();
 		}
 
-//log("11");
 		for(int i = 0; i < memDirs.count(); ++i) {
 			catDirectories->addItem(memDirs[i].name);
 			QListWidgetItem* it = catDirectories->item(i);
@@ -153,21 +142,17 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 			catDirectories->setCurrentRow(0);
 
 
-//log("12");		
 		catProgress->setRange(0,100);
-//log("13");
 		if (main->catalog != NULL) {
 			QString txt = tr("Index has ");
 			txt += QString::number(main->catalog->count());
 			txt += tr(" items");
 			catSize->setText(txt);
 		}
-//log("14");
 		if (gBuilder != NULL) {
 			connect(gBuilder, SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
 			connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		}
-//log("15");		
 		// Load up the plugins		
 		connect(plugList, SIGNAL(currentRowChanged(int)), this, SLOT(pluginChanged(int)));
 		connect(plugList, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(pluginItemChanged(QListWidgetItem*)));
@@ -185,12 +170,9 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		if (plugList->count() > 0) {
 			plugList->setCurrentRow(0);
 		}
-//log("16");
 		aboutVer->setText(QString("This is Launchy version ") + QString(LAUNCHY_VERSION_STRING));
-//log("17");
 
 		tabWidget->setCurrentIndex(0);
-//log("18");
 }
 OptionsDlg::~OptionsDlg() {
 	MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
