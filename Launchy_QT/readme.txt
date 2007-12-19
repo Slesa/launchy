@@ -1,22 +1,8 @@
 2.0+:
 . Add memory for runny/launchy (rebuild/exit/etc..)
 . Add a plugin for open with etc..
+. Add BBorn's kanji shortcuts
 
-
-For 2.0 Final:
-Easy stuff -
-	. Add thanks to Tyler for graphics stuff on webpage
-	. Add thanks to testers
-	. Take log messages out of options button press
-Hard stuff -
-
-For Beta 3:
-	. Added leal's patch for character input
-	. Fixed tab order
-	. Shortcuts to directories no longer have .lnk in their names
-	
-For Beta 2:
-	. Sometimes when I hit the options button it crashes
 	
 Done for beta 2:
 . Shortcuts to directories are treated as normal files
