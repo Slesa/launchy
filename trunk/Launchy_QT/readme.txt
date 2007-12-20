@@ -3,6 +3,15 @@
 . Add a plugin for open with etc..
 . Add BBorn's kanji shortcuts
 
+
+To be fixed from 2.0:
+. Centering problm
+. encording of url characters in weby
+. database update time doesn't seem to be controllable
+
+
+
+
 	
 Done for beta 2:
 . Shortcuts to directories are treated as normal files

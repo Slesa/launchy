@@ -1,5 +1,11 @@
 TEMPLATE	= app
-CONFIG		+= qt_warn release
+CONFIG		+= qt_warn debug_and_release
+CONFIG(debug, debug|release) {
+  TARGET=launchyd
+} else {
+  TARGET = launchy
+}
+
 QT			+= network
 TARGET		= Launchy
 VPATH		+= src/
