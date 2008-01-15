@@ -2,4 +2,43 @@ Building on WINDOWS:
 
 Requirements: 
 1) Visual Studio 2005 w/ SP1
-2) QT 
+2) QT 4.3 or greater
+
+
+Installing QT:
+. Download QT src zip file at: http://trolltech.com/developer/downloads/qt/windows
+. Unzip the contents into c:\qt\4.x.x\ where x.x is the version number e.g. 4.3.3
+. Move all of the files in the "qt-win-opensource-src-4.x.x" folder up a directory into your 4.x.x directory
+
+ . Setting the QT environment variables:
+  . Go to control panel -> System -> Advanced system settings -> Environment Variables
+  . Add these 2 variables to your user variables
+    . Variable = QMAKESPEC    Value = win32-msvc2005
+    . Variable = QTDIR        Value = c:\qt\4.x.x\
+
+. Type "2005 command prompt" into Launchy to get a VS enabled command prompt
+. cd c:\qt\4.x.x\  (e.g. c:\qt\4.3.3\)
+. configure -no-stl -no-qt3support -debug-and-release
+. nmake
+
+
+The configure and nmake commands take a very long time.
+
+Once it is built, you have a *very* nice QT documentation program in c:\qt\4.x.x\bin\assistant.exe
+
+
+
+
+Building Launchy:
+
+. Download launchy from subversion, the url to use is this: https://launchy.svn.sourceforge.net/svnroot/launchy/trunk/Launchy_QT/
+. Double click on launchyQT\win\Launchy.sln
+. F7 to compile!
+
+
+Note that everything should build except for calcy.  Calcy requires the BOOST library headers to be installed in c:\boost\boost\  You can build the rest of Launchy just fine without calcy.
+
+
+When you run Launchy, note that only one skin is installed in the debug\release directories.  
+Launchy looks awfully funny when it can't find its skin!
+
