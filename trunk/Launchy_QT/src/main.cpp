@@ -171,7 +171,7 @@ MyWidget::MyWidget(QWidget *parent)
 	 dropTimer->setSingleShot(true);
      connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTimeout()));
 	 connect(dropTimer, SIGNAL(timeout()), this, SLOT(dropTimeout()));
-	 if (gSettings->value("indexTime", 10).toInt() != 0)
+	 if (gSettings->value("GenOps/updatetimer", 10).toInt() != 0)
 		 updateTimer->start(60000);
 
 
@@ -755,11 +755,10 @@ void MyWidget::updateTimeout() {
 		gBuilder->start(QThread::IdlePriority);
 	}
 
-	int time = gSettings->value("indexTime", 10).toInt();
+	int time = gSettings->value("GenOps/updatetimer", 10).toInt();
 	updateTimer->stop();
 	if (time != 0)
 		updateTimer->start(time * 60000);
-
 }
 
 void MyWidget::dropTimeout() {
