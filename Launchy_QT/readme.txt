@@ -4,8 +4,11 @@
 . Add BBorn's kanji shortcuts
 
 
+Done for 2.1:
+. Fixed the database update timer
+
 To be fixed from 2.0:
-. Centering problm
+. Centering problem
 . encording of url characters in weby
 . database update time doesn't seem to be controllable
 
