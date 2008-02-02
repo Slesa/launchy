@@ -59,11 +59,47 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MSG_CONTROL_EXIT 501
 #define MSG_CONTROL_REBUILD 502
 
+/*! \file
+    \brief The plugin interface to Launchy
+    
+*/
+
+/*! \def MAX(a,b)
+    \brief A macro that returns the maximum of \a a and \a b.
+   
+    Details.
+*/
+
+/*! \var typedef unsigned int UINT32
+    \brief A type definition for a .
+    
+    Details.
+*/
+
+	/** 
+		\fn int blah(int MSG_GET_ID, void* blah)
+		\param MSG_GET_ID blah
+		\param blah halb
+		\return blah
+		This is a function
+	*/
+
 class PluginInterface
 {
 public:
 	virtual ~PluginInterface() {};
+
+
+	/**
+		\brief This is how messages are passed to the plugin
+		\param msgId The type of the message, such as show dialog, initialize, or get results
+		\param wParam If this message type requires any parameters, this will be the first and casted to void*
+		\param lParam If this message requires two parameters, this is the second, casted to void*
+		\return 1 means the message was handled, 0 means it was ignored
+	*/
 	virtual int msg(int msgId, void* wParam = NULL, void* lParam = NULL) = 0;
+
+	/** The setting manager in which you store your persistent data, please refer to the QT manual for QSettings */
 	QSettings** settings;
 };
 
