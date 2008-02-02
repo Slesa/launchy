@@ -18,6 +18,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "plugin_interface.h"
 
+/*! \file
+    \brief A Documented file.
+    
+    Details.
+*/
+
 void runProgram(QString path, QString args) {
 #ifdef Q_WS_WIN
 	SHELLEXECUTEINFO ShExecInfo;
