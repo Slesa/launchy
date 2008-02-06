@@ -153,7 +153,7 @@ public:
 	~MyWidget();
 	Fader* fader;
 	QPoint moveStartPoint;
-	PlatformImp platform;	
+	PlatformBase * platform;	
 	QLabel* label;
 	QLineEditMenu *output;
 	QCharLineEdit *input;

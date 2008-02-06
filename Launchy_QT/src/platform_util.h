@@ -17,21 +17,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef PLATFORM_UTIL
-#define PLATFORM_UTIL
+#ifndef PLATFORM_UTIL_Z
+#define PLATFORM_UTIL_Z
 
+#include <QPluginLoader>
 #include "platform_base.h"
 
-#ifdef Q_WS_WIN
-#include "platform_win.h"
-#endif
 
-#ifdef Q_WS_MAC
-#include "platform_osx.h"
-#endif
+PlatformBase * loadPlatform();
 
-#ifdef Q_WS_X11
-#include "platform_x11.h"
-#endif
 
 #endif

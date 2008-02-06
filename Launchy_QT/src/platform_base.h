@@ -24,11 +24,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QStringList>
 #include <QList>
 #include <QFileIconProvider>
+#include <QObject>
+
 
 #include "options.h"
-
-#include "platform_base_hotkey.h"
-#include "platform_base_hottrigger.h"
 
 class PlatformBase {
 public:
@@ -52,11 +51,8 @@ public:
 	QKeySequence oldKey;
 
 	// Set hotkey
-	void SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot) {
-		GlobalShortcutManager::disconnect(oldKey, receiver, slot);
-		GlobalShortcutManager::connect(key, receiver, slot);
-		oldKey = key;
-	}
+	virtual void SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot) = 0;
+
 
 
 	// Alpha border functions	
@@ -71,12 +67,7 @@ public:
 
 };
 
-/*
-class LaunchyIconProvider2 : friend QFileIconProvider {
-	LaunchyIconProvider2() : QFileIconProvider() {}
-//	~LaunchyIconProvider() : ~QFileIconProvider() {}
-	QIcon icon ( const QFileInfo & info ) const;
+ Q_DECLARE_INTERFACE(PlatformBase,
+                     "net.launchy.PlatformBase/1.0")
 
-};
-*/
 #endif

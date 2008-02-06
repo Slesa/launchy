@@ -48,109 +48,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QtDebug>
 #include <QMouseEvent>
 #include "platform_base.h"
-#include "globals.h"
+#include "platform_win_util.h"
+#include "platform_base_hotkey.h"
+#include "platform_base_hottrigger.h"
+//#include "globals.h"
 
 
-#pragma warning (disable : 4089)
-BOOL GetShellDir(int iType, QString& szPath);
 
 
-class LimitSingleInstance
+
+class PlatformWin : public QObject, public PlatformBase 
 {
-public:
-  DWORD  m_dwLastError;
-  HANDLE m_hMutex;
-
-public:
-  LimitSingleInstance(TCHAR *strMutexName)
-  {
-    //Make sure that you use a name that is unique for this application otherwise
-    //two apps may think they are the same if they are using same name for
-    //3rd parm to CreateMutex
-    m_hMutex = CreateMutex(NULL, FALSE, strMutexName); //do early
-    m_dwLastError = GetLastError(); //save for use later...
-  }
-   
-  ~LimitSingleInstance() 
-  {
-    if (m_hMutex)  //Do not forget to close handles.
-    {
-       CloseHandle(m_hMutex); //Do as late as possible.
-       m_hMutex = NULL; //Good habit to be in.
-    }
-  }
-
-  BOOL IsAnotherInstanceRunning() 
-  {
-    return (ERROR_ALREADY_EXISTS == m_dwLastError);
-  }
-};
-
-class WinIconProvider : QFileIconProvider
-{
-public:
-	WinIconProvider() {
-		iconlist = GetSystemImageListHandle(false);
-	}
-	~WinIconProvider() {
-
-	}
-
-
-	virtual QIcon icon(const QFileInfo& info) const;
-
-private:
-
-	HIMAGELIST iconlist;	
-
-
-private:
-	HIMAGELIST GetSystemImageListHandle( bool bSmallIcon );
-
-
-	int GetFileIconIndex( QString strFileName , BOOL bSmallIcon ) const;
-
-	int GetDirIconIndex(BOOL bSmallIcon );
-	HICON GetFileIconHandle(QString strFileName, BOOL bSmallIcon);
-
-	HICON GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIcon) const;
-
-	HICON GetFolderIconHandle(BOOL bSmallIcon );
-
-	QString GetFileType(QString strFileName);
-
-	QPixmap convertHIconToPixmap( const HICON icon) const;
-
-};
-
-
-class QLaunchyAlphaBorder : public QWidget {
-	Q_OBJECT  
-private:
-	QPoint moveStartPoint;
-public:
-	QLaunchyAlphaBorder(QWidget *parent)
-	: QWidget(parent,Qt::Tool | Qt::FramelessWindowHint) {
-	}
-	~QLaunchyAlphaBorder() {}
-	void SetImage(QString name);
-	void RepositionWindow(QPoint pos) {
-		move(pos);
-	}
-	void contextMenuEvent(QContextMenuEvent *event);
-	void QLaunchyAlphaBorder::mousePressEvent(QMouseEvent *e)
-	{
-		moveStartPoint = e->pos();
-	}
-
-	void QLaunchyAlphaBorder::mouseMoveEvent(QMouseEvent *e);
-	void SetAlphaOpacity(double trans);
-
-};
-
-
-
-class PlatformImp : public PlatformBase {
+	Q_OBJECT
+	Q_INTERFACES(PlatformBase)
 private:
 	QLaunchyAlphaBorder* alpha;
 	HWND hotkeyWnd;
@@ -159,7 +69,7 @@ private:
 	QString lastImageName;
 	LimitSingleInstance* instance;
 public:
-	PlatformImp() : PlatformBase() 		
+	PlatformWin() : PlatformBase() 		
 	{
 		instance = new LimitSingleInstance(TEXT("Global\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
 		
@@ -198,7 +108,7 @@ public:
 
 	   free(libvar); */
 	}
-	~PlatformImp() {
+	~PlatformWin() {
 		if (icons != NULL)
 			delete icons;
 		CloseHandle(m1);
@@ -207,6 +117,13 @@ public:
 
 	}
 	// Mandatory functions
+	void SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
+	{
+		GlobalShortcutManager::disconnect(oldKey, receiver, slot);
+		GlobalShortcutManager::connect(key, receiver, slot);
+		oldKey = key;
+	}
+
 	QString GetSettingsDirectory() { 
 		QString ret;	
 		GetShellDir(CSIDL_APPDATA, ret);
