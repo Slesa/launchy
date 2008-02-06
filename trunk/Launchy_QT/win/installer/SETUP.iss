@@ -37,6 +37,7 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 [Files]
 Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\platform_win.dll; DestDir: {app}; Flags: ignoreversion
 
 ; Plugins
 Source: ..\..\release\plugins\weby.dll; DestDir: {app}\plugins\; Flags: ignoreversion
