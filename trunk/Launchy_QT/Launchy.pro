@@ -27,9 +27,7 @@ ICON		= Launchy.ico
 win32 {
 	RC_FILE = win/launchy.rc
 	LIBS += shell32.lib
-	LIBS += user32.lib
-	LIBS += gdi32.lib
-	LIBS += comctl32.lib
+
 }
 
 win32:debug {
