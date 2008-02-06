@@ -123,15 +123,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\platform_base_hotkey.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\platform_base_hotkey.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\platform_base_hottrigger.h"
+				RelativePath="..\src\platform_util.cpp"
 				>
 			</File>
 			<File
@@ -139,15 +131,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\platform_win.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\platform_win.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\platform_win_hotkey.cpp"
+				RelativePath="..\src\platform_x11.h"
 				>
 			</File>
 		</Filter>

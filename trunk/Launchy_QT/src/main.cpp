@@ -54,7 +54,9 @@ MyWidget::MyWidget(QWidget *parent)
 //	setAttribute(Qt::WA_DeleteOnClose);
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);
-	if (platform.isAlreadyRunning())
+
+	platform = loadPlatform();
+	if (platform->isAlreadyRunning())
 		exit(1);
 
 	fader = new Fader(this);
@@ -145,7 +147,7 @@ MyWidget::MyWidget(QWidget *parent)
 	// Move to saved position
 	QPoint x = loadPosition(); //gSettings->value("Display/relpos", QPoint(0,0)).toPoint();
 	move(x);
-	platform.MoveAlphaBorder(x);
+	platform->MoveAlphaBorder(x);
 
 	// Set the general options
 	setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool());
@@ -201,7 +203,7 @@ void MyWidget::setCondensed(int condensed) {
 }
 void MyWidget::setHotkey(int meta, int key) {
 	QKeySequence keys = QKeySequence(meta + key);
-	platform.SetHotkey(keys, this, SLOT(onHotKey()));
+	platform->SetHotkey(keys, this, SLOT(onHotKey()));
 }
 
 void MyWidget::menuEvent(QContextMenuEvent* evt) {
@@ -550,11 +552,11 @@ QIcon MyWidget::getIcon(CatItem & item) {
 	if (item.icon.isNull()) {
 		QDir dir(item.fullPath);
 		if (dir.exists())
-			return platform.icons->icon(QFileIconProvider::Folder);
-		return platform.icons->icon(QDir::toNativeSeparators(item.fullPath));
+			return platform->icons->icon(QFileIconProvider::Folder);
+		return platform->icons->icon(QDir::toNativeSeparators(item.fullPath));
 	}
 	else
-		return platform.icons->icon(QDir::toNativeSeparators(item.icon));
+		return platform->icons->icon(QDir::toNativeSeparators(item.icon));
 }
 
 void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults) {
@@ -662,8 +664,8 @@ void MyWidget::setSkin(QString name) {
 
 	applySkin(qApp->applicationDirPath() + "/Skins/" + name);
 	move(p);
-	platform.MoveAlphaBorder(p);
-	platform.ShowAlphaBorder();
+	platform->MoveAlphaBorder(p);
+	platform->ShowAlphaBorder();
 	if (wasShowing)
 		showLaunchy(true);
 }
@@ -871,7 +873,7 @@ void MyWidget::setOpaqueness(int val)
 	double max = (double) val;
 	max /= 100.0;
 	this->setWindowOpacity(max);
-	platform.SetAlphaOpacity(max);
+	platform->SetAlphaOpacity(max);
 }
 
 void MyWidget::applySkin(QString directory) {
@@ -968,8 +970,8 @@ void MyWidget::applySkin(QString directory) {
 
 	// Set the alpha background
 	if (QFile::exists(directory + "/alpha.png")) {
-		platform.CreateAlphaBorder(this, directory + "/alpha.png");
-		platform.MoveAlphaBorder(pos());
+		platform->CreateAlphaBorder(this, directory + "/alpha.png");
+		platform->MoveAlphaBorder(pos());
 	}
 	
 }
@@ -986,7 +988,7 @@ void MyWidget::mouseMoveEvent(QMouseEvent *e)
 	QPoint p = e->globalPos();
 	p -= moveStartPoint;
 	move(p);
-	platform.MoveAlphaBorder(p);
+	platform->MoveAlphaBorder(p);
 	showAlternatives(false);
 	input->setFocus();
 
@@ -1086,13 +1088,13 @@ void Fader::run() {
 
 void MyWidget::setFadeLevel(double d) {
 	this->setWindowOpacity(d);
-	platform.SetAlphaOpacity(d);
+	platform->SetAlphaOpacity(d);
 }
 
 void MyWidget::finishedFade(double d) {
 	if (d == 0.0) {
 		hide();
-		platform.HideAlphaBorder();
+		platform->HideAlphaBorder();
 	}
 }
 
@@ -1121,12 +1123,12 @@ void MyWidget::showLaunchy(bool now) {
 	// where the alpha border would dissappear
 	// on sleep or user switch
 	move(loadPosition());
-	platform.CreateAlphaBorder(this, "");
-	platform.MoveAlphaBorder(pos());
+	platform->CreateAlphaBorder(this, "");
+	platform->MoveAlphaBorder(pos());
 
 	setFadeLevel(0.0);
 	this->show();
-	platform.ShowAlphaBorder();
+	platform->ShowAlphaBorder();
 
 	if (!now) {
 		fadeIn();
@@ -1188,6 +1190,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setApplicationName("Launchy");
 	QCoreApplication::setOrganizationDomain("Launchy");
 
+	
 
 
 	MyWidget widget;

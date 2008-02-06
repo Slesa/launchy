@@ -17,11 +17,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+
 #include "platform_win.h"
 #include "globals.h"
 #include "main.h"
 #include <QKeyEvent>
 #include <QDir>
+#include <QObject>
+#include <QtGui>
+
 
 BOOL GetShellDir(int iType, QString& szPath)
 {
@@ -328,10 +332,11 @@ void QLaunchyAlphaBorder::SetAlphaOpacity(double trans)
 
 void QLaunchyAlphaBorder::mouseMoveEvent(QMouseEvent *e)
 {
-	QPoint p = e->globalPos();
+/*	QPoint p = e->globalPos();
 	p -= moveStartPoint;
 	move(p);
 	((MyWidget*)parentWidget())->MoveFromAlpha(p);
+	*/
 }
 
 void QLaunchyAlphaBorder::contextMenuEvent(QContextMenuEvent *event) {
@@ -360,30 +365,3 @@ void PlatformImp::Execute(QString path, QString args) {
 	BOOL ret = ShellExecuteEx(&ShExecInfo);	
 }
 */
-QString PlatformImp::expandEnvironmentVars(QString txt) 
-{
-	QString delim("%");
-	QString out = "";
-	int curPos = txt.indexOf(delim, 0);
-	if (curPos == -1)
-		return txt;
-	while (curPos != -1) {
-		int nextPos = txt.indexOf(delim, curPos+1);
-		if (nextPos == -1) {
-			out += txt.mid(curPos+1);
-			break;
-		}
-		QString var = txt.mid(curPos+1, nextPos-curPos-1);
-		DWORD size = GetEnvironmentVariableW((LPCTSTR) var.utf16(), NULL, 0);
-		if (size > 0) {
-			LPWSTR tmpString = (LPWSTR) malloc(size*sizeof(TCHAR));
-			GetEnvironmentVariableW((LPCTSTR) var.utf16(), tmpString, size);
-			out += QString::fromUtf16((const ushort*) tmpString);
-			free(tmpString);
-		} else {
-			out += "%" + var + "%";
-		}
-		curPos = nextPos;
-	}
-	return out;
-}

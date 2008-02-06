@@ -21,14 +21,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define PLATFORM_X11
 
 
-class PlatformImp : public PlatformBase {
+class PlatformKDE : public PlatformBase {
 private:
 public:
-	PlatformImp() : PlatformBase() 		
+	PlatformKDE() : PlatformBase() 		
 	{
 
 	}
-	~PlatformImp() {
+	~PlatformKDE() {
 	}
 
 	// Mandatory functions

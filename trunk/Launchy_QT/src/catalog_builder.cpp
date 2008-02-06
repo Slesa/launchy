@@ -72,12 +72,12 @@ void CatBuilder::buildCatalog() {
 	gSettings->endArray();
 
 	if (memDirs.count() == 0) {
-		memDirs = main->platform.GetInitialDirs();
+		memDirs = main->platform->GetInitialDirs();
 	}
 
 	for(int i = 0; i < memDirs.count(); ++i) {
 		emit(catalogIncrement(100.0 * (float)(i+1) / (float) memDirs.count()));
-		QString cur = main->platform.expandEnvironmentVars(memDirs[i].name);
+		QString cur = main->platform->expandEnvironmentVars(memDirs[i].name);
 		indexDirectory(cur, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth);
 	}
 	

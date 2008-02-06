@@ -131,7 +131,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		}
 		gSettings->endArray();
 		if (memDirs.count() == 0) {
-			memDirs = main->platform.GetInitialDirs();
+			memDirs = main->platform->GetInitialDirs();
 		}
 
 		for(int i = 0; i < memDirs.count(); ++i) {
@@ -500,7 +500,7 @@ void OptionsDlg::skinChanged(const QString newSkin) {
 		pix.setMask(QPixmap(sDir + "mask.png"));
 
 		
-		if (main->platform.SupportsAlphaBorder()) {
+		if (main->platform->SupportsAlphaBorder()) {
 			// Compose the alpha image with the background
 			QImage sourceImage(pix.toImage());
 			QImage destinationImage(sDir + "alpha.png");
