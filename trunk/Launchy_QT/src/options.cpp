@@ -40,7 +40,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		genAlwaysShow->setChecked(gSettings->value("GenOps/alwaysshow", false).toBool());
 		genAlwaysTop->setChecked(gSettings->value("GenOps/alwaystop", false).toBool());
 		genPortable->setChecked(gSettings->value("GenOps/isportable", false).toBool());
-		genHideFocus->setChecked(gSettings->value("GenOps/hideiflostfocus", true).toBool());
+		genHideFocus->setChecked(gSettings->value("GenOps/hideiflostfocus", false).toBool());
 		genCenter->setChecked(gSettings->value("GenOps/alwayscenter", false).toBool());
 		genFastIndex->setChecked(gSettings->value("GenOps/fastindexer",false).toBool());
 		genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
@@ -90,7 +90,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 
 
 		// Load up the skins list
-		QDir dir(qApp->applicationDirPath() + "/Skins/");
+		QDir dir(qApp->applicationDirPath() + "/skins/");
 		QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
 		QString skinName = gSettings->value("GenOps/skin", "Default").toString();
 		connect(skinList, SIGNAL(currentTextChanged(const QString)), this, SLOT(skinChanged(const QString)));
@@ -264,7 +264,7 @@ void OptionsDlg::tabChanged(int tab) {
 	tab = tab; // Compiler warning
 	// Redraw the current skin
 	// (necessary because of dialog resizing issues)
-	if (tabWidget->currentWidget()->objectName() == "Skins") {
+	if (tabWidget->currentWidget()->objectName() == "skins") {
 		int row = skinList->currentRow();
 		skinList->setCurrentRow(-1);
 		skinList->setCurrentRow(row);
@@ -473,7 +473,7 @@ void OptionsDlg::skinChanged(const QString newSkin) {
 	if (main == NULL) return;
 
 	// Load up the author file
-	QFile author(qApp->applicationDirPath() + "/Skins/" + newSkin + "/Author.txt"); 
+	QFile author(qApp->applicationDirPath() + "/skins/" + newSkin + "/Author.txt"); 
 	if (!author.open(QIODevice::ReadOnly)) {
 		authorInfo->setText("");
 		skinPreview->clear();

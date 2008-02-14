@@ -42,6 +42,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 
 
+#define DESKTOP_WINDOWS 0
+#define DESKTOP_GNOME 1
+#define DESKTOP_KDE 2
+
 #define MSG_GET_ID 0
 #define MSG_GET_LABELS 1
 #define MSG_GET_RESULTS 2
@@ -105,7 +109,7 @@ public:
 
 
 void runProgram(QString file, QString args);
-
+int getDesktop();
 
 
  Q_DECLARE_INTERFACE(PluginInterface,

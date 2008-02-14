@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <QLibrary>
 #include <QDir>
+#include <QDebug>
 #include "globals.h"
 #include "main.h"
 
@@ -105,9 +106,10 @@ void PluginHandler::loadPlugins() {
 
 	// Load up the plugins in the plugins/ directory
 	QDir pluginsDir(qApp->applicationDirPath());
-	pluginsDir.cd("plugins");
+	if (!pluginsDir.cd("plugins")) return;
 	foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
 		if (!QLibrary::isLibrary(fileName)) continue;
+		qDebug() << fileName;
 		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader.instance();
 		if (plugin) {

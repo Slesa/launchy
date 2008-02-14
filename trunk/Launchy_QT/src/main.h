@@ -98,7 +98,7 @@ class QCharListWidget : public QListWidget
 	Q_OBJECT
 public:
 	QCharListWidget(QWidget* parent = 0) : 
-		QListWidget(parent) 
+    QListWidget(parent) 
 		{
 			setAttribute(Qt::WA_AlwaysShowToolTips);
 			setAlternatingRowColors(true);
@@ -148,8 +148,8 @@ class MyWidget : public QWidget
 public:
 
 
-
-	MyWidget(QWidget *parent = 0);
+    MyWidget() {};
+    MyWidget(QWidget *parent, PlatformBase* );
 	~MyWidget();
 	Fader* fader;
 	QPoint moveStartPoint;
