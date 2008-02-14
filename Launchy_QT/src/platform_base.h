@@ -34,12 +34,13 @@ public:
 	PlatformBase() {
 		icons = NULL;
 	}
+
 	virtual ~PlatformBase() {
 	}
 
 	QFileIconProvider* icons;
 
-
+	virtual QApplication* init(int* argc, char** argv) = 0;
 	virtual QString GetSettingsDirectory() = 0;
 	virtual QList<Directory> GetInitialDirs() = 0;
 	virtual void AddToNotificationArea() = 0;

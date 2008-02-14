@@ -17,6 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "plugin_interface.h"
+#include <QProcess>
+#include <QDebug>
+
+
 
 /*! \file
     \brief A Documented file.
@@ -24,8 +28,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     Details.
 */
 
-void runProgram(QString path, QString args) {
+
 #ifdef Q_WS_WIN
+int getDesktop() { return DESKTOP_WINDOWS; }
+void runProgram(QString path, QString args) {
 	SHELLEXECUTEINFO ShExecInfo;
 
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -47,6 +53,7 @@ void runProgram(QString path, QString args) {
 	ShExecInfo.hInstApp = NULL;
 
 	ShellExecuteEx(&ShExecInfo);	
+}
 #endif
 
 #ifdef Q_WS_MAC
@@ -54,7 +61,27 @@ void runProgram(QString path, QString args) {
 #endif
 
 #ifdef Q_WS_X11
+int getDesktop()
+{
+    QStringList list = QProcess::systemEnvironment();
+    foreach(QString s, list)
+	{
+	    if (s.startsWith("GNOME_DESKTOP_SESSION"))
+		return DESKTOP_GNOME;
+	    else if (s.startsWith("KDE_FULL_SESSION"))
+		return DESKTOP_KDE;
+	}
+    return -1;
+}
 
+void runProgram(QString path, QString args) {
+    QProcess proc;
+    QStringList largs;
+    QFileInfo info(path);
+    largs << path;
+    if (args != QString(""))
+	largs << args;
+    proc.startDetached(QString("xdg-open"), largs, ".");
+}
 #endif
 
-}

@@ -1,10 +1,7 @@
 TEMPLATE	= app
 CONFIG		+= qt_warn debug_and_release
-CONFIG(debug, debug|release) {
-  TARGET=launchyd
-} else {
-  TARGET = launchy
-}
+TARGET = launchy
+
 
 QT			+= network
 TARGET		= Launchy
@@ -30,18 +27,28 @@ win32 {
 
 }
 
-win32:debug {
-	%CONFIG += console 
+debug {
+        CONFIG -= release
 	DESTDIR = ../debug/
+}
+
+release {
+        CONFIG -= debug
+	DESTDIR = ../release/
+}
+
+win32:debug {
+	CONFIG += console 
 }
 
 win32:release {
 	CONFIG += embed_manifest_exe
-	DESTDIR = ../release/
 }
 
+
 unix {
-	SOURCES += dsingleapplication.cpp platform_x11_hotkey.cpp
-	HEADERS += dsingleapplication.h platform_x11.h
+#  include(platforms/gnome/gnome.pro)
+#	SOURCES += dsingleapplication.cpp platform_x11_hotkey.cpp
+#	HEADERS += dsingleapplication.h platform_x11.h
 }
 

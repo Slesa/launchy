@@ -21,26 +21,36 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define PLATFORM_X11
 
 
-class PlatformKDE : public PlatformBase {
+#include "platform_base.h"
+#include "platform_base_hotkey.h"
+#include "platform_base_hottrigger.h"
+#include "platform_gnome_util.h"
+
+class PlatformGnome : public QObject, public PlatformBase 
+{
+    Q_OBJECT
+	Q_INTERFACES(PlatformBase)
 private:
 public:
-	PlatformKDE() : PlatformBase() 		
-	{
+    PlatformGnome();
+    ~PlatformGnome() {delete icons;}
 
-	}
-	~PlatformKDE() {
-	}
-
+    QApplication* init(int* argc, char** argv);
 	// Mandatory functions
+	// Mandatory functions
+	void SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
+	{
+		GlobalShortcutManager::disconnect(oldKey, receiver, slot);
+		GlobalShortcutManager::connect(key, receiver, slot);
+		oldKey = key;
+	}
+
 	QString GetSettingsDirectory() { 
 	    return "";
 	};
 
 
-	QList<Directory> GetInitialDirs() {
-		QList<Directory> list;
-		return list;
-	}
+	QList<Directory> GetInitialDirs();
 
 
 	QString expandEnvironmentVars(QString str) {return str;} 

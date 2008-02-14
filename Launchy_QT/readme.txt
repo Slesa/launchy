@@ -1,3 +1,12 @@
+Linux Issues:
+. If you call XSetInputFocus (called from activateWindow) before the window is mapped,
+  you get an X11 crash (when gtk_init has been called).  Running ./Launchy -sync prevents it from
+  always crashing but it still does crash.
+     http://lists.kde.org/?l=kde-core-devel&m=102009799009063&w=2
+. The Launchy window doesn't seem to get focus properly unless I remove the "Qt::Tool" widget option,
+  but that's necessary to make the app not appear in the taskbar 
+
+
 2.0+:
 . Add memory for runny/launchy (rebuild/exit/etc..)
 . Add a plugin for open with etc..

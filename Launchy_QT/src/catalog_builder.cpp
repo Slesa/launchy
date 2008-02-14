@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "globals.h"
 #include "main.h"
 #include "options.h"
+#include <QDebug>
 
 #include <QFile>
 #include <QDataStream>
@@ -95,7 +96,8 @@ void CatBuilder::buildCatalog() {
 
 void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth)
 {
-//	dir = QDir::toNativeSeparators(dir);
+    dir = QDir::toNativeSeparators(dir);
+    
 	QDir qd(dir);
 	dir = qd.absolutePath();
 	QStringList dirs = qd.entryList(QDir::AllDirs);

@@ -48,14 +48,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 
-MyWidget::MyWidget(QWidget *parent)
-:  updateTimer(NULL), dropTimer(NULL), alternatives(NULL), QWidget(parent,Qt::Tool | Qt::FramelessWindowHint /*,Qt::Popup*/)
+MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat)
+    :  updateTimer(NULL), dropTimer(NULL), alternatives(NULL), platform(plat),
+   //   QWidget(parent)
+       QWidget(parent,  Qt::FramelessWindowHint) // This works better for focus in X11, but not sure about windows
+       //QWidget(parent,Qt::Tool | Qt::FramelessWindowHint /*,Qt::Popup*/)
 {
+
 //	setAttribute(Qt::WA_DeleteOnClose);
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);
+	//	setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 
-	platform = loadPlatform();
+
 	if (platform->isAlreadyRunning())
 		exit(1);
 
@@ -69,6 +74,7 @@ MyWidget::MyWidget(QWidget *parent)
 	gSearchTxt = "";
 	gBuilder = NULL;
 	catalog = NULL;
+
 
 	setFocusPolicy(Qt::ClickFocus);
 
@@ -103,7 +109,6 @@ MyWidget::MyWidget(QWidget *parent)
 
 
 
-
 	licon = new QLabel(label);
 
 
@@ -121,7 +126,6 @@ MyWidget::MyWidget(QWidget *parent)
 		updateVersion(gSettings->value("version", 0).toInt());
 		showLaunchyFirstTime = true;
 	}
-
 	alternatives = new QCharListWidget(this);
 	listDelegate = new IconDelegate(this);
 	defaultDelegate = alternatives->itemDelegate();
@@ -141,8 +145,8 @@ MyWidget::MyWidget(QWidget *parent)
 	plugins.loadPlugins();
 
 	// Load the skin
-	qDebug() << qApp->applicationDirPath() + "/Skins/";
-	applySkin(qApp->applicationDirPath() + "/Skins/" + gSettings->value("GenOps/skin", "Default").toString());
+	qDebug() << qApp->applicationDirPath() + "/skins/";
+	applySkin(qApp->applicationDirPath() + "/skins/" + gSettings->value("GenOps/skin", "Default").toString());
 
 	// Move to saved position
 	QPoint x = loadPosition(); //gSettings->value("Display/relpos", QPoint(0,0)).toPoint();
@@ -166,7 +170,6 @@ MyWidget::MyWidget(QWidget *parent)
 	int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
 	setHotkey(curMeta, curAction);
 
-
 	// Set the timers
      updateTimer = new QTimer(this);
 	 dropTimer = new QTimer(this);
@@ -185,10 +188,13 @@ MyWidget::MyWidget(QWidget *parent)
 
 	//	setTabOrder(combo, combo);
 	
+
 	if (showLaunchyFirstTime)
 		showLaunchy();
 	else
-		hideLaunchy();
+	    hideLaunchy();
+	
+
 //	hideLaunchy();
 }
 
@@ -259,7 +265,6 @@ void MyWidget::showAlternatives(bool show) {
 		opaqueness /= 100.0;
 		alternatives->setWindowOpacity(opaqueness);
 		alternatives->show();
-
 	}
 }
 
@@ -302,12 +307,12 @@ void MyWidget::launchObject() {
 }
 
 void MyWidget::focusOutEvent ( QFocusEvent * evt) {
-	if (evt->reason() == Qt::ActiveWindowFocusReason) {
-		if (gSettings->value("GenOps/hideiflostfocus", true).toBool())
-			if (!this->isActiveWindow() && !alternatives->isActiveWindow() && !optionsOpen) {
-				hideLaunchy();
-			}
-	}
+    if (evt->reason() == Qt::ActiveWindowFocusReason) {
+	if (gSettings->value("GenOps/hideiflostfocus", false).toBool())
+	    if (!this->isActiveWindow() && !alternatives->isActiveWindow() && !optionsOpen) {
+		hideLaunchy();
+	    }
+    }
 }
 
 
@@ -357,6 +362,7 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 	}
 	else {
 		alternatives->hide();
+
 		this->activateWindow();
 		input->setFocus();
 		key->ignore();
@@ -463,8 +469,9 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 				alternatives->setCurrentRow(0);
 			}
 
-			alternatives->activateWindow();
 
+			alternatives->activateWindow();			
+			
 		}
 	}
 
@@ -662,7 +669,7 @@ void MyWidget::setSkin(QString name) {
 	QPoint p = pos();
 	hideLaunchy(true);
 
-	applySkin(qApp->applicationDirPath() + "/Skins/" + name);
+	applySkin(qApp->applicationDirPath() + "/skins/" + name);
 	move(p);
 	platform->MoveAlphaBorder(p);
 	platform->ShowAlphaBorder();
@@ -764,8 +771,8 @@ void MyWidget::updateTimeout() {
 }
 
 void MyWidget::dropTimeout() {
-	if (input->text() != "")
-		showAlternatives();
+    if (input->text() != "")
+	showAlternatives();
 }
 
 void MyWidget::onHotKey() {
@@ -886,7 +893,7 @@ void MyWidget::applySkin(QString directory) {
 
 	// Use default skin if this one doesn't exist
 	if (!QFile::exists(directory + "/misc.txt"))  {
-		directory = qApp->applicationDirPath() + "/Skins/Default/";
+		directory = qApp->applicationDirPath() + "/skins/Default/";
 		gSettings->setValue("GenOps/skin", "Default");
 	}
 	
@@ -1022,6 +1029,7 @@ void MyWidget::menuOptions() {
 		connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		gBuilder->start(QThread::IdlePriority);
 	}
+
 	input->activateWindow();
 	input->setFocus();	
 	optionsOpen = false;
@@ -1117,11 +1125,14 @@ void MyWidget::fadeOut() {
 
 
 void MyWidget::showLaunchy(bool now) {
+
 	shouldDonate();
 	alternatives->hide();
+
 	// This gets around the weird Vista bug
 	// where the alpha border would dissappear
 	// on sleep or user switch
+
 	move(loadPosition());
 	platform->CreateAlphaBorder(this, "");
 	platform->MoveAlphaBorder(pos());
@@ -1129,7 +1140,6 @@ void MyWidget::showLaunchy(bool now) {
 	setFadeLevel(0.0);
 	this->show();
 	platform->ShowAlphaBorder();
-
 	if (!now) {
 		fadeIn();
 	} else {
@@ -1138,10 +1148,10 @@ void MyWidget::showLaunchy(bool now) {
 		setFadeLevel(end);
 	}
 
-	input->activateWindow();
+    	input->activateWindow();
+	raise();
 	input->selectAll();
 	input->setFocus();
-
 	// Let the plugins know
 	plugins.showLaunchy();
 }
@@ -1183,18 +1193,17 @@ QChar MyWidget::sepChar() {
 }
 int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
 
+	PlatformBase * platform = loadPlatform();
+	QApplication * app = platform->init(&argc, argv);
 	QStringList args = qApp->arguments();
 
 	QCoreApplication::setApplicationName("Launchy");
 	QCoreApplication::setOrganizationDomain("Launchy");
 
-	
-
-
-	MyWidget widget;
+	MyWidget widget(NULL, platform);
 	widget.setObjectName("main");
 
-	return app.exec();
+	app->exec();
+	delete app;
 } 
