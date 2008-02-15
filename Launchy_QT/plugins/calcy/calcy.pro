@@ -1,5 +1,5 @@
  TEMPLATE      = lib
- CONFIG       += plugin release
+ CONFIG       += plugin debug_and_release
  VPATH 		  += ../../src/
  INCLUDEPATH += ../../src/
  INCLUDEPATH += c:/boost/
@@ -17,9 +17,11 @@
 }
  
  *:debug {
+        CONFIG -= release
 	DESTDIR = ../../debug/plugins/
  }
  *:release {
+        CONFIG -= debug
 	DESTDIR = ../../release/plugins/
 	%QMAKE_CXXFLAGS += /Ox /Ob2 /Oi /Oy /GT /GA  /WX
  }

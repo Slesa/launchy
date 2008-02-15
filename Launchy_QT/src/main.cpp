@@ -126,6 +126,7 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat)
 		updateVersion(gSettings->value("version", 0).toInt());
 		showLaunchyFirstTime = true;
 	}
+
 	alternatives = new QCharListWidget(this);
 	listDelegate = new IconDelegate(this);
 	defaultDelegate = alternatives->itemDelegate();
@@ -187,15 +188,19 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat)
 	gBuilder->start();
 
 	//	setTabOrder(combo, combo);
-	
 
+
+
+	
 	if (showLaunchyFirstTime)
 		showLaunchy();
 	else
 	    hideLaunchy();
 	
+	#ifdef Q_WS_X11
+	showLaunchy();	
+	#endif
 
-//	hideLaunchy();
 }
 
 void MyWidget::setCondensed(int condensed) {
