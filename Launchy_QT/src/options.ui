@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>566</width>
-    <height>453</height>
+    <width>678</width>
+    <height>585</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -23,7 +23,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab" >
       <attribute name="title" >
@@ -572,7 +572,7 @@
              </property>
              <property name="maximumSize" >
               <size>
-               <width>115</width>
+               <width>140</width>
                <height>16777215</height>
               </size>
              </property>
@@ -617,7 +617,7 @@
                 <property name="maximumSize" >
                  <size>
                   <width>16777215</width>
-                  <height>16</height>
+                  <height>13123213</height>
                  </size>
                 </property>
                 <property name="text" >
@@ -630,7 +630,7 @@
                 <property name="maximumSize" >
                  <size>
                   <width>16777215</width>
-                  <height>16</height>
+                  <height>13123123</height>
                  </size>
                 </property>
                 <property name="text" >
@@ -683,8 +683,8 @@
              </property>
              <property name="sizeHint" >
               <size>
-               <width>20</width>
-               <height>40</height>
+               <width>140</width>
+               <height>16</height>
               </size>
              </property>
             </spacer>
@@ -786,8 +786,8 @@
          </property>
          <property name="sizeHint" >
           <size>
-           <width>20</width>
-           <height>40</height>
+           <width>630</width>
+           <height>16</height>
           </size>
          </property>
         </spacer>

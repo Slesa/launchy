@@ -17,7 +17,10 @@ PlatformBase * loadPlatform()
 	QObject *plugin = loader.instance();
 
 	if (!plugin)
+	    {
+		qDebug() << loader.errorString();
 		exit(1);
+	    }
 
 	return qobject_cast<PlatformBase*>(plugin);
 }

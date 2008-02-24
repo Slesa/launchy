@@ -25,8 +25,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QList>
 #include <QFileIconProvider>
 #include <QObject>
-
-
+#include <QProcess>
+#include <QDebug>
+#include "catalog.h"
 #include "options.h"
 
 class PlatformBase {
@@ -45,8 +46,8 @@ public:
 	virtual QList<Directory> GetInitialDirs() = 0;
 	virtual void AddToNotificationArea() = 0;
 	virtual void RemoveFromNotificationArea() = 0;
-//	virtual void Execute(QString path, QString args) = 0;
-	virtual QString expandEnvironmentVars(QString) = 0;
+	virtual bool Execute(QString path, QString args) { return false; }
+       
 	virtual bool isAlreadyRunning() = 0;
 
 	QKeySequence oldKey;
@@ -54,7 +55,8 @@ public:
 	// Set hotkey
 	virtual void SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot) = 0;
 
-
+	// Need to alter an indexed item?  e.g. .desktop files
+	virtual void alterItem(CatItem*) {return;};
 
 	// Alpha border functions	
 	virtual bool SupportsAlphaBorder() { return false; }
@@ -65,7 +67,36 @@ public:
 	virtual void ShowAlphaBorder() { return; }
 	virtual void SetAlphaOpacity(double) { return; }
 
-
+	virtual QString expandEnvironmentVars(QString txt)
+	{	    
+	    QStringList list = QProcess::systemEnvironment();
+	    txt.replace('~', "$HOME$");
+	    QString delim("$");
+	    QString out = "";
+	    int curPos = txt.indexOf(delim, 0);
+	    if (curPos == -1) return txt;
+	    
+	    while(curPos != -1) {
+		int nextPos = txt.indexOf("$", curPos+1);
+		if (nextPos == -1) {
+		    out += txt.mid(curPos+1);
+		    break;
+		}
+		QString var = txt.mid(curPos+1, nextPos-curPos-1);
+		bool found = false;
+		foreach(QString s, list) {
+		    if (s.startsWith(var, Qt::CaseInsensitive)) {
+			found = true;
+			out += s.mid(var.length()+1);
+			break;
+		    }			
+		}
+		if (!found)
+		    out += "$" + var;
+		curPos = nextPos;
+	    }
+	    return out;
+	}
 };
 
  Q_DECLARE_INTERFACE(PlatformBase,

@@ -96,6 +96,8 @@ void CatBuilder::buildCatalog() {
 
 void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth)
 {
+    MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
+    if (!main) return;
     dir = QDir::toNativeSeparators(dir);
     
 	QDir qd(dir);
@@ -167,6 +169,7 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 			CatItem item(dir + "/" + files[i]);
 			if (curcat != NULL)
 				item.usage = curcat->getUsage(item.fullPath);
+			main->platform->alterItem(&item);
 			cat->addItem(item);
 			indexed[dir + "/" + files[i]] = true;
 		}
