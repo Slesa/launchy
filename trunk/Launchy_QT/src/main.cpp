@@ -281,7 +281,8 @@ void MyWidget::launchObject() {
 		if (inputData.count() > 1)
 			for(int i = 1; i < inputData.count(); ++i)
 				args += inputData[i].getText() + " ";
-		runProgram(res.fullPath, args);
+		if (!platform->Execute(res.fullPath, args))
+		    runProgram(res.fullPath, args);
 	}
 	else {
 		int ops = plugins.execute(&inputData, &res);
@@ -1198,7 +1199,6 @@ QChar MyWidget::sepChar() {
 }
 int main(int argc, char *argv[])
 {
-
 	PlatformBase * platform = loadPlatform();
 	QApplication * app = platform->init(&argc, argv);
 	QStringList args = qApp->arguments();

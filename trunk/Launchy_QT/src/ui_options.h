@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'options.ui'
 **
-** Created: Thu Feb 14 14:16:20 2008
+** Created: Sat Feb 23 19:01:19 2008
 **      by: Qt User Interface Compiler version 4.3.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -170,7 +170,7 @@ public:
     if (OptionsDlg->objectName().isEmpty())
         OptionsDlg->setObjectName(QString::fromUtf8("OptionsDlg"));
     OptionsDlg->setWindowModality(Qt::NonModal);
-    OptionsDlg->resize(566, 453);
+    OptionsDlg->resize(678, 585);
     vboxLayout = new QVBoxLayout(OptionsDlg);
     vboxLayout->setObjectName(QString::fromUtf8("vboxLayout"));
     hboxLayout = new QHBoxLayout();
@@ -513,7 +513,7 @@ public:
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(groupBox_2->sizePolicy().hasHeightForWidth());
     groupBox_2->setSizePolicy(sizePolicy);
-    groupBox_2->setMaximumSize(QSize(115, 16777215));
+    groupBox_2->setMaximumSize(QSize(140, 16777215));
     vboxLayout13 = new QVBoxLayout(groupBox_2);
     vboxLayout13->setObjectName(QString::fromUtf8("vboxLayout13"));
     catTypes = new QListWidget(groupBox_2);
@@ -540,13 +540,13 @@ public:
 
     catTypesPlus = new QPushButton(groupBox_2);
     catTypesPlus->setObjectName(QString::fromUtf8("catTypesPlus"));
-    catTypesPlus->setMaximumSize(QSize(16777215, 16));
+    catTypesPlus->setMaximumSize(QSize(16777215, 13123213));
 
     vboxLayout13->addWidget(catTypesPlus);
 
     catTypesMinus = new QPushButton(groupBox_2);
     catTypesMinus->setObjectName(QString::fromUtf8("catTypesMinus"));
-    catTypesMinus->setMaximumSize(QSize(16777215, 16));
+    catTypesMinus->setMaximumSize(QSize(16777215, 13123123));
 
     vboxLayout13->addWidget(catTypesMinus);
 
@@ -580,7 +580,7 @@ public:
 
     vboxLayout12->addWidget(groupBox_2);
 
-    spacerItem12 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    spacerItem12 = new QSpacerItem(140, 16, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
     vboxLayout12->addItem(spacerItem12);
 
@@ -638,7 +638,7 @@ public:
 
     vboxLayout11->addLayout(hboxLayout10);
 
-    spacerItem17 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    spacerItem17 = new QSpacerItem(630, 16, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
     vboxLayout11->addItem(spacerItem17);
 
@@ -825,7 +825,7 @@ public:
     QObject::connect(buttonBox, SIGNAL(accepted()), OptionsDlg, SLOT(accept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), OptionsDlg, SLOT(reject()));
 
-    tabWidget->setCurrentIndex(0);
+    tabWidget->setCurrentIndex(2);
 
 
     QMetaObject::connectSlotsByName(OptionsDlg);

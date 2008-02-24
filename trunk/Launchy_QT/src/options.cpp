@@ -473,7 +473,7 @@ void OptionsDlg::skinChanged(const QString newSkin) {
 	if (main == NULL) return;
 
 	// Load up the author file
-	QFile author(qApp->applicationDirPath() + "/skins/" + newSkin + "/Author.txt"); 
+	QFile author(qApp->applicationDirPath() + "/skins/" + newSkin + "/author.txt"); 
 	if (!author.open(QIODevice::ReadOnly)) {
 		authorInfo->setText("");
 		skinPreview->clear();
