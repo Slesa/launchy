@@ -22,9 +22,11 @@ QString alphaFile;
 
  GnomeAlphaBorder(QWidget * parent, QString);
  ~GnomeAlphaBorder();
+ QWidget* p;
     void paintEvent(QPaintEvent *);
     void SetAlphaOpacity(double trans);
     //    QPaintEngine * paintEngine() { return 0; }
+    //    void mousePressEvent(QMouseEvent *event);
     GC			gc;	// Target Painter
     GC                  gcback;
     XImage 		*xmask;	// Image informations
