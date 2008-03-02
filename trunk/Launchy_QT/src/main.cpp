@@ -37,6 +37,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QTimer>
 #include <QDateTime>
 #include <QDesktopWidget>
+//#include <QX11Info>
+
 
 #include "icon_delegate.h"
 #include "main.h"
@@ -44,22 +46,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "options.h"
 #include "dsingleapplication.h"
 #include "plugin_interface.h"
-
-
-
+#ifdef Q_WS_X11
+//#include <X11/Xlib.h>
+#endif
 
 MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat)
     :  updateTimer(NULL), dropTimer(NULL), alternatives(NULL), platform(plat),
-   //   QWidget(parent)
-       QWidget(parent,  Qt::FramelessWindowHint) // This works better for focus in X11, but not sure about windows
-       //QWidget(parent,Qt::Tool | Qt::FramelessWindowHint /*,Qt::Popup*/)
+       //      QWidget(parent)
+       //       QWidget(parent,  Qt::FramelessWindowHint) // This works better for focus in X11, but not sure about windows
+       #ifdef Q_WS_WIN
+       QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )//| Qt::X11BypassWindowManagerHint)
+       #endif
+       #ifdef Q_WS_X11
+       QWidget(parent, Qt::FramelessWindowHint | Qt::Tool)
+       #endif
+       // QWidget(parent, Qt::Dialog)
+       //QWidget(parent, Qt::SubWindow | Qt::FramelessWindowHint)
 {
 
 //	setAttribute(Qt::WA_DeleteOnClose);
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);
 	//	setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
-
+	//    setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
 
 	if (platform->isAlreadyRunning())
 		exit(1);
@@ -811,6 +820,8 @@ void MyWidget::closeEvent(QCloseEvent *event) {
 MyWidget::~MyWidget() {
 	delete updateTimer;
 	delete dropTimer;
+	delete platform;
+	
 }
 
 void MyWidget::MoveFromAlpha(QPoint pos) {
@@ -971,20 +982,20 @@ void MyWidget::applySkin(QString directory) {
 	
 	// Set the background image
 	if (QFile::exists(directory + "/background.png")) {
-		QPixmap image(directory + "/background.png");
-		label->setPixmap(image);
+	    QPixmap image(directory + "/background.png");
+	    label->setPixmap(image);
 	}
-
+	
 	// Set the background mask
 	if (QFile::exists(directory + "/mask.png")) {
-		QPixmap image(directory + "/mask.png");
-		setMask(image);
+	    QPixmap image(directory + "/mask.png");
+	    setMask(image);
 	}
-
+	
 	// Set the alpha background
-	if (QFile::exists(directory + "/alpha.png")) {
-		platform->CreateAlphaBorder(this, directory + "/alpha.png");
-		platform->MoveAlphaBorder(pos());
+	if (QFile::exists(directory + "/alpha.png") && platform->SupportsAlphaBorder()) {
+	    platform->CreateAlphaBorder(this, directory + "/alpha.png");
+	    platform->MoveAlphaBorder(pos());
 	}
 	
 }
@@ -1140,12 +1151,15 @@ void MyWidget::showLaunchy(bool now) {
 	// on sleep or user switch
 
 	move(loadPosition());
+	#ifdef Q_WS_WIN
 	platform->CreateAlphaBorder(this, "");
+	#endif
 	platform->MoveAlphaBorder(pos());
 
 	setFadeLevel(0.0);
-	this->show();
+
 	platform->ShowAlphaBorder();
+	this->show();
 	if (!now) {
 		fadeIn();
 	} else {
@@ -1154,6 +1168,9 @@ void MyWidget::showLaunchy(bool now) {
 		setFadeLevel(end);
 	}
 
+	//#ifdef Q_WS_X11
+	//XSetInputFocus(QX11Info::display(), input->winId(), RevertToParent, QX11Info::appTime());
+	//#endif
     	input->activateWindow();
 	raise();
 	input->selectAll();

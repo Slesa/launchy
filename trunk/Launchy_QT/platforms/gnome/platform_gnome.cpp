@@ -33,14 +33,21 @@ PlatformGnome::PlatformGnome() : PlatformBase()
 QApplication* PlatformGnome::init(int* argc, char** argv)
 {
     // MUST CALL GTK BEFORE QAPP!  Otherwise things get confused
-    qDebug() << "initing";
-    g_thread_init(NULL);
+    g_thread_init(NULL); // necessary since gtk called from catalog thread
     gdk_threads_init();
     gtk_init(argc, &argv);
     gnome_vfs_init();
+    
+        
     QApplication * app = new QApplication(*argc, argv);
     icons = (QFileIconProvider*) new GnomeIconProvider();
     return app;
+}
+
+PlatformGnome::~PlatformGnome()
+{ 
+    delete icons;
+    gnome_vfs_shutdown();
 }
 
 QList<Directory> PlatformGnome::GetInitialDirs() {
@@ -62,19 +69,39 @@ QList<Directory> PlatformGnome::GetInitialDirs() {
 }
 
 void PlatformGnome::alterItem(CatItem* item) {
+    //    return;
+    
     if (!item->fullPath.endsWith(".desktop", Qt::CaseInsensitive))
 	return;
+    GError * error = NULL;
+
+    gdk_threads_enter();
     GnomeDesktopItem* ditem = gnome_desktop_item_new_from_file(item->fullPath.toLocal8Bit().data(),
-							       GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS,
-							       NULL);
-    if (!ditem) return;
-    
+							       (GnomeDesktopItemLoadFlags) 0,//GNOME_DESKTOP_ITEM_LOAD_ONLY_IF_EXISTS,
+							       &error);
+    if (error) {
+	g_error_free(error);
+	gdk_threads_leave();
+	return;
+    }
+
+    if (!ditem) {
+	gdk_threads_leave();
+	return;
+    }
+
+    // The gnome errors are coming from here, because it falls back to
+    // finding the file if it can't find the icon and spits out a
+    // nasty error.  Nothing I can do but reimplement get_icon, pretty
+    // annoying behavior on gnome's part
+   
     item->icon = gnome_desktop_item_get_icon (ditem, gtk_icon_theme_get_default());
 
     //item->fullPath = gnome_desktop_item_get_localestring(ditem, "Exec");
     //    item->shortName = gnome_desktop_item_get_localestring(ditem, "Name");
     //item->lowName = item->shortName.toLower();
     gnome_desktop_item_unref (ditem);    
+    gdk_threads_leave();
     return;
 }
 
@@ -83,28 +110,61 @@ bool PlatformGnome::Execute(QString path, QString args)
     if (!path.endsWith(".desktop", Qt::CaseInsensitive))
 	return false;
 
+    gdk_threads_enter();
+
+    GError * error = NULL;
     GnomeDesktopItem* ditem = gnome_desktop_item_new_from_file(path.toLocal8Bit().data(),
 							       (GnomeDesktopItemLoadFlags) 0,
-							       NULL);
+							       &error);
+    if (error) {
+	g_error_free(error);
+	gdk_threads_leave();
+	return false;
+    }
     if (!ditem) return false;
     
     
-    gnome_desktop_item_launch(ditem, NULL, (GnomeDesktopItemLaunchFlags) 0, NULL);
-    
+    gnome_desktop_item_launch(ditem, NULL, (GnomeDesktopItemLaunchFlags) 0, &error);
+    if (error) {
+	g_error_free(error);
+	gnome_desktop_item_unref(ditem);
+	gdk_threads_leave();
+	return false;
+    }
+			      
     gnome_desktop_item_unref(ditem);
+    gdk_threads_leave();
     return true;
 }
 
 
 bool PlatformGnome::CreateAlphaBorder(QWidget* w, QString ImageName)
 {
+    if (alpha)
+	delete alpha;
+  
     if (ImageName == "")
 	ImageName = alphaFile;
     alphaFile = ImageName;
-    alpha = new GnomeAlphaBorder(w);
-    alpha->ShowAlpha(ImageName);
+    alpha = new GnomeAlphaBorder(w, ImageName);
+    //    alpha->ShowAlpha(ImageName);
     return true;
 }
 
+bool PlatformGnome::SupportsAlphaBorder()
+{
+
+    QProcess qp;
+    QString program = "/bin/sh";
+    QStringList args;
+    args << "-c" << "ps ax | grep 'compiz' | grep -v 'grep'";
+    qp.start(program, args);   
+    qp.waitForFinished();
+    QByteArray result = qp.readAll();
+    //    qDebug() << result;
+    if (result.length() > 0)
+	return true;
+    return false;
+}
 
 Q_EXPORT_PLUGIN2(platform_gnome, PlatformGnome)

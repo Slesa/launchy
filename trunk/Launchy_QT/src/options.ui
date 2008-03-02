@@ -23,7 +23,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab" >
       <attribute name="title" >
@@ -101,7 +101,14 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="genModifierBox" />
+                 <widget class="QComboBox" name="genModifierBox" >
+                  <property name="minimumSize" >
+                   <size>
+                    <width>80</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </widget>
                 </item>
                 <item>
                  <spacer>
@@ -117,7 +124,14 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="genKeyBox" />
+                 <widget class="QComboBox" name="genKeyBox" >
+                  <property name="minimumSize" >
+                   <size>
+                    <width>80</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </widget>
                 </item>
                 <item>
                  <spacer>

@@ -20,10 +20,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef PLATFORM_X11
 #define PLATFORM_X11
 
+
+#include "platform_gnome_util.h"
 #include "platform_base.h"
 #include "platform_base_hotkey.h"
 #include "platform_base_hottrigger.h"
-#include "platform_gnome_util.h"
+
+
 
 class PlatformGnome : public QObject, public PlatformBase 
 {
@@ -34,7 +37,7 @@ private:
     QString alphaFile;
 public:
     PlatformGnome();
-    ~PlatformGnome() {delete icons;}
+    ~PlatformGnome();
 
     QApplication* init(int* argc, char** argv);
 	// Mandatory functions
@@ -63,13 +66,14 @@ public:
 
 	void alterItem(CatItem*);
 	bool Execute(QString path, QString args);
-	bool SupportsAlphaBorder() { return true; }
+
+	bool SupportsAlphaBorder();
 	bool CreateAlphaBorder(QWidget* w, QString ImageName);
 	void DestroyAlphaBorder() { delete alpha ; alpha = NULL; return; }
 	void MoveAlphaBorder(QPoint pos) { if (alpha) alpha->move(pos); }
 	void ShowAlphaBorder() { if (alpha) alpha->show(); }
 	void HideAlphaBorder() { if (alpha) alpha->hide(); }
-	void SetAlphaOpacity(double trans ) { }
+	void SetAlphaOpacity(double trans ) { if (alpha) alpha->SetAlphaOpacity(trans); }
 };
 
 

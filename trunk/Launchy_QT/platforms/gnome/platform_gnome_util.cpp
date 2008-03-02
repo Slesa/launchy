@@ -1,132 +1,201 @@
+
 #include <libgnomeui/libgnomeui.h>
-
-
 #include "platform_gnome_util.h"
 #include <gtk/gtk.h>
-#include <gdk/gdkscreen.h>
-#include <cairo.h>
+
 
 #include <QPixmap>
 #include <QIcon>
 #include <QDebug>
+#include <QPainter>
 
-/* Only some X servers support alpha channels. Always have a fallback */
-gboolean supports_alpha = FALSE;
-
-GtkWidget* gtk_win = NULL;
+#include <QX11Info>
 
 
-void alphaScreenChanged(GtkWidget *widget, GdkScreen *old_screen, QString alphaFile)
+GnomeAlphaBorder::GnomeAlphaBorder(QWidget * parent, QString file) : 
+    QWidget(NULL, Qt::Tool | Qt::FramelessWindowHint)
 {
-    /* To check if the display supports alpha channels, get the colormap */
-    GdkScreen *screen = gtk_widget_get_screen(widget);
-    GdkColormap *colormap = gdk_screen_get_rgba_colormap(screen);
+    // This stops a bunch of XCopyArea problems
+    // Note that you need to override and return 0 for paintEngine()
+    setAttribute(Qt::WA_PaintOnScreen);
+    setAttribute(Qt::WA_OpaquePaintEvent);
+    setAttribute(Qt::WA_NoSystemBackground);
 
-    if (!colormap)
-    {
-        printf("Your screen does not support alpha channels!\n");
-        colormap = gdk_screen_get_rgb_colormap(screen);
-        supports_alpha = FALSE;
-    }
-    else
-    {
-        printf("Your screen supports alpha channels!\n");
-        supports_alpha = TRUE;
-    }
-
-    /* Now we have a colormap appropriate for the screen, use it */
-    gtk_widget_set_colormap(widget, colormap);
-}
-
-/* This is called when we need to draw the windows contents */
-bool alphaExpose(GtkWidget *widget, GdkEventExpose *event, QString alphaFile)
-{
-    cairo_t *cr = gdk_cairo_create(widget->window);
-
-    if (!supports_alpha)
-	return FALSE;
+    Display *d;
+    int s;
+    Window w;
+    XEvent e;
+    Colormap colormap;
+    Visual * visual;
     
-    cairo_set_source_rgba (cr, 1.0, 1.0, 1.0, 0.0); /* transparent */
     
-    /* draw the background */
-    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-    cairo_paint (cr);
-
-
-    /* draw a circle */
-
-    //int width, height;
-    //gtk_window_get_size(GTK_WINDOW(widget), &width, &height);
-
-    //cairo_set_source_rgba(cr, 1, 0.2, 0.2, 0.6);
-    //    cairo_arc(cr, width / 2, height / 2, (width < height ? width : height) / 2 - 8 , 0, 2 * 3.14);
-    //cairo_fill(cr);
-    //cairo_stroke(cr);
+    //    setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
     
-
-    cairo_surface_t* pCairoSurface = cairo_image_surface_create_from_png(alphaFile.toLocal8Bit().data());
-    cairo_set_source_surface(cr, pCairoSurface,0,0);
-    cairo_mask_surface(cr, pCairoSurface, 0,0);
-
-    cairo_destroy(cr);
-    return FALSE;
-}
-
-GnomeAlphaBorder::GnomeAlphaBorder(QWidget * parent) : 
-    QWidget(parent, Qt::Tool | Qt::FramelessWindowHint)
-{
-    resize(parent->size());
-    gtk_win  = gtk_plug_new(winId());
-    gtk_widget_set_app_paintable(gtk_win, TRUE);
-    gtk_window_set_decorated(GTK_WINDOW(gtk_win), FALSE);
-    gtk_widget_show_all(gtk_win);
-}
-
-void GnomeAlphaBorder::paintEvent(QPaintEvent *)
-{
-    qDebug() << "calling expose";
-    alphaExpose(gtk_win, NULL, alphaFile);
-}
-
-void GnomeAlphaBorder::ShowAlpha(QString file)
-{
+    
+    QX11Info info;
+    d = info.display();
+    s = info.screen();
+    
+    
+    int event_base, error_base;
+    bool argb_visual = false;
+    XVisualInfo * xvi;
+    int index = 0;
+    
+    if (  XRenderQueryExtension( d, &event_base, &error_base ) )
+        {
+            int nvi;
+            
+            XVisualInfo templ;
+            templ.screen  = s;
+            templ.depth   = 32;
+            templ.c_class = TrueColor;
+            
+            xvi = XGetVisualInfo( d, VisualScreenMask | VisualDepthMask
+                                  | VisualClassMask, &templ, &nvi );
+            
+            for ( int i = 0; i < nvi; i++ ) {
+                XRenderPictFormat *format = XRenderFindVisualFormat( d, xvi[i].visual );
+                if ( format->type == PictTypeDirect && format->direct.alphaMask ) {
+                    visual = xvi[i].visual;
+                    
+                    index = i;
+                    colormap = XCreateColormap( d, info.appRootWindow(info.screen()), visual, AllocNone );
+                    argb_visual=true;
+                    break;
+                }
+            }
+        }
+    
+    XSetWindowAttributes swa;
+    swa.colormap = colormap;
+    swa.background_pixel = WhitePixel(d,s);
+    swa.border_pixel = BlackPixel(d,s);
+    
+    w = XCreateWindow(d, info.appRootWindow(info.screen()) , 10, 10, 100, 500, 0, 32,
+                      InputOutput, visual,
+                      CWBackPixel|CWBorderPixel|CWColormap,
+                      &swa);
+    /*
+      w = XCreateWindow(d, parent->winId() , 10, 10, 100, 500, 0, 32,
+      InputOutput, visual,
+      CWBackPixel|CWBorderPixel|CWColormap,
+      &swa);
+    */
+    
+    /*
+      w = XCreateWindow(d, RootWindow(d,s), 10, 10, 100, 500, 0, 32,
+      InputOutput, visual,
+      CWBackPixel|CWBorderPixel|CWColormap, &swa);
+    */
+    XWindowAttributes wa;
+    Status success = XGetWindowAttributes(d, w, &wa);
+    
+    
+    create(w, true, true);
+    
+    
+    
     alphaFile = file;
-    qDebug() << alphaFile;
-    alphaScreenChanged(gtk_win, NULL, alphaFile);
+    //    values.foreground = 0x00000000L;
+    //values.background = 0x00000000L;
+    
+    
+    
+    gc = XCreateGC (info.display(), w, 0,0);//GCForeground | GCBackground, &values); // drawing content
+    
+    QImage img;
+    img.load(alphaFile.toLocal8Bit().data());
+    img = img.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+    width = img.width();
+    height = img.height();
+    
+    resize(width,height);
+    
+    
+    xmask = XCreateImage(info.display(), visual, 
+                         32, ZPixmap, 0, NULL, width, height, 32, 0);
+
+    
+    int len = width * height * sizeof(unsigned int);
+    
+    char *ColorBuffer = (char*) malloc(len);
+    memcpy(ColorBuffer, img.bits(), len);
+    
+    xmask->data=ColorBuffer;
+}
+
+void GnomeAlphaBorder::SetAlphaOpacity(double trans)
+{
+    setWindowOpacity(trans);
+}
+
+
+void GnomeAlphaBorder::paintEvent(QPaintEvent * e)
+{
+    QRect rect = e->rect();
+    int l=rect.left();
+    int t=rect.top();
+    int w=rect.width();
+    int h=rect.height();
+
+    XPutImage(QX11Info::display(), winId(), gc, xmask, l,t,l,t,w,h);
+
+    //    XPutImage(QX11Info::display(), winId(), gc, xmask, 0,0,0,0,width,height);
+}
+
+
+
+GnomeAlphaBorder::~GnomeAlphaBorder()
+{
+    
+    
+    /*
+      qDebug() << "Destroying alpha border";
+      XDestroyWindow(QX11Info::display(),winId());
+      XFreeGC(QX11Info::display(), gc);
+      // Frees the data as well
+      XDestroyImage(xmask);
+    */
+    
+    if (xmask->data)
+        free(xmask->data);
 }
 
 QIcon GnomeIconProvider::icon(const QFileInfo& info) const
 {
     if (info.fileName().endsWith(".png", Qt::CaseInsensitive))
-	{
-	    return QIcon(info.absoluteFilePath());
-	}
+        {
+            return QIcon(info.absoluteFilePath());
+        }
+    gdk_threads_enter();
     GnomeIconLookupResultFlags resultFlags;
     char* file = gnome_icon_lookup_sync(gtk_icon_theme_get_default(),
-					NULL,
-					info.absoluteFilePath().toLocal8Bit().data(),
-					NULL,
-					GNOME_ICON_LOOKUP_FLAGS_NONE,
-					&resultFlags);
+                                        NULL,
+                                        info.absoluteFilePath().toLocal8Bit().data(),
+                                        NULL,
+                                        GNOME_ICON_LOOKUP_FLAGS_NONE,
+                                        &resultFlags);
     GtkIconInfo* icinfo = gtk_icon_theme_lookup_icon(gtk_icon_theme_get_default(),
-			       file,
-			       32,
-			       GTK_ICON_LOOKUP_NO_SVG);
+                                                     file,
+                                                     32,
+                                                     GTK_ICON_LOOKUP_NO_SVG);
     
     GdkPixbuf* buff = gtk_icon_info_load_icon(icinfo, NULL);
     gchar* pixmap;
     gsize buflen;
-
+    
     gdk_pixbuf_save_to_buffer (buff,
-			       &pixmap,
-			       &buflen,
-			       "png",
-			       NULL, NULL);
+                               &pixmap,
+                               &buflen,
+                               "png",
+                               NULL, NULL);
     QPixmap qp;
     qp.loadFromData((const uchar*) pixmap, buflen, "png");
     QIcon qico(qp);
     free(pixmap);
     g_object_unref(buff);
-
+    gdk_threads_leave();
+    
     return qp;
 }
