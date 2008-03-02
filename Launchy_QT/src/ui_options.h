@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'options.ui'
 **
-** Created: Sat Feb 23 19:01:19 2008
+** Created: Sun Mar 2 14:26:29 2008
 **      by: Qt User Interface Compiler version 4.3.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -231,6 +231,7 @@ public:
 
     genModifierBox = new QComboBox(groupBox_4);
     genModifierBox->setObjectName(QString::fromUtf8("genModifierBox"));
+    genModifierBox->setMinimumSize(QSize(80, 0));
 
     hboxLayout2->addWidget(genModifierBox);
 
@@ -240,6 +241,7 @@ public:
 
     genKeyBox = new QComboBox(groupBox_4);
     genKeyBox->setObjectName(QString::fromUtf8("genKeyBox"));
+    genKeyBox->setMinimumSize(QSize(80, 0));
 
     hboxLayout2->addWidget(genKeyBox);
 
@@ -825,7 +827,7 @@ public:
     QObject::connect(buttonBox, SIGNAL(accepted()), OptionsDlg, SLOT(accept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), OptionsDlg, SLOT(reject()));
 
-    tabWidget->setCurrentIndex(2);
+    tabWidget->setCurrentIndex(0);
 
 
     QMetaObject::connectSlotsByName(OptionsDlg);

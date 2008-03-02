@@ -15,11 +15,13 @@
 GnomeAlphaBorder::GnomeAlphaBorder(QWidget * parent, QString file) : 
     QWidget(NULL, Qt::Tool | Qt::FramelessWindowHint)
 {
+    p = parent;
     // This stops a bunch of XCopyArea problems
     // Note that you need to override and return 0 for paintEngine()
     setAttribute(Qt::WA_PaintOnScreen);
     setAttribute(Qt::WA_OpaquePaintEvent);
     setAttribute(Qt::WA_NoSystemBackground);
+    setEnabled(false);
 
     Display *d;
     int s;
@@ -94,7 +96,7 @@ GnomeAlphaBorder::GnomeAlphaBorder(QWidget * parent, QString file) :
     
     create(w, true, true);
     
-    
+
     
     alphaFile = file;
     //    values.foreground = 0x00000000L;
@@ -125,6 +127,16 @@ GnomeAlphaBorder::GnomeAlphaBorder(QWidget * parent, QString file) :
     xmask->data=ColorBuffer;
 }
 
+/*
+void GnomeAlphaBorder::mousePressEvent(QMouseEvent * event) {
+    if (underMouse()) {
+        qDebug() << "Under mouse!";
+        //p->activateWindow();
+        stackUnder(p);
+        //        lower();
+    }
+}
+*/
 void GnomeAlphaBorder::SetAlphaOpacity(double trans)
 {
     setWindowOpacity(trans);
