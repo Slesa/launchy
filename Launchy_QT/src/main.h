@@ -41,7 +41,7 @@ class QLineEditMenu : public QLineEdit
 	Q_OBJECT
 public:
 	QLineEditMenu(QWidget* parent = 0) :
-	QLineEdit(parent) {}
+    QLineEdit(parent) {setAttribute(Qt::WA_InputMethodEnabled);}
 	void contextMenuEvent(QContextMenuEvent *evt) {
 		emit menuEvent(evt);
 	}
@@ -56,6 +56,7 @@ public:
 	QCharLineEdit(QWidget* parent = 0) : 
 		QLineEdit(parent) 
 		{
+		    setAttribute(Qt::WA_InputMethodEnabled);
 		}
 		void keyPressEvent(QKeyEvent* key) {
 			QLineEdit::keyPressEvent(key);
@@ -97,10 +98,14 @@ class QCharListWidget : public QListWidget
 {
 	Q_OBJECT
 public:
-	QCharListWidget(QWidget* parent = 0) : 
-    QListWidget(parent) 
+    QCharListWidget(QWidget* parent = 0) : 
+    QListWidget(NULL)
 		{
+		    #ifdef Q_WS_X11
+		    setWindowFlags( windowFlags() |   Qt::Tool );
+		    #endif
 			setAttribute(Qt::WA_AlwaysShowToolTips);
+			
 			setAlternatingRowColors(true);
 		}
 		void keyPressEvent(QKeyEvent* key) {

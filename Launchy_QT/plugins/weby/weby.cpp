@@ -48,7 +48,7 @@ void WebyPlugin::init()
 		set->setArrayIndex(0);
 		set->setValue("name", "Google");
 		set->setValue("base", "http://www.google.com/");
-		set->setValue("query", "search?q=%s");
+		set->setValue("query", "search?source=launchy&q=%s");
 
 		set->setArrayIndex(1);
 		set->setValue("name", "Live Search");
