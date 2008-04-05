@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifndef PLATFORM_BASE_H
 #define PLATFORM_BASE_H
+#include <QtGui>
 #include <QWidget>
 #include <QPoint>
 #include <QStringList>
@@ -41,13 +42,16 @@ public:
 
 	QFileIconProvider* icons;
 
-	virtual QApplication* init(int* argc, char** argv) = 0;
+	virtual QApplication* init(int* argc, char** argv) { 
+		return new QApplication(*argc, argv);
+	}
+
 	virtual QString GetSettingsDirectory() = 0;
 	virtual QList<Directory> GetInitialDirs() = 0;
 	virtual void AddToNotificationArea() = 0;
 	virtual void RemoveFromNotificationArea() = 0;
 	virtual bool Execute(QString path, QString args) { return false; }
-       
+
 	virtual bool isAlreadyRunning() = 0;
 
 	QKeySequence oldKey;

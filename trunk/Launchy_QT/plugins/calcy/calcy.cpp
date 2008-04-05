@@ -107,7 +107,7 @@ bool DoCalculation(QString str, double& result) {
     parse_info<const wchar_t *> info = parse(wstr, calc[var(n) = arg1], space_p);
     free(wstr);
     
-FOR SOME REASON IN LINUX info.full is false
+//FOR SOME REASON IN LINUX info.full is false
 
     if (info.full) {
 	result = n;
