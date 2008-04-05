@@ -33,15 +33,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define _UNICODE
 #endif
 
-
-
 #include <QFileIconProvider>
 #include <windows.h>
 #include <shlobj.h>
 //#include <stdlib.h>
 //#include <stdio.h>
 #include <TCHAR.h>
-#include <QT>
+
 #include <QIcon>
 #include <QPixmap>
 #include <QString>
@@ -116,6 +114,8 @@ public:
 		delete instance;
 
 	}
+
+
 	// Mandatory functions
 	void SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
 	{

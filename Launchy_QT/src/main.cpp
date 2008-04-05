@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-
 #include <QApplication>
 #include <QFont>
 #include <QPushButton>
@@ -1216,8 +1215,13 @@ QChar MyWidget::sepChar() {
 }
 int main(int argc, char *argv[])
 {
+#ifdef Q_WS_WIN
+	QApplication * app = new QApplication(argc, argv);
+#endif
 	PlatformBase * platform = loadPlatform();
+#ifdef Q_WS_X11
 	QApplication * app = platform->init(&argc, argv);
+#endif
 	QStringList args = qApp->arguments();
 
 	QCoreApplication::setApplicationName("Launchy");

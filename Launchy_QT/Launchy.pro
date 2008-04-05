@@ -24,21 +24,20 @@ ICON		= Launchy.ico
 win32 {
 	RC_FILE = win/launchy.rc
 	LIBS += shell32.lib
-
 }
 
 debug {
-        CONFIG -= release
+    CONFIG -= release
 	DESTDIR = ../debug/
 }
 
 release {
-        CONFIG -= debug
+    CONFIG -= debug
 	DESTDIR = ../release/
 }
 
 win32:debug {
-	CONFIG += console 
+#	CONFIG += console 
 }
 
 win32:release {
