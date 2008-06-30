@@ -142,7 +142,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		if (catDirectories->count() > 0)
 			catDirectories->setCurrentRow(0);
 
-
+		genOpaqueness->setRange(15,100);
 		catProgress->setRange(0,100);
 		if (main->catalog != NULL) {
 			QString txt = tr("Index has ");
@@ -171,7 +171,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 		if (plugList->count() > 0) {
 			plugList->setCurrentRow(0);
 		}
-		aboutVer->setText(QString("This is Launchy version ") + QString(LAUNCHY_VERSION_STRING));
+		aboutVer->setText(QString(tr("This is Launchy version ")) + QString(LAUNCHY_VERSION_STRING));
 
 		tabWidget->setCurrentIndex(0);
 }

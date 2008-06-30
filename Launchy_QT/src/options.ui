@@ -23,7 +23,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab" >
       <attribute name="title" >
@@ -655,14 +655,14 @@
               <item>
                <widget class="QCheckBox" name="catCheckBinaries" >
                 <property name="text" >
-                 <string>Executables</string>
+                 <string>Include executables</string>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QCheckBox" name="catCheckDirs" >
                 <property name="text" >
-                 <string>Directories</string>
+                 <string>Include directories</string>
                 </property>
                </widget>
               </item>
