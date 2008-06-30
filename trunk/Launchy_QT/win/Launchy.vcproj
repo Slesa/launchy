@@ -24,8 +24,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake debug"
-				ReBuildCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake debug-clean&#x0D;&#x0A;nmake debug"
+				BuildCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake debug&#x0D;&#x0A;%QTDIR%\bin\lupdate ..\Launchy.pro"
+				ReBuildCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake debug-clean&#x0D;&#x0A;nmake debug&#x0D;&#x0A;%QTDIR%\bin\lupdate ..\Launchy.pro"
 				CleanCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake debug-clean"
 				Output="..\debug\Launchy.exe"
 				PreprocessorDefinitions=""
@@ -45,8 +45,8 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake release"
-				ReBuildCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake release-clean&#x0D;&#x0A;nmake release"
+				BuildCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake release&#x0D;&#x0A;cd ..&#x0D;&#x0A;%QTDIR%\bin\lupdate Launchy.pro&#x0D;&#x0A;%QTDIR%\bin\lrelease Launchy.pro"
+				ReBuildCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake release-clean&#x0D;&#x0A;nmake release&#x0D;&#x0A;cd ..&#x0D;&#x0A;%QTDIR%\bin\lupdate Launchy.pro&#x0D;&#x0A;%QTDIR%\bin\lrelease Launchy.pro"
 				CleanCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake release-clean"
 				Output="..\release\Launchy.exe"
 				PreprocessorDefinitions=""
@@ -164,6 +164,14 @@
 			</File>
 			<File
 				RelativePath="..\src\catalog_builder.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\catalog_types.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\catalog_types.h"
 				>
 			</File>
 		</Filter>

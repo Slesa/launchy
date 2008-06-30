@@ -36,6 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QTimer>
 #include <QDateTime>
 #include <QDesktopWidget>
+#include <QTranslator>
 //#include <QX11Info>
 
 
@@ -634,6 +635,7 @@ void MyWidget::catalogBuilt() {
 	//todo Do a search here of the current input text
 	searchOnInput();
 	updateDisplay();
+	qDebug() << "Catalog built!";
 }
 
 void MyWidget::checkForUpdate() {
@@ -750,8 +752,11 @@ QPoint MyWidget::loadPosition() {
 	if (gSettings->value("GenOps/alwayscenter", false).toBool()) {
 		QPoint p;
 		QRect r = geometry();
-		p.setX(qApp->desktop()->width()/2.0 - r.width() / 2.0);
-		p.setY(qApp->desktop()->height()/2.0 - r.height() / 2.0);
+        int primary = qApp->desktop()->primaryScreen();
+        QRect scr = qApp->desktop()->availableGeometry(primary);
+
+		p.setX(scr.width()/2.0 - r.width() / 2.0);
+		p.setY(scr.height()/2.0 - r.height() / 2.0);
 		return p;
 	} 
 	return gSettings->value("Display/pos", QPoint(0,0)).toPoint();
@@ -774,6 +779,7 @@ void MyWidget::updateTimeout() {
 	if (gBuilder == NULL) {
 		gBuilder = new CatBuilder(false, &plugins);
 		gBuilder->setPreviousCatalog(catalog);
+		qDebug() << "Building catalog..";
 		connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		gBuilder->start(QThread::IdlePriority);
 	}
@@ -1226,6 +1232,12 @@ int main(int argc, char *argv[])
 
 	QCoreApplication::setApplicationName("Launchy");
 	QCoreApplication::setOrganizationDomain("Launchy");
+
+    QString locale = QLocale::system().name();
+
+    QTranslator translator;
+    translator.load(QString("tr/launchy_" + locale));
+    app->installTranslator(&translator); 
 
 	MyWidget widget(NULL, platform);
 	widget.setObjectName("main");

@@ -109,11 +109,11 @@ bool DoCalculation(QString str, double& result) {
     
 //FOR SOME REASON IN LINUX info.full is false
 
-    if (info.full) {
+  //  if (info.full) {
 	result = n;
 	return true;
-    } 
-    return false;
+//    } 
+//    return false;
 }
 
 

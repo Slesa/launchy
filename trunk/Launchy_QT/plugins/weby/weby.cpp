@@ -73,7 +73,8 @@ void WebyPlugin::init()
 		set->setArrayIndex(5);
 		set->setValue("name", "Amazon");
 		set->setValue("base", "http://www.amazon.com/");
-		set->setValue("query", "s/ref=nb_ss_gw/104-5604144-0028745?url=search-alias%3Daps&field-keywords=%s");
+		set->setValue("query", "gp/search/?keywords=%s&index=blended");
+		//		set->setValue("query", "s/ref=nb_ss_gw/104-5604144-0028745?url=search-alias%3Daps&field-keywords=%s");
 
 		set->setArrayIndex(6);
 		set->setValue("name", "YouTube");
@@ -340,9 +341,9 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 	QString file = "";
 	QString args = "";
 
-
 	if (id->count() == 2) {
 		args = id->last().getText();
+		args = QUrl::toPercentEncoding(args);
 		item = &id->first().getTopResult();
 	}
 
@@ -375,7 +376,8 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 	}
 //	file = file.replace("#", "%23");
 	QUrl url(file);
-	runProgram(url.toEncoded(), "");
+//	runProgram(url.toEncoded(), "");
+	runProgram(url.toString(), "");
 }
 
 void WebyPlugin::doDialog(QWidget* parent, QWidget** newDlg) {

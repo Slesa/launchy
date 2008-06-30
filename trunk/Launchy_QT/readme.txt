@@ -15,13 +15,15 @@ Linux Issues:
 
 Done for 2.1:
 . Fixed the database update timer
+. Limited the transparency to a minimum of 15%
+. Fixed the centering problem when multiple monitors in use
+. Fixed the encoding problem with urls, e.g. googling for "c#" now works
+. Searches are now even faster, and the catalog uses slightly less memory.
+
 
 To be fixed from 2.0:
-. Centering problem
 . encording of url characters in weby
-. database update time doesn't seem to be controllable
-
-
+. Memory problem
 
 
 	
