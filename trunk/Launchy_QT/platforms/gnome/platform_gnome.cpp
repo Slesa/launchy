@@ -22,6 +22,7 @@
 #include <libgnome/gnome-desktop-item.h>
 #include <QtGui>
 #include <QApplication>
+#include <QX11Info>
 #include "platform_gnome.h"
 
 
@@ -153,7 +154,8 @@ bool PlatformGnome::CreateAlphaBorder(QWidget* w, QString ImageName)
 
 bool PlatformGnome::SupportsAlphaBorder()
 {
-
+    return QX11Info::isCompositingManagerRunning();
+    /*
     QProcess qp;
     QString program = "/bin/sh";
     QStringList args;
@@ -165,6 +167,7 @@ bool PlatformGnome::SupportsAlphaBorder()
     if (result.length() > 0)
 	return true;
     return false;
+    */
 }
 
 Q_EXPORT_PLUGIN2(platform_gnome, PlatformGnome)

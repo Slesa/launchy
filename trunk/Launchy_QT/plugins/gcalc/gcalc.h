@@ -65,7 +65,7 @@ public:
 	void getID(uint*);
 	void getName(QString*);
 	void getResults(QList<InputData>* id, QList<CatItem>* results);
-	void gcalcPlugin::getCatalog(QList<CatItem>* items);
+	void getCatalog(QList<CatItem>* items);
 	void init();
 	QString getIcon();
 

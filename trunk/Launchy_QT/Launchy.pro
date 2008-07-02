@@ -28,12 +28,12 @@ win32 {
 
 debug {
     CONFIG -= release
-	DESTDIR = ../debug/
+	DESTDIR = debug/
 }
 
 release {
     CONFIG -= debug
-	DESTDIR = ../release/
+	DESTDIR = release/
 }
 
 win32:debug {

@@ -22,7 +22,7 @@ GnomeAlphaBorder::GnomeAlphaBorder(QWidget * parent, QString file) :
     setAttribute(Qt::WA_OpaquePaintEvent);
     setAttribute(Qt::WA_NoSystemBackground);
     setEnabled(false);
-
+    
     Display *d;
     int s;
     Window w;
@@ -47,20 +47,20 @@ GnomeAlphaBorder::GnomeAlphaBorder(QWidget * parent, QString file) :
     if (  XRenderQueryExtension( d, &event_base, &error_base ) )
         {
             int nvi;
-            
+	    
             XVisualInfo templ;
             templ.screen  = s;
             templ.depth   = 32;
             templ.c_class = TrueColor;
-            
+	    
             xvi = XGetVisualInfo( d, VisualScreenMask | VisualDepthMask
                                   | VisualClassMask, &templ, &nvi );
-            
+	    
             for ( int i = 0; i < nvi; i++ ) {
                 XRenderPictFormat *format = XRenderFindVisualFormat( d, xvi[i].visual );
                 if ( format->type == PictTypeDirect && format->direct.alphaMask ) {
                     visual = xvi[i].visual;
-                    
+		    
                     index = i;
                     colormap = XCreateColormap( d, info.appRootWindow(info.screen()), visual, AllocNone );
                     argb_visual=true;
@@ -69,12 +69,22 @@ GnomeAlphaBorder::GnomeAlphaBorder(QWidget * parent, QString file) :
             }
         }
     
+    alphaFile = file;
+    QImage img;
+    img.load(alphaFile.toLocal8Bit().data());
+    img = img.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+    width = img.width();
+    height = img.height();
+    
+
+
     XSetWindowAttributes swa;
     swa.colormap = colormap;
     swa.background_pixel = WhitePixel(d,s);
     swa.border_pixel = BlackPixel(d,s);
     
-    w = XCreateWindow(d, info.appRootWindow(info.screen()) , 10, 10, 100, 500, 0, 32,
+
+    w = XCreateWindow(d, info.appRootWindow(info.screen()) , 10, 10, width, height, 0, 32,
                       InputOutput, visual,
                       CWBackPixel|CWBorderPixel|CWColormap,
                       &swa);
@@ -96,9 +106,9 @@ GnomeAlphaBorder::GnomeAlphaBorder(QWidget * parent, QString file) :
     
     create(w, true, true);
     
-
     
-    alphaFile = file;
+    
+
     //    values.foreground = 0x00000000L;
     //values.background = 0x00000000L;
     
@@ -106,18 +116,12 @@ GnomeAlphaBorder::GnomeAlphaBorder(QWidget * parent, QString file) :
     
     gc = XCreateGC (info.display(), w, 0,0);//GCForeground | GCBackground, &values); // drawing content
     
-    QImage img;
-    img.load(alphaFile.toLocal8Bit().data());
-    img = img.convertToFormat(QImage::Format_ARGB32_Premultiplied);
-    width = img.width();
-    height = img.height();
-    
     resize(width,height);
     
     
     xmask = XCreateImage(info.display(), visual, 
                          32, ZPixmap, 0, NULL, width, height, 32, 0);
-
+    
     
     int len = width * height * sizeof(unsigned int);
     
@@ -128,14 +132,14 @@ GnomeAlphaBorder::GnomeAlphaBorder(QWidget * parent, QString file) :
 }
 
 /*
-void GnomeAlphaBorder::mousePressEvent(QMouseEvent * event) {
-    if (underMouse()) {
-        qDebug() << "Under mouse!";
-        //p->activateWindow();
-        stackUnder(p);
-        //        lower();
-    }
-}
+  void GnomeAlphaBorder::mousePressEvent(QMouseEvent * event) {
+  if (underMouse()) {
+  qDebug() << "Under mouse!";
+  //p->activateWindow();
+  stackUnder(p);
+  //        lower();
+  }
+  }
 */
 void GnomeAlphaBorder::SetAlphaOpacity(double trans)
 {
@@ -150,9 +154,9 @@ void GnomeAlphaBorder::paintEvent(QPaintEvent * e)
     int t=rect.top();
     int w=rect.width();
     int h=rect.height();
-
+    
     XPutImage(QX11Info::display(), winId(), gc, xmask, l,t,l,t,w,h);
-
+    
     //    XPutImage(QX11Info::display(), winId(), gc, xmask, 0,0,0,0,width,height);
 }
 
