@@ -94,12 +94,12 @@ void gcalcPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 	if (id->count() != 2)
 		return;
 
-	QString & text = id->first().getText();
+	const QString & text = id->first().getText();
 
 	if (!text.contains("gcalc", Qt::CaseInsensitive))
 		return;
 
-	QString & query = id->last().getText();
+	const QString & query = id->last().getText();
 
 //	if (!query.contains("?", Qt::CaseInsensitive))
 //		return;
@@ -118,9 +118,7 @@ void gcalcPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 
 QString gcalcPlugin::getIcon()
 {
-#ifdef Q_WS_WIN
     return qApp->applicationDirPath() + "/plugins/icons/calcy.ico";
-#endif
 }
 
 

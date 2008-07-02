@@ -8,7 +8,7 @@ HEADERS		= platform_base.h platform_gnome.h platform_base_hotkey.h platform_base
 CONFIG		-= embed_manifest_dll
 CONFIG          += link_pkgconfig
 PKGCONFIG       += gtk+-2.0 libgnomeui-2.0 gnome-desktop-2.0
-
+LIBS += -lX11 -lXext -lXrender
 
 debug {
         CONFIG -= release
