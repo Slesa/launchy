@@ -437,9 +437,13 @@ void MyWidget::doTab()
 	    {
 		QString path;
 		if (info.isSymLink())
-		    path = info.symLinkTarget() + QDir::toNativeSeparators("/");
+		    path = info.symLinkTarget();
 		else
 		    path = searchResults[0].fullPath;
+		if (info.isDir() && !path.endsWith(QDir::toNativeSeparators("/"))) 
+		    path += QDir::toNativeSeparators("/");
+		    
+		
 		input->setText(printInput() + QDir::toNativeSeparators(path));
 	    } else {
 	    // Looking for a plugin
@@ -544,7 +548,7 @@ void MyWidget::searchOnInput() {
     qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
     
     // Is it a file?
-    if (gSearchTxt.contains("\\") || gSearchTxt.contains("/")) {
+    if (gSearchTxt.contains("\\") || gSearchTxt.contains("/") || gSearchTxt.startsWith("~")) {
 	searchFiles(gSearchTxt, searchResults);
 	inputData.last().setLabel(LABEL_FILE);
     }
@@ -585,6 +589,9 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
     // Split the string on the last slash
     QString path = QDir::fromNativeSeparators(input);
     
+    if (path.startsWith("~"))
+	path.replace("~",QDir::homePath());
+
     // Network searches are too slow
     if (path.startsWith("//")) return;
     
