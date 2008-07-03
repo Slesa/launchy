@@ -37,7 +37,7 @@
 #include <QDateTime>
 #include <QDesktopWidget>
 #include <QTranslator>
-//#include <QX11Info>
+#include <QX11Info>
 
 
 #include "icon_delegate.h"
@@ -47,6 +47,8 @@
 #include "dsingleapplication.h"
 #include "plugin_interface.h"
 #ifdef Q_WS_X11
+#include <X11/X.h>
+#include <X11/Xlib.h>
 #endif
 
 MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat)
@@ -1174,6 +1176,7 @@ void MyWidget::showLaunchy(bool now) {
     
     platform->ShowAlphaBorder();
     this->show();
+
     if (!now) {
 	fadeIn();
     } else {
@@ -1182,13 +1185,18 @@ void MyWidget::showLaunchy(bool now) {
 	setFadeLevel(end);
     }
     
-    //#ifdef Q_WS_X11
-    //XSetInputFocus(QX11Info::display(), input->winId(), RevertToParent, QX11Info::appTime());
-    //#endif
-    input->activateWindow();
+
+    #ifdef Q_WS_X11
+    // Wait for the show to occur before activating the window
+    XSync(QX11Info::display(), False);
+    #endif
+
     raise();
+    input->activateWindow();
+    input->raise();
     input->selectAll();
     input->setFocus();
+
     // Let the plugins know
     plugins.showLaunchy();
 }
