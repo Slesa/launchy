@@ -154,7 +154,7 @@ void WebyPlugin::getLabels(QList<InputData>* id)
 		return;
 
 	// Apply a "website" label if we think it's a website
-	QString & text = id->last().getText();
+	const QString & text = id->last().getText();
 
 	if (text.contains("http://", Qt::CaseInsensitive))
 		id->last().setLabel(HASH_WEBSITE);
@@ -173,13 +173,13 @@ void WebyPlugin::getLabels(QList<InputData>* id)
 void WebyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 {
 	if (id->last().hasLabel(HASH_WEBSITE)) {
-		QString & text = id->last().getText();
+		const QString & text = id->last().getText();
 		// This is a website, create an entry for it
 		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
 	}
 
 	if (id->count() > 1 && id->first().getTopResult().id == HASH_WEBY) {
-		QString & text = id->last().getText();
+		const QString & text = id->last().getText();
 		// This is user search text, create an entry for it
 		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
 	}
@@ -272,6 +272,7 @@ QString WebyPlugin::getIcon()
 #ifdef Q_WS_WIN
 	return qApp->applicationDirPath() + "/plugins/icons/weby.ico";
 #endif
+	return "";
 }
 
 void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
