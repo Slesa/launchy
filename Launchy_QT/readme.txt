@@ -1,5 +1,6 @@
 Linux Issues:
-. Necessary installs: qt4-dev-tools, libgnome-desktop-dev, libgnomeui-dev,
+. Necessary build packages: qt4-dev-tools, libgnome-desktop-dev
+. Necessary run packages: xdg-utils libqt4-gui libqt4-network 
 . If you call XSetInputFocus (called from activateWindow) before the window is mapped,
   you get an X11 crash (when gtk_init has been called).  Running ./Launchy -sync prevents it from
   always crashing but it still does crash.
