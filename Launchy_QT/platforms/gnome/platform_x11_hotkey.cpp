@@ -26,6 +26,7 @@
 #include <QKeyEvent>
 #include <QCoreApplication>
 
+
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
@@ -317,9 +318,11 @@ public:
         ~Impl()
         {
                 X11KeyTriggerManager::instance()->removeTrigger(this);
-
-                foreach(GrabbedKey key, grabbedKeys_)
-                        XUngrabKey(QX11Info::display(), key.code, key.mod, QX11Info::appRootWindow());
+		//	XUngrabKey(QX11Info::display(),AnyKey,AnyModifier,QX11Info::appRootWindow());
+		foreach(GrabbedKey key, grabbedKeys_) 
+		    XUngrabKey(QX11Info::display(), key.code, key.mod, QX11Info::appRootWindow());
+		
+		
         }
 
         void activate()
