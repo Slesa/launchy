@@ -9,6 +9,14 @@ Linux Issues:
   but that's necessary to make the app not appear in the taskbar 
 
 
+To be done for 2.1 Linux:
+. Need to write kde plugin
+. Need to write installer
+. Need to remove taskbar entry
+. Need to fix icons for files/dirs
+. Need to set default search engine in weby
+
+
 2.0+:
 . Add memory for runny/launchy (rebuild/exit/etc..)
 . Add a plugin for open with etc..

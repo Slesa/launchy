@@ -48,7 +48,6 @@ QApplication* PlatformGnome::init(int* argc, char** argv)
 PlatformGnome::~PlatformGnome()
 { 
     GlobalShortcutManager::clear();
-    delete icons;
     gnome_vfs_shutdown();
 }
 
