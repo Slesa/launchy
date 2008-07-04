@@ -13,29 +13,6 @@
 
 #include <QWidget>
 
-class GnomeAlphaBorder : public QWidget
-{
-    Q_OBJECT    
-private:
-    public:
-QString alphaFile;
-
- GnomeAlphaBorder(QWidget * parent, QString);
- ~GnomeAlphaBorder();
- QWidget* p;
-    void paintEvent(QPaintEvent *);
-    void SetAlphaOpacity(double trans);
-    //    QPaintEngine * paintEngine() { return 0; }
-    //    void mousePressEvent(QMouseEvent *event);
-    GC			gc;	// Target Painter
-    GC                  gcback;
-    XImage 		*xmask;	// Image informations
-    XImage              *buffer;
-    XGCValues		values;	// Setup GC
-    uint 		width;
-    uint 		height;
-};
-
 class GnomeIconProvider : QFileIconProvider
 {
  public:

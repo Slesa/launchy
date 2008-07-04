@@ -26,9 +26,9 @@
 #include "platform_gnome.h"
 
 
-PlatformGnome::PlatformGnome() : PlatformBase() 		
+PlatformGnome::PlatformGnome() : PlatformUnix () 		
 {
-    alpha = NULL;
+
 }
 
 QApplication* PlatformGnome::init(int* argc, char** argv)
@@ -52,26 +52,8 @@ PlatformGnome::~PlatformGnome()
     gnome_vfs_shutdown();
 }
 
-QList<Directory> PlatformGnome::GetInitialDirs() {
-    QList<Directory> list;
-    const char *dirs[] = { "/usr/share/applications/",
-			   "/usr/local/share/applications/",
-			   "/usr/share/gdm/applications/",
-			   "/usr/share/applications/kde/",
-			   "~/.local/share/applications/"};
-    QStringList l;
-    l << "*.desktop";
-
-    for(int i = 0; i < 5; i++)
-	list.append(Directory(dirs[i],l,false,false,100));
-
-    list.append(Directory("~",QStringList(),true,false,1));
-    
-    return list;
-}
 
 void PlatformGnome::alterItem(CatItem* item) {
-    //    return;
     
     if (!item->fullPath.endsWith(".desktop", Qt::CaseInsensitive))
 	return;
@@ -141,38 +123,6 @@ bool PlatformGnome::Execute(QString path, QString args)
     gnome_desktop_item_unref(ditem);
     gdk_threads_leave();
     return true;
-}
-
-
-bool PlatformGnome::CreateAlphaBorder(QWidget* w, QString ImageName)
-{
-    if (alpha)
-	delete alpha;
-  
-    if (ImageName == "")
-	ImageName = alphaFile;
-    alphaFile = ImageName;
-    alpha = new GnomeAlphaBorder(w, ImageName);
-    //    alpha->ShowAlpha(ImageName);
-    return true;
-}
-
-bool PlatformGnome::SupportsAlphaBorder()
-{
-    return QX11Info::isCompositingManagerRunning();
-    /*
-    QProcess qp;
-    QString program = "/bin/sh";
-    QStringList args;
-    args << "-c" << "ps ax | grep 'compiz' | grep -v 'grep'";
-    qp.start(program, args);   
-    qp.waitForFinished();
-    QByteArray result = qp.readAll();
-    //    qDebug() << result;
-    if (result.length() > 0)
-	return true;
-    return false;
-    */
 }
 
 Q_EXPORT_PLUGIN2(platform_gnome, PlatformGnome)
