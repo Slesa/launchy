@@ -265,7 +265,6 @@ void OptionsDlg::tabChanged(int tab) {
     // Redraw the current skin
     // (necessary because of dialog resizing issues)
     if (tabWidget->currentWidget()->objectName() == "Skins") {
-	qDebug() << "redrawing skin";
 	int row = skinList->currentRow();
 	skinList->setCurrentRow(-1);
 	skinList->setCurrentRow(row);

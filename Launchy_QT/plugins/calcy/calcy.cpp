@@ -164,6 +164,7 @@ QString calcyPlugin::getIcon()
 #ifdef Q_WS_WIN
     return qApp->applicationDirPath() + "/plugins/icons/calcy.ico";
 #endif
+    return "";
 }
 
 

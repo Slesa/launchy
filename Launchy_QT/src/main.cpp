@@ -282,6 +282,11 @@ void MyWidget::showAlternatives(bool show) {
 	opaqueness /= 100.0;
 	alternatives->setWindowOpacity(opaqueness);
 	alternatives->show();
+	#ifdef Q_WS_X11
+	XSync(QX11Info::display(),False);
+	#endif
+	alternatives->raise();
+	
     }
 }
 
@@ -551,7 +556,7 @@ void MyWidget::searchOnInput() {
     qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
     
     // Is it a file?
-    if (gSearchTxt.contains("\\") || gSearchTxt.contains("/") || gSearchTxt.startsWith("~")) {
+    if (gSearchTxt.contains("\\") || gSearchTxt.contains("/") || gSearchTxt.startsWith("~") || gSearchTxt[1] == ':') {
 	searchFiles(gSearchTxt, searchResults);
 	inputData.last().setLabel(LABEL_FILE);
     }

@@ -82,6 +82,7 @@ QString runnerPlugin::getIcon()
 #ifdef Q_WS_WIN
 	return qApp->applicationDirPath() + "/plugins/icons/runner.ico";
 #endif
+	return "";
 }
 
 void runnerPlugin::getCatalog(QList<CatItem>* items)
@@ -95,7 +96,7 @@ void runnerPlugin::getCatalog(QList<CatItem>* items)
 void runnerPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 {
 	if (id->count() > 1 && id->first().getTopResult().id == HASH_runner) {
-		QString & text = id->last().getText();
+		const QString & text = id->last().getText();
 		// This is user search text, create an entry for it
 		results->push_front(CatItem(text, text, HASH_runner, getIcon()));
 	}

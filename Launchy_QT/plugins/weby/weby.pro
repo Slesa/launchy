@@ -1,5 +1,5 @@
  TEMPLATE      = lib
- CONFIG       += plugin release
+ CONFIG       += plugin debug_and_release
  VPATH 		  += ../../src/
  INCLUDEPATH += ../../src/
  UI_DIR		   = ../../plugins/weby/
@@ -17,6 +17,7 @@
 }
  
  *:debug {
+        CONFIG -= release
 	DESTDIR = ../../debug/plugins/
  }
  *:release {
