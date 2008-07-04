@@ -1,5 +1,5 @@
  TEMPLATE      = lib
- CONFIG       += plugin release
+ CONFIG       += plugin debug_and_release
  VPATH 		  += ../../src/
  INCLUDEPATH += ../../src/
  UI_DIR		   = ../../plugins/runner/
@@ -17,10 +17,10 @@
 }
  
  *:debug {
+        CONFIG -= release 
 	DESTDIR = ../../debug/plugins/
  }
  *:release {
 	DESTDIR = ../../release/plugins/
-	%QMAKE_CXXFLAGS += /Ox /Ob2 /Oi /Oy /GT /GA  /WX
  }
 

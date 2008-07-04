@@ -78,6 +78,12 @@ void runProgram(QString path, QString args) {
     QProcess proc;
     QStringList largs;
     QFileInfo info(path);
+    if (info.isExecutable()) {
+	QStringList l = args.split(" ");
+	qDebug() << l;
+	proc.startDetached(path, args.split(" "));
+	return;
+    }
     largs << path;
     if (args != QString(""))
 	largs << args;

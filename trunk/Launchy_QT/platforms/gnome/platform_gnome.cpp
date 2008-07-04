@@ -59,13 +59,13 @@ QList<Directory> PlatformGnome::GetInitialDirs() {
 			   "/usr/share/gdm/applications/",
 			   "/usr/share/applications/kde/",
 			   "~/.local/share/applications/"};
+    QStringList l;
+    l << "*.desktop";
+
     for(int i = 0; i < 5; i++)
-	{
-	    Directory tmp;
-	    tmp.name = dirs[i];
-	    tmp.types << "*.desktop";
-	    list.append(tmp);
-	}
+	list.append(Directory(dirs[i],l,false,false,100));
+
+    list.append(Directory("~",QStringList(),true,false,1));
     
     return list;
 }
@@ -101,8 +101,11 @@ void PlatformGnome::alterItem(CatItem* item) {
     //    item->icon = gnome_desktop_item_get_icon (ditem, gtk_icon_theme_get_default());
     item->icon = gnome_desktop_item_get_icon(ditem, thm);
     //item->fullPath = gnome_desktop_item_get_localestring(ditem, "Exec");
-    //    item->shortName = gnome_desktop_item_get_localestring(ditem, "Name");
-    //item->lowName = item->shortName.toLower();
+    QString name = gnome_desktop_item_get_localestring(ditem, "Name");
+    if (name.size() >= item->shortName.size() - 8) {
+	item->shortName = name;
+	item->lowName = item->shortName.toLower();
+    }
     gnome_desktop_item_unref (ditem);    
     gdk_threads_leave();
     return;

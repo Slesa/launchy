@@ -180,24 +180,24 @@ void CatBuilder::indexDirectory(QString dir, QStringList filters, bool fdirs, bo
 bool CatBuilder::loadCatalog(QString dest) {
 
     QFile inFile(dest);
-	if (!inFile.open(QIODevice::ReadOnly)) {
-		return false;
-	}
+    if (!inFile.open(QIODevice::ReadOnly)) {
+	return false;
+    }
     QByteArray ba = inFile.readAll();
-
-	QByteArray unzipped = qUncompress(ba);
-
-	QDataStream in(&unzipped, QIODevice::ReadOnly);
-	in.setVersion(QDataStream::Qt_4_2);
-
-	while(!in.atEnd()) {
-		CatItem item;
-		in >> item;
-		cat->addItem(item);
-	}
-	
-
-	return true;
+    
+    QByteArray unzipped = qUncompress(ba);
+    
+    QDataStream in(&unzipped, QIODevice::ReadOnly);
+    in.setVersion(QDataStream::Qt_4_2);
+    
+    while(!in.atEnd()) {
+	CatItem item;
+	in >> item;
+	cat->addItem(item);
+    }
+    
+    
+    return true;
 }
 
 void CatBuilder::storeCatalog(QString dest) {
