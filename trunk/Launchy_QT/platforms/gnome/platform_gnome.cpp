@@ -47,6 +47,7 @@ QApplication* PlatformGnome::init(int* argc, char** argv)
 
 PlatformGnome::~PlatformGnome()
 { 
+    GlobalShortcutManager::clear();
     delete icons;
     gnome_vfs_shutdown();
 }
@@ -96,8 +97,9 @@ void PlatformGnome::alterItem(CatItem* item) {
     // nasty error.  Nothing I can do but reimplement get_icon, pretty
     // annoying behavior on gnome's part
    
-    item->icon = gnome_desktop_item_get_icon (ditem, gtk_icon_theme_get_default());
-
+    GtkIconTheme* thm = gtk_icon_theme_get_for_screen(gdk_screen_get_default());
+    //    item->icon = gnome_desktop_item_get_icon (ditem, gtk_icon_theme_get_default());
+    item->icon = gnome_desktop_item_get_icon(ditem, thm);
     //item->fullPath = gnome_desktop_item_get_localestring(ditem, "Exec");
     //    item->shortName = gnome_desktop_item_get_localestring(ditem, "Name");
     //item->lowName = item->shortName.toLower();

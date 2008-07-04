@@ -49,6 +49,7 @@
 #ifdef Q_WS_X11
 #include <X11/X.h>
 #include <X11/Xlib.h>
+#include <X11/extensions/shape.h>
 #endif
 
 MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat)
@@ -828,14 +829,18 @@ void MyWidget::closeEvent(QCloseEvent *event) {
     CatBuilder builder(catalog, &plugins);
     builder.storeCatalog(dest.absoluteFilePath("Launchy.db"));
     event->accept();
+    // Delete the platform (to unbind hotkeys) right away
+    // else XUngrabKey segfaults if done later
+    delete platform;
+    platform = NULL;
     qApp->quit();
 }
 
 MyWidget::~MyWidget() {
     delete updateTimer;
     delete dropTimer;
-    delete platform;
-    
+    if (platform)
+	delete platform;    
 }
 
 void MyWidget::MoveFromAlpha(QPoint pos) {
@@ -1003,13 +1008,15 @@ void MyWidget::applySkin(QString directory) {
     // Set the background mask
     if (QFile::exists(directory + "/mask.png")) {
 	QPixmap image(directory + "/mask.png");
+	// For some reason, w/ compiz setmask won't work
+	// for rectangular areas.  This is due to compiz and
+	// XShapeCombineMask
 	setMask(image );
     }
     
     
     
-    // Set the alpha background
-    
+    // Set the alpha background    
     if (QFile::exists(directory + "/alpha.png") && platform->SupportsAlphaBorder()) {
 	platform->CreateAlphaBorder(this, directory + "/alpha.png");
 	platform->MoveAlphaBorder(pos());
