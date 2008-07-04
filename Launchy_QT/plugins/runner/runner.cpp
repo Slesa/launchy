@@ -45,9 +45,16 @@ void runnerPlugin::init()
 	if ( set->value("runner/version", 0.0).toDouble() == 0.0 ) {
 		set->beginWriteArray("runner/cmds");
 		set->setArrayIndex(0);
+		#ifdef Q_WS_WIN
 		set->setValue("name", "cmd");
 		set->setValue("file", "C:\\Windows\\System32\\cmd.exe");
 		set->setValue("args", "/K $$");
+		#endif
+		#ifdef Q_WS_X11
+		set->setValue("name", "cmd");
+		set->setValue("file", "/usr/bin/xterm");
+		set->setValue("args", "-hold -e $$");
+		#endif
 		set->endArray();
 	}
 	set->setValue("runner/version", 2.0);

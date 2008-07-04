@@ -238,11 +238,18 @@ QString WebyPlugin::getFirefoxPath()
 	QString path;
 	QString iniPath;
 	QString appData;
+	QString osPath;
 
 #ifdef Q_WS_WIN
 	GetShellDir(CSIDL_APPDATA, appData);
-	iniPath = appData + "/Mozilla/Firefox/profiles.ini";
+	osPath = apPData + "/Mozilla/Firefox/";
 #endif
+
+#ifdef Q_WS_X11
+	osPath = QDir::homePath() + "/.mozilla/firefox/";
+#endif
+
+	iniPath = osPath + "profiles.ini";
 
 	QFile file(iniPath);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -257,7 +264,7 @@ QString WebyPlugin::getFirefoxPath()
 		if (line.contains("Path")) {
 			QStringList spl = line.split("=");
 			if (isRel)
-				path = appData + "/Mozilla/Firefox/" + spl[1].mid(0,spl[1].count()-1) + "/bookmarks.html" ;
+				path = osPath + spl[1].mid(0,spl[1].count()-1) + "/bookmarks.html" ;
 			else
 				path = spl[1].mid(0,spl[1].count()-1);
 			break;
