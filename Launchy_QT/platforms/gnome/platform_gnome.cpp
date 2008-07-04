@@ -112,8 +112,11 @@ bool PlatformGnome::Execute(QString path, QString args)
     
     // Get the args
     GList * list = NULL;
-    foreach(QString s, args.split(" ")) {
-	list = g_list_append(list, s.toLocal8Bit().data());
+    args = args.trimmed();
+    if (args.size() > 0) {
+	foreach(QString s, args.split(" ")) {
+	    list = g_list_append(list, s.toLocal8Bit().data());
+	}
     }
 
     
