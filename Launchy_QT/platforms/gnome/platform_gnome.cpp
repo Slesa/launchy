@@ -110,8 +110,17 @@ bool PlatformGnome::Execute(QString path, QString args)
     }
     if (!ditem) return false;
     
+    // Get the args
+    GList * list = NULL;
+    foreach(QString s, args.split(" ")) {
+	list = g_list_append(list, s.toLocal8Bit().data());
+    }
+
     
-    gnome_desktop_item_launch(ditem, NULL, (GnomeDesktopItemLaunchFlags) 0, &error);
+    gnome_desktop_item_launch(ditem, list, (GnomeDesktopItemLaunchFlags) 0, &error);
+
+    g_list_free(list);
+
     if (error) {
 	g_error_free(error);
 	gnome_desktop_item_unref(ditem);
