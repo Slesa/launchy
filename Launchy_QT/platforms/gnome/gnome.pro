@@ -27,3 +27,7 @@ release {
 	DESTDIR = ../../release/
 }
 
+unix {
+ target.path = /usr/lib/launchy/
+ INSTALLS += target
+}

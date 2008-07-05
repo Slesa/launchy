@@ -46,11 +46,6 @@
 #include "options.h"
 #include "dsingleapplication.h"
 #include "plugin_interface.h"
-#ifdef Q_WS_X11
-#include <X11/X.h>
-#include <X11/Xlib.h>
-#include <X11/extensions/shape.h>
-#endif
 
 MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat)
     :  updateTimer(NULL), dropTimer(NULL), alternatives(NULL), platform(plat),
@@ -282,9 +277,7 @@ void MyWidget::showAlternatives(bool show) {
 	opaqueness /= 100.0;
 	alternatives->setWindowOpacity(opaqueness);
 	alternatives->show();
-	#ifdef Q_WS_X11
-	XSync(QX11Info::display(),False);
-	#endif
+	qApp->syncX();
 	alternatives->raise();
 	
     }
@@ -1198,10 +1191,8 @@ void MyWidget::showLaunchy(bool now) {
     }
     
 
-    #ifdef Q_WS_X11
-    // Wait for the show to occur before activating the window
-    XSync(QX11Info::display(), False);
-    #endif
+    qApp->syncX();
+
 
     raise();
     input->activateWindow();

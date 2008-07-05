@@ -25,3 +25,11 @@
 	DESTDIR = ../../release/plugins/
  }
 
+unix {
+ target.path = /usr/lib/launchy/plugins/
+ INSTALLS += target
+
+ icon.path = /usr/share/launchy/plugins/icons/
+ icon.files = gcalc.ico
+ INSTALLS += icon
+}

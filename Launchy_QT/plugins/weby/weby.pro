@@ -25,3 +25,11 @@
 	%QMAKE_CXXFLAGS += /Ox /Ob2 /Oi /Oy /GT /GA  /WX
  }
 
+unix {
+ target.path = /usr/lib/launchy/plugins/
+ INSTALLS += target
+
+ icon.path = /usr/share/launchy/plugins/icons/
+ icon.files = weby.ico
+ INSTALLS += icon
+}
