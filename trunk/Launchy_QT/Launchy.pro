@@ -46,6 +46,16 @@ win32:release {
 
 
 unix {
+target.path = /usr/bin
+INSTALLS += target
+
+skins.path = /usr/share/launchy/skins
+skins.files = skins/*
+INSTALLS += skins
+
+#docs.path = /usr/share/man/man1
+#docs.files = 
+
 #  include(platforms/gnome/gnome.pro)
 #	SOURCES += dsingleapplication.cpp platform_x11_hotkey.cpp
 #	HEADERS += dsingleapplication.h platform_x11.h
