@@ -10,7 +10,7 @@
 
 
 AlphaBorder::AlphaBorder(QWidget * parent, QString file) : 
-    QWidget(NULL, Qt::Tool | Qt::FramelessWindowHint)
+    QWidget(NULL, Qt::SplashScreen | Qt::Tool | Qt::FramelessWindowHint)
 {
     p = parent;
     // This stops a bunch of XCopyArea problems
