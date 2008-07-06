@@ -55,13 +55,14 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat)
        QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )//| Qt::X11BypassWindowManagerHint)
 #endif
 #ifdef Q_WS_X11
-       QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ) //| Qt::X11BypassWindowManagerHint)
+       QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool ) //| Qt::X11BypassWindowManagerHint)
        //       QWidget(parent)
 #endif
        // QWidget(parent, Qt::Dialog)
        //QWidget(parent, Qt::SubWindow | Qt::FramelessWindowHint)
 {
     
+    //    parent = this;
     //	setAttribute(Qt::WA_DeleteOnClose);
     setAttribute(Qt::WA_AlwaysShowToolTips);
     setAttribute(Qt::WA_InputMethodEnabled);

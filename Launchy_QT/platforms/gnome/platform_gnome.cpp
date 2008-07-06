@@ -24,11 +24,13 @@
 #include <QApplication>
 #include <QX11Info>
 #include "platform_gnome.h"
-
+#include "platform_gnome_util.h"
 
 PlatformGnome::PlatformGnome() : PlatformUnix () 		
 {
-
+    if (icons)
+	delete icons;
+    icons = (QFileIconProvider*) new GnomeIconProvider();
 }
 
 QApplication* PlatformGnome::init(int* argc, char** argv)
