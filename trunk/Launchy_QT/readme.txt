@@ -13,7 +13,10 @@ To be done for 2.1 Linux:
 . Need to write kde plugin
 . Need to write installer
 . Need to set default search engine in weby
+. Need to set directories
 
+To be done for 2.1 Windows:
+. Rescue shortcut
 
 2.0+:
 . Add memory for runny/launchy (rebuild/exit/etc..)
@@ -22,6 +25,7 @@ To be done for 2.1 Linux:
 
 
 Done for 2.1:
+. Added rescue mode (new shortcut in start menu)
 . Fixed the database update timer
 . Limited the transparency to a minimum of 15%
 . Fixed the centering problem when multiple monitors in use

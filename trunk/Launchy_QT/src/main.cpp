@@ -47,23 +47,15 @@
 #include "dsingleapplication.h"
 #include "plugin_interface.h"
 
-MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat)
+MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
     :  updateTimer(NULL), dropTimer(NULL), alternatives(NULL), platform(plat),
-       //      QWidget(parent)
-       //       QWidget(parent,  Qt::FramelessWindowHint) // This works better for focus in X11, but not sure about windows
 #ifdef Q_WS_WIN
-       QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )//| Qt::X11BypassWindowManagerHint)
+       QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 #endif
 #ifdef Q_WS_X11
-       QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool ) //| Qt::X11BypassWindowManagerHint)
-       //       QWidget(parent)
+       QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool )
 #endif
-       // QWidget(parent, Qt::Dialog)
-       //QWidget(parent, Qt::SubWindow | Qt::FramelessWindowHint)
-{
-    
-    //    parent = this;
-    //	setAttribute(Qt::WA_DeleteOnClose);
+{    
     setAttribute(Qt::WA_AlwaysShowToolTips);
     setAttribute(Qt::WA_InputMethodEnabled);
     //	setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
@@ -158,10 +150,12 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat)
     applySkin(qApp->applicationDirPath() + "/skins/" + gSettings->value("GenOps/skin", "Default").toString());
     
     // Move to saved position
-    QPoint x = loadPosition(); //gSettings->value("Display/relpos", QPoint(0,0)).toPoint();
-    move(x);
-    platform->MoveAlphaBorder(x);
-    
+    if (!rescue) {
+	QPoint x = loadPosition(); //gSettings->value("Display/relpos", QPoint(0,0)).toPoint();
+	move(x);
+	platform->MoveAlphaBorder(x);
+    }
+
     // Set the general options
     setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool());
     setAlwaysTop(gSettings->value("GenOps/alwaystop", false).toBool());
@@ -197,18 +191,10 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat)
     
     //	setTabOrder(combo, combo);
     
-    
-    
-    
-    if (showLaunchyFirstTime)
+    if (showLaunchyFirstTime || rescue)
 	showLaunchy();
     else
-	hideLaunchy();
-    
-#ifdef Q_WS_X11
-    showLaunchy();	
-#endif
-    
+	hideLaunchy();    
 }
 
 void MyWidget::setCondensed(int condensed) {
@@ -1250,6 +1236,12 @@ int main(int argc, char *argv[])
     QApplication * app = platform->init(&argc, argv);
 #endif
     QStringList args = qApp->arguments();
+
+    bool rescue = false;
+    if (args.size() > 1) 
+	if (args[1] == "rescue") 
+	    rescue = true;
+
     
     QCoreApplication::setApplicationName("Launchy");
     QCoreApplication::setOrganizationDomain("Launchy");
@@ -1260,7 +1252,7 @@ int main(int argc, char *argv[])
     translator.load(QString("tr/launchy_" + locale));
     app->installTranslator(&translator); 
     
-    MyWidget widget(NULL, platform);
+    MyWidget widget(NULL, platform, rescue);
     widget.setObjectName("main");
     
     app->exec();
