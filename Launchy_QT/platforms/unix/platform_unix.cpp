@@ -60,6 +60,25 @@ QList<Directory> PlatformUnix::GetInitialDirs() {
 }
 
 
+QHash<QString, QList<QString> > PlatformUnix::GetDirectories(bool portable) {
+    QHash<QString, QList<QString> > out;
+    QString baseDir = "/usr";
+    QDir d;
+    d.mkdir(QDir::homePath() + "/.launchy");
+    
+    out["skins"] += baseDir + "/share/launchy/skins";
+    out["skins"] += QDir::homePath() + "/.launchy/skins";
+    out["plugins"] += baseDir + "/lib/launchy/plugins";
+    out["plugins"] += QDir::homePath() + "/.launchy/plugins";
+    if (portable)
+	out["config"] += qApp->applicationDirPath() + "/launchy.ini";
+    else 
+	out["config"] += QDir::homePath() + "/.launchy/launchy.ini";
+    
+    return out;
+}
+
+
 
 bool PlatformUnix::CreateAlphaBorder(QWidget* w, QString ImageName)
 {

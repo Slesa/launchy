@@ -154,7 +154,7 @@ public:
 
 
     MyWidget() {};
-    MyWidget(QWidget *parent, PlatformBase* );
+    MyWidget(QWidget *parent, PlatformBase*, bool rescue );
 	~MyWidget();
 	Fader* fader;
 	QPoint moveStartPoint;
