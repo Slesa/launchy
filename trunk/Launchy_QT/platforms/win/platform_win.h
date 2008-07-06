@@ -131,7 +131,7 @@ public:
 		return ret;
 	};
 
-	virtual QHash<QString, QList<QString> > GetDirectories(bool);
+	virtual QHash<QString, QList<QString> > GetDirectories();
 
 	QList<Directory> GetInitialDirs() {
 		QList<Directory> list;

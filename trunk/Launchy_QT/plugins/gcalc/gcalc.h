@@ -48,20 +48,21 @@ public slots:
 
 class gcalcPlugin : public QObject, public PluginInterface
 {
+
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
 	QRegExp* reg;
 
 public:
 	uint HASH_gcalc;
-
+	QString libPath;
 public:
 	gcalcPlugin() {
 		HASH_gcalc = qHash(QString("gcalc"));
 	}
 	~gcalcPlugin() {delete reg;}
 	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
-
+	void setPath(QString * path);
 	void getID(uint*);
 	void getName(QString*);
 	void getResults(QList<InputData>* id, QList<CatItem>* results);

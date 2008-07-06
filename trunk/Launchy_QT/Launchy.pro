@@ -49,8 +49,8 @@ unix {
 target.path = /usr/bin
 INSTALLS += target
 
-skins.path = /usr/share/launchy/skins
-skins.files = skins/*
+skins.path = /usr/share/launchy/
+skins.files = skins/
 INSTALLS += skins
 
 #docs.path = /usr/share/man/man1

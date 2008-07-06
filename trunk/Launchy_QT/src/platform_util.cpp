@@ -2,25 +2,40 @@
 #include <QDebug>
 #include "plugin_interface.h"
 #include "platform_util.h"
+#include "globals.h"
+#include "main.h"
+
 
 PlatformBase * loadPlatform()
 {
-	QString file;
-	int desktop = getDesktop();
-	if (desktop == DESKTOP_WINDOWS)
-	    file = "platform_win.dll";
-	else if (desktop == DESKTOP_GNOME)
-	    file = "libplatform_gnome.so";
-	else if (desktop == DESKTOP_KDE)
-	    file = "libplatform_kde.so";
+    MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
+    QList<QString> files;
+    QString file;
+    int desktop = getDesktop();
+    if (desktop == DESKTOP_WINDOWS)
+	files += "/platform_win.dll";
+    else if (desktop == DESKTOP_GNOME) {
+	files += "libplatform_gnome.so";
+	files += "/usr/lib/launchy/libplatform_gnome.so";
+    }
+    else if (desktop == DESKTOP_KDE) {
+	files += "/libplatform_kde.so";
+	files += "/usr/lib/launchy/libplatform_kde.so";
+    }
+
+    QObject * plugin = NULL;
+    foreach(QString file, files) {
 	QPluginLoader loader(file);
-	QObject *plugin = loader.instance();
+	plugin = loader.instance();
 
-	if (!plugin)
-	    {
-		qDebug() << loader.errorString();
-		exit(1);
-	    }
-
-	return qobject_cast<PlatformBase*>(plugin);
+	if (plugin) break;
+    }
+    
+    if (!plugin)
+	{
+	    qDebug() << "Could not load platform file!";
+	    exit(1);
+	}
+    
+    return qobject_cast<PlatformBase*>(plugin);
 }

@@ -90,20 +90,31 @@ OptionsDlg::OptionsDlg(QWidget * parent)
     
     
     // Load up the skins list
-    QDir dir(qApp->applicationDirPath() + "/skins/");
-    QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
-    QString skinName = gSettings->value("GenOps/skin", "Default").toString();
+    QString skinName = gSettings->value("GenOps/skin", main->dirs["defSkin"][0]).toString();
+
     connect(skinList, SIGNAL(currentTextChanged(const QString)), this, SLOT(skinChanged(const QString)));
+
     int skinRow = 0;
-    foreach(QString d, dirs) {
-	QFile f(dir.absolutePath() + "/" + d + "/misc.txt");
-	// Only look for 2.0+ skins
-	if (!f.exists()) continue;
-	
-	skinList->addItem(d);
-	if (skinName.compare(d, Qt::CaseInsensitive) == 0)
-	    skinRow = skinList->count() - 1;
+
+    foreach(QString szDir, main->dirs["skins"]) {
+	QDir dir(szDir);
+	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
+
+	foreach(QString d, dirs) {
+
+	    QFile f(dir.absolutePath() + "/" + d + "/misc.txt");
+	    // Only look for 2.0+ skins
+	    if (!f.exists()) continue;
+	    
+	    QListWidgetItem * item = new QListWidgetItem(d);
+	    item->setData(Qt::UserRole, szDir);
+	    skinList->addItem(item);
+	    
+	    if (skinName.compare(szDir + "/" + d, Qt::CaseInsensitive) == 0)
+		skinRow = skinList->count() - 1;
+	}
     }
+
     skinList->setCurrentRow(skinRow);
     connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
     
@@ -219,13 +230,13 @@ void OptionsDlg::accept() {
     main->setOpaqueness(genOpaqueness->value());
     
     
-    
     // Apply Skin Options
-    QString prevSkinName = gSettings->value("GenOps/skin", "Default").toString();
+    QString prevSkinName = gSettings->value("GenOps/skin", main->dirs["defSkin"][0]).toString();
     
     if (skinList->currentRow() >= 0 && skinList->currentItem()->text() != prevSkinName) {
-	gSettings->setValue("GenOps/skin", skinList->currentItem()->text());
-	main->setSkin(skinList->currentItem()->text());
+	QString path = skinList->currentItem()->data(Qt::UserRole).toString();
+	gSettings->setValue("GenOps/skin", path + "/" + skinList->currentItem()->text());
+	main->setSkin(path, skinList->currentItem()->text());
     }
     
     // Apply Directory Options
@@ -472,8 +483,13 @@ void OptionsDlg::skinChanged(const QString newSkin) {
     MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
     if (main == NULL) return;
     
+    if (skinList->currentRow() == -1)
+	return;
+
+    QString path = skinList->currentItem()->data(Qt::UserRole).toString();  
+
     // Load up the author file
-    QFile author(qApp->applicationDirPath() + "/skins/" + newSkin + "/author.txt"); 
+    QFile author(path + "/" + newSkin + "/author.txt"); 
     if (!author.open(QIODevice::ReadOnly)) {
 	authorInfo->setText("");
 	skinPreview->clear();
@@ -494,7 +510,7 @@ void OptionsDlg::skinChanged(const QString newSkin) {
     
     // Set the image preview
     QPixmap pix;
-    QString sDir(qApp->applicationDirPath() + "/skins/" + newSkin + "/");
+    QString sDir(path + "/" + newSkin + "/");
     
     if (pix.load(sDir + "background.png")) {
 	pix.setMask(QPixmap(sDir + "mask.png"));
@@ -523,8 +539,7 @@ void OptionsDlg::skinChanged(const QString newSkin) {
 	skinPreview->setPixmap(scaled);
     } else {
 	skinPreview->clear();
-    }
-    
+    }    
 }
 
 void OptionsDlg::reject() {

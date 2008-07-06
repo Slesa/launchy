@@ -60,7 +60,7 @@ QList<Directory> PlatformUnix::GetInitialDirs() {
 }
 
 
-QHash<QString, QList<QString> > PlatformUnix::GetDirectories(bool portable) {
+QHash<QString, QList<QString> > PlatformUnix::GetDirectories() {
     QHash<QString, QList<QString> > out;
     QString baseDir = "/usr";
     QDir d;
@@ -70,11 +70,18 @@ QHash<QString, QList<QString> > PlatformUnix::GetDirectories(bool portable) {
     out["skins"] += QDir::homePath() + "/.launchy/skins";
     out["plugins"] += baseDir + "/lib/launchy/plugins";
     out["plugins"] += QDir::homePath() + "/.launchy/plugins";
-    if (portable)
-	out["config"] += qApp->applicationDirPath() + "/launchy.ini";
-    else 
-	out["config"] += QDir::homePath() + "/.launchy/launchy.ini";
-    
+    out["config"] += QDir::homePath() + "/.launchy/launchy.ini";
+    out["portConfig"] += qApp->applicationDirPath() + "/launchy.ini";
+    out["db"] += QDir::homePath() + "/.launchy/launchy.db";
+    out["portDB"] += qApp->applicationDirPath() + "/launchy.db";
+    if (SupportsAlphaBorder())
+	out["defSkin"] += out["skins"][0] + "/Default";
+    else
+	out["defSkin"] += out["skins"][0] + "/Default NC";
+
+    out["platforms"] += qApp->applicationDirPath();
+    out["platforms"] += baseDir + "/lib/launchy";
+
     return out;
 }
 

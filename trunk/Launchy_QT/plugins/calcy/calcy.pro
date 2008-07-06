@@ -30,7 +30,7 @@ unix {
  target.path = /usr/lib/launchy/plugins/
  INSTALLS += target
 
- icon.path = /usr/share/launchy/plugins/icons/
+ icon.path = /usr/lib/launchy/plugins/icons/
  icon.files = calcy.ico
  INSTALLS += icon
 }

@@ -41,6 +41,7 @@ public:
 private:
 	Gui* gui;
 public:
+	QString libPath;
 	WebyPlugin() {
 		gui = NULL;
 		HASH_WEBSITE = qHash(QString("website"));
@@ -48,7 +49,7 @@ public:
 	}
 	~WebyPlugin() {}
 	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
-
+	void setPath(QString * path);
 	void getLabels(QList<InputData>*);
 	void getID(uint*);
 	void getName(QString*);

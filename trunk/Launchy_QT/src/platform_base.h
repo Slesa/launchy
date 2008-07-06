@@ -71,7 +71,7 @@ public:
 	virtual void ShowAlphaBorder() { return; }
 	virtual void SetAlphaOpacity(double) { return; }
 
-	virtual QHash<QString, QList<QString> > GetDirectories(bool portable) = 0;
+	virtual QHash<QString, QList<QString> > GetDirectories() = 0;
 
 	virtual QString expandEnvironmentVars(QString txt)
 	{	    

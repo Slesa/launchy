@@ -83,12 +83,15 @@ void PlatformGnome::alterItem(CatItem* item) {
     GtkIconTheme* thm = gtk_icon_theme_get_for_screen(gdk_screen_get_default());
     //    item->icon = gnome_desktop_item_get_icon (ditem, gtk_icon_theme_get_default());
     item->icon = gnome_desktop_item_get_icon(ditem, thm);
+    
     //item->fullPath = gnome_desktop_item_get_localestring(ditem, "Exec");
     QString name = gnome_desktop_item_get_localestring(ditem, "Name");
     if (name.size() >= item->shortName.size() - 8) {
 	item->shortName = name;
 	item->lowName = item->shortName.toLower();
     }
+    
+	
     gnome_desktop_item_unref (ditem);    
     gdk_threads_leave();
     return;
