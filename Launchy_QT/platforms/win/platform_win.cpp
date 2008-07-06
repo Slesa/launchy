@@ -24,18 +24,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "platform_win.h"
 #include "globals.h"
 
-QHash<QString, QList<QString> > PlatformWin::GetDirectories(bool portable) {
+QHash<QString, QList<QString> > PlatformWin::GetDirectories() {
     QHash<QString, QList<QString> > out;
     out["skins"] += qApp->applicationDirPath() + "/skins";
     out["plugins"] += qApp->applicationDirPath() + "/pugins";
-
-    if (portable)
-	out["config"] += qApp->applicationDirath() + "/Launchy.ini";
-    else {
-	QSettings tmp(QSettings::IniFomat, QSettings::UserScope, "Launchy", "Launchy");
-	out["config"] += tmp.fileName();
-    }
-
+    out["portConfig"] += qApp->applicationDirPath() + "/Launchy.ini";
+    QSettings tmp(QSettings::IniFomat, QSettings::UserScope, "Launchy", "Launchy");
+    out["config"] += tmp.fileName();
+    out["portDB"] += qApp->applicationDirPath() + "/Launchy.db";
+    QDir d(out["config"]);
+    d.cdUp();
+    out["db"] += d.absoluteFilePath("Launchy.db");
+    out["defSkin"] += out["skins"][0] + "/Default";
+    out["platforms"] += qApp->applicationDirPath();
     return out;
 }
 

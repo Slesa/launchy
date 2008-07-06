@@ -118,11 +118,13 @@ void gcalcPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 
 QString gcalcPlugin::getIcon()
 {
-    return qApp->applicationDirPath() + "/plugins/icons/calcy.ico";
+    return libPath + "/icons/calcy.ico";
 }
 
 
-
+void gcalcPlugin::setPath(QString * path) {
+    libPath = *path;
+}
 
 int gcalcPlugin::msg(int msgId, void* wParam, void* lParam)
 {
@@ -149,7 +151,8 @@ int gcalcPlugin::msg(int msgId, void* wParam, void* lParam)
 		getCatalog((QList<CatItem>*) wParam);
 		handled = true;
 		break;
-	    
+	case MSG_PATH:
+	    setPath((QString *) wParam);	    
 	default:
 	    break;
 	}

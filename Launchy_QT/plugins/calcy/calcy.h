@@ -34,6 +34,7 @@ public:
 	uint HASH_CALCY;
 
 public:
+	QString libPath;
 	calcyPlugin() {
 
 		HASH_CALCY = qHash(QString("calcy"));
@@ -41,7 +42,7 @@ public:
 	}
 	~calcyPlugin() {delete reg;}
 	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
-
+	void setPath(QString * path);
 	void getLabels(QList<InputData>*);
 	void getID(uint*);
 	void getName(QString*);

@@ -53,7 +53,8 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
        QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 #endif
 #ifdef Q_WS_X11
-       QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool )
+       //QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool )
+       QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 #endif
 {    
     setAttribute(Qt::WA_AlwaysShowToolTips);
@@ -111,14 +112,15 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
     
     licon = new QLabel(label);
     
-    
+    dirs = platform->GetDirectories();
     
     
     // Load settings
-    if (QFile::exists(qApp->applicationDirPath() + "/config.ini")) 
-	gSettings = new QSettings(qApp->applicationDirPath() + "/config.ini", QSettings::IniFormat); 
+    
+    if (QFile::exists(dirs["portConfig"][0]))
+	gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat);
     else
-	gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
+	gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat);
     
     // If this is the first time running or a new version, call updateVersion
     bool showLaunchyFirstTime = false;
@@ -146,9 +148,8 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
     plugins.loadPlugins();
     
     // Load the skin
-    qDebug() << qApp->applicationDirPath() + "/skins/";
-    applySkin(qApp->applicationDirPath() + "/skins/" + gSettings->value("GenOps/skin", "Default").toString());
-    
+    applySkin(gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString());
+
     // Move to saved position
     if (!rescue) {
 	QPoint x = loadPosition(); //gSettings->value("Display/relpos", QPoint(0,0)).toPoint();
@@ -169,7 +170,12 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
     
     
     // Set the hotkey
+    #ifdef Q_WS_WIN
     int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::AltModifier).toInt();
+    #endif
+    #ifdef Q_WS_X11
+    int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::ControlModifier).toInt();
+    #endif
     int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
     setHotkey(curMeta, curAction);
     
@@ -191,10 +197,16 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
     
     //	setTabOrder(combo, combo);
     
+
+
     if (showLaunchyFirstTime || rescue)
 	showLaunchy();
     else
 	hideLaunchy();    
+
+    #ifdef Q_WS_X11
+        showLaunchy();
+    #endif
 }
 
 void MyWidget::setCondensed(int condensed) {
@@ -674,13 +686,15 @@ void MyWidget::httpGetFinished(bool error) {
     delete counterBuffer;
 }
 
-void MyWidget::setSkin(QString name) {
+void MyWidget::setSkin(QString dir, QString name) {
     
     bool wasShowing = isVisible();
     QPoint p = pos();
     hideLaunchy(true);
     
-    applySkin(qApp->applicationDirPath() + "/skins/" + name);
+    applySkin(dir + "/" + name);
+
+//    applySkin(qApp->applicationDirPath() + "/skins/" + name);
     move(p);
     platform->MoveAlphaBorder(p);
     platform->ShowAlphaBorder();
@@ -694,30 +708,30 @@ void MyWidget::updateVersion(int oldVersion) {
 	// Erase all of the old information
 	QString origFile = gSettings->fileName();
 	delete gSettings;
-	
-	gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
-	QString permFile = gSettings->fileName();
-	delete gSettings;
-	
-	QFile oldIniPerm(permFile);
+
+	QFile oldIniPerm(dirs["config"][0]);
 	oldIniPerm.remove();
 	oldIniPerm.close();
 	
-	QDir d(permFile);
-	d.cdUp();
-	QFile oldDbPerm(d.absoluteFilePath("Launchy.db"));
+	QFile oldDbPerm(dirs["db"][0]);
 	oldDbPerm.remove();
 	oldDbPerm.close();
 	
-	QFile oldDB(qApp->applicationDirPath() + "/Launchy.db");
+	QFile oldDB(dirs["portDB"][0]);
 	oldDB.remove();
 	oldDB.close();
 	
-	QFile oldIni(qApp->applicationDirPath() + "/Launchy.ini");
+	QFile oldIni(dirs["portConfig"][0]);
 	oldIni.remove();
 	oldIni.close();
 	
 	gSettings = new QSettings(origFile, QSettings::IniFormat);
+    }
+
+    if (oldVersion < 210) {
+	QString oldSkin = gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString();
+	QString newSkin = dirs["skins"][0] + "/" + oldSkin;
+	gSettings->setValue("GenOps/skin", newSkin);
     }
     
     if (oldVersion < LAUNCHY_VERSION) {
@@ -851,46 +865,41 @@ void MyWidget::setAlwaysTop(bool alwaysTop) {
     
 }
 void MyWidget::setPortable(bool portable) {
-    if (portable && gSettings->fileName().compare(qApp->applicationDirPath() + "/config.ini", Qt::CaseInsensitive) != 0) {
-	QString oldName = gSettings->fileName();
+    if (portable && gSettings->fileName().compare(dirs["portConfig"][0], Qt::CaseInsensitive) != 0) {
 	delete gSettings;
 	
 	// Copy the old settings
-	QFile oldSet(oldName);
-	oldSet.copy(qApp->applicationDirPath() + "/config.ini");
+	QFile oldSet(dirs["config"][0]);
+	oldSet.copy(dirs["portConfig"][0]);
 	oldSet.close();
 	
-	QFile oldDB(oldName.mid(0,oldName.lastIndexOf("/")) + "/Launchy.db");
-	oldDB.copy(qApp->applicationDirPath() + "/Launchy.db");
+	QFile oldDB(dirs["db"][0]);
+	oldDB.copy(dirs["portDB"][0]);
 	oldDB.close();
-	
-	gSettings = new QSettings(qApp->applicationDirPath() + "/config.ini", QSettings::IniFormat); 
-	
+
+	gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat);
     }
-    else if (!portable && gSettings->fileName().compare(qApp->applicationDirPath() + "/config.ini", Qt::CaseInsensitive) == 0) {
+    else if (!portable && gSettings->fileName().compare(dirs["portConfig"][0], Qt::CaseInsensitive) == 0) {
 	delete gSettings;
-	gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
-	QString newName = gSettings->fileName();
-	delete gSettings;
-	
+
 	// Remove the ini file we're going to copy to so that copy can work
-	QFile newF(newName);
+	QFile newF(dirs["config"][0]);
 	newF.remove();
 	newF.close();
 	
 	// Copy the local ini + db files to the users section
-	QFile oldSet(qApp->applicationDirPath() + "/config.ini");
-	oldSet.copy(newName);
+	QFile oldSet(dirs["portConfig"][0]);
+	oldSet.copy(dirs["config"][0]);
 	oldSet.remove();
 	oldSet.close();
 	
-	QFile oldDB(qApp->applicationDirPath() + "/Launchy.db");
-	oldDB.copy(newName.mid(0,newName.lastIndexOf("/")) + "/Launchy.db");
+	QFile oldDB(dirs["portDB"][0]);
+	oldDB.copy(dirs["db"][0]);
 	oldDB.remove();
 	oldDB.close();
 	
 	// Load up the user section ini file
-	gSettings = new QSettings(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
+	gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat);
 	
     }
 }
@@ -905,7 +914,6 @@ void MyWidget::setOpaqueness(int val)
 }
 
 void MyWidget::applySkin(QString directory) {
-    
     // Hide the buttons by default
     closeButton->hide();
     opsButton->hide();
@@ -914,8 +922,8 @@ void MyWidget::applySkin(QString directory) {
     
     // Use default skin if this one doesn't exist
     if (!QFile::exists(directory + "/misc.txt"))  {
-	directory = qApp->applicationDirPath() + "/skins/Default/";
-	gSettings->setValue("GenOps/skin", "Default");
+	directory = dirs["defSkin"][0];
+	gSettings->setValue("GenOps/skin", dirs["defSkin"][0]);
     }
     
     

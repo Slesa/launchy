@@ -156,6 +156,8 @@ public:
     MyWidget() {};
     MyWidget(QWidget *parent, PlatformBase*, bool rescue );
 	~MyWidget();
+
+	QHash<QString, QList<QString> > dirs;
 	Fader* fader;
 	QPoint moveStartPoint;
 	PlatformBase * platform;	
@@ -231,7 +233,7 @@ public slots:
 	void setAlwaysShow(bool);
 	void setAlwaysTop(bool);
 	void setPortable(bool);
-	void setSkin(QString);
+	void setSkin(QString, QString);
 	void httpGetFinished(bool result);
 	void catalogBuilt();
 	void inputMethodEvent(QInputMethodEvent* e);

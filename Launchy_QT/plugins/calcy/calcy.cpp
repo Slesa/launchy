@@ -161,13 +161,12 @@ void calcyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 
 QString calcyPlugin::getIcon()
 {
-#ifdef Q_WS_WIN
-    return qApp->applicationDirPath() + "/plugins/icons/calcy.ico";
-#endif
-    return "";
+    return libPath + "/icons/calcy.ico";
 }
 
-
+void calcyPlugin::setPath(QString * path) {
+    libPath = *path;
+}
 
 
 int calcyPlugin::msg(int msgId, void* wParam, void* lParam)
@@ -195,7 +194,8 @@ int calcyPlugin::msg(int msgId, void* wParam, void* lParam)
 	    getResults((QList<InputData>*) wParam, (QList<CatItem>*) lParam);
 	    handled = true;
 	    break;
-	    
+	case MSG_PATH:
+	    setPath((QString *) wParam);	    
 	default:
 	    break;
 	}

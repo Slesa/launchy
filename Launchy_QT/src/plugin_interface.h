@@ -457,6 +457,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MSG_LAUNCHY_HIDE 11
 
 
+/**
+   \brief This message informs Launchy of what directory the plugin was loaded from.
+   This can be helpful in determining where the icon should be loaded from.
+   
+   \param wParam QString path
+*/
+#define MSG_PATH 12
+   
+   
+
 
 #define MSG_CONTROL_OPTIONS 500
 #define MSG_CONTROL_EXIT 501

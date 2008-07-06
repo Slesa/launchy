@@ -63,7 +63,7 @@ class PlatformUnix : public QObject, public PlatformBase
     }
     
 
-    virtual QHash<QString, QList<QString> > GetDirectories(bool portable);
+    virtual QHash<QString, QList<QString> > GetDirectories();
 
     bool SupportsAlphaBorder();
     bool CreateAlphaBorder(QWidget* w, QString ImageName);

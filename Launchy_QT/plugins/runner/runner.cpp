@@ -86,10 +86,7 @@ void runnerPlugin::getName(QString* str)
 
 QString runnerPlugin::getIcon()
 {
-#ifdef Q_WS_WIN
-	return qApp->applicationDirPath() + "/plugins/icons/runner.ico";
-#endif
-	return "";
+    return libPath + "/icons/runner.ico";
 }
 
 void runnerPlugin::getCatalog(QList<CatItem>* items)
@@ -166,6 +163,10 @@ void runnerPlugin::endDialog(bool accept) {
 	gui = NULL;
 }
 
+void runnerPlugin::setPath(QString * path) {
+    libPath = *path;
+}
+
 int runnerPlugin::msg(int msgId, void* wParam, void* lParam)
 {
 	bool handled = false;
@@ -204,6 +205,8 @@ int runnerPlugin::msg(int msgId, void* wParam, void* lParam)
 		case MSG_END_DIALOG:
 			endDialog((bool) wParam);
 			break;
+	case MSG_PATH:
+	    setPath((QString*) wParam);
 
 		default:
 			break;

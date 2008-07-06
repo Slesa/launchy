@@ -40,6 +40,7 @@ public:
 private:
 	Gui* gui;
 public:
+	QString libPath;
 	runnerPlugin() {
 		gui = NULL;
 		HASH_runner = qHash(QString("runner"));
@@ -47,6 +48,7 @@ public:
 	~runnerPlugin() {}
 	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
 
+	void setPath(QString * path);
 	void getID(uint*);
 	void getName(QString*);
 	void getCatalog(QList<CatItem>* items);

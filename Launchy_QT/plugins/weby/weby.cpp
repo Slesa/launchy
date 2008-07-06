@@ -276,10 +276,7 @@ QString WebyPlugin::getFirefoxPath()
 
 QString WebyPlugin::getIcon()
 {
-#ifdef Q_WS_WIN
-	return qApp->applicationDirPath() + "/plugins/icons/weby.ico";
-#endif
-	return "";
+    return libPath + "/icons/weby.ico";
 }
 
 void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
@@ -405,6 +402,10 @@ void WebyPlugin::endDialog(bool accept) {
 	gui = NULL;
 }
 
+void WebyPlugin::setPath(QString * path) {
+    libPath = *path;
+}
+
 int WebyPlugin::msg(int msgId, void* wParam, void* lParam)
 {
 	bool handled = false;
@@ -447,7 +448,8 @@ int WebyPlugin::msg(int msgId, void* wParam, void* lParam)
 		case MSG_END_DIALOG:
 			endDialog((bool) wParam);
 			break;
-
+	case MSG_PATH:
+	    setPath((QString *) wParam);
 		default:
 			break;
 	}
