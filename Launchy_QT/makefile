@@ -8,18 +8,20 @@ QMAKE=qmake-qt4
 DEFS=SKINS_PATH=\\\"$(SKINS_PATH)\\\" PLUGINS_PATH=\\\"$(PLUGINS_PATH)\\\" \
 	PLATFORMS_PATH=\\\"$(PLATFORMS_PATH)\\\"
 
+DIRS=. platforms/gnome plugins/runner plugins/weby plugins/calcy plugins/gcalc
+
 
 release:: 
-	$(QMAKE) Launchy.pro && make -f Makefile release
-	cd platforms/gnome && $(DEFS) $(QMAKE) gnome.pro && $(DEFS) make -f Makefile.Release
+	$(DEFS) $(QMAKE) Launchy.pro && $(DEFS) make -f Makefile release
+	cd platforms/gnome && $(DEFS) $(QMAKE) gnome.pro && $(DEFS) make release
 	cd plugins/runner && $(QMAKE) runner.pro && make release
 	cd plugins/weby && $(QMAKE) weby.pro && make release
 	cd plugins/calcy && $(QMAKE) calcy.pro && make release
 	cd plugins/gcalc && $(QMAKE) gcalc.pro && make release
 
 debug::
-	$(QMAKE) Launchy.pro && make -f Makefile debug
-	cd platforms/gnome && $(DEFS) $(QMAKE) gnome.pro && $(DEFS) make -f Makefile.Debug
+	$(DEFS) $(QMAKE) Launchy.pro && $(DEFS) make -f Makefile debug
+	cd platforms/gnome && $(DEFS) $(QMAKE) gnome.pro && $(DEFS) make debug
 	cd plugins/runner && $(QMAKE) runner.pro && make debug
 	cd plugins/weby && $(QMAKE) weby.pro && make debug
 	cd plugins/calcy && $(QMAKE) calcy.pro && make debug
