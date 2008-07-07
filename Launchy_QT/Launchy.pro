@@ -46,10 +46,10 @@ win32:release {
 
 
 unix {
-target.path = bin/
+target.path = /bin/
 INSTALLS += target
 
-skins.path = share/launchy/
+skins.path = /share/launchy/
 skins.files = skins/
 INSTALLS += skins
 
