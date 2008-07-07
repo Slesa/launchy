@@ -62,13 +62,12 @@ QList<Directory> PlatformUnix::GetInitialDirs() {
 
 QHash<QString, QList<QString> > PlatformUnix::GetDirectories() {
     QHash<QString, QList<QString> > out;
-    QString baseDir = "/usr";
     QDir d;
     d.mkdir(QDir::homePath() + "/.launchy");
     
-    out["skins"] += baseDir + "/share/launchy/skins";
+    out["skins"] += SKINS_PATH;
     out["skins"] += QDir::homePath() + "/.launchy/skins";
-    out["plugins"] += baseDir + "/lib/launchy/plugins";
+    out["plugins"] += PLUGINS_PATH;
     out["plugins"] += QDir::homePath() + "/.launchy/plugins";
     out["config"] += QDir::homePath() + "/.launchy/launchy.ini";
     out["portConfig"] += qApp->applicationDirPath() + "/launchy.ini";
@@ -80,7 +79,7 @@ QHash<QString, QList<QString> > PlatformUnix::GetDirectories() {
 	out["defSkin"] += out["skins"][0] + "/Default NC";
 
     out["platforms"] += qApp->applicationDirPath();
-    out["platforms"] += baseDir + "/lib/launchy";
+    out["platforms"] += PLATFORMS_PATH;
 
     return out;
 }

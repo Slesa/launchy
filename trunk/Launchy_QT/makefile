@@ -11,32 +11,32 @@ PLATFORMS_PATH=$(PREFIX)/lib/launchy/
 QMAKE=qmake-qt4
 
 DEFS=SKINS_PATH=\\\"$(SKINS_PATH)\\\" PLUGINS_PATH=\\\"$(PLUGINS_PATH)\\\" \
-     PLATFORMS_PATH=\\\"$(PLATFORMS_PATH)\\\"
+	PLATFORMS_PATH=\\\"$(PLATFORMS_PATH)\\\"
 
 
 release:: 
-	$(QMAKE) Launchy.pro && $(DEFS) make -f Makefile release
-	cd platforms/gnome && $(QMAKE) gnome.pro && $(DEFS) make release
-	cd plugins/runner && $(QMAKE) runner.pro && $(DEFS) make release
-	cd plugins/weby && $(QMAKE) weby.pro && $(DEFS) make release
-	cd plugins/calcy && $(QMAKE) calcy.pro && $(DEFS) make release
-	cd plugins/gcalc && $(QMAKE) gcalc.pro && $(DEFS) make release
+	$(QMAKE) Launchy.pro && make -f Makefile release
+	cd platforms/gnome && $(DEFS) $(QMAKE) gnome.pro && $(DEFS) make -f Makefile.Release
+	cd plugins/runner && $(QMAKE) runner.pro && make release
+	cd plugins/weby && $(QMAKE) weby.pro && make release
+	cd plugins/calcy && $(QMAKE) calcy.pro && make release
+	cd plugins/gcalc && $(QMAKE) gcalc.pro && make release
 
 debug::
-	$(QMAKE) Launchy.pro && $(DEFS) make -f Makefile debug
-	cd platforms/gnome && $(QMAKE) gnome.pro && $(DEFS) make debug
-	cd plugins/runner && $(QMAKE) runner.pro && $(DEFS) make debug
-	cd plugins/weby && $(QMAKE) weby.pro && $(DEFS) make debug
-	cd plugins/calcy && $(QMAKE) calcy.pro && $(DEFS) make debug
-	cd plugins/gcalc && $(QMAKE) gcalc.pro && $(DEFS) make debug
+	$(QMAKE) Launchy.pro && make -f Makefile debug
+	cd platforms/gnome && $(DEFS) $(QMAKE) gnome.pro && $(DEFS) make -f Makefile.Debug
+	cd plugins/runner && $(QMAKE) runner.pro && make debug
+	cd plugins/weby && $(QMAKE) weby.pro && make debug
+	cd plugins/calcy && $(QMAKE) calcy.pro && make debug
+	cd plugins/gcalc && $(QMAKE) gcalc.pro && make debug
 
 clean::
-	$(QMAKE) Launchy.pro && $(DEFS) make -f Makefile clean
+	$(QMAKE) Launchy.pro && make -f Makefile clean
 	cd platforms/gnome && $(QMAKE) gnome.pro && $(DEFS) make clean
-	cd plugins/runner && $(QMAKE) runner.pro && $(DEFS) make clean
-	cd plugins/weby && $(QMAKE) weby.pro && $(DEFS) make clean
-	cd plugins/calcy && $(QMAKE) calcy.pro && $(DEFS) make clean
-	cd plugins/gcalc && $(QMAKE) gcalc.pro && $(DEFS) make clean
+	cd plugins/runner && $(QMAKE) runner.pro &&  make clean
+	cd plugins/weby && $(QMAKE) weby.pro &&  make clean
+	cd plugins/calcy && $(QMAKE) calcy.pro && make clean
+	cd plugins/gcalc && $(QMAKE) gcalc.pro &&  make clean
 
 install::
 	-install -d $(PREFIX)/bin/
