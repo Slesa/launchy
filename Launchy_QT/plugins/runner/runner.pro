@@ -8,7 +8,7 @@
  SOURCES       = plugin_interface.cpp runner.cpp gui.cpp
  TARGET		   = runner
  
- win32 {
+win32 {
  	CONFIG -= embed_manifest_dll
 	LIBS += shell32.lib
 %	LIBS += user32.lib
@@ -16,13 +16,19 @@
 %	LIBS += comctl32.lib
 }
  
- *:debug {
-        CONFIG -= release 
-	DESTDIR = ../../debug/plugins/
- }
- *:release {
-	DESTDIR = ../../release/plugins/
- }
+if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
+    DESTDIR = ../../debug/plugins
+}
+
+if(!debug_and_release|build_pass):CONFIG(release, debug|release) {
+    DESTDIR = ../../release/plugins
+}
+
+
+
+
+
+
 
 unix {
 
