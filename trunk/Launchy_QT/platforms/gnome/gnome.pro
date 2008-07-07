@@ -28,6 +28,6 @@ release {
 }
 
 unix {
- target.path = lib/launchy/
+ target.path = /lib/launchy/
  INSTALLS += target
 }
