@@ -17,15 +17,17 @@ CONFIG          += link_pkgconfig
 PKGCONFIG       += gtk+-2.0 libgnomeui-2.0 gnome-desktop-2.0
 LIBS += -lX11 -lXext -lXrender
 
-debug {
-        CONFIG -= release
-	DESTDIR = ../../debug/
+
+if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
+     DESTDIR = ../../debug/
 }
 
-release {
-        CONFIG -= debug
-	DESTDIR = ../../release/
+if(!debug_and_release|build_pass):CONFIG(release, debug|release) {
+     DESTDIR = ../../release/
 }
+
+
+
 
 unix {
 }

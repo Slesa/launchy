@@ -26,15 +26,15 @@ win32 {
 	LIBS += shell32.lib
 }
 
-debug {
-    CONFIG -= release
-	DESTDIR = debug/
+
+if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
+    DESTDIR = debug//
 }
 
-release {
-    CONFIG -= debug
-	DESTDIR = release/
+if(!debug_and_release|build_pass):CONFIG(release, debug|release) {
+    DESTDIR = release/
 }
+
 
 win32:debug {
 %	CONFIG += console 
@@ -45,9 +45,6 @@ win32:release {
 }
 
 
-unix {
-
-}
 
 TRANSLATIONS = tr/launchy_fr.ts \
                tr/launchy_nl.ts \

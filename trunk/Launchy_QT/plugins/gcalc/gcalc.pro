@@ -16,14 +16,17 @@
 %	LIBS += comctl32.lib
 }
  
- *:debug {
-        CONFIG -= release
-	DESTDIR = ../../debug/plugins/
- }
- *:release {
-        CONFIG -= debug
-	DESTDIR = ../../release/plugins/
- }
+
+if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
+    DESTDIR = ../../debug/plugins
+}
+
+if(!debug_and_release|build_pass):CONFIG(release, debug|release) {
+    DESTDIR = ../../release/plugins
+}
+
+
+
 
 unix {
 }

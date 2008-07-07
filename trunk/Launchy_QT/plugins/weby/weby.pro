@@ -16,14 +16,14 @@
 %	LIBS += comctl32.lib
 }
  
- *:debug {
-        CONFIG -= release
-	DESTDIR = ../../debug/plugins/
- }
- *:release {
-	DESTDIR = ../../release/plugins/
-	%QMAKE_CXXFLAGS += /Ox /Ob2 /Oi /Oy /GT /GA  /WX
- }
+if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
+    DESTDIR = ../../debug/plugins
+}
+
+if(!debug_and_release|build_pass):CONFIG(release, debug|release) {
+    DESTDIR = ../../release/plugins
+}
+
 
 unix {
 
