@@ -16,11 +16,11 @@ PlatformBase * loadPlatform()
 	files += "/platform_win.dll";
     else if (desktop == DESKTOP_GNOME) {
 	files += "libplatform_gnome.so";
-	files += "/usr/lib/launchy/libplatform_gnome.so";
+	files += PLATFORMS_PATH + "/libplatform_gnome.so";
     }
     else if (desktop == DESKTOP_KDE) {
 	files += "/libplatform_kde.so";
-	files += "/usr/lib/launchy/libplatform_kde.so";
+	files += PLATFORMS_PATH + "/libplatform_kde.so";
     }
 
     QObject * plugin = NULL;
