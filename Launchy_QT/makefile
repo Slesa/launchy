@@ -1,9 +1,4 @@
-ifdef DESTDIR
-PREFIX=$(DESTDIR)
-else
 PREFIX=/usr
-endif
-
 SKINS_PATH=$(PREFIX)/share/launchy/skins
 PLUGINS_PATH=$(PREFIX)/lib/launchy/plugins
 PLATFORMS_PATH=$(PREFIX)/lib/launchy/
@@ -39,18 +34,18 @@ clean::
 	cd plugins/gcalc && $(QMAKE) gcalc.pro &&  make clean
 
 install::
-	-install -d $(PREFIX)/bin/
-	install -m 755 release/Launchy $(PREFIX)/bin/launchy
-	-install -d $(PLATFORMS_PATH)
-	install -m 644 release/libplatform_*.so $(PLATFORMS_PATH)/
-	-install -d $(PLUGINS_PATH)
-	install -m 644 release/plugins/*.so $(PLUGINS_PATH)/ 
-	-install -d $(PLUGINS_PATH)/icons
-	install -m 644 plugins/runner/runner.ico $(PLUGINS_PATH)/icons/
-	-install -m 644 plugins/weby/weby.ico $(PLUGINS_PATH)/icons/
-	install -m 644 plugins/calcy/calcy.ico $(PLUGINS_PATH)/icons/
-	-install -d $(SKINS_PATH)
-	cp -r skins $(PREFIX)/share/launchy/
+	-install -d $(DESTDIR)$(PREFIX)/bin/
+	install -m 755 release/Launchy $(DESTDIR)$(PREFIX)/bin/launchy
+	-install -d $(DESTDIR)$(PLATFORMS_PATH)
+	install -m 644 release/libplatform_*.so $(DESTDIR)$(PLATFORMS_PATH)/
+	-install -d $(DESTDIR)$(PLUGINS_PATH)
+	install -m 644 release/plugins/*.so $(DESTDIR)$(PLUGINS_PATH)/ 
+	-install -d $(DESTDIR)$(PLUGINS_PATH)/icons
+	install -m 644 plugins/runner/runner.ico $(DESTDIR)$(PLUGINS_PATH)/icons/
+	-install -m 644 plugins/weby/weby.ico $(DESTDIR)$(PLUGINS_PATH)/icons/
+	install -m 644 plugins/calcy/calcy.ico $(DESTDIR)$(PLUGINS_PATH)/icons/
+	-install -d $(DESTDIR)$(SKINS_PATH)
+	cp -r skins $(DESTDIR)$(PREFIX)/share/launchy/
 
 
 
