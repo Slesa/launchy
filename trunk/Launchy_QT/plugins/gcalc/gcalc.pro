@@ -26,10 +26,4 @@
  }
 
 unix {
- target.path = /lib/launchy/plugins/
- INSTALLS += target
-
- icon.path = /lib/launchy/plugins/icons/
- icon.files = gcalc.ico
- INSTALLS += icon
 }
