@@ -15,7 +15,7 @@ svn export ../ launchy-$ver
 tar cfz launchy-$ver.tar.gz launchy-$ver/
 cd launchy-$ver
 dh_make -e karlinjf@sourceforge.net -f ../launchy-$ver.tar.gz
-cp debian/* launchy-$ver/debian/
+cp ../debian/* debian/
 dpkg-buildpackage -rfakeroot
 
 
