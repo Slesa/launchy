@@ -25,10 +25,10 @@
  }
 
 unix {
- target.path = /usr/lib/launchy/plugins/
+ target.path = lib/launchy/plugins/
  INSTALLS += target
 
- icon.path = /usr/lib/launchy/plugins/icons/
+ icon.path = lib/launchy/plugins/icons/
  icon.files = runner.ico
  INSTALLS += icon
 }

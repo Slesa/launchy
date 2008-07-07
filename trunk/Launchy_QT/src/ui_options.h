@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading ui file 'options.ui'
 **
-** Created: Sat Apr 5 16:51:17 2008
-**      by: Qt User Interface Compiler version 4.3.3
+** Created: Sun Jul 6 18:23:34 2008
+**      by: Qt User Interface Compiler version 4.4.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 ********************************************************************************/
@@ -31,6 +31,8 @@
 #include <QtGui/QTabWidget>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
+
+QT_BEGIN_NAMESPACE
 
 class Ui_OptionsDlg
 {
@@ -182,6 +184,7 @@ public:
     tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
     tab = new QWidget();
     tab->setObjectName(QString::fromUtf8("tab"));
+    tab->setGeometry(QRect(0, 0, 656, 491));
     vboxLayout1 = new QVBoxLayout(tab);
     vboxLayout1->setObjectName(QString::fromUtf8("vboxLayout1"));
     hboxLayout1 = new QHBoxLayout();
@@ -443,6 +446,7 @@ public:
     tabWidget->addTab(tab, QString());
     Skins = new QWidget();
     Skins->setObjectName(QString::fromUtf8("Skins"));
+    Skins->setGeometry(QRect(0, 0, 656, 491));
     vboxLayout8 = new QVBoxLayout(Skins);
     vboxLayout8->setObjectName(QString::fromUtf8("vboxLayout8"));
     hboxLayout8 = new QHBoxLayout();
@@ -502,6 +506,7 @@ public:
     tabWidget->addTab(Skins, QString());
     tab_2 = new QWidget();
     tab_2->setObjectName(QString::fromUtf8("tab_2"));
+    tab_2->setGeometry(QRect(0, 0, 656, 491));
     vboxLayout11 = new QVBoxLayout(tab_2);
     vboxLayout11->setObjectName(QString::fromUtf8("vboxLayout11"));
     hboxLayout10 = new QHBoxLayout();
@@ -671,6 +676,9 @@ public:
 
     catProgress = new QProgressBar(tab_2);
     catProgress->setObjectName(QString::fromUtf8("catProgress"));
+    catProgress->setMinimum(0);
+    catProgress->setMaximum(100);
+    catProgress->setValue(0);
     catProgress->setTextVisible(false);
     catProgress->setOrientation(Qt::Horizontal);
 
@@ -682,6 +690,7 @@ public:
     tabWidget->addTab(tab_2, QString());
     tab_4 = new QWidget();
     tab_4->setObjectName(QString::fromUtf8("tab_4"));
+    tab_4->setGeometry(QRect(0, 0, 656, 491));
     vboxLayout17 = new QVBoxLayout(tab_4);
     vboxLayout17->setObjectName(QString::fromUtf8("vboxLayout17"));
     hboxLayout14 = new QHBoxLayout();
@@ -717,6 +726,7 @@ public:
     tabWidget->addTab(tab_4, QString());
     tab_3 = new QWidget();
     tab_3->setObjectName(QString::fromUtf8("tab_3"));
+    tab_3->setGeometry(QRect(0, 0, 656, 491));
     vboxLayout20 = new QVBoxLayout(tab_3);
     vboxLayout20->setObjectName(QString::fromUtf8("vboxLayout20"));
     spacerItem21 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -784,7 +794,7 @@ public:
     buttonBox = new QDialogButtonBox(OptionsDlg);
     buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
     buttonBox->setOrientation(Qt::Horizontal);
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
     hboxLayout17->addWidget(buttonBox);
 
@@ -827,7 +837,7 @@ public:
     QObject::connect(buttonBox, SIGNAL(accepted()), OptionsDlg, SLOT(accept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), OptionsDlg, SLOT(reject()));
 
-    tabWidget->setCurrentIndex(0);
+    tabWidget->setCurrentIndex(2);
 
 
     QMetaObject::connectSlotsByName(OptionsDlg);
@@ -866,8 +876,8 @@ public:
     groupBox_2->setTitle(QApplication::translate("OptionsDlg", "File Types", 0, QApplication::UnicodeUTF8));
     catTypesPlus->setText(QApplication::translate("OptionsDlg", "+", 0, QApplication::UnicodeUTF8));
     catTypesMinus->setText(QApplication::translate("OptionsDlg", "-", 0, QApplication::UnicodeUTF8));
-    catCheckBinaries->setText(QApplication::translate("OptionsDlg", "Executables", 0, QApplication::UnicodeUTF8));
-    catCheckDirs->setText(QApplication::translate("OptionsDlg", "Directories", 0, QApplication::UnicodeUTF8));
+    catCheckBinaries->setText(QApplication::translate("OptionsDlg", "Include executables", 0, QApplication::UnicodeUTF8));
+    catCheckDirs->setText(QApplication::translate("OptionsDlg", "Include directories", 0, QApplication::UnicodeUTF8));
     label_10->setText(QApplication::translate("OptionsDlg", "Depth:", 0, QApplication::UnicodeUTF8));
     groupBox->setTitle(QApplication::translate("OptionsDlg", "Directories", 0, QApplication::UnicodeUTF8));
     catDirPlus->setText(QApplication::translate("OptionsDlg", "+", 0, QApplication::UnicodeUTF8));
@@ -889,5 +899,7 @@ public:
 namespace Ui {
     class OptionsDlg: public Ui_OptionsDlg {};
 } // namespace Ui
+
+QT_END_NAMESPACE
 
 #endif // UI_OPTIONS_H
