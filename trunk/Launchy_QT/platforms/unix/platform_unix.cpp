@@ -65,8 +65,10 @@ QHash<QString, QList<QString> > PlatformUnix::GetDirectories() {
     QDir d;
     d.mkdir(QDir::homePath() + "/.launchy");
     
+    out["skins"] += qApp->applicationDirPath() + "/skins";
     out["skins"] += SKINS_PATH;
     out["skins"] += QDir::homePath() + "/.launchy/skins";
+    out["plugins"] += qApp->applicationDirPath() + "/plugins";
     out["plugins"] += PLUGINS_PATH;
     out["plugins"] += QDir::homePath() + "/.launchy/plugins";
     out["config"] += QDir::homePath() + "/.launchy/launchy.ini";
@@ -77,6 +79,7 @@ QHash<QString, QList<QString> > PlatformUnix::GetDirectories() {
 	out["defSkin"] += out["skins"][0] + "/Default";
     else
 	out["defSkin"] += out["skins"][0] + "/Default NC";
+
 
     out["platforms"] += qApp->applicationDirPath();
     out["platforms"] += PLATFORMS_PATH;
@@ -117,3 +120,91 @@ bool PlatformUnix::SupportsAlphaBorder()
 }
 
 //Q_EXPORT_PLUGIN2(platform_unix, PlatformUnix)
+
+
+void PlatformUnix::alterItem(CatItem* item) {
+    if (!item->fullPath.endsWith(".desktop", Qt::CaseInsensitive))
+	return;
+
+    QString locale = QLocale::system().name();
+    
+    
+
+    QFile file(item->fullPath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	return;
+
+    QString name = "";
+    QString icon = "";
+    QString exe = "";
+    while(!file.atEnd()) {
+	QString line = file.readLine();
+
+	
+	if (line.startsWith("Name[" + locale, Qt::CaseInsensitive)) 
+	    name = line.split("=")[1].trimmed();
+	
+
+	else if (line.startsWith("Name=", Qt::CaseInsensitive)) 
+	    name = line.split("=")[1].trimmed();
+
+	else if (line.startsWith("Icon", Qt::CaseInsensitive))
+	    icon = line.split("=")[1].trimmed();
+	else if (line.startsWith("Exec", Qt::CaseInsensitive))
+	    exe = line.split("=")[1].trimmed();	
+    }
+    if (name.size() >= item->shortName.size() - 8) {
+	item->shortName = name;
+	item->lowName = item->shortName.toLower();
+    }
+
+    exe = exe.trimmed().split(" ")[0];
+
+    // Look for the executable in the path
+    if (!QFile::exists(exe) && exe != "") {
+	bool foundPath = false;
+	foreach(QString line, QProcess::systemEnvironment()) {
+	    if (!line.startsWith("Path", Qt::CaseInsensitive)) 
+		continue;
+
+	    QStringList spl = line.split("=");
+	    QStringList spl2 = spl[1].split(":");
+	    foreach(QString dir, spl2) {
+		QString tmp = dir + "/" + exe;
+		if (QFile::exists(tmp)) {
+		    exe = tmp;
+		    foundPath = true;
+		    break;
+		}
+	    }
+	    if (foundPath)
+		break;
+	}
+    }
+
+    item->fullPath = exe;
+
+    // Look for the icon
+    if (!QFile::exists(icon) && icon != "") {
+	
+    }
+
+    item->icon = icon;
+
+
+    
+
+
+    
+    
+
+
+    file.close();
+    return;
+}
+
+bool PlatformUnix::Execute(QString path, QString args) {
+
+}
+
+Q_EXPORT_PLUGIN2(platform_unix, PlatformUnix)

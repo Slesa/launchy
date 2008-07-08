@@ -72,6 +72,9 @@ class PlatformUnix : public QObject, public PlatformBase
     void ShowAlphaBorder() { if (alpha) alpha->show(); }
     void HideAlphaBorder() { if (alpha) alpha->hide(); }
     void SetAlphaOpacity(double trans ) { if (alpha) alpha->SetAlphaOpacity(trans); }
+
+    virtual void alterItem(CatItem*);
+    virtual bool Execute(QString path, QString args);
 };
 
 

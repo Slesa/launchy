@@ -21,7 +21,8 @@ release::
 
 debug::
 	$(DEFS) $(QMAKE) Launchy.pro && $(DEFS) make -f Makefile debug
-	cd platforms/gnome && $(DEFS) $(QMAKE) gnome.pro && $(DEFS) make debug
+#	cd platforms/gnome && $(DEFS) $(QMAKE) gnome.pro && $(DEFS) make debug
+	cd platforms/unix && $(DEFS) $(QMAKE) unix.pro && $(DEFS) make debug
 	cd plugins/runner && $(QMAKE) runner.pro && make debug
 	cd plugins/weby && $(QMAKE) weby.pro && make debug
 	cd plugins/calcy && $(QMAKE) calcy.pro && make debug
