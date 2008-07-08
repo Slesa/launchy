@@ -81,15 +81,17 @@ void runProgram(QString path, QString args) {
 
     QString toRun = path + " " + args;
 
-
     // Try xdg-open first, which should spawn quickly
     proc.start(QString("xdg-open"), QStringList(toRun.trimmed()));
     bool done = proc.waitForFinished(10000);
     int status = proc.exitCode();
     
+    if (args.trimmed().size() > 0)
+	largs = args.trimmed().split(" ");
+
     // If it couldn't handle it, see if we can
     if (status > 0 && info.isExecutable()) {
-	proc.startDetached(path, args.split(" "));
+	proc.startDetached(path, largs);
 	return;
     }
 

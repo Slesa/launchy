@@ -53,8 +53,8 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
        QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 #endif
 #ifdef Q_WS_X11
-       QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool )
-       //QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
+       //       QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool )
+       QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 #endif
 {    
     setAttribute(Qt::WA_AlwaysShowToolTips);

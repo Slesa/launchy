@@ -15,11 +15,12 @@ PlatformBase * loadPlatform()
     if (desktop == DESKTOP_WINDOWS)
 	files += "/platform_win.dll";
     else if (desktop == DESKTOP_GNOME) {
-	files += "libplatform_gnome.so";
-	files += QString(PLATFORMS_PATH) + QString("/libplatform_gnome.so");
+	files += "libplatform_unix.so";
+	//	files += "libplatform_gnome.so";
+	//files += QString(PLATFORMS_PATH) + QString("/libplatform_gnome.so");
     }
     else if (desktop == DESKTOP_KDE) {
-	files += "/libplatform_kde.so";
+	files += "libplatform_kde.so";
 	files += QString(PLATFORMS_PATH) + "/libplatform_kde.so";
     }
 
