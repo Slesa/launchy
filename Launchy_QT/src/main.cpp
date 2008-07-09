@@ -581,8 +581,11 @@ QIcon MyWidget::getIcon(CatItem & item) {
 	    return platform->icons->icon(QFileIconProvider::Folder);
 	return platform->icons->icon(QDir::toNativeSeparators(item.fullPath));
     }
-    else
+    else {
+	if (QFile::exists(item.icon))
+	    return QIcon(item.icon);
 	return platform->icons->icon(QDir::toNativeSeparators(item.icon));
+    }
 }
 
 void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults) {

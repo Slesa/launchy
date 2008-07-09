@@ -162,7 +162,6 @@ void PlatformUnix::alterItem(CatItem* item) {
 
     // Look for the executable in the path
     if (!QFile::exists(exe) && exe != "") {
-	bool foundPath = false;
 	foreach(QString line, QProcess::systemEnvironment()) {
 	    if (!line.startsWith("Path", Qt::CaseInsensitive)) 
 		continue;
@@ -173,12 +172,10 @@ void PlatformUnix::alterItem(CatItem* item) {
 		QString tmp = dir + "/" + exe;
 		if (QFile::exists(tmp)) {
 		    exe = tmp;
-		    foundPath = true;
 		    break;
 		}
 	    }
-	    if (foundPath)
-		break;
+	    break;
 	}
     }
 
@@ -186,25 +183,49 @@ void PlatformUnix::alterItem(CatItem* item) {
 
     // Look for the icon
     if (!QFile::exists(icon) && icon != "") {
-	
+	bool found = false;
+	QString iname = icon + ".png";
+	QString theme = "/hicolor/32x32";
+	QStringList dirs;
+	dirs += QDir::homePath() + "/.icons" + theme;
+	foreach(QString line, QProcess::systemEnvironment()) {
+	    if (!line.startsWith("XDG_DATA_DIRS", Qt::CaseInsensitive))
+		continue;
+	    QStringList spl = line.split("=");
+	    QStringList spl2 = spl[1].split(":");
+	    foreach(QString dir, spl2) {
+		dirs += dir + theme;	
+		dirs += dir + "/icons" + theme;
+	    }    
+	}
+
+	dirs += "/usr/share/pixmaps";
+
+	bool ifound = false;
+	foreach(QString dir, dirs) {
+	    QDir d(dir);
+	    QStringList sdirs;
+	    if (!dir.endsWith("pixmaps"))
+		sdirs = d.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+	    sdirs += "."; 
+
+	    foreach (QString subdir, sdirs) {
+		if (QFile::exists(dir + "/" + subdir + "/" +  iname)) {
+		    icon = dir + "/" + subdir + "/" + iname;
+		    ifound = true;
+		    break;
+		}
+	    }
+	    if (ifound)
+		break;
+	}
     }
-
     item->icon = icon;
-
-
-    
-
-
-    
-    
-
-
+	    
     file.close();
     return;
 }
 
-bool PlatformUnix::Execute(QString path, QString args) {
 
-}
 
 Q_EXPORT_PLUGIN2(platform_unix, PlatformUnix)

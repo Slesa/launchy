@@ -74,7 +74,6 @@ class PlatformUnix : public QObject, public PlatformBase
     void SetAlphaOpacity(double trans ) { if (alpha) alpha->SetAlphaOpacity(trans); }
 
     virtual void alterItem(CatItem*);
-    virtual bool Execute(QString path, QString args);
 };
 
 
