@@ -99,7 +99,7 @@ class QCharListWidget : public QListWidget
 	Q_OBJECT
 public:
     QCharListWidget(QWidget* parent = 0) : 
-    QListWidget(parent)
+    QListWidget(NULL)
 		{
 		    #ifdef Q_WS_X11
 		    setWindowFlags( windowFlags() |   Qt::Tool );
