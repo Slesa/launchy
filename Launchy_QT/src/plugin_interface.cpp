@@ -80,6 +80,7 @@ void runProgram(QString path, QString args) {
     QFileInfo info(path);
 
     QString toRun = path + " " + args;
+    toRun = toRun.simplified();
 
     // Try xdg-open first, which should spawn quickly
     /*
@@ -109,11 +110,13 @@ void runProgram(QString path, QString args) {
     r += path;
     r += args.trimmed().split(" ");
     */
-    QString r = "xdg-open \"" + path + " " + args + " \" 2>/dev/null || " + toRun;
+    QString r = "xdg-open \"" + toRun + "\" 2>/dev/null || " + toRun;
+
+    qDebug() << r.simplified();
     QStringList ra;
 
     ra += "-c";
-    ra += r;
+    ra += r.simplified();
     proc.startDetached("sh", ra);
 
     return;
