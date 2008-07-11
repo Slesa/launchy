@@ -109,8 +109,9 @@ void runProgram(QString path, QString args) {
     r += path;
     r += args.trimmed().split(" ");
     */
-    QString r = "xdg-open \"" + path + "\" " + args  + " 2>/dev/null || " + toRun;
+    QString r = "xdg-open \"" + path + " " + args + " \" 2>/dev/null || " + toRun;
     QStringList ra;
+
     ra += "-c";
     ra += r;
     proc.startDetached("sh", ra);
