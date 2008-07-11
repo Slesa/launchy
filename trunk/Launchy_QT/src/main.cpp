@@ -458,8 +458,9 @@ void MyWidget::doEnter()
 {
     if (dropTimer->isActive())
 	dropTimer->stop();
+
     if (searchResults.count() > 0 || inputData.count() > 1) 
-	launchObject();
+    	launchObject();
     hideLaunchy();
     
 }
@@ -646,7 +647,6 @@ void MyWidget::catalogBuilt() {
     //todo Do a search here of the current input text
     searchOnInput();
     updateDisplay();
-    qDebug() << "Catalog built!";
 }
 
 void MyWidget::checkForUpdate() {

@@ -82,6 +82,7 @@ void runProgram(QString path, QString args) {
     QString toRun = path + " " + args;
 
     // Try xdg-open first, which should spawn quickly
+    /*
     proc.start(QString("xdg-open"), QStringList(toRun.trimmed()));
     bool done = proc.waitForFinished(10000);
     int status = proc.exitCode();
@@ -94,7 +95,27 @@ void runProgram(QString path, QString args) {
 	proc.startDetached(path, largs);
 	return;
     }
+    */
 
+
+    // xdg-open <args> || <args>
+
+    /*
+    QStringList r;
+    r += "xdg-open";
+    r += path;
+    r += args.trimmed().split(" ");
+    r += "||";
+    r += path;
+    r += args.trimmed().split(" ");
+    */
+    QString r = "xdg-open \"" + path + "\" " + args  + " 2>/dev/null || " + toRun;
+    QStringList ra;
+    ra += "-c";
+    ra += r;
+    proc.startDetached("sh", ra);
+
+    return;
 }
 #endif
 
