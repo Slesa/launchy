@@ -205,6 +205,5 @@ public:
 	}
 	void SetAlphaOpacity(double trans) { if (alpha != NULL) alpha->SetAlphaOpacity(trans); }
 
-
 };
 #endif

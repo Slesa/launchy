@@ -8,12 +8,12 @@ QMAKE=qmake-qt4
 DEFS=SKINS_PATH=\\\"$(SKINS_PATH)\\\" PLUGINS_PATH=\\\"$(PLUGINS_PATH)\\\" \
 	PLATFORMS_PATH=\\\"$(PLATFORMS_PATH)\\\"
 
-DIRS=. platforms/gnome plugins/runner plugins/weby plugins/calcy plugins/gcalc
+DIRS=. platforms/unix plugins/runner plugins/weby plugins/calcy plugins/gcalc
 
 
 release:: 
 	$(DEFS) $(QMAKE) Launchy.pro && $(DEFS) make -f Makefile release
-	cd platforms/gnome && $(DEFS) $(QMAKE) gnome.pro && $(DEFS) make release
+	cd platforms/unix && $(DEFS) $(QMAKE) unix.pro && $(DEFS) make release
 	cd plugins/runner && $(QMAKE) runner.pro && make release
 	cd plugins/weby && $(QMAKE) weby.pro && make release
 	cd plugins/calcy && $(QMAKE) calcy.pro && make release
@@ -21,7 +21,6 @@ release::
 
 debug::
 	$(DEFS) $(QMAKE) Launchy.pro && $(DEFS) make -f Makefile debug
-#	cd platforms/gnome && $(DEFS) $(QMAKE) gnome.pro && $(DEFS) make debug
 	cd platforms/unix && $(DEFS) $(QMAKE) unix.pro && $(DEFS) make debug
 	cd plugins/runner && $(QMAKE) runner.pro && make debug
 	cd plugins/weby && $(QMAKE) weby.pro && make debug
@@ -30,7 +29,7 @@ debug::
 
 clean::
 	$(QMAKE) Launchy.pro && make -f Makefile clean
-	cd platforms/gnome && $(QMAKE) gnome.pro && $(DEFS) make clean
+	cd platforms/unix && $(QMAKE) unix.pro && $(DEFS) make clean
 	cd plugins/runner && $(QMAKE) runner.pro &&  make clean
 	cd plugins/weby && $(QMAKE) weby.pro &&  make clean
 	cd plugins/calcy && $(QMAKE) calcy.pro && make clean
@@ -40,7 +39,7 @@ install::
 	-install -d $(DESTDIR)$(PREFIX)/bin/
 	install -m 755 release/Launchy $(DESTDIR)$(PREFIX)/bin/launchy
 	-install -d $(DESTDIR)$(PLATFORMS_PATH)
-	install -m 644 release/libplatform_*.so $(DESTDIR)$(PLATFORMS_PATH)/
+	install -m 644 release/libplatform_unix.so $(DESTDIR)$(PLATFORMS_PATH)/
 	-install -d $(DESTDIR)$(PLUGINS_PATH)
 	install -m 644 release/plugins/*.so $(DESTDIR)$(PLUGINS_PATH)/ 
 	-install -d $(DESTDIR)$(PLUGINS_PATH)/icons

@@ -46,6 +46,7 @@ public:
 		return new QApplication(*argc, argv);
 	}
 
+	virtual QIcon icon(const QFileInfo & info) { return icons->icon(info); }
 	virtual QString GetSettingsDirectory() = 0;
 	virtual QList<Directory> GetInitialDirs() = 0;
 	virtual void AddToNotificationArea() = 0;

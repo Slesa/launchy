@@ -577,14 +577,15 @@ QIcon MyWidget::getIcon(CatItem & item) {
     
     if (item.icon.isNull()) {
 	QDir dir(item.fullPath);
-	if (dir.exists())
+	if (dir.exists()) 
 	    return platform->icons->icon(QFileIconProvider::Folder);
-	return platform->icons->icon(QDir::toNativeSeparators(item.fullPath));
+
+	return platform->icon(QDir::toNativeSeparators(item.fullPath));
     }
     else {
 	if (QFile::exists(item.icon))
 	    return QIcon(item.icon);
-	return platform->icons->icon(QDir::toNativeSeparators(item.icon));
+	return platform->icon(QDir::toNativeSeparators(item.icon));
     }
 }
 

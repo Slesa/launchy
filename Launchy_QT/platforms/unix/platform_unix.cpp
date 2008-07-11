@@ -23,15 +23,17 @@
 #include "platform_unix.h"
 
 
+
 PlatformUnix::PlatformUnix() : PlatformBase() 		
 {
     alpha = NULL;
+    icons = NULL;
 }
 
 QApplication* PlatformUnix::init(int* argc, char** argv)
 {        
     QApplication * app = new QApplication(*argc, argv);
-    icons = new QFileIconProvider();
+    icons = (QFileIconProvider *) new UnixIconProvider();
     return app;
 }
 
@@ -181,50 +183,17 @@ void PlatformUnix::alterItem(CatItem* item) {
 
     item->fullPath = exe;
 
-    // Look for the icon
-    if (!QFile::exists(icon) && icon != "") {
-	bool found = false;
-	QString iname = icon + ".png";
-	QString theme = "/hicolor/32x32";
-	QStringList dirs;
-	dirs += QDir::homePath() + "/.icons" + theme;
-	foreach(QString line, QProcess::systemEnvironment()) {
-	    if (!line.startsWith("XDG_DATA_DIRS", Qt::CaseInsensitive))
-		continue;
-	    QStringList spl = line.split("=");
-	    QStringList spl2 = spl[1].split(":");
-	    foreach(QString dir, spl2) {
-		dirs += dir + theme;	
-		dirs += dir + "/icons" + theme;
-	    }    
-	}
+    // Cache the icon for this desktop file
+    UnixIconProvider* u = (UnixIconProvider*) icons;
+    
+    icon = u->getDesktopIcon(file.fileName(), icon);
 
-	dirs += "/usr/share/pixmaps";
-
-	bool ifound = false;
-	foreach(QString dir, dirs) {
-	    QDir d(dir);
-	    QStringList sdirs;
-	    if (!dir.endsWith("pixmaps"))
-		sdirs = d.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
-	    sdirs += "."; 
-
-	    foreach (QString subdir, sdirs) {
-		if (QFile::exists(dir + "/" + subdir + "/" +  iname)) {
-		    icon = dir + "/" + subdir + "/" + iname;
-		    ifound = true;
-		    break;
-		}
-	    }
-	    if (ifound)
-		break;
-	}
-    }
     item->icon = icon;
-	    
+
     file.close();
     return;
 }
+
 
 
 
