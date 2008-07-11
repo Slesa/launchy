@@ -792,7 +792,6 @@ void MyWidget::updateTimeout() {
     if (gBuilder == NULL) {
 	gBuilder = new CatBuilder(false, &plugins);
 	gBuilder->setPreviousCatalog(catalog);
-	qDebug() << "Building catalog..";
 	connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 	gBuilder->start(QThread::IdlePriority);
     }
@@ -997,13 +996,22 @@ void MyWidget::applySkin(QString directory) {
     }
     
     // Set the background image
-    if (QFile::exists(directory + "/background.png")) {
+    if (!platform->SupportsAlphaBorder() && QFile::exists(directory + "/background_nc.png")) {
+	QPixmap image(directory + "/background_nc.png");
+	label->setPixmap(image);
+    }
+
+    else if (QFile::exists(directory + "/background.png")) {
 	QPixmap image(directory + "/background.png");
 	label->setPixmap(image);
     }
     
     // Set the background mask
-    if (QFile::exists(directory + "/mask.png")) {
+    if (!platform->SupportsAlphaBorder() && QFile::exists(directory + "/mask_nc.png")) {
+	QPixmap image(directory + "/mask_nc.png");
+	setMask(image);
+    } 
+    else if (QFile::exists(directory + "/mask.png")) {
 	QPixmap image(directory + "/mask.png");
 	// For some reason, w/ compiz setmask won't work
 	// for rectangular areas.  This is due to compiz and

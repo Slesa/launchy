@@ -511,9 +511,14 @@ void OptionsDlg::skinChanged(const QString newSkin) {
     // Set the image preview
     QPixmap pix;
     QString sDir(path + "/" + newSkin + "/");
-    
+        
     if (pix.load(sDir + "background.png")) {
-	pix.setMask(QPixmap(sDir + "mask.png"));
+	if (!main->platform->SupportsAlphaBorder() && QFile::exists(sDir + "background_nc.png"))
+	    pix.load(sDir + "background_nc.png");
+	if (!main->platform->SupportsAlphaBorder() && QFile::exists(sDir + "mask_nc.png"))
+	    pix.setMask(QPixmap(sDir + "mask_nc.png"));
+	else
+	    pix.setMask(QPixmap(sDir + "mask.png"));
 	
 	
 	if (main->platform->SupportsAlphaBorder()) {
