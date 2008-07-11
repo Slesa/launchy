@@ -110,15 +110,16 @@ void runProgram(QString path, QString args) {
     r += path;
     r += args.trimmed().split(" ");
     */
-    QString r = "xdg-open \"" + toRun + "\" 2>/dev/null || " + toRun;
+    QString r = toRun + " 2>/dev/null || xdg-open \"" + toRun + "\" 2>/dev/null";
+    //    QString r = "xdg-open \"" + toRun + "\" 2>/dev/null || " + toRun;
 
-    qDebug() << r.simplified();
+    //    qDebug() << r.simplified();
     QStringList ra;
 
     ra += "-c";
     ra += r.simplified();
     proc.startDetached("sh", ra);
-
+    //proc.execute("sh", ra);
     return;
 }
 #endif

@@ -51,7 +51,12 @@ void Process::httpGetFinished(bool error) {
 		QRegExp regex_res("<h2 class=r><font size=\\+1><b>(.*)</b></h2></td>", Qt::CaseInsensitive);
 //		qDebug() << result;
 		if (regex_res.indexIn(result) != -1) {
-			result = regex_res.cap(1);	
+		    QLocale locale;
+		    result = regex_res.cap(1);
+		    result = result.replace("<font size=-2> </font>",locale.groupSeparator());
+		    result = result.replace("<sup>",locale.exponential() + QString("("));
+			result = result.replace("</sup>",")");
+			result = result.replace("&#215;", "x");
 /*			QStringList spl = result.split("<b>");
 			spl = spl[1].split("</b>");
 			result = spl[0];
