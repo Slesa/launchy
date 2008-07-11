@@ -11,6 +11,16 @@ PlatformBase * loadPlatform()
     MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
     QList<QString> files;
     QString file;
+
+    #ifdef Q_WS_WIN
+    files += "/platform_win.dll";
+    #endif
+    #ifdef Q_WS_X11
+    files += "libplatform_unix.so";
+    files += QString(PLATFORMS_PATH) + "/libplatform_unix.so";
+    #endif
+
+    /*
     int desktop = getDesktop();
     if (desktop == DESKTOP_WINDOWS)
 	files += "/platform_win.dll";
@@ -23,6 +33,7 @@ PlatformBase * loadPlatform()
 	files += "libplatform_kde.so";
 	files += QString(PLATFORMS_PATH) + "/libplatform_kde.so";
     }
+    */
 
     QObject * plugin = NULL;
     foreach(QString file, files) {

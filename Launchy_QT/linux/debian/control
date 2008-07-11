@@ -7,7 +7,7 @@ Standards-Version: 3.7.2
 
 Package: launchy
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, xdg-utils
 Description: Open Source Keystroke Launcher
     Launchy is a free, cross-platform utility, designed 
     to help you forget about your start menu, the icons
