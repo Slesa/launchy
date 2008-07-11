@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dlg.ui'
 **
-** Created: Wed Jul 9 13:53:32 2008
+** Created: Thu Jul 10 17:40:13 2008
 **      by: Qt User Interface Compiler version 4.4.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!

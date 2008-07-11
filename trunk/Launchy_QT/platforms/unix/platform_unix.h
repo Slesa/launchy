@@ -73,6 +73,10 @@ class PlatformUnix : public QObject, public PlatformBase
     void HideAlphaBorder() { if (alpha) alpha->hide(); }
     void SetAlphaOpacity(double trans ) { if (alpha) alpha->SetAlphaOpacity(trans); }
 
+    QIcon icon(const QFileInfo& info) {
+	return ((UnixIconProvider*)icons)->getIcon(info); 
+    }
+
     virtual void alterItem(CatItem*);
 };
 
