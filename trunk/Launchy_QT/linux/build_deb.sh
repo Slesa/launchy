@@ -10,7 +10,7 @@ fi
 
 ver=$1
 
-rm -rf launchy*
+rm -rf launchy-*
 svn export ../ launchy-$ver
 tar cfz launchy-$ver.tar.gz launchy-$ver/
 cd launchy-$ver
