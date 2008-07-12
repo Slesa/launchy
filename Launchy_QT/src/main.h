@@ -220,6 +220,8 @@ public:
 	QChar sepChar();
 	QString printInput();
 	void processKey();
+
+
 private:
     QHttp *http;
     QBuffer *verBuffer;
