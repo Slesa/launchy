@@ -248,6 +248,7 @@ public slots:
 	void setFadeLevel(double);
 	void finishedFade(double d);
 	void menuEvent(QContextMenuEvent*);
+	void buildCatalog();
 };
 
 #endif

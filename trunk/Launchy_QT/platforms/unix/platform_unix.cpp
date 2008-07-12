@@ -141,7 +141,6 @@ void PlatformUnix::alterItem(CatItem* item) {
     QString exe = "";
     while(!file.atEnd()) {
 	QString line = file.readLine();
-
 	
 	if (line.startsWith("Name[" + locale, Qt::CaseInsensitive)) 
 	    name = line.split("=")[1].trimmed();
@@ -160,8 +159,10 @@ void PlatformUnix::alterItem(CatItem* item) {
 	item->lowName = item->shortName.toLower();
     }
 
+        
     exe = exe.trimmed().split(" ")[0];
 
+    /*
     // Look for the executable in the path
     if (!QFile::exists(exe) && exe != "") {
 	foreach(QString line, QProcess::systemEnvironment()) {
@@ -180,7 +181,7 @@ void PlatformUnix::alterItem(CatItem* item) {
 	    break;
 	}
     }
-
+    */
     item->fullPath = exe;
 
     // Cache the icon for this desktop file

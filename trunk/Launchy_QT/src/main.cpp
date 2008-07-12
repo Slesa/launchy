@@ -309,13 +309,7 @@ void MyWidget::launchObject() {
 		    menuOptions();
 		    break;
 		case MSG_CONTROL_REBUILD:
-		    // Perform the database update
-		    if (gBuilder == NULL) {
-			gBuilder = new CatBuilder(false, &plugins);
-			gBuilder->setPreviousCatalog(catalog);
-			connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
-			gBuilder->start(QThread::IdlePriority);
-		    }
+		    buildCatalog();
 		    break;
 		default:
 		    break;
@@ -1068,6 +1062,8 @@ void MyWidget::mouseMoveEvent(QMouseEvent *e)
 
 void MyWidget::contextMenuEvent(QContextMenuEvent *event) {
     QMenu menu(this);
+    QAction* actMenu = menu.addAction(tr("Rebuild Catalog"));
+    connect(actMenu, SIGNAL(triggered()), this, SLOT(buildCatalog()));
     QAction* actOptions = menu.addAction(tr("Options"));
     connect(actOptions, SIGNAL(triggered()), this, SLOT(menuOptions()));
     QAction* actExit = menu.addAction(tr("Exit"));
@@ -1077,6 +1073,15 @@ void MyWidget::contextMenuEvent(QContextMenuEvent *event) {
     menuOpen = false;
 }
 
+void MyWidget::buildCatalog() {
+    // Perform the database update
+    if (gBuilder == NULL) {
+	gBuilder = new CatBuilder(false, &plugins);
+	gBuilder->setPreviousCatalog(catalog);
+	connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+	gBuilder->start(QThread::IdlePriority);
+    }    
+}
 
 void MyWidget::menuOptions() {
     dropTimer->stop();
@@ -1097,6 +1102,8 @@ void MyWidget::menuOptions() {
     input->setFocus();	
     optionsOpen = false;
 }
+
+
 
 void MyWidget::shouldDonate() {
     QDateTime time = QDateTime::currentDateTime();
