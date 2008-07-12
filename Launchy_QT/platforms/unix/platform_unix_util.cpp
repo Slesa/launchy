@@ -8,6 +8,7 @@
 #include <QProcess>
 #include <QX11Info>
 
+//#include "../../src/main.h"
 
 AlphaBorder::AlphaBorder(QWidget * parent, QString file) : 
     //    QWidget(NULL, Qt::SplashScreen | Qt::Tool | Qt::FramelessWindowHint)
@@ -135,16 +136,29 @@ AlphaBorder::AlphaBorder(QWidget * parent, QString file) :
     memcpy(ColorBuffer, img.bits(), len);
     
     xmask->data=ColorBuffer;
-    activateWindow();
-    
+
 }
 
 
 void AlphaBorder::mousePressEvent(QMouseEvent * event) {
+    moveStartPoint = event->pos();
     if (underMouse()) {
 	p->activateWindow();
 	p->raise();	
     }
+}
+
+void AlphaBorder::mouseMoveEvent(QMouseEvent *e)
+{
+    
+    QPoint px = e->globalPos();
+    px -= moveStartPoint;
+    move(px);
+    p->move(px);    
+}
+
+void AlphaBorder::contextMenuEvent(QContextMenuEvent* evt) {
+    //   p->contextMenuEvent(evt);
 }
 
 void AlphaBorder::SetAlphaOpacity(double trans)

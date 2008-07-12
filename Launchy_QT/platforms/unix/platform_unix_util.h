@@ -20,10 +20,15 @@ QString alphaFile;
  AlphaBorder(QWidget * parent, QString);
  ~AlphaBorder();
  QWidget* p;
+ QPoint moveStartPoint;
+
     void paintEvent(QPaintEvent *);
     void SetAlphaOpacity(double trans);
+    
     //    QPaintEngine * paintEngine() { return 0; }
     void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *e);
+
     GC			gc;	// Target Painter
     GC                  gcback;
     XImage 		*xmask;	// Image informations
@@ -31,6 +36,8 @@ QString alphaFile;
     XGCValues		values;	// Setup GC
     uint 		width;
     uint 		height;
+
+    void contextMenuEvent(QContextMenuEvent* evt);
 };
 
 
