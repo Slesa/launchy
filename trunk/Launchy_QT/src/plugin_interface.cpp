@@ -124,6 +124,7 @@ void runProgram(QString path, QString args) {
 
     ra += "-c";
     ra += r.simplified();
+
     proc.startDetached("sh", ra);
     //proc.execute("sh", ra);
     return;
