@@ -50,8 +50,11 @@ install::
 	install -m 644 plugins/calcy/calcy.ico $(DESTDIR)$(PLUGINS_PATH)/icons/
 	-install -d $(DESTDIR)$(SKINS_PATH)
 	cp -r skins $(DESTDIR)$(PREFIX)/share/launchy/
+	install -d $(DESTDIR)$(DESKTOP_PATH)/
+	-install -d $(DSTDIR)$(DESKTOP_PATH2)/
 	-install -m 644 linux/launchy.desktop $(DESTDIR)$(DESKTOP_PATH2)/
 	install -m 644 linux/launchy.desktop $(DESTDIR)$(DESKTOP_PATH)/
+	install -d $(DESTDIR)$(ICON_PATH)/
 	-install -m 644 "misc/Launchy Icon/launchy_icon.png" $(DESTDIR)$(ICON_PATH)/launchy.png
 
 uninstall::
