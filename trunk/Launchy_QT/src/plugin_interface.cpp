@@ -119,7 +119,7 @@ void runProgram(QString path, QString args) {
     
     //QString r = "xdg-open \"" + toRun + "\" 2>/dev/null || " + toRun;
 
-    qDebug() << r.simplified();
+    //    qDebug() << r.simplified();
     QStringList ra;
 
     ra += "-c";
