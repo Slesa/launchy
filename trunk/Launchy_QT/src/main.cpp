@@ -206,7 +206,6 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
 
     #ifdef Q_WS_X11
         showLaunchy();
-	setHotkey(curMeta, curAction);
 	//	qDebug() << "Main says root is:" << QX11Info::appRootWindow();
 
     #endif

@@ -332,11 +332,10 @@ void QLaunchyAlphaBorder::SetAlphaOpacity(double trans)
 
 void QLaunchyAlphaBorder::mouseMoveEvent(QMouseEvent *e)
 {
-/*	QPoint p = e->globalPos();
-	p -= moveStartPoint;
-	move(p);
-	((MyWidget*)parentWidget())->MoveFromAlpha(p);
-	*/
+	QPoint px = e->globalPos();
+	px -= moveStartPoint;
+	move(px);
+	parentWidget()->move(px);
 }
 
 void QLaunchyAlphaBorder::contextMenuEvent(QContextMenuEvent *event) {
