@@ -81,51 +81,9 @@ void runProgram(QString path, QString args) {
 
     QString toRun = path + " " + args;
     toRun = toRun.simplified();
-
-    // Try xdg-open first, which should spawn quickly
-    /*
-    proc.start(QString("xdg-open"), QStringList(toRun.trimmed()));
-    bool done = proc.waitForFinished(10000);
-    int status = proc.exitCode();
-    
-    if (args.trimmed().size() > 0)
-	largs = args.trimmed().split(" ");
-
-    // If it couldn't handle it, see if we can
-    if (status > 0 && info.isExecutable()) {
-	proc.startDetached(path, largs);
-	return;
-    }
-    */
-
-
-    // xdg-open <args> || <args>
-
-    /*    
-    QStringList ra;
-    ra += "-c";
-    ra += path;
-    ra += args.trimmed().split(" ");
-    ra += " || ";
-    ra += "xdg-open";
-    ra += path;
-    ra += args.trimmed().split(" ");
-    ra += "||";
-    ra += path;
-    ra += args.trimmed().split(" ");
-    */
-
-    //WORKING ON BRINGING KDE WINDOW TO FOREGROUND
-
     
     QString r;
 
-
-    
-    //r = "\"" + path + "\" " + args + "  2>/dev/null || xdg-open \"" + toRun + "\" 2>/dev/null";	
-    
-
-    //r = "xdg-open \"" + toRun + "\" 2>/dev/null || \"" + path + "\" " + args;    
     r = "xdg-open \"" + path + "\" " + args + " 2>/dev/null || \"" + path + "\" " + args;
 
 
@@ -135,7 +93,7 @@ void runProgram(QString path, QString args) {
     ra += "-c";
     ra += r.simplified();
 
-    qDebug() << ra;
+    //    qDebug() << ra;
 
     // Firefox needs special treatment in KDE
     // else it falls behind a window
