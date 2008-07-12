@@ -330,17 +330,9 @@ void QLaunchyAlphaBorder::SetAlphaOpacity(double trans)
 }
 
 
-void QLaunchyAlphaBorder::mouseMoveEvent(QMouseEvent *e)
-{
-	QPoint px = e->globalPos();
-	px -= moveStartPoint;
-	move(px);
-	parentWidget()->move(px);
-}
 
-void QLaunchyAlphaBorder::contextMenuEvent(QContextMenuEvent *event) {
-	((MyWidget*)parentWidget())->contextMenuEvent(event);
-}
+
+
 /*
 void PlatformImp::Execute(QString path, QString args) {
 	SHELLEXECUTEINFO ShExecInfo;

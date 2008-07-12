@@ -46,6 +46,8 @@ public:
 		return new QApplication(*argc, argv);
 	}
 
+	virtual QWidget* getAlphaWidget() = 0;
+
 	virtual QIcon icon(const QFileInfo & info) { return icons->icon(info); }
 	virtual QString GetSettingsDirectory() = 0;
 	virtual QList<Directory> GetInitialDirs() = 0;
@@ -104,6 +106,8 @@ public:
 	    }
 	    return out;
 	}
+
+
 };
 
  Q_DECLARE_INTERFACE(PlatformBase,
