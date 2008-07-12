@@ -2,7 +2,8 @@ PREFIX=/usr
 SKINS_PATH=$(PREFIX)/share/launchy/skins
 PLUGINS_PATH=$(PREFIX)/lib/launchy/plugins
 PLATFORMS_PATH=$(PREFIX)/lib/launchy/
-
+DESKTOP_PATH=$(PREFIX)/share/applications
+ICON_PATH=$(PREFIX)/share/pixmaps
 QMAKE=qmake-qt4
 
 DEFS=SKINS_PATH=\\\"$(SKINS_PATH)\\\" PLUGINS_PATH=\\\"$(PLUGINS_PATH)\\\" \
@@ -48,12 +49,13 @@ install::
 	install -m 644 plugins/calcy/calcy.ico $(DESTDIR)$(PLUGINS_PATH)/icons/
 	-install -d $(DESTDIR)$(SKINS_PATH)
 	cp -r skins $(DESTDIR)$(PREFIX)/share/launchy/
-
-
-
+	install -m 644 linux/launchy.desktop $(DESTDIR)$(DESKTOP_PATH)/
+	-install -m 644 "misc/Launchy Icon/launchy_icon.png" $(DESTDIR)$(ICON_PATH)/launchy.png
 
 uninstall::
 	-rm $(PREFIX)/bin/launchy
 	-rm -rf $(PLUGINS_PATH)
 	-rm -rf $(PLATFORMS_PATH)
 	-rm -rf $(SKINS_PATH)
+	-rm $(DESTDIR)$(DESKTOP_PATH)/launchy.desktop
+	-rm $(DESTDIR)$(ICON_PATH)/launchy.png	

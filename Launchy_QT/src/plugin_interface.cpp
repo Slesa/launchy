@@ -79,9 +79,14 @@ void runProgram(QString path, QString args) {
     QStringList largs;
     QFileInfo info(path);
 
+
     QString toRun = path + " " + args;
     toRun = toRun.simplified();
     
+
+
+
+
     QString r;
 
     r = "xdg-open \"" + path + "\" " + args + " 2>/dev/null || \"" + path + "\" " + args;
