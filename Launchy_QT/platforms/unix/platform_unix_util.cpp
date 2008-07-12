@@ -253,11 +253,13 @@ QIcon UnixIconProvider::getIcon(const QFileInfo& info)
     
     QString desktop = mime2desktop[mimeType];
 
+    if (desktop == "")
+	return icon(QFileIconProvider::File);
 
     return QIcon(getDesktopIcon(desktop));
 }
 
-QString UnixIconProvider::getDesktopIcon(QString desktopFile, QString IconName) {
+QString UnixIconProvider::getDesktopIcon(QString desktopFile, QString IconName) {    
     if (QFile::exists(desktopFile)) 
 	desktopFile = desktopFile.mid(desktopFile.lastIndexOf("/")+1);	
     
@@ -287,7 +289,7 @@ QString UnixIconProvider::getDesktopIcon(QString desktopFile, QString IconName) 
 	    }
 	}
     }
-    
+
     if (IconName == "")
 	IconName = desktop2icon[desktopFile];
 
@@ -337,6 +339,7 @@ QString UnixIconProvider::getDesktopIcon(QString desktopFile, QString IconName) 
 		break;
 	}
     }	
-    
+
+
     return iconPath;
 }

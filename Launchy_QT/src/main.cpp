@@ -438,10 +438,10 @@ void MyWidget::doTab()
 		    path = info.symLinkTarget();
 		else
 		    path = searchResults[0].fullPath;
+
 		if (info.isDir() && !path.endsWith(QDir::toNativeSeparators("/"))) 
 		    path += QDir::toNativeSeparators("/");
 		    
-		
 		input->setText(printInput() + QDir::toNativeSeparators(path));
 	    } else {
 	    // Looking for a plugin
@@ -499,7 +499,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
     
     
     else {
-	if (key->key() == Qt::Key_Tab) {
+	if (key->key() == Qt::Key_Tab || key->key() == Qt::Key_Slash || key->key() == Qt::Key_Backslash) {
 	    doTab();
 	} else {
 	    key->ignore();	
@@ -599,8 +599,11 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
     if (path.startsWith("//")) return;
     
     QString dir, file;
-    dir = path.mid(0,path.lastIndexOf("/"));
+    dir = path.mid(0,path.lastIndexOf("/")+1);
     file = path.mid(path.lastIndexOf("/")+1);
+
+    //    qDebug() << "Path" << path << "Dir:" << dir << "File:" << file;
+    
     QFileInfo info(dir);
     if (!info.isDir()) return;
     
@@ -617,15 +620,22 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 	ilist = qd.entryList(QStringList(file + "*"), QDir::Hidden | QDir::AllDirs | QDir::Files, QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
     else
 	ilist = qd.entryList(QStringList(file + "*"), QDir::AllDirs | QDir::Files , QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
-    foreach(QString inf, ilist) {
+
+    
+    for(int i = ilist.size()-1; i >= 0; i--) {
+	QString inf = ilist[i];
+
 	if (inf.startsWith(".")) continue;
 	if (inf.mid(0, file.count()).compare(file,  Qt::CaseInsensitive) == 0) {
 	    QString fp = qd.absolutePath() + "/" + inf;
+	    fp = QDir::cleanPath(fp);
 	    QFileInfo in(fp);
 	    if (in.isDir())
 		fp += "/";
+	    
+	    
 	    CatItem item(QDir::toNativeSeparators(fp), inf);
-	    searchResults.push_back(item);
+	    searchResults.push_front(item);
 	}
     }
     return;
