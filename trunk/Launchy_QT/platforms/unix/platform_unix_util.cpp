@@ -25,7 +25,7 @@ AlphaBorder::AlphaBorder(QWidget * parent, QString file) :
     setAttribute(Qt::WA_PaintOnScreen);
     setAttribute(Qt::WA_OpaquePaintEvent);
     setAttribute(Qt::WA_NoSystemBackground);
-    setEnabled(false);
+    //    setEnabled(false);
     
     Display *d;
     int s;
@@ -92,6 +92,8 @@ AlphaBorder::AlphaBorder(QWidget * parent, QString file) :
                       InputOutput, visual,
                       CWBackPixel|CWBorderPixel|CWColormap,
                       &swa);
+
+
     /*
       w = XCreateWindow(d, parent->winId() , 10, 10, 100, 500, 0, 32,
       InputOutput, visual,
@@ -109,8 +111,8 @@ AlphaBorder::AlphaBorder(QWidget * parent, QString file) :
     
     
     create(w, true, true);
-    
-    
+
+        
     
 
     //    values.foreground = 0x00000000L;
@@ -133,19 +135,18 @@ AlphaBorder::AlphaBorder(QWidget * parent, QString file) :
     memcpy(ColorBuffer, img.bits(), len);
     
     xmask->data=ColorBuffer;
+    activateWindow();
     
 }
 
-/*
-  void AlphaBorder::mousePressEvent(QMouseEvent * event) {
-  if (underMouse()) {
-  qDebug() << "Under mouse!";
-  //p->activateWindow();
-  stackUnder(p);
-  //        lower();
-  }
-  }
-*/
+
+void AlphaBorder::mousePressEvent(QMouseEvent * event) {
+    if (underMouse()) {
+	p->activateWindow();
+	p->raise();	
+    }
+}
+
 void AlphaBorder::SetAlphaOpacity(double trans)
 {
     setWindowOpacity(trans);
@@ -161,8 +162,8 @@ void AlphaBorder::paintEvent(QPaintEvent * e)
     int h=rect.height();
     
     XPutImage(QX11Info::display(), winId(), gc, xmask, l,t,l,t,w,h);
-    
-    //    XPutImage(QX11Info::display(), winId(), gc, xmask, 0,0,0,0,width,height);
+    //    p->activateWindow();
+    //p->raise();
 }
 
 
