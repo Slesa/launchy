@@ -101,19 +101,25 @@ void runProgram(QString path, QString args) {
 
     // xdg-open <args> || <args>
 
-    /*
-    QStringList r;
-    r += "xdg-open";
-    r += path;
-    r += args.trimmed().split(" ");
-    r += "||";
-    r += path;
-    r += args.trimmed().split(" ");
+    /*    
+    QStringList ra;
+    ra += "-c";
+    ra += path;
+    ra += args.trimmed().split(" ");
+    ra += " || ";
+    ra += "xdg-open";
+    ra += path;
+    ra += args.trimmed().split(" ");
+    ra += "||";
+    ra += path;
+    ra += args.trimmed().split(" ");
     */
-    QString r = toRun + " 2>/dev/null || xdg-open \"" + toRun + "\" 2>/dev/null";
-    //    QString r = "xdg-open \"" + toRun + "\" 2>/dev/null || " + toRun;
+    QString r = "\"" + toRun + "\" 2>/dev/null || xdg-open \"" + toRun + "\" 2>/dev/null";
 
-    //    qDebug() << r.simplified();
+    
+    //QString r = "xdg-open \"" + toRun + "\" 2>/dev/null || " + toRun;
+
+    qDebug() << r.simplified();
     QStringList ra;
 
     ra += "-c";
