@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "plugin_interface.h"
 #include <QProcess>
 #include <QDebug>
-
+#include <QLocale>
 
 
 /*! \file
@@ -114,10 +114,20 @@ void runProgram(QString path, QString args) {
     ra += path;
     ra += args.trimmed().split(" ");
     */
-    QString r = "\"" + path + "\" " + args + "  2>/dev/null || xdg-open \"" + toRun + "\" 2>/dev/null";
+
+    //WORKING ON BRINGING KDE WINDOW TO FOREGROUND
 
     
-    //QString r = "xdg-open \"" + toRun + "\" 2>/dev/null || " + toRun;
+    QString r;
+
+
+    
+    //r = "\"" + path + "\" " + args + "  2>/dev/null || xdg-open \"" + toRun + "\" 2>/dev/null";	
+    
+
+    //r = "xdg-open \"" + toRun + "\" 2>/dev/null || \"" + path + "\" " + args;    
+    r = "xdg-open \"" + path + "\" " + args + " 2>/dev/null || \"" + path + "\" " + args;
+
 
     //    qDebug() << r.simplified();
     QStringList ra;
@@ -125,9 +135,135 @@ void runProgram(QString path, QString args) {
     ra += "-c";
     ra += r.simplified();
 
-    proc.startDetached("sh", ra);
+    qDebug() << ra;
+
+    // Firefox needs special treatment in KDE
+    // else it falls behind a window
+    if (path.contains("http://",Qt::CaseInsensitive) ||
+	path.contains("firefox",Qt::CaseInsensitive)) {
+	proc.execute("sh",ra);
+    } else {
+	proc.startDetached("sh",ra);
+    }
+
     //proc.execute("sh", ra);
+    
     return;
 }
+
+
+
+
+
+
+
+
+
+
+
+/*
+void runProgram(QString path, QString args) {
+    // My own launcher..
+    QString mimetype;
+    QString locale = QLocale::system().name();
+    if (path.startsWith("http", Qt::CaseInsensitive))
+	mimetype = "text/html";
+    if (mimetype == "") {
+
+	QProcess proc;
+	
+	QStringList args;
+	args += "query";
+	args += "filetype";
+	args += path;
+	proc.setReadChannel(QProcess::StandardOutput);
+	proc.start(QString("xdg-mime"),args);
+	proc.waitForFinished(10000);
+	mimetype = proc.readAll().trimmed();
+	proc.close();
+    }
+
+    // Get the default app for the mime-type
+    QString defapp;
+    if (mimetype.startsWith("application", Qt::CaseInsensitive))
+	defapp = path;
+
+    if (mimetype == "")
+	defapp = path;
+
+    if (defapp == "") {
+	QProcess proc;
+	QStringList args;
+	args += "query";
+	args += "default";
+	args += mimetype;
+	proc.start(QString("xdg-mime"),args);
+	proc.waitForFinished(10000);
+	QString desk = proc.readAll().trimmed();
+	if (desk == "")
+	    defapp = path;
+	else {
+	    QString icon;
+	    QString name;
+	    // Read the .desktop file
+	    const char *dirs[] = { "/usr/share/applications/",
+				   "/usr/local/share/applications/",
+				   "/usr/share/gdm/applications/",
+				   "/usr/share/applications/kde/",
+				   "~/.local/share/applications/"};
+	    for(int i = 0; i < 5; i++) {
+		QString dir = dirs[i];
+		QString path = dir + "/" + desk;
+		
+		if (QFile::exists(path)) {
+		    QFile file(path);
+		    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) 
+			break;
+		    while(!file.atEnd()) {
+			QString line = file.readLine();
+			if (line.startsWith("Exec", Qt::CaseInsensitive)) {
+			    defapp = line.split("=")[1].trimmed();
+			}
+			else if (line.startsWith("Icon",Qt::CaseInsensitive))
+			    icon = line.split("=")[1].trimmed();
+			else if (line.startsWith("Name",Qt::CaseInsensitive)) {
+			    if (line.startsWith("Name[" + locale, Qt::CaseInsensitive))
+				name = line.split("=")[1].trimmed();
+			    else if (!line.contains("["))
+				name = line.split("=")[1].trimmed();
+			    
+			}
+		    }
+		    defapp.replace("%k", path);
+		    break;
+		}
+	    }	    
+	    defapp.replace("%u", "\"" + path + "\"");
+	    defapp.replace("%U", "\"" + path + "\"");
+	    defapp.replace("%f", "\"" + path + "\"");
+	    defapp.replace("%F", "\"" + path + "\"");
+	    defapp.replace("%i", "--icon " + icon);
+	    defapp.replace("%c", name);
+	}
+    }
+    
+
+
+    //    qDebug() << mimetype << defapp;
+    QString toRun = defapp + " " + args;
+    QStringList largs = toRun.simplified().split(" ", QString::SkipEmptyParts);
+    
+    qDebug() << largs;
+    QProcess proc;
+
+    QString exec = largs[0];
+    largs.removeFirst();
+    qDebug() << exec << largs.join(" ");
+    proc.startDetached(exec, QStringList(largs.join(" ")));
+
+    //proc.startDetached(exec, largs);
+    return;
+}
+*/
 #endif
 
