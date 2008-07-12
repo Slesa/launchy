@@ -80,6 +80,16 @@ void runProgram(QString path, QString args) {
     QFileInfo info(path);
 
 
+    if (path.contains("%")) {
+	path.replace("%u", args);
+	path.replace("%U", args);
+	path.replace("%f", args);
+	path.replace("%F", args);
+	path.replace("%c", path.split(" ")[0]);
+	path.replace("%k", path.split(" ")[0]);
+	args = "";
+    } 
+
     QString toRun = path + " " + args;
     toRun = toRun.simplified();
     
@@ -87,9 +97,13 @@ void runProgram(QString path, QString args) {
 
 
 
+
+
     QString r;
 
-    r = "xdg-open \"" + path + "\" " + args + " 2>/dev/null || \"" + path + "\" " + args;
+    r = "xdg-open \"" + path + "\" " + args + " 2>/dev/null || sh -c \"" + path + "\" " + args;
+
+    //    r = "xdg-open " + path + " " + args + " 2>/dev/null || sh -c " + path + " " + args;
 
 
     //    qDebug() << r.simplified();
@@ -98,7 +112,6 @@ void runProgram(QString path, QString args) {
     ra += "-c";
     ra += r.simplified();
 
-    //    qDebug() << ra;
 
     // Firefox needs special treatment in KDE
     // else it falls behind a window

@@ -52,7 +52,7 @@ QList<Directory> PlatformUnix::GetInitialDirs() {
 			   "~/.local/share/applications/"};
     QStringList l;
     l << "*.desktop";
-
+    
     for(int i = 0; i < 5; i++)
 	list.append(Directory(dirs[i],l,false,false,100));
 
@@ -160,7 +160,12 @@ void PlatformUnix::alterItem(CatItem* item) {
     }
 
         
-    exe = exe.trimmed().split(" ")[0];
+    QStringList allExe = exe.trimmed().split(" ",QString::SkipEmptyParts);
+    if (allExe.size() == 0)
+	return;
+    exe = allExe[0];
+    allExe.removeFirst();
+    //    exe = exe.trimmed().split(" ")[0];
 
     
     // Look for the executable in the path
@@ -182,7 +187,8 @@ void PlatformUnix::alterItem(CatItem* item) {
 	}
     }
     
-    item->fullPath = exe;
+    
+    item->fullPath = exe + " " + allExe.join(" ");
 
     // Cache the icon for this desktop file
     UnixIconProvider* u = (UnixIconProvider*) icons;
