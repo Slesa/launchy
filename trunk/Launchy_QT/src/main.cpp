@@ -374,10 +374,10 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 	}
     }
     else {
-	alternatives->hide();
-	
-	this->activateWindow();
+	activateWindow();
+	raise();
 	input->setFocus();
+	alternatives->hide();	
 	key->ignore();
     }
 }

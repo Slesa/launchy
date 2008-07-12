@@ -162,7 +162,7 @@ void PlatformUnix::alterItem(CatItem* item) {
         
     exe = exe.trimmed().split(" ")[0];
 
-    /*
+    
     // Look for the executable in the path
     if (!QFile::exists(exe) && exe != "") {
 	foreach(QString line, QProcess::systemEnvironment()) {
@@ -181,7 +181,7 @@ void PlatformUnix::alterItem(CatItem* item) {
 	    break;
 	}
     }
-    */
+    
     item->fullPath = exe;
 
     // Cache the icon for this desktop file
