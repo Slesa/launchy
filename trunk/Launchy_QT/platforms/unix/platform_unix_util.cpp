@@ -13,7 +13,13 @@ AlphaBorder::AlphaBorder(QWidget * parent, QString file) :
     //    QWidget(NULL, Qt::SplashScreen | Qt::Tool | Qt::FramelessWindowHint)
     QWidget(NULL,  Qt::Tool | Qt::FramelessWindowHint)
 {
+
     p = parent;
+
+
+    //    stackUnder(parent);
+    //setFocusPolicy(Qt::NoFocus);
+    //    setFocusProxy(parent);
     // This stops a bunch of XCopyArea problems
     // Note that you need to override and return 0 for paintEngine()
     setAttribute(Qt::WA_PaintOnScreen);
@@ -127,6 +133,7 @@ AlphaBorder::AlphaBorder(QWidget * parent, QString file) :
     memcpy(ColorBuffer, img.bits(), len);
     
     xmask->data=ColorBuffer;
+    
 }
 
 /*
@@ -163,7 +170,7 @@ void AlphaBorder::paintEvent(QPaintEvent * e)
 AlphaBorder::~AlphaBorder()
 {
     
-    
+    //    p->setParent(NULL);
     /*
       qDebug() << "Destroying alpha border";
       XDestroyWindow(QX11Info::display(),winId());

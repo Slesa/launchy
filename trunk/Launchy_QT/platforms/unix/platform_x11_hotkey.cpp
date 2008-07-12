@@ -20,12 +20,11 @@
 #include "platform_base_hotkey.h"
 #include "platform_base_hottrigger.h"
 
-
 #include <QWidget>
 #include <QX11Info>
 #include <QKeyEvent>
 #include <QCoreApplication>
-
+#include <QDebug>
 
 #include <X11/X.h>
 #include <X11/Xlib.h>
@@ -283,8 +282,10 @@ private:
 
                 failed = false;
                 XErrorHandler savedErrorHandler = XSetErrorHandler(XGrabErrorHandler);
-                WId w = QX11Info::appRootWindow();
-                foreach(long mask_mod, X11KeyTriggerManager::ignModifiersList()) {
+
+		WId w = QX11Info::appRootWindow();
+		//		qDebug() << "X11 hotkey says root is:" << w;
+		foreach(long mask_mod, X11KeyTriggerManager::ignModifiersList()) {
                         XGrabKey(QX11Info::display(), code, mod | mask_mod, w, False, GrabModeAsync, GrabModeAsync);
                         GrabbedKey grabbedKey;
                         grabbedKey.code = code;
