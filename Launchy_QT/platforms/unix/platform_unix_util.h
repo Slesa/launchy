@@ -34,6 +34,7 @@ QString alphaFile;
 };
 
 
+
 class UnixIconProvider : public QFileIconProvider
 {
  private:
