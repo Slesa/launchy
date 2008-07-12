@@ -280,8 +280,9 @@ void MyWidget::showAlternatives(bool show) {
 	alternatives->setWindowOpacity(opaqueness);
 	alternatives->show();
 	qApp->syncX();
-	alternatives->raise();
-	
+	alternatives->raise();	
+    } else {
+	alternatives->hide();
     }
 }
 
@@ -1027,15 +1028,29 @@ void MyWidget::applySkin(QString directory) {
     // Set the alpha background    
     if (QFile::exists(directory + "/alpha.png") && platform->SupportsAlphaBorder()) {
 	platform->CreateAlphaBorder(this, directory + "/alpha.png");
+	connectAlpha();
 	platform->MoveAlphaBorder(pos());
     }
     
 }
 
 
+void MyWidget::connectAlpha()
+{
+    QWidget* w = platform->getAlphaWidget();
+    if (!w) return;
+    connect(w, SIGNAL(menuEvent(QContextMenuEvent*)), this, SLOT(menuEvent(QContextMenuEvent*)));
+    connect(w, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
+    connect(w, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
+}
+
 
 void MyWidget::mousePressEvent(QMouseEvent *e)
 {
+    //alternatives->hide();
+    activateWindow();
+    raise();
+    showAlternatives(false);
     moveStartPoint = e->pos();
 }
 
@@ -1047,7 +1062,6 @@ void MyWidget::mouseMoveEvent(QMouseEvent *e)
     platform->MoveAlphaBorder(p);
     showAlternatives(false);
     input->setFocus();
-    
 }
 
 
@@ -1184,6 +1198,7 @@ void MyWidget::showLaunchy(bool now) {
     move(loadPosition());
 #ifdef Q_WS_WIN
     platform->CreateAlphaBorder(this, "");
+    connectAlpha();
 #endif
     platform->MoveAlphaBorder(pos());
     

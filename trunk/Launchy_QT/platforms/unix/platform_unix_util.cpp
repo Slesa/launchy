@@ -139,7 +139,7 @@ AlphaBorder::AlphaBorder(QWidget * parent, QString file) :
 
 }
 
-
+/*
 void AlphaBorder::mousePressEvent(QMouseEvent * event) {
     moveStartPoint = event->pos();
     if (underMouse()) {
@@ -149,17 +149,14 @@ void AlphaBorder::mousePressEvent(QMouseEvent * event) {
 }
 
 void AlphaBorder::mouseMoveEvent(QMouseEvent *e)
-{
-    
+{    
     QPoint px = e->globalPos();
     px -= moveStartPoint;
     move(px);
     p->move(px);    
 }
+*/
 
-void AlphaBorder::contextMenuEvent(QContextMenuEvent* evt) {
-    //   p->contextMenuEvent(evt);
-}
 
 void AlphaBorder::SetAlphaOpacity(double trans)
 {

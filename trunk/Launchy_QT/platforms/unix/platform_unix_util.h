@@ -26,8 +26,12 @@ QString alphaFile;
     void SetAlphaOpacity(double trans);
     
     //    QPaintEngine * paintEngine() { return 0; }
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *event) {
+	emit mousePress(event);
+    }
+    void mouseMoveEvent(QMouseEvent *e) {
+	emit mouseMove(e);
+    }
 
     GC			gc;	// Target Painter
     GC                  gcback;
@@ -37,7 +41,14 @@ QString alphaFile;
     uint 		width;
     uint 		height;
 
-    void contextMenuEvent(QContextMenuEvent* evt);
+    void contextMenuEvent(QContextMenuEvent* evt) {
+	emit menuEvent(evt);
+    }
+
+ signals:
+    void menuEvent(QContextMenuEvent*);
+    void mousePress(QMouseEvent*);
+    void mouseMove(QMouseEvent*);
 };
 
 

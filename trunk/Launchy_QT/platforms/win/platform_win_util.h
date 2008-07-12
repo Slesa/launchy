@@ -116,15 +116,22 @@ public:
 	void RepositionWindow(QPoint pos) {
 		move(pos);
 	}
-	void contextMenuEvent(QContextMenuEvent *event);
-	void QLaunchyAlphaBorder::mousePressEvent(QMouseEvent *e)
-	{
-		moveStartPoint = e->pos();
-	}
 
-	void QLaunchyAlphaBorder::mouseMoveEvent(QMouseEvent *e);
 	void SetAlphaOpacity(double trans);
-
+	void contextMenuEvent(QContextMenuEvent* evt) {
+	    emit menuEvent(evt);
+	}
+	
+	void mousePressEvent(QMouseEvent *event) {
+	    emit mousePress(event);
+	}
+	void mouseMoveEvent(QMouseEvent *e) {
+	    emit mouseMove(e);
+	}
+ signals:
+	void menuEvent(QContextMenuEvent*);
+	void mousePress(QMouseEvent*);
+	void mouseMove(QMouseEvent*);
 };
 
 #endif

@@ -99,7 +99,7 @@ class QCharListWidget : public QListWidget
 	Q_OBJECT
 public:
     QCharListWidget(QWidget* parent = 0) : 
-    QListWidget(parent)
+    QListWidget(NULL)
 		{
 		    #ifdef Q_WS_X11
 		    setWindowFlags( windowFlags() |   Qt::Tool );
@@ -187,9 +187,8 @@ public:
 	IconDelegate* listDelegate;
 	QAbstractItemDelegate * defaultDelegate;
 
+	void connectAlpha();
 	QIcon getIcon(CatItem & item);
-	void mousePressEvent(QMouseEvent *e);
-	void mouseMoveEvent(QMouseEvent *e);
 	void MoveFromAlpha(QPoint pos);
 	void applySkin(QString);
 	void contextMenuEvent(QContextMenuEvent *event);
@@ -235,6 +234,8 @@ public slots:
 	void setAlwaysShow(bool);
 	void setAlwaysTop(bool);
 	void setPortable(bool);
+	void mousePressEvent(QMouseEvent *e);
+	void mouseMoveEvent(QMouseEvent *e);
 	void setSkin(QString, QString);
 	void httpGetFinished(bool result);
 	void catalogBuilt();

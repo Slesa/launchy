@@ -63,6 +63,10 @@ class PlatformUnix : public QObject, public PlatformBase
     }
     
 
+    QWidget* getAlphaWidget() {
+	return alpha;
+    }
+
     virtual QHash<QString, QList<QString> > GetDirectories();
 
     bool SupportsAlphaBorder();
@@ -78,6 +82,7 @@ class PlatformUnix : public QObject, public PlatformBase
     }
 
     virtual void alterItem(CatItem*);
+
 };
 
 
