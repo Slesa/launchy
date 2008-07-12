@@ -114,7 +114,7 @@ void runProgram(QString path, QString args) {
     ra += path;
     ra += args.trimmed().split(" ");
     */
-    QString r = "\"" + toRun + "\" 2>/dev/null || xdg-open \"" + toRun + "\" 2>/dev/null";
+    QString r = "\"" + path + "\" " + args + "  2>/dev/null || xdg-open \"" + toRun + "\" 2>/dev/null";
 
     
     //QString r = "xdg-open \"" + toRun + "\" 2>/dev/null || " + toRun;
