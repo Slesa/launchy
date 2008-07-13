@@ -862,6 +862,7 @@ void MyWidget::aboutToQuit() {
 }
 
 void MyWidget::closeEvent(QCloseEvent *event) {
+    qDebug() << "In cose event";
 	//	gSettings->setValue("Display/pos", relativePosition());
 /*	qDebug() << "In close event";
 	savePosition();
