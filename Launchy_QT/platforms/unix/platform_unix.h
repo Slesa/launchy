@@ -26,6 +26,13 @@
 
 #include <QX11Info>
 
+
+/*
+  This QAPP scans all x events for keypresses
+  and sends them off to the hotkey manager
+*/
+
+
 class MyApp : public QApplication {
     Q_OBJECT
     public:
