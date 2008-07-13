@@ -172,6 +172,11 @@ void WebyPlugin::getLabels(QList<InputData>* id)
 
 void WebyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 {
+    // If we don't have any results, add default
+    if (id->count() == 0 && id->first().getTopResult().lowName == "") {
+	
+    }
+
 	if (id->last().hasLabel(HASH_WEBSITE)) {
 		const QString & text = id->last().getText();
 		// This is a website, create an entry for it
@@ -183,6 +188,7 @@ void WebyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 		// This is user search text, create an entry for it
 		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
 	}
+
 }
 
 #ifdef Q_WS_WIN
