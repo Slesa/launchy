@@ -96,11 +96,16 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 
     int skinRow = 0;
 
+    QHash<QString, bool> knownSkins;
+
     foreach(QString szDir, main->dirs["skins"]) {
 	QDir dir(szDir);
 	QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
 
 	foreach(QString d, dirs) {
+	    if (knownSkins.contains(d))
+		continue;
+	    knownSkins[d] = true;
 
 	    QFile f(dir.absolutePath() + "/" + d + "/misc.txt");
 	    // Only look for 2.0+ skins
@@ -109,6 +114,8 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 	    QListWidgetItem * item = new QListWidgetItem(d);
 	    item->setData(Qt::UserRole, szDir);
 	    skinList->addItem(item);
+
+	    
 	    
 	    if (skinName.compare(szDir + "/" + d, Qt::CaseInsensitive) == 0)
 		skinRow = skinList->count() - 1;
