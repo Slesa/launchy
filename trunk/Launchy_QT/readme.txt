@@ -10,11 +10,17 @@ Linux Issues:
 
 
 To be done for 2.1 Linux:
-. Need to set default search engine in weby
-. Need to set directories
+. Make a man page
+. Fix hotkey on startup issue
 
 To be done for 2.1 Windows:
 . Create rescue shortcut
+
+To be done for 2.1 for both:
+. Add Firefox3 stuff to readme
+
+
+
 
 2.0+:
 . Add memory for runny/launchy (rebuild/exit/etc..)
