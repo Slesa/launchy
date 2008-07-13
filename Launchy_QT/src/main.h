@@ -108,7 +108,7 @@ public:
     QListWidget(NULL)
 		{
 		    #ifdef Q_WS_X11
-		    setWindowFlags( windowFlags() |   Qt::Tool );
+		    setWindowFlags( windowFlags() |   Qt::Tool | Qt::SplashScreen);
 		    #endif
 			setAttribute(Qt::WA_AlwaysShowToolTips);
 			
