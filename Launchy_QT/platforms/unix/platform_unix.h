@@ -24,7 +24,21 @@
 #include "platform_base_hotkey.h"
 #include "platform_base_hottrigger.h"
 
+#include <QX11Info>
 
+class MyApp : public QApplication {
+    Q_OBJECT
+    public:
+	MyApp(int argc, char** argv) : QApplication(argc,argv) {}
+	bool x11EventFilter ( XEvent * event ) {
+	    if (event->type == KeyPress) {
+		emit xkeyPressed(event);
+	    }
+	return false;
+    }    
+signals:
+    void xkeyPressed(XEvent*);
+};
 
 class PlatformUnix : public QObject, public PlatformBase 
 {

@@ -20,6 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef MAIN_H
 #define MAIN_H
 
+
+
 #include <QWidget>
 #include <QLabel>
 #include <QLineEdit>
@@ -35,6 +37,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "catalog_builder.h"
 #include "icon_delegate.h"
 #include "globals.h"
+
+
+
+
 
 class QLineEditMenu : public QLineEdit
 {
@@ -219,7 +225,6 @@ public:
 	QChar sepChar();
 	QString printInput();
 	void processKey();
-
 
 private:
     QHttp *http;

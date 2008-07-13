@@ -47,6 +47,7 @@
 #include "dsingleapplication.h"
 #include "plugin_interface.h"
 
+
 MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
     :  updateTimer(NULL), dropTimer(NULL), alternatives(NULL), platform(plat),
 #ifdef Q_WS_WIN
@@ -206,6 +207,8 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
 
     #ifdef Q_WS_X11
         showLaunchy();
+
+	//	showAlternatives(false);
 	//	qDebug() << "Main says root is:" << QX11Info::appRootWindow();
 
     #endif
@@ -697,6 +700,8 @@ void MyWidget::httpGetFinished(bool error) {
     delete verBuffer;
     delete counterBuffer;
 }
+
+
 
 void MyWidget::setSkin(QString dir, QString name) {
     

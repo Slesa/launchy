@@ -173,8 +173,6 @@ void AlphaBorder::paintEvent(QPaintEvent * e)
     int h=rect.height();
     
     XPutImage(QX11Info::display(), winId(), gc, xmask, l,t,l,t,w,h);
-    //    p->activateWindow();
-    //p->raise();
 }
 
 
@@ -182,7 +180,6 @@ void AlphaBorder::paintEvent(QPaintEvent * e)
 AlphaBorder::~AlphaBorder()
 {
     
-    //    p->setParent(NULL);
     /*
       qDebug() << "Destroying alpha border";
       XDestroyWindow(QX11Info::display(),winId());
