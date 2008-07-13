@@ -58,6 +58,7 @@ public:
 	void launchItem(QList<InputData>*, CatItem*);
 	void doDialog(QWidget* parent, QWidget**);
 	void endDialog(bool accept);
+	WebySite getDefault();
 	void init();
 	QString getFirefoxPath();
 	void indexFirefox(QString path, QList<CatItem>* items);

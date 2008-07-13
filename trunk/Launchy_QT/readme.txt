@@ -23,6 +23,8 @@ To be done for 2.1 Windows:
 
 
 Done for 2.1:
+. Added default search
+. Better file browsing (/ and \ now tab complete)
 . Added rescue mode (new shortcut in start menu)
 . Fixed the database update timer
 . Limited the transparency to a minimum of 15%

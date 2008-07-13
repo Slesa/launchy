@@ -36,7 +36,7 @@ clean::
 	cd plugins/calcy && $(QMAKE) calcy.pro && make clean
 	cd plugins/gcalc && $(QMAKE) gcalc.pro &&  make clean
 
-install::
+install:: release
 	-install -d $(DESTDIR)$(PREFIX)/bin/
 	install -m 755 release/Launchy $(DESTDIR)$(PREFIX)/bin/launchy
 	-install -d $(DESTDIR)$(PLATFORMS_PATH)

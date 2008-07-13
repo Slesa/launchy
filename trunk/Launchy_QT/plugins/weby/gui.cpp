@@ -44,11 +44,19 @@ Gui::Gui(QWidget* parent)
 	int count = settings->beginReadArray("weby/sites");
 	table->setRowCount(count);
 
+
+
 	for(int i = 0; i < count; ++i) {
 		settings->setArrayIndex(i);
 		table->setItem(i, 0, new QTableWidgetItem(settings->value("name").toString()));
 		table->setItem(i, 1, new QTableWidgetItem(settings->value("base").toString()));
 		table->setItem(i, 2, new QTableWidgetItem(settings->value("query").toString()));
+		bool isDef = settings->value("default",false).toBool();
+		if (isDef) {
+		    defaultName = settings->value("name").toString();
+		    label_default->setText(defaultName);
+		}
+
 		table->verticalHeader()->resizeSection(i, table->verticalHeader()->fontMetrics().height() + ROW_PADDING);
 	}
 	settings->endArray();
@@ -58,6 +66,7 @@ Gui::Gui(QWidget* parent)
 
 	connect(tableNew, SIGNAL(clicked(bool)), this, SLOT(newRow(void)));
 	connect(tableRemove, SIGNAL(clicked(bool)), this, SLOT(remRow(void)));
+	connect(pushDefault, SIGNAL(clicked(bool)), this, SLOT(makeDefault(void)));
 }
 
 void Gui::writeOptions()
@@ -77,7 +86,12 @@ void Gui::writeOptions()
 		if (table->item(i,2) == NULL)
 			settings->setValue("query", "");
 		else
-			settings->setValue("query", table->item(i, 2)->text());
+			settings->setValue("query", table->item(i, 2)->text());		
+		if (table->item(i,0)->text() == defaultName)
+		    settings->setValue("default", true);
+		else
+		    settings->setValue("default", false);
+		
 	}
 	settings->endArray();
 }
@@ -93,4 +107,14 @@ void Gui::remRow()
 {
 	if (table->currentRow() != -1)
 		table->removeRow(table->currentRow());
+}
+
+void Gui::makeDefault()
+{
+    int row = table->currentRow();
+    if (row == -1)
+	return;
+
+    defaultName = table->item(row,0)->text();
+    label_default->setText(defaultName);
 }
