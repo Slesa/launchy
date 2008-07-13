@@ -14,7 +14,8 @@ To be done for 2.1 Linux:
 . Fix hotkey on startup issue
 
 To be done for 2.1 Windows:
-. Create rescue shortcut
+. Rescue mode should kill running Launchy's
+. Fix the close crash
 
 To be done for 2.1 for both:
 . Add Firefox3 stuff to readme
