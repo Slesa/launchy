@@ -257,7 +257,7 @@ QString WebyPlugin::getFirefoxPath()
 
 #ifdef Q_WS_WIN
 	GetShellDir(CSIDL_APPDATA, appData);
-	osPath = apPData + "/Mozilla/Firefox/";
+	osPath = appData + "/Mozilla/Firefox/";
 #endif
 
 #ifdef Q_WS_X11

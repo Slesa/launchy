@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading ui file 'dlg.ui'
 **
-** Created: Sat Apr 5 16:47:10 2008
-**      by: Qt User Interface Compiler version 4.3.3
+** Created: Sun Jul 13 15:50:15 2008
+**      by: Qt User Interface Compiler version 4.4.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 ********************************************************************************/
@@ -21,6 +21,8 @@
 #include <QtGui/QTableWidget>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
+
+QT_BEGIN_NAMESPACE
 
 class Ui_Dlg
 {
@@ -68,6 +70,14 @@ public:
     vboxLayout->addLayout(hboxLayout);
 
     table = new QTableWidget(Dlg);
+    if (table->columnCount() < 3)
+        table->setColumnCount(3);
+    QTableWidgetItem *__colItem = new QTableWidgetItem();
+    table->setHorizontalHeaderItem(0, __colItem);
+    QTableWidgetItem *__colItem1 = new QTableWidgetItem();
+    table->setHorizontalHeaderItem(1, __colItem1);
+    QTableWidgetItem *__colItem2 = new QTableWidgetItem();
+    table->setHorizontalHeaderItem(2, __colItem2);
     table->setObjectName(QString::fromUtf8("table"));
     table->setColumnCount(3);
 
@@ -128,20 +138,9 @@ public:
     {
     Dlg->setWindowTitle(QApplication::translate("Dlg", "Form", 0, QApplication::UnicodeUTF8));
     label->setText(QApplication::translate("Dlg", "winshell - Launch custom commands", 0, QApplication::UnicodeUTF8));
-    if (table->columnCount() < 3)
-        table->setColumnCount(3);
-
-    QTableWidgetItem *__colItem = new QTableWidgetItem();
-    __colItem->setText(QApplication::translate("Dlg", "Name", 0, QApplication::UnicodeUTF8));
-    table->setHorizontalHeaderItem(0, __colItem);
-
-    QTableWidgetItem *__colItem1 = new QTableWidgetItem();
-    __colItem1->setText(QApplication::translate("Dlg", "Program", 0, QApplication::UnicodeUTF8));
-    table->setHorizontalHeaderItem(1, __colItem1);
-
-    QTableWidgetItem *__colItem2 = new QTableWidgetItem();
-    __colItem2->setText(QApplication::translate("Dlg", "Arguments", 0, QApplication::UnicodeUTF8));
-    table->setHorizontalHeaderItem(2, __colItem2);
+    table->horizontalHeaderItem(0)->setText(QApplication::translate("Dlg", "Name", 0, QApplication::UnicodeUTF8));
+    table->horizontalHeaderItem(1)->setText(QApplication::translate("Dlg", "Program", 0, QApplication::UnicodeUTF8));
+    table->horizontalHeaderItem(2)->setText(QApplication::translate("Dlg", "Arguments", 0, QApplication::UnicodeUTF8));
     tableNew->setText(QApplication::translate("Dlg", "+", 0, QApplication::UnicodeUTF8));
     tableRemove->setText(QApplication::translate("Dlg", "-", 0, QApplication::UnicodeUTF8));
     label_2->setText(QApplication::translate("Dlg", "Hint: Use $$ symbols to mark locations for user input", 0, QApplication::UnicodeUTF8));
@@ -153,5 +152,7 @@ public:
 namespace Ui {
     class Dlg: public Ui_Dlg {};
 } // namespace Ui
+
+QT_END_NAMESPACE
 
 #endif // UI_DLG_H

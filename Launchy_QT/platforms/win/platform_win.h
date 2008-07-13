@@ -67,7 +67,7 @@ class PlatformWin : public QObject, public PlatformBase
     QString lastImageName;
     LimitSingleInstance* instance;
  public:
-    virtual QHash<QString, QList<QString> > GetDirectories(bool);
+//    QHash<QString, QList<QString> > GetDirectories(bool);
  PlatformWin() : PlatformBase() 		
 	{
 	    instance = new LimitSingleInstance(TEXT("Global\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));

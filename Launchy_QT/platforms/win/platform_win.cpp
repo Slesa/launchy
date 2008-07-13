@@ -27,12 +27,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 QHash<QString, QList<QString> > PlatformWin::GetDirectories() {
     QHash<QString, QList<QString> > out;
     out["skins"] += qApp->applicationDirPath() + "/skins";
-    out["plugins"] += qApp->applicationDirPath() + "/pugins";
+    out["plugins"] += qApp->applicationDirPath() + "/plugins";
     out["portConfig"] += qApp->applicationDirPath() + "/Launchy.ini";
-    QSettings tmp(QSettings::IniFomat, QSettings::UserScope, "Launchy", "Launchy");
+    QSettings tmp(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
     out["config"] += tmp.fileName();
     out["portDB"] += qApp->applicationDirPath() + "/Launchy.db";
-    QDir d(out["config"]);
+    QDir d(out["config"][0]);
     d.cdUp();
     out["db"] += d.absoluteFilePath("Launchy.db");
     out["defSkin"] += out["skins"][0] + "/Default";

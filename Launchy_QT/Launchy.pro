@@ -1,5 +1,5 @@
 TEMPLATE	= app
-CONFIG		+= qt_warn debug_and_release
+CONFIG		+= qt_warn debug_and_release 
 TARGET = launchy
 
 
@@ -21,32 +21,35 @@ HEADERS		= platform_util.h platform_base.h globals.h \
 ICON		= Launchy.ico
 
 
-win32 {
-	RC_FILE = win/launchy.rc
-	LIBS += shell32.lib
-}
+
 
 
 unix {
-DEFINES += SKINS_PATH=$(SKINS_PATH) PLUGINS_PATH=$(PLUGINS_PATH)\
-           PLATFORMS_PATH=$(PLATFORMS_PATH)
+
+	DEFINES += SKINS_PATH=$(SKINS_PATH) PLUGINS_PATH=$(PLUGINS_PATH)\
+			   PLATFORMS_PATH=$(PLATFORMS_PATH)
+
+	if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
+		DESTDIR = debug/
+	}
+
+	if(!debug_and_release|build_pass):CONFIG(release, debug|release) {
+		DESTDIR = release/
+	}
 }
 
-if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
-    DESTDIR = debug//
-}
 
-if(!debug_and_release|build_pass):CONFIG(release, debug|release) {
-    DESTDIR = release/
-}
+win32 {
+	RC_FILE = win/launchy.rc
+	LIBS += shell32.lib
+	if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
+		DESTDIR = ../debug/
+	}
 
-
-win32:debug {
-%	CONFIG += console 
-}
-
-win32:release {
-	CONFIG += embed_manifest_exe
+	if(!debug_and_release|build_pass):CONFIG(release, debug|release) {
+		CONFIG += embed_manifest_exe
+		DESTDIR = ../release/
+	}
 }
 
 

@@ -43,6 +43,7 @@ Source: ..\..\release\platform_win.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\plugins\weby.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 Source: ..\..\release\plugins\calcy.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 Source: ..\..\release\plugins\runner.dll; DestDir: {app}\plugins\; Flags: ignoreversion
+Source: ..\..\release\plugins\gcalc.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 ;Source: ..\..\release\plugins\controly.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 
 ; Plugin icons
@@ -50,6 +51,7 @@ Source: ..\..\plugins\weby\weby.ico; DestDir: {app}\plugins\icons\; Flags: ignor
 Source: ..\..\plugins\calcy\calcy.ico; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\controly\controly.ico; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\runner\runner.ico; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\gcalc\gcalc.ico; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 
 ; Documentation
 Source: ..\Launchy.ico; DestDir: {app}; Flags: ignoreversion
@@ -141,6 +143,7 @@ Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: deskto
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: quicklaunchicon; WorkingDir: {app}
 Name: {commonstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
 Name: {group}\Readme.pdf; Filename: {app}\Readme.pdf; WorkingDir: {app}
+Name: {group}\Launchy Rescue Mode; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Parameters: rescue
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent runasoriginaluser
