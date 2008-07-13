@@ -113,8 +113,8 @@ void Gui::makeDefault()
 {
     int row = table->currentRow();
     if (row == -1)
-	return;
-
-    defaultName = table->item(row,0)->text();
+	defaultName = "";
+    else
+	defaultName = table->item(row,0)->text();
     label_default->setText(defaultName);
 }
