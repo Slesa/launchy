@@ -1,6 +1,6 @@
 boundary = 0,0,465,145
-output = 0,56,465,15
-input = 15,86,410,15
+output = 0,54,465,18
+input = 15,84,410,18
 alternatives = 10,101,445,80
 icon = 217,9,32,32
 optionsButton = 444,23,14,15
