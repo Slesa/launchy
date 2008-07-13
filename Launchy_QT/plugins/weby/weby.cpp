@@ -179,9 +179,11 @@ void WebyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
     // If we don't have any results, add default
     if (id->count() == 1 && id->first().getTopResult().lowName == "") {
 	const QString & text = id->last().getText();
-	QString name = getDefault().name;
-	if (name != "")
-	    results->push_front(CatItem(text + ".webyd", name, HASH_WEBY, getIcon()));
+	if (text != "") {
+	    QString name = getDefault().name;
+	    if (name != "")
+		results->push_front(CatItem(text + ".webyd", name, HASH_WEBY, getIcon()));
+	}
     }
     
     if (id->last().hasLabel(HASH_WEBSITE)) {
