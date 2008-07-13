@@ -22,6 +22,10 @@
 #include <QX11Info>
 #include "platform_unix.h"
 
+#include <X11/Xlib.h>
+
+
+
 
 
 PlatformUnix::PlatformUnix() : PlatformBase() 		
@@ -32,7 +36,8 @@ PlatformUnix::PlatformUnix() : PlatformBase()
 
 QApplication* PlatformUnix::init(int* argc, char** argv)
 {        
-    QApplication * app = new QApplication(*argc, argv);
+    //    QApplication * app = new QApplication(*argc, argv);
+    QApplication * app = new MyApp(*argc, argv);
     icons = (QFileIconProvider *) new UnixIconProvider();
     return app;
 }

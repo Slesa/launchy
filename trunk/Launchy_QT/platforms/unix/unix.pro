@@ -4,7 +4,8 @@ CONFIG		+= plugin qt_warn debug_and_release
 VPATH 		+= ../../src/
 INCLUDEPATH     += ../../src/
 SOURCES		= platform_x11_hotkey.cpp platform_base_hotkey.cpp platform_unix.cpp platform_unix_util.cpp
-HEADERS		= platform_base.h platform_unix.h platform_base_hotkey.h platform_base_hottrigger.h  platform_unix_util.h
+HEADERS		= platform_base.h platform_unix.h platform_base_hotkey.h platform_base_hottrigger.h  platform_unix_util.h \
+                  platform_x11_hotkey.h
 CONFIG		-= embed_manifest_dll
 LIBS += -lX11 -lXext -lXrender
 
