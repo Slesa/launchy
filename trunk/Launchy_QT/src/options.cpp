@@ -421,10 +421,11 @@ void OptionsDlg::dirChanged(int row) {
 void OptionsDlg::catDirPlusClicked(bool c) {
     c = c; // Compiler warning
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select a directory"),
-						    "",
+						    lastDir,
 						    QFileDialog::ShowDirsOnly );
     if (dir == "")
 	return;
+    lastDir = dir;
     
     QString nativeDir = QDir::toNativeSeparators(dir);
     Directory tmp;

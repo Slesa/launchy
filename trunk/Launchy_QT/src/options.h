@@ -58,6 +58,7 @@ OptionsDlg(QWidget* parent = 0);
 QList<Directory> memDirs;
 QList<QPair<QString, uint> > pluginNames;
 QVBoxLayout* pluginLayout;
+ QString lastDir;
 
 public slots:
 	void accept();
