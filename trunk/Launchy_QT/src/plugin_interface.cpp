@@ -101,17 +101,17 @@ void runProgram(QString path, QString args) {
 
     QString r;
 
-    r = "xdg-open \"" + path + "\" " + args + " 2>/dev/null || sh -c \"" + path + "\" " + args;
+    //    r = "xdg-open \"" + path + "\" " + args + " 2>/dev/null || sh -c \"" + path + "\" " + args;
 
-    //    r = "xdg-open " + path + " " + args + " 2>/dev/null || sh -c " + path + " " + args;
+    r = "xdg-open " + path + " " + args + " 2>/dev/null || sh -c \"" + path + " "  + args + "\"";
 
 
-    //    qDebug() << r.simplified();
+    qDebug() << r.simplified();
     QStringList ra;
 
     ra += "-c";
     ra += r.simplified();
-
+    qDebug() << ra;
 
     // Firefox needs special treatment in KDE
     // else it falls behind a window

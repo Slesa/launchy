@@ -885,8 +885,8 @@ void MyWidget::closeEvent(QCloseEvent *event) {
 MyWidget::~MyWidget() {
 	delete updateTimer;
 	delete dropTimer;
-//	if (platform)
-//		delete platform;    
+	if (platform)
+		delete platform;    
 }
 
 void MyWidget::MoveFromAlpha(QPoint pos) {

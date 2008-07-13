@@ -73,11 +73,13 @@ QHash<QString, QList<QString> > PlatformUnix::GetDirectories() {
     d.mkdir(QDir::homePath() + "/.launchy");
     
     out["skins"] += qApp->applicationDirPath() + "/skins";
-    out["skins"] += SKINS_PATH;
     out["skins"] += QDir::homePath() + "/.launchy/skins";
+    out["skins"] += SKINS_PATH;
+
     out["plugins"] += qApp->applicationDirPath() + "/plugins";
-    out["plugins"] += PLUGINS_PATH;
     out["plugins"] += QDir::homePath() + "/.launchy/plugins";
+    out["plugins"] += PLUGINS_PATH;
+
     out["config"] += QDir::homePath() + "/.launchy/launchy.ini";
     out["portConfig"] += qApp->applicationDirPath() + "/launchy.ini";
     out["db"] += QDir::homePath() + "/.launchy/launchy.db";
