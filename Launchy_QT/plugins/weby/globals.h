@@ -22,9 +22,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QString>
 
 struct WebySite {
-	QString base;
-	QString name;
-	QString query;
+    QString base;
+    QString name;
+    QString query;
+    bool def;
+    
+    WebySite() { def = false; }
+
+    WebySite(QString b, QString n, QString q, bool d = true) :
+	base(b), name(n), query(q), def(d) {}
 };
 
 struct Bookmark {

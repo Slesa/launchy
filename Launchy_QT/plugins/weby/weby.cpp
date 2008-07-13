@@ -49,6 +49,7 @@ void WebyPlugin::init()
 		set->setValue("name", "Google");
 		set->setValue("base", "http://www.google.com/");
 		set->setValue("query", "search?source=launchy&q=%s");
+		set->setValue("default", true);
 
 		set->setArrayIndex(1);
 		set->setValue("name", "Live Search");
@@ -133,6 +134,7 @@ void WebyPlugin::init()
 		s.base = set->value("base").toString();
 		s.name = set->value("name").toString();
 		s.query = set->value("query").toString();
+		s.def = set->value("default", false).toBool();
 		sites.push_back(s);
 	}
 	set->endArray();
@@ -170,25 +172,30 @@ void WebyPlugin::getLabels(QList<InputData>* id)
 		id->last().setLabel(HASH_WEBSITE);
 }
 
+
+
 void WebyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 {
     // If we don't have any results, add default
-    if (id->count() == 0 && id->first().getTopResult().lowName == "") {
-	
+    if (id->count() == 1 && id->first().getTopResult().lowName == "") {
+	const QString & text = id->last().getText();
+	QString name = getDefault().name;
+	if (name != "")
+	    results->push_front(CatItem(text + ".webyd", name, HASH_WEBY, getIcon()));
     }
-
-	if (id->last().hasLabel(HASH_WEBSITE)) {
-		const QString & text = id->last().getText();
-		// This is a website, create an entry for it
-		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
-	}
-
-	if (id->count() > 1 && id->first().getTopResult().id == HASH_WEBY) {
+    
+    if (id->last().hasLabel(HASH_WEBSITE)) {
+	const QString & text = id->last().getText();
+	// This is a website, create an entry for it
+	results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
+    }
+    
+    if (id->count() > 1 && id->first().getTopResult().id == HASH_WEBY) {
 		const QString & text = id->last().getText();
 		// This is user search text, create an entry for it
 		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
-	}
-
+    }
+    
 }
 
 #ifdef Q_WS_WIN
@@ -328,6 +335,18 @@ QString string = fileName();//fileName() returns a chinese filename
                 QLabel *label = new QLabel(gbk_string);
 */
 
+
+WebySite WebyPlugin::getDefault() 
+{
+    foreach(WebySite site, sites) {
+	if (site.def) {
+	    return site;
+	}
+    }
+    return WebySite();
+}
+
+
 void WebyPlugin::getCatalog(QList<CatItem>* items)
 {
 	foreach(WebySite site, sites) {
@@ -352,11 +371,12 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 	QString file = "";
 	QString args = "";
 
-	if (id->count() == 2) {
+	//	if (id->count() == 2) {
 		args = id->last().getText();
 		args = QUrl::toPercentEncoding(args);
 		item = &id->first().getTopResult();
-	}
+		//	}
+
 
 	// Is it a Firefox shortcut?
 	if (item->fullPath.contains(".shortcut")) {
@@ -364,19 +384,19 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 		file.replace("%s", args);
 	}
 	else { // It's a user-specific site
-		bool found = false;
-		foreach(WebySite site, sites) {
-			if (item->shortName == site.name) {
-				found = true;
-				file = site.base;
-				if (args != "") {
-					QString tmp = site.query;
-					tmp.replace("%s", args);
-					file += tmp;
-				}
-				break;
-			}
+	    bool found = false;
+	    foreach(WebySite site, sites) {
+		if (item->shortName == site.name) {
+		    found = true;
+		    file = site.base;
+		    if (args != "") {
+			QString tmp = site.query;
+			tmp.replace("%s", args);
+			file += tmp;
+		    }
+		    break;
 		}
+	    }
 
 		if (!found) {
 			file = item->shortName;	

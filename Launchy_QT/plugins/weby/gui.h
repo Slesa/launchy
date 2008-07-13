@@ -36,10 +36,12 @@ public:
 	Gui(QWidget* parent);
 	~Gui() { this->hide(); }
 	void writeOptions();
+	QString defaultName;
 
 public slots:
 	void newRow();
 	void remRow();
+	void makeDefault();
 };
 
 #endif 
