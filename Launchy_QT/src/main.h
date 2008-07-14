@@ -254,7 +254,6 @@ public slots:
 	void finishedFade(double d);
 	void menuEvent(QContextMenuEvent*);
 	void buildCatalog();
-	void aboutToQuit();
 };
 
 #endif
