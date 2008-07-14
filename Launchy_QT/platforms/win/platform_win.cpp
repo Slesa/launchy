@@ -32,7 +32,8 @@ QHash<QString, QList<QString> > PlatformWin::GetDirectories() {
     QSettings tmp(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
     out["config"] += tmp.fileName();
     out["portDB"] += qApp->applicationDirPath() + "/Launchy.db";
-    QDir d(out["config"][0]);
+	qDebug() << out["config"][0];
+	QDir d(out["config"][0]);
     d.cdUp();
     out["db"] += d.absoluteFilePath("Launchy.db");
     out["defSkin"] += out["skins"][0] + "/Default";

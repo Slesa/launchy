@@ -120,7 +120,16 @@ public:
 		instance = NULL;
 
 	}
-
+/*
+	void KillLaunchys() {
+		
+		qint64 mypid = qApp->applicationPid();
+		QString toRun = "TASKKILL /F /FI \"PID lt " + QString::number(mypid) + "\" /IM Launchy.exe";
+		QProcess proc;
+		proc.execute(toRun);	
+		
+	}
+*/
 
 	// Mandatory functions
 	void SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
