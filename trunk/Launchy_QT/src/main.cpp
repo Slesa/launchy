@@ -85,8 +85,6 @@ QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool )
 	//	hideLaunchy();
 	label = new QLabel(this);
 
-	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(aboutToQuit()));
-
 	opsButton = new QPushButton(label);
 	opsButton->setObjectName("opsButton");
 	opsButton->setToolTip(tr("Launchy Options"));
@@ -206,13 +204,8 @@ QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool )
 	else
 		hideLaunchy();    
 
-#ifdef Q_WS_X11
-	showLaunchy();
+//	showLaunchy();
 
-	//	showAlternatives(false);
-	//	qDebug() << "Main says root is:" << QX11Info::appRootWindow();
-
-#endif
 
 }
 
@@ -307,7 +300,7 @@ void MyWidget::launchObject() {
 			switch (ops)
 			{
 			case MSG_CONTROL_EXIT:
-				qApp->quit();
+				close();
 				break;
 			case MSG_CONTROL_OPTIONS:
 				menuOptions();
@@ -589,8 +582,10 @@ QIcon MyWidget::getIcon(CatItem & item) {
 		return platform->icon(QDir::toNativeSeparators(item.fullPath));
 	}
 	else {
-		if (QFile::exists(item.icon))
-			return QIcon(item.icon);
+#ifdef Q_WS_X11
+		if (QFile::exists(item.icon)) 
+			return QIcon(item.icon);		
+#endif
 		return platform->icon(QDir::toNativeSeparators(item.icon));
 	}
 }
@@ -842,29 +837,11 @@ void MyWidget::onHotKey() {
 }
 
 
-void MyWidget::aboutToQuit() {
-	//	gSettings->setValue("Display/pos", relativePosition());
-	savePosition();
-	gSettings->sync();
 
-
-	QDir dest(gSettings->fileName());
-	dest.cdUp();
-	CatBuilder builder(catalog, &plugins);
-	builder.storeCatalog(dest.absoluteFilePath("Launchy.db"));
-
-	// Delete the platform (to unbind hotkeys) right away
-	// else XUngrabKey segfaults if done later
-
-	if (platform)
-		delete platform;
-	platform = NULL;
-}
 
 void MyWidget::closeEvent(QCloseEvent *event) {
     qDebug() << "In cose event";
 	//	gSettings->setValue("Display/pos", relativePosition());
-/*	qDebug() << "In close event";
 	savePosition();
 	gSettings->sync();
 
@@ -876,19 +853,25 @@ void MyWidget::closeEvent(QCloseEvent *event) {
 
 	// Delete the platform (to unbind hotkeys) right away
 	// else XUngrabKey segfaults if done later
+
 	if (platform)
 		delete platform;
 	platform = NULL;
-	*/
+	
 	event->accept();
+	qApp->quit();
 }
 
+
 MyWidget::~MyWidget() {
+
 	delete updateTimer;
 	delete dropTimer;
 	if (platform)
 		delete platform;    
+
 }
+
 
 void MyWidget::MoveFromAlpha(QPoint pos) {
 	move(pos);
@@ -1114,7 +1097,7 @@ void MyWidget::contextMenuEvent(QContextMenuEvent *event) {
 	QAction* actOptions = menu.addAction(tr("Options"));
 	connect(actOptions, SIGNAL(triggered()), this, SLOT(menuOptions()));
 	QAction* actExit = menu.addAction(tr("Exit"));
-	connect(actExit, SIGNAL(triggered()), qApp, SLOT(quit()));
+	connect(actExit, SIGNAL(triggered()), this, SLOT(close()));
 	menuOpen = true;
 	menu.exec(event->globalPos());
 	menuOpen = false;
@@ -1340,6 +1323,7 @@ int main(int argc, char *argv[])
 
 	QString locale = QLocale::system().name();
 
+
 	QTranslator translator;
 	translator.load(QString("tr/launchy_" + locale));
 	app->installTranslator(&translator); 
@@ -1348,5 +1332,6 @@ int main(int argc, char *argv[])
 	widget.setObjectName("main");
 
 	app->exec();
+
 	delete app;
 } 

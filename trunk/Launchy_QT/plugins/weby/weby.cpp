@@ -176,28 +176,28 @@ void WebyPlugin::getLabels(QList<InputData>* id)
 
 void WebyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 {
-    // If we don't have any results, add default
-    if (id->count() == 1 && id->first().getTopResult().lowName == "") {
-	const QString & text = id->last().getText();
-	if (text != "") {
-	    QString name = getDefault().name;
-	    if (name != "")
-		results->push_front(CatItem(text + ".webyd", name, HASH_WEBY, getIcon()));
+	// If we don't have any results, add default
+	if (id->count() == 1 && id->first().getTopResult().lowName == "") {
+		const QString & text = id->last().getText();
+		if (text != "") {
+			QString name = getDefault().name;
+			if (name != "")
+				results->push_front(CatItem(text + ".weby", name, HASH_WEBY, getIcon()));
+		}
 	}
-    }
-    
-    if (id->last().hasLabel(HASH_WEBSITE)) {
-	const QString & text = id->last().getText();
-	// This is a website, create an entry for it
-	results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
-    }
-    
-    if (id->count() > 1 && id->first().getTopResult().id == HASH_WEBY) {
+
+	if (id->last().hasLabel(HASH_WEBSITE)) {
+		const QString & text = id->last().getText();
+		// This is a website, create an entry for it
+		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
+	}
+
+	if (id->count() > 1 && id->first().getTopResult().id == HASH_WEBY) {
 		const QString & text = id->last().getText();
 		// This is user search text, create an entry for it
 		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
-    }
-    
+	}
+
 }
 
 #ifdef Q_WS_WIN
@@ -291,7 +291,7 @@ QString WebyPlugin::getFirefoxPath()
 
 QString WebyPlugin::getIcon()
 {
-    return libPath + "/icons/weby.ico";
+	return libPath + "/icons/weby.ico";
 }
 
 void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
@@ -332,20 +332,20 @@ void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
 
 /*
 QString string = fileName();//fileName() returns a chinese filename
-                QTextCodec* gbk_codec = QTextCodec::codecForName("GB2312");
-                QString gbk_string = gbk_codec->toUnicode(string);
-                QLabel *label = new QLabel(gbk_string);
+QTextCodec* gbk_codec = QTextCodec::codecForName("GB2312");
+QString gbk_string = gbk_codec->toUnicode(string);
+QLabel *label = new QLabel(gbk_string);
 */
 
 
 WebySite WebyPlugin::getDefault() 
 {
-    foreach(WebySite site, sites) {
-	if (site.def) {
-	    return site;
+	foreach(WebySite site, sites) {
+		if (site.def) {
+			return site;
+		}
 	}
-    }
-    return WebySite();
+	return WebySite();
 }
 
 
@@ -374,10 +374,10 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 	QString args = "";
 
 	//	if (id->count() == 2) {
-		args = id->last().getText();
-		args = QUrl::toPercentEncoding(args);
-		item = &id->first().getTopResult();
-		//	}
+	args = id->last().getText();
+	args = QUrl::toPercentEncoding(args);
+	item = &id->first().getTopResult();
+	//	}
 
 
 	// Is it a Firefox shortcut?
@@ -386,19 +386,19 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 		file.replace("%s", args);
 	}
 	else { // It's a user-specific site
-	    bool found = false;
-	    foreach(WebySite site, sites) {
-		if (item->shortName == site.name) {
-		    found = true;
-		    file = site.base;
-		    if (args != "") {
-			QString tmp = site.query;
-			tmp.replace("%s", args);
-			file += tmp;
-		    }
-		    break;
+		bool found = false;
+		foreach(WebySite site, sites) {
+			if (item->shortName == site.name) {
+				found = true;
+				file = site.base;
+				if (args != "") {
+					QString tmp = site.query;
+					tmp.replace("%s", args);
+					file += tmp;
+				}
+				break;
+			}
 		}
-	    }
 
 		if (!found) {
 			file = item->shortName;	
@@ -407,9 +407,9 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 			}
 		}
 	}
-//	file = file.replace("#", "%23");
+	//	file = file.replace("#", "%23");
 	QUrl url(file);
-//	runProgram(url.toEncoded(), "");
+	//	runProgram(url.toEncoded(), "");
 	runProgram(url.toString(), "");
 }
 
@@ -426,12 +426,13 @@ void WebyPlugin::endDialog(bool accept) {
 	}
 	if (gui != NULL) 
 		delete gui;
-	
+
 	gui = NULL;
 }
 
 void WebyPlugin::setPath(QString * path) {
-    libPath = *path;
+	qDebug() << "libPath = " << *path;
+	libPath = *path;
 }
 
 int WebyPlugin::msg(int msgId, void* wParam, void* lParam)
@@ -439,49 +440,49 @@ int WebyPlugin::msg(int msgId, void* wParam, void* lParam)
 	bool handled = false;
 	switch (msgId)
 	{		
-		case MSG_INIT:
-			init();
-			handled = true;
-			break;
-		case MSG_GET_LABELS:
-			getLabels((QList<InputData>*) wParam);
-			handled = true;
-			break;
-		case MSG_GET_ID:
-			getID((uint*) wParam);
-			handled = true;
-			break;
-		case MSG_GET_NAME:
-			getName((QString*) wParam);
-			handled = true;
-			break;
-		case MSG_GET_RESULTS:
-			getResults((QList<InputData>*) wParam, (QList<CatItem>*) lParam);
-			handled = true;
-			break;
-		case MSG_GET_CATALOG:
-			getCatalog((QList<CatItem>*) wParam);
-			handled = true;
-			break;
-		case MSG_LAUNCH_ITEM:
-			launchItem((QList<InputData>*) wParam, (CatItem*) lParam);
-			handled = true;
-			break;
-		case MSG_HAS_DIALOG:
-			handled = true;
-			break;
-		case MSG_DO_DIALOG:
-			doDialog((QWidget*) wParam, (QWidget**) lParam);
-			break;
-		case MSG_END_DIALOG:
-			endDialog((bool) wParam);
-			break;
+	case MSG_INIT:
+		init();
+		handled = true;
+		break;
+	case MSG_GET_LABELS:
+		getLabels((QList<InputData>*) wParam);
+		handled = true;
+		break;
+	case MSG_GET_ID:
+		getID((uint*) wParam);
+		handled = true;
+		break;
+	case MSG_GET_NAME:
+		getName((QString*) wParam);
+		handled = true;
+		break;
+	case MSG_GET_RESULTS:
+		getResults((QList<InputData>*) wParam, (QList<CatItem>*) lParam);
+		handled = true;
+		break;
+	case MSG_GET_CATALOG:
+		getCatalog((QList<CatItem>*) wParam);
+		handled = true;
+		break;
+	case MSG_LAUNCH_ITEM:
+		launchItem((QList<InputData>*) wParam, (CatItem*) lParam);
+		handled = true;
+		break;
+	case MSG_HAS_DIALOG:
+		handled = true;
+		break;
+	case MSG_DO_DIALOG:
+		doDialog((QWidget*) wParam, (QWidget**) lParam);
+		break;
+	case MSG_END_DIALOG:
+		endDialog((bool) wParam);
+		break;
 	case MSG_PATH:
-	    setPath((QString *) wParam);
-		default:
-			break;
+		setPath((QString *) wParam);
+	default:
+		break;
 	}
-		
+
 	return handled;
 }
 
