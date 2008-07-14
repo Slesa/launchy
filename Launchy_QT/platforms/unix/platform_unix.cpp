@@ -85,9 +85,9 @@ QHash<QString, QList<QString> > PlatformUnix::GetDirectories() {
     out["db"] += QDir::homePath() + "/.launchy/launchy.db";
     out["portDB"] += qApp->applicationDirPath() + "/launchy.db";
     if (SupportsAlphaBorder())
-	out["defSkin"] += out["skins"][0] + "/Default";
+	out["defSkin"] += out["skins"].last() + "/Default";
     else
-	out["defSkin"] += out["skins"][0] + "/Default NC";
+	out["defSkin"] += out["skins"].last() + "/Default NC";
 
 
     out["platforms"] += qApp->applicationDirPath();

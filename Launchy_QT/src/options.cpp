@@ -250,9 +250,7 @@ void OptionsDlg::accept() {
     if (skinList->currentRow() >= 0 && skinList->currentItem()->text() != prevSkinName) {
 	QString path = skinList->currentItem()->data(Qt::UserRole).toString();
 	gSettings->setValue("GenOps/skin", path + "/" + skinList->currentItem()->text());
-    qDebug() << "About to accept 3";
 	main->setSkin(path, skinList->currentItem()->text());
-    qDebug() << "About to accept 4";
     }
 
     
