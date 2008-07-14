@@ -748,7 +748,7 @@ void MyWidget::updateVersion(int oldVersion) {
 	}
 
 	if (oldVersion < 210) {
-		QString oldSkin = gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString();
+	    QString oldSkin = gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString();
 		QString newSkin = dirs["skins"][0] + "/" + oldSkin;
 		gSettings->setValue("GenOps/skin", newSkin);
 	}
@@ -951,8 +951,8 @@ void MyWidget::applySkin(QString directory) {
 
 	// Use default skin if this one doesn't exist
 	if (!QFile::exists(directory + "/misc.txt"))  {
-		directory = dirs["defSkin"][0];
-		gSettings->setValue("GenOps/skin", dirs["defSkin"][0]);
+	    directory = dirs["defSkin"][0];
+	    gSettings->setValue("GenOps/skin", dirs["defSkin"][0]);
 	}
 
 	
