@@ -12,7 +12,7 @@ SOURCES		= main.cpp globals.cpp  \
 			  options.cpp catalog.cpp catalog_builder.cpp \ 
 			   plugin_handler.cpp platform_util.cpp\
 			  icon_delegate.cpp plugin_interface.cpp catalog_types.cpp
-HEADERS		= platform_util.h platform_base.h globals.h \
+HEADERS		= platform_util.h platform_base.h globals.h \ 
 			  globals.h main.h \ 
 			   catalog.h \
 			  catalog_builder.h  \ 
@@ -21,7 +21,7 @@ HEADERS		= platform_util.h platform_base.h globals.h \
 ICON		= Launchy.ico
 
 
-
+ 
 
 
 unix {

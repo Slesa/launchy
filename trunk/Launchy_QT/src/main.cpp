@@ -1310,8 +1310,11 @@ int main(int argc, char *argv[])
 
 	bool rescue = false;
 	if (args.size() > 1) 
-		if (args[1] == "rescue") 
+		if (args[1] == "rescue")  {
 			rescue = true;
+			// Kill all existing Launchy's
+//			platform->KillLaunchys();
+		}
 
 
 	QCoreApplication::setApplicationName("Launchy");

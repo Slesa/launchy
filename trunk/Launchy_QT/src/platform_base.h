@@ -73,7 +73,7 @@ public:
 	virtual void HideAlphaBorder() { return; }
 	virtual void ShowAlphaBorder() { return; }
 	virtual void SetAlphaOpacity(double) { return; }
-
+	//virtual void KillLaunchys() = 0;
 	virtual QHash<QString, QList<QString> > GetDirectories() = 0;
 
 	virtual QString expandEnvironmentVars(QString txt)
