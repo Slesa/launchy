@@ -711,7 +711,6 @@ void MyWidget::setSkin(QString dir, QString name) {
 	bool wasShowing = isVisible();
 	QPoint p = pos();
 	hideLaunchy(true);
-
 	applySkin(dir + "/" + name);
 
 	//    applySkin(qApp->applicationDirPath() + "/skins/" + name);
@@ -840,7 +839,6 @@ void MyWidget::onHotKey() {
 
 
 void MyWidget::closeEvent(QCloseEvent *event) {
-    qDebug() << "In cose event";
 	//	gSettings->setValue("Display/pos", relativePosition());
 	savePosition();
 	gSettings->sync();
@@ -957,7 +955,7 @@ void MyWidget::applySkin(QString directory) {
 		gSettings->setValue("GenOps/skin", dirs["defSkin"][0]);
 	}
 
-
+	
 	// Set positions
 	if (QFile::exists(directory + "/misc.txt")) {
 		QFile file(directory + "/misc.txt");
@@ -1018,6 +1016,7 @@ void MyWidget::applySkin(QString directory) {
 		QFile file(directory + "/style.qss");
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 			QString styleSheet = QLatin1String(file.readAll());
+			// This is causing the ::destroyed connect errors
 			qApp->setStyleSheet(styleSheet);
 			file.close();
 		}
@@ -1039,6 +1038,7 @@ void MyWidget::applySkin(QString directory) {
 		QPixmap image(directory + "/mask_nc.png");
 		setMask(image);
 	} 
+
 	else if (QFile::exists(directory + "/mask.png")) {
 		QPixmap image(directory + "/mask.png");
 		// For some reason, w/ compiz setmask won't work
@@ -1046,7 +1046,6 @@ void MyWidget::applySkin(QString directory) {
 		// XShapeCombineMask
 		setMask(image );
 	}
-
 
 
 	// Set the alpha background    
@@ -1120,13 +1119,10 @@ void MyWidget::menuOptions() {
 	OptionsDlg ops(this);
 	ops.setObjectName("options");
 	ops.exec();
+
 	// Perform the database update
-	if (gBuilder == NULL) {
-		gBuilder = new CatBuilder(false, &plugins);
-		gBuilder->setPreviousCatalog(catalog);
-		connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
-		gBuilder->start(QThread::IdlePriority);
-	}
+	if (gBuilder == NULL)
+	    buildCatalog();
 
 	input->activateWindow();
 	input->setFocus();	

@@ -75,7 +75,12 @@ OptionsDlg::OptionsDlg(QWidget * parent)
     
     // Find the current hotkey
     QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier +  Qt::Key_Space)).value<QKeySequence>();
+    #ifdef Q_WS_WIN
     int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::AltModifier).toInt();
+    #endif
+    #ifdef Q_WS_X11
+    int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::ControlModifier).toInt();
+    #endif
     int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
     for(int i = 0; i < metaKeys.count(); ++i) {
 	genModifierBox->addItem(metaKeys[i]);
@@ -208,6 +213,8 @@ void OptionsDlg::accept() {
     MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
     if (main == NULL) return;
     if (gSettings == NULL) return;
+
+
     
     // Save General Options
     gSettings->setValue("GenOps/alwaysshow", genAlwaysShow->isChecked());
@@ -243,8 +250,11 @@ void OptionsDlg::accept() {
     if (skinList->currentRow() >= 0 && skinList->currentItem()->text() != prevSkinName) {
 	QString path = skinList->currentItem()->data(Qt::UserRole).toString();
 	gSettings->setValue("GenOps/skin", path + "/" + skinList->currentItem()->text());
+    qDebug() << "About to accept 3";
 	main->setSkin(path, skinList->currentItem()->text());
+    qDebug() << "About to accept 4";
     }
+
     
     // Apply Directory Options
     gSettings->beginWriteArray("directories");
@@ -259,15 +269,18 @@ void OptionsDlg::accept() {
     
     gSettings->endArray();
     
+
     
     // Compare the checks to the plugins
     QHash<uint, PluginInfo> plugins = main->plugins.getPlugins();
     bool changed = false;
+
     
-    
+
     if (changed) {
 	main->plugins.loadPlugins();
     }
+
     
     if (curPlugin >= 0) {
 	QListWidgetItem* item = plugList->item(curPlugin);
@@ -275,6 +288,7 @@ void OptionsDlg::accept() {
     }
     
     gSettings->sync();
+
     QDialog::accept();
 }
 

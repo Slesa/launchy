@@ -431,7 +431,6 @@ void WebyPlugin::endDialog(bool accept) {
 }
 
 void WebyPlugin::setPath(QString * path) {
-	qDebug() << "libPath = " << *path;
 	libPath = *path;
 }
 

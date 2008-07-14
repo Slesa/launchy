@@ -11,7 +11,6 @@ Linux Issues:
 
 To be done for 2.1 Linux:
 . Make a man page
-. Fix hotkey on startup issue
 
 To be done for 2.1 Windows:
 . Rescue mode should kill running Launchy's
