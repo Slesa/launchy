@@ -143,6 +143,7 @@ void runnerPlugin::launchItem(QList<InputData>* id, CatItem* item)
 		QUrl url(file);
 		file = url.toEncoded();
 	}
+	//	qDebug() << file << args;
 	runProgram(file, args);
 }
 

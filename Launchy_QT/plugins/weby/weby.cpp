@@ -373,12 +373,18 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 	QString file = "";
 	QString args = "";
 
-	//	if (id->count() == 2) {
-	args = id->last().getText();
-	args = QUrl::toPercentEncoding(args);
-	item = &id->first().getTopResult();
-	//	}
 
+	//	if (id->count() == 2) {
+	    args = id->last().getText();
+	    args = QUrl::toPercentEncoding(args);
+	    item = &id->first().getTopResult();
+	    //	}
+
+	    qDebug() << args;
+
+
+
+     
 
 	// Is it a Firefox shortcut?
 	if (item->fullPath.contains(".shortcut")) {

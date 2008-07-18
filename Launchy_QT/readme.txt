@@ -11,13 +11,13 @@ Linux Issues:
 
 To be done for 2.1 Linux:
 . Make a man page
+. Seems that bookmarks aren't running correctly
 
 To be done for 2.1 Windows:
 . Rescue mode should kill running Launchy's
-. Fix the close crash
 
 To be done for 2.1 for both:
-. Add Firefox3 stuff to readme
+. Can't select a directory, only files
 
 
 
