@@ -1243,21 +1243,25 @@ void MyWidget::showLaunchy(bool now) {
 	if (!now) {
 		fadeIn();
 	} else {
-		double end = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
-		end /= 100.0;
-		setFadeLevel(end);
+	    double end = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
+	    end /= 100.0;
+	    setFadeLevel(end);
 	}
 
 
-	qApp->syncX();
-
-
-	raise();
+	// Terrible hack to steal focus from other apps in compiz
+	#ifdef Q_WS_X11
+	for(int i = 0; i < 100; i++) {
+	    activateWindow();
+	    raise();
+	    qApp->syncX();
+	}
+	#endif
 	input->activateWindow();
 	input->raise();
 	input->selectAll();
 	input->setFocus();
-
+	qApp->syncX();
 	// Let the plugins know
 	plugins.showLaunchy();
 }

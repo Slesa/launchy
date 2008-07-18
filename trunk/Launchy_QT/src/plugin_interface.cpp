@@ -103,20 +103,21 @@ void runProgram(QString path, QString args) {
 
     //    r = "xdg-open \"" + path + "\" " + args + " 2>/dev/null || sh -c \"" + path + "\" " + args;
 
-    r = "xdg-open " + path + " " + args + " 2>/dev/null || sh -c \"" + path + " "  + args + "\"";
+    r = "xdg-open \"" + path.trimmed() + "\" " + args.trimmed() + " 2>/dev/null || sh -c \"" + path.trimmed() + " "  + args + "\"";
 
 
     //    qDebug() << r.simplified();
     QStringList ra;
 
     ra += "-c";
-    ra += r.simplified();
+    ra += r.trimmed().simplified();
     //    qDebug() << ra;
 
     // Firefox needs special treatment in KDE
     // else it falls behind a window
-    if (path.contains("http://",Qt::CaseInsensitive) ||
-	path.contains("firefox",Qt::CaseInsensitive)) {
+    if ((path.contains("http://",Qt::CaseInsensitive) ||
+	 path.contains("firefox",Qt::CaseInsensitive)) &&
+	getDesktop() == DESKTOP_KDE) {
 	proc.execute("sh",ra);
     } else {
 	proc.startDetached("sh",ra);
