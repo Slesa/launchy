@@ -46,22 +46,23 @@ bool CatLess (CatItem* a, CatItem* b)  {
 	if (a->usage < b->usage)
 		return false;
 
-	bool localFind = a->lowName.contains(gSearchTxt);
-	bool otherFind = b->lowName.contains(gSearchTxt);
 
-	if (localFind  && !otherFind)
+
+	int localFind = a->lowName.indexOf(gSearchTxt);
+	int otherFind = b->lowName.indexOf(gSearchTxt);
+
+	if (localFind != -1  && otherFind == -1)
 		return true;
-	else if (!localFind && otherFind)
+	else if (localFind == -1 && otherFind != -1)
 		return false;
-
-	/*
+	
 	if (localFind != -1 && otherFind != -1) {
 		if (localFind < otherFind)
 			return true;
 		else
 			return false;
 	}
-*/
+
 	int localLen = a->lowName.count();
 	int otherLen = b->lowName.count();
 

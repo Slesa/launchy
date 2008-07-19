@@ -499,7 +499,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 		if (key->key() == Qt::Key_Tab) {
 			doTab();
 		} else if (key->key() == Qt::Key_Slash || key->key() == Qt::Key_Backslash) {
-			if (inputData.last().hasLabel(LABEL_FILE))
+		    if (inputData.size() > 0 && inputData.last().hasLabel(LABEL_FILE))
 				doTab();
 		} else {
 			key->ignore();	
@@ -516,6 +516,7 @@ void MyWidget::processKey() {
 	dropTimer->stop();
 	dropTimer->start(1000);
 
+
 	parseInput(input->text());
 
 	searchOnInput();
@@ -528,10 +529,12 @@ void MyWidget::inputMethodEvent(QInputMethodEvent *e) {
 }
 
 void MyWidget::searchOnInput() {
+
 	if (catalog == NULL) return;
 	if (inputData.count() == 0) return;
 
-	gSearchTxt = inputData.last().getText();
+	QString stxt = inputData.last().getText();
+	gSearchTxt = stxt;
 	searchResults.clear();
 
 	if (catalog != NULL) {
@@ -546,9 +549,12 @@ void MyWidget::searchOnInput() {
 	plugins.getResults(&inputData, &searchResults);
 	qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
 
+
+	//	    qDebug() << gSearchTxt;
 	// Is it a file?
-	if (gSearchTxt.contains("\\") || gSearchTxt.contains("/") || gSearchTxt.startsWith("~")) {	
-		searchFiles(gSearchTxt, searchResults);
+
+	if (stxt.contains("\\") || stxt.contains("/") || stxt.startsWith("~")) {
+		searchFiles(stxt, searchResults);
 		inputData.last().setLabel(LABEL_FILE);
 	}
 	catalog->checkHistory(gSearchTxt, searchResults);
@@ -592,6 +598,7 @@ QIcon MyWidget::getIcon(CatItem & item) {
 
 void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults) {
 	// Split the string on the last slash
+
 	QString path = QDir::fromNativeSeparators(input);
 	if (path.startsWith("~"))
 		path.replace("~",QDir::homePath());
@@ -606,17 +613,10 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 	dir = path.mid(0,path.lastIndexOf("/")+1);
 	file = path.mid(path.lastIndexOf("/")+1);
 
-//	qDebug() << "Path" << path << "Dir:" << dir << "File:" << file;
+	qDebug() << "Path" << path << "Dir:" << dir << "File:" << file;
 
 	QFileInfo info(dir);
 	if (!info.isDir()) return;
-
-
-
-	if (file == "") {
-		CatItem item(QDir::toNativeSeparators(dir + "/"));
-		searchResults.push_back(item);
-	}	
 
 
 	// Okay, we have a directory, find files that match "file"
@@ -644,6 +644,15 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 			searchResults.push_front(item);
 		}
 	}
+
+	// Showing a directory
+	if (file == "") {
+	    QString n = QDir::toNativeSeparators(dir);
+	    if (n.endsWith(QDir::separator()))
+		n += QDir::separator();
+	    CatItem item(n);
+	    searchResults.push_front(item);
+	}	
 	return;
 }
 
@@ -848,6 +857,7 @@ void MyWidget::closeEvent(QCloseEvent *event) {
 	dest.cdUp();
 	CatBuilder builder(catalog, &plugins);
 	builder.storeCatalog(dest.absoluteFilePath("Launchy.db"));
+	qDebug() << "Stored catalog";
 
 	// Delete the platform (to unbind hotkeys) right away
 	// else XUngrabKey segfaults if done later
