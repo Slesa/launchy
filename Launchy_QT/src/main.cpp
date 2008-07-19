@@ -53,7 +53,7 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
 QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 #endif
 #ifdef Q_WS_X11
-   //QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool )
+//QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool )
 QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 #endif
 {    
@@ -153,12 +153,12 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 	// Move to saved position
 	QPoint x;
 	if (rescue)
-	    x = QPoint(0,0);
+		x = QPoint(0,0);
 	else
-	    x = loadPosition();
+		x = loadPosition();
 	move(x);
 	platform->MoveAlphaBorder(x);
-	
+
 
 	// Set the general options
 	setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool());
@@ -207,7 +207,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 	else
 		hideLaunchy();    
 
-//	showLaunchy();
+	//	showLaunchy();
 
 
 }
@@ -379,10 +379,8 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 		raise();
 		input->setFocus();
 		key->ignore();
-		#ifdef Q_WS_X11
 		input->setText(input->text() + key->text());
 		keyPressEvent(key);
-		#endif
 	}
 }
 
@@ -506,7 +504,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 		if (key->key() == Qt::Key_Tab) {
 			doTab();
 		} else if (key->key() == Qt::Key_Slash || key->key() == Qt::Key_Backslash) {
-		    if (inputData.size() > 0 && inputData.last().hasLabel(LABEL_FILE))
+			if (inputData.size() > 0 && inputData.last().hasLabel(LABEL_FILE))
 				doTab();
 		} else {
 			key->ignore();	
@@ -653,11 +651,11 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 
 	// Showing a directory
 	if (file == "") {
-	    QString n = QDir::toNativeSeparators(dir);
-	    if (n.endsWith(QDir::separator()))
-		n += QDir::separator();
-	    CatItem item(n);
-	    searchResults.push_front(item);
+		QString n = QDir::toNativeSeparators(dir);
+		if (!n.endsWith(QDir::separator()))
+			n += QDir::separator();
+		CatItem item(n);
+		searchResults.push_front(item);
 	}	
 	return;
 }
@@ -763,7 +761,7 @@ void MyWidget::updateVersion(int oldVersion) {
 	}
 
 	if (oldVersion < 210) {
-	    QString oldSkin = gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString();
+		QString oldSkin = gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString();
 		QString newSkin = dirs["skins"][0] + "/" + oldSkin;
 		gSettings->setValue("GenOps/skin", newSkin);
 	}
@@ -792,23 +790,23 @@ return absPos;
 */
 
 QPoint MyWidget::loadPosition() {
-    QRect r = geometry();
-    int primary = qApp->desktop()->primaryScreen();
-    QRect scr = qApp->desktop()->availableGeometry(primary);
-    if (gSettings->value("GenOps/alwayscenter", false).toBool()) {
-	QPoint p;
-	p.setX(scr.width()/2.0 - r.width() / 2.0);
-	p.setY(scr.height()/2.0 - r.height() / 2.0);
-	return p;
-    } 
-    QPoint pt = gSettings->value("Display/pos", QPoint(0,0)).toPoint();
-    // See if pt is in the current screen resolution, if not go to center
-    
-    if (pt.x() > scr.width() || pt.y() > scr.height() || pt.x() < 0 || pt.y() < 0) {
-	pt.setX(scr.width()/2.0 - r.width() / 2.0);
-	pt.setY(scr.height()/2.0 - r.height() / 2.0);
-    }
-    return pt;
+	QRect r = geometry();
+	int primary = qApp->desktop()->primaryScreen();
+	QRect scr = qApp->desktop()->availableGeometry(primary);
+	if (gSettings->value("GenOps/alwayscenter", false).toBool()) {
+		QPoint p;
+		p.setX(scr.width()/2.0 - r.width() / 2.0);
+		p.setY(scr.height()/2.0 - r.height() / 2.0);
+		return p;
+	} 
+	QPoint pt = gSettings->value("Display/pos", QPoint(0,0)).toPoint();
+	// See if pt is in the current screen resolution, if not go to center
+
+	if (pt.x() > scr.width() || pt.y() > scr.height() || pt.x() < 0 || pt.y() < 0) {
+		pt.setX(scr.width()/2.0 - r.width() / 2.0);
+		pt.setY(scr.height()/2.0 - r.height() / 2.0);
+	}
+	return pt;
 }
 /*
 void MyWidget::savePosition() {
@@ -876,7 +874,7 @@ void MyWidget::closeEvent(QCloseEvent *event) {
 	if (platform)
 		delete platform;
 	platform = NULL;
-	
+
 	event->accept();
 	qApp->quit();
 }
@@ -972,11 +970,11 @@ void MyWidget::applySkin(QString directory) {
 
 	// Use default skin if this one doesn't exist
 	if (!QFile::exists(directory + "/misc.txt"))  {
-	    directory = dirs["defSkin"][0];
-	    gSettings->setValue("GenOps/skin", dirs["defSkin"][0]);
+		directory = dirs["defSkin"][0];
+		gSettings->setValue("GenOps/skin", dirs["defSkin"][0]);
 	}
 
-	
+
 	// Set positions
 	if (QFile::exists(directory + "/misc.txt")) {
 		QFile file(directory + "/misc.txt");
@@ -1143,7 +1141,7 @@ void MyWidget::menuOptions() {
 
 	// Perform the database update
 	if (gBuilder == NULL)
-	    buildCatalog();
+		buildCatalog();
 
 	input->activateWindow();
 	input->setFocus();	
@@ -1245,7 +1243,7 @@ void MyWidget::showLaunchy(bool now) {
 	shouldDonate();
 	alternatives->hide();
 
-	
+
 
 	// This gets around the weird Vista bug
 	// where the alpha border would dissappear
@@ -1266,9 +1264,9 @@ void MyWidget::showLaunchy(bool now) {
 	if (!now) {
 		fadeIn();
 	} else {
-	    double end = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
-	    end /= 100.0;
-	    setFadeLevel(end);
+		double end = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
+		end /= 100.0;
+		setFadeLevel(end);
 	}
 
 
@@ -1277,9 +1275,9 @@ void MyWidget::showLaunchy(bool now) {
 	// Terrible hack to steal focus from other apps when using splashscreen
 	#ifdef Q_WS_X11
 	for(int i = 0; i < 100; i++) {
-	    activateWindow();
-	    raise();
-	    qApp->syncX();
+	activateWindow();
+	raise();
+	qApp->syncX();
 	}
 	#endif
 	*/
@@ -1343,25 +1341,25 @@ int main(int argc, char *argv[])
 		if (args[1] == "rescue")  {
 			rescue = true;
 			// Kill all existing Launchy's
-//			platform->KillLaunchys();
+			//			platform->KillLaunchys();
 		}
 
 
-	QCoreApplication::setApplicationName("Launchy");
-	QCoreApplication::setOrganizationDomain("Launchy");
+		QCoreApplication::setApplicationName("Launchy");
+		QCoreApplication::setOrganizationDomain("Launchy");
 
-	QString locale = QLocale::system().name();
+		QString locale = QLocale::system().name();
 
 
-	QTranslator translator;
-	translator.load(QString("tr/launchy_" + locale));
-	app->installTranslator(&translator); 
+		QTranslator translator;
+		translator.load(QString("tr/launchy_" + locale));
+		app->installTranslator(&translator); 
 
-	MyWidget widget(NULL, platform, rescue);
-	widget.setObjectName("main");
+		MyWidget widget(NULL, platform, rescue);
+		widget.setObjectName("main");
 
-	app->exec();
+		app->exec();
 
-	// Causing exit crashes.. screw it
-	//	delete app;
+		// Causing exit crashes.. screw it
+		//	delete app;
 } 

@@ -1,21 +1,21 @@
 QPushButton#opsButton{
     border: none;
-    background: url(skins/default/opsButton.png);
+    background: url(skins/Default/opsButton.png);
 }
 
 QPushButton#opsButton:pressed {
     border: none;
-    background-image: url(skins/default/opsButtonPressed.png); 
+    background-image: url(skins/Default/opsButtonPressed.png); 
 }
 
 QPushButton#closeButton{
     border: none;
-    background: url(skins/default/closeButton.png);
+    background: url(skins/Default/closeButton.png);
 }
 
 QPushButton#closeButton:pressed {
     border: none;
-    background-image: url(skins/default/closeButtonPressed.png); 
+    background-image: url(skins/Default/closeButtonPressed.png); 
 }
 
 QLineEdit#input { 
@@ -62,15 +62,15 @@ QScrollBar#altScroll::sub-line:vertical {
     height: 16px;
     subcontrol-position: top;
     subcontrol-origin: margin; 
-    image: url(skins/default/scrollUp.png); 	
+    image: url(skins/Default/scrollUp.png); 	
 }
 
 QScrollBar#altScroll::add-page:vertical {
-    background: url(skins/default/scrollBack.png);
+    background: url(skins/Default/scrollBack.png);
 }
 
 QScrollBar#altScroll::sub-page:vertical {
-    background: url(skins/default/scrollBack.png); 	
+    background: url(skins/Default/scrollBack.png); 	
 }
 
 QScrollBar#altScroll::add-line:vertical { 
@@ -78,5 +78,5 @@ QScrollBar#altScroll::add-line:vertical {
     height: 16px; 
     subcontrol-position: bottom;
     subcontrol-origin: margin;        
-    image: url(skins/default/scrollDown.png);
+    image: url(skins/Default/scrollDown.png);
 }
