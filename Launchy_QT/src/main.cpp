@@ -1358,5 +1358,6 @@ int main(int argc, char *argv[])
 
 	app->exec();
 
-	delete app;
+	// Causing exit crashes.. screw it
+	//	delete app;
 } 
