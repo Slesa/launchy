@@ -183,6 +183,7 @@ bool CatBuilder::loadCatalog(QString dest) {
     if (!inFile.open(QIODevice::ReadOnly)) {
 	return false;
     }
+
     QByteArray ba = inFile.readAll();
     
     QByteArray unzipped = qUncompress(ba);
