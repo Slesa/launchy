@@ -61,7 +61,7 @@ QList<Directory> PlatformUnix::GetInitialDirs() {
     for(int i = 0; i < 5; i++)
 	list.append(Directory(dirs[i],l,false,false,100));
 
-    list.append(Directory("~",QStringList(),true,false,1));
+    list.append(Directory("~",QStringList(),true,false,0));
     
     return list;
 }

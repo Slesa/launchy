@@ -59,7 +59,7 @@ bool CatLess (CatItem* a, CatItem* b)  {
 	if (localFind != -1 && otherFind != -1) {
 		if (localFind < otherFind)
 			return true;
-		else
+		else if (otherFind < localFind)
 			return false;
 	}
 
