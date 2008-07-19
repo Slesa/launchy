@@ -374,11 +374,15 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 		}
 	}
 	else {
+		alternatives->hide();	
 		activateWindow();
 		raise();
 		input->setFocus();
-		alternatives->hide();	
 		key->ignore();
+		#ifdef Q_WS_X11
+		input->setText(input->text() + key->text());
+		keyPressEvent(key);
+		#endif
 	}
 }
 
