@@ -57,6 +57,7 @@ void Process::httpGetFinished(bool error) {
 		    result = result.replace("<sup>",locale.exponential() + QString("("));
 			result = result.replace("</sup>",")");
 			result = result.replace("&#215;", "x");
+			result = result.split("=")[1].trimmed();
 /*			QStringList spl = result.split("<b>");
 			spl = spl[1].split("</b>");
 			result = spl[0];
