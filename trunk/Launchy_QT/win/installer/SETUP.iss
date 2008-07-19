@@ -73,6 +73,17 @@ Source: ..\..\skins\Quicksilver2\mask.png; DestDir: {app}\skins\Quicksilver2\; F
 Source: ..\..\skins\Quicksilver2\misc.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\..\skins\Quicksilver2\style.qss; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 
+Source: ..\..\skins\Note\alpha.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
+Source: ..\..\skins\Note\author.txt; DestDir: {app}\skins\Note\; Flags: ignoreversion
+Source: ..\..\skins\Note\background.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
+Source: ..\..\skins\Note\mask.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
+Source: ..\..\skins\Note\misc.txt; DestDir: {app}\skins\Note\; Flags: ignoreversion
+Source: ..\..\skins\Note\style.qss; DestDir: {app}\skins\Note\; Flags: ignoreversion
+Source: ..\..\skins\Note\scrollBack.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
+Source: ..\..\skins\Note\scrollDown.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
+Source: ..\..\skins\Note\scrollUp.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
+
+
 Source: ..\..\skins\Black Glass\alpha.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black Glass\author.txt; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black Glass\background.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
