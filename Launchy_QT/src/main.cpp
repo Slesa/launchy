@@ -53,8 +53,8 @@ MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
 QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 #endif
 #ifdef Q_WS_X11
-QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool )
-//QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
+   //QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool )
+QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 #endif
 {    
 	setAttribute(Qt::WA_AlwaysShowToolTips);
@@ -613,7 +613,6 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 	dir = path.mid(0,path.lastIndexOf("/")+1);
 	file = path.mid(path.lastIndexOf("/")+1);
 
-	qDebug() << "Path" << path << "Dir:" << dir << "File:" << file;
 
 	QFileInfo info(dir);
 	if (!info.isDir()) return;
@@ -857,7 +856,6 @@ void MyWidget::closeEvent(QCloseEvent *event) {
 	dest.cdUp();
 	CatBuilder builder(catalog, &plugins);
 	builder.storeCatalog(dest.absoluteFilePath("Launchy.db"));
-	qDebug() << "Stored catalog";
 
 	// Delete the platform (to unbind hotkeys) right away
 	// else XUngrabKey segfaults if done later
@@ -1259,7 +1257,9 @@ void MyWidget::showLaunchy(bool now) {
 	}
 
 
-	// Terrible hack to steal focus from other apps in compiz
+
+	/*
+	// Terrible hack to steal focus from other apps when using splashscreen
 	#ifdef Q_WS_X11
 	for(int i = 0; i < 100; i++) {
 	    activateWindow();
@@ -1267,6 +1267,7 @@ void MyWidget::showLaunchy(bool now) {
 	    qApp->syncX();
 	}
 	#endif
+	*/
 	input->activateWindow();
 	input->raise();
 	input->selectAll();
