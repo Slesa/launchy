@@ -151,11 +151,14 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 	applySkin(gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString());
 
 	// Move to saved position
-	if (!rescue) {
-		QPoint x = loadPosition(); //gSettings->value("Display/relpos", QPoint(0,0)).toPoint();
-		move(x);
-		platform->MoveAlphaBorder(x);
-	}
+	QPoint x;
+	if (rescue)
+	    x = QPoint(0,0);
+	else
+	    x = loadPosition();
+	move(x);
+	platform->MoveAlphaBorder(x);
+	
 
 	// Set the general options
 	setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool());
@@ -785,17 +788,23 @@ return absPos;
 */
 
 QPoint MyWidget::loadPosition() {
-	if (gSettings->value("GenOps/alwayscenter", false).toBool()) {
-		QPoint p;
-		QRect r = geometry();
-		int primary = qApp->desktop()->primaryScreen();
-		QRect scr = qApp->desktop()->availableGeometry(primary);
-
-		p.setX(scr.width()/2.0 - r.width() / 2.0);
-		p.setY(scr.height()/2.0 - r.height() / 2.0);
-		return p;
-	} 
-	return gSettings->value("Display/pos", QPoint(0,0)).toPoint();
+    QRect r = geometry();
+    int primary = qApp->desktop()->primaryScreen();
+    QRect scr = qApp->desktop()->availableGeometry(primary);
+    if (gSettings->value("GenOps/alwayscenter", false).toBool()) {
+	QPoint p;
+	p.setX(scr.width()/2.0 - r.width() / 2.0);
+	p.setY(scr.height()/2.0 - r.height() / 2.0);
+	return p;
+    } 
+    QPoint pt = gSettings->value("Display/pos", QPoint(0,0)).toPoint();
+    // See if pt is in the current screen resolution, if not go to center
+    
+    if (pt.x() > scr.width() || pt.y() > scr.height() || pt.x() < 0 || pt.y() < 0) {
+	pt.setX(scr.width()/2.0 - r.width() / 2.0);
+	pt.setY(scr.height()/2.0 - r.height() / 2.0);
+    }
+    return pt;
 }
 /*
 void MyWidget::savePosition() {
@@ -1231,6 +1240,8 @@ void MyWidget::fadeOut() {
 void MyWidget::showLaunchy(bool now) {
 	shouldDonate();
 	alternatives->hide();
+
+	
 
 	// This gets around the weird Vista bug
 	// where the alpha border would dissappear
