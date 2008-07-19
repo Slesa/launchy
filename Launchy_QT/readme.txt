@@ -10,8 +10,9 @@ Linux Issues:
 
 
 To be done for 2.1 Linux:
-. Make a man page
-. Seems that bookmarks aren't running correctly
+. Make sure it works in kde
+. Make the icons show up without make install
+. Make devlopment plugins take priority over global areas
 
 To be done for 2.1 Windows:
 . Rescue mode should kill running Launchy's

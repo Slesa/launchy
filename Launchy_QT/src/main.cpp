@@ -441,8 +441,8 @@ void MyWidget::doTab()
 			else
 				path = searchResults[0].fullPath;
 
-			if (info.isDir() && !path.endsWith(QDir::toNativeSeparators("/"))) 
-				path += QDir::toNativeSeparators("/");
+			if (info.isDir() && !path.endsWith(QDir::separator())) 
+				path += QDir::separator();
 
 			input->setText(printInput() + QDir::toNativeSeparators(path));
 		} else {
@@ -558,7 +558,7 @@ void MyWidget::searchOnInput() {
 	//	    qDebug() << gSearchTxt;
 	// Is it a file?
 
-	if (stxt.contains("\\") || stxt.contains("/") || stxt.startsWith("~")) {
+	if (stxt.contains(QDir::separator()) || stxt.startsWith("~") || (stxt.size() == 2 && stxt[1] == ':')) {
 		searchFiles(stxt, searchResults);
 		inputData.last().setLabel(LABEL_FILE);
 	}
