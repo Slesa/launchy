@@ -6,8 +6,6 @@ TARGET = launchy
 QT			+= network
 TARGET		= Launchy
 VPATH		+= src/
-UI_DIR		= ../src/
-FORMS		= ../src/options.ui
 SOURCES		= main.cpp globals.cpp  \ 
 			  options.cpp catalog.cpp catalog_builder.cpp \ 
 			   plugin_handler.cpp platform_util.cpp\
@@ -25,6 +23,9 @@ ICON		= Launchy.ico
 
 
 unix {
+  UI_DIR = src/
+  FORMS	= src/options.ui
+
 	DEFINES += SKINS_PATH=$(SKINS_PATH) PLUGINS_PATH=$(PLUGINS_PATH)\
 			   PLATFORMS_PATH=$(PLATFORMS_PATH)
 
@@ -39,6 +40,9 @@ unix {
 
 
 win32 {
+UI_DIR		= ../src/
+FORMS		= ../src/options.ui
+
 	RC_FILE = win/launchy.rc
 	LIBS += shell32.lib
 	if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
