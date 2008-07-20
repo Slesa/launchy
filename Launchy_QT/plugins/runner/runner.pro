@@ -1,12 +1,13 @@
  TEMPLATE      = lib
  CONFIG       += plugin debug_and_release
- VPATH 		  += ../../src/
- INCLUDEPATH += ../../src/
+ VPATH 		  += ../../src
+ INCLUDEPATH += ../../src
  UI_DIR		   = ../../plugins/runner/
  FORMS		   = dlg.ui
  HEADERS       = plugin_interface.h runner.h gui.h globals.h
  SOURCES       = plugin_interface.cpp runner.cpp gui.cpp
  TARGET		   = runner
+
  
 win32 {
  	CONFIG -= embed_manifest_dll

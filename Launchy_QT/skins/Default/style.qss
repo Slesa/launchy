@@ -46,7 +46,7 @@ QListWidget#alternatives {
 }
 
 QScrollBar#altScroll:vertical {
-	image: url(skins/default/scroller-back.png); 
+	image: url(skins/Default/scroller-back.png); 
     width: 16px; 
     margin: 16px 0px 16px 0px; 
 }
