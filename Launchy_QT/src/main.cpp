@@ -1271,8 +1271,9 @@ void MyWidget::showLaunchy(bool now) {
 
 
 
-	/*
+	
 	// Terrible hack to steal focus from other apps when using splashscreen
+	
 	#ifdef Q_WS_X11
 	for(int i = 0; i < 100; i++) {
 	activateWindow();
@@ -1280,7 +1281,8 @@ void MyWidget::showLaunchy(bool now) {
 	qApp->syncX();
 	}
 	#endif
-	*/
+
+	qApp->syncX();
 	input->activateWindow();
 	input->raise();
 	input->selectAll();
