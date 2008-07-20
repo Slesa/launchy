@@ -560,7 +560,7 @@ void MyWidget::searchOnInput() {
 
 	if (stxt.contains(QDir::separator()) || stxt.startsWith("~") || (stxt.size() == 2 && stxt[1] == ':')) {
 		searchFiles(stxt, searchResults);
-		inputData.last().setLabel(LABEL_FILE);
+
 	}
 	catalog->checkHistory(gSearchTxt, searchResults);
 }
@@ -622,6 +622,8 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 	QFileInfo info(dir);
 	if (!info.isDir()) return;
 
+
+	inputData.last().setLabel(LABEL_FILE);
 
 	// Okay, we have a directory, find files that match "file"
 	QDir qd(dir);
