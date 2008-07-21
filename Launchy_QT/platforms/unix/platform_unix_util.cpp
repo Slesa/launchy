@@ -302,9 +302,16 @@ QString UnixIconProvider::getDesktopIcon(QString desktopFile, QString IconName) 
 	iconPath = IconName;
     }
     else {
-	QString iname = IconName;
-	if (!iname.endsWith(".png"))
-	    iname += ".png";
+	QStringList inames;
+	if (IconName.endsWith(".png") || IconName.endsWith(".xpm") || IconName.endsWith(".svg"))
+	    inames += IconName;
+	else {
+	    inames += IconName + ".png";
+	    inames += IconName + ".xpm";
+	    inames += IconName + ".svg";
+	}
+
+
 	bool ifound = false;
 	QString theme = "/hicolor/32x32";
 	
@@ -315,7 +322,9 @@ QString UnixIconProvider::getDesktopIcon(QString desktopFile, QString IconName) 
 	    dirs += dir + "/icons" + theme;
 	}
 	dirs += "/usr/share/pixmaps";
+
 	
+
 	
 	foreach(QString dir, dirs) {
 	    QDir d(dir);
@@ -325,11 +334,14 @@ QString UnixIconProvider::getDesktopIcon(QString desktopFile, QString IconName) 
 	    sdirs += "."; 
 	    
 	    foreach (QString subdir, sdirs) {
-		if (QFile::exists(dir + "/" + subdir + "/" +  iname)) {
-		    iconPath = dir + "/" + subdir + "/" + iname;
-		    icon2path[IconName] = iconPath;
-		    ifound = true;
-		    break;
+		foreach(QString iname, inames) {
+		    qDebug() << iname;
+		    if (QFile::exists(dir + "/" + subdir + "/" +  iname)) {
+			iconPath = dir + "/" + subdir + "/" + iname;
+			icon2path[IconName] = iconPath;
+			ifound = true;
+			break;
+		    }
 		}
 	    }
 	    if (ifound)
