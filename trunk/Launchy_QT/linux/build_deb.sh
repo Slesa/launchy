@@ -18,5 +18,13 @@ dh_make -e karlinjf@sourceforge.net -f ../launchy-$ver.tar.gz -c gpl
 cp ../debian/* debian/
 dpkg-buildpackage -rfakeroot
 
+cd ..
 
-
+mkdir repository
+mkdir repository/binary
+mkdir repository/source
+cp *.deb repository/binary/
+cp *.orig.* *.diff.gz *.dsc  repository/source/
+cd repository
+dpkg-scanpackages binary /dev/null | gzip -9c > binary/Packages.gz
+dpkg-scansources source /dev/null | gzip -9c > source/Sources.gz
