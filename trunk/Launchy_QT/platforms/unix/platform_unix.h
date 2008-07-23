@@ -36,7 +36,7 @@
 class MyApp : public QApplication {
     Q_OBJECT
     public:
-	MyApp(int argc, char** argv) : QApplication(argc,argv) {}
+	MyApp(int & argc, char** & argv) : QApplication(argc,argv) {}
 	bool x11EventFilter ( XEvent * event ) {
 	    if (event->type == KeyPress) {
 		emit xkeyPressed(event);
@@ -58,7 +58,7 @@ class PlatformUnix : public QObject, public PlatformBase
     PlatformUnix();
     ~PlatformUnix();
     
-    virtual QApplication* init(int* argc, char** argv);
+    virtual QApplication* init(int & argc, char** argv);
     // Mandatory functions
     // Mandatory functions
     void SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
@@ -105,6 +105,7 @@ class PlatformUnix : public QObject, public PlatformBase
     virtual void alterItem(CatItem*);
 
 };
+
 
 
 
