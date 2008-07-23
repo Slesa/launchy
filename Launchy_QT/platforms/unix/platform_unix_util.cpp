@@ -335,7 +335,6 @@ QString UnixIconProvider::getDesktopIcon(QString desktopFile, QString IconName) 
 	    
 	    foreach (QString subdir, sdirs) {
 		foreach(QString iname, inames) {
-		    qDebug() << iname;
 		    if (QFile::exists(dir + "/" + subdir + "/" +  iname)) {
 			iconPath = dir + "/" + subdir + "/" + iname;
 			icon2path[IconName] = iconPath;

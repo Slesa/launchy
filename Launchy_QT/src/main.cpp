@@ -1337,11 +1337,12 @@ int main(int argc, char *argv[])
 #endif
 	PlatformBase * platform = loadPlatform();
 #ifdef Q_WS_X11
-	QApplication * app = platform->init(&argc, argv);
+	QApplication * app = platform->init(argc, argv);
 #endif
 	QStringList args = qApp->arguments();
 
 	bool rescue = false;
+
 	if (args.size() > 1) 
 		if (args[1] == "rescue")  {
 			rescue = true;

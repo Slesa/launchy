@@ -34,10 +34,10 @@ PlatformUnix::PlatformUnix() : PlatformBase()
     icons = NULL;
 }
 
-QApplication* PlatformUnix::init(int* argc, char** argv)
+QApplication* PlatformUnix::init(int & argc, char** argv)
 {        
     //    QApplication * app = new QApplication(*argc, argv);
-    QApplication * app = new MyApp(*argc, argv);
+    QApplication * app = new MyApp(argc, argv);
     icons = (QFileIconProvider *) new UnixIconProvider();
     return app;
 }

@@ -42,8 +42,8 @@ public:
 
 	QFileIconProvider* icons;
 
-	virtual QApplication* init(int* argc, char** argv) { 
-		return new QApplication(*argc, argv);
+	virtual QApplication* init(int & argc, char** argv) { 
+		return new QApplication(argc, argv);
 	}
 
 	virtual QWidget* getAlphaWidget() = 0;
