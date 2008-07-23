@@ -1175,7 +1175,8 @@ void Fader::fadeIn() {
 
 		for(double i = 0.0; i < end + 0.01 && keepRunning; i += 0.05) {
 			emit fadeLevel(i);
-			msleep(delay);
+			//			qApp->syncX();
+			msleep(delay);			
 		}
 	}
 	emit fadeLevel(end);
