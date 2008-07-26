@@ -205,7 +205,7 @@ public:
 	void checkForUpdate();
 	void shouldDonate();
 	void setCondensed(int condensed);
-	void setHotkey(int, int);
+	bool setHotkey(int, int);
 	void showAlternatives(bool show=true);
 	void launchObject();
 	void searchFiles(const QString & input, QList<CatItem>& searchResults);

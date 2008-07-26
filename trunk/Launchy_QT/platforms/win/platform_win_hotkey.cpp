@@ -47,17 +47,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class GlobalShortcutManager::KeyTrigger::Impl : public QWidget
 {
 public:
+	
+	bool connected;
         /**
          * Constructor registers the hotkey.
          */
         Impl(GlobalShortcutManager::KeyTrigger* t, const QKeySequence& ks)
                 : trigger_(t)
                 , id_(0)
+				, connected(false)
         {
                 UINT mod, key;
                 if (convertKeySequence(ks, &mod, &key))
-                        if (RegisterHotKey(winId(), nextId, mod, key))
+					if (RegisterHotKey(winId(), nextId, mod, key)) {
                                 id_ = nextId++;
+								connected = true;
+					}
         }
 
         /**
@@ -65,8 +70,10 @@ public:
          */
         ~Impl()
         {
-                if (id_)
+			if (id_) {
                         UnregisterHotKey(winId(), id_);
+						connected = false;
+			}
         }
 
         /**
@@ -230,4 +237,10 @@ GlobalShortcutManager::KeyTrigger::~KeyTrigger()
 {
         delete d;
         d = 0;
+}
+
+bool GlobalShortcutManager::KeyTrigger::isConnected() 
+{
+	if (!d) return false;
+	return d->connected;
 }

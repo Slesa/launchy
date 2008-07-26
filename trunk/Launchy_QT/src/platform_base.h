@@ -60,7 +60,7 @@ public:
 	QKeySequence oldKey;
 
 	// Set hotkey
-	virtual void SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot) = 0;
+	virtual bool SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot) = 0;
 
 	// Need to alter an indexed item?  e.g. .desktop files
 	virtual void alterItem(CatItem*) {return;};

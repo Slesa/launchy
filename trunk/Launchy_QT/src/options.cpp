@@ -215,6 +215,18 @@ void OptionsDlg::accept() {
     if (gSettings == NULL) return;
 
 
+	// See if the new hotkey works, if not we're not leaving the dialog.
+	bool newKey = main->setHotkey(iMetaKeys[genModifierBox->currentIndex()], iActionKeys[genKeyBox->currentIndex()]);
+
+	if (!newKey) {
+		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey you have chosen is already in use, please select another."));
+		return;
+	}
+
+    gSettings->setValue("GenOps/hotkeyModifier", iMetaKeys[genModifierBox->currentIndex()]);
+    gSettings->setValue("GenOps/hotkeyAction", iActionKeys[genKeyBox->currentIndex()]);
+
+
     
     // Save General Options
     gSettings->setValue("GenOps/alwaysshow", genAlwaysShow->isChecked());
@@ -229,8 +241,6 @@ void OptionsDlg::accept() {
     gSettings->setValue("GenOps/updatetimer", genUpMinutes->text());
     gSettings->setValue("GenOps/numviewable", genMaxViewable->text());
     gSettings->setValue("GenOps/numresults", genNumResults->text());
-    gSettings->setValue("GenOps/hotkeyModifier", iMetaKeys[genModifierBox->currentIndex()]);
-    gSettings->setValue("GenOps/hotkeyAction", iActionKeys[genKeyBox->currentIndex()]);
     gSettings->setValue("GenOps/opaqueness", genOpaqueness->value());
     gSettings->setValue("GenOps/fadein", genFadeIn->value());
     gSettings->setValue("GenOps/fadeout", genFadeOut->value());
@@ -239,7 +249,6 @@ void OptionsDlg::accept() {
     main->setAlwaysShow(genAlwaysShow->isChecked());
     main->setAlwaysTop(genAlwaysTop->isChecked());
     main->setPortable(genPortable->isChecked());
-    main->setHotkey(iMetaKeys[genModifierBox->currentIndex()], iActionKeys[genKeyBox->currentIndex()]);
     main->setCondensed(genCondensed->isChecked());
     main->setOpaqueness(genOpaqueness->value());
     

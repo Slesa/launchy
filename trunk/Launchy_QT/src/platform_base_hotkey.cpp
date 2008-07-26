@@ -65,6 +65,15 @@ void GlobalShortcutManager::connect(const QKeySequence& key, QObject* receiver, 
         }
 
         QObject::connect(t, SIGNAL(activated()), receiver, slot);
+		
+}
+
+bool GlobalShortcutManager::isConnected(const QKeySequence& key)
+{
+	KeyTrigger* t = instance()->triggers_[key];
+	if (!t)
+		return false;
+	return t->isConnected();
 }
 
 /**
