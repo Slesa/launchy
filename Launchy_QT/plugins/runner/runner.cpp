@@ -86,7 +86,7 @@ void runnerPlugin::getName(QString* str)
 
 QString runnerPlugin::getIcon()
 {
-    return libPath + "/icons/runner.ico";
+    return libPath + "/icons/runner.png";
 }
 
 void runnerPlugin::getCatalog(QList<CatItem>* items)
