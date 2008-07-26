@@ -34,7 +34,8 @@ public:
         static GlobalShortcutManager* instance();
         static void connect(const QKeySequence& key, QObject* receiver, const char* slot);
         static void disconnect(const QKeySequence& key, QObject* receiver, const char* slot);
-        static void clear();
+		static bool isConnected(const QKeySequence& key);
+		static void clear();
 
 private:
         GlobalShortcutManager();

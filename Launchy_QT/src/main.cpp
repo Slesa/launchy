@@ -180,7 +180,10 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 	int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::ControlModifier).toInt();
 #endif
 	int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
-	setHotkey(curMeta, curAction);
+	if (!setHotkey(curMeta, curAction)) {
+		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey you have chosen is already in use, please alter Launchy's options and select another."));
+		rescue = true;
+	}
 
 	// Set the timers
 	updateTimer = new QTimer(this);
@@ -221,9 +224,9 @@ void MyWidget::setCondensed(int condensed) {
 		alternatives->setItemDelegate(listDelegate);
 
 }
-void MyWidget::setHotkey(int meta, int key) {
+bool MyWidget::setHotkey(int meta, int key) {
 	QKeySequence keys = QKeySequence(meta + key);
-	platform->SetHotkey(keys, this, SLOT(onHotKey()));
+	return platform->SetHotkey(keys, this, SLOT(onHotKey()));
 }
 
 void MyWidget::menuEvent(QContextMenuEvent* evt) {
