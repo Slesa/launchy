@@ -31,6 +31,8 @@ X11KeyTriggerManager* X11KeyTriggerManager::instance_ = NULL;
 
 class GlobalShortcutManager::KeyTrigger::Impl : public X11KeyTrigger
 {
+public:
+        static bool failed;
 private:
         KeyTrigger* trigger_;
         int qkey_;
@@ -41,7 +43,7 @@ private:
         };
         QList<GrabbedKey> grabbedKeys_;
 
-        static bool failed;
+
         static int XGrabErrorHandler(Display *, XErrorEvent *)
         {
                 qWarning("failed to grab key");
@@ -217,6 +219,11 @@ GlobalShortcutManager::KeyTrigger::~KeyTrigger()
         d = 0;
 }
 
+bool GlobalShortcutManager::KeyTrigger::isConnected()
+{
+  	if (!d) return false;
+	return !GlobalShortcutManager::KeyTrigger::Impl::failed;
+}
 
 
 

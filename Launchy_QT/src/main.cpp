@@ -181,7 +181,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
 #endif
 	int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
 	if (!setHotkey(curMeta, curAction)) {
-		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey you have chosen is already in use, please alter Launchy's options and select another."));
+		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey you have chosen is already in use. Please select another from Launchy's preferences."));
 		rescue = true;
 	}
 
