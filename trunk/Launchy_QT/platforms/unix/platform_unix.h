@@ -61,11 +61,12 @@ class PlatformUnix : public QObject, public PlatformBase
     virtual QApplication* init(int & argc, char** argv);
     // Mandatory functions
     // Mandatory functions
-    void SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
+    bool SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
     {
 	GlobalShortcutManager::disconnect(oldKey, receiver, slot);
 	GlobalShortcutManager::connect(key, receiver, slot);
 	oldKey = key;
+	return GlobalShortcutManager::isConnected(key);
     }
     
     QString GetSettingsDirectory() { 
