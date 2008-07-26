@@ -124,7 +124,7 @@ void gcalcPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 
 QString gcalcPlugin::getIcon()
 {
-    return libPath + "/icons/calcy.ico";
+    return libPath + "/icons/calcy.png";
 }
 
 

@@ -44,9 +44,9 @@ install:: release
 	-install -d $(DESTDIR)$(PLUGINS_PATH)
 	install -m 644 release/plugins/*.so $(DESTDIR)$(PLUGINS_PATH)/ 
 	-install -d $(DESTDIR)$(PLUGINS_PATH)/icons
-	install -m 644 plugins/runner/runner.ico $(DESTDIR)$(PLUGINS_PATH)/icons/
-	-install -m 644 plugins/weby/weby.ico $(DESTDIR)$(PLUGINS_PATH)/icons/
-	install -m 644 plugins/calcy/calcy.ico $(DESTDIR)$(PLUGINS_PATH)/icons/
+	install -m 644 plugins/runner/runner.png $(DESTDIR)$(PLUGINS_PATH)/icons/
+	-install -m 644 plugins/weby/weby.png $(DESTDIR)$(PLUGINS_PATH)/icons/
+	install -m 644 plugins/calcy/calcy.png $(DESTDIR)$(PLUGINS_PATH)/icons/
 	-install -d $(DESTDIR)$(SKINS_PATH)
 	cp -r skins $(DESTDIR)$(PREFIX)/share/launchy/
 	install -d $(DESTDIR)$(DESKTOP_PATH)/

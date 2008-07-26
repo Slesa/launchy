@@ -292,7 +292,7 @@ QString WebyPlugin::getFirefoxPath()
 
 QString WebyPlugin::getIcon()
 {
-	return libPath + "/icons/weby.ico";
+	return libPath + "/icons/weby.png";
 }
 
 void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
