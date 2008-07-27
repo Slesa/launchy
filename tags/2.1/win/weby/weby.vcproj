@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="plug_weby"
+	ProjectGUID="{4537EEC0-8AF8-4BD3-9A78-4C1A34297045}"
+	RootNamespace="weby"
+	Keyword="MakeFileProj"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="0"
+			>
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="%QTDIR%\bin\qmake ..\..\plugins\weby\weby.pro&#x0D;&#x0A;nmake debug"
+				ReBuildCommandLine="%QTDIR%\bin\qmake ..\..\plugins\weby\weby.pro&#x0D;&#x0A;nmake debug-clean&#x0D;&#x0A;nmake debug"
+				CleanCommandLine="%QTDIR%\bin\qmake ..\..\plugins\weby\weby.pro&#x0D;&#x0A;nmake debug-clean"
+				Output="weby.exe"
+				PreprocessorDefinitions="WIN32;_DEBUG"
+				IncludeSearchPath=""
+				ForcedIncludes=""
+				AssemblySearchPath=""
+				ForcedUsingAssemblies=""
+				CompileAsManaged=""
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="0"
+			>
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="%QTDIR%\bin\qmake ..\..\plugins\weby\weby.pro&#x0D;&#x0A;nmake release"
+				ReBuildCommandLine="%QTDIR%\bin\qmake ..\..\plugins\weby\weby.pro&#x0D;&#x0A;nmake release-clean&#x0D;&#x0A;nmake release"
+				CleanCommandLine="%QTDIR%\bin\qmake ..\..\plugins\weby\weby.pro&#x0D;&#x0A;nmake release-clean"
+				Output="weby.exe"
+				PreprocessorDefinitions="WIN32;NDEBUG"
+				IncludeSearchPath=""
+				ForcedIncludes=""
+				AssemblySearchPath=""
+				ForcedUsingAssemblies=""
+				CompileAsManaged=""
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<File
+			RelativePath="..\..\plugins\weby\globals.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\plugins\weby\gui.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\plugins\weby\gui.h"
+			>
+		</File>
+		<File
+			RelativePath=".\readme.txt"
+			>
+		</File>
+		<File
+			RelativePath="..\..\plugins\weby\weby.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\plugins\weby\weby.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\plugins\weby\weby.pro"
+			>
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

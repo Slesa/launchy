@@ -1,0 +1,23 @@
+QLineEdit#input {
+	font:  14px "Verdana";
+	border-width: 0px;
+	background-color: rgb(255,255,255);
+	border-style: solid;
+	color: black;
+}
+
+QListWidget#alternatives {
+	font:  12px "Verdana";
+	border-width: 0px;
+	background-color: rgb(255,255,255);
+	border-style: solid;
+	color: black;
+}
+
+QLineEdit#output {
+	font:  12px "Verdana";
+	border-width: 0px;
+	background-color: rgba(255,255,255,0%);
+	border-style: solid;
+	color: black;
+}
