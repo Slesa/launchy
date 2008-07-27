@@ -18,6 +18,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win", "..\platforms\win\win
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_gcalc", "gcalc\gcalc.vcproj", "{2B674BCD-7C3C-4996-ACDB-43900A5652C4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_loader", "loader\loader.vcproj", "{C511DA04-FD9A-4A09-85EA-301DA3BD8924}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -56,6 +58,10 @@ Global
 		{2B674BCD-7C3C-4996-ACDB-43900A5652C4}.Debug|Win32.Build.0 = Debug|Win32
 		{2B674BCD-7C3C-4996-ACDB-43900A5652C4}.Release|Win32.ActiveCfg = Release|Win32
 		{2B674BCD-7C3C-4996-ACDB-43900A5652C4}.Release|Win32.Build.0 = Release|Win32
+		{C511DA04-FD9A-4A09-85EA-301DA3BD8924}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C511DA04-FD9A-4A09-85EA-301DA3BD8924}.Debug|Win32.Build.0 = Debug|Win32
+		{C511DA04-FD9A-4A09-85EA-301DA3BD8924}.Release|Win32.ActiveCfg = Release|Win32
+		{C511DA04-FD9A-4A09-85EA-301DA3BD8924}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,5 +73,6 @@ Global
 		{4537EEC0-8AF8-4BD3-9A78-4C1A34297045} = {1F2DCBE1-0DDA-4643-882F-D46D964F2264}
 		{7E13C272-561A-4022-B991-E24BF57686D2} = {1F2DCBE1-0DDA-4643-882F-D46D964F2264}
 		{2B674BCD-7C3C-4996-ACDB-43900A5652C4} = {1F2DCBE1-0DDA-4643-882F-D46D964F2264}
+		{C511DA04-FD9A-4A09-85EA-301DA3BD8924} = {1F2DCBE1-0DDA-4643-882F-D46D964F2264}
 	EndGlobalSection
 EndGlobal
