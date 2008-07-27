@@ -85,7 +85,6 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 
 	QStringList files = qd.entryList(QStringList("*.cpl"), QDir::Files, QDir::Unsorted);
 	foreach(QString file, files) {
-
 		QString path = QDir::toNativeSeparators(qd.absoluteFilePath(file));
 
 		if (cache.count(file) > 0) {
@@ -93,6 +92,37 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 				items->push_back(CatItem(path, cache[file], 0, getIcon()));
 			continue;
 		}
+
+		CPLINFO info;
+		HINSTANCE hLib; // Library Handle to *.cpl file
+		APPLET_PROC CplCall; // Pointer to CPlApplet() function
+		LONG i;
+
+
+		hLib = LoadLibrary((LPCTSTR) path.utf16());
+		if (hLib) {
+			CplCall=(APPLET_PROC)GetProcAddress(hLib,"CPlApplet");
+			if (CplCall) {
+				if (CplCall(NULL, CPL_INIT,0,0)) {
+					
+					for (i=0;i<CplCall(NULL,CPL_GETCOUNT,0,0);i++)
+					{	        
+						a = CplCall(NULL, CPL_INQUIRE, i, (LPARAM) &info);
+						TCHAR name[128] = L"";
+						LoadString(hLib, info.idName,
+									name,128);
+						items->push_back(CatItem(path, QString::fromUtf16(name), 0, getIcon()));
+					}
+				}
+				CplCall(NULL,CPL_EXIT,0,0);
+			}
+			FreeLibrary(hLib);
+		}
+	} 
+/*
+						
+
+
 		union { 
 			NEWCPLINFOA NewCplInfoA;
 			NEWCPLINFOW NewCplInfoW; 
@@ -147,6 +177,7 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 			FreeLibrary(hLib);
 		} 
 	}
+	*/
 }
 #endif
 
