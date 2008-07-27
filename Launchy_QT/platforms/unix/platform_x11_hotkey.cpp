@@ -221,7 +221,7 @@ GlobalShortcutManager::KeyTrigger::~KeyTrigger()
 
 bool GlobalShortcutManager::KeyTrigger::isConnected()
 {
-  	if (!d) return false;
+  	if (!d) return false;	
 	return !GlobalShortcutManager::KeyTrigger::Impl::failed;
 }
 
