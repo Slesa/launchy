@@ -189,7 +189,7 @@ void WebyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 	}
 
 	// If we don't have any results, add default
-	if (results->size() == 0) {
+	if (results->size() == 0 && id->count() <= 1) {
 		const QString & text = id->last().getText();
 		if (text != "") {
 			QString name = getDefault().name;
