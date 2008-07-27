@@ -91,9 +91,10 @@ void GlobalShortcutManager::disconnect(const QKeySequence& key, QObject* receive
 
         QObject::disconnect(t, SIGNAL(activated()), receiver, slot);
 
-        if (!t->isUsed()) {
-                delete instance()->triggers_.take(key);
-        }
+	delete instance()->triggers_.take(key);
+	//        if (!t->isUsed()) {
+        //        delete instance()->triggers_.take(key);
+        //}
 }
 
 void GlobalShortcutManager::clear()
