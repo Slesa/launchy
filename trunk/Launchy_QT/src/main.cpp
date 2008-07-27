@@ -597,14 +597,9 @@ QIcon MyWidget::getIcon(CatItem & item) {
 		return platform->icon(QDir::toNativeSeparators(item.fullPath));
 	}
 	else {
-#ifdef Q_WS_X11
 	  if (QFile::exists(item.icon)) {
-	    qDebug () << "Returning icon for" << item.icon;
-	    QPixmap p(item.icon);
-	    qDebug() << p.isNull();
 	    return QIcon(item.icon);		
 	  }
-#endif
 		return platform->icon(QDir::toNativeSeparators(item.icon));
 	}
 }

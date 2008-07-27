@@ -47,11 +47,10 @@ Source: ..\..\release\plugins\gcalc.dll; DestDir: {app}\plugins\; Flags: ignorev
 ;Source: ..\..\release\plugins\controly.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 
 ; Plugin icons
-Source: ..\..\plugins\weby\weby.ico; DestDir: {app}\plugins\icons\; Flags: ignoreversion
-Source: ..\..\plugins\calcy\calcy.ico; DestDir: {app}\plugins\icons\; Flags: ignoreversion
-Source: ..\..\plugins\controly\controly.ico; DestDir: {app}\plugins\icons\; Flags: ignoreversion
-Source: ..\..\plugins\runner\runner.ico; DestDir: {app}\plugins\icons\; Flags: ignoreversion
-Source: ..\..\plugins\gcalc\gcalc.ico; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\weby\weby.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\calcy\calcy.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+;Source: ..\..\plugins\controly\controly.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\runner\runner.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 
 ; Documentation
 Source: ..\Launchy.ico; DestDir: {app}; Flags: ignoreversion
