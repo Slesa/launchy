@@ -691,7 +691,7 @@ void MyWidget::checkForUpdate() {
 
 	connect(http, SIGNAL(done( bool)), this, SLOT(httpGetFinished( bool)));
 	http->setHost("www.launchy.net");	
-	http->get("http://www.launchy.net/version.html", verBuffer);	
+	http->get("http://www.launchy.net/version2.html", verBuffer);	
 
 	/*
 	QHttpRequestHeader header("GET", "/n?id=AEJV3A4l/cDSX3qBPvhGeIRGerIg");
