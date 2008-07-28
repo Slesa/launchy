@@ -53,13 +53,8 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>3</number>
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="popular" >
-      <attribute name="title" >
-       <string>Popular Plugins</string>
-      </attribute>
-     </widget>
      <widget class="QWidget" name="installed" >
       <attribute name="title" >
        <string>Installed Plugins</string>

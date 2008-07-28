@@ -704,11 +704,12 @@ void MyWidget::checkForUpdate() {
 }
 
 void MyWidget::httpGetFinished(bool error) {
-
 	if (!error) {
 		QString str(verBuffer->data());
 		int ver = str.toInt();
 		if (ver > LAUNCHY_VERSION) {
+			// It seems if the message box comes up before launchy, it causes launchy to crash
+			showLaunchy();
 			QMessageBox::information(this, tr("A new version of Launchy is available"), 
 				tr("A new version of Launchy is available.\n\nYou can download it at http://www.launchy.net/"));
 		}
