@@ -1344,7 +1344,7 @@ int main(int argc, char *argv[])
 	QApplication * app = platform->init(argc, argv);
 #endif
 	QStringList args = qApp->arguments();
-
+	app->setQuitOnLastWindowClosed(false); 
 	bool rescue = false;
 
 	if (args.size() > 1) 
