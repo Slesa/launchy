@@ -1163,7 +1163,9 @@ void MyWidget::shouldDonate() {
 	gSettings->setValue("donateTime", donateTime);
 
 	if (donateTime <= time) {
+	  #ifdef Q_WS_WIN
 		runProgram("http://www.launchy.net/donate.html", "");
+          #endif
 		QDateTime def;
 		gSettings->setValue("donateTime", def);
 	}
