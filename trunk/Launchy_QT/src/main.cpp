@@ -402,31 +402,35 @@ void MyWidget::inputKeyPressEvent(QKeyEvent* key) {
 
 void MyWidget::parseInput(QString text) {
 	//	QStringList spl = text.split(" | ");
-	QStringList spl = text.split(QString(" ") + sepChar() + QString(" "));
+    QStringList spl = text.split(QString(" ") + sepChar() + QString(" "));
+
 	if (spl.count() < inputData.count()) {
 		inputData = inputData.mid(0, spl.count());
 	}
+
+
 	for(int i = 0; i < inputData.size(); i++) {
 		if (inputData[i].getText() != spl[i]) {
 			inputData = inputData.mid(0, i);
 			break;
 		}
 	}
+
 	for(int i = inputData.count(); i < spl.count(); i++) {
 		InputData data(spl[i]);
 		inputData.push_back(data);
 	}
+	
 }
 
 // Print all of the input up to the last entry
 QString MyWidget::printInput() {
-	QString res = "";
-	for(int i = 0; i < inputData.count()-1; ++i) {
-		res += inputData[i].getText();
-		if (i+2 >= inputData.count())
-			res += QString(" ") + sepChar() + QString(" ");
-	}
-	return res;
+    QString res = "";
+    for(int i = 0; i < inputData.count()-1; ++i) {
+	res += inputData[i].getText();
+	res += QString(" ") + sepChar() + QString(" ");
+    }
+    return res;    
 }
 
 void MyWidget::doTab() 
@@ -505,10 +509,10 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 
 	else {
 		if (key->key() == Qt::Key_Tab) {
-			doTab();
+		    doTab();
 		} else if (key->key() == Qt::Key_Slash || key->key() == Qt::Key_Backslash) {
-			if (inputData.size() > 0 && inputData.last().hasLabel(LABEL_FILE))
-				doTab();
+		    if (inputData.size() > 0 && inputData.last().hasLabel(LABEL_FILE))
+			doTab();		    
 		} else {
 			key->ignore();	
 		}
@@ -524,11 +528,10 @@ void MyWidget::processKey() {
 	dropTimer->stop();
 	dropTimer->start(1000);
 
-
 	parseInput(input->text());
-
 	searchOnInput();
 	updateDisplay();
+
 }
 
 void MyWidget::inputMethodEvent(QInputMethodEvent *e) {
