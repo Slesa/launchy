@@ -31,9 +31,8 @@ AlphaBorder::AlphaBorder(QWidget * parent, QString file) :
     Display *d;
     int s;
     Window w;
-    XEvent e;
-    Colormap colormap;
-    Visual * visual;
+    Colormap colormap = NULL;
+    Visual * visual = NULL;
     
     
     //    setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
@@ -107,8 +106,8 @@ AlphaBorder::AlphaBorder(QWidget * parent, QString file) :
       InputOutput, visual,
       CWBackPixel|CWBorderPixel|CWColormap, &swa);
     */
-    XWindowAttributes wa;
-    Status success = XGetWindowAttributes(d, w, &wa);
+    //    XWindowAttributes wa;
+    //    Status success = XGetWindowAttributes(d, w, &wa);
     
     
     create(w, true, true);

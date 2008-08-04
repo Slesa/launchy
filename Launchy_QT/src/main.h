@@ -107,6 +107,7 @@ public:
     QCharListWidget(QWidget* parent = 0) : 
     QListWidget(NULL)
 		{
+		    parent = parent; // warning
 		    #ifdef Q_WS_X11
 		    setWindowFlags( windowFlags() |   Qt::Tool | Qt::SplashScreen);
 		    #endif

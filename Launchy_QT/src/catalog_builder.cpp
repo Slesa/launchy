@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QDataStream>
 
 CatBuilder::CatBuilder(bool fromArchive, PluginHandler* plugs) :
-  buildFromStorage(fromArchive), curcat(NULL), plugins(plugs)
+    curcat(NULL), plugins(plugs), buildFromStorage(fromArchive)
 {
 	if (gSettings->value("GenOps/fastindexer",false).toBool())
 		cat = (Catalog*) new FastCatalog();
