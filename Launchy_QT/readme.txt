@@ -5,7 +5,8 @@ To be done for 2.2 Windows:
 
 
 
-
+Done for 2.1.2:
+. Multiple tabs problem fixed.
 
 
 
