@@ -465,6 +465,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #define MSG_PATH 12
    
+
+/**
+   \brief This message asks the plugin to load any of its own plugins and to return them.  This is for language binding plugins such as for python plugins.
+   
+   \param wParam QList<PluginInfo>*: The plugins controlled by the plugin
+   \param lParam NULL
+*/   
+#define MSG_LOAD_PLUGINS 100
+
+/**
+   \brief This message asks the plugin to unload a plugin.
+   
+   \param wParam uint: The plugin ID
+   \param lParam NULL
+*/   
+#define MSG_UNLOAD_PLUGIN 101
+
    
 
 
