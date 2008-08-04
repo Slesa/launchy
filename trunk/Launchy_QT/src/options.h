@@ -32,7 +32,7 @@ struct Directory {
 	
 	}
     Directory(QString n, QStringList t, bool d, bool e, int dep) 
-    : name(n), types(t), indexDirs(d), indexExe(e), depth(dep) {}
+    :  indexDirs(d), indexExe(e), name(n), types(t), depth(dep) {}
 	bool indexDirs;
 	bool indexExe;
 	QString name;

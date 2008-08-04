@@ -205,7 +205,7 @@ public:
                         mod |= alt_mask;
 
                 Qt_XK_Keygroup kg;
-                kg.num = 0;
+		kg.num = 0;
                 kg.sym[0] = 0;
                 code &= ~Qt::KeyboardModifierMask;
 

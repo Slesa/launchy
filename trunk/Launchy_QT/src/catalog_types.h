@@ -57,3 +57,4 @@ public:
 	void incrementUsage(const CatItem& item);
 	int getUsage(const QString& path);
 };
+

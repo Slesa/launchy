@@ -182,7 +182,7 @@ void WebyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
 	}
 
-	if (id->count() > 1 && id->first().getTopResult().id == HASH_WEBY) {
+	if (id->count() > 1 && (unsigned int) id->first().getTopResult().id == HASH_WEBY) {
 		const QString & text = id->last().getText();
 		// This is user search text, create an entry for it
 		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));

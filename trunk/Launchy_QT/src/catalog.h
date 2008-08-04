@@ -84,7 +84,7 @@ public:
 	}
 
 	CatItem(QString full, QString shortN, uint i_d) 
-		: id(i_d), fullPath(full), shortName(shortN)
+	    :  fullPath(full), shortName(shortN), id(i_d)
 	{
 		lowName = shortName.toLower();
 		data = NULL;
@@ -99,7 +99,7 @@ public:
 	so that there are not multiple items in the index with the same full path.
 	*/
 	CatItem(QString full, QString shortN, uint i_d, QString iconPath) 
-		: id(i_d), fullPath(full), shortName(shortN), icon(iconPath)
+	    : fullPath(full), shortName(shortN), icon(iconPath), id(i_d)
 	{
 		lowName = shortName.toLower();
 		data = NULL;

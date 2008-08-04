@@ -48,14 +48,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
-:  updateTimer(NULL), dropTimer(NULL), alternatives(NULL), platform(plat),
+    :  
 #ifdef Q_WS_WIN
-QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
+    QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 #endif
 #ifdef Q_WS_X11
-//QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool )
-QWidget(parent, Qt::FramelessWindowHint | Qt::Tool )
+//QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool ),
+    QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 #endif
+platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 {    
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);

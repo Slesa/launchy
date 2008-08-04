@@ -238,9 +238,9 @@ void X11KeyTriggerManager::xkeyPressed(XEvent* event) {
     unsigned int keysym = XKeycodeToKeysym(dsp, event->xkey.keycode, 0);
     
     bool found = false;
-    int n = 0;
+    uint n = 0;
     for (n = 0; qt_xk_table[n].key != Qt::Key_unknown; ++n) {
-	if (qt_xk_table[n].xk.sym[0] == keysym) {
+	if ((unsigned int) qt_xk_table[n].xk.sym[0] == keysym) {
 	    found = true;
 	    break;
 	}

@@ -8,7 +8,6 @@
 
 PlatformBase * loadPlatform()
 {
-    MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
     QList<QString> files;
     QString file;
 

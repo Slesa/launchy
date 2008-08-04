@@ -53,7 +53,10 @@ public:
 	virtual QList<Directory> GetInitialDirs() = 0;
 	virtual void AddToNotificationArea() = 0;
 	virtual void RemoveFromNotificationArea() = 0;
-	virtual bool Execute(QString path, QString args) { return false; }
+	virtual bool Execute(QString path, QString args) { 
+	    path = path ; args = args; // warning remover
+	    return false; 
+	}
 
 	virtual bool isAlreadyRunning() = 0;
 
