@@ -312,17 +312,21 @@ QString UnixIconProvider::getDesktopIcon(QString desktopFile, QString IconName) 
 
 
 	bool ifound = false;
-	QString theme = "/hicolor/32x32";
+	QStringList themes;
+	themes += "/hicolor/32x32";
+	themes += "/hicolor/48x48";
+	themes += "/hicolor/64x64";
 	
 	QStringList dirs;	
-	dirs += QDir::homePath() + "/.icons" + theme;
+	dirs += QDir::homePath() + "/.icons" + themes[0];
 
 	foreach(QString dir, xdgDataDirs) {
-	    dirs += dir + "/icons" + theme;
+	    foreach(QString thm, themes) {
+		dirs += dir + "/icons" + thm;
+	    }
 	}
-	dirs += "/usr/share/pixmaps";
 
-	
+	dirs += "/usr/share/pixmaps";
 
 	
 	foreach(QString dir, dirs) {

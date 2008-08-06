@@ -179,7 +179,7 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 #endif
 #ifdef Q_WS_X11
 	int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::ControlModifier).toInt();
-#endif
+#endif 
 	int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
 	if (!setHotkey(curMeta, curAction)) {
 		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey you have chosen is already in use. Please select another from Launchy's preferences."));
@@ -235,6 +235,9 @@ void MyWidget::menuEvent(QContextMenuEvent* evt) {
 }
 
 void MyWidget::showAlternatives(bool show) {
+    if (!isVisible())
+	return;
+
 	if (searchResults.size() <= 1)
 		return;
 	QRect n = altRect;
@@ -474,7 +477,6 @@ void MyWidget::doEnter()
 }
 
 void MyWidget::keyPressEvent(QKeyEvent* key) {
-
 	if (key->key() == Qt::Key_Escape) {
 		if (alternatives->isVisible())
 			alternatives->hide();
