@@ -195,7 +195,6 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 	plugList->setCurrentRow(0);
     }
     aboutVer->setText(QString(tr("This is Launchy version ")) + QString(LAUNCHY_VERSION_STRING));
-    
     tabWidget->setCurrentIndex(0);
 }
 OptionsDlg::~OptionsDlg() {

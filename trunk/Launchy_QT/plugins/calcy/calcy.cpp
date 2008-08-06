@@ -161,7 +161,7 @@ void calcyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 
 QString calcyPlugin::getIcon()
 {
-    return libPath + "/icons/calcy.png";
+    return libPath + "/icons/calcy.ico";
 }
 
 void calcyPlugin::setPath(QString * path) {
