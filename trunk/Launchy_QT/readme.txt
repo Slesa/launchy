@@ -10,8 +10,8 @@ To be done for 2.2 Windows:
 
 Done for 2.1.2:
 . Multiple tabs problem fixed.
-. Removed Linux nag screen (never meant to be there in first place)
 . Added support for plugins to load other plugins (now python plugins can be made)
+. Added back .ico support
 
 
 
