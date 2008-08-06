@@ -48,13 +48,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
-    :  
+:  
 #ifdef Q_WS_WIN
-    QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
+QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 #endif
 #ifdef Q_WS_X11
 //QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool ),
-    QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
+QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 #endif
 platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 {    
@@ -403,7 +403,7 @@ void MyWidget::inputKeyPressEvent(QKeyEvent* key) {
 
 void MyWidget::parseInput(QString text) {
 	//	QStringList spl = text.split(" | ");
-    QStringList spl = text.split(QString(" ") + sepChar() + QString(" "));
+	QStringList spl = text.split(QString(" ") + sepChar() + QString(" "));
 
 	if (spl.count() < inputData.count()) {
 		inputData = inputData.mid(0, spl.count());
@@ -421,17 +421,17 @@ void MyWidget::parseInput(QString text) {
 		InputData data(spl[i]);
 		inputData.push_back(data);
 	}
-	
+
 }
 
 // Print all of the input up to the last entry
 QString MyWidget::printInput() {
-    QString res = "";
-    for(int i = 0; i < inputData.count()-1; ++i) {
-	res += inputData[i].getText();
-	res += QString(" ") + sepChar() + QString(" ");
-    }
-    return res;    
+	QString res = "";
+	for(int i = 0; i < inputData.count()-1; ++i) {
+		res += inputData[i].getText();
+		res += QString(" ") + sepChar() + QString(" ");
+	}
+	return res;    
 }
 
 void MyWidget::doTab() 
@@ -510,10 +510,10 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 
 	else {
 		if (key->key() == Qt::Key_Tab) {
-		    doTab();
+			doTab();
 		} else if (key->key() == Qt::Key_Slash || key->key() == Qt::Key_Backslash) {
-		    if (inputData.size() > 0 && inputData.last().hasLabel(LABEL_FILE))
-			doTab();		    
+			if (inputData.size() > 0 && inputData.last().hasLabel(LABEL_FILE))
+				doTab();		    
 		} else {
 			key->ignore();	
 		}
@@ -601,9 +601,12 @@ QIcon MyWidget::getIcon(CatItem & item) {
 		return platform->icon(QDir::toNativeSeparators(item.fullPath));
 	}
 	else {
-	  if (QFile::exists(item.icon)) {
-	    return QIcon(item.icon);		
-	  }
+#ifdef Q_WS_X11
+		if (QFile::exists(item.icon)) {
+			return QIcon(item.icon);		
+		}
+#endif
+
 		return platform->icon(QDir::toNativeSeparators(item.icon));
 	}
 }
@@ -1167,9 +1170,9 @@ void MyWidget::shouldDonate() {
 	gSettings->setValue("donateTime", donateTime);
 
 	if (donateTime <= time) {
-	  #ifdef Q_WS_WIN
+#ifdef Q_WS_WIN
 		runProgram("http://www.launchy.net/donate.html", "");
-          #endif
+#endif
 		QDateTime def;
 		gSettings->setValue("donateTime", def);
 	}
@@ -1284,16 +1287,16 @@ void MyWidget::showLaunchy(bool now) {
 
 
 
-	
+
 	// Terrible hack to steal focus from other apps when using splashscreen
-	
-	#ifdef Q_WS_X11
+
+#ifdef Q_WS_X11
 	for(int i = 0; i < 100; i++) {
-	activateWindow();
-	raise();
-	qApp->syncX();
+		activateWindow();
+		raise();
+		qApp->syncX();
 	}
-	#endif
+#endif
 
 	qApp->syncX();
 	input->activateWindow();
