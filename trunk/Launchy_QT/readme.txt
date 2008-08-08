@@ -7,6 +7,9 @@ To be done for 2.2 Windows:
 
 . .ico files now display correctly.
 
+To be done for 2.1.3:
+. Lost .png support in Windows.  It just shows the default png app as opposed to the actual picture.  This is due to my switch back in windows for 2.1.2 for .ico support.
+
 
 Done for 2.1.2:
 . Multiple tabs problem fixed.
