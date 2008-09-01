@@ -10,9 +10,14 @@ CONFIG		-= embed_manifest_dll
 LIBS += -lX11 -lXext -lXrender
 
 
-
-DEFINES += SKINS_PATH=$(SKINS_PATH) PLUGINS_PATH=$(PLUGINS_PATH)\
-           PLATFORMS_PATH=$(PLATFORMS_PATH)
+unix {
+ PREFIX = /usr
+ DEFINES += SKINS_PATH=\\\"$$PREFIX/share/launchy/skins/\\\" \
+           PLUGINS_PATH=\\\"$$PREFIX/lib/launchy/plugins/\\\" \
+           PLATFORMS_PATH=\\\"$$PREFIX/lib/launchy/\\\"
+ target.path = $$PREFIX/lib/launchy/
+ INSTALLS += target
+}
 
 if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
      DESTDIR = ../../debug/

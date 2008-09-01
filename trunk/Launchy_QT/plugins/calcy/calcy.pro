@@ -29,5 +29,9 @@ if(!debug_and_release|build_pass):CONFIG(release, debug|release) {
 
 
 unix {
-
+ PREFIX = /usr
+ target.path = $$PREFIX/lib/launchy/plugins/
+ icon.path = $$PREFIX/lib/launchy/plugins/icons/
+ icon.files = calcy.png
+ INSTALLS += target icon
 }
