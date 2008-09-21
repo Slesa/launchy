@@ -64,7 +64,7 @@ unix {
 
 win32 {
   FORMS =   options.ui
-  RC_FILE =   win/launchy.rc
+  RC_FILE =   ../win/launchy.rc
   LIBS +=   shell32.lib
   if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
