@@ -24,9 +24,9 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake debug&#x0D;&#x0A;%QTDIR%\bin\lupdate ..\Launchy.pro"
-				ReBuildCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake debug-clean&#x0D;&#x0A;nmake debug&#x0D;&#x0A;%QTDIR%\bin\lupdate ..\Launchy.pro"
-				CleanCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake debug-clean"
+				BuildCommandLine="cd ..&#x0D;&#x0A;%QTDIR%\bin\qmake Launchy.pro&#x0D;&#x0A;nmake debug&#x0D;&#x0A;%QTDIR%\bin\lupdate Launchy.pro"
+				ReBuildCommandLine="cd ..&#x0D;&#x0A;%QTDIR%\bin\qmake Launchy.pro&#x0D;&#x0A;nmake clean&#x0D;&#x0A;nmake debug&#x0D;&#x0A;%QTDIR%\bin\lupdate Launchy.pro"
+				CleanCommandLine="cd ..&#x0D;&#x0A;%QTDIR%\bin\qmake Launchy.pro&#x0D;&#x0A;nmake clean"
 				Output="..\debug\Launchy.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath=""
@@ -45,9 +45,9 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake release&#x0D;&#x0A;cd ..&#x0D;&#x0A;%QTDIR%\bin\lupdate Launchy.pro&#x0D;&#x0A;%QTDIR%\bin\lrelease Launchy.pro"
-				ReBuildCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake release-clean&#x0D;&#x0A;nmake release&#x0D;&#x0A;cd ..&#x0D;&#x0A;%QTDIR%\bin\lupdate Launchy.pro&#x0D;&#x0A;%QTDIR%\bin\lrelease Launchy.pro"
-				CleanCommandLine="%QTDIR%\bin\qmake ..\Launchy.pro&#x0D;&#x0A;nmake release-clean"
+				BuildCommandLine="cd ..&#x0D;&#x0A;%QTDIR%\bin\qmake Launchy.pro&#x0D;&#x0A;nmake release&#x0D;&#x0A;%QTDIR%\bin\lupdate Launchy.pro&#x0D;&#x0A;%QTDIR%\bin\lrelease Launchy.pro"
+				ReBuildCommandLine="cd ..&#x0D;&#x0A;%QTDIR%\bin\qmake Launchy.pro&#x0D;&#x0A;nmake clean&#x0D;&#x0A;nmake release&#x0D;&#x0A;%QTDIR%\bin\lupdate Launchy.pro&#x0D;&#x0A;%QTDIR%\bin\lrelease Launchy.pro"
+				CleanCommandLine="cd ..&#x0D;&#x0A;%QTDIR%\bin\qmake Launchy.pro&#x0D;&#x0A;nmake clean"
 				Output="..\release\Launchy.exe"
 				PreprocessorDefinitions=""
 				IncludeSearchPath="%QTDIR%\include"
