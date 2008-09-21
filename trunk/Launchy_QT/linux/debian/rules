@@ -37,7 +37,7 @@ clean:
 	rm -f build-stamp configure-stamp
 
 	# Add here commands to clean up after the build process.
-	-$(MAKE) release clean
+	-$(MAKE) release-clean
 
 	dh_clean 
 
@@ -48,7 +48,7 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/launchy.
-	$(MAKE) INSTALL_ROOT=$(CURDIR)/debian/launchy release install
+	$(MAKE) INSTALL_ROOT=$(CURDIR)/debian/launchy release-install
 
 
 # Build architecture-independent files here.
