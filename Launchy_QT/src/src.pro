@@ -1,5 +1,6 @@
 TEMPLATE = app
 CONFIG += debug_and_release
+#CONFIG += qt release
 TARGET = launchy
 QT += network
 
@@ -28,6 +29,8 @@ HEADERS = platform_util.h \
  icon_delegate.h
 
 ICON = Launchy.ico
+
+first.target = blah
 
 unix {
  FORMS =  options.ui
@@ -77,5 +80,5 @@ win32 {
 TRANSLATIONS =  ../tr/launchy_fr.ts  ../tr/launchy_nl.ts  ../tr/launchy_zh.ts
 OBJECTS_DIR = build
 MOC_DIR = build
-UI_DIR = build
+#UI_DIR = build
 
