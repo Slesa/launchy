@@ -1,11 +1,11 @@
 For installation instructions, please refer to the INSTALL.txt file.  This file is for the author's random notes to himself.
 
+
+
+
 To be done for 2.2 Windows:
 . Rescue mode should kill running Launchy's
-
-
-
-. .ico files now display correctly.
+. .png and .ico files should display correctly.
 
 To be done for 2.1.3:
 . Lost .png support in Windows.  It just shows the default png app as opposed to the actual picture.  This is due to my switch back in windows for 2.1.2 for .ico support.

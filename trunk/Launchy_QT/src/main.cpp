@@ -603,11 +603,11 @@ QIcon MyWidget::getIcon(CatItem & item) {
 		return platform->icon(QDir::toNativeSeparators(item.fullPath));
 	}
 	else {
-#ifdef Q_WS_X11
+//#ifdef Q_WS_X11 // Windows needs this too for .png files
 		if (QFile::exists(item.icon)) {
 			return QIcon(item.icon);		
 		}
-#endif
+//#endif
 
 		return platform->icon(QDir::toNativeSeparators(item.icon));
 	}
@@ -1348,6 +1348,7 @@ QChar MyWidget::sepChar() {
 	else
 		return QChar('|');
 }
+
 int main(int argc, char *argv[])
 {
 #ifdef Q_WS_WIN

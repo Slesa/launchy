@@ -1,7 +1,12 @@
 TEMPLATE = app
-CONFIG += debug_and_release
+unix {
+  TARGET = launchy
+}
+win32 {
+  TARGET = Launchy
+}
+CONFIG += debug_and_release console
 #CONFIG += qt release
-TARGET = launchy
 QT += network
 
 SOURCES = main.cpp \
