@@ -82,7 +82,9 @@ win32 {
   }
 }
 
-TRANSLATIONS =  ../tr/launchy_fr.ts  ../tr/launchy_nl.ts  ../tr/launchy_zh.ts
+TRANSLATIONS =  ../translations/launchy_fr.ts  ../translations/launchy_nl.ts  \
+		    ../translations/launchy_zh.ts ../translations/launchy_es.ts \
+		    ../translations/launchy_de.ts 
 OBJECTS_DIR = build
 MOC_DIR = build
 #UI_DIR = build
