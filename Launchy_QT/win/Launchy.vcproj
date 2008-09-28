@@ -45,7 +45,7 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="%QTDIR%\bin\qmake ..\src\src.pro&#x0D;&#x0A;nmake release&#x0D;&#x0A;cd ..&#x0D;&#x0A;%QTDIR%\bin\lupdate ..\src\src.pro&#x0D;&#x0A;%QTDIR%\bin\lrelease ..\src\src.pro"
+				BuildCommandLine="%QTDIR%\bin\qmake ..\src\src.pro&#x0D;&#x0A;nmake release&#x0D;&#x0A;%QTDIR%\bin\lupdate ..\src\src.pro&#x0D;&#x0A;%QTDIR%\bin\lrelease ..\src\src.pro"
 				ReBuildCommandLine="%QTDIR%\bin\qmake ..\src\src.pro&#x0D;&#x0A;nmake clean&#x0D;&#x0A;nmake release&#x0D;&#x0A;%QTDIR%\bin\lupdate ..\src\src.pro&#x0D;&#x0A;%QTDIR%\bin\lrelease ..\src\src.pro"
 				CleanCommandLine="%QTDIR%\bin\qmake ..\src\src.pro&#x0D;&#x0A;nmake clean"
 				Output="..\release\Launchy.exe"
