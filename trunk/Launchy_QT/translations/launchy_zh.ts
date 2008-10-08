@@ -98,7 +98,7 @@ You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><by
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="59"/>
+        <location filename="../src/options.cpp" line="60"/>
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
@@ -138,7 +138,7 @@ You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><by
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="60"/>
+        <location filename="../src/options.cpp" line="61"/>
         <source>F1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -183,7 +183,7 @@ You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><by
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="61"/>
+        <location filename="../src/options.cpp" line="62"/>
         <source>F10</source>
         <translation type="unfinished"></translation>
     </message>
