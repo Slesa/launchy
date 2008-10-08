@@ -1385,6 +1385,6 @@ int main(int argc, char *argv[])
 
 		app->exec();
 
-		// Causing exit crashes.. screw it
+		// Deletion causes a crash..
 		//	delete app;
 } 
