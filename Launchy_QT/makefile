@@ -13,7 +13,7 @@ DIRS=. platforms/unix plugins/runner plugins/weby plugins/calcy plugins/gcalc
 
 
 release:: 
-	$(DEFS) $(QMAKE) Launchy.pro && $(DEFS) make -f Makefile release
+	cd src && $(DEFS) $(QMAKE) src.pro && $(DEFS) make release
 	cd platforms/unix && $(DEFS) $(QMAKE) unix.pro && $(DEFS) make release
 	cd plugins/runner && $(QMAKE) runner.pro && make release
 	cd plugins/weby && $(QMAKE) weby.pro && make release
@@ -21,7 +21,7 @@ release::
 	cd plugins/gcalc && $(QMAKE) gcalc.pro && make release
 
 debug::
-	$(DEFS) $(QMAKE) Launchy.pro && $(DEFS) make -f Makefile debug
+	cd src && $(DEFS) $(QMAKE) src.pro && $(DEFS) make debug
 	cd platforms/unix && $(DEFS) $(QMAKE) unix.pro && $(DEFS) make debug
 	cd plugins/runner && $(QMAKE) runner.pro && make debug
 	cd plugins/weby && $(QMAKE) weby.pro && make debug
@@ -29,7 +29,7 @@ debug::
 	cd plugins/gcalc && $(QMAKE) gcalc.pro && make debug
 
 clean::
-	$(QMAKE) Launchy.pro && make -f Makefile clean
+	cd src && $(QMAKE) src.pro && $(DEFS) make clean
 	cd platforms/unix && $(QMAKE) unix.pro && $(DEFS) make clean
 	cd plugins/runner && $(QMAKE) runner.pro &&  make clean
 	cd plugins/weby && $(QMAKE) weby.pro &&  make clean
@@ -37,27 +37,17 @@ clean::
 	cd plugins/gcalc && $(QMAKE) gcalc.pro &&  make clean
 
 install:: release
-	-install -d $(DESTDIR)$(PREFIX)/bin/
-	install -m 755 release/Launchy $(DESTDIR)$(PREFIX)/bin/launchy
-	-install -d $(DESTDIR)$(PLATFORMS_PATH)
-	install -m 644 release/libplatform_unix.so $(DESTDIR)$(PLATFORMS_PATH)/
-	-install -d $(DESTDIR)$(PLUGINS_PATH)
-	install -m 644 release/plugins/*.so $(DESTDIR)$(PLUGINS_PATH)/ 
-	-install -d $(DESTDIR)$(PLUGINS_PATH)/icons
-	install -m 644 plugins/runner/runner.png $(DESTDIR)$(PLUGINS_PATH)/icons/
-	-install -m 644 plugins/weby/weby.png $(DESTDIR)$(PLUGINS_PATH)/icons/
-	install -m 644 plugins/calcy/calcy.png $(DESTDIR)$(PLUGINS_PATH)/icons/
-	-install -d $(DESTDIR)$(SKINS_PATH)
-	cp -r skins $(DESTDIR)$(PREFIX)/share/launchy/
-	install -d $(DESTDIR)$(DESKTOP_PATH)/
-	install -m 644 linux/launchy.desktop $(DESTDIR)$(DESKTOP_PATH)/
-	install -d $(DESTDIR)$(ICON_PATH)/
-	-install -m 644 "misc/Launchy Icon/launchy_icon.png" $(DESTDIR)$(ICON_PATH)/launchy.png
+	cd src && $(DEFS) $(QMAKE) src.pro && $(DEFS) make INSTALL_ROOT=$(DESTDIR) release-install
+	cd platforms/unix && $(QMAKE) unix.pro && $(DEFS) make INSTALL_ROOT=$(DESTDIR) release-install
+	cd plugins/runner && $(QMAKE) runner.pro && $(DEFS) make INSTALL_ROOT=$(DESTDIR) release-install
+	cd plugins/weby && $(QMAKE) weby.pro && $(DEFS) make INSTALL_ROOT=$(DESTDIR) release-install
+	cd plugins/calcy && $(QMAKE) calcy.pro && $(DEFS) make INSTALL_ROOT=$(DESTDIR) release-install
+	cd plugins/gcalc && $(QMAKE) gcalc.pro && $(DEFS) make INSTALL_ROOT=$(DESTDIR) release-install
 
 uninstall::
-	-rm $(PREFIX)/bin/launchy
-	-rm -rf $(PLUGINS_PATH)
-	-rm -rf $(PLATFORMS_PATH)
-	-rm -rf $(SKINS_PATH)
-	-rm $(DESTDIR)$(DESKTOP_PATH)/launchy.desktop
-	-rm $(DESTDIR)$(ICON_PATH)/launchy.png	
+	cd src && $(DEFS) $(QMAKE) src.pro && $(DEFS) make INSTALL_ROOT=$(DESTDIR) release-uninstall
+	cd platforms/unix && $(QMAKE) unix.pro && $(DEFS) make INSTALL_ROOT=$(DESTDIR) release-uninstall
+	cd plugins/runner && $(QMAKE) runner.pro && $(DEFS) make INSTALL_ROOT=$(DESTDIR) release-uninstall
+	cd plugins/weby && $(QMAKE) weby.pro && $(DEFS) make INSTALL_ROOT=$(DESTDIR) release-uninstall
+	cd plugins/calcy && $(QMAKE) calcy.pro && $(DEFS) make INSTALL_ROOT=$(DESTDIR) release-uninstall
+	cd plugins/gcalc && $(QMAKE) gcalc.pro && $(DEFS) make INSTALL_ROOT=$(DESTDIR) release-uninstall
