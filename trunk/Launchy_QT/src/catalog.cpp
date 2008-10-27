@@ -47,7 +47,6 @@ bool CatLess (CatItem* a, CatItem* b)  {
 		return false;
 
 
-
 	int localFind = a->lowName.indexOf(gSearchTxt);
 	int otherFind = b->lowName.indexOf(gSearchTxt);
 
