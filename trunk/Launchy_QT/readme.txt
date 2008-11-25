@@ -1,6 +1,9 @@
 For installation instructions, please refer to the INSTALL.txt file.  This file is for the author's random notes to himself.
 
 
+To be done for 2.2 All:
+. why are there so many checks for updates on some networks?  It seems like it should only happen once..
+
 
 
 To be done for 2.2 Windows:
@@ -15,9 +18,6 @@ Done for 2.1.2:
 . Multiple tabs problem fixed.
 . Added support for plugins to load other plugins (now python plugins can be made)
 . Added back .ico support
-
-
-
 
 2.0+:
 . Add memory for runny/launchy (rebuild/exit/etc..)
