@@ -48,7 +48,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
-:  
+:
 #ifdef Q_WS_WIN
 QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 #endif
@@ -57,7 +57,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 #endif
 platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
-{    
+{
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);
 	//	setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
@@ -179,7 +179,7 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 #endif
 #ifdef Q_WS_X11
 	int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::ControlModifier).toInt();
-#endif 
+#endif
 	int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
 	if (!setHotkey(curMeta, curAction)) {
 		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey you have chosen is already in use. Please select another from Launchy's preferences."));
@@ -209,7 +209,7 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	if (showLaunchyFirstTime || rescue)
 		showLaunchy();
 	else
-		hideLaunchy();    
+		hideLaunchy();
 
 	//	showLaunchy();
 
@@ -219,9 +219,9 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 void MyWidget::setCondensed(int condensed) {
 	if (alternatives == NULL || listDelegate == NULL || defaultDelegate == NULL)
 		return;
-	if (condensed) 
+	if (condensed)
 		alternatives->setItemDelegate(defaultDelegate);
-	else 
+	else
 		alternatives->setItemDelegate(listDelegate);
 
 }
@@ -287,7 +287,7 @@ void MyWidget::showAlternatives(bool show) {
 		alternatives->setWindowOpacity(opaqueness);
 		alternatives->show();
 		qApp->syncX();
-		alternatives->raise();	
+		alternatives->raise();
 	} else {
 		alternatives->hide();
 	}
@@ -348,7 +348,7 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 			if (row > -1) {
 				QString location = "History/" + input->text();
 				QStringList hist;
-				hist << searchResults[row].lowName << 
+				hist << searchResults[row].lowName <<
 					searchResults[row].fullPath;
 				gSettings->setValue(location, hist);
 
@@ -381,7 +381,7 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 		}
 	}
 	else {
-		alternatives->hide();	
+		alternatives->hide();
 		activateWindow();
 		raise();
 		input->setFocus();
@@ -398,7 +398,7 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 void MyWidget::inputKeyPressEvent(QKeyEvent* key) {
 	if (key->key() == Qt::Key_Tab) {
 		keyPressEvent(key);
-	} 	
+	}
 	else {
 		key->ignore();
 	}
@@ -434,10 +434,10 @@ QString MyWidget::printInput() {
 		res += inputData[i].getText();
 		res += QString(" ") + sepChar() + QString(" ");
 	}
-	return res;    
+	return res;
 }
 
-void MyWidget::doTab() 
+void MyWidget::doTab()
 {
 	if (inputData.count() > 0 && searchResults.count() > 0) {
 		// If it's an incomplete file or dir, complete it
@@ -452,7 +452,7 @@ void MyWidget::doTab()
 			else
 				path = searchResults[0].fullPath;
 
-			if (info.isDir() && !path.endsWith(QDir::separator())) 
+			if (info.isDir() && !path.endsWith(QDir::separator()))
 				path += QDir::separator();
 
 			input->setText(printInput() + QDir::toNativeSeparators(path));
@@ -470,7 +470,7 @@ void MyWidget::doEnter()
 	if (dropTimer->isActive())
 		dropTimer->stop();
 
-	if (searchResults.count() > 0 || inputData.count() > 1) 
+	if (searchResults.count() > 0 || inputData.count() > 1)
 		launchObject();
 	hideLaunchy();
 
@@ -485,7 +485,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 	}
 
 	else if (key->key() == Qt::Key_Return || key->key() == Qt::Key_Enter) {
-		doEnter();			
+		doEnter();
 	}
 
 	else if (key->key() == Qt::Key_Down) {
@@ -500,7 +500,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 			}
 
 
-			alternatives->activateWindow();			
+			alternatives->activateWindow();
 
 		}
 	}
@@ -515,14 +515,14 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 			doTab();
 		} else if (key->key() == Qt::Key_Slash || key->key() == Qt::Key_Backslash) {
 			if (inputData.size() > 0 && inputData.last().hasLabel(LABEL_FILE))
-				doTab();		    
+				doTab();
 		} else {
-			key->ignore();	
+			key->ignore();
 		}
 
 		processKey();
 
-	}	
+	}
 }
 
 
@@ -590,14 +590,14 @@ void MyWidget::updateDisplay() {
 	} else {
 		licon->clear();
 		output->clear();
-	}	
+	}
 }
 
 QIcon MyWidget::getIcon(CatItem & item) {
 
 	if (item.icon.isNull()) {
 		QDir dir(item.fullPath);
-		if (dir.exists()) 
+		if (dir.exists())
 			return platform->icons->icon(QFileIconProvider::Folder);
 
 		return platform->icon(QDir::toNativeSeparators(item.fullPath));
@@ -605,7 +605,7 @@ QIcon MyWidget::getIcon(CatItem & item) {
 	else {
 //#ifdef Q_WS_X11 // Windows needs this too for .png files
 		if (QFile::exists(item.icon)) {
-			return QIcon(item.icon);		
+			return QIcon(item.icon);
 		}
 //#endif
 
@@ -670,7 +670,7 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 			n += QDir::separator();
 		CatItem item(n);
 		searchResults.push_front(item);
-	}	
+	}
 	return;
 }
 
@@ -685,7 +685,7 @@ void MyWidget::catalogBuilt() {
 	delete gBuilder;
 	gBuilder = NULL;
 	//	qDebug() << "The catalog is built, need to re-search input text" << catalog->count();
-	//todo Do a search here of the current input text
+	// Do a search here of the current input text
 	searchOnInput();
 	updateDisplay();
 }
@@ -699,8 +699,8 @@ void MyWidget::checkForUpdate() {
 
 
 	connect(http, SIGNAL(done( bool)), this, SLOT(httpGetFinished( bool)));
-	http->setHost("www.launchy.net");	
-	http->get("http://www.launchy.net/version2.html", verBuffer);	
+	http->setHost("www.launchy.net");
+	http->get("http://www.launchy.net/version2.html", verBuffer);
 
 	/*
 	QHttpRequestHeader header("GET", "/n?id=AEJV3A4l/cDSX3qBPvhGeIRGerIg");
@@ -816,7 +816,7 @@ QPoint MyWidget::loadPosition() {
 		p.setX(scr.width()/2.0 - r.width() / 2.0);
 		p.setY(scr.height()/2.0 - r.height() / 2.0);
 		return p;
-	} 
+	}
 	QPoint pt = gSettings->value("Display/pos", QPoint(0,0)).toPoint();
 	// See if pt is in the current screen resolution, if not go to center
 
@@ -863,7 +863,7 @@ void MyWidget::onHotKey() {
 	if (menuOpen || optionsOpen) {
 		showLaunchy();
 		return;
-	} 
+	}
 	if (isVisible()) {
 		hideLaunchy();
 	}
@@ -903,7 +903,7 @@ MyWidget::~MyWidget() {
 	delete updateTimer;
 	delete dropTimer;
 	if (platform)
-		delete platform;    
+		delete platform;
 
 }
 
@@ -996,7 +996,7 @@ void MyWidget::applySkin(QString directory) {
 	// Set positions
 	if (QFile::exists(directory + "/misc.txt")) {
 		QFile file(directory + "/misc.txt");
-		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {	
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 			QTextStream in(&file);
 			while (!in.atEnd()) {
 				QString line = in.readLine();
@@ -1007,19 +1007,19 @@ void MyWidget::applySkin(QString directory) {
 					QRect rect;
 					if (sizes.size() == 4) {
 						rect.setRect(sizes[0].toInt(), sizes[1].toInt(), sizes[2].toInt(), sizes[3].toInt());
-					} 
+					}
 
-					if (spl.at(0).trimmed().compare("input", Qt::CaseInsensitive) == 0) 
+					if (spl.at(0).trimmed().compare("input", Qt::CaseInsensitive) == 0)
 						input->setGeometry(rect);
-					else if (spl.at(0).trimmed().compare("output", Qt::CaseInsensitive) == 0) 
+					else if (spl.at(0).trimmed().compare("output", Qt::CaseInsensitive) == 0)
 						output->setGeometry(rect);
 					else if (spl.at(0).trimmed().compare("alternatives", Qt::CaseInsensitive) == 0)
 						altRect = rect;
 					else if (spl.at(0).trimmed().compare("boundary", Qt::CaseInsensitive) == 0) {
 						setGeometry(rect);
-						label->setGeometry(rect);	
+						label->setGeometry(rect);
 					}
-					else if (spl.at(0).trimmed().compare("icon", Qt::CaseInsensitive) == 0) 
+					else if (spl.at(0).trimmed().compare("icon", Qt::CaseInsensitive) == 0)
 						licon->setGeometry(rect);
 					else if (spl.at(0).trimmed().compare("optionsbutton", Qt::CaseInsensitive) == 0) {
 						opsButton->setGeometry(rect);
@@ -1043,13 +1043,13 @@ void MyWidget::applySkin(QString directory) {
 						listDelegate->setItalics(spl.at(1).toInt());
 				}
 
-			}			
+			}
 			file.close();
 		}
 	}
 
 	// Load the style sheet
-	if (QFile::exists(directory + "/style.qss")) {		
+	if (QFile::exists(directory + "/style.qss")) {
 		QFile file(directory + "/style.qss");
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 			QString styleSheet = QLatin1String(file.readAll());
@@ -1074,7 +1074,7 @@ void MyWidget::applySkin(QString directory) {
 	if (!platform->SupportsAlphaBorder() && QFile::exists(directory + "/mask_nc.png")) {
 		QPixmap image(directory + "/mask_nc.png");
 		setMask(image);
-	} 
+	}
 
 	else if (QFile::exists(directory + "/mask.png")) {
 		QPixmap image(directory + "/mask.png");
@@ -1085,7 +1085,7 @@ void MyWidget::applySkin(QString directory) {
 	}
 
 
-	// Set the alpha background    
+	// Set the alpha background
 	if (QFile::exists(directory + "/alpha.png") && platform->SupportsAlphaBorder()) {
 		platform->CreateAlphaBorder(this, directory + "/alpha.png");
 		connectAlpha();
@@ -1146,7 +1146,7 @@ void MyWidget::buildCatalog() {
 		gBuilder->setPreviousCatalog(catalog);
 		connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		gBuilder->start(QThread::IdlePriority);
-	}    
+	}
 }
 
 void MyWidget::menuOptions() {
@@ -1162,7 +1162,7 @@ void MyWidget::menuOptions() {
 		buildCatalog();
 
 	input->activateWindow();
-	input->setFocus();	
+	input->setFocus();
 	optionsOpen = false;
 }
 
@@ -1194,7 +1194,7 @@ void Fader::fadeIn() {
 		for(double i = 0.0; i < end + 0.01 && keepRunning; i += 0.05) {
 			emit fadeLevel(i);
 			//			qApp->syncX();
-			msleep(delay);			
+			msleep(delay);
 		}
 	}
 	emit fadeLevel(end);
@@ -1359,10 +1359,10 @@ int main(int argc, char *argv[])
 	QApplication * app = platform->init(argc, argv);
 #endif
 	QStringList args = qApp->arguments();
-	app->setQuitOnLastWindowClosed(false); 
+	app->setQuitOnLastWindowClosed(false);
 	bool rescue = false;
 
-	if (args.size() > 1) 
+	if (args.size() > 1)
 		if (args[1] == "rescue")  {
 			rescue = true;
 			// Kill all existing Launchy's
@@ -1378,7 +1378,7 @@ int main(int argc, char *argv[])
 
 		QTranslator translator;
 		translator.load(QString("tr/launchy_" + locale));
-		app->installTranslator(&translator); 
+		app->installTranslator(&translator);
 
 		MyWidget widget(NULL, platform, rescue);
 		widget.setObjectName("main");
@@ -1387,4 +1387,4 @@ int main(int argc, char *argv[])
 
 		// Deletion causes a crash..
 		//	delete app;
-} 
+}
