@@ -230,13 +230,15 @@ int GlobalShortcutManager::KeyTrigger::Impl::nextId = 1;
 
 GlobalShortcutManager::KeyTrigger::KeyTrigger(const QKeySequence& key)
 {
-        d = new Impl(this, key);
+        d.reset(new Impl(this, key));
 }
 
 GlobalShortcutManager::KeyTrigger::~KeyTrigger()
 {
-        delete d;
+	/*
+	delete d;
         d = 0;
+		*/
 }
 
 bool GlobalShortcutManager::KeyTrigger::isConnected() 

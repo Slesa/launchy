@@ -5,7 +5,7 @@ unix {
 win32 {
   TARGET = Launchy
 }
-CONFIG += debug_and_release console
+CONFIG += debug_and_release
 #CONFIG += qt release
 QT += network
 
@@ -68,6 +68,7 @@ unix {
 }
 
 win32 {
+  INCLUDEPATH += c:/boost/
   FORMS =   options.ui
   RC_FILE =   ../win/launchy.rc
   LIBS +=   shell32.lib
