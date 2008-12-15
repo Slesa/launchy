@@ -23,16 +23,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "plugin_handler.h"
 #include <QThread>
 
+#include <boost/shared_ptr.hpp>
+
+using namespace boost;
+
 class CatBuilder : public QThread
 {
 	Q_OBJECT
 
 private:
 
-	Catalog* curcat;
+	shared_ptr<Catalog> curcat;
 	PluginHandler* plugins;
 	bool buildFromStorage;
-	Catalog* cat;
+	shared_ptr<Catalog> cat;
 	QHash<QString, bool> indexed;
 
 public:
@@ -40,14 +44,14 @@ public:
 	void storeCatalog(QString);
 	void buildCatalog();
 	void indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth);
-	void setPreviousCatalog(Catalog* cata) {
+	void setPreviousCatalog(shared_ptr<Catalog> cata) {
 		curcat = cata;
 	}
 
 
-	Catalog* getCatalog() { return cat; }
-	CatBuilder(bool fromArchive, PluginHandler* plugs);
-	CatBuilder(Catalog* catalog, PluginHandler* plugs) : plugins(plugs), buildFromStorage(false), cat(catalog) {}
+	shared_ptr<Catalog> getCatalog() { return cat; }
+	CatBuilder(bool fromArchive, PluginHandler * plugs);
+	CatBuilder(shared_ptr<Catalog> catalog, PluginHandler * plugs) : plugins(plugs), buildFromStorage(false), cat(catalog) {}
 	void run();
 
 signals:

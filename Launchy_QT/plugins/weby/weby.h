@@ -24,7 +24,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "plugin_interface.h"
 
+#include <boost/shared_ptr.hpp>
 
+using namespace boost;
 
 class WebyPlugin : public QObject, public PluginInterface
 {
@@ -39,11 +41,11 @@ public:
 	QList<Bookmark> marks;
 
 private:
-	Gui* gui;
+	shared_ptr<Gui> gui;
 public:
 	QString libPath;
 	WebyPlugin() {
-		gui = NULL;
+//		gui = NULL;
 		HASH_WEBSITE = qHash(QString("website"));
 		HASH_WEBY = qHash(QString("weby"));
 	}

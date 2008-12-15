@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "main.h"
 #include "globals.h"
 #include "options.h"
-#include "dsingleapplication.h"
+//#include "dsingleapplication.h"
 #include "plugin_interface.h"
 
 
@@ -74,8 +74,8 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	menuOpen = false;
 	optionsOpen = false;
 	gSearchTxt = "";
-	gBuilder = NULL;
-	catalog = NULL;
+//	gBuilder = NULL;
+//	catalog = NULL;
 
 
 	setFocusPolicy(Qt::ClickFocus);
@@ -119,9 +119,9 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	// Load settings
 
 	if (QFile::exists(dirs["portConfig"][0]))
-		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat);
+		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat, this);
 	else
-		gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat);
+		gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
 
 	// If this is the first time running or a new version, call updateVersion
 	bool showLaunchyFirstTime = false;
@@ -198,8 +198,8 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 
 
 	// Load the catalog
-	gBuilder = new CatBuilder(true, &plugins);
-	connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+	gBuilder.reset(new CatBuilder(true, &plugins));
+	connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 	gBuilder->start();
 
 	//	setTabOrder(combo, combo);
@@ -676,14 +676,20 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 
 
 void MyWidget::catalogBuilt() {
+/*
 	if (catalog != NULL) {
 		delete catalog;
 	}
+	*/
 	catalog = gBuilder->getCatalog();
+//	catalog = gBuilder->getCatalog();
 
 	gBuilder->wait();
+	gBuilder.reset();
+/*
 	delete gBuilder;
 	gBuilder = NULL;
+	*/
 	//	qDebug() << "The catalog is built, need to re-search input text" << catalog->count();
 	// Do a search here of the current input text
 	searchOnInput();
@@ -775,7 +781,7 @@ void MyWidget::updateVersion(int oldVersion) {
 		oldIni.remove();
 		oldIni.close();
 
-		gSettings = new QSettings(origFile, QSettings::IniFormat);
+		gSettings = new QSettings(origFile, QSettings::IniFormat, this);
 	}
 
 	if (oldVersion < 210) {
@@ -842,9 +848,9 @@ void MyWidget::updateTimeout() {
 
 	// Perform the database update
 	if (gBuilder == NULL) {
-		gBuilder = new CatBuilder(false, &plugins);
+		gBuilder.reset(new CatBuilder(false, &plugins));
 		gBuilder->setPreviousCatalog(catalog);
-		connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+		connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		gBuilder->start(QThread::IdlePriority);
 	}
 
@@ -888,10 +894,12 @@ void MyWidget::closeEvent(QCloseEvent *event) {
 
 	// Delete the platform (to unbind hotkeys) right away
 	// else XUngrabKey segfaults if done later
-
+/*
 	if (platform)
 		delete platform;
 	platform = NULL;
+	*/
+	platform.reset();
 
 	event->accept();
 	qApp->quit();
@@ -902,9 +910,11 @@ MyWidget::~MyWidget() {
 
 	delete updateTimer;
 	delete dropTimer;
+/*
 	if (platform)
 		delete platform;
-
+		*/
+	platform.reset();
 }
 
 
@@ -943,7 +953,7 @@ void MyWidget::setPortable(bool portable) {
 		oldDB.copy(dirs["portDB"][0]);
 		oldDB.close();
 
-		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat);
+		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat, this);
 	}
 	else if (!portable && gSettings->fileName().compare(dirs["portConfig"][0], Qt::CaseInsensitive) == 0) {
 		delete gSettings;
@@ -965,7 +975,7 @@ void MyWidget::setPortable(bool portable) {
 		oldDB.close();
 
 		// Load up the user section ini file
-		gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat);
+		gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
 
 	}
 }
@@ -1097,11 +1107,11 @@ void MyWidget::applySkin(QString directory) {
 
 void MyWidget::connectAlpha()
 {
-	QWidget* w = platform->getAlphaWidget();
+	shared_ptr<QWidget> w = platform->getAlphaWidget();
 	if (!w) return;
-	connect(w, SIGNAL(menuEvent(QContextMenuEvent*)), this, SLOT(menuEvent(QContextMenuEvent*)));
-	connect(w, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
-	connect(w, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
+	connect(w.get(), SIGNAL(menuEvent(QContextMenuEvent*)), this, SLOT(menuEvent(QContextMenuEvent*)));
+	connect(w.get(), SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
+	connect(w.get(), SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
 }
 
 
@@ -1142,9 +1152,9 @@ void MyWidget::contextMenuEvent(QContextMenuEvent *event) {
 void MyWidget::buildCatalog() {
 	// Perform the database update
 	if (gBuilder == NULL) {
-		gBuilder = new CatBuilder(false, &plugins);
+		gBuilder.reset(new CatBuilder(false, &plugins));
 		gBuilder->setPreviousCatalog(catalog);
-		connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+		connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		gBuilder->start(QThread::IdlePriority);
 	}
 }
@@ -1352,11 +1362,11 @@ QChar MyWidget::sepChar() {
 int main(int argc, char *argv[])
 {
 #ifdef Q_WS_WIN
-	QApplication * app = new QApplication(argc, argv);
+	shared_ptr<QApplication> app(new QApplication(argc, argv));
 #endif
 	PlatformBase * platform = loadPlatform();
 #ifdef Q_WS_X11
-	QApplication * app = platform->init(argc, argv);
+	shared_ptr<QApplication> app(platform->init(argc, argv));
 #endif
 	QStringList args = qApp->arguments();
 	app->setQuitOnLastWindowClosed(false);
@@ -1383,8 +1393,5 @@ int main(int argc, char *argv[])
 		MyWidget widget(NULL, platform, rescue);
 		widget.setObjectName("main");
 
-		app->exec();
-
-		// Deletion causes a crash..
-		//	delete app;
+		app->exec();	
 }

@@ -28,9 +28,10 @@
 
 PlatformGnome::PlatformGnome() : PlatformUnix () 		
 {
-    if (icons)
-	delete icons;
-    icons = (QFileIconProvider*) new GnomeIconProvider();
+//    if (icons)
+//		delete icons;
+	icons.reset((QFileIconProvider*) new GnomeIconProvider());
+//    icons = (QFileIconProvider*) new GnomeIconProvider();
 }
 
 QApplication* PlatformGnome::init(int* argc, char** argv)
@@ -43,7 +44,7 @@ QApplication* PlatformGnome::init(int* argc, char** argv)
     
         
     QApplication * app = new QApplication(*argc, argv);
-    icons = (QFileIconProvider*) new GnomeIconProvider();
+    icons.reset((QFileIconProvider*) new GnomeIconProvider());
     return app;
 }
 
@@ -51,6 +52,7 @@ PlatformGnome::~PlatformGnome()
 { 
     GlobalShortcutManager::clear();
     gnome_vfs_shutdown();
+//    delete icons;
 }
 
 

@@ -20,14 +20,7 @@
 
 #include "platform_x11_hotkey.h"
 
-
-
-
-
-    
-
-
-X11KeyTriggerManager* X11KeyTriggerManager::instance_ = NULL;
+X11KeyTriggerManager* X11KeyTriggerManager::instance_;
 
 class GlobalShortcutManager::KeyTrigger::Impl : public X11KeyTrigger
 {
@@ -210,13 +203,16 @@ X11KeyTriggerManager::qt_xk_table[] = {
 
 GlobalShortcutManager::KeyTrigger::KeyTrigger(const QKeySequence& key)
 {
-        d = new Impl(this, key);
+        d.reset(new Impl(this, key));
 }
 
 GlobalShortcutManager::KeyTrigger::~KeyTrigger()
 {
+	d.reset();
+	/*
         delete d;
         d = 0;
+        */
 }
 
 bool GlobalShortcutManager::KeyTrigger::isConnected()

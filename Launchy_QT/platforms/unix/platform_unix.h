@@ -25,7 +25,9 @@
 #include "platform_base_hottrigger.h"
 
 #include <QX11Info>
+#include <boost/shared_ptr.hpp>
 
+using namespace boost;
 
 /*
   This QAPP scans all x events for keypresses
@@ -52,13 +54,13 @@ class PlatformUnix : public QObject, public PlatformBase
     Q_OBJECT
 	Q_INTERFACES(PlatformBase)
 	private:
-    AlphaBorder * alpha;
+	shared_ptr<AlphaBorder> alpha;
     QString alphaFile;
  public:
     PlatformUnix();
     ~PlatformUnix();
     
-    virtual QApplication* init(int & argc, char** argv);
+    virtual shared_ptr<QApplication> init(int & argc, char** argv);
     // Mandatory functions
     // Mandatory functions
     bool SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
@@ -85,22 +87,24 @@ class PlatformUnix : public QObject, public PlatformBase
     }
     
 
-    QWidget* getAlphaWidget() {
-	return alpha;
+    shared_ptr<QWidget> getAlphaWidget() {
+		return alpha;
     }
 
     virtual QHash<QString, QList<QString> > GetDirectories();
 
     bool SupportsAlphaBorder();
     bool CreateAlphaBorder(QWidget* w, QString ImageName);
-    void DestroyAlphaBorder() { delete alpha ; alpha = NULL; return; }
+    void DestroyAlphaBorder() { alpha.reset(); /*delete alpha ; alpha = NULL;*/ return; }
     void MoveAlphaBorder(QPoint pos) { if (alpha) alpha->move(pos); }
     void ShowAlphaBorder() { if (alpha) alpha->show(); }
     void HideAlphaBorder() { if (alpha) alpha->hide(); }
     void SetAlphaOpacity(double trans ) { if (alpha) alpha->SetAlphaOpacity(trans); }
 
     QIcon icon(const QFileInfo& info) {
-	return ((UnixIconProvider*)icons)->getIcon(info); 
+    	shared_ptr<UnixIconProvider> u(dynamic_pointer_cast<UnixIconProvider>(icons));
+  	  	return u->getIcon(info);
+//		return ((UnixIconProvider*) icons.get())->getIcon(info); 
     }
 
     virtual void alterItem(CatItem*);

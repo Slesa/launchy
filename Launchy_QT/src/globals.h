@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern QWidget* gMainWidget;
 extern QSettings* gSettings;
-extern CatBuilder* gBuilder;
+extern shared_ptr<CatBuilder> gBuilder;
 extern QString gNativeSep;
 
 extern QString gSearchTxt;

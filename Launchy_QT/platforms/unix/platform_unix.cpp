@@ -21,7 +21,7 @@
 #include <QApplication>
 #include <QX11Info>
 #include "platform_unix.h"
-
+#include <boost/pointer_cast.hpp>  
 #include <X11/Xlib.h>
 
 
@@ -30,22 +30,23 @@
 
 PlatformUnix::PlatformUnix() : PlatformBase() 		
 {
-    alpha = NULL;
-    icons = NULL;
+	alpha.reset();
+//    alpha = NULL;
+    icons.reset();
 }
 
-QApplication* PlatformUnix::init(int & argc, char** argv)
+shared_ptr<QApplication> PlatformUnix::init(int & argc, char** argv)
 {        
     //    QApplication * app = new QApplication(*argc, argv);
-    QApplication * app = new MyApp(argc, argv);
-    icons = (QFileIconProvider *) new UnixIconProvider();
+    shared_ptr<QApplication> app(new MyApp(argc, argv));
+    icons.reset( (QFileIconProvider *) new UnixIconProvider());
     return app;
 }
 
 PlatformUnix::~PlatformUnix()
 { 
     GlobalShortcutManager::clear();
-    delete icons;
+//    delete icons;
 }
 
 QList<Directory> PlatformUnix::GetInitialDirs() {
@@ -100,13 +101,13 @@ QHash<QString, QList<QString> > PlatformUnix::GetDirectories() {
 
 bool PlatformUnix::CreateAlphaBorder(QWidget* w, QString ImageName)
 {
-    if (alpha)
-	delete alpha;
+//   if (alpha)
+//	delete alpha;
   
     if (ImageName == "")
 	ImageName = alphaFile;
     alphaFile = ImageName;
-    alpha = new AlphaBorder(w, ImageName);
+    alpha.reset( new AlphaBorder(w, ImageName) ); 
     return true;
 }
 
@@ -198,7 +199,8 @@ void PlatformUnix::alterItem(CatItem* item) {
     item->fullPath = exe + " " + allExe.join(" ");
 
     // Cache the icon for this desktop file
-    UnixIconProvider* u = (UnixIconProvider*) icons;
+    shared_ptr<UnixIconProvider> u(dynamic_pointer_cast<UnixIconProvider>(icons));
+//    shared_ptr<UnixIconProvider> u((UnixIconProvider*) icons.get());
     
     icon = u->getDesktopIcon(file.fileName(), icon);
 
