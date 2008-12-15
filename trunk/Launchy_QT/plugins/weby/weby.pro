@@ -2,6 +2,7 @@
  CONFIG       += plugin debug_and_release
  VPATH 		  += ../../src/
  INCLUDEPATH += ../../src/
+ INCLUDEPATH += c:/boost/
  UI_DIR		   = ../../plugins/weby/
  FORMS		   = dlg.ui
  HEADERS       = plugin_interface.h weby.h gui.h globals.h

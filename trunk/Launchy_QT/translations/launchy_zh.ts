@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="zh">
-<defaultcodec></defaultcodec>
 <context>
     <name>MyWidget</name>
     <message>
@@ -24,12 +23,12 @@
         <translation>你选择的快捷键已经被占用， 请选择其他的快捷键.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="723"/>
+        <location filename="../src/main.cpp" line="729"/>
         <source>A new version of Launchy is available</source>
         <translation>Launchy 有新版本了！</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="725"/>
+        <location filename="../src/main.cpp" line="731"/>
         <source>A new version of Launchy is available.
 
 You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
@@ -38,17 +37,17 @@ You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><by
 请到这里下载： <byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1131"/>
+        <location filename="../src/main.cpp" line="1141"/>
         <source>Rebuild Catalog</source>
         <translation>重新建立索引</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1133"/>
+        <location filename="../src/main.cpp" line="1143"/>
         <source>Options</source>
         <translation>选项</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1135"/>
+        <location filename="../src/main.cpp" line="1145"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
@@ -101,7 +100,7 @@ You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><by
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="60"/>
+        <location filename="../src/options.cpp" line="59"/>
         <source>Home</source>
         <translation></translation>
     </message>
@@ -141,7 +140,7 @@ You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><by
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="61"/>
+        <location filename="../src/options.cpp" line="60"/>
         <source>F1</source>
         <translation></translation>
     </message>
@@ -186,7 +185,7 @@ You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><by
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="62"/>
+        <location filename="../src/options.cpp" line="61"/>
         <source>F10</source>
         <translation></translation>
     </message>

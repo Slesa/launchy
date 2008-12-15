@@ -75,7 +75,7 @@ public:
 		//CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
 		//alpha = NULL; 
-		icons = (QFileIconProvider*) new WinIconProvider();
+		icons.reset((QFileIconProvider*) new WinIconProvider());
 
 		// Create application mutexes so that installer knows when
 		// Launchy is running
@@ -113,9 +113,11 @@ public:
 			delete alpha;
 		alpha = NULL;
 		*/
+/*
 		if (icons != NULL)
 			delete icons;
 		icons = NULL;
+		*/
 		CloseHandle(m1);
 		CloseHandle(mg1);
 		delete instance;

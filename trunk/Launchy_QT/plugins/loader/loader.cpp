@@ -42,7 +42,7 @@ void loaderPlugin::init()
 
 
 
-	QSettings* set = *settings;
+//	QSettings* set = *settings;
 
 }
 

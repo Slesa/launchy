@@ -3,6 +3,7 @@
  CONFIG       += plugin debug_and_release
  VPATH 		  += ../../src/
  INCLUDEPATH += ../../src/
+ INCLUDEPATH += c:/boost/
  UI_DIR		   = ../../plugins/gcalc/
  HEADERS       = plugin_interface.h gcalc.h 
  SOURCES       = plugin_interface.cpp gcalc.cpp 
