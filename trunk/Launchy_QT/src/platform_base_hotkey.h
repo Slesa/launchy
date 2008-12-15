@@ -25,6 +25,7 @@
 #include <QKeySequence>
 #include <QMap>
 
+
 class QObject;
 class KeyTrigger;
 
@@ -36,10 +37,10 @@ public:
         static void disconnect(const QKeySequence& key, QObject* receiver, const char* slot);
 		static bool isConnected(const QKeySequence& key);
 		static void clear();
-
-private:
         GlobalShortcutManager();
         ~GlobalShortcutManager();
+private:
+
         static GlobalShortcutManager* instance_;
         class KeyTrigger;
         QMap<QKeySequence, KeyTrigger*> triggers_;

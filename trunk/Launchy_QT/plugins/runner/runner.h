@@ -23,8 +23,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "globals.h"
 
 #include "plugin_interface.h"
+#include <boost/shared_ptr.hpp>
 
-
+using namespace boost;
 
 class runnerPlugin : public QObject, public PluginInterface
 {
@@ -38,11 +39,12 @@ public:
 	QList<runnerCmd> cmds;
 
 private:
-	Gui* gui;
+	shared_ptr<Gui> gui;
 public:
 	QString libPath;
 	runnerPlugin() {
-		gui = NULL;
+		gui.reset();
+//		gui = NULL;
 		HASH_runner = qHash(QString("runner"));
 	}
 	~runnerPlugin() {}

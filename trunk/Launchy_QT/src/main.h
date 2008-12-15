@@ -37,7 +37,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "catalog_builder.h"
 #include "icon_delegate.h"
 #include "globals.h"
+#include <boost/shared_ptr.hpp>
 
+using namespace boost;
 
 
 
@@ -167,7 +169,7 @@ public:
 	QHash<QString, QList<QString> > dirs;
 	Fader* fader;
 	QPoint moveStartPoint;
-	PlatformBase * platform;	
+	shared_ptr<PlatformBase> platform;	
 	QLabel* label;
 	QLineEditMenu *output;
 	QCharLineEdit *input;
@@ -181,8 +183,8 @@ public:
 
 
 	QScrollBar* altScroll;
-	Catalog* catalog;
-	CatBuilder* catBuilder;
+	shared_ptr<Catalog> catalog;
+	shared_ptr<CatBuilder> catBuilder;
 	QList<CatItem> searchResults;
 	QList<InputData> inputData;
 	PluginHandler plugins;

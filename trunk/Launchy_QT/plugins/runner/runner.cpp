@@ -27,6 +27,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <shlobj.h>
 #include <tchar.h>
 
+
+
 #endif
 
 #include "runner.h"
@@ -149,8 +151,9 @@ void runnerPlugin::launchItem(QList<InputData>* id, CatItem* item)
 
 void runnerPlugin::doDialog(QWidget* parent, QWidget** newDlg) {
 	if (gui != NULL) return;
-	gui = new Gui(parent);
-	*newDlg = gui;
+	gui.reset(new Gui(parent));
+//	gui = new Gui(parent);
+	*newDlg = gui.get();
 }
 
 void runnerPlugin::endDialog(bool accept) {
@@ -158,10 +161,13 @@ void runnerPlugin::endDialog(bool accept) {
 		gui->writeOptions();
 		init();
 	}
+/*
 	if (gui != NULL) 
 		delete gui;
 	
 	gui = NULL;
+	*/
+	gui.reset();
 }
 
 void runnerPlugin::setPath(QString * path) {

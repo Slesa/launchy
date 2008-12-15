@@ -60,7 +60,7 @@ class PlatformWin : public QObject, public PlatformBase
 	Q_OBJECT
 		Q_INTERFACES(PlatformBase)
 private:
-	QLaunchyAlphaBorder* alpha;
+	shared_ptr<QLaunchyAlphaBorder> alpha;
 	HWND hotkeyWnd;
 	HANDLE m1, mg1;
 	HDC hDC;
@@ -74,7 +74,7 @@ public:
 
 		//CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
-		alpha = NULL; 
+		//alpha = NULL; 
 		icons = (QFileIconProvider*) new WinIconProvider();
 
 		// Create application mutexes so that installer knows when
@@ -108,9 +108,11 @@ public:
 		free(libvar); */
 	}
 	~PlatformWin() {
+		/*
 		if (alpha)
 			delete alpha;
 		alpha = NULL;
+		*/
 		if (icons != NULL)
 			delete icons;
 		icons = NULL;
@@ -178,7 +180,7 @@ public:
 	void RemoveFromNotificationArea() {};
 
 	// Alpha border functions	
-	QWidget* getAlphaWidget() {
+	shared_ptr<QWidget> getAlphaWidget() {
 		return alpha;
 	}
 	bool SupportsAlphaBorder() { return true; }
@@ -194,7 +196,8 @@ public:
 			//			RECT r;
 			//			GetWindowRect(alpha->winId(), &r);
 			DestroyAlphaBorder();
-			alpha = new QLaunchyAlphaBorder(w);
+			
+			alpha.reset(new QLaunchyAlphaBorder(w));
 			//			alpha->hide();
 			alpha->SetImage(ImageName);
 			alpha->setGeometry(w->geometry());
@@ -205,13 +208,13 @@ public:
 			// 			alpha->show();
 
 		} else {
-			alpha = new QLaunchyAlphaBorder(w);
+			alpha.reset(new QLaunchyAlphaBorder(w));
 			alpha->SetImage(ImageName);
 		}
 		lastImageName = ImageName;
 		return true;
 	}
-	void DestroyAlphaBorder() { delete alpha; alpha = NULL; return;}
+	void DestroyAlphaBorder() { alpha.reset(); /*delete alpha; alpha = NULL;*/ return;}
 	void MoveAlphaBorder(QPoint pos) { if (alpha != NULL) alpha->RepositionWindow(pos); }
 	void HideAlphaBorder() { if (alpha != NULL) alpha->hide(); }
 	void ShowAlphaBorder() {

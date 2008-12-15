@@ -174,8 +174,8 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 	catSize->setText(txt);
     }
     if (gBuilder != NULL) {
-	connect(gBuilder, SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
-	connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+	connect(gBuilder.get(), SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
+	connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
     }
     // Load up the plugins		
     connect(plugList, SIGNAL(currentRowChanged(int)), this, SLOT(pluginChanged(int)));
@@ -402,11 +402,11 @@ void OptionsDlg::catRescanClicked(bool val) {
     gSettings->endArray();
     
     if (gBuilder == NULL) {
-	gBuilder = new CatBuilder(false, &main->plugins);
+	gBuilder.reset(new CatBuilder(false, &main->plugins));
 	gBuilder->setPreviousCatalog(main->catalog);
-	connect(gBuilder, SIGNAL(catalogFinished()), main, SLOT(catalogBuilt()));
-	connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
-	connect(gBuilder, SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
+	connect(gBuilder.get(), SIGNAL(catalogFinished()), main, SLOT(catalogBuilt()));
+	connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+	connect(gBuilder.get(), SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
 	gBuilder->start(QThread::IdlePriority);
     }
 }

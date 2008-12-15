@@ -16,6 +16,10 @@
 
 #include "platform_x11_hotkey.h"
 
+#include <boost/shared_ptr.hpp>
+
+using namespace boost;
+
 #ifdef KeyPress
 // defined by X11 headers
 const int XKeyPress   = KeyPress;

@@ -30,23 +30,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QDebug>
 #include "catalog.h"
 #include "options.h"
+#include <boost/shared_ptr.hpp>
 
+using namespace boost;
 class PlatformBase {
 public:
 	PlatformBase() {
-		icons = NULL;
+//		icons = NULL;
 	}
 
 	virtual ~PlatformBase() {
 	}
 
-	QFileIconProvider* icons;
+	shared_ptr<QFileIconProvider> icons;
 
-	virtual QApplication* init(int & argc, char** argv) { 
-		return new QApplication(argc, argv);
+	virtual shared_ptr<QApplication> init(int & argc, char** argv) { 
+		return shared_ptr<QApplication>(new QApplication(argc, argv));
 	}
 
-	virtual QWidget* getAlphaWidget() = 0;
+	virtual shared_ptr<QWidget> getAlphaWidget() = 0;
 
 	virtual QIcon icon(const QFileInfo & info) { return icons->icon(info); }
 	virtual QString GetSettingsDirectory() = 0;

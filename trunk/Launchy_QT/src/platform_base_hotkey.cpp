@@ -38,7 +38,7 @@ GlobalShortcutManager::~GlobalShortcutManager()
         clear();
 }
 
-GlobalShortcutManager* GlobalShortcutManager::instance_ = 0;
+GlobalShortcutManager* GlobalShortcutManager::instance_;
 
 /**
  * \brief Returns the instance of GlobalShortcutManager.

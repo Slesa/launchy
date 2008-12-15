@@ -422,8 +422,8 @@ void WebyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 
 void WebyPlugin::doDialog(QWidget* parent, QWidget** newDlg) {
 	if (gui != NULL) return;
-	gui = new Gui(parent);
-	*newDlg = gui;
+	gui.reset(new Gui(parent));
+	*newDlg = gui.get();
 }
 
 void WebyPlugin::endDialog(bool accept) {
@@ -431,10 +431,13 @@ void WebyPlugin::endDialog(bool accept) {
 		gui->writeOptions();
 		init();
 	}
+	/*
 	if (gui != NULL) 
 		delete gui;
 
 	gui = NULL;
+	*/
+	gui.reset();
 }
 
 void WebyPlugin::setPath(QString * path) {

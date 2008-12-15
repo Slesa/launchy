@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 QWidget* gMainWidget;
 QSettings* gSettings;
 QString gSearchTxt;
-CatBuilder* gBuilder;
+shared_ptr<CatBuilder> gBuilder;
 QString gNativeSep = QDir::toNativeSeparators("/");
 
 void log(QString str) 
