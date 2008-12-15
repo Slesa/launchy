@@ -914,6 +914,7 @@ MyWidget::~MyWidget() {
 	if (platform)
 		delete platform;
 		*/
+	delete alternatives;
 	platform.reset();
 }
 
@@ -1394,4 +1395,5 @@ int main(int argc, char *argv[])
 		widget.setObjectName("main");
 
 		app->exec();	
+		//app.reset();
 }

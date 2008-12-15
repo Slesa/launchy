@@ -107,7 +107,7 @@ class QCharListWidget : public QListWidget
 	Q_OBJECT
 public:
     QCharListWidget(QWidget* parent = 0) : 
-    QListWidget(NULL)
+    	QListWidget(NULL)
 		{
 		    parent = parent; // warning
 		    #ifdef Q_WS_X11

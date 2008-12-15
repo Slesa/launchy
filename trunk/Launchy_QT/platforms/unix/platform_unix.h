@@ -38,7 +38,7 @@ using namespace boost;
 class MyApp : public QApplication {
     Q_OBJECT
     public:
-	MyApp(int & argc, char** & argv) : QApplication(argc,argv) {}
+	MyApp(int & argc, char** argv) : QApplication(argc,argv) {}
 	bool x11EventFilter ( XEvent * event ) {
 	    if (event->type == KeyPress) {
 		emit xkeyPressed(event);

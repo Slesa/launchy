@@ -44,7 +44,7 @@ public:
 
 	shared_ptr<QFileIconProvider> icons;
 
-	virtual shared_ptr<QApplication> init(int & argc, char** argv) { 
+	virtual shared_ptr<QApplication> init(int & argc, char**  argv) { 
 		return shared_ptr<QApplication>(new QApplication(argc, argv));
 	}
 
