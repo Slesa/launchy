@@ -35,17 +35,17 @@ You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><by
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1141"/>
+        <location filename="../src/main.cpp" line="1142"/>
         <source>Rebuild Catalog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1143"/>
+        <location filename="../src/main.cpp" line="1144"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1145"/>
+        <location filename="../src/main.cpp" line="1146"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
