@@ -37,17 +37,17 @@ You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><by
 Puedes obtenerla en <byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1141"/>
+        <location filename="../src/main.cpp" line="1142"/>
         <source>Rebuild Catalog</source>
         <translation>Reconstruir catálogo</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1143"/>
+        <location filename="../src/main.cpp" line="1144"/>
         <source>Options</source>
         <translation>Opciones</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1145"/>
+        <location filename="../src/main.cpp" line="1146"/>
         <source>Exit</source>
         <translation>Salir</translation>
     </message>
