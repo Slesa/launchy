@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1">
+<!DOCTYPE TS><TS version="1.1" language="de">
+<defaultcodec></defaultcodec>
 <context>
     <name>MyWidget</name>
     <message>
         <location filename="../src/main.cpp" line="91"/>
         <source>Launchy Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Launchy Einstellungen</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="96"/>
         <source>Close Launchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Launchy schliessen</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="185"/>
         <source>Launchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Launchy</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="185"/>
         <source>The hotkey you have chosen is already in use. Please select another from Launchy&apos;s preferences.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die  Tastenkombination wird bereits verwendet. Bitte wählen Sie ein  Launchy&apos;s Einstellungen eine andere aus.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="729"/>
+        <location filename="../src/main.cpp" line="723"/>
         <source>A new version of Launchy is available</source>
-        <translation type="unfinished"></translation>
+        <translation>Es ist eine neue Version von Launchy verfügbar</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="731"/>
+        <location filename="../src/main.cpp" line="725"/>
         <source>A new version of Launchy is available.
 
 You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><byte value="x9"/>   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Es ist eine neue Version von Launchy verfügbar.
+
+Sie können die neue Version von <byte value="x9"/>&lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;
+herunterladen</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1142"/>
+        <location filename="../src/main.cpp" line="1131"/>
         <source>Rebuild Catalog</source>
-        <translation type="unfinished"></translation>
+        <translation>Katalog neu erstellen</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1144"/>
+        <location filename="../src/main.cpp" line="1133"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1146"/>
+        <location filename="../src/main.cpp" line="1135"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Beenden</translation>
     </message>
 </context>
 <context>
@@ -55,382 +59,382 @@ You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><by
     <message>
         <location filename="../src/options.cpp" line="56"/>
         <source>Alt</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="56"/>
         <source>Win</source>
-        <translation type="unfinished"></translation>
+        <translation>Win</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="56"/>
         <source>Shift</source>
-        <translation type="unfinished"></translation>
+        <translation>Umschaltung</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="56"/>
         <source>Control</source>
-        <translation type="unfinished"></translation>
+        <translation>Steuerung</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="59"/>
         <source>Space</source>
-        <translation type="unfinished"></translation>
+        <translation>Leertaste</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="59"/>
         <source>Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Tab</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="59"/>
         <source>Backspace</source>
-        <translation type="unfinished"></translation>
+        <translation>Zurück</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="59"/>
         <source>Enter</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="59"/>
         <source>Esc</source>
-        <translation type="unfinished"></translation>
+        <translation>Esc</translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="59"/>
+        <location filename="../src/options.cpp" line="60"/>
         <source>Home</source>
-        <translation type="unfinished"></translation>
+        <translation>Pos 1</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="60"/>
         <source>End</source>
-        <translation type="unfinished"></translation>
+        <translation>Ende</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="60"/>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Pause</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="60"/>
         <source>Print</source>
-        <translation type="unfinished"></translation>
+        <translation>Druck</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="60"/>
         <source>Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="60"/>
         <source>Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Ab</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="60"/>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Links</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="60"/>
         <source>Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechts</translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="60"/>
+        <location filename="../src/options.cpp" line="61"/>
         <source>F1</source>
-        <translation type="unfinished"></translation>
+        <translation>F1</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="61"/>
         <source>F2</source>
-        <translation type="unfinished"></translation>
+        <translation>F2</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="61"/>
         <source>F3</source>
-        <translation type="unfinished"></translation>
+        <translation>F3</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="61"/>
         <source>F4</source>
-        <translation type="unfinished"></translation>
+        <translation>F4</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="61"/>
         <source>F5</source>
-        <translation type="unfinished"></translation>
+        <translation>F5</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="61"/>
         <source>F6</source>
-        <translation type="unfinished"></translation>
+        <translation>F6</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="61"/>
         <source>F7</source>
-        <translation type="unfinished"></translation>
+        <translation>F7</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="61"/>
         <source>F8</source>
-        <translation type="unfinished"></translation>
+        <translation>F8</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="61"/>
         <source>F9</source>
-        <translation type="unfinished"></translation>
+        <translation>F9</translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="61"/>
+        <location filename="../src/options.cpp" line="62"/>
         <source>F10</source>
-        <translation type="unfinished"></translation>
+        <translation>F10</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="62"/>
         <source>F11</source>
-        <translation type="unfinished"></translation>
+        <translation>F11</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="62"/>
         <source>F12</source>
-        <translation type="unfinished"></translation>
+        <translation>F12</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="62"/>
         <source>F13</source>
-        <translation type="unfinished"></translation>
+        <translation>F13</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="384"/>
         <source>Index has </source>
-        <translation type="unfinished"></translation>
+        <translation>Der Index enthält</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="384"/>
         <source> items</source>
-        <translation type="unfinished"></translation>
+        <translation>Elemente</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="197"/>
         <source>This is Launchy version </source>
-        <translation type="unfinished"></translation>
+        <translation>Dies ist Launchy Version</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="221"/>
         <source>Launchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Launchy</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="221"/>
         <source>The hotkey you have chosen is already in use, please select another.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die  Tastenkombination wird bereits verwendet. Bitte wählen Sie eine andere Einstellung.</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="450"/>
         <source>Select a directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordner auswählen</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="17"/>
         <source>Launchy options</source>
-        <translation type="unfinished"></translation>
+        <translation>Launchy Einstellungen</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="30"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="40"/>
         <source>User Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzerschnittstelle</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="46"/>
         <source>Always display Launchy window</source>
-        <translation type="unfinished"></translation>
+        <translation>Launchy Fenster immer anzeigen</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="53"/>
         <source>Hide Launchy when it loses focus</source>
-        <translation type="unfinished"></translation>
+        <translation>Launchy bei Fokusverlust ausblenden</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="63"/>
         <source>Always on top</source>
-        <translation type="unfinished"></translation>
+        <translation>Immer im Vordergrund</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="70"/>
         <source>Condense suggestion list</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorschlagsliste kurz darstellen</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="77"/>
         <source>Always center Launchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Launchy immer zentrieren</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="86"/>
         <source>Hotkey:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tastenkombination:</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="172"/>
         <source>GUI</source>
-        <translation type="unfinished"></translation>
+        <translation>GUI</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="182"/>
         <source>Opaqueness</source>
-        <translation type="unfinished"></translation>
+        <translation>Undurchsichtigkeit</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="189"/>
         <source>Fade in time</source>
-        <translation type="unfinished"></translation>
+        <translation>Einblenden</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="196"/>
         <source>Fade out time</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausblenden</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="252"/>
         <source>Simultaneously visible alternate suggestions</source>
-        <translation type="unfinished"></translation>
+        <translation>Gleichtzeitig sichtbare Alternativvorschläge</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="299"/>
         <source>Max. number of alternate suggestions</source>
-        <translation type="unfinished"></translation>
+        <translation>Max. Anzahl der Alternativvorschläge</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="351"/>
         <source>System Options</source>
-        <translation type="unfinished"></translation>
+        <translation>System Einstellungen</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="357"/>
         <source>Check for updates on startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim Start nach Aktualisierungen suchen</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="364"/>
         <source>Show hidden files in browse mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Versteckte Dateien im Browser Modus anzeigen</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="371"/>
         <source>Portable mode (USB stick)</source>
-        <translation type="unfinished"></translation>
+        <translation>Portabler Modus (USB Stick)</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="381"/>
         <source>Use testing indexer?</source>
-        <translation type="unfinished"></translation>
+        <translation>Test Indexierung verwenden?</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="390"/>
         <source>Minutes between catalog updates</source>
-        <translation type="unfinished"></translation>
+        <translation>Minuten zwischen Katalog Aktualisierung</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="407"/>
         <source>(0 for manual updates only)</source>
-        <translation type="unfinished"></translation>
+        <translation>(0 für manuelle Aktualisierung)</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="461"/>
         <source>Skins</source>
-        <translation type="unfinished"></translation>
+        <translation>Skins</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="481"/>
         <source>Select a skin</source>
-        <translation type="unfinished"></translation>
+        <translation>Skin auswählen</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="506"/>
         <source>Author information</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor Information</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="549"/>
         <source>Skin preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Skin Vorschau</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="572"/>
         <source>Catalog</source>
-        <translation type="unfinished"></translation>
+        <translation>Katalog</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="594"/>
         <source>File Types</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateitypen</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="737"/>
         <source>+</source>
-        <translation type="unfinished"></translation>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="757"/>
         <source>-</source>
-        <translation type="unfinished"></translation>
+        <translation>-</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="658"/>
         <source>Include executables</source>
-        <translation type="unfinished"></translation>
+        <translation>Anwendungsdateien einschliessen</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="665"/>
         <source>Include directories</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordner einschliessen</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="674"/>
         <source>Depth:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tiefe:</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="713"/>
         <source>Directories</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordner</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="816"/>
         <source>Rescan Catalog</source>
-        <translation type="unfinished"></translation>
+        <translation>Katalog aktualisieren</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="836"/>
         <source>Indexing 0 items</source>
-        <translation type="unfinished"></translation>
+        <translation>0 Elemente indexieren</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="880"/>
         <source>Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugins</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="894"/>
         <source>Available plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Verfügbare Plugins</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="910"/>
         <source>Plugin options</source>
-        <translation type="unfinished"></translation>
+        <translation>Plugin Einstellungen</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="935"/>
         <source>About Launchy</source>
-        <translation type="unfinished"></translation>
+        <translation>Über Launchy</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="1045"/>
@@ -438,7 +442,7 @@ You can download it at <byte value="x9"/><byte value="x9"/><byte value="x9"/><by
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Please help this poor grad student to put ramen on the table. I greatly enjoy developing Launchy, and I hope that you enjoy using it. It&apos;s free to use, but if you think Launchy is a worthwhile application, I would appreciate your &lt;a href=&quot;http://www.launchy.net/#donate&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;donation.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Bitte helfen Sein einem armen Studenten etwas vernünftiges auf den Tisch zu bekommen. Ich habe viel Spaß bei der Entwicklung von Launchy, und ich hoffe dass es Ihnen ebenfalls viel Freude macht damit zu arbeiten. Sie können Launchy kostenlos nutzen. Wenn Sie der Meinung sind, Launchy ist eine wertvolle Anwendung, würde ich mich über Ihre &lt;a href=&quot;http://www.launchy.net/#donate&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Spende&lt;/span&gt;&lt;/a&gt; freuen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="1102"/>
@@ -446,7 +450,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Launchy&apos;s official homepage is &lt;a href=&quot;http://www.launchy.net/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.launchy.net/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Launchy&apos;s offizielle Homepage ist &lt;a href=&quot;http://www.launchy.net/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.launchy.net/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 </TS>
