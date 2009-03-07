@@ -3,12 +3,13 @@ For installation instructions, please refer to the INSTALL.txt file.  This file 
 
 To be done for 2.2 All:
 . why are there so many checks for updates on some networks?  It seems like it should only happen once..
-
+. add a history of recent commands mapped to up arrow
 
 
 To be done for 2.2 Windows:
 . Rescue mode should kill running Launchy's
 . .png and .ico files should display correctly.
+. add a run as admin option
 
 To be done for 2.1.3:
 . Lost .png support in Windows.  It just shows the default png app as opposed to the actual picture.  This is due to my switch back in windows for 2.1.2 for .ico support.
