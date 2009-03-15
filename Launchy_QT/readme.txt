@@ -4,7 +4,7 @@ For installation instructions, please refer to the INSTALL.txt file.  This file 
 To be done for 2.2 All:
 . why are there so many checks for updates on some networks?  It seems like it should only happen once..
 . add a history of recent commands mapped to up arrow
-
+. fix text alignment problem for output box in skins (discussed in skins 2.0 forum)
 
 To be done for 2.2 Windows:
 . Rescue mode should kill running Launchy's
