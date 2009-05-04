@@ -55,6 +55,11 @@ BOOL GetShellDir(int iType, QString& szPath)
 }
 
 QIcon WinIconProvider::icon(const QFileInfo& info) const {
+	if (info.suffix().compare("png", Qt::CaseInsensitive) == 0)
+	{
+		QPixmap qpix(info.filePath());
+		return qpix;
+	}
 	HICON hico = GetIconHandleNoOverlay(QDir::toNativeSeparators(info.filePath()), false);
 	QPixmap qpix = convertHIconToPixmap(hico);
 //	qpix.fromWinHBITMAP(hico, QPixmap::PremultipliedAlpha);

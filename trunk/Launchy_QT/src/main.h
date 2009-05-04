@@ -163,7 +163,7 @@ public:
 
 
     MyWidget() {};
-    MyWidget(QWidget *parent, PlatformBase*, bool rescue );
+    MyWidget(QWidget *parent, PlatformBase*, bool show);
 	~MyWidget();
 
 	QHash<QString, QList<QString> > dirs;
@@ -228,6 +228,8 @@ public:
 	QChar sepChar();
 	QString printInput();
 	void processKey();
+
+	void loadOptions();
 
 private:
     QHttp *http;

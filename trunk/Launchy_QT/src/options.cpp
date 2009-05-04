@@ -41,11 +41,14 @@ OptionsDlg::OptionsDlg(QWidget * parent)
     genAlwaysTop->setChecked(gSettings->value("GenOps/alwaystop", false).toBool());
     genPortable->setChecked(gSettings->value("GenOps/isportable", false).toBool());
     genHideFocus->setChecked(gSettings->value("GenOps/hideiflostfocus", false).toBool());
-    genCenter->setChecked(gSettings->value("GenOps/alwayscenter", false).toBool());
+	int center = gSettings->value("GenOps/alwayscenter", 3).toInt();
+    genHCenter->setChecked((center & 1) != 0);
+    genVCenter->setChecked((center & 2) != 0);
     genFastIndex->setChecked(gSettings->value("GenOps/fastindexer",false).toBool());
     genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
     genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
     genCondensed->setChecked(gSettings->value("GenOps/condensedView",false).toBool());
+	genAutoSuggestDelay->setText(gSettings->value("GenOps/autoSuggestDelay","1000").toString());
     genUpMinutes->setText(gSettings->value("GenOps/updatetimer", "10").toString());
     genMaxViewable->setText(gSettings->value("GenOps/numviewable", "4").toString());
     genNumResults->setText(gSettings->value("GenOps/numresults", "10").toString());
@@ -53,13 +56,13 @@ OptionsDlg::OptionsDlg(QWidget * parent)
     genFadeIn->setValue(gSettings->value("GenOps/fadein", 0).toInt());
     genFadeOut->setValue(gSettings->value("GenOps/fadeout", 20).toInt());
     connect(genOpaqueness, SIGNAL(sliderMoved(int)), main, SLOT(setOpaqueness(int)));
-    metaKeys << tr("Alt") << tr("Win") << tr("Shift") << tr("Control");
-    iMetaKeys << Qt::AltModifier << Qt::MetaModifier << Qt::ShiftModifier << Qt::ControlModifier;
+    metaKeys << tr("") << tr("Alt") << tr("Win") << tr("Shift") << tr("Control");
+	iMetaKeys << Qt::NoModifier << Qt::AltModifier << Qt::MetaModifier << Qt::ShiftModifier << Qt::ControlModifier;
     
     actionKeys << tr("Space") << tr("Tab") << tr("Backspace") << tr("Enter") << tr("Esc") << tr("Home") << 
 	tr("End") << tr("Pause") << tr("Print") << tr("Up") << tr("Down") << tr("Left") << tr("Right") << tr("F1") <<
 	tr("F2") << tr("F3") << tr("F4") << tr("F5") << tr("F6") << tr("F7") << tr("F8") << tr("F9") << tr("F10") <<
-	tr("F11") << tr("F12") << tr("F13");
+	tr("F11") << tr("F12") << tr("F13") << tr("F14") << tr("F15") << tr("Caps Lock");
     
     
     for(int i = 'A'; i <= 'Z'; i++) 
@@ -67,7 +70,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
     iActionKeys << Qt::Key_Space << Qt::Key_Tab << Qt::Key_Backspace << Qt::Key_Enter << Qt::Key_Escape << Qt::Key_Home <<
 	Qt::Key_End << Qt::Key_Pause << Qt::Key_Print << Qt::Key_Up << Qt::Key_Down << Qt::Key_Left << Qt::Key_Right << Qt::Key_F1 <<
 	Qt::Key_F2 << Qt::Key_F3 << Qt::Key_F4 << Qt::Key_F5 << Qt::Key_F6 << Qt::Key_F7 << Qt::Key_F8 << Qt::Key_F9 << Qt::Key_F10 <<
-	Qt::Key_F11 << Qt::Key_F12 << Qt::Key_F13;
+	Qt::Key_F11 << Qt::Key_F12 << Qt::Key_F13 << Qt::Key_F14 << Qt::Key_F15 << Qt::Key_CapsLock;
     
     for(int i = 'A'; i <= 'Z'; i++) 
 	iActionKeys << i;
@@ -93,6 +96,9 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 	    genKeyBox->setCurrentIndex(i);
     }
     
+	// Load up web proxy settings
+	genProxyHostname->setText(gSettings->value("WebProxy/hostAddress").toString());
+	genProxyPort->setText(gSettings->value("WebProxy/port").toString());
     
     // Load up the skins list
     QString skinName = gSettings->value("GenOps/skin", main->dirs["defSkin"][0]).toString();
@@ -233,16 +239,21 @@ void OptionsDlg::accept() {
     gSettings->setValue("GenOps/isportable", genPortable->isChecked());
     gSettings->setValue("GenOps/updatecheck", genUpdateCheck->isChecked());
     gSettings->setValue("GenOps/hideiflostfocus", genHideFocus->isChecked());
-    gSettings->setValue("GenOps/alwayscenter", genCenter->isChecked());
+	gSettings->setValue("GenOps/alwayscenter", (genHCenter->isChecked() ? 1 : 0) | (genVCenter->isChecked() ? 2 : 0));
     gSettings->setValue("GenOps/fastindexer", genFastIndex->isChecked());
     gSettings->setValue("GenOps/showHiddenFiles", genShowHidden->isChecked());
     gSettings->setValue("GenOps/condensedView", genCondensed->isChecked());
+	gSettings->setValue("GenOps/autoSuggestDelay", genAutoSuggestDelay->text());
     gSettings->setValue("GenOps/updatetimer", genUpMinutes->text());
     gSettings->setValue("GenOps/numviewable", genMaxViewable->text());
     gSettings->setValue("GenOps/numresults", genNumResults->text());
     gSettings->setValue("GenOps/opaqueness", genOpaqueness->value());
     gSettings->setValue("GenOps/fadein", genFadeIn->value());
     gSettings->setValue("GenOps/fadeout", genFadeOut->value());
+
+	gSettings->setValue("WebProxy/hostAddress", genProxyHostname->text());
+	gSettings->setValue("WebProxy/port", genProxyPort->text());
+
     
     // Apply General Options	
     main->setAlwaysShow(genAlwaysShow->isChecked());
@@ -250,6 +261,7 @@ void OptionsDlg::accept() {
     main->setPortable(genPortable->isChecked());
     main->setCondensed(genCondensed->isChecked());
     main->setOpaqueness(genOpaqueness->value());
+	main->loadOptions();
     
     
     // Apply Skin Options
@@ -543,11 +555,12 @@ void OptionsDlg::skinChanged(const QString newSkin) {
     if (pix.load(sDir + "background.png")) {
 	if (!main->platform->SupportsAlphaBorder() && QFile::exists(sDir + "background_nc.png"))
 	    pix.load(sDir + "background_nc.png");
+	if (pix.hasAlpha())
+		pix.setMask(pix.mask());
 	if (!main->platform->SupportsAlphaBorder() && QFile::exists(sDir + "mask_nc.png"))
 	    pix.setMask(QPixmap(sDir + "mask_nc.png"));
-	else
+	else if (QFile::exists(sDir + "mask.png"))
 	    pix.setMask(QPixmap(sDir + "mask.png"));
-	
 	
 	if (main->platform->SupportsAlphaBorder()) {
 	    // Compose the alpha image with the background
