@@ -35,6 +35,44 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 WebyPlugin* gWebyInstance = NULL;
 
+
+
+void Suggest::run()
+{
+	url.replace("%s", QUrl::toPercentEncoding(query));
+
+    connect(&http, SIGNAL(done(bool)), this, SLOT(httpGetFinished(bool)));
+	QUrl u = QUrl::fromPercentEncoding(url.toAscii());
+
+	http.setHost(u.host(), u.port(80));	
+	http.get(u.toEncoded(QUrl::RemoveScheme | QUrl::RemoveAuthority));	
+	loop.exec();
+} 
+
+void Suggest::httpGetFinished(bool error)
+{
+	results << query;
+
+	if (!error) {
+		QRegExp regex("\\[.*\\[(.*)\\]\\]");
+		QRegExp rx("\"((?:[^\\\\\"]|\\\\\")*)\"");
+		
+		if (regex.indexIn(http.readAll()) != -1) {
+			QString csv = regex.cap(1);
+
+			int pos = 0;
+			while ((pos = rx.indexIn(csv, pos)) != -1) {
+				results << rx.cap(1);
+				pos += rx.matchedLength();
+			}
+		}
+	}
+
+	loop.exit();
+}
+
+
+
 void WebyPlugin::init()
 {
 	if (gWebyInstance == NULL)
@@ -49,6 +87,7 @@ void WebyPlugin::init()
 		set->setValue("name", "Google");
 		set->setValue("base", "http://www.google.com/");
 		set->setValue("query", "search?source=launchy&q=%s");
+		set->setValue("suggest", "http://suggestqueries.google.com/complete/search?output=firefox&q=%s");
 		set->setValue("default", true);
 
 		set->setArrayIndex(1);
@@ -60,6 +99,7 @@ void WebyPlugin::init()
 		set->setValue("name", "Yahoo");
 		set->setValue("base", "http://search.yahoo.com/");
 		set->setValue("query", "search?p=%s");
+		set->setValue("suggest", "http://ff.search.yahoo.com/gossip?output=fxjson&command=%s");
 
 		set->setArrayIndex(3);
 		set->setValue("name", "MSN");
@@ -86,6 +126,7 @@ void WebyPlugin::init()
 		set->setValue("name", "Wikipedia");
 		set->setValue("base", "http://en.wikipedia.com/");
 		set->setValue("query", "wiki/Special:Search?search=%s&fulltext=Search");
+		set->setValue("suggest", "http://en.wikipedia.org/w/api.php?action=opensearch&search=%s");
 
 		set->setArrayIndex(8);
 		set->setValue("name", "Dictionary");
@@ -134,6 +175,7 @@ void WebyPlugin::init()
 		s.base = set->value("base").toString();
 		s.name = set->value("name").toString();
 		s.query = set->value("query").toString();
+		s.suggest = set->value("suggest").toString();
 		s.def = set->value("default", false).toBool();
 		sites.push_back(s);
 	}
@@ -185,7 +227,28 @@ void WebyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 	if (id->count() > 1 && (unsigned int) id->first().getTopResult().id == HASH_WEBY) {
 		const QString & text = id->last().getText();
 		// This is user search text, create an entry for it
-		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
+		QString suggestUrl;
+		CatItem* item;
+	    item = &id->first().getTopResult();
+  
+		foreach(WebySite site, sites) {
+			if (item->shortName == site.name) {
+				suggestUrl = site.suggest;
+				break;
+			}
+		}
+
+		if (!suggestUrl.isEmpty()) {
+			/* query the web */
+			Suggest s(suggestUrl, text);
+			s.run();
+
+			foreach(QString res, s.results) {
+				results->push_back(CatItem(res + ".weby", res, HASH_WEBY, getIcon()));
+			}
+		}else{
+			results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
+		}
 	}
 
 	// If we don't have any results, add default

@@ -141,8 +141,7 @@ private:
                                 return false;
                 }
 
-                if (mod)
-                        *mod_ = mod;
+                *mod_ = mod;
                 if (key)
                         *key_ = key;
 

@@ -60,6 +60,7 @@ public:
 	void endDialog(bool accept);
 	void init();
 	QString getIcon();
+	QString getIcon(QString file);
 
 };
 

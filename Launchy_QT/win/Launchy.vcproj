@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="Launchy"
 	ProjectGUID="{DB63F725-9F43-48AE-A254-41A4DEC71AA0}"
 	RootNamespace="Launchy"
 	Keyword="MakeFileProj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform

@@ -49,7 +49,6 @@ void Process::httpGetFinished(bool error) {
 	if (!error) {
 		result = resBuffer.data();
 		QRegExp regex_res("<h2 class=r><font size=\\+1><b>(.*)</b></h2></td>", Qt::CaseInsensitive);
-//		qDebug() << result;
 		if (regex_res.indexIn(result) != -1) {
 		    QLocale locale;
 		    result = regex_res.cap(1);
@@ -58,10 +57,6 @@ void Process::httpGetFinished(bool error) {
 			result = result.replace("</sup>",")");
 			result = result.replace("&#215;", "x");
 			result = result.split("=")[1].trimmed();
-/*			QStringList spl = result.split("<b>");
-			spl = spl[1].split("</b>");
-			result = spl[0];
-*/			
 		} else {
 			result = "unknown";
 		}

@@ -37,6 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QDateTime>
 #include <QDesktopWidget>
 #include <QTranslator>
+#include <QNetworkProxy>
 
 
 #include "icon_delegate.h"
@@ -47,7 +48,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "plugin_interface.h"
 
 
-MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool rescue)
+MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool show)
 :
 #ifdef Q_WS_WIN
 QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
@@ -89,17 +90,17 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	opsButton = new QPushButton(label);
 	opsButton->setObjectName("opsButton");
 	opsButton->setToolTip(tr("Launchy Options"));
-	connect(opsButton, SIGNAL(pressed()), this, SLOT(menuOptions()));
+	connect(opsButton, SIGNAL(clicked()), this, SLOT(menuOptions()));
 
 	closeButton = new QPushButton(label);
 	closeButton->setObjectName("closeButton");
 	closeButton->setToolTip(tr("Close Launchy"));
-	connect(closeButton, SIGNAL(pressed()), qApp, SLOT(quit()));
+	connect(closeButton, SIGNAL(clicked()), qApp, SLOT(quit()));
 
 
 	output = new QLineEditMenu(label);
 	output->setAlignment(Qt::AlignHCenter);
-	output->setReadOnly(true);
+	output->setEnabled(false);
 	output->setObjectName("output");
 	connect(output, SIGNAL(menuEvent(QContextMenuEvent*)), this, SLOT(menuEvent(QContextMenuEvent*)));
 
@@ -124,10 +125,9 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 		gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
 
 	// If this is the first time running or a new version, call updateVersion
-	bool showLaunchyFirstTime = false;
 	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION) {
 		updateVersion(gSettings->value("version", 0).toInt());
-		showLaunchyFirstTime = true;
+		show = true;
 	}
 
 	alternatives = new QCharListWidget(this);
@@ -152,11 +152,7 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	applySkin(gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString());
 
 	// Move to saved position
-	QPoint x;
-	if (rescue)
-		x = QPoint(0,0);
-	else
-		x = loadPosition();
+	QPoint x = loadPosition();
 	move(x);
 	platform->MoveAlphaBorder(x);
 
@@ -183,7 +179,7 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
 	if (!setHotkey(curMeta, curAction)) {
 		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey you have chosen is already in use. Please select another from Launchy's preferences."));
-		rescue = true;
+		show = true;
 	}
 
 	// Set the timers
@@ -205,15 +201,12 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	//	setTabOrder(combo, combo);
 
 
-
-	if (showLaunchyFirstTime || rescue)
+	if (show)
 		showLaunchy();
 	else
 		hideLaunchy();
 
-	//	showLaunchy();
-
-
+	loadOptions();
 }
 
 void MyWidget::setCondensed(int condensed) {
@@ -238,7 +231,7 @@ void MyWidget::showAlternatives(bool show) {
     if (!isVisible())
 	return;
 
-	if (searchResults.size() <= 1)
+	if (searchResults.size() < 1)
 		return;
 	QRect n = altRect;
 	n.translate(pos());
@@ -339,8 +332,9 @@ void MyWidget::focusOutEvent ( QFocusEvent * evt) {
 void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 	if (key->key() == Qt::Key_Escape) {
 		alternatives->hide();
+		key->ignore();
 	}
-	if (key->key() == Qt::Key_Up) {key->ignore();}
+	else if (key->key() == Qt::Key_Up) {key->ignore();}
 	else if (key->key() == Qt::Key_Down) {key->ignore();}
 	else if (key->key() == Qt::Key_Return || key->key() == Qt::Key_Enter || key->key() == Qt::Key_Tab) {
 		if (searchResults.count() > 0) {
@@ -373,7 +367,9 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 					searchOnInput();
 					updateDisplay();
 					dropTimer->stop();
-					dropTimer->start(1000);
+					int delay = gSettings->value("GenOps/autoSuggestDelay",1000).toInt();
+					if (delay > 0)
+						dropTimer->start(delay);
 				} else {
 					doEnter();
 				}
@@ -386,7 +382,7 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 		raise();
 		input->setFocus();
 		key->ignore();
-		input->setText(input->text() + key->text());
+		input->keyPressEvent(key);
 		keyPressEvent(key);
 	}
 }
@@ -477,11 +473,14 @@ void MyWidget::doEnter()
 }
 
 void MyWidget::keyPressEvent(QKeyEvent* key) {
-	if (key->key() == Qt::Key_Escape) {
-		if (alternatives->isVisible())
-			alternatives->hide();
-		else
-			hideLaunchy();
+	if (key->key() == Qt::Key_F5 && (key->modifiers() & ~Qt::ShiftModifier) == 0) {
+		setSkin(gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString(),"");
+		if ((key->modifiers() & Qt::ShiftModifier) == 0)
+			buildCatalog();
+	}
+
+	else if (key->key() == Qt::Key_Escape) {
+		hideLaunchy();
 	}
 
 	else if (key->key() == Qt::Key_Return || key->key() == Qt::Key_Enter) {
@@ -529,7 +528,9 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 void MyWidget::processKey() {
 	alternatives->hide();
 	dropTimer->stop();
-	dropTimer->start(1000);
+	int delay = gSettings->value("GenOps/autoSuggestDelay",1000).toInt();
+	if (delay > 0)
+		dropTimer->start(delay);
 
 	parseInput(input->text());
 	searchOnInput();
@@ -608,7 +609,6 @@ QIcon MyWidget::getIcon(CatItem & item) {
 			return QIcon(item.icon);
 		}
 //#endif
-
 		return platform->icon(QDir::toNativeSeparators(item.icon));
 	}
 }
@@ -814,22 +814,27 @@ return absPos;
 */
 
 QPoint MyWidget::loadPosition() {
+	QPoint pt = gSettings->value("Display/pos", QPoint(0,0)).toPoint();
 	QRect r = geometry();
 	int primary = qApp->desktop()->primaryScreen();
 	QRect scr = qApp->desktop()->availableGeometry(primary);
-	if (gSettings->value("GenOps/alwayscenter", false).toBool()) {
-		QPoint p;
-		p.setX(scr.width()/2.0 - r.width() / 2.0);
-		p.setY(scr.height()/2.0 - r.height() / 2.0);
-		return p;
-	}
-	QPoint pt = gSettings->value("Display/pos", QPoint(0,0)).toPoint();
-	// See if pt is in the current screen resolution, if not go to center
 
-	if (pt.x() > scr.width() || pt.y() > scr.height() || pt.x() < 0 || pt.y() < 0) {
-		pt.setX(scr.width()/2.0 - r.width() / 2.0);
-		pt.setY(scr.height()/2.0 - r.height() / 2.0);
-	}
+	// See if pt is in the current screen resolution, if not pull it inside
+	if (pt.x()+r.width()/2 < 0)
+		pt.setX(0);
+	else if (pt.x()-r.width()/2 > scr.width())
+		pt.setX(scr.width()-r.width());
+	if (pt.y()+r.height()/2 < 0)
+		pt.setY(0);
+	else if (pt.y()-r.height()/2 > scr.height())
+		pt.setY(scr.height()-r.height());
+
+	int center = gSettings->value("GenOps/alwayscenter", 3).toInt();
+	if (center & 1)
+		pt.setX(scr.width()/2 - r.width()/2);
+	if (center & 2)
+		pt.setY(scr.height()/2 - r.height()/2);
+
 	return pt;
 }
 /*
@@ -1022,8 +1027,16 @@ void MyWidget::applySkin(QString directory) {
 
 					if (spl.at(0).trimmed().compare("input", Qt::CaseInsensitive) == 0)
 						input->setGeometry(rect);
-					else if (spl.at(0).trimmed().compare("output", Qt::CaseInsensitive) == 0)
+					else if (spl.at(0).trimmed().compare("inputAlignment", Qt::CaseInsensitive) == 0)
+						input->setAlignment(
+							sizes[0].trimmed().compare("left", Qt::CaseInsensitive) == 0 ? Qt::AlignLeft : 
+							sizes[0].trimmed().compare("right", Qt::CaseInsensitive) == 0 ? Qt::AlignRight : Qt::AlignHCenter );
+					else if (spl.at(0).trimmed().compare("output", Qt::CaseInsensitive) == 0) 
 						output->setGeometry(rect);
+					else if (spl.at(0).trimmed().compare("outputAlignment", Qt::CaseInsensitive) == 0)
+						output->setAlignment(
+							sizes[0].trimmed().compare("left", Qt::CaseInsensitive) == 0 ? Qt::AlignLeft : 
+							sizes[0].trimmed().compare("right", Qt::CaseInsensitive) == 0 ? Qt::AlignRight : Qt::AlignHCenter );
 					else if (spl.at(0).trimmed().compare("alternatives", Qt::CaseInsensitive) == 0)
 						altRect = rect;
 					else if (spl.at(0).trimmed().compare("boundary", Qt::CaseInsensitive) == 0) {
@@ -1079,6 +1092,8 @@ void MyWidget::applySkin(QString directory) {
 	else if (QFile::exists(directory + "/background.png")) {
 		QPixmap image(directory + "/background.png");
 		label->setPixmap(image);
+		if (image.hasAlpha())
+			setMask(image.mask());
 	}
 
 	// Set the background mask
@@ -1123,6 +1138,7 @@ void MyWidget::mousePressEvent(QMouseEvent *e)
 	raise();
 	showAlternatives(false);
 	moveStartPoint = e->pos();
+	input->setFocus();
 }
 
 void MyWidget::mouseMoveEvent(QMouseEvent *e)
@@ -1360,6 +1376,22 @@ QChar MyWidget::sepChar() {
 		return QChar('|');
 }
 
+
+void MyWidget::loadOptions()
+{
+	// If a network proxy server is specified, apply an application wide NetworkProxy setting
+	QString proxyHost = gSettings->value("WebProxy/hostAddress", "").toString();
+	if (proxyHost.length() > 0)
+	{
+		QNetworkProxy proxy;
+		proxy.setType((QNetworkProxy::ProxyType)gSettings->value("WebProxy/type", 0).toInt());
+		proxy.setHostName(gSettings->value("WebProxy/hostAddress", "").toString());
+		proxy.setPort(gSettings->value("WebProxy/port", "").toInt());
+		QNetworkProxy::setApplicationProxy(proxy);
+	}
+}
+
+
 int main(int argc, char *argv[])
 {
 #ifdef Q_WS_WIN
@@ -1371,14 +1403,24 @@ int main(int argc, char *argv[])
 #endif
 	QStringList args = qApp->arguments();
 	app->setQuitOnLastWindowClosed(false);
-	bool rescue = false;
+	bool show = false;
 
 	if (args.size() > 1)
-		if (args[1] == "rescue")  {
-			rescue = true;
+	{
+		foreach (QString arg, args)
+		{
+			if (arg.compare("/rescue", Qt::CaseInsensitive) == 0)
+			{
 			// Kill all existing Launchy's
 			//			platform->KillLaunchys();
+				show = true;
+			}
+			else if (arg.compare("/show", Qt::CaseInsensitive) == 0)
+			{
+				show = true;
+			}
 		}
+	}
 
 
 		QCoreApplication::setApplicationName("Launchy");
@@ -1391,7 +1433,7 @@ int main(int argc, char *argv[])
 		translator.load(QString("tr/launchy_" + locale));
 		app->installTranslator(&translator);
 
-		MyWidget widget(NULL, platform, rescue);
+		MyWidget widget(NULL, platform, show);
 		widget.setObjectName("main");
 
 		app->exec();	

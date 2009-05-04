@@ -23,9 +23,17 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>4</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab" >
+      <property name="geometry" >
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>654</width>
+        <height>499</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>General</string>
       </attribute>
@@ -38,6 +46,9 @@
             <widget class="QGroupBox" name="groupBox_4" >
              <property name="title" >
               <string>User Interface</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
              </property>
              <layout class="QVBoxLayout" >
               <item>
@@ -57,7 +68,7 @@
               <item>
                <widget class="QCheckBox" name="genAlwaysTop" >
                 <property name="enabled" >
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="text" >
                  <string>Always on top</string>
@@ -65,16 +76,16 @@
                </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="genCondensed" >
+               <widget class="QCheckBox" name="genHCenter" >
                 <property name="text" >
-                 <string>Condense suggestion list</string>
+                 <string>Always center Launchy horizontally</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="genCenter" >
+               <widget class="QCheckBox" name="genVCenter" >
                 <property name="text" >
-                 <string>Always center Launchy</string>
+                 <string>Always center Launchy vertically</string>
                 </property>
                </widget>
               </item>
@@ -85,20 +96,10 @@
                   <property name="text" >
                    <string>Hotkey:</string>
                   </property>
+                  <property name="buddy" >
+                   <cstring>genModifierBox</cstring>
+                  </property>
                  </widget>
-                </item>
-                <item>
-                 <spacer>
-                  <property name="orientation" >
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" >
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
                 </item>
                 <item>
                  <widget class="QComboBox" name="genModifierBox" >
@@ -109,19 +110,6 @@
                    </size>
                   </property>
                  </widget>
-                </item>
-                <item>
-                 <spacer>
-                  <property name="orientation" >
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" >
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
                 </item>
                 <item>
                  <widget class="QComboBox" name="genKeyBox" >
@@ -138,7 +126,7 @@
                   <property name="orientation" >
                    <enum>Qt::Horizontal</enum>
                   </property>
-                  <property name="sizeHint" >
+                  <property name="sizeHint" stdset="0" >
                    <size>
                     <width>40</width>
                     <height>20</height>
@@ -151,57 +139,144 @@
              </layout>
             </widget>
            </item>
-           <item>
-            <spacer>
-             <property name="orientation" >
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" >
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
           </layout>
          </item>
          <item>
           <widget class="QGroupBox" name="groupBox_10" >
            <property name="title" >
-            <string>GUI</string>
+            <string>Suggestion List</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
            </property>
            <layout class="QVBoxLayout" >
             <item>
-             <layout class="QHBoxLayout" >
+             <widget class="QCheckBox" name="genCondensed" >
+              <property name="text" >
+               <string>Condense suggestion list</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QFormLayout" name="formLayout_2" >
+              <property name="fieldGrowthPolicy" >
+               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+              </property>
+              <item row="0" column="0" >
+               <widget class="QLabel" name="label_11" >
+                <property name="sizePolicy" >
+                 <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text" >
+                 <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:8pt;">Auto open delay (ms)&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+                </property>
+                <property name="buddy" >
+                 <cstring>genAutoSuggestDelay</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" >
+               <widget class="QLineEdit" name="genAutoSuggestDelay" >
+                <property name="maximumSize" >
+                 <size>
+                  <width>40</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="inputMask" >
+                 <string/>
+                </property>
+                <property name="maxLength" >
+                 <number>5</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" >
+               <widget class="QLabel" name="label_9" >
+                <property name="text" >
+                 <string>Simultaneously visible suggestions</string>
+                </property>
+                <property name="buddy" >
+                 <cstring>genMaxViewable</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1" >
+               <widget class="QLineEdit" name="genMaxViewable" >
+                <property name="maximumSize" >
+                 <size>
+                  <width>40</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="inputMask" >
+                 <string/>
+                </property>
+                <property name="maxLength" >
+                 <number>5</number>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0" >
+               <widget class="QLabel" name="label_8" >
+                <property name="text" >
+                 <string>Maximum number of suggestions</string>
+                </property>
+                <property name="buddy" >
+                 <cstring>genNumResults</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1" >
+               <widget class="QLineEdit" name="genNumResults" >
+                <property name="maximumSize" >
+                 <size>
+                  <width>40</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="inputMask" >
+                 <string/>
+                </property>
+                <property name="maxLength" >
+                 <number>5</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4" >
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_6" >
+           <item>
+            <widget class="QGroupBox" name="groupBox_11" >
+             <property name="title" >
+              <string>Visual Effects</string>
+             </property>
+             <layout class="QVBoxLayout" name="_14" >
               <item>
-               <layout class="QVBoxLayout" >
-                <item>
+               <layout class="QFormLayout" name="formLayout_3" >
+                <item row="0" column="0" >
                  <widget class="QLabel" name="label_6" >
                   <property name="text" >
                    <string>Opaqueness</string>
                   </property>
                  </widget>
                 </item>
-                <item>
-                 <widget class="QLabel" name="label_3" >
-                  <property name="text" >
-                   <string>Fade in time</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_4" >
-                  <property name="text" >
-                   <string>Fade out time</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QVBoxLayout" >
-                <item>
+                <item row="0" column="1" >
                  <widget class="QSlider" name="genOpaqueness" >
                   <property name="maximum" >
                    <number>100</number>
@@ -211,7 +286,7 @@
                   </property>
                  </widget>
                 </item>
-                <item>
+                <item row="1" column="1" >
                  <widget class="QSlider" name="genFadeIn" >
                   <property name="maximum" >
                    <number>1000</number>
@@ -224,7 +299,21 @@
                   </property>
                  </widget>
                 </item>
-                <item>
+                <item row="1" column="0" >
+                 <widget class="QLabel" name="label_3" >
+                  <property name="text" >
+                   <string>Fade in time</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0" >
+                 <widget class="QLabel" name="label_4" >
+                  <property name="text" >
+                   <string>Fade out time</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1" >
                  <widget class="QSlider" name="genFadeOut" >
                   <property name="maximum" >
                    <number>1000</number>
@@ -242,46 +331,12 @@
                 </item>
                </layout>
               </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" >
               <item>
-               <widget class="QLabel" name="label_9" >
-                <property name="text" >
-                 <string>Simultaneously visible alternate suggestions</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer>
+               <spacer name="spacer" >
                 <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
+                 <enum>Qt::Vertical</enum>
                 </property>
-                <property name="sizeHint" >
-                 <size>
-                  <width>16</width>
-                  <height>16</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="genMaxViewable" >
-                <property name="maximumSize" >
-                 <size>
-                  <width>40</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>16</width>
                   <height>16</height>
@@ -290,61 +345,10 @@
                </spacer>
               </item>
              </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" >
-              <item>
-               <widget class="QLabel" name="label_8" >
-                <property name="text" >
-                 <string>Max. number of alternate suggestions</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" >
-                 <size>
-                  <width>16</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="genNumResults" >
-                <property name="maximumSize" >
-                 <size>
-                  <width>40</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer>
-                <property name="orientation" >
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" >
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
+            </widget>
+           </item>
+          </layout>
          </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" >
          <item>
           <widget class="QGroupBox" name="groupBox_6" >
            <property name="title" >
@@ -389,6 +393,9 @@
                 <property name="text" >
                  <string>Minutes between catalog updates</string>
                 </property>
+                <property name="buddy" >
+                 <cstring>genUpMinutes</cstring>
+                </property>
                </widget>
               </item>
               <item>
@@ -398,6 +405,9 @@
                   <width>40</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="inputMask" >
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -413,7 +423,7 @@
                 <property name="orientation" >
                  <enum>Qt::Horizontal</enum>
                 </property>
-                <property name="sizeHint" >
+                <property name="sizeHint" stdset="0" >
                  <size>
                   <width>31</width>
                   <height>20</height>
@@ -426,12 +436,78 @@
            </layout>
           </widget>
          </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" >
+         <item>
+          <widget class="QGroupBox" name="groupBox_12" >
+           <property name="title" >
+            <string>Internet Proxy</string>
+           </property>
+           <layout class="QVBoxLayout" name="_15" >
+            <item>
+             <layout class="QFormLayout" name="formLayout_4" >
+              <property name="fieldGrowthPolicy" >
+               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+              </property>
+              <item row="0" column="0" >
+               <widget class="QLabel" name="label_24" >
+                <property name="text" >
+                 <string>Hostname</string>
+                </property>
+                <property name="buddy" >
+                 <cstring>genProxyHostname</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1" >
+               <widget class="QLineEdit" name="genProxyHostname" />
+              </item>
+              <item row="1" column="0" >
+               <widget class="QLabel" name="label_25" >
+                <property name="text" >
+                 <string>Port</string>
+                </property>
+                <property name="buddy" >
+                 <cstring>genProxyPort</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1" >
+               <widget class="QLineEdit" name="genProxyPort" >
+                <property name="inputMask" >
+                 <string/>
+                </property>
+                <property name="maxLength" >
+                 <number>5</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="spacer" >
+              <property name="orientation" >
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0" >
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
          <item>
           <spacer>
            <property name="orientation" >
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>40</width>
              <height>20</height>
@@ -446,7 +522,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>524</width>
            <height>16</height>
@@ -457,6 +533,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="Skins" >
+      <property name="geometry" >
+       <rect>
+        <x>4</x>
+        <y>26</y>
+        <width>654</width>
+        <height>499</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Skins</string>
       </attribute>
@@ -524,7 +608,7 @@
               <property name="orientation" >
                <enum>Qt::Horizontal</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>40</width>
                 <height>20</height>
@@ -568,6 +652,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_2" >
+      <property name="geometry" >
+       <rect>
+        <x>4</x>
+        <y>26</y>
+        <width>654</width>
+        <height>499</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Catalog</string>
       </attribute>
@@ -673,6 +765,9 @@
                   <property name="text" >
                    <string>Depth:</string>
                   </property>
+                  <property name="buddy" >
+                   <cstring>catDepth</cstring>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -695,7 +790,7 @@
              <property name="orientation" >
               <enum>Qt::Vertical</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>140</width>
                <height>16</height>
@@ -723,7 +818,7 @@
                   <property name="orientation" >
                    <enum>Qt::Horizontal</enum>
                   </property>
-                  <property name="sizeHint" >
+                  <property name="sizeHint" stdset="0" >
                    <size>
                     <width>40</width>
                     <height>20</height>
@@ -743,7 +838,7 @@
                   <property name="orientation" >
                    <enum>Qt::Horizontal</enum>
                   </property>
-                  <property name="sizeHint" >
+                  <property name="sizeHint" stdset="0" >
                    <size>
                     <width>40</width>
                     <height>20</height>
@@ -763,7 +858,7 @@
                   <property name="orientation" >
                    <enum>Qt::Horizontal</enum>
                   </property>
-                  <property name="sizeHint" >
+                  <property name="sizeHint" stdset="0" >
                    <size>
                     <width>40</width>
                     <height>20</height>
@@ -781,7 +876,7 @@
              <property name="orientation" >
               <enum>Qt::Vertical</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>20</width>
                <height>40</height>
@@ -798,7 +893,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>630</width>
            <height>16</height>
@@ -822,7 +917,7 @@
              <property name="orientation" >
               <enum>Qt::Horizontal</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -842,7 +937,7 @@
              <property name="orientation" >
               <enum>Qt::Horizontal</enum>
              </property>
-             <property name="sizeHint" >
+             <property name="sizeHint" stdset="0" >
               <size>
                <width>40</width>
                <height>20</height>
@@ -876,6 +971,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_4" >
+      <property name="geometry" >
+       <rect>
+        <x>4</x>
+        <y>26</y>
+        <width>654</width>
+        <height>499</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>Plugins</string>
       </attribute>
@@ -915,7 +1018,7 @@
               <property name="orientation" >
                <enum>Qt::Horizontal</enum>
               </property>
-              <property name="sizeHint" >
+              <property name="sizeHint" stdset="0" >
                <size>
                 <width>40</width>
                 <height>20</height>
@@ -931,6 +1034,14 @@
       </layout>
      </widget>
      <widget class="QWidget" name="tab_3" >
+      <property name="geometry" >
+       <rect>
+        <x>4</x>
+        <y>26</y>
+        <width>654</width>
+        <height>499</height>
+       </rect>
+      </property>
       <attribute name="title" >
        <string>About Launchy</string>
       </attribute>
@@ -957,7 +1068,7 @@
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>611</width>
            <height>121</height>
@@ -972,7 +1083,7 @@
            <property name="orientation" >
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>40</width>
              <height>20</height>
@@ -1003,7 +1114,7 @@
            <property name="orientation" >
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>40</width>
              <height>20</height>
@@ -1020,7 +1131,7 @@
            <property name="orientation" >
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>61</width>
              <height>98</height>
@@ -1060,7 +1171,7 @@ p, li { white-space: pre-wrap; }
            <property name="orientation" >
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>51</width>
              <height>98</height>
@@ -1077,7 +1188,7 @@ p, li { white-space: pre-wrap; }
            <property name="orientation" >
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>111</width>
              <height>20</height>
@@ -1120,7 +1231,7 @@ p, li { white-space: pre-wrap; }
            <property name="orientation" >
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="sizeHint" >
+           <property name="sizeHint" stdset="0" >
             <size>
              <width>121</width>
              <height>20</height>
@@ -1135,7 +1246,7 @@ p, li { white-space: pre-wrap; }
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>636</width>
            <height>141</height>
@@ -1154,7 +1265,7 @@ p, li { white-space: pre-wrap; }
        <property name="orientation" >
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeHint" >
+       <property name="sizeHint" stdset="0" >
         <size>
          <width>40</width>
          <height>20</height>
@@ -1168,7 +1279,7 @@ p, li { white-space: pre-wrap; }
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="standardButtons" >
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::NoButton|QDialogButtonBox::Ok</set>
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>
@@ -1177,23 +1288,30 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <tabstops>
+  <tabstop>tabWidget</tabstop>
   <tabstop>genAlwaysShow</tabstop>
   <tabstop>genHideFocus</tabstop>
   <tabstop>genAlwaysTop</tabstop>
-  <tabstop>genCondensed</tabstop>
-  <tabstop>genCenter</tabstop>
+  <tabstop>genHCenter</tabstop>
+  <tabstop>genVCenter</tabstop>
   <tabstop>genModifierBox</tabstop>
   <tabstop>genKeyBox</tabstop>
+  <tabstop>genCondensed</tabstop>
+  <tabstop>genAutoSuggestDelay</tabstop>
+  <tabstop>genMaxViewable</tabstop>
+  <tabstop>genNumResults</tabstop>
+  <tabstop>genOpaqueness</tabstop>
+  <tabstop>genFadeIn</tabstop>
+  <tabstop>genFadeOut</tabstop>
   <tabstop>genUpdateCheck</tabstop>
   <tabstop>genShowHidden</tabstop>
   <tabstop>genPortable</tabstop>
   <tabstop>genFastIndex</tabstop>
   <tabstop>genUpMinutes</tabstop>
-  <tabstop>genOpaqueness</tabstop>
-  <tabstop>genFadeIn</tabstop>
-  <tabstop>genFadeOut</tabstop>
-  <tabstop>genMaxViewable</tabstop>
-  <tabstop>genNumResults</tabstop>
+  <tabstop>genProxyHostname</tabstop>
+  <tabstop>genProxyPort</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>skinList</tabstop>
   <tabstop>catTypes</tabstop>
   <tabstop>catTypeEdit</tabstop>
   <tabstop>catTypesPlus</tabstop>
@@ -1205,10 +1323,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>catDirPlus</tabstop>
   <tabstop>catDirMinus</tabstop>
   <tabstop>catRescan</tabstop>
-  <tabstop>skinList</tabstop>
   <tabstop>plugList</tabstop>
-  <tabstop>tabWidget</tabstop>
-  <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -1219,8 +1334,8 @@ p, li { white-space: pre-wrap; }
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>169</x>
-     <y>533</y>
+     <x>511</x>
+     <y>574</y>
     </hint>
     <hint type="destinationlabel" >
      <x>157</x>
@@ -1235,8 +1350,8 @@ p, li { white-space: pre-wrap; }
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>169</x>
-     <y>533</y>
+     <x>511</x>
+     <y>574</y>
     </hint>
     <hint type="destinationlabel" >
      <x>286</x>

@@ -91,10 +91,22 @@ QString runnerPlugin::getIcon()
     return libPath + "/icons/runner.png";
 }
 
+
+QString runnerPlugin::getIcon(QString file)
+{
+#ifdef Q_WS_WIN
+	QRegExp rx("\\.(exe|lnk)$", Qt::CaseInsensitive);
+    if (rx.indexIn(file) != -1)
+		return file;
+#endif
+	return getIcon();
+}
+
+
 void runnerPlugin::getCatalog(QList<CatItem>* items)
 {
 	foreach(runnerCmd cmd, cmds) {
-		items->push_back(CatItem(cmd.file + "%%%" + cmd.args, cmd.name, HASH_runner, getIcon()));
+		items->push_back(CatItem(cmd.file + "%%%" + cmd.args, cmd.name, HASH_runner, getIcon(cmd.file)));
 	}
 }
 

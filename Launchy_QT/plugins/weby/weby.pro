@@ -1,4 +1,5 @@
  TEMPLATE      = lib
+ QT			+= network
  CONFIG       += plugin debug_and_release
  VPATH 		  += ../../src/
  INCLUDEPATH += ../../src/

@@ -21,11 +21,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define WEBY_H
 #include "gui.h"
 #include "globals.h"
-
+#include <QtGui>
+#include <QUrl>
+#include <QFile>
+#include <QRegExp>
+#include <QHttp>
+#include <QEventLoop>
+#include <QString>
 #include "plugin_interface.h"
 
 #include <boost/shared_ptr.hpp>
 
+class Suggest : public QObject
+{
+	Q_OBJECT
+public:
+	QHttp http;
+	QEventLoop loop; 
+	QString query;
+	QString url;
+	QStringList results;
+	Suggest() {}
+	Suggest(QString url, QString query) : url(url), query(query) {}
+	void run();
+public slots:
+	void httpGetFinished(bool error);
+};
 using namespace boost;
 
 class WebyPlugin : public QObject, public PluginInterface

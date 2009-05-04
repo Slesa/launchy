@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="plug_controly"
 	ProjectGUID="{E03E4829-E43C-4843-BEAA-905C3186F277}"
 	RootNamespace="controly"
 	Keyword="MakeFileProj"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
