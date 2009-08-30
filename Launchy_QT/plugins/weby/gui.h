@@ -41,7 +41,12 @@ public:
 public slots:
 	void newRow();
 	void remRow();
+	void dragEnter(QDragEnterEvent *event);
+	void drop(QDropEvent *event);
 	void makeDefault();
+
+private:
+	void appendRow(const QString& name, const QString& path, const QString& query);
 };
 
 #endif 
