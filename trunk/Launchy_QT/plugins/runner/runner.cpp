@@ -111,12 +111,16 @@ void runnerPlugin::getCatalog(QList<CatItem>* items)
 }
 
 
-void runnerPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
+void runnerPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results)
 {
-    if ( id->count() > 1 && (unsigned int)id->first().getTopResult().id == HASH_runner) {
-		const QString & text = id->last().getText();
+    if ( inputData->count() <= 1 )
+		return;
+	
+	CatItem& catItem = inputData->first().getTopResult();
+	if (catItem.id == HASH_runner) {
+		const QString & text = inputData->last().getText();
 		// This is user search text, create an entry for it
-		results->push_front(CatItem(text, text, HASH_runner, getIcon()));
+		results->push_front(CatItem(text, text, HASH_runner, getIcon(catItem.icon)));
 	}
 }
 
