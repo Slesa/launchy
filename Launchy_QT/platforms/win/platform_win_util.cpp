@@ -27,6 +27,57 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QtGui>
 
 
+// Replace this process' environment with the current system environment
+void UpdateEnvironment()
+{
+	// Fetch the current environment for the user
+	HANDLE accessToken;
+	if (!OpenProcessToken(GetCurrentProcess(), TOKEN_DUPLICATE | TOKEN_QUERY, &accessToken))
+		return;
+
+	wchar_t* environment;
+	if (!CreateEnvironmentBlock((LPVOID*)&environment, accessToken, FALSE))
+		return;
+
+	// Empty the current environment
+	QStringList variables;
+	wchar_t* currentEnvironment = GetEnvironmentStrings();
+	for (TCHAR* p = currentEnvironment; *p != 0;)
+	{
+		QString variable = QString::fromUtf16(p);
+		QString name = variable.section("=", 0, 0);
+		// Ignore entries for drive current directory entries that have no name
+		if (name.size() > 0)
+			variables.append(name);
+		p += wcslen(p) + 1;
+	}
+	if (currentEnvironment)
+		FreeEnvironmentStrings(currentEnvironment);
+
+	// Now we've finished enumerating the current environment, we can safely delete variables
+	foreach (QString name, variables)
+	{
+		SetEnvironmentVariable(name.utf16(), NULL);
+	}
+
+	// Recreate the environment using the fresh system copy
+	for (wchar_t* p = environment; *p != 0;)
+	{
+		wchar_t* name = p;
+		wchar_t* value = wcschr(p, L'=');
+		p += wcslen(p) + 1;
+		if (value)
+		{
+			*value = L'\0';
+			SetEnvironmentVariable(name, value + 1);
+		}
+	}
+
+	DestroyEnvironmentBlock(environment);
+	CloseHandle(accessToken);
+}
+
+
 BOOL GetShellDir(int iType, QString& szPath)
 {
 	HINSTANCE hInst = ::LoadLibrary( _T("shell32.dll") );
@@ -51,20 +102,55 @@ BOOL GetShellDir(int iType, QString& szPath)
 	szPath = QString::fromUtf16((const ushort*)tmp);
 	FreeLibrary( hInst ); // <-- and here
 	return TRUE;
-	return 0;
 }
 
 QIcon WinIconProvider::icon(const QFileInfo& info) const {
-	if (info.suffix().compare("png", Qt::CaseInsensitive) == 0)
+
+	QIcon retIcon;
+	QString fileExtension = info.suffix().toLower();
+
+	if (fileExtension == "png" ||
+		fileExtension == "bmp" ||
+		fileExtension == "jpg" ||
+		fileExtension == "jpeg")
 	{
-		QPixmap qpix(info.filePath());
-		return qpix;
+		retIcon = QIcon(info.filePath());
 	}
-	HICON hico = GetIconHandleNoOverlay(QDir::toNativeSeparators(info.filePath()), false);
-	QPixmap qpix = convertHIconToPixmap(hico);
-//	qpix.fromWinHBITMAP(hico, QPixmap::PremultipliedAlpha);
-	DestroyIcon(hico);
-	return qpix;
+	else if (fileExtension == "cpl")
+	{
+		HICON hIcon;
+		QString filePath = QDir::toNativeSeparators(info.filePath());
+		ExtractIconEx(filePath.utf16(), 0, &hIcon, NULL, 1);
+        retIcon = QIcon(convertHIconToPixmap(hIcon));
+		DestroyIcon(hIcon);
+	}
+	else
+	{
+		SHFILEINFO sfi;
+		QString filePath = QDir::toNativeSeparators(info.filePath());
+		HIMAGELIST imageList = (HIMAGELIST)SHGetFileInfo(
+			filePath.utf16(), 
+			FILE_ATTRIBUTE_NORMAL,
+			&sfi, sizeof(SHFILEINFO), 
+			SHGFI_SYSICONINDEX | SHGFI_SHELLICONSIZE | SHGFI_USEFILEATTRIBUTES);
+		if (sfi.iIcon != 3)
+		{
+			HICON hIcon = ImageList_GetIcon(imageList, sfi.iIcon, ILD_TRANSPARENT);
+		    retIcon = QIcon(convertHIconToPixmap(hIcon));
+			DestroyIcon(hIcon);
+		}
+		else if (info.isSymLink() || fileExtension == "lnk") // isSymLink is case sensitive when it perhaps shouldn't be
+		{
+			QFileInfo targetInfo(info.symLinkTarget());
+			retIcon = icon(targetInfo);
+		}
+		else
+		{
+			retIcon = QFileIconProvider::icon(info);
+		}
+	}
+
+	return retIcon;
 }
 
 HIMAGELIST WinIconProvider::GetSystemImageListHandle( bool bSmallIcon ) 
@@ -231,7 +317,7 @@ QString WinIconProvider::GetFileType(QString strFileName)
 QPixmap WinIconProvider::convertHIconToPixmap( const HICON icon) const
 {
     bool foundAlpha = false;
-    HDC screenDevice = qt_win_display_dc();
+    HDC screenDevice = GetDC(0);
     HDC hdc = CreateCompatibleDC(screenDevice);
 
     ICONINFO iconinfo;
@@ -294,6 +380,7 @@ QPixmap WinIconProvider::convertHIconToPixmap( const HICON icon) const
     SelectObject(hdc, oldhdc); //restore state
     DeleteObject(winBitmap);
     DeleteDC(hdc);
+	DeleteDC(screenDevice);
     return QPixmap::fromImage(img);
 }
 

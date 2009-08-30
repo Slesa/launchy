@@ -39,13 +39,45 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QTranslator>
 #include <QNetworkProxy>
 
-
 #include "icon_delegate.h"
 #include "main.h"
 #include "globals.h"
 #include "options.h"
 //#include "dsingleapplication.h"
 #include "plugin_interface.h"
+
+
+QChar QCharLineEdit::sepChar() {
+	QFontMetrics met = fontMetrics();
+	QChar arrow(0x25ba);
+	if (met.inFont(arrow))
+		return arrow;
+	else
+		return QChar('|');
+}
+
+
+QString QCharLineEdit::sepText() {
+	return QString(" ") + sepChar() + " ";
+}
+
+
+void QCharLineEdit::keyPressEvent(QKeyEvent* key) {
+	if (key->key() == Qt::Key_Backspace && selectionStart() == -1) {
+		int cursor = cursorPosition() - 3;
+		if (text().mid(cursor, 3) == sepText()) {
+			// Delete separator characters in a single keypress
+			setText(text().left(cursor) + text().mid(cursor+3));
+			setCursorPosition(cursor);
+			key->ignore();
+		}
+		else
+			QLineEdit::keyPressEvent(key);
+	}
+	else
+		QLineEdit::keyPressEvent(key);
+	emit keyPressed(key);
+}
 
 
 MyWidget::MyWidget(QWidget *parent,  PlatformBase * plat, bool show)
@@ -57,19 +89,19 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 //QWidget(parent, Qt::SplashScreen | Qt::FramelessWindowHint | Qt::Tool ),
 QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 #endif
-platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
+platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL),
+iconExtractor(platform)
 {
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);
 	//	setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 	//    setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
 
-	if (platform->isAlreadyRunning())
-		exit(1);
-
 	fader = new Fader(this);
 	connect(fader, SIGNAL(fadeLevel(double)), this, SLOT(setFadeLevel(double)));
 	connect(fader, SIGNAL(finishedFade(double)), this, SLOT(finishedFade(double)));
+
+	connect(&iconExtractor, SIGNAL(iconExtracted(int, QIcon)), this, SLOT(iconExtracted(int, QIcon)));
 
 	gMainWidget = this;
 	menuOpen = false;
@@ -188,18 +220,15 @@ platform(plat), updateTimer(NULL), dropTimer(NULL), alternatives(NULL)
 	dropTimer->setSingleShot(true);
 	connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTimeout()));
 	connect(dropTimer, SIGNAL(timeout()), this, SLOT(dropTimeout()));
-	if (gSettings->value("GenOps/updatetimer", 10).toInt() != 0)
-		updateTimer->start(60000);
-
+	int time = gSettings->value("GenOps/updatetimer", 10).toInt();
+	if (time > 0)
+		updateTimer->start(time * 60000);
 
 
 	// Load the catalog
 	gBuilder.reset(new CatBuilder(true, &plugins));
 	connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 	gBuilder->start();
-
-	//	setTabOrder(combo, combo);
-
 
 	if (show)
 		showLaunchy();
@@ -223,44 +252,47 @@ bool MyWidget::setHotkey(int meta, int key) {
 	return platform->SetHotkey(keys, this, SLOT(onHotKey()));
 }
 
+
+bool MyWidget::event(QEvent *e)
+{
+	if (e->type() == QEvent::User)
+	{
+		showLaunchy();
+		return true;
+	}
+
+	return QWidget::event(e);
+}
+
+
 void MyWidget::menuEvent(QContextMenuEvent* evt) {
 	contextMenuEvent(evt);
 }
 
 void MyWidget::showAlternatives(bool show) {
     if (!isVisible())
-	return;
-
-	if (searchResults.size() < 1)
 		return;
-	QRect n = altRect;
-	n.translate(pos());
-
-	alternatives->setGeometry(n);
 
 	if (show) {
-		//alternatives->clear();
-		int num = alternatives->count();
-		for(int i = 0; i < num; ++i) {
-			QListWidgetItem * item = alternatives->takeItem(0);
-			if (item != NULL)
-				delete item;
-		}
+		if (searchResults.size() < 1)
+			return;
 
+		QRect n = altRect;
+		n.translate(pos());
+		alternatives->setGeometry(n);
+
+		alternatives->clear();
 
 		for(int i = 0; i < searchResults.size(); ++i) {
-			QFileInfo fileInfo(searchResults[i].fullPath);
-
-			QIcon icon = getIcon(searchResults[i]);
-			QListWidgetItem * item = new QListWidgetItem(icon, QDir::toNativeSeparators(searchResults[i].fullPath), alternatives);
-			//			QListWidgetItem *item = new QListWidgetItem(alternatives);
+			QListWidgetItem * item = new QListWidgetItem(QDir::toNativeSeparators(searchResults[i].fullPath), alternatives);
 			item->setData(ROLE_FULL, QDir::toNativeSeparators(searchResults[i].fullPath));
 			item->setData(ROLE_SHORT, searchResults[i].shortName);
-			item->setData(ROLE_ICON, icon);
 			item->setToolTip(QDir::toNativeSeparators(searchResults[i].fullPath));
 			alternatives->addItem(item);
-			alternatives->setFocus();
 		}
+
+		iconExtractor.processIcons(searchResults);
+
 		if (alternatives->count() > 0) {
 			int numViewable = gSettings->value("GenOps/numviewable", "4").toInt();
 			//QRect r = alternatives->geometry();
@@ -279,10 +311,12 @@ void MyWidget::showAlternatives(bool show) {
 		opaqueness /= 100.0;
 		alternatives->setWindowOpacity(opaqueness);
 		alternatives->show();
+		alternatives->setFocus();
 		qApp->syncX();
 		alternatives->raise();
 	} else {
 		alternatives->hide();
+		iconExtractor.stop();
 	}
 }
 
@@ -331,11 +365,17 @@ void MyWidget::focusOutEvent ( QFocusEvent * evt) {
 
 void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 	if (key->key() == Qt::Key_Escape) {
-		alternatives->hide();
+		showAlternatives(false);
 		key->ignore();
 	}
 	else if (key->key() == Qt::Key_Up) {key->ignore();}
 	else if (key->key() == Qt::Key_Down) {key->ignore();}
+	else if (key->key() == Qt::Key_PageUp) {key->ignore();}
+	else if (key->key() == Qt::Key_PageDown) {key->ignore();}
+	else if (key->key() == Qt::Key_Control) {key->ignore();}
+	else if (key->key() == Qt::Key_Shift) {key->ignore();}
+	else if (key->key() == Qt::Key_Alt) {key->ignore();}
+	else if (key->key() == Qt::Key_AltGr) {key->ignore();}
 	else if (key->key() == Qt::Key_Return || key->key() == Qt::Key_Enter || key->key() == Qt::Key_Tab) {
 		if (searchResults.count() > 0) {
 			int row = alternatives->currentRow();
@@ -358,8 +398,7 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 				input->setText(printInput() + searchResults[0].fullPath);
 				}
 				*/
-				alternatives->hide();
-
+				showAlternatives(false);
 
 				if (key->key() == Qt::Key_Tab) {
 					doTab();
@@ -377,7 +416,6 @@ void MyWidget::altKeyPressEvent(QKeyEvent* key) {
 		}
 	}
 	else {
-		alternatives->hide();
 		activateWindow();
 		raise();
 		input->setFocus();
@@ -398,11 +436,14 @@ void MyWidget::inputKeyPressEvent(QKeyEvent* key) {
 	else {
 		key->ignore();
 	}
+
+	if (input->text().length() == 0)
+		showAlternatives(false);
 }
 
 void MyWidget::parseInput(QString text) {
 	//	QStringList spl = text.split(" | ");
-	QStringList spl = text.split(QString(" ") + sepChar() + QString(" "));
+	QStringList spl = text.split(input->sepText());
 
 	if (spl.count() < inputData.count()) {
 		inputData = inputData.mid(0, spl.count());
@@ -428,7 +469,7 @@ QString MyWidget::printInput() {
 	QString res = "";
 	for(int i = 0; i < inputData.count()-1; ++i) {
 		res += inputData[i].getText();
-		res += QString(" ") + sepChar() + QString(" ");
+		res += input->sepText();
 	}
 	return res;
 }
@@ -454,9 +495,12 @@ void MyWidget::doTab()
 			input->setText(printInput() + QDir::toNativeSeparators(path));
 		} else {
 			// Looking for a plugin
-			input->setText(input->text() + " " + sepChar() + " ");
+			input->setText(input->text() + input->sepText());
 			inputData.last().setText(searchResults[0].shortName);
-			input->setText(printInput() + searchResults[0].shortName + " " + sepChar() + " ");
+			input->setText(printInput() + searchResults[0].shortName + input->sepText());
+
+			QRect rect = input->rect();
+			repaint(rect);
 		}
 	}
 }
@@ -480,34 +524,55 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 	}
 
 	else if (key->key() == Qt::Key_Escape) {
-		hideLaunchy();
+		if (alternatives->isVisible())
+			showAlternatives(false);
+		else
+			hideLaunchy();
 	}
 
 	else if (key->key() == Qt::Key_Return || key->key() == Qt::Key_Enter) {
 		doEnter();
 	}
 
-	else if (key->key() == Qt::Key_Down) {
-		if (!alternatives->isVisible()) {
+	else if (key->key() == Qt::Key_Down || key->key() == Qt::Key_PageDown ||
+			 key->key() == Qt::Key_PageUp) {
+		if (alternatives->isVisible()) {
+			if (this->isActiveWindow()) {
+				if (alternatives->currentRow() < 0 && alternatives->count() > 0)
+				{
+					alternatives->activateWindow();
+					alternatives->setCurrentRow(0);
+				}
+				else
+				{
+					alternatives->activateWindow();
+					qApp->sendEvent(alternatives, key);
+				}
+			}
+		}
+		else if (key->key() == Qt::Key_Down || key->key() == Qt::Key_PageDown) {
 			dropTimer->stop();
 			showAlternatives();
-		}
-		if (alternatives->isVisible() && this->isActiveWindow()) {
-			alternatives->setFocus();
-			if (alternatives->count() > 0) {
-				alternatives->setCurrentRow(0);
-			}
-
-
 			alternatives->activateWindow();
-
+			if (alternatives->count() > 0)
+				alternatives->setCurrentRow(0);
 		}
 	}
 
-	else if (key->key() == Qt::Key_Up) {
-		// Prevent alternatives from being hidden on up key
+	else if (
+		key->key() == Qt::Key_Left ||
+		key->key() == Qt::Key_Right ||
+		key->key() == Qt::Key_Up ||
+		key->key() == Qt::Key_Down ||
+		key->key() == Qt::Key_PageUp ||
+		key->key() == Qt::Key_PageDown ||
+		key->key() == Qt::Key_Control ||
+		key->key() == Qt::Key_Shift ||
+		key->key() == Qt::Key_Alt ||
+		key->key() == Qt::Key_AltGr)
+	{
+		// Prevent alternatives from being hidden
 	}
-
 
 	else {
 		if (key->key() == Qt::Key_Tab) {
@@ -526,7 +591,7 @@ void MyWidget::keyPressEvent(QKeyEvent* key) {
 
 
 void MyWidget::processKey() {
-	alternatives->hide();
+
 	dropTimer->stop();
 	int delay = gSettings->value("GenOps/autoSuggestDelay",1000).toInt();
 	if (delay > 0)
@@ -552,10 +617,8 @@ void MyWidget::searchOnInput() {
 	gSearchTxt = stxt;
 	searchResults.clear();
 
-	if (catalog != NULL) {
-		if (inputData.count() <= 1)
-			catalog->searchCatalogs(gSearchTxt, searchResults);
-	}
+	if (inputData.count() <= 1)
+		catalog->searchCatalogs(gSearchTxt, searchResults);
 
 	if (searchResults.count() != 0)
 		inputData.last().setTopResult(searchResults[0]);
@@ -577,8 +640,8 @@ void MyWidget::searchOnInput() {
 
 void MyWidget::updateDisplay() {
 	if (searchResults.count() > 0) {
-		QIcon icon = getIcon(searchResults[0]);
 
+		QIcon icon = iconExtractor.getIcon(searchResults[0]);
 		licon->setPixmap(icon.pixmap(QSize(32,32), QIcon::Normal, QIcon::On));
 		output->setText(searchResults[0].shortName);
 
@@ -594,22 +657,16 @@ void MyWidget::updateDisplay() {
 	}
 }
 
-QIcon MyWidget::getIcon(CatItem & item) {
+void MyWidget::iconExtracted(int itemIndex, QIcon icon)
+{
+	if (itemIndex < alternatives->count())
+	{
+		QListWidgetItem* listItem = alternatives->item(itemIndex);
+		listItem->setIcon(icon);
+		listItem->setData(ROLE_ICON, icon);
 
-	if (item.icon.isNull()) {
-		QDir dir(item.fullPath);
-		if (dir.exists())
-			return platform->icons->icon(QFileIconProvider::Folder);
-
-		return platform->icon(QDir::toNativeSeparators(item.fullPath));
-	}
-	else {
-//#ifdef Q_WS_X11 // Windows needs this too for .png files
-		if (QFile::exists(item.icon)) {
-			return QIcon(item.icon);
-		}
-//#endif
-		return platform->icon(QDir::toNativeSeparators(item.icon));
+		QRect rect = alternatives->visualItemRect(listItem);
+		repaint(rect);
 	}
 }
 
@@ -676,21 +733,12 @@ void MyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
 
 
 void MyWidget::catalogBuilt() {
-/*
-	if (catalog != NULL) {
-		delete catalog;
-	}
-	*/
+
 	catalog = gBuilder->getCatalog();
-//	catalog = gBuilder->getCatalog();
 
 	gBuilder->wait();
 	gBuilder.reset();
-/*
-	delete gBuilder;
-	gBuilder = NULL;
-	*/
-	//	qDebug() << "The catalog is built, need to re-search input text" << catalog->count();
+
 	// Do a search here of the current input text
 	searchOnInput();
 	updateDisplay();
@@ -927,7 +975,7 @@ MyWidget::~MyWidget() {
 void MyWidget::MoveFromAlpha(QPoint pos) {
 	move(pos);
 	if(alternatives)
-		alternatives->hide();
+		showAlternatives(false);
 }
 
 void MyWidget::setAlwaysShow(bool alwaysShow) {
@@ -1133,7 +1181,7 @@ void MyWidget::connectAlpha()
 
 void MyWidget::mousePressEvent(QMouseEvent *e)
 {
-	//alternatives->hide();
+	//showAlternatives(false);
 	activateWindow();
 	raise();
 	showAlternatives(false);
@@ -1159,6 +1207,7 @@ void MyWidget::contextMenuEvent(QContextMenuEvent *event) {
 	connect(actMenu, SIGNAL(triggered()), this, SLOT(buildCatalog()));
 	QAction* actOptions = menu.addAction(tr("Options"));
 	connect(actOptions, SIGNAL(triggered()), this, SLOT(menuOptions()));
+	menu.addSeparator();
 	QAction* actExit = menu.addAction(tr("Exit"));
 	connect(actExit, SIGNAL(triggered()), this, SLOT(close()));
 	menuOpen = true;
@@ -1178,7 +1227,7 @@ void MyWidget::buildCatalog() {
 
 void MyWidget::menuOptions() {
 	dropTimer->stop();
-	alternatives->hide();
+	showAlternatives(false);
 	optionsOpen = true;
 	OptionsDlg ops(this);
 	ops.setObjectName("options");
@@ -1289,9 +1338,7 @@ void MyWidget::fadeOut() {
 
 void MyWidget::showLaunchy(bool now) {
 	shouldDonate();
-	alternatives->hide();
-
-
+	showAlternatives(false);
 
 	// This gets around the weird Vista bug
 	// where the alpha border would dissappear
@@ -1351,7 +1398,7 @@ void MyWidget::hideLaunchy(bool now) {
 	if (alwaysShowLaunchy) return;
 
 	if (alternatives != NULL)
-		alternatives->hide();
+		showAlternatives(false);
 
 	if (isVisible()) {
 		if (!now)
@@ -1364,16 +1411,6 @@ void MyWidget::hideLaunchy(bool now) {
 
 	// let the plugins know
 	plugins.hideLaunchy();
-}
-
-
-QChar MyWidget::sepChar() {
-	QFontMetrics met = input->fontMetrics();
-	QChar arrow(0x25ba);
-	if (met.inFont(arrow))
-		return arrow;
-	else
-		return QChar('|');
 }
 
 
@@ -1394,13 +1431,9 @@ void MyWidget::loadOptions()
 
 int main(int argc, char *argv[])
 {
-#ifdef Q_WS_WIN
-	shared_ptr<QApplication> app(new QApplication(argc, argv));
-#endif
 	PlatformBase * platform = loadPlatform();
-#ifdef Q_WS_X11
 	shared_ptr<QApplication> app(platform->init(argc, argv));
-#endif
+
 	QStringList args = qApp->arguments();
 	app->setQuitOnLastWindowClosed(false);
 	bool show = false;
@@ -1422,6 +1455,11 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	if (platform->isAlreadyRunning())
+	{
+		platform->showOtherInstance();
+		exit(1);
+	}
 
 		QCoreApplication::setApplicationName("Launchy");
 		QCoreApplication::setOrganizationDomain("Launchy");
@@ -1436,6 +1474,6 @@ int main(int argc, char *argv[])
 		MyWidget widget(NULL, platform, show);
 		widget.setObjectName("main");
 
-		app->exec();	
+		app->exec();
 		//app.reset();
 }

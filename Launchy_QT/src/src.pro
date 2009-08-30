@@ -6,33 +6,42 @@ win32 {
   TARGET = Launchy
 }
 CONFIG += debug_and_release
-#CONFIG += qt release
+
+# CONFIG += qt release
+INCLUDEPATH += ../common
 QT += network
 
 SOURCES = main.cpp \
- globals.cpp \
- options.cpp \
- catalog.cpp \
- catalog_builder.cpp \
- plugin_handler.cpp \
- platform_util.cpp \
- icon_delegate.cpp \
- plugin_interface.cpp \
- catalog_types.cpp
-
+    globals.cpp \
+    options.cpp \
+    catalog.cpp \
+    catalog_builder.cpp \
+    plugin_handler.cpp \
+    platform_util.cpp \
+    icon_delegate.cpp \
+    plugin_interface.cpp \
+    catalog_types.cpp \
+    icon_extractor.cpp \
+    ../common/FileBrowserDelegate.cpp \
+    ../common/FileBrowser.cpp \
+    ../common/DropListWidget.cpp
 HEADERS = platform_util.h \
- platform_base.h \
- globals.h \
- globals.h \
- main.h \
- catalog.h \
- catalog_builder.h \
- plugin_interface.h \
- plugin_handler.h \
- options.h \
- catalog_types.h \
- icon_delegate.h
-
+    platform_base.h \
+    globals.h \
+    globals.h \
+    main.h \
+    catalog.h \
+    catalog_builder.h \
+    plugin_interface.h \
+    plugin_handler.h \
+    options.h \
+    catalog_types.h \
+    icon_delegate.h \
+    icon_extractor.h \
+    ../common/FileBrowserDelegate.h \
+    ../common/FileBrowser.h \
+    ../common/DropList.h \
+    ../common/DropListWidget.h
 ICON = Launchy.ico
 
 first.target = blah
@@ -71,7 +80,7 @@ win32 {
   INCLUDEPATH += c:/boost/
   FORMS =   options.ui
   RC_FILE =   ../win/launchy.rc
-  LIBS +=   shell32.lib
+  LIBS +=   shell32.lib ole32.lib
   if(!debug_and_release|build_pass) {
    CONFIG(debug, debug|release) {
     DESTDIR =     ../debug/
@@ -88,5 +97,4 @@ TRANSLATIONS =  ../translations/launchy_fr.ts  ../translations/launchy_nl.ts  \
 		    ../translations/launchy_de.ts ../translations/launchy_ja.ts
 OBJECTS_DIR = build
 MOC_DIR = build
-#UI_DIR = build
 
