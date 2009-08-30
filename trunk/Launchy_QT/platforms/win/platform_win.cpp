@@ -22,7 +22,88 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QDir>
 #include <QObject>
 #include "platform_win.h"
-#include "globals.h"
+
+
+// Hidden widget that listen for various useful Windows messages
+class WindowMessageListener : public QWidget
+{
+public:
+	static void Create()
+	{
+		if (instance == NULL)
+			instance.reset(new WindowMessageListener());
+	}
+
+private:
+	WindowMessageListener()
+	{
+		// Force creation of the widget's window handle
+		winId();
+
+		activateMessageId = RegisterWindowMessage(_T("LaunchyActivate"));
+	}
+
+	virtual bool winEvent(MSG* msg, long* result)
+	{
+		if (msg->message == WM_SETTINGCHANGE)
+		{
+			// Refresh Launchy's environment on settings changes
+			if (msg->lParam && _tcscmp((TCHAR*)msg->lParam, _T("Environment")) == 0)
+			{
+				UpdateEnvironment();
+			}
+		}
+		else if (msg->message == activateMessageId)
+		{
+			QEvent event(QEvent::User);
+			foreach (QWidget *widget, QApplication::topLevelWidgets())
+			{
+				QApplication::sendEvent(widget, &event);
+			}
+		}
+		return QWidget::winEvent(msg, result);
+	}
+
+	QWidget* widget;
+	UINT activateMessageId;
+
+	static shared_ptr<WindowMessageListener> instance;
+};
+
+shared_ptr<WindowMessageListener> WindowMessageListener::instance;
+
+
+
+PlatformWin::PlatformWin() :
+	PlatformBase() 		
+{
+	instance = new LimitSingleInstance(TEXT("Global\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
+
+	// Create application mutexes so that installer knows when
+	// Launchy is running
+	m1 = CreateMutex(NULL,0,_T("LaunchyMutex"));
+	mg1 = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
+}
+
+
+PlatformWin::~PlatformWin()
+{
+	CloseHandle(m1);
+	CloseHandle(mg1);
+	delete instance;
+	instance = NULL;
+}
+
+
+shared_ptr<QApplication> PlatformWin::init(int& argc, char** argv)
+{
+	QApplication* app = new QApplication(argc, argv);
+	icons.reset((QFileIconProvider*)new WinIconProvider());
+	WindowMessageListener::Create();
+
+	return shared_ptr<QApplication>(app);
+}
+
 
 QHash<QString, QList<QString> > PlatformWin::GetDirectories() {
     QHash<QString, QList<QString> > out;
@@ -69,5 +150,13 @@ QString PlatformWin::expandEnvironmentVars(QString txt)
 	}
 	return out;
 }
+
+
+void PlatformWin::showOtherInstance()
+{
+	UINT activateMessageId = RegisterWindowMessage(_T("LaunchyActivate"));
+	PostMessage(HWND_BROADCAST, activateMessageId, 0, 0);
+}
+
 
 Q_EXPORT_PLUGIN2(platform_win, PlatformWin) 

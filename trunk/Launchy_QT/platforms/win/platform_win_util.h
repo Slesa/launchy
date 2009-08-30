@@ -31,6 +31,7 @@
 
 
 #pragma warning (disable : 4089)
+void UpdateEnvironment();
 BOOL GetShellDir(int iType, QString& szPath);
 
 

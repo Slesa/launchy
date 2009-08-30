@@ -36,6 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "catalog.h"
 #include "catalog_builder.h"
 #include "icon_delegate.h"
+#include "icon_extractor.h"
 #include "globals.h"
 #include <boost/shared_ptr.hpp>
 
@@ -66,10 +67,7 @@ public:
 		{
 		    setAttribute(Qt::WA_InputMethodEnabled);
 		}
-		void keyPressEvent(QKeyEvent* key) {
-			QLineEdit::keyPressEvent(key);
-			emit keyPressed(key);
-		}
+		void keyPressEvent(QKeyEvent* key);
 		// This is how you pick up the tab key
 		bool focusNextPrevChild(bool next) {
 			next = next; // Remove compiler warning
@@ -96,6 +94,9 @@ public:
 				}
 			}
 			*/
+	QChar sepChar();
+	QString sepText();
+
 signals:
 	void keyPressed(QKeyEvent*);
 	void focusOut(QFocusEvent* evt);
@@ -162,7 +163,7 @@ class MyWidget : public QWidget
 public:
 
 
-    MyWidget() {};
+	MyWidget();
     MyWidget(QWidget *parent, PlatformBase*, bool show);
 	~MyWidget();
 
@@ -185,6 +186,7 @@ public:
 	QScrollBar* altScroll;
 	shared_ptr<Catalog> catalog;
 	shared_ptr<CatBuilder> catBuilder;
+	IconExtractor iconExtractor;
 	QList<CatItem> searchResults;
 	QList<InputData> inputData;
 	PluginHandler plugins;
@@ -197,7 +199,7 @@ public:
 	QAbstractItemDelegate * defaultDelegate;
 
 	void connectAlpha();
-	QIcon getIcon(CatItem & item);
+
 	void MoveFromAlpha(QPoint pos);
 	void applySkin(QString);
 	void contextMenuEvent(QContextMenuEvent *event);
@@ -209,7 +211,7 @@ public:
 	void shouldDonate();
 	void setCondensed(int condensed);
 	bool setHotkey(int, int);
-	void showAlternatives(bool show=true);
+	void showAlternatives(bool show = true);
 	void launchObject();
 	void searchFiles(const QString & input, QList<CatItem>& searchResults);
 	void parseInput(QString text);
@@ -225,11 +227,13 @@ public:
 	void savePosition() { gSettings->setValue("Display/pos", pos()); }
 	void doTab();
 	void doEnter();
-	QChar sepChar();
 	QString printInput();
 	void processKey();
 
 	void loadOptions();
+
+protected:
+	bool event(QEvent *e);
 
 private:
     QHttp *http;
@@ -259,6 +263,7 @@ public slots:
 	void finishedFade(double d);
 	void menuEvent(QContextMenuEvent*);
 	void buildCatalog();
+	void iconExtracted(int itemIndex, QIcon icon);
 };
 
 #endif

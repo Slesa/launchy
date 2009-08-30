@@ -21,9 +21,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define OPTIONS_H
 
 #include "ui_options.h"
+#include "FileBrowserDelegate.h"
 #include <QString>
 #include <QStringList>
 #include <QList>
+#include <QDragEnterEvent>
 
 struct Directory {
 	Directory() 
@@ -45,20 +47,24 @@ class OptionsDlg : public QDialog, private Ui::OptionsDlg
   Q_OBJECT
 
 private:
+	FileBrowserDelegate directoryItemDelegate;
+	static QByteArray windowGeometry;
+	static int currentTab;
+	static int currentPlugin;
 	int curPlugin;
 
 public:
 
-QStringList metaKeys;
-QStringList actionKeys;
-QList<int> iMetaKeys;
-QList<int> iActionKeys;
-OptionsDlg(QWidget* parent = 0);
-~OptionsDlg();
-QList<Directory> memDirs;
-QList<QPair<QString, uint> > pluginNames;
-QVBoxLayout* pluginLayout;
- QString lastDir;
+	QStringList metaKeys;
+	QStringList actionKeys;
+	QList<int> iMetaKeys;
+	QList<int> iActionKeys;
+	OptionsDlg(QWidget* parent = 0);
+	~OptionsDlg();
+	QList<Directory> memDirs;
+	QList<QPair<QString, uint> > pluginNames;
+	QVBoxLayout* pluginLayout;
+	QString lastDir;
 
 public slots:
 	void accept();
@@ -79,6 +85,11 @@ public slots:
 	void pluginItemChanged(QListWidgetItem* state);
 	void tabChanged(int tab);
 	void catDirTextChanged(QListWidgetItem * item );
+	void catDirDragEnter(QDragEnterEvent *event);
+	void catDirDrop(QDropEvent *event);
+
+private:
+	void addDirectory(const QString& directory);
 };
 
 

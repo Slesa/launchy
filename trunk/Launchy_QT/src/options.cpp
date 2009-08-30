@@ -21,6 +21,7 @@
 #include "main.h"
 #include "globals.h"
 #include "plugin_handler.h"
+#include "FileBrowserDelegate.h"
 #include <QSettings>
 #include <QDir>
 #include <QPixmap>
@@ -29,13 +30,24 @@
 #include <QFileDialog>
 #include <QTextStream>
 
-OptionsDlg::OptionsDlg(QWidget * parent)
-    : QDialog(parent) 
+
+QByteArray OptionsDlg::windowGeometry;
+int OptionsDlg::currentTab;
+int OptionsDlg::currentPlugin;
+
+
+OptionsDlg::OptionsDlg(QWidget * parent) :
+    QDialog(parent),
+	directoryItemDelegate(this, FileBrowser::Directory)
 {
     setupUi(this);
     curPlugin = -1;
     MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
     if (main == NULL) return;
+
+	restoreGeometry(windowGeometry);
+    tabWidget->setCurrentIndex(currentTab);
+
     // Load General Options
     genAlwaysShow->setChecked(gSettings->value("GenOps/alwaysshow", false).toBool());
     genAlwaysTop->setChecked(gSettings->value("GenOps/alwaystop", false).toBool());
@@ -44,7 +56,7 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 	int center = gSettings->value("GenOps/alwayscenter", 3).toInt();
     genHCenter->setChecked((center & 1) != 0);
     genVCenter->setChecked((center & 2) != 0);
-    genFastIndex->setChecked(gSettings->value("GenOps/fastindexer",false).toBool());
+//    genFastIndex->setChecked(gSettings->value("GenOps/fastindexer",false).toBool());
     genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
     genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
     genCondensed->setChecked(gSettings->value("GenOps/condensedView",false).toBool());
@@ -137,7 +149,11 @@ OptionsDlg::OptionsDlg(QWidget * parent)
     connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
     
     // Load the directories and types
-    connect(catDirectories, SIGNAL(currentRowChanged(int)), this, SLOT(dirChanged(int)));
+	catDirectories->setItemDelegate(&directoryItemDelegate);
+
+	connect(catDirectories, SIGNAL(currentRowChanged(int)), this, SLOT(dirChanged(int)));
+	connect(catDirectories, SIGNAL(dragEnter(QDragEnterEvent*)), this, SLOT(catDirDragEnter(QDragEnterEvent*)));
+	connect(catDirectories, SIGNAL(drop(QDropEvent*)), this, SLOT(catDirDrop(QDropEvent*)));
     connect(catDirPlus, SIGNAL(clicked(bool)), this, SLOT(catDirPlusClicked(bool)));
     connect(catDirMinus, SIGNAL(clicked(bool)), this, SLOT(catDirMinusClicked(bool)));
     connect(catTypesPlus, SIGNAL(clicked(bool)), this, SLOT(catTypesPlusClicked(bool)));
@@ -198,12 +214,18 @@ OptionsDlg::OptionsDlg(QWidget * parent)
 	    item->setCheckState(Qt::Unchecked);
     }
     if (plugList->count() > 0) {
-	plugList->setCurrentRow(0);
+	plugList->setCurrentRow(currentPlugin);
     }
     aboutVer->setText(QString(tr("This is Launchy version ")) + QString(LAUNCHY_VERSION_STRING));
-    tabWidget->setCurrentIndex(0);
+	catDirectories->installEventFilter(this);
 }
+
+
 OptionsDlg::~OptionsDlg() {
+
+	currentTab = tabWidget->currentIndex();
+	windowGeometry = saveGeometry();
+
     MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
     if (main == NULL) return;
     
@@ -240,7 +262,7 @@ void OptionsDlg::accept() {
     gSettings->setValue("GenOps/updatecheck", genUpdateCheck->isChecked());
     gSettings->setValue("GenOps/hideiflostfocus", genHideFocus->isChecked());
 	gSettings->setValue("GenOps/alwayscenter", (genHCenter->isChecked() ? 1 : 0) | (genVCenter->isChecked() ? 2 : 0));
-    gSettings->setValue("GenOps/fastindexer", genFastIndex->isChecked());
+//    gSettings->setValue("GenOps/fastindexer", genFastIndex->isChecked());
     gSettings->setValue("GenOps/showHiddenFiles", genShowHidden->isChecked());
     gSettings->setValue("GenOps/condensedView", genCondensed->isChecked());
 	gSettings->setValue("GenOps/autoSuggestDelay", genAutoSuggestDelay->text());
@@ -338,6 +360,7 @@ void OptionsDlg::pluginChanged(int row) {
     
     // Open the new plugin dialog
     curPlugin = row;
+	currentPlugin = row;
     if (row < 0) return;	
     QListWidgetItem* item = plugList->item(row);
     QWidget* win = main->plugins.doDialog(plugBox, item->data(Qt::UserRole).toUInt());
@@ -445,6 +468,26 @@ void OptionsDlg::catDirTextChanged( QListWidgetItem * item ) {
     memDirs[row].name = item->text();
 }
 
+void OptionsDlg::catDirDragEnter(QDragEnterEvent *event)
+{
+	const QMimeData* mimeData = event->mimeData();
+	if (mimeData && mimeData->hasUrls())
+		event->acceptProposedAction();
+}
+
+void OptionsDlg::catDirDrop(QDropEvent *event)
+{
+	const QMimeData* mimeData = event->mimeData();
+	if (mimeData && mimeData->hasUrls()) {
+		foreach(QUrl url, mimeData->urls()) {
+			QFileInfo info(url.toLocalFile());
+			if(info.exists() && info.isDir()) {
+				addDirectory(info.filePath());
+			}
+		}
+	}
+}
+
 void OptionsDlg::dirChanged(int row) {
     if (row == -1) return;
     
@@ -458,6 +501,7 @@ void OptionsDlg::dirChanged(int row) {
 };
 
 void OptionsDlg::catDirPlusClicked(bool c) {
+
     c = c; // Compiler warning
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select a directory"),
 						    lastDir,
@@ -465,12 +509,17 @@ void OptionsDlg::catDirPlusClicked(bool c) {
     if (dir == "")
 	return;
     lastDir = dir;
+
+	addDirectory(dir);
+}
+
+void OptionsDlg::addDirectory(const QString& directory) {
     
-    QString nativeDir = QDir::toNativeSeparators(dir);
+    QString nativeDir = QDir::toNativeSeparators(directory);
     Directory tmp;
     tmp.name = nativeDir;
     memDirs.append(tmp);
-    
+
     catTypes->clear();
     catDirectories->addItem(nativeDir);
     QListWidgetItem* it = catDirectories->item(catDirectories->count()-1);

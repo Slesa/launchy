@@ -36,8 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QFileIconProvider>
 #include <windows.h>
 #include <shlobj.h>
-//#include <stdlib.h>
-//#include <stdio.h>
+#include <userenv.h>
 #include <TCHAR.h>
 
 #include <QIcon>
@@ -48,11 +47,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "platform_base.h"
 #include "platform_win_util.h"
 #include "platform_base_hotkey.h"
-#include "platform_base_hottrigger.h"
-//#include "globals.h"
-
-
-
 
 
 class PlatformWin : public QObject, public PlatformBase 
@@ -61,69 +55,15 @@ class PlatformWin : public QObject, public PlatformBase
 		Q_INTERFACES(PlatformBase)
 private:
 	shared_ptr<QLaunchyAlphaBorder> alpha;
-	HWND hotkeyWnd;
 	HANDLE m1, mg1;
-	HDC hDC;
 	QString lastImageName;
 	LimitSingleInstance* instance;
 public:
-	//    QHash<QString, QList<QString> > GetDirectories(bool);
-	PlatformWin() : PlatformBase() 		
-	{
-		instance = new LimitSingleInstance(TEXT("Global\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
+	PlatformWin();
+	~PlatformWin();
 
-		//CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+	virtual shared_ptr<QApplication> init(int& argc, char** argv);
 
-		//alpha = NULL; 
-		icons.reset((QFileIconProvider*) new WinIconProvider());
-
-		// Create application mutexes so that installer knows when
-		// Launchy is running
-		m1 = CreateMutex(NULL,0,_T("LaunchyMutex"));
-		mg1 = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
-
-
-		/*
-		TCHAR* libvar;
-		size_t requiredSize;
-
-		_tgetenv_s( &requiredSize, NULL, 0, L"PATH");
-		requiredSize += 128;
-
-
-		libvar = (TCHAR*) malloc(requiredSize * sizeof(TCHAR));
-		if (!libvar)
-		{
-		printf("Failed to allocate memory!\n");
-		exit(1);
-		}
-
-		_tgetenv_s( &requiredSize, libvar, requiredSize, L"PATH" );
-		_tcscat(libvar, L";c:\\program files\\launchyqt\\");
-		_tputenv_s(L"PATH", libvar);
-		_tgetenv_s( &requiredSize, NULL, 0, L"PATH");
-		_tgetenv_s(&requiredSize, libvar, requiredSize, L"PATH");
-		qDebug() << QString::fromUtf16((const ushort*) libvar);
-
-		free(libvar); */
-	}
-	~PlatformWin() {
-		/*
-		if (alpha)
-			delete alpha;
-		alpha = NULL;
-		*/
-/*
-		if (icons != NULL)
-			delete icons;
-		icons = NULL;
-		*/
-		CloseHandle(m1);
-		CloseHandle(mg1);
-		delete instance;
-		instance = NULL;
-
-	}
 /*
 	void KillLaunchys() {
 		
@@ -226,6 +166,7 @@ public:
 	bool isAlreadyRunning() {
 		return instance->IsAnotherInstanceRunning();
 	}
+	void showOtherInstance();
 	void SetAlphaOpacity(double trans) { if (alpha != NULL) alpha->SetAlphaOpacity(trans); }
 
 };
