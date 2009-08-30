@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Launchy"
-#define MyAppVerName "Launchy 2.1.2"
+#define MyAppVerName "Launchy 2.2.0"
 #define MyAppPublisher "Code Jelly"
 #define MyAppURL "http://www.launchy.net"
 #define MyAppExeName "Launchy.exe"
@@ -31,11 +31,13 @@ AppID=Launchy_21344213
 Name: english; MessagesFile: compiler:Default.isl
 
 [Tasks]
+Name: startmenuicon; Description: "Create start menu icons"; GroupDescription: {cm:StartMenuIcons};
+Name: startmenuicon\user; Description: "For the current user only"; GroupDescription: {cm:StartMenuIcons}; Flags: exclusive
+Name: startmenuicon\common; Description: "For all users"; GroupDescription: {cm:StartMenuIcons}; Flags: exclusive unchecked
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 
 [Files]
-Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\platform_win.dll; DestDir: {app}; Flags: ignoreversion
 
@@ -44,12 +46,15 @@ Source: ..\..\release\plugins\weby.dll; DestDir: {app}\plugins\; Flags: ignoreve
 Source: ..\..\release\plugins\calcy.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 Source: ..\..\release\plugins\runner.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 Source: ..\..\release\plugins\gcalc.dll; DestDir: {app}\plugins\; Flags: ignoreversion
-;Source: ..\..\release\plugins\controly.dll; DestDir: {app}\plugins\; Flags: ignoreversion
+Source: ..\..\release\plugins\controly.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 
 ; Plugin icons
 Source: ..\..\plugins\weby\weby.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\calcy\calcy.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
-;Source: ..\..\plugins\controly\controly.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\controly\controly.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\controly\controly.exit.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\controly\controly.options.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\controly\controly.rebuild.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\runner\runner.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 
 ; Documentation
@@ -81,7 +86,6 @@ Source: ..\..\skins\Note\style.qss; DestDir: {app}\skins\Note\; Flags: ignorever
 Source: ..\..\skins\Note\scrollBack.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
 Source: ..\..\skins\Note\scrollDown.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
 Source: ..\..\skins\Note\scrollUp.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
-
 
 Source: ..\..\skins\Black Glass\alpha.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black Glass\author.txt; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
@@ -124,9 +128,9 @@ Source: ..\..\skins\Spotlight Wide\style.qss; DestDir: {app}\skins\Spotlight Wid
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtGui4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtNetwork4.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\msvcp80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
-Source: ..\msvcr80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
-Source: ..\Microsoft.VC80.CRT.manifest; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
+Source: ..\msvcp90.dll; DestDir: {app}\Microsoft.VC90.CRT\; Flags: ignoreversion
+Source: ..\msvcr90.dll; DestDir: {app}\Microsoft.VC90.CRT\; Flags: ignoreversion
+Source: ..\Microsoft.VC90.CRT.manifest; DestDir: {app}\Microsoft.VC90.CRT\; Flags: ignoreversion
 
 Source: ..\Utilities\Special Folders\C Drive.lnk; DestDir: {app}\Utilities\Special Folders\; Flags: ignoreversion
 Source: ..\Utilities\Special Folders\Control Panel.lnk; DestDir: {app}\Utilities\Special Folders\; Flags: ignoreversion
@@ -139,6 +143,7 @@ Source: ..\Utilities\Special Folders\Recycle Bin.lnk; DestDir: {app}\Utilities\S
 Source: ..\Utilities\System Power\System Logoff.lnk; DestDir: {app}\Utilities\System Power\; Flags: ignoreversion
 Source: ..\Utilities\System Power\System Reboot.lnk; DestDir: {app}\Utilities\System Power\; Flags: ignoreversion
 Source: ..\Utilities\System Power\System Shutdown.lnk; DestDir: {app}\Utilities\System Power\; Flags: ignoreversion
+Source: ..\Utilities\System Power\System Hibernate.lnk; DestDir: {app}\Utilities\System Power\; Flags: ignoreversion
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
@@ -146,14 +151,22 @@ Source: ..\Utilities\System Power\System Shutdown.lnk; DestDir: {app}\Utilities\
 Filename: {app}\{#MyAppUrlName}; Section: InternetShortcut; Key: URL; String: {#MyAppURL}
 
 [Icons]
-Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
-Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}
-Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
+Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: startmenuicon\common
+Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}; Tasks: startmenuicon\common
+Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}; Tasks: startmenuicon\common
+Name: {commonstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: startmenuicon\common
+Name: {group}\Readme.pdf; Filename: {app}\Readme.pdf; WorkingDir: {app}; Tasks: startmenuicon\common
+Name: {group}\Launchy Rescue Mode; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Parameters: rescue; Tasks: startmenuicon\common
+
+Name: {group}\{groupname}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: startmenuicon\user
+Name: {group}\{groupname}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}; Tasks: startmenuicon\user
+Name: {group}\{groupname}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}; Tasks: startmenuicon\user
+Name: {userstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: startmenuicon\user
+Name: {group}\{groupname}\Readme.pdf; Filename: {app}\Readme.pdf; WorkingDir: {app}; Tasks: startmenuicon\user
+Name: {group}\{groupname}\Launchy Rescue Mode; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Parameters: rescue; Tasks: startmenuicon\user
+
 Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon; WorkingDir: {app}
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: quicklaunchicon; WorkingDir: {app}
-Name: {commonstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
-Name: {group}\Readme.pdf; Filename: {app}\Readme.pdf; WorkingDir: {app}
-Name: {group}\Launchy Rescue Mode; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Parameters: rescue
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent runasoriginaluser
@@ -178,3 +191,7 @@ Type: files; Name: {app}\{#MyAppUrlName}
 [Messages]
 SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close and uninstall Launchy now (bring Launchy forward and type Alt+F4), then click OK to continue, or Cancel to exit.
 ;WelcomeLabel2=!!!!!!READ THIS!!!!!!  You should close and uninstall any previous versions of Launchy before running this installer!
+
+[CustomMessages]
+StartMenuIcons=Start menu icons:
+
