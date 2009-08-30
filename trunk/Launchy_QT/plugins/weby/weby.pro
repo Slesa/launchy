@@ -6,8 +6,8 @@
  INCLUDEPATH += c:/boost/
  UI_DIR		   = ../../plugins/weby/
  FORMS		   = dlg.ui
- HEADERS       = plugin_interface.h weby.h gui.h globals.h
- SOURCES       = plugin_interface.cpp weby.cpp gui.cpp
+ HEADERS       = plugin_interface.h weby.h gui.h globals.h	../../common/DropTableWidget.h
+ SOURCES       = plugin_interface.cpp weby.cpp gui.cpp ../../common/DropTableWidget.cpp
  TARGET		   = weby
  
  win32 {
