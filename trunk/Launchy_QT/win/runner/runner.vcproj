@@ -61,6 +61,30 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\common\DropTableWidget.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\common\DropTableWidget.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\common\FileBrowser.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\common\FileBrowser.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\common\FileBrowserDelegate.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\common\FileBrowserDelegate.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\plugins\runner\globals.h"
 			>
 		</File>
