@@ -37,12 +37,12 @@ public:
 
 public:
 	controlyPlugin() {
-
 		HASH_controly = qHash(QString("controly"));
 	}
 	~controlyPlugin() {}
 	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
 
+private:
 	void getID(uint*);
 	void getName(QString*);
 	void getCatalog(QList<CatItem>*);
@@ -51,6 +51,7 @@ public:
 	void getApps(QList<CatItem>* items);
 	void getResults(QList<InputData>* id, QList<CatItem>* results);
 	int launchItem(QList<InputData>* id, CatItem* item);
+	QString getIconPath() const;
 };
 
 

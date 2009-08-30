@@ -22,9 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QString>
 
 #include "controly.h"
-//#include <QFile>
-//#include <QTextStream>
-//#include <QTime>
 
 #ifdef Q_WS_WIN
 #include <shellapi.h>
@@ -33,27 +30,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 
 
-/*
-void log(QString str) {
-	return;
-	QFile file("debug.txt");
-	file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
-	QTextStream out(&file);
-	out << "[" << QTime::currentTime().toString() << "] ";
-	out << str;
-	file.close();
-}
-*/
-
 void controlyPlugin::init()
 {
 
 }
 
+
 void controlyPlugin::getID(uint* id)
 {
 	*id = HASH_controly;
 }
+
 
 void controlyPlugin::getName(QString* str)
 {
@@ -61,16 +48,19 @@ void controlyPlugin::getName(QString* str)
 }
 
 
-
 QString controlyPlugin::getIcon()
 {
-#ifdef Q_WS_WIN
-	return qApp->applicationDirPath() + "/plugins/icons/controly.ico";
-#endif
+	return qApp->applicationDirPath() + "/plugins/icons/controly.png";
 }
 
-#ifdef Q_WS_WIN
 
+QString controlyPlugin::getIconPath() const
+{
+	return qApp->applicationDirPath() + "/plugins/icons/";
+}
+
+
+#ifdef Q_WS_WIN
 
 void controlyPlugin::getApps(QList<CatItem>* items) {
 	int a = 0;
@@ -89,7 +79,7 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 
 		if (cache.count(file) > 0) {
 			if (cache[file] != "") 
-				items->push_back(CatItem(path, cache[file], 0, getIcon()));
+				items->push_back(CatItem(path, cache[file], 0));
 			continue;
 		}
 
@@ -111,7 +101,7 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 						TCHAR name[128] = L"";
 						LoadString(hLib, info.idName,
 									name,128);
-						items->push_back(CatItem(path, QString::fromUtf16(name), 0, getIcon()));
+						items->push_back(CatItem(path, QString::fromUtf16(name), 0));
 					}
 				}
 				CplCall(NULL,CPL_EXIT,0,0);
@@ -148,7 +138,7 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 						if (Newcpl.NewCplInfoA.dwSize == sizeof(NEWCPLINFOW))
 						{
 							// Case #1, CPL_INQUIRE has returned an Unicode String
-							items->push_back(CatItem(path, QString::fromUtf16((const ushort*)Newcpl.NewCplInfoW.szName), 0, getIcon()));
+							items->push_back(CatItem(path, QString::fromUtf16((const ushort*)Newcpl.NewCplInfoW.szName), 0));
 							cache[file] = QString::fromUtf16((const ushort*)Newcpl.NewCplInfoW.szName);
 						}
 						else 
@@ -166,7 +156,7 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 							}
 			//				wchar_t	tmpString[32];
 			//				MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, Newcpl.NewCplInfoA.szName, 32, tmpString, 32);
-							items->push_back(CatItem(path, QString(Newcpl.NewCplInfoA.szName), 0, getIcon()));
+							items->push_back(CatItem(path, QString(Newcpl.NewCplInfoA.szName), 0));
 							cache[file] = QString(Newcpl.NewCplInfoA.szName);
 						}
 					} // for
@@ -190,22 +180,25 @@ void controlyPlugin::getCatalog(QList<CatItem>* items) {
 	items->push_back(tmp); 
 }
 
+
 void controlyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 {
-	if (id->count() < 2) return;
+	if (id->count() != 2)
+		return;
 	if (id->first().getTopResult().id == HASH_controly) {
 		QSettings* set = *settings;
-		if (set == NULL) return;
+		if (set == NULL)
+			return;
 
-		CatItem tmp = CatItem("Launchy.options", "Options", HASH_controly, getIcon());
+		CatItem tmp = CatItem("Launchy.options", "Options", HASH_controly, getIconPath() + "controly.options.png");
 //		tmp.usage = set->value("controly/OptionsCount",0).toInt();
 		results->push_back(tmp);
 
-		tmp = CatItem("Launchy.reindex", "Rebuild Index", HASH_controly, getIcon());
+		tmp = CatItem("Launchy.reindex", "Rebuild Index", HASH_controly, getIconPath() + "controly.rebuild.png");
 //		tmp.usage = set->value("controly/RebuildCount",0).toInt();
 		results->push_back(tmp);
 
-		tmp = CatItem("Launchy.exit", "Exit", HASH_controly, getIcon());
+		tmp = CatItem("Launchy.exit", "Exit", HASH_controly, getIconPath() + "controly.exit.png");
 //		tmp.usage = set->value("controly/ExitCount",0).toInt();
 		results->push_back(tmp);
 	}	
@@ -214,10 +207,13 @@ void controlyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 int controlyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 {
 	item = item; // Compiler warning
-	if (id->count() < 2) return 1;
+	if (id->count() != 2)
+		return 1;
 	CatItem last = id->last().getTopResult();
 	QSettings* set = *settings;
-	if (set == NULL) return 1;
+	if (set == NULL)
+		return 1;
+
 	if (last.shortName == "Options") {
 //		set->setValue("controly/OptionsCount", set->value("controly/OptionsCount",0).toInt() + 1);
 		return MSG_CONTROL_OPTIONS;
@@ -233,6 +229,7 @@ int controlyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 	return 1;
 
 }
+
 int controlyPlugin::msg(int msgId, void* wParam, void* lParam)
 {
 	int handled = 0;
