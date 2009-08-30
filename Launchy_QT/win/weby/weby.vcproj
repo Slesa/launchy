@@ -61,6 +61,14 @@
 	</References>
 	<Files>
 		<File
+			RelativePath="..\..\common\DropTableWidget.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\common\DropTableWidget.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\plugins\weby\globals.h"
 			>
 		</File>

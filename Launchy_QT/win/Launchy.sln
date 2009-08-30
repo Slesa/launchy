@@ -12,13 +12,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_controly", "controly\c
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_runner", "runner\runner.vcproj", "{809B4524-7A79-43FE-B3CF-F67A16FD3803}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_winshell", "winshell\winshell.vcproj", "{7E13C272-561A-4022-B991-E24BF57686D2}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win", "..\platforms\win\win.vcproj", "{E8D4049F-8453-4609-9F5E-66D6E254A618}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_gcalc", "gcalc\gcalc.vcproj", "{2B674BCD-7C3C-4996-ACDB-43900A5652C4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_loader", "loader\loader.vcproj", "{C511DA04-FD9A-4A09-85EA-301DA3BD8924}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_Verby", "Verby\Verby.vcproj", "{7E13C272-561A-4022-B991-E24BF57686D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,10 +46,6 @@ Global
 		{809B4524-7A79-43FE-B3CF-F67A16FD3803}.Debug|Win32.Build.0 = Debug|Win32
 		{809B4524-7A79-43FE-B3CF-F67A16FD3803}.Release|Win32.ActiveCfg = Release|Win32
 		{809B4524-7A79-43FE-B3CF-F67A16FD3803}.Release|Win32.Build.0 = Release|Win32
-		{7E13C272-561A-4022-B991-E24BF57686D2}.Debug|Win32.ActiveCfg = Debug|Win32
-		{7E13C272-561A-4022-B991-E24BF57686D2}.Debug|Win32.Build.0 = Debug|Win32
-		{7E13C272-561A-4022-B991-E24BF57686D2}.Release|Win32.ActiveCfg = Release|Win32
-		{7E13C272-561A-4022-B991-E24BF57686D2}.Release|Win32.Build.0 = Release|Win32
 		{E8D4049F-8453-4609-9F5E-66D6E254A618}.Debug|Win32.ActiveCfg = Debug|Win32
 		{E8D4049F-8453-4609-9F5E-66D6E254A618}.Debug|Win32.Build.0 = Debug|Win32
 		{E8D4049F-8453-4609-9F5E-66D6E254A618}.Release|Win32.ActiveCfg = Release|Win32
@@ -62,6 +58,10 @@ Global
 		{C511DA04-FD9A-4A09-85EA-301DA3BD8924}.Debug|Win32.Build.0 = Debug|Win32
 		{C511DA04-FD9A-4A09-85EA-301DA3BD8924}.Release|Win32.ActiveCfg = Release|Win32
 		{C511DA04-FD9A-4A09-85EA-301DA3BD8924}.Release|Win32.Build.0 = Release|Win32
+		{7E13C272-561A-4022-B991-E24BF57686D2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7E13C272-561A-4022-B991-E24BF57686D2}.Debug|Win32.Build.0 = Debug|Win32
+		{7E13C272-561A-4022-B991-E24BF57686D2}.Release|Win32.ActiveCfg = Release|Win32
+		{7E13C272-561A-4022-B991-E24BF57686D2}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

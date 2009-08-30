@@ -100,6 +100,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\main.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\main.h"
 				>
 			</File>
@@ -117,6 +121,18 @@
 			>
 			<File
 				RelativePath="..\src\platform_base.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\platform_base_hotkey.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\platform_base_hotkey.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\platform_base_hottrigger.h"
 				>
 			</File>
 			<File
@@ -169,6 +185,50 @@
 			</File>
 			<File
 				RelativePath="..\src\catalog_types.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\icon_extractor.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\icon_extractor.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Common"
+			>
+			<File
+				RelativePath="..\common\DropListWidget.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\common\DropListWidget.h"
+				>
+			</File>
+			<File
+				RelativePath="..\common\DropTableWidget.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\common\DropTableWidget.h"
+				>
+			</File>
+			<File
+				RelativePath="..\common\FileBrowser.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\common\FileBrowser.h"
+				>
+			</File>
+			<File
+				RelativePath="..\common\FileBrowserDelegate.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\common\FileBrowserDelegate.h"
 				>
 			</File>
 		</Filter>
