@@ -21,7 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define PLATFORM_WIN
 
 
-
 #define VC_EXTRALEAN
 #define WINVER 0x05100
 #define _WIN32_WINNT 0x0510	
@@ -52,7 +51,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class PlatformWin : public QObject, public PlatformBase 
 {
 	Q_OBJECT
-		Q_INTERFACES(PlatformBase)
+	Q_INTERFACES(PlatformBase)
+
 private:
 	shared_ptr<QLaunchyAlphaBorder> alpha;
 	HANDLE m1, mg1;
@@ -159,15 +159,21 @@ public:
 	void DestroyAlphaBorder() { alpha.reset(); /*delete alpha; alpha = NULL;*/ return;}
 	void MoveAlphaBorder(QPoint pos) { if (alpha != NULL) alpha->RepositionWindow(pos); }
 	void HideAlphaBorder() { if (alpha != NULL) alpha->hide(); }
-	void ShowAlphaBorder() {
+	void ShowAlphaBorder()
+	{
 		if (alpha != NULL) 
 			alpha->show(); 
 	}
-	bool isAlreadyRunning() {
+	bool isAlreadyRunning()
+	{
 		return instance->IsAnotherInstanceRunning();
 	}
 	void showOtherInstance();
-	void SetAlphaOpacity(double trans) { if (alpha != NULL) alpha->SetAlphaOpacity(trans); }
+	void SetAlphaOpacity(double trans)
+	{
+		if (alpha != NULL)
+			alpha->SetAlphaOpacity(trans);
+	}
 
 };
 #endif

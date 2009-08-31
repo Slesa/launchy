@@ -22,8 +22,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "globals.h"
 #include "main.h"
 #include <QDebug>
-
 #include <QFile>
+
 
 IconExtractor::IconExtractor(shared_ptr<PlatformBase> platform)
 {
@@ -34,19 +34,20 @@ IconExtractor::IconExtractor(shared_ptr<PlatformBase> platform)
 void IconExtractor::processIcons(const QList<CatItem>& newItems)
 {
 	mutex.lock();
-	
+
 	if (isRunning())
 		items.clear();
 
 	items += newItems;
 	for (int i = 0; i < items.size(); ++i)
 		items[i].id = i;
-	
+
 	mutex.unlock();
-	
+
 	if (!isRunning())
 		start(IdlePriority);
 }
+
 
 void IconExtractor::stop()
 {
@@ -54,6 +55,7 @@ void IconExtractor::stop()
 	items.clear();
 	mutex.unlock();
 }
+
 
 void IconExtractor::run()
 {
@@ -81,7 +83,7 @@ QIcon IconExtractor::getIcon(const CatItem& item)
 	{
 		QFileInfo info(item.fullPath);
 		if (info.isDir())
-			return platform->icons->icon(QFileIconProvider::Folder);
+			return platform->icon(QFileIconProvider::Folder);
 
 		return platform->icon(QDir::toNativeSeparators(item.fullPath));
 	}

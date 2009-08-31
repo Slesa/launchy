@@ -92,11 +92,47 @@
 			Name="Gui"
 			>
 			<File
+				RelativePath="..\src\CharLineEdit.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\CharLineEdit.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\CharListWidget.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\CharListWidget.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Directory.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Fader.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Fader.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\icon_delegate.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\src\icon_delegate.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\LineEditMenu.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\LineEditMenu.h"
 				>
 			</File>
 			<File

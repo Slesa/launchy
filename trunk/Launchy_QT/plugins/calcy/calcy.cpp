@@ -24,7 +24,7 @@
 
 #include "calcy.h"
 
-#include <boost/spirit/core.hpp>
+#include <boost/spirit/include/classic_core.hpp>
 #include <boost/spirit/attribute.hpp>
 #include <boost/spirit/phoenix/functions.hpp>
 

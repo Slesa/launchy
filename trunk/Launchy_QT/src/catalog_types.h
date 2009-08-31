@@ -2,8 +2,10 @@
 
 #include "catalog.h"
 
+
 /** This class does not pertain to plugins */
-class Catalog {
+class Catalog
+{
 public:
 	Catalog() {}
 	virtual ~Catalog() {}
@@ -25,7 +27,8 @@ private:
 /** This class does not pertain to plugins */
 // The fast catalog searches quickly but 
 // addition of items is slow and uses a lot of memory
-class FastCatalog : public Catalog {
+class FastCatalog : public Catalog
+{
 private:
 	QVector<CatItem> catList;
 //	QList<CatItem> catList;
@@ -40,11 +43,13 @@ public:
 	int getUsage(const QString& path);
 };
 
+
 /** This class does not pertain to plugins */
 // The slow catalog searches slowly but
 // adding items is fast and uses less memory
 // than FastCatalog
-class SlowCatalog : public Catalog {
+class SlowCatalog : public Catalog
+{
 private:
 	QVector<CatItem> catList;
 //	QList<CatItem> catList;
@@ -57,4 +62,3 @@ public:
 	void incrementUsage(const CatItem& item);
 	int getUsage(const QString& path);
 };
-

@@ -19,6 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifndef PLATFORM_BASE_H
 #define PLATFORM_BASE_H
+
+
 #include <QtGui>
 #include <QWidget>
 #include <QPoint>
@@ -32,38 +34,42 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "catalog.h"
 #include <boost/shared_ptr.hpp>
 
+
 using namespace boost;
-class PlatformBase {
+
+
+class PlatformBase
+{
 public:
-	PlatformBase() {
-//		icons = NULL;
+	PlatformBase()
+	{
 	}
 
-	virtual ~PlatformBase() {
+	virtual ~PlatformBase()
+	{
+		if (icons)
+		{
+			delete icons;
+			icons = NULL;
+		}
 	}
 
-	shared_ptr<QFileIconProvider> icons;
-
-	virtual shared_ptr<QApplication> init(int & argc, char**  argv) { 
+	virtual shared_ptr<QApplication> init(int & argc, char** argv)
+	{ 
 		return shared_ptr<QApplication>(new QApplication(argc, argv));
 	}
 
 	virtual shared_ptr<QWidget> getAlphaWidget() = 0;
 
-	virtual QIcon icon(const QFileInfo & info) { return icons->icon(info); }
+	QIcon icon(const QFileInfo & info) { return icons->icon(info); }
+	QIcon icon(QFileIconProvider::IconType type) { return icons->icon(type); }
 	virtual QString GetSettingsDirectory() = 0;
 	virtual QList<Directory> GetInitialDirs() = 0;
 	virtual void AddToNotificationArea() = 0;
 	virtual void RemoveFromNotificationArea() = 0;
-	virtual bool Execute(QString path, QString args) { 
-	    path = path ; args = args; // warning remover
-	    return false; 
-	}
-
+	virtual bool Execute(QString path, QString args) { path = path ; args = args; return false; }
 	virtual bool isAlreadyRunning() = 0;
 	virtual void showOtherInstance() { }
-
-	QKeySequence oldKey;
 
 	// Set hotkey
 	virtual bool SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot) = 0;
@@ -84,39 +90,45 @@ public:
 
 	virtual QString expandEnvironmentVars(QString txt)
 	{	    
-	    QStringList list = QProcess::systemEnvironment();
-	    txt.replace('~', "$HOME$");
-	    QString delim("$");
-	    QString out = "";
-	    int curPos = txt.indexOf(delim, 0);
-	    if (curPos == -1) return txt;
-	    
-	    while(curPos != -1) {
-		int nextPos = txt.indexOf("$", curPos+1);
-		if (nextPos == -1) {
-		    out += txt.mid(curPos+1);
-		    break;
+		QStringList list = QProcess::systemEnvironment();
+		txt.replace('~', "$HOME$");
+		QString delim("$");
+		QString out = "";
+		int curPos = txt.indexOf(delim, 0);
+		if (curPos == -1) return txt;
+
+		while(curPos != -1)
+		{
+			int nextPos = txt.indexOf("$", curPos+1);
+			if (nextPos == -1) 
+			{
+				out += txt.mid(curPos+1);
+				break;
+			}
+			QString var = txt.mid(curPos+1, nextPos-curPos-1);
+			bool found = false;
+			foreach(QString s, list)
+			{
+				if (s.startsWith(var, Qt::CaseInsensitive))
+				{
+					found = true;
+					out += s.mid(var.length()+1);
+					break;
+				}			
+			}
+			if (!found)
+				out += "$" + var;
+			curPos = nextPos;
 		}
-		QString var = txt.mid(curPos+1, nextPos-curPos-1);
-		bool found = false;
-		foreach(QString s, list) {
-		    if (s.startsWith(var, Qt::CaseInsensitive)) {
-			found = true;
-			out += s.mid(var.length()+1);
-			break;
-		    }			
-		}
-		if (!found)
-		    out += "$" + var;
-		curPos = nextPos;
-	    }
-	    return out;
+		return out;
 	}
 
-
+protected:
+	QFileIconProvider* icons;
+	QKeySequence oldKey;
 };
 
- Q_DECLARE_INTERFACE(PlatformBase,
-                     "net.launchy.PlatformBase/1.0")
+Q_DECLARE_INTERFACE(PlatformBase, "net.launchy.PlatformBase/1.0")
+
 
 #endif
