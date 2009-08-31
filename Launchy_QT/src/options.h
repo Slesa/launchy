@@ -26,41 +26,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QStringList>
 #include <QList>
 #include <QDragEnterEvent>
+#include "Directory.h"
 
-struct Directory {
-	Directory() 
-		: indexDirs(false), indexExe(false), depth(100)
-	{
-	
-	}
-    Directory(QString n, QStringList t, bool d, bool e, int dep) 
-    :  indexDirs(d), indexExe(e), name(n), types(t), depth(dep) {}
-	bool indexDirs;
-	bool indexExe;
-	QString name;
-	QStringList types;
-	int depth;
-};
 
-class OptionsDlg : public QDialog, private Ui::OptionsDlg
+class OptionsDialog : public QDialog, private Ui::OptionsDlg
 {
   Q_OBJECT
 
-private:
-	FileBrowserDelegate directoryItemDelegate;
-	static QByteArray windowGeometry;
-	static int currentTab;
-	static int currentPlugin;
-	int curPlugin;
-
 public:
+	OptionsDialog(QWidget* parent = 0);
+	~OptionsDialog();
 
 	QStringList metaKeys;
 	QStringList actionKeys;
 	QList<int> iMetaKeys;
 	QList<int> iActionKeys;
-	OptionsDlg(QWidget* parent = 0);
-	~OptionsDlg();
 	QList<Directory> memDirs;
 	QList<QPair<QString, uint> > pluginNames;
 	QVBoxLayout* pluginLayout;
@@ -90,6 +70,14 @@ public slots:
 
 private:
 	void addDirectory(const QString& directory);
+
+private:
+	FileBrowserDelegate directoryItemDelegate;
+	static QByteArray windowGeometry;
+	static int currentTab;
+	static int currentPlugin;
+	int curPlugin;
+
 };
 
 

@@ -57,7 +57,7 @@ void VerbyPlugin::getName(QString* str)
 QString VerbyPlugin::getIcon()
 {
 #ifdef Q_WS_WIN
-	return getIconPath() + "Verby.ico";
+	return getIconPath() + "verby.png";
 #endif
 }
 

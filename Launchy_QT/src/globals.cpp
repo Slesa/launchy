@@ -23,15 +23,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QDateTime>
 #include <QTextStream>
 
+
 QWidget* gMainWidget;
 QSettings* gSettings;
 QString gSearchTxt;
-shared_ptr<CatBuilder> gBuilder;
-QString gNativeSep = QDir::toNativeSeparators("/");
+shared_ptr<CatalogBuilder> gBuilder;
+
 
 void log(QString str) 
 {
-
 	QFile file("log.txt");
 	file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
 	QTextStream os(&file);

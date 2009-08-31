@@ -12,7 +12,8 @@ void IconDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 						 const QModelIndex &index) const
 {
 	painter->save();
-	if (option.state & QStyle::State_Selected) {
+	if (option.state & QStyle::State_Selected)
+	{
 		painter->fillRect(option.rect, option.palette.highlight());
 		painter->setPen(option.palette.color(QPalette::HighlightedText));
 	}

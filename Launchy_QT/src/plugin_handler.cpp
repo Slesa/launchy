@@ -92,7 +92,7 @@ void PluginHandler::endDialog(uint id, bool accept) {
 }
 
 void PluginHandler::loadPlugins() {
-    MyWidget* main = qobject_cast<MyWidget*>(gMainWidget);
+    LaunchyWidget* main = qobject_cast<LaunchyWidget*>(gMainWidget);
 
     // Get the list of loadable plugins
     QHash<uint,bool> loadable;

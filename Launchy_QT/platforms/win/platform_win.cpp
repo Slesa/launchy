@@ -98,14 +98,15 @@ PlatformWin::~PlatformWin()
 shared_ptr<QApplication> PlatformWin::init(int& argc, char** argv)
 {
 	QApplication* app = new QApplication(argc, argv);
-	icons.reset((QFileIconProvider*)new WinIconProvider());
+	icons = (QFileIconProvider*)new WinIconProvider();
 	WindowMessageListener::Create();
 
 	return shared_ptr<QApplication>(app);
 }
 
 
-QHash<QString, QList<QString> > PlatformWin::GetDirectories() {
+QHash<QString, QList<QString> > PlatformWin::GetDirectories()
+{
     QHash<QString, QList<QString> > out;
     out["skins"] += qApp->applicationDirPath() + "/skins";
     out["plugins"] += qApp->applicationDirPath() + "/plugins";

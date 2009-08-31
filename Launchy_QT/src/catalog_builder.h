@@ -19,45 +19,50 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifndef CATALOG_BUILDER
 #define CATALOG_BUILDER
+
+
+#include <QThread>
+#include <boost/shared_ptr.hpp>
 #include "catalog_types.h"
 #include "plugin_handler.h"
-#include <QThread>
 
-#include <boost/shared_ptr.hpp>
 
 using namespace boost;
 
-class CatBuilder : public QThread
+
+class CatalogBuilder : public QThread
 {
 	Q_OBJECT
 
-private:
-
-	shared_ptr<Catalog> curcat;
-	PluginHandler* plugins;
-	bool buildFromStorage;
-	shared_ptr<Catalog> cat;
-	QHash<QString, bool> indexed;
-
 public:
-	bool loadCatalog(QString);
-	void storeCatalog(QString);
+	CatalogBuilder(bool fromArchive, PluginHandler * plugs);
+	CatalogBuilder(shared_ptr<Catalog> catalog, PluginHandler * plugs) : plugins(plugs), buildFromStorage(false), catalog(catalog) {}
+	bool loadCatalog(const QString& filename);
+	void storeCatalog(const QString& filename);
 	void buildCatalog();
-	void indexDirectory(QString dir, QStringList filters, bool fdirs, bool fbin, int depth);
-	void setPreviousCatalog(shared_ptr<Catalog> cata) {
-		curcat = cata;
+	void indexDirectory(const QString& dir, const QStringList& filters, bool fdirs, bool fbin, int depth);
+	void setPreviousCatalog(shared_ptr<Catalog> cata)
+	{
+		currentCatalog = cata;
 	}
 
-
-	shared_ptr<Catalog> getCatalog() { return cat; }
-	CatBuilder(bool fromArchive, PluginHandler * plugs);
-	CatBuilder(shared_ptr<Catalog> catalog, PluginHandler * plugs) : plugins(plugs), buildFromStorage(false), cat(catalog) {}
+	shared_ptr<Catalog> getCatalog()
+	{
+		return catalog;
+	}
 	void run();
 
 signals:
 	void catalogFinished();
 	void catalogIncrement(float);
 
+private:
+	shared_ptr<Catalog> currentCatalog;
+	shared_ptr<Catalog> catalog;
+	PluginHandler* plugins;
+	bool buildFromStorage;
+	QHash<QString, bool> indexed;
 };
+
 
 #endif

@@ -215,6 +215,4 @@ inline QDataStream &operator>>(QDataStream &in, CatItem &item) {
 }
 
 
-
-
 #endif

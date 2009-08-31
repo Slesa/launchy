@@ -12,34 +12,27 @@ PlatformBase * loadPlatform()
     QString file;
 
     #ifdef Q_WS_WIN
-    files += "platform_win.dll";
+	// Look for the platform file in the same directory as the executable
+    wchar_t module_name[MAX_PATH+1];
+    GetModuleFileNameW(0, module_name, MAX_PATH);
+    module_name[MAX_PATH] = 0;
+    QFileInfo filePath = QString::fromUtf16((ushort*)module_name);
+    files += filePath.path() + "/platform_win.dll";
     #endif
     #ifdef Q_WS_X11
     files += "libplatform_unix.so";
     files += QString(PLATFORMS_PATH) + "/libplatform_unix.so";
     #endif
 
-    /*
-    int desktop = getDesktop();
-    if (desktop == DESKTOP_WINDOWS)
-	files += "/platform_win.dll";
-    else if (desktop == DESKTOP_GNOME) {
-	files += "libplatform_unix.so";
-	//	files += "libplatform_gnome.so";
-	//files += QString(PLATFORMS_PATH) + QString("/libplatform_gnome.so");
-    }
-    else if (desktop == DESKTOP_KDE) {
-	files += "libplatform_kde.so";
-	files += QString(PLATFORMS_PATH) + "/libplatform_kde.so";
-    }
-    */
-
-    QObject * plugin = NULL;
-    foreach(QString file, files) {
-	QPluginLoader loader(file);
-	plugin = loader.instance();
-
-	if (plugin) break;
+	QObject * plugin = NULL;
+	foreach(QString file, files)
+	{
+	    qDebug() << file;
+		QPluginLoader loader(file);
+		plugin = loader.instance();
+		if (plugin)
+			break;
+	    qDebug() << loader.errorString();
     }
     
     if (!plugin)

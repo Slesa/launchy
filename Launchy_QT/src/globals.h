@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+
 #include <QWidget>
 #include <QSettings>
 #include "catalog_builder.h"
@@ -32,16 +33,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern QWidget* gMainWidget;
 extern QSettings* gSettings;
-extern shared_ptr<CatBuilder> gBuilder;
-extern QString gNativeSep;
-
+extern shared_ptr<CatalogBuilder> gBuilder;
 extern QString gSearchTxt;
 
 void log(QString str);
-
-
-
-
 
 
 #endif

@@ -88,7 +88,6 @@ BOOL GetShellDir(int iType, QString& szPath)
 
 	HRESULT (__stdcall *pfnSHGetFolderPath)( HWND, int, HANDLE, DWORD, LPWSTR );
 
-
 	pfnSHGetFolderPath = reinterpret_cast<HRESULT (__stdcall *)( HWND, int, HANDLE, DWORD, LPWSTR )>( GetProcAddress( hInst,"SHGetFolderPathW" ) );
 
 	if ( NULL == pfnSHGetFolderPath )
@@ -104,8 +103,9 @@ BOOL GetShellDir(int iType, QString& szPath)
 	return TRUE;
 }
 
-QIcon WinIconProvider::icon(const QFileInfo& info) const {
 
+QIcon WinIconProvider::icon(const QFileInfo& info) const
+{
 	QIcon retIcon;
 	QString fileExtension = info.suffix().toLower();
 
@@ -153,7 +153,8 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const {
 	return retIcon;
 }
 
-HIMAGELIST WinIconProvider::GetSystemImageListHandle( bool bSmallIcon ) 
+
+HIMAGELIST WinIconProvider::GetSystemImageListHandle(bool bSmallIcon) 
 {
 	HIMAGELIST  hSystemImageList; 
 	SHFILEINFO    ssfi; 
@@ -183,6 +184,7 @@ HIMAGELIST WinIconProvider::GetSystemImageListHandle( bool bSmallIcon )
 	}
 	return hSystemImageList;
 }
+
 
 int WinIconProvider::GetFileIconIndex( QString strFileName , BOOL bSmallIcon ) const
 {
@@ -214,6 +216,7 @@ int WinIconProvider::GetFileIconIndex( QString strFileName , BOOL bSmallIcon ) c
 	return sfi.iIcon;
 }
 
+
 int WinIconProvider::GetDirIconIndex(BOOL bSmallIcon )
 {
 	SHFILEINFO    sfi;
@@ -239,6 +242,8 @@ int WinIconProvider::GetDirIconIndex(BOOL bSmallIcon )
 	return sfi.iIcon;
 
 }
+
+
 HICON WinIconProvider::GetFileIconHandle(QString strFileName, BOOL bSmallIcon)
 {
 
@@ -264,6 +269,7 @@ HICON WinIconProvider::GetFileIconHandle(QString strFileName, BOOL bSmallIcon)
 	return sfi.hIcon;
 }
 
+
 HICON WinIconProvider::GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIcon) const
 {
 	int index = GetFileIconIndex(strFileName, bSmallIcon);
@@ -275,6 +281,7 @@ HICON WinIconProvider::GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIc
 		);
 	return nH;
 }
+
 
 HICON WinIconProvider::GetFolderIconHandle(BOOL bSmallIcon )
 {
@@ -300,6 +307,7 @@ HICON WinIconProvider::GetFolderIconHandle(BOOL bSmallIcon )
 	return sfi.hIcon;
 }
 
+
 QString WinIconProvider::GetFileType(QString strFileName)
 {
 	SHFILEINFO    sfi;
@@ -314,6 +322,8 @@ QString WinIconProvider::GetFileType(QString strFileName)
 	QString ret = QString::fromUtf16((const ushort*) sfi.szTypeName);
 	return ret;
 }
+
+
 QPixmap WinIconProvider::convertHIconToPixmap( const HICON icon) const
 {
     bool foundAlpha = false;
@@ -385,8 +395,6 @@ QPixmap WinIconProvider::convertHIconToPixmap( const HICON icon) const
 }
 
 
-
-
 void QLaunchyAlphaBorder::SetImage(QString name)
 {
 	SetWindowLong(winId(), GWL_EXSTYLE,
@@ -413,16 +421,9 @@ void QLaunchyAlphaBorder::SetImage(QString name)
 }
 void QLaunchyAlphaBorder::SetAlphaOpacity(double trans)
 { 
-
-//	HDC hDC = 
-//	if (alpha != NULL) alpha->setWindowOpacity(trans); 
 	BLENDFUNCTION bf = { AC_SRC_OVER, 0, (int) (trans * 255.0), AC_SRC_ALPHA };
-	UpdateLayeredWindow(winId(), NULL, NULL, NULL, NULL,
-		NULL, 0, &bf, ULW_ALPHA);
+	UpdateLayeredWindow(winId(), NULL, NULL, NULL, NULL, NULL, 0, &bf, ULW_ALPHA);
 }
-
-
-
 
 
 /*

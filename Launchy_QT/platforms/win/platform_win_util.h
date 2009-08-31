@@ -13,12 +13,10 @@
 #endif
 
 
-
 #include <QFileIconProvider>
 #include <windows.h>
 #include <shlobj.h>
-//#include <stdlib.h>
-//#include <stdio.h>
+
 #include <TCHAR.h>
 #include <QT>
 #include <QIcon>
@@ -29,8 +27,8 @@
 #include <QWidget>
 
 
-
 #pragma warning (disable : 4089)
+
 void UpdateEnvironment();
 BOOL GetShellDir(int iType, QString& szPath);
 
@@ -66,6 +64,7 @@ public:
   }
 };
 
+
 class WinIconProvider : QFileIconProvider
 {
 public:
@@ -76,38 +75,26 @@ public:
 
 	}
 
-
 	virtual QIcon icon(const QFileInfo& info) const;
 
 private:
-
 	HIMAGELIST iconlist;	
-
 
 private:
 	HIMAGELIST GetSystemImageListHandle( bool bSmallIcon );
-
-
 	int GetFileIconIndex( QString strFileName , BOOL bSmallIcon ) const;
-
 	int GetDirIconIndex(BOOL bSmallIcon );
 	HICON GetFileIconHandle(QString strFileName, BOOL bSmallIcon);
-
 	HICON GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIcon) const;
-
 	HICON GetFolderIconHandle(BOOL bSmallIcon );
-
 	QString GetFileType(QString strFileName);
-
 	QPixmap convertHIconToPixmap( const HICON icon) const;
-
 };
 
 
 class QLaunchyAlphaBorder : public QWidget {
+
 	Q_OBJECT  
-private:
-	QPoint moveStartPoint;
 public:
 	QLaunchyAlphaBorder(QWidget *parent)
 	: QWidget(parent,Qt::Tool | Qt::FramelessWindowHint) {
@@ -133,6 +120,10 @@ public:
 	void menuEvent(QContextMenuEvent*);
 	void mousePress(QMouseEvent*);
 	void mouseMove(QMouseEvent*);
+
+private:
+	QPoint moveStartPoint;
 };
+
 
 #endif

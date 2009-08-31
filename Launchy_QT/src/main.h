@@ -21,7 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MAIN_H
 
 
-
 #include <QWidget>
 #include <QLabel>
 #include <QLineEdit>
@@ -39,156 +38,45 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "icon_extractor.h"
 #include "globals.h"
 #include <boost/shared_ptr.hpp>
+#include "CharLineEdit.h"
+#include "LineEditMenu.h"
+#include "CharListWidget.h"
+#include "Fader.h"
+
 
 using namespace boost;
 
 
-
-
-class QLineEditMenu : public QLineEdit
-{
-	Q_OBJECT
-public:
-	QLineEditMenu(QWidget* parent = 0) :
-    QLineEdit(parent) {setAttribute(Qt::WA_InputMethodEnabled);}
-	void contextMenuEvent(QContextMenuEvent *evt) {
-		emit menuEvent(evt);
-	}
-signals:
-	void menuEvent(QContextMenuEvent*);
-};
-
-class QCharLineEdit : public QLineEdit
-{
-	Q_OBJECT
-public:
-	QCharLineEdit(QWidget* parent = 0) : 
-		QLineEdit(parent) 
-		{
-		    setAttribute(Qt::WA_InputMethodEnabled);
-		}
-		void keyPressEvent(QKeyEvent* key);
-		// This is how you pick up the tab key
-		bool focusNextPrevChild(bool next) {
-			next = next; // Remove compiler warning
-			QKeyEvent key(QEvent::KeyPress, Qt::Key_Tab, NULL);
-			emit keyPressed(&key);
-			return true;
-		}
-		void focusOutEvent ( QFocusEvent * evt) {
-			emit focusOut(evt);
-		}
-
-		void inputMethodEvent(QInputMethodEvent *e) {
-			QLineEdit::inputMethodEvent(e);
-			if (e->commitString() != "") {
-				emit inputMethod(e);
-			}
-		}
-		/*
-		void mouseReleaseEvent(QMouseEvent* e)
-			{
-				if (event->button() & RightButton) {
-					QContextMenuEvent
-					emit contextMenuEvent
-				}
-			}
-			*/
-	QChar sepChar();
-	QString sepText();
-
-signals:
-	void keyPressed(QKeyEvent*);
-	void focusOut(QFocusEvent* evt);
-	void inputMethod(QInputMethodEvent *e);
-};
-
-class QCharListWidget : public QListWidget
-{
-	Q_OBJECT
-public:
-    QCharListWidget(QWidget* parent = 0) : 
-    	QListWidget(NULL)
-		{
-		    parent = parent; // warning
-		    #ifdef Q_WS_X11
-		    setWindowFlags( windowFlags() |   Qt::Tool | Qt::SplashScreen);
-		    #endif
-			setAttribute(Qt::WA_AlwaysShowToolTips);
-			
-			setAlternatingRowColors(true);
-		}
-		void keyPressEvent(QKeyEvent* key) {
-			emit keyPressed(key);
-			QListWidget::keyPressEvent(key);
-			key->ignore();
-		}
-		void mouseDoubleClickEvent( QMouseEvent * event  ) {
-			event = event; // Remove compiler warning
-			QKeyEvent key(QEvent::KeyPress, Qt::Key_Enter, NULL);
-			emit keyPressed(&key);
-		}
-		void focusOutEvent ( QFocusEvent * evt) {
-			emit focusOut(evt);
-		}
-
-signals:
-	void keyPressed(QKeyEvent*);
-	void focusOut(QFocusEvent* evt);
-};
-
-class Fader : public QThread
-{
-	Q_OBJECT
-private:
-	bool keepRunning;
-	bool fadeType;
-public:
-	Fader(QObject* parent = NULL)
-		: QThread(parent), keepRunning(true) {}
-	~Fader() {}
-	void stop() { keepRunning = false; }
-	void run();
-	void fadeIn();
-	void fadeOut();
-	void setFadeType(bool type) { fadeType = type; }
-signals:
-	void fadeLevel(double);
-	void finishedFade(double);
-};
-
-class MyWidget : public QWidget
+class LaunchyWidget : public QWidget
 {
 	Q_OBJECT  // Enable signals and slots
+
 public:
-
-
-	MyWidget();
-    MyWidget(QWidget *parent, PlatformBase*, bool show);
-	~MyWidget();
+	LaunchyWidget();
+    LaunchyWidget(QWidget *parent, PlatformBase*, bool show);
+	~LaunchyWidget();
 
 	QHash<QString, QList<QString> > dirs;
 	Fader* fader;
 	QPoint moveStartPoint;
 	shared_ptr<PlatformBase> platform;	
 	QLabel* label;
-	QLineEditMenu *output;
-	QCharLineEdit *input;
+	LineEditMenu *output;
+	CharLineEdit *input;
 	QTimer* updateTimer;
 	QTimer* dropTimer;
-	QCharListWidget *alternatives;
-	QPushButton *opsButton;
+	CharListWidget *alternatives;
+	QPushButton *optionsButton;
 	QPushButton *closeButton;
 	QRect altRect;
-	QLabel * licon;
-
-
+	QLabel* labelIcon;
 	QScrollBar* altScroll;
 	shared_ptr<Catalog> catalog;
-	shared_ptr<CatBuilder> catBuilder;
+	shared_ptr<CatalogBuilder> catalogBuilder;
 	IconExtractor iconExtractor;
 	QList<CatItem> searchResults;
 	QList<InputData> inputData;
+	QStringList history;
 	PluginHandler plugins;
 	bool visible;
 	bool alwaysShowLaunchy;
@@ -200,7 +88,6 @@ public:
 
 	void connectAlpha();
 
-	void MoveFromAlpha(QPoint pos);
 	void applySkin(QString);
 	void contextMenuEvent(QContextMenuEvent *event);
 	void closeEvent(QCloseEvent *event);
@@ -216,13 +103,10 @@ public:
 	void searchFiles(const QString & input, QList<CatItem>& searchResults);
 	void parseInput(QString text);
 	void resetLaunchy();
-	void applySkin2(QString directory);
 	void updateDisplay();
 	void searchOnInput();
 	void fadeIn();
 	void fadeOut();
-//	QPair<double,double> relativePos();
-//	QPoint absolutePos(QPair<double,double> relPos);
 	QPoint loadPosition();
 	void savePosition() { gSettings->setValue("Display/pos", pos()); }
 	void doTab();
@@ -265,5 +149,6 @@ public slots:
 	void buildCatalog();
 	void iconExtracted(int itemIndex, QIcon icon);
 };
+
 
 #endif
