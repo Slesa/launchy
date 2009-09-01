@@ -20,8 +20,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef CALCY_H
 #define CALCY_H
 
+
 #include "plugin_interface.h"
 #include <boost/shared_ptr.hpp>
+
 using namespace boost;
 
 
@@ -29,19 +31,14 @@ class calcyPlugin : public QObject, public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
-	shared_ptr<QRegExp> reg;
 
 public:
-	uint HASH_CALCY;
-
-public:
-	QString libPath;
-	calcyPlugin() {
-
+	calcyPlugin() :
+		reg(".*[\\-\\+\\*\\/]+[\\d\\s\\-\\+\\*\\/\\(\\)\\.]+")
+	{
 		HASH_CALCY = qHash(QString("calcy"));
-		reg.reset(new QRegExp(".*[\\-\\+\\*\\/]+[\\d\\s\\-\\+\\*\\/\\(\\)\\.]+"));
 	}
-	~calcyPlugin() {/*delete reg;*/}
+	~calcyPlugin() {}
 	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
 	void setPath(QString * path);
 	void getLabels(QList<InputData>*);
@@ -51,9 +48,11 @@ public:
 	void init();
 	QString getIcon();
 
+private:
+	uint HASH_CALCY;
+	QString libPath;
+	QRegExp reg;
 };
-
-
 
 
 #endif
