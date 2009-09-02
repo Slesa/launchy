@@ -730,46 +730,34 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="catTypeEdit">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="catTypesPlus">
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>13123213</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>+</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="catTypesMinus">
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>13123123</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>-</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <item>
+               <widget class="QPushButton" name="catTypesPlus">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>13123213</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>+</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="catTypesMinus">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>13123123</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>-</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <widget class="QCheckBox" name="catCheckBinaries">
@@ -1211,9 +1199,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>catDirPlus</tabstop>
   <tabstop>catDirMinus</tabstop>
   <tabstop>catTypes</tabstop>
-  <tabstop>catTypeEdit</tabstop>
-  <tabstop>catTypesPlus</tabstop>
-  <tabstop>catTypesMinus</tabstop>
   <tabstop>catCheckBinaries</tabstop>
   <tabstop>catCheckDirs</tabstop>
   <tabstop>catDepth</tabstop>

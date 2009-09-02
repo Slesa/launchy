@@ -50,9 +50,13 @@ public slots:
 	void accept();
 	void reject();
 	void skinChanged(const QString);
-	void dirChanged(int row);
+	void dirRowChanged(int row);
+	void catDirItemChanged(QListWidgetItem* item);
+	void catDirDragEnter(QDragEnterEvent *event);
+	void catDirDrop(QDropEvent *event);
 	void catDirPlusClicked(bool c);
 	void catDirMinusClicked(bool c);
+	void catTypesItemChanged(QListWidgetItem* item);
 	void catTypesPlusClicked(bool c);
 	void catTypesMinusClicked(bool c);
 	void catTypesDirChanged(int);
@@ -64,20 +68,17 @@ public slots:
 	void pluginChanged(int row);
 	void pluginItemChanged(QListWidgetItem* state);
 	void tabChanged(int tab);
-	void catDirTextChanged(QListWidgetItem * item );
-	void catDirDragEnter(QDragEnterEvent *event);
-	void catDirDrop(QDropEvent *event);
 
 private:
 	void addDirectory(const QString& directory);
 
 private:
 	FileBrowserDelegate directoryItemDelegate;
+	int curPlugin;
+
 	static QByteArray windowGeometry;
 	static int currentTab;
 	static int currentPlugin;
-	int curPlugin;
-
 };
 
 

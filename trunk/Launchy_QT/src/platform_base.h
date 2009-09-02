@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QObject>
 #include <QProcess>
 #include <QDebug>
-#include "options.h"
+#include "Directory.h"
 #include "catalog.h"
 #include <boost/shared_ptr.hpp>
 
