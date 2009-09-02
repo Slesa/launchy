@@ -33,12 +33,20 @@ struct Directory
 	{
 	}
 
-	Directory(QString n, QStringList t, bool d, bool e, int dep) :
+	Directory(const QString& n) :
+		indexDirs(false),
+		indexExe(false),
+		depth(100),
+		name(n)
+	{
+	}
+
+	Directory(const QString& n, const QStringList& t, bool d, bool e, int dep) :
 		indexDirs(d),
 		indexExe(e),
+		depth(dep),
 		name(n),
-		types(t),
-		depth(dep)
+		types(t)
 	{
 	}
 

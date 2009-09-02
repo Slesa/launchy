@@ -155,18 +155,19 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	// Load the directories and types
 	catDirectories->setItemDelegate(&directoryItemDelegate);
 
-	connect(catDirectories, SIGNAL(currentRowChanged(int)), this, SLOT(dirChanged(int)));
+	connect(catDirectories, SIGNAL(currentRowChanged(int)), this, SLOT(dirRowChanged(int)));
 	connect(catDirectories, SIGNAL(dragEnter(QDragEnterEvent*)), this, SLOT(catDirDragEnter(QDragEnterEvent*)));
 	connect(catDirectories, SIGNAL(drop(QDropEvent*)), this, SLOT(catDirDrop(QDropEvent*)));
+	connect(catDirectories, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(catDirItemChanged(QListWidgetItem*)));
 	connect(catDirPlus, SIGNAL(clicked(bool)), this, SLOT(catDirPlusClicked(bool)));
 	connect(catDirMinus, SIGNAL(clicked(bool)), this, SLOT(catDirMinusClicked(bool)));
+	connect(catTypes, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(catTypesItemChanged(QListWidgetItem*)));
 	connect(catTypesPlus, SIGNAL(clicked(bool)), this, SLOT(catTypesPlusClicked(bool)));
 	connect(catTypesMinus, SIGNAL(clicked(bool)), this, SLOT(catTypesMinusClicked(bool)));
 	connect(catCheckDirs, SIGNAL(stateChanged(int)), this, SLOT(catTypesDirChanged(int)));
 	connect(catCheckBinaries, SIGNAL(stateChanged(int)), this, SLOT(catTypesExeChanged(int)));
 	connect(catDepth, SIGNAL(valueChanged(int)),this, SLOT(catDepthChanged(int)));
 	connect(catRescan, SIGNAL(clicked(bool)), this, SLOT(catRescanClicked(bool)));
-	connect(catDirectories, SIGNAL(itemChanged(QListWidgetItem *)), this, SLOT(catDirTextChanged(QListWidgetItem* )));
 	int size = gSettings->beginReadArray("directories");
 	for (int i = 0; i < size; ++i)
 	{
@@ -491,13 +492,14 @@ void OptionsDialog::catTypesExeChanged(int state)
 }
 
 
-void OptionsDialog::catDirTextChanged( QListWidgetItem * item )
+void OptionsDialog::catDirItemChanged(QListWidgetItem* item)
 {
 	int row = catDirectories->currentRow();
 	if (row == -1)
 		return;
 	if (item != catDirectories->item(row))
-		return;		
+		return;	
+
 	memDirs[row].name = item->text();
 }
 
@@ -527,7 +529,7 @@ void OptionsDialog::catDirDrop(QDropEvent *event)
 }
 
 
-void OptionsDialog::dirChanged(int row)
+void OptionsDialog::dirRowChanged(int row)
 {
 	if (row == -1)
 		return;
@@ -535,17 +537,32 @@ void OptionsDialog::dirChanged(int row)
 	catTypes->clear();
 	foreach(QString str, memDirs[row].types)
 	{
-		catTypes->addItem(str);
-	}	
+		QListWidgetItem* item = new QListWidgetItem(str, catTypes);
+		item->setFlags(item->flags() | Qt::ItemIsEditable);
+	}
 	catCheckDirs->setChecked(memDirs[row].indexDirs);
 	catCheckBinaries->setChecked(memDirs[row].indexExe);
 	catDepth->setValue(memDirs[row].depth);
 }
 
 
+void OptionsDialog::catDirMinusClicked(bool c)
+{
+	c = c; // Compiler warning
+	int dirRow = catDirectories->currentRow();
+
+	delete catDirectories->takeItem(dirRow);
+	catTypes->clear();
+
+	memDirs.removeAt(dirRow);
+
+	if (dirRow >= catDirectories->count() && catDirectories->count() > 0)
+		catDirectories->setCurrentRow(catDirectories->count() - 1);
+}
+
+
 void OptionsDialog::catDirPlusClicked(bool c)
 {
-
 	c = c; // Compiler warning
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Select a directory"),
 		lastDir,
@@ -560,46 +577,61 @@ void OptionsDialog::catDirPlusClicked(bool c)
 
 void OptionsDialog::addDirectory(const QString& directory)
 {
-
 	QString nativeDir = QDir::toNativeSeparators(directory);
-	Directory tmp;
-	tmp.name = nativeDir;
-	memDirs.append(tmp);
+	Directory dir(nativeDir);
+	memDirs.append(dir);
 
 	catTypes->clear();
-	catDirectories->addItem(nativeDir);
-	QListWidgetItem* it = catDirectories->item(catDirectories->count()-1);
-	it->setFlags(it->flags() | Qt::ItemIsEditable);
-	catDirectories->setCurrentRow(catDirectories->count()-1);
+	QListWidgetItem* item = new QListWidgetItem(nativeDir, catDirectories);
+	item->setFlags(item->flags() | Qt::ItemIsEditable);
+	catDirectories->setCurrentItem(item);
+}
+
+
+void OptionsDialog::catTypesItemChanged(QListWidgetItem* item)
+{
+	int row = catDirectories->currentRow();
+	if (row == -1)
+		return;
+	int typesRow = catTypes->currentRow();
+	if (typesRow == -1)
+		return;
+
+	memDirs[row].types[typesRow] = item->text();
 }
 
 
 void OptionsDialog::catTypesPlusClicked(bool c)
 {
 	c = c; // Compiler warning
-	if (catDirectories->currentRow() == -1)
+	int row = catDirectories->currentRow();
+	if (row == -1)
 		return;
-	QString txt = catTypeEdit->text();
-	if (txt == "")
-		return;
-	if (txt.startsWith("."))
-		txt = "*" + txt;
-	catTypes->addItem(txt);
-	memDirs[catDirectories->currentRow()].types << txt;
-	catTypeEdit->clear();
+
+	memDirs[row].types << "";
+	QListWidgetItem* item = new QListWidgetItem(catTypes);
+	item->setFlags(item->flags() | Qt::ItemIsEditable);
+	catTypes->setCurrentItem(item);
+	catTypes->editItem(item);
 }
 
 
 void OptionsDialog::catTypesMinusClicked(bool c)
 {
 	c = c; // Compiler warning
-	int row = catTypes->currentRow();
 	int dirRow = catDirectories->currentRow();
-	if (row == -1 || dirRow == -1)
+	if (dirRow == -1)
 		return;
 
-	memDirs[dirRow].types.removeAt(row);
-	catTypes->takeItem(row);
+	int typesRow = catTypes->currentRow();
+	if (typesRow == -1)
+		return;
+
+	memDirs[dirRow].types.removeAt(typesRow);
+	delete catTypes->takeItem(typesRow);
+
+	if (typesRow >= catTypes->count() && catTypes->count() > 0)
+		catTypes->setCurrentRow(catTypes->count() - 1);
 }
 
 
@@ -608,22 +640,6 @@ void OptionsDialog::catDepthChanged(int d)
 	int row = catDirectories->currentRow();
 	if (row != -1)
 		memDirs[row].depth = d;
-}
-
-
-void OptionsDialog::catDirMinusClicked(bool c)
-{
-	c = c; // Compiler warning
-	int row = catDirectories->currentRow();
-
-	catDirectories->takeItem(row);
-	catTypes->clear();
-
-	memDirs.removeAt(row);
-
-
-	if (catDirectories->count() > 0)
-		catDirectories->setCurrentRow(catDirectories->count() - 1);
 }
 
 
