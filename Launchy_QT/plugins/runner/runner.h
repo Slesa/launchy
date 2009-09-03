@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifndef runner_H
 #define runner_H
+
 #include "gui.h"
 #include "globals.h"
 
@@ -27,45 +28,44 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 using namespace boost;
 
-class runnerPlugin : public QObject, public PluginInterface
+
+class RunnerPlugin : public QObject, public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
 
-
 public:
-	uint HASH_WEBSITE;
-	uint HASH_runner;
-	QList<runnerCmd> cmds;
-
-private:
-	shared_ptr<Gui> gui;
-public:
-	QString libPath;
-	runnerPlugin() {
+	RunnerPlugin()
+	{
 		gui.reset();
-//		gui = NULL;
 		HASH_runner = qHash(QString("runner"));
 	}
-	~runnerPlugin() {}
+	~RunnerPlugin() {}
+	
 	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
 
+private:
 	void setPath(QString * path);
 	void getID(uint*);
 	void getName(QString*);
 	void getCatalog(QList<CatItem>* items);
-	void getResults(QList<InputData>* id, QList<CatItem>* results);
-	void launchItem(QList<InputData>*, CatItem*);
+	void getResults(QList<InputData>* inputData, QList<CatItem>* results);
+	void launchItem(QList<InputData>* inputData, CatItem* item);
 	void doDialog(QWidget* parent, QWidget**);
 	void endDialog(bool accept);
 	void init();
 	QString getIcon();
 	QString getIcon(QString file);
 
+	uint HASH_WEBSITE;
+	uint HASH_runner;
+	QList<runnerCmd> cmds;
+	QString libPath;
+	shared_ptr<Gui> gui;
 };
 
-extern runnerPlugin* grunnerInstance;
 
+extern RunnerPlugin* gRunnerInstance;
 
 
 #endif

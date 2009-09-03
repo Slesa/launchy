@@ -62,9 +62,9 @@ QString VerbyPlugin::getIcon()
 }
 
 
-void VerbyPlugin::getLabels(QList<InputData>* id)
+void VerbyPlugin::getLabels(QList<InputData>* inputData)
 {
-	QString & text = id->last().getText();
+	QString & text = inputData->last().getText();
 
 	// Is it a file?
 	if (text.contains("\\") || text.contains("/"))
@@ -73,20 +73,20 @@ void VerbyPlugin::getLabels(QList<InputData>* id)
 	QDir qd;
 	QFile qf;
 
-	QString path = id->last().getTopResult().fullPath;
+	QString path = inputData->last().getTopResult().fullPath;
 	QFileInfo info(path);
 
 	if (info.isSymLink())
 	{
-		id->last().setLabel(HASH_LINK);
+		inputData->last().setLabel(HASH_LINK);
 	}
 	else if (qd.exists(path))
 	{
-		id->last().setLabel(HASH_DIR);
+		inputData->last().setLabel(HASH_DIR);
 	}
 	else if (qf.exists(path)) 
 	{
-		id->last().setLabel(HASH_FILE);
+		inputData->last().setLabel(HASH_FILE);
 	}
 }
 
