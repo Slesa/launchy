@@ -1,6 +1,8 @@
 #include "icon_delegate.h"
 #include <QPainter>
 #include <QAbstractListModel>
+#include "globals.h"
+
 
 IconDelegate::IconDelegate(QObject *parent)
 : QAbstractItemDelegate(parent)
@@ -31,9 +33,8 @@ void IconDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 	longRect.setLeft(longRect.left() + 50);
 	longRect.setTop(longRect.top() + fontHeight);
 
-
-
-	painter->drawText(shortRect,Qt::AlignTop, index.data(ROLE_SHORT).toString());
+	QString text = Catalog::decorateText(index.data(ROLE_SHORT).toString(), gSearchTxt);
+	painter->drawText(shortRect, Qt::AlignTop | Qt::TextShowMnemonic, text);
 
 	if (option.state & QStyle::State_Selected)
 		painter->setPen(hicolor);

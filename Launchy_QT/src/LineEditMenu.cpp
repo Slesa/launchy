@@ -2,7 +2,7 @@
 
 
 LineEditMenu::LineEditMenu(QWidget* parent) :
-	QLineEdit(parent)
+	QLabel(parent)
 {
 	setAttribute(Qt::WA_InputMethodEnabled);
 }

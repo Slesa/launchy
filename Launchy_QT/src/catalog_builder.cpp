@@ -64,10 +64,6 @@ void CatalogBuilder::run()
 
 void CatalogBuilder::buildCatalog()
 {
-	LaunchyWidget* main = qobject_cast<LaunchyWidget*>(gMainWidget);
-	if (main == NULL)
-		return;
-
 	QList<Directory> memDirs;
 	int size = gSettings->beginReadArray("directories");
 	for (int i = 0; i < size; ++i)
@@ -85,13 +81,13 @@ void CatalogBuilder::buildCatalog()
 
 	if (memDirs.count() == 0)
 	{
-		memDirs = main->platform->GetInitialDirs();
+		memDirs = gMainWidget->platform->GetInitialDirs();
 	}
 
 	for (int i = 0; i < memDirs.count(); ++i)
 	{
 		emit(catalogIncrement(100.0 * (float)(i+1) / (float) memDirs.count()));
-		QString cur = main->platform->expandEnvironmentVars(memDirs[i].name);
+		QString cur = gMainWidget->platform->expandEnvironmentVars(memDirs[i].name);
 		indexDirectory(cur, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth);
 	}
 
@@ -112,10 +108,6 @@ void CatalogBuilder::buildCatalog()
 
 void CatalogBuilder::indexDirectory(const QString& directory, const QStringList& filters, bool fdirs, bool fbin, int depth)
 {
-	LaunchyWidget* main = qobject_cast<LaunchyWidget*>(gMainWidget);
-	if (!main)
-		return;
-
 	QString dir = QDir::toNativeSeparators(directory);
 	QDir qd(dir);
 	dir = qd.absolutePath();
@@ -200,7 +192,7 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 			CatItem item(dir + "/" + files[i]);
 			if (currentCatalog != NULL)
 				item.usage = currentCatalog->getUsage(item.fullPath);
-			main->platform->alterItem(&item);
+			gMainWidget->platform->alterItem(&item);
 			catalog->addItem(item);
 			indexed[dir + "/" + files[i]] = true;
 		}

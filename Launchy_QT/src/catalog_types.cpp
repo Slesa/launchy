@@ -73,24 +73,47 @@ void SlowCatalog::addItem(CatItem item)
 }
 
 
-bool Catalog::matches(CatItem* item, QString& txt)
+bool Catalog::matches(CatItem* item, const QString& match)
 {
-	int size = item->lowName.count();
-	int txtSize = txt.count();
+	int matchLength = match.count();
 	int curChar = 0;
 
-	for (int i = 0; i < size; i++)
+	foreach(QChar c, item->lowName)
 	{
-		if (item->lowName[i] == txt[curChar])
+		if (c == match[curChar])
 		{
-			curChar++;
-			if (curChar >= txtSize)
+			++curChar;
+			if (curChar >= matchLength)
 			{
 				return true;
 			}
 		} 
 	}
+
 	return false;
+}
+
+
+QString Catalog::decorateText(const QString& text, const QString& match, bool outputRichText)
+{
+	QString decoratedText;
+	int matchLength = match.count();
+	int curChar = 0;
+
+	foreach(QChar c, text)
+	{
+		if (curChar < matchLength && c.toLower() == match[curChar].toLower())
+		{
+			decoratedText += outputRichText ? QString("<u>") + c + QString("</u>") : QString("&") + c;
+			++curChar;
+		}
+		else
+		{
+			decoratedText += c;
+		}
+	}
+
+	return decoratedText;
 }
 
 

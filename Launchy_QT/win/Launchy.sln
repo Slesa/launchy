@@ -16,8 +16,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win", "..\platforms\win\win
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_gcalc", "gcalc\gcalc.vcproj", "{2B674BCD-7C3C-4996-ACDB-43900A5652C4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_loader", "loader\loader.vcproj", "{C511DA04-FD9A-4A09-85EA-301DA3BD8924}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_Verby", "Verby\Verby.vcproj", "{7E13C272-561A-4022-B991-E24BF57686D2}"
 EndProject
 Global
@@ -54,10 +52,6 @@ Global
 		{2B674BCD-7C3C-4996-ACDB-43900A5652C4}.Debug|Win32.Build.0 = Debug|Win32
 		{2B674BCD-7C3C-4996-ACDB-43900A5652C4}.Release|Win32.ActiveCfg = Release|Win32
 		{2B674BCD-7C3C-4996-ACDB-43900A5652C4}.Release|Win32.Build.0 = Release|Win32
-		{C511DA04-FD9A-4A09-85EA-301DA3BD8924}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C511DA04-FD9A-4A09-85EA-301DA3BD8924}.Debug|Win32.Build.0 = Debug|Win32
-		{C511DA04-FD9A-4A09-85EA-301DA3BD8924}.Release|Win32.ActiveCfg = Release|Win32
-		{C511DA04-FD9A-4A09-85EA-301DA3BD8924}.Release|Win32.Build.0 = Release|Win32
 		{7E13C272-561A-4022-B991-E24BF57686D2}.Debug|Win32.ActiveCfg = Debug|Win32
 		{7E13C272-561A-4022-B991-E24BF57686D2}.Debug|Win32.Build.0 = Debug|Win32
 		{7E13C272-561A-4022-B991-E24BF57686D2}.Release|Win32.ActiveCfg = Release|Win32

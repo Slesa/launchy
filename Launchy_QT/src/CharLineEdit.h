@@ -16,7 +16,7 @@ public:
 	bool focusNextPrevChild(bool next);
 	void focusOutEvent(QFocusEvent* event);
 	void inputMethodEvent(QInputMethodEvent *e);
-	QString separatorText();
+	QString separatorText() const;
 
 signals:
 	void keyPressed(QKeyEvent*);
@@ -24,7 +24,7 @@ signals:
 	void inputMethod(QInputMethodEvent *e);
 
 private:
-	QChar sepChar();
+	QChar sepChar() const;
 };
 
 

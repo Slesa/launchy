@@ -22,8 +22,7 @@ SOURCES = main.cpp \
     ../common/DropListWidget.cpp \
     Fader.cpp \
     CharListWidget.cpp \
-    CharLineEdit.cpp \
-    LineEditMenu.cpp
+    CharLineEdit.cpp
 HEADERS = platform_util.h \
     platform_base.h \
     globals.h \
@@ -41,7 +40,6 @@ HEADERS = platform_util.h \
     ../common/FileBrowser.h \
     ../common/DropListWidget.h \
     CharListWidget.h \
-    LineEditMenu.h \
     CharLineEdit.h \
     Fader.h
 ICON = Launchy.ico
@@ -69,6 +67,7 @@ unix {
         desktop
 }
 win32 { 
+    CONFIG += embed_manifest_exe
     INCLUDEPATH += c:/boost/
     FORMS = options.ui
     RC_FILE = ../win/launchy.rc
@@ -76,8 +75,7 @@ win32 {
         ole32.lib
     if(!debug_and_release|build_pass) { 
         CONFIG(debug, debug|release):DESTDIR = ../debug/
-        CONFIG(release, debug|release):CONFIG += embed_manifest_exe
-        DESTDIR = ../release/
+        CONFIG(release, debug|release):DESTDIR = ../release/
     }
 }
 TRANSLATIONS = ../translations/launchy_fr.ts \

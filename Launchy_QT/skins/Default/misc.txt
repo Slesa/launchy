@@ -1,11 +1,11 @@
 boundary = 0,0,300,145
-output = 0,54,300,18
 input = 15,84,245,18
+inputAlignment = left
+output = 10,54,290,18
+outputAlignment = center
 alternatives = 10,101,280,80
 icon = 135,9,32,32
 optionsButton = 279,23,14,15
-; optionsButton = 259,23,14,15
-; closeButton = 279,23,14,15
 
 ; These describe the font of the full path in the dropdown box
 ; This should be in style.qss but the style sheet doesn't support it

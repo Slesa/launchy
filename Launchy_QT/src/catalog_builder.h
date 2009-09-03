@@ -39,8 +39,6 @@ public:
 	CatalogBuilder(shared_ptr<Catalog> catalog, PluginHandler * plugs) : plugins(plugs), buildFromStorage(false), catalog(catalog) {}
 	bool loadCatalog(const QString& filename);
 	void storeCatalog(const QString& filename);
-	void buildCatalog();
-	void indexDirectory(const QString& dir, const QStringList& filters, bool fdirs, bool fbin, int depth);
 	void setPreviousCatalog(shared_ptr<Catalog> cata)
 	{
 		currentCatalog = cata;
@@ -57,6 +55,9 @@ signals:
 	void catalogIncrement(float);
 
 private:
+	void buildCatalog();
+	void indexDirectory(const QString& dir, const QStringList& filters, bool fdirs, bool fbin, int depth);
+
 	shared_ptr<Catalog> currentCatalog;
 	shared_ptr<Catalog> catalog;
 	PluginHandler* plugins;

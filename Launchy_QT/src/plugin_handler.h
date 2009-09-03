@@ -20,47 +20,49 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef PLUGIN_HANDLER
 #define PLUGIN_HANDLER
 
+
 #include <QPluginLoader>
 #include <QHash>
 #include "plugin_interface.h"
 #include "catalog.h"
-#include <QLayout>
 
-struct PluginInfo {
+
+struct PluginInfo
+{
 	uint id;
 	QString name;
 	QString path;
 	PluginInterface* obj;
 	bool loaded;
 
-	~PluginInfo() {
+	~PluginInfo()
+	{
 		QPluginLoader loader(path);
 		loader.unload();
 	}
 };
 
 
-class PluginHandler {
-private:
-	QHash<uint, PluginInfo> plugins;
-
+class PluginHandler
+{
 public:
-
 	PluginHandler();
 	~PluginHandler();
 
 	void loadPlugins();
 	void showLaunchy();
 	void hideLaunchy();
-	void getLabels(QList<InputData>* id);
-	void getResults(QList<InputData>* id, QList<CatItem>* results);
+	void getLabels(QList<InputData>* inputData);
+	void getResults(QList<InputData>* inputData, QList<CatItem>* results);
 	void getCatalogs(QList<CatItem>* items);
 	int execute(QList<InputData>*, CatItem*);
 	QWidget* doDialog(QWidget* parent, uint id);
 	void endDialog(uint id, bool accept);
 	QHash<uint, PluginInfo> & getPlugins() { return plugins; }
-};
 
+private:
+	QHash<uint, PluginInfo> plugins;
+};
 
 
 #endif

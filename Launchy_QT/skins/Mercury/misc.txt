@@ -1,6 +1,8 @@
 boundary = 0,0,500,100
-output = 290,37,160,24
 input = 60,37,160,24
+inputAlignment = left
+output = 290,37,160,24
+outputAlignment = center
 alternatives = 37,61,436,100
 icon = 241,32,32,32
 

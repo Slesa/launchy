@@ -1,7 +1,9 @@
 boundary = 0,0,312,252
 input = 25,130,130,25
-alternatives = 8,215,256,40
+inputAlignment = left
 output = 25,170,170,20
+outputAlignment = center
+alternatives = 8,215,256,40
 icon = 180,65,32,32
 
 ; These describe the font of the full path in the dropdown box

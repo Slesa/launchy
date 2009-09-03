@@ -42,9 +42,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 {
 	setupUi(this);
 	curPlugin = -1;
-	LaunchyWidget* main = qobject_cast<LaunchyWidget*>(gMainWidget);
-	if (main == NULL)
-		return;
+	needRescan = false;
 
 	restoreGeometry(windowGeometry);
 	tabWidget->setCurrentIndex(currentTab);
@@ -68,7 +66,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genOpaqueness->setValue(gSettings->value("GenOps/opaqueness", 100).toInt());
 	genFadeIn->setValue(gSettings->value("GenOps/fadein", 0).toInt());
 	genFadeOut->setValue(gSettings->value("GenOps/fadeout", 20).toInt());
-	connect(genOpaqueness, SIGNAL(sliderMoved(int)), main, SLOT(setOpaqueness(int)));
+	connect(genOpaqueness, SIGNAL(sliderMoved(int)), gMainWidget, SLOT(setOpaqueness(int)));
 	metaKeys << tr("") << tr("Alt") << tr("Win") << tr("Shift") << tr("Control");
 	iMetaKeys << Qt::NoModifier << Qt::AltModifier << Qt::MetaModifier << Qt::ShiftModifier << Qt::ControlModifier;
 
@@ -115,15 +113,11 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genProxyPort->setText(gSettings->value("WebProxy/port").toString());
 
 	// Load up the skins list
-	QString skinName = gSettings->value("GenOps/skin", main->dirs["defSkin"][0]).toString();
-
-	connect(skinList, SIGNAL(currentTextChanged(const QString)), this, SLOT(skinChanged(const QString)));
+	QString skinName = gSettings->value("GenOps/skin", "Default").toString();
 
 	int skinRow = 0;
-
 	QHash<QString, bool> knownSkins;
-
-	foreach(QString szDir, main->dirs["skins"])
+	foreach(QString szDir, gMainWidget->dirs["skins"])
 	{
 		QDir dir(szDir);
 		QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
@@ -138,18 +132,15 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 			// Only look for 2.0+ skins
 			if (!f.exists()) continue;
 
-			QListWidgetItem * item = new QListWidgetItem(d);
-			item->setData(Qt::UserRole, szDir);
+			QListWidgetItem* item = new QListWidgetItem(d);
 			skinList->addItem(item);
 
-
-
-			if (skinName.compare(szDir + "/" + d, Qt::CaseInsensitive) == 0)
+			if (skinName.compare(d, Qt::CaseInsensitive) == 0)
 				skinRow = skinList->count() - 1;
 		}
 	}
-
 	skinList->setCurrentRow(skinRow);
+
 	connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 
 	// Load the directories and types
@@ -183,7 +174,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	gSettings->endArray();
 	if (memDirs.count() == 0)
 	{
-		memDirs = main->platform->GetInitialDirs();
+		memDirs = gMainWidget->platform->GetInitialDirs();
 	}
 
 	for (int i = 0; i < memDirs.count(); ++i)
@@ -197,10 +188,10 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 
 	genOpaqueness->setRange(15,100);
 
-	if (main->catalog != NULL)
+	if (gMainWidget->catalog != NULL)
 	{
 		QString txt = tr("Index has ");
-		txt += QString::number(main->catalog->count());
+		txt += QString::number(gMainWidget->catalog->count());
 		txt += tr(" items");
 		catSize->setText(txt);
 	}
@@ -212,8 +203,8 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	// Load up the plugins		
 	connect(plugList, SIGNAL(currentRowChanged(int)), this, SLOT(pluginChanged(int)));
 	connect(plugList, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(pluginItemChanged(QListWidgetItem*)));
-	main->plugins.loadPlugins();
-	foreach(PluginInfo info, main->plugins.getPlugins())
+	gMainWidget->plugins.loadPlugins();
+	foreach(PluginInfo info, gMainWidget->plugins.getPlugins())
 	{
 		plugList->addItem(info.name);
 		QListWidgetItem* item = plugList->item(plugList->count()-1);
@@ -240,14 +231,25 @@ OptionsDialog::~OptionsDialog()
 }
 
 
+void OptionsDialog::setVisible(bool visible)
+{
+	QDialog::setVisible(visible);
+
+	if (visible)
+	{
+		connect(skinList, SIGNAL(currentTextChanged(const QString)), this, SLOT(skinChanged(const QString)));
+		skinChanged(skinList->currentItem()->text());
+	}
+}
+
+
 void OptionsDialog::accept()
 {
-	LaunchyWidget* main = qobject_cast<LaunchyWidget*>(gMainWidget);
-	if (main == NULL || gSettings == NULL)
+	if (gSettings == NULL)
 		return;
 
 	// See if the new hotkey works, if not we're not leaving the dialog.
-	bool newKey = main->setHotkey(iMetaKeys[genModifierBox->currentIndex()], iActionKeys[genKeyBox->currentIndex()]);
+	bool newKey = gMainWidget->setHotkey(iMetaKeys[genModifierBox->currentIndex()], iActionKeys[genKeyBox->currentIndex()]);
 
 	if (!newKey)
 	{
@@ -279,78 +281,138 @@ void OptionsDialog::accept()
 	gSettings->setValue("WebProxy/port", genProxyPort->text());
 
 	// Apply General Options	
-	main->setAlwaysShow(genAlwaysShow->isChecked());
-	main->setAlwaysTop(genAlwaysTop->isChecked());
-	main->setPortable(genPortable->isChecked());
-	main->setCondensed(genCondensed->isChecked());
-	main->setOpaqueness(genOpaqueness->value());
-	main->loadOptions();
-
-	// Apply Skin Options
-	QString prevSkinName = gSettings->value("GenOps/skin", main->dirs["defSkin"][0]).toString();
-
-	if (skinList->currentRow() >= 0 && skinList->currentItem()->text() != prevSkinName)
-	{
-		QString path = skinList->currentItem()->data(Qt::UserRole).toString();
-		gSettings->setValue("GenOps/skin", path + "/" + skinList->currentItem()->text());
-		main->setSkin(path, skinList->currentItem()->text());
-	}
+	gMainWidget->setPortable(genPortable->isChecked());
+	gMainWidget->setCondensed(genCondensed->isChecked());
+	gMainWidget->loadOptions();
 
 	// Apply Directory Options
-	gSettings->beginWriteArray("directories");
-	for (int i = 0; i < memDirs.count(); ++i)
-	{
-		gSettings->setArrayIndex(i);
-		gSettings->setValue("name", memDirs[i].name);
-		gSettings->setValue("types", memDirs[i].types);
-		gSettings->setValue("indexDirs", memDirs[i].indexDirs);
-		gSettings->setValue("indexExes", memDirs[i].indexExe);
-		gSettings->setValue("depth", memDirs[i].depth);
-	}
-
-	gSettings->endArray();
-
-	// Compare the checks to the plugins
-	QHash<uint, PluginInfo> plugins = main->plugins.getPlugins();
-	bool changed = false;
-
-	if (changed)
-	{
-		main->plugins.loadPlugins();
-	}
+	saveCatalogOptions();
 
 	if (curPlugin >= 0)
 	{
 		QListWidgetItem* item = plugList->item(curPlugin);
-		main->plugins.endDialog(item->data(Qt::UserRole).toUInt(), true);
+		gMainWidget->plugins.endDialog(item->data(Qt::UserRole).toUInt(), true);
 	}
 
 	gSettings->sync();
 
 	QDialog::accept();
+
+	// Now save the options that cause redraws
+	bool show = gMainWidget->setAlwaysShow(genAlwaysShow->isChecked());
+	bool redraw = gMainWidget->setAlwaysTop(genAlwaysTop->isChecked());
+	gMainWidget->setOpaqueness(genOpaqueness->value());
+
+	// Apply Skin Options
+	QString prevSkinName = gSettings->value("GenOps/skin", "Default").toString();
+	QString skinName = skinList->currentItem()->text();
+	if (skinList->currentRow() >= 0 && skinName != prevSkinName)
+	{
+		gSettings->setValue("GenOps/skin", skinName);
+		gMainWidget->setSkin(skinName, true);
+		redraw = false;
+	}
+
+	if (redraw || show)
+		gMainWidget->showLaunchy(true);
+}
+
+
+void OptionsDialog::reject()
+{
+	if (curPlugin >= 0)
+	{
+		QListWidgetItem* item = plugList->item(curPlugin);
+		gMainWidget->plugins.endDialog(item->data(Qt::UserRole).toUInt(), false);
+	}
+
+	QDialog::reject();
 }
 
 
 void OptionsDialog::tabChanged(int tab)
 {
 	tab = tab; // Compiler warning
-	// Redraw the current skin
-	// (necessary because of dialog resizing issues)
+	// Redraw the current skin (necessary because of dialog resizing issues)
 	if (tabWidget->currentWidget()->objectName() == "Skins")
 	{
-		int row = skinList->currentRow();
-		skinList->setCurrentRow(-1);
-		skinList->setCurrentRow(row);
+		skinChanged(skinList->currentItem()->text());
+	}
+}
+
+
+void OptionsDialog::skinChanged(const QString& newSkin)
+{
+	if (newSkin.count() == 0)
+		return;
+
+	QString directory = gMainWidget->dirs["skins"][0] + "/" + newSkin + "/";
+
+	// Load up the author file
+	QFile author(directory + "author.txt"); 
+	if (!author.open(QIODevice::ReadOnly))
+	{
+		authorInfo->setText("");
+		skinPreview->clear();
+		return;
+	}
+
+	QTextStream in(&author);
+
+	QString line, total;
+	line = in.readLine();
+	while (!line.isNull())
+	{
+		total += line + "\n";
+		line = in.readLine();
+	}
+	authorInfo->setText(total);
+	author.close();
+
+	// Set the image preview
+	QPixmap pix;
+	if (pix.load(directory + "background.png"))
+	{
+		if (!gMainWidget->platform->SupportsAlphaBorder() && QFile::exists(directory + "background_nc.png"))
+			pix.load(directory + "background_nc.png");
+		if (pix.hasAlpha())
+			pix.setMask(pix.mask());
+		if (!gMainWidget->platform->SupportsAlphaBorder() && QFile::exists(directory + "mask_nc.png"))
+			pix.setMask(QPixmap(directory + "mask_nc.png"));
+		else if (QFile::exists(directory + "mask.png"))
+			pix.setMask(QPixmap(directory + "mask.png"));
+
+		if (gMainWidget->platform->SupportsAlphaBorder())
+		{
+			// Compose the alpha image with the background
+			QImage sourceImage(pix.toImage());
+			QImage destinationImage(directory + "alpha.png");
+			QImage resultImage(destinationImage.size(), QImage::Format_ARGB32_Premultiplied);
+
+			QPainter painter(&resultImage);
+			painter.setCompositionMode(QPainter::CompositionMode_Source);
+			painter.fillRect(resultImage.rect(), Qt::transparent);
+			painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+			painter.drawImage(0, 0, sourceImage);
+			painter.drawImage(0, 0, destinationImage);
+			painter.end();
+
+			pix = QPixmap::fromImage(resultImage);
+		}
+
+		QPixmap scaled;
+		scaled = pix.scaled(skinPreview->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+		skinPreview->setPixmap(scaled);
+	}
+	else
+	{
+		skinPreview->clear();
 	}
 }
 
 
 void OptionsDialog::pluginChanged(int row)
 {
-	LaunchyWidget* main = qobject_cast<LaunchyWidget*>(gMainWidget);
-	if (main == NULL)
-		return;
-
 	if (plugBox->layout() != NULL)
 		for (int i = 1; i < plugBox->layout()->count(); i++) 
 			plugBox->layout()->removeItem(plugBox->layout()->itemAt(i));
@@ -359,7 +421,7 @@ void OptionsDialog::pluginChanged(int row)
 	if (curPlugin >= 0)
 	{
 		QListWidgetItem* item = plugList->item(curPlugin);
-		main->plugins.endDialog(item->data(Qt::UserRole).toUInt(), true);
+		gMainWidget->plugins.endDialog(item->data(Qt::UserRole).toUInt(), true);
 	}
 
 	// Open the new plugin dialog
@@ -368,7 +430,7 @@ void OptionsDialog::pluginChanged(int row)
 	if (row < 0)
 		return;	
 	QListWidgetItem* item = plugList->item(row);
-	QWidget* win = main->plugins.doDialog(plugBox, item->data(Qt::UserRole).toUInt());
+	QWidget* win = gMainWidget->plugins.doDialog(plugBox, item->data(Qt::UserRole).toUInt());
 
 	if (win != NULL)
 	{
@@ -381,10 +443,6 @@ void OptionsDialog::pluginChanged(int row)
 
 void OptionsDialog::pluginItemChanged(QListWidgetItem* iz)
 {
-
-	LaunchyWidget* main = qobject_cast<LaunchyWidget*>(gMainWidget);
-	if (main == NULL)
-		return;
 	int row = plugList->currentRow();
 	if (row == -1)
 		return;
@@ -393,7 +451,7 @@ void OptionsDialog::pluginItemChanged(QListWidgetItem* iz)
 	if (curPlugin >= 0)
 	{
 		QListWidgetItem* item = plugList->item(curPlugin);
-		main->plugins.endDialog(item->data(Qt::UserRole).toUInt(), true);
+		gMainWidget->plugins.endDialog(item->data(Qt::UserRole).toUInt(), true);
 	}
 
 	// Write out the new config
@@ -415,12 +473,12 @@ void OptionsDialog::pluginItemChanged(QListWidgetItem* iz)
 	gSettings->endArray();
 
 	// Reload the plugins
-	main->plugins.loadPlugins();
+	gMainWidget->plugins.loadPlugins();
 
 	// If enabled, reload the dialog
 	if (iz->checkState() == Qt::Checked)
 	{
-		main->plugins.doDialog(plugBox, iz->data(Qt::UserRole).toUInt());
+		gMainWidget->plugins.doDialog(plugBox, iz->data(Qt::UserRole).toUInt());
 	}
 }
 
@@ -433,38 +491,23 @@ void OptionsDialog::catProgressUpdated(float val)
 
 void OptionsDialog::catalogBuilt()
 {
-	LaunchyWidget* main = qobject_cast<LaunchyWidget*>(gMainWidget);
-	if (main->catalog != NULL)
-		catSize->setText(tr("Index has ") + QString::number(main->catalog->count()) + tr(" items"));
+	if (gMainWidget->catalog != NULL)
+		catSize->setText(tr("Index has ") + QString::number(gMainWidget->catalog->count()) + tr(" items"));
 }
 
 
 void OptionsDialog::catRescanClicked(bool val)
 {
 	val = val; // Compiler warning
-	LaunchyWidget* main = qobject_cast<LaunchyWidget*>(gMainWidget);
-	if (main == NULL)
-		return;
 
 	// Apply Directory Options
-	gSettings->beginWriteArray("directories");
-	for (int i = 0; i < memDirs.count(); ++i)
-	{
-		gSettings->setArrayIndex(i);
-		gSettings->setValue("name", memDirs[i].name);
-		gSettings->setValue("types", memDirs[i].types);
-		gSettings->setValue("indexDirs", memDirs[i].indexDirs);
-		gSettings->setValue("indexExes", memDirs[i].indexExe);
-		gSettings->setValue("depth", memDirs[i].depth);
-	}
-
-	gSettings->endArray();
+	saveCatalogOptions();
 
 	if (gBuilder == NULL)
 	{
-		gBuilder.reset(new CatalogBuilder(false, &main->plugins));
-		gBuilder->setPreviousCatalog(main->catalog);
-		connect(gBuilder.get(), SIGNAL(catalogFinished()), main, SLOT(catalogBuilt()));
+		gBuilder.reset(new CatalogBuilder(false, &gMainWidget->plugins));
+		gBuilder->setPreviousCatalog(gMainWidget->catalog);
+		connect(gBuilder.get(), SIGNAL(catalogFinished()), gMainWidget, SLOT(catalogBuilt()));
 		connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		connect(gBuilder.get(), SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
 		gBuilder->start(QThread::IdlePriority);
@@ -479,6 +522,8 @@ void OptionsDialog::catTypesDirChanged(int state)
 	if (row == -1)
 		return;
 	memDirs[row].indexDirs = catCheckDirs->isChecked();
+
+	needRescan = true;
 }
 
 
@@ -489,6 +534,8 @@ void OptionsDialog::catTypesExeChanged(int state)
 	if (row == -1)
 		return;
 	memDirs[row].indexExe = catCheckBinaries->isChecked();
+
+	needRescan = true;
 }
 
 
@@ -501,6 +548,8 @@ void OptionsDialog::catDirItemChanged(QListWidgetItem* item)
 		return;	
 
 	memDirs[row].name = item->text();
+
+	needRescan = true;
 }
 
 
@@ -543,6 +592,8 @@ void OptionsDialog::dirRowChanged(int row)
 	catCheckDirs->setChecked(memDirs[row].indexDirs);
 	catCheckBinaries->setChecked(memDirs[row].indexExe);
 	catDepth->setValue(memDirs[row].depth);
+
+	needRescan = true;
 }
 
 
@@ -566,12 +617,12 @@ void OptionsDialog::catDirPlusClicked(bool c)
 	c = c; // Compiler warning
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Select a directory"),
 		lastDir,
-		QFileDialog::ShowDirsOnly );
-	if (dir == "")
-		return;
-	lastDir = dir;
-
-	addDirectory(dir);
+		QFileDialog::ShowDirsOnly);
+	if (dir != "")
+	{
+		lastDir = dir;
+		addDirectory(dir);
+	}
 }
 
 
@@ -585,6 +636,8 @@ void OptionsDialog::addDirectory(const QString& directory)
 	QListWidgetItem* item = new QListWidgetItem(nativeDir, catDirectories);
 	item->setFlags(item->flags() | Qt::ItemIsEditable);
 	catDirectories->setCurrentItem(item);
+
+	needRescan = true;
 }
 
 
@@ -598,6 +651,8 @@ void OptionsDialog::catTypesItemChanged(QListWidgetItem* item)
 		return;
 
 	memDirs[row].types[typesRow] = item->text();
+	
+	needRescan = true;
 }
 
 
@@ -613,6 +668,8 @@ void OptionsDialog::catTypesPlusClicked(bool c)
 	item->setFlags(item->flags() | Qt::ItemIsEditable);
 	catTypes->setCurrentItem(item);
 	catTypes->editItem(item);
+
+	needRescan = true;
 }
 
 
@@ -632,6 +689,8 @@ void OptionsDialog::catTypesMinusClicked(bool c)
 
 	if (typesRow >= catTypes->count() && catTypes->count() > 0)
 		catTypes->setCurrentRow(catTypes->count() - 1);
+
+	needRescan = true;
 }
 
 
@@ -640,97 +699,23 @@ void OptionsDialog::catDepthChanged(int d)
 	int row = catDirectories->currentRow();
 	if (row != -1)
 		memDirs[row].depth = d;
+
+	needRescan = true;
 }
 
 
-void OptionsDialog::skinChanged(const QString newSkin)
+void OptionsDialog::saveCatalogOptions()
 {
-	LaunchyWidget* main = qobject_cast<LaunchyWidget*>(gMainWidget);
-	if (main == NULL)
-		return;
-
-	if (skinList->currentRow() == -1)
-		return;
-
-	QString path = skinList->currentItem()->data(Qt::UserRole).toString();  
-
-	// Load up the author file
-	QFile author(path + "/" + newSkin + "/author.txt"); 
-	if (!author.open(QIODevice::ReadOnly))
+	gSettings->beginWriteArray("directories");
+	for (int i = 0; i < memDirs.count(); ++i)
 	{
-		authorInfo->setText("");
-		skinPreview->clear();
-		return;
+		gSettings->setArrayIndex(i);
+		gSettings->setValue("name", memDirs[i].name);
+		gSettings->setValue("types", memDirs[i].types);
+		gSettings->setValue("indexDirs", memDirs[i].indexDirs);
+		gSettings->setValue("indexExes", memDirs[i].indexExe);
+		gSettings->setValue("depth", memDirs[i].depth);
 	}
 
-	QTextStream in(&author);
-
-	QString line, total;
-	line = in.readLine();
-	while (!line.isNull())
-	{
-		total += line + "\n";
-		line = in.readLine();
-	}
-	authorInfo->setText(total);
-	author.close();
-
-	// Set the image preview
-	QPixmap pix;
-	QString sDir(path + "/" + newSkin + "/");
-
-	if (pix.load(sDir + "background.png"))
-	{
-		if (!main->platform->SupportsAlphaBorder() && QFile::exists(sDir + "background_nc.png"))
-			pix.load(sDir + "background_nc.png");
-		if (pix.hasAlpha())
-			pix.setMask(pix.mask());
-		if (!main->platform->SupportsAlphaBorder() && QFile::exists(sDir + "mask_nc.png"))
-			pix.setMask(QPixmap(sDir + "mask_nc.png"));
-		else if (QFile::exists(sDir + "mask.png"))
-			pix.setMask(QPixmap(sDir + "mask.png"));
-
-		if (main->platform->SupportsAlphaBorder())
-		{
-			// Compose the alpha image with the background
-			QImage sourceImage(pix.toImage());
-			QImage destinationImage(sDir + "alpha.png");
-			QImage resultImage(destinationImage.size(), QImage::Format_ARGB32_Premultiplied);
-
-			QPainter painter(&resultImage);
-			painter.setCompositionMode(QPainter::CompositionMode_Source);
-			painter.fillRect(resultImage.rect(), Qt::transparent);
-			painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-			painter.drawImage(0, 0, sourceImage);
-			painter.drawImage(0, 0, destinationImage);
-
-			painter.end();
-
-			pix = QPixmap::fromImage(resultImage);
-		}
-
-		QPixmap scaled;
-		scaled = pix.scaled(skinPreview->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-		skinPreview->setPixmap(scaled);
-	}
-	else
-	{
-		skinPreview->clear();
-	}
-}
-
-
-void OptionsDialog::reject()
-{
-	LaunchyWidget* main = qobject_cast<LaunchyWidget*>(gMainWidget);
-	if (main == NULL)
-		return;
-
-	if (curPlugin >= 0)
-	{
-		QListWidgetItem* item = plugList->item(curPlugin);
-		main->plugins.endDialog(item->data(Qt::UserRole).toUInt(), false);
-	}
-
-	QDialog::reject();
+	gSettings->endArray();
 }
