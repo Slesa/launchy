@@ -53,7 +53,7 @@ private:
 	void launchItem(QList<InputData>* inputData, CatItem* item);
 	void doDialog(QWidget* parent, QWidget**);
 	void endDialog(bool accept);
-	void getLabels(QList<InputData>* id);
+	void getLabels(QList<InputData>* inputData);
 	void init();
 	QString getIcon();
 	QString getIconPath() const;

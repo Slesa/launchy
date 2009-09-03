@@ -30,7 +30,7 @@ Gui::Gui(QWidget* parent)
 	: QWidget(parent)
 {
 	setupUi(this);
-	QSettings* settings = *grunnerInstance->settings;
+	QSettings* settings = *gRunnerInstance->settings;
 	if (settings == NULL) return;
 
 	// Stretch the centre column of the table
@@ -60,7 +60,7 @@ Gui::Gui(QWidget* parent)
 
 void Gui::writeOptions()
 {
-	QSettings* settings = *grunnerInstance->settings;
+	QSettings* settings = *gRunnerInstance->settings;
 	if (settings == NULL) return;
 
 	settings->beginWriteArray("runner/cmds");
