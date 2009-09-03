@@ -29,9 +29,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define LAUNCHY_VERSION_STRING "2.2.0"
 
 #define HASH_LAUNCHY 0
+#define HASH_HISTORY 1
 #define LABEL_FILE 0
 
-extern QWidget* gMainWidget;
+class LaunchyWidget;
+
+extern LaunchyWidget* gMainWidget;
 extern QSettings* gSettings;
 extern shared_ptr<CatalogBuilder> gBuilder;
 extern QString gSearchTxt;

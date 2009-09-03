@@ -53,88 +53,34 @@ class LaunchyWidget : public QWidget
 
 public:
 	LaunchyWidget();
-    LaunchyWidget(QWidget *parent, PlatformBase*, bool show);
+	LaunchyWidget(QWidget *parent, PlatformBase*, bool show);
 	~LaunchyWidget();
 
 	QHash<QString, QList<QString> > dirs;
-	Fader* fader;
-	QPoint moveStartPoint;
 	shared_ptr<PlatformBase> platform;	
-	QLabel* label;
-	LineEditMenu *output;
-	CharLineEdit *input;
-	QTimer* updateTimer;
-	QTimer* dropTimer;
-	CharListWidget *alternatives;
-	QPushButton *optionsButton;
-	QPushButton *closeButton;
-	QRect altRect;
-	QLabel* labelIcon;
-	QScrollBar* altScroll;
 	shared_ptr<Catalog> catalog;
-	shared_ptr<CatalogBuilder> catalogBuilder;
-	IconExtractor iconExtractor;
-	QList<CatItem> searchResults;
-	QList<InputData> inputData;
-	QStringList history;
 	PluginHandler plugins;
-	bool visible;
-	bool alwaysShowLaunchy;
-	bool menuOpen;
-	bool optionsOpen;
 
-	IconDelegate* listDelegate;
-	QAbstractItemDelegate * defaultDelegate;
+	void showLaunchy(bool noFade = false);
 
-	void connectAlpha();
-
-	void applySkin(QString);
-	void contextMenuEvent(QContextMenuEvent *event);
-	void closeEvent(QCloseEvent *event);
-	void showLaunchy(bool now = false);
-	void hideLaunchy(bool now = false);
-	void updateVersion(int oldVersion);
-	void checkForUpdate();
-	void shouldDonate();
 	void setCondensed(int condensed);
 	bool setHotkey(int, int);
-	void showAlternatives(bool show = true);
-	void launchObject();
-	void searchFiles(const QString & input, QList<CatItem>& searchResults);
-	void parseInput(QString text);
-	void resetLaunchy();
-	void updateDisplay();
-	void searchOnInput();
-	void fadeIn();
-	void fadeOut();
-	QPoint loadPosition();
-	void savePosition() { gSettings->setValue("Display/pos", pos()); }
-	void doTab();
-	void doEnter();
-	QString printInput();
-	void processKey();
-
+	bool setAlwaysShow(bool);
+	bool setAlwaysTop(bool);
+	void setPortable(bool);
+	void setSkin(const QString& name, bool show);
 	void loadOptions();
 
 protected:
 	bool event(QEvent *e);
-
-private:
-    QHttp *http;
-    QBuffer *verBuffer;
-	QBuffer *counterBuffer;
 
 public slots:
 	void menuOptions();
 	void onHotKey();
 	void updateTimeout();
 	void dropTimeout();
-	void setAlwaysShow(bool);
-	void setAlwaysTop(bool);
-	void setPortable(bool);
 	void mousePressEvent(QMouseEvent *e);
 	void mouseMoveEvent(QMouseEvent *e);
-	void setSkin(QString, QString);
 	void httpGetFinished(bool result);
 	void catalogBuilt();
 	void inputMethodEvent(QInputMethodEvent* e);
@@ -145,9 +91,66 @@ public slots:
 	void setOpaqueness(int val);
 	void setFadeLevel(double);
 	void finishedFade(double d);
-	void menuEvent(QContextMenuEvent*);
 	void buildCatalog();
 	void iconExtracted(int itemIndex, QIcon icon);
+
+private:
+	void connectAlpha();
+	void applySkin(const QString& name);
+	void contextMenuEvent(QContextMenuEvent *event);
+	void closeEvent(QCloseEvent *event);
+	void hideLaunchy(bool noFade = false);
+	void updateVersion(int oldVersion);
+	void checkForUpdate();
+	void shouldDonate();
+	void showAlternatives(bool show = true);
+	void searchFiles(const QString& searchText, QList<CatItem>& searchResults);
+	void searchHistory(const QString& searchText, QList<CatItem>& searchResults);
+	void parseInput(const QString& text);
+	void resetLaunchy();
+	void updateDisplay();
+	void searchOnInput();
+	void fadeIn();
+	void fadeOut();
+	QPoint loadPosition();
+	void savePosition() { gSettings->setValue("Display/pos", pos()); }
+	void doTab();
+	void doEnter();
+	QString formatInput();
+	void processKey();
+	void launchObject();
+	void addToHistory(const CatItem& catalogItem);
+
+	Fader* fader;
+	QPoint moveStartPoint;
+	QLabel* label;
+	CharLineEdit* input;
+	QLabel* output;
+	QLabel* outputIcon;
+	CharListWidget* alternatives;
+	QPushButton* optionsButton;
+	QPushButton* closeButton;
+	QScrollBar* altScroll;
+	QTimer* updateTimer;
+	QTimer* dropTimer;
+	QRect altRect;
+	shared_ptr<CatalogBuilder> catalogBuilder;
+	IconExtractor iconExtractor;
+	QList<CatItem> searchResults;
+	QList<InputData> inputData;
+	QList<CatItem> history;
+	bool visible;
+	bool alwaysShowLaunchy;
+	bool menuOpen;
+	bool optionsOpen;
+
+	IconDelegate* listDelegate;
+	QAbstractItemDelegate * defaultDelegate;
+
+	QHttp *http;
+	QBuffer *verBuffer;
+	QBuffer *counterBuffer;
+
 };
 
 

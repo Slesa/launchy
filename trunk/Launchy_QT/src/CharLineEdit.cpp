@@ -61,7 +61,7 @@ void CharLineEdit::inputMethodEvent(QInputMethodEvent *e)
 }
 
 
-QChar CharLineEdit::sepChar()
+QChar CharLineEdit::sepChar() const
 {
 	QFontMetrics met = fontMetrics();
 	QChar arrow(0x25ba);
@@ -72,7 +72,7 @@ QChar CharLineEdit::sepChar()
 }
 
 
-QString CharLineEdit::separatorText()
+QString CharLineEdit::separatorText() const
 {
 	return QString(" ") + sepChar() + " ";
 }

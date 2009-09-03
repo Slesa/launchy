@@ -2,10 +2,10 @@
 #define LINEEDITMENU_H
 
 
-#include <QtGui/QLineEdit>
+#include <QtGui/QLabel>
 
 
-class LineEditMenu : public QLineEdit
+class LineEditMenu : public QLabel
 {
 	Q_OBJECT
 

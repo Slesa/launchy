@@ -12,7 +12,8 @@ public:
 	virtual void addItem(CatItem item) = 0;
 	virtual int count() = 0;
 	virtual const CatItem & getItem(int) = 0;
-	static bool matches(CatItem* item, QString& txt);
+	static bool matches(CatItem* item, const QString& match);
+	static QString decorateText(const QString& text, const QString& match, bool outputRichText = false);
 
 	void searchCatalogs(QString, QList<CatItem> & );
 	virtual void incrementUsage(const CatItem& item) = 0;

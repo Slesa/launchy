@@ -37,19 +37,13 @@ public:
 	OptionsDialog(QWidget* parent = 0);
 	~OptionsDialog();
 
-	QStringList metaKeys;
-	QStringList actionKeys;
-	QList<int> iMetaKeys;
-	QList<int> iActionKeys;
-	QList<Directory> memDirs;
-	QList<QPair<QString, uint> > pluginNames;
-	QVBoxLayout* pluginLayout;
-	QString lastDir;
+    virtual void setVisible(bool visible);
 
 public slots:
 	void accept();
 	void reject();
-	void skinChanged(const QString);
+	void tabChanged(int tab);
+	void skinChanged(const QString& newSkin);
 	void dirRowChanged(int row);
 	void catDirItemChanged(QListWidgetItem* item);
 	void catDirDragEnter(QDragEnterEvent *event);
@@ -67,14 +61,23 @@ public slots:
 	void catRescanClicked(bool);
 	void pluginChanged(int row);
 	void pluginItemChanged(QListWidgetItem* state);
-	void tabChanged(int tab);
 
 private:
 	void addDirectory(const QString& directory);
+	void saveCatalogOptions();
 
 private:
 	FileBrowserDelegate directoryItemDelegate;
 	int curPlugin;
+	bool needRescan;
+	QStringList metaKeys;
+	QStringList actionKeys;
+	QList<int> iMetaKeys;
+	QList<int> iActionKeys;
+	QList<Directory> memDirs;
+	QList<QPair<QString, uint> > pluginNames;
+	QVBoxLayout* pluginLayout;
+	QString lastDir;
 
 	static QByteArray windowGeometry;
 	static int currentTab;

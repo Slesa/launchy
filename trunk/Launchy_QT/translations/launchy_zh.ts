@@ -2,6 +2,25 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="zh">
 <context>
+    <name></name>
+    <message>
+        <source>A new version of Launchy is available</source>
+        <translation type="obsolete">Launchy 有新版本了！</translation>
+    </message>
+    <message>
+        <source>Rebuild Catalog</source>
+        <translation type="obsolete">重新建立索引</translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="obsolete">选项</translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation type="obsolete">退出</translation>
+    </message>
+</context>
+<context>
     <name>LaunchyWidget</name>
     <message>
         <location filename="../src/main.cpp" line="86"/>
@@ -14,22 +33,22 @@
         <translation type="unfinished">关闭 Launchy</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="167"/>
+        <location filename="../src/main.cpp" line="165"/>
         <source>Launchy</source>
         <translation type="unfinished">Launchy</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="167"/>
+        <location filename="../src/main.cpp" line="165"/>
         <source>The hotkey you have chosen is already in use. Please select another from Launchy&apos;s preferences.</source>
         <translation type="unfinished">你选择的快捷键已经被占用， 请选择其他的快捷键.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="812"/>
+        <location filename="../src/main.cpp" line="833"/>
         <source>A new version of Launchy is available</source>
         <translation type="unfinished">Launchy 有新版本了！</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="813"/>
+        <location filename="../src/main.cpp" line="834"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
@@ -44,17 +63,17 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
 请到这里下载： 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1229"/>
+        <location filename="../src/main.cpp" line="1244"/>
         <source>Rebuild Catalog</source>
         <translation type="unfinished">重新建立索引</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1231"/>
+        <location filename="../src/main.cpp" line="1246"/>
         <source>Options</source>
         <translation type="unfinished">选项</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1234"/>
+        <location filename="../src/main.cpp" line="1249"/>
         <source>Exit</source>
         <translation type="unfinished">退出</translation>
     </message>
@@ -105,199 +124,199 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
 <context>
     <name>OptionsDialog</name>
     <message>
-        <location filename="../src/options.cpp" line="72"/>
+        <location filename="../src/options.cpp" line="70"/>
         <source>Alt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="72"/>
+        <location filename="../src/options.cpp" line="70"/>
         <source>Win</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="72"/>
+        <location filename="../src/options.cpp" line="70"/>
         <source>Shift</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="72"/>
+        <location filename="../src/options.cpp" line="70"/>
         <source>Control</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="75"/>
+        <location filename="../src/options.cpp" line="73"/>
         <source>Space</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="75"/>
+        <location filename="../src/options.cpp" line="73"/>
         <source>Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="75"/>
+        <location filename="../src/options.cpp" line="73"/>
         <source>Backspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="75"/>
+        <location filename="../src/options.cpp" line="73"/>
         <source>Enter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="75"/>
+        <location filename="../src/options.cpp" line="73"/>
         <source>Esc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="75"/>
+        <location filename="../src/options.cpp" line="73"/>
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="76"/>
+        <location filename="../src/options.cpp" line="74"/>
         <source>End</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="76"/>
+        <location filename="../src/options.cpp" line="74"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="76"/>
+        <location filename="../src/options.cpp" line="74"/>
         <source>Print</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="76"/>
+        <location filename="../src/options.cpp" line="74"/>
         <source>Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="76"/>
+        <location filename="../src/options.cpp" line="74"/>
         <source>Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="76"/>
+        <location filename="../src/options.cpp" line="74"/>
         <source>Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="76"/>
+        <location filename="../src/options.cpp" line="74"/>
         <source>Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="76"/>
+        <location filename="../src/options.cpp" line="74"/>
         <source>F1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="77"/>
+        <location filename="../src/options.cpp" line="75"/>
         <source>F2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="77"/>
+        <location filename="../src/options.cpp" line="75"/>
         <source>F3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="77"/>
+        <location filename="../src/options.cpp" line="75"/>
         <source>F4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="77"/>
+        <location filename="../src/options.cpp" line="75"/>
         <source>F5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="77"/>
+        <location filename="../src/options.cpp" line="75"/>
         <source>F6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="77"/>
+        <location filename="../src/options.cpp" line="75"/>
         <source>F7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="77"/>
+        <location filename="../src/options.cpp" line="75"/>
         <source>F8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="77"/>
+        <location filename="../src/options.cpp" line="75"/>
         <source>F9</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="77"/>
+        <location filename="../src/options.cpp" line="75"/>
         <source>F10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="78"/>
+        <location filename="../src/options.cpp" line="76"/>
         <source>F11</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="78"/>
+        <location filename="../src/options.cpp" line="76"/>
         <source>F12</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="78"/>
+        <location filename="../src/options.cpp" line="76"/>
         <source>F13</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="78"/>
+        <location filename="../src/options.cpp" line="76"/>
         <source>F14</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="78"/>
+        <location filename="../src/options.cpp" line="76"/>
         <source>F15</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="78"/>
+        <location filename="../src/options.cpp" line="76"/>
         <source>Caps Lock</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="201"/>
-        <location filename="../src/options.cpp" line="437"/>
+        <location filename="../src/options.cpp" line="193"/>
+        <location filename="../src/options.cpp" line="495"/>
         <source>Index has </source>
         <translation type="unfinished">索引有 </translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="203"/>
-        <location filename="../src/options.cpp" line="437"/>
+        <location filename="../src/options.cpp" line="195"/>
+        <location filename="../src/options.cpp" line="495"/>
         <source> items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="230"/>
+        <location filename="../src/options.cpp" line="222"/>
         <source>This is Launchy version </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="253"/>
+        <location filename="../src/options.cpp" line="256"/>
         <source>Launchy</source>
         <translation type="unfinished">Launchy</translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="253"/>
+        <location filename="../src/options.cpp" line="256"/>
         <source>The hotkey you have chosen is already in use, please select another.</source>
         <translation type="unfinished">你选择的快捷键已经被占用， 请选择其他的快捷键.</translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="550"/>
+        <location filename="../src/options.cpp" line="618"/>
         <source>Select a directory</source>
         <translation type="unfinished">选择一个目录</translation>
     </message>
@@ -507,28 +526,28 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/options.ui" line="654"/>
-        <location filename="../src/options.ui" line="757"/>
+        <location filename="../src/options.ui" line="743"/>
         <source>+</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="674"/>
-        <location filename="../src/options.ui" line="770"/>
+        <location filename="../src/options.ui" line="756"/>
         <source>-</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="777"/>
+        <location filename="../src/options.ui" line="765"/>
         <source>Include executables</source>
         <translation>包含可执行文件</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="784"/>
+        <location filename="../src/options.ui" line="772"/>
         <source>Include directories</source>
         <translation>包含目录</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="793"/>
+        <location filename="../src/options.ui" line="781"/>
         <source>Depth:</source>
         <translation>深度:</translation>
     </message>
@@ -538,37 +557,37 @@ p, li { white-space: pre-wrap; }
         <translation>目录</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="827"/>
+        <location filename="../src/options.ui" line="815"/>
         <source>Rescan Catalog</source>
         <translation>扫描目录</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="847"/>
+        <location filename="../src/options.ui" line="835"/>
         <source>Indexing 0 items</source>
         <translation>已找到 0 项</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="891"/>
+        <location filename="../src/options.ui" line="879"/>
         <source>Plugins</source>
         <translation>插件</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="905"/>
+        <location filename="../src/options.ui" line="893"/>
         <source>Available plugins</source>
         <translation>有效的插件</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="927"/>
+        <location filename="../src/options.ui" line="915"/>
         <source>Plugin options</source>
         <translation>插件选项</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="948"/>
+        <location filename="../src/options.ui" line="936"/>
         <source>About Launchy</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1058"/>
+        <location filename="../src/options.ui" line="1046"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -576,7 +595,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;&quot;&gt;原作者语：我很高兴开发Launchy，希望你能喜欢它。你可以免费使用，如果你觉得Launchy不错，我期待你的 &lt;a href=&quot;http://www.launchy.net/#donate&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;赞助.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;拼音处理方案采用李先静的 &lt;a href=&quot;http://sourceforge.net/projects/pinyin-kit/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;pinyin-kit&lt;/span&gt;&lt;/a&gt; 谢谢&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1115"/>
+        <location filename="../src/options.ui" line="1103"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;

@@ -91,11 +91,9 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 	closeButton->setToolTip(tr("Close Launchy"));
 	connect(closeButton, SIGNAL(clicked()), qApp, SLOT(quit()));
 
-	output = new LineEditMenu(label);
+	output = new QLabel(label);
 	output->setAlignment(Qt::AlignHCenter);
-	output->setEnabled(false);
 	output->setObjectName("output");
-	connect(output, SIGNAL(menuEvent(QContextMenuEvent*)), this, SLOT(menuEvent(QContextMenuEvent*)));
 
 	input = new CharLineEdit(label);
 	input->setObjectName("input");
@@ -103,7 +101,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 	connect(input, SIGNAL(focusOut(QFocusEvent*)), this, SLOT(focusOutEvent(QFocusEvent*)));
 	connect(input, SIGNAL(inputMethod(QInputMethodEvent*)), this, SLOT(inputMethodEvent(QInputMethodEvent*)));
 
-	labelIcon = new QLabel(label);
+	outputIcon = new QLabel(label);
 
 	dirs = platform->GetDirectories();
 
@@ -137,7 +135,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 	plugins.loadPlugins();
 
 	// Load the skin
-	applySkin(gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString());
+	applySkin(gSettings->value("GenOps/skin", "Default").toString());
 
 	// Move to saved position
 	QPoint x = loadPosition();
@@ -145,7 +143,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool ),
 	platform->MoveAlphaBorder(x);
 
 	// Set the general options
-	setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool());
+	show = setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool());
 	setAlwaysTop(gSettings->value("GenOps/alwaystop", false).toBool());
 	setPortable(gSettings->value("GenOps/isportable", false).toBool());
 
@@ -227,13 +225,6 @@ bool LaunchyWidget::setHotkey(int meta, int key)
 {
 	QKeySequence keys = QKeySequence(meta + key);
 	return platform->SetHotkey(keys, this, SLOT(onHotKey()));
-}
-
-
-
-void LaunchyWidget::menuEvent(QContextMenuEvent* evt)
-{
-	contextMenuEvent(evt);
 }
 
 
@@ -330,10 +321,37 @@ void LaunchyWidget::launchObject()
 		}
 	}
 	catalog->incrementUsage(res);
+	addToHistory(res);
 }
 
 
-void LaunchyWidget::focusOutEvent( QFocusEvent * evt)
+void LaunchyWidget::addToHistory(const CatItem& catalogItem)
+{
+	CatItem item = catalogItem;
+	item.fullPath = "";
+	for (int i = 0; i < inputData.count(); ++i)
+	{
+		if (i > 0)
+			item.fullPath += input->separatorText();
+		item.fullPath += inputData[i].getText();
+	}
+
+	for (int i = 0; i < history.size(); ++i)
+	{
+		if (history[i].fullPath == item.fullPath)
+		{
+			history.removeAt(i);
+			break;
+		}
+	}
+
+	//history.push_front(item);
+	if (history.size() > gSettings->value("GenOps/maxitemsinhistory", 20).toInt())
+		history.pop_back();
+}
+
+
+void LaunchyWidget::focusOutEvent(QFocusEvent * evt)
 {
 	if (evt->reason() == Qt::ActiveWindowFocusReason)
 	{
@@ -380,13 +398,6 @@ void LaunchyWidget::altKeyPressEvent(QKeyEvent* key)
 
 				updateDisplay();
 
-				/* This seems to be unnecessary
-				if (key->key() == Qt::Key_Tab)
-				{
-				inputData.last().setText(searchResults[0].fullPath);
-				input->setText(printInput() + searchResults[0].fullPath);
-				}
-				*/
 				showAlternatives(false);
 
 				if (key->key() == Qt::Key_Tab)
@@ -435,7 +446,7 @@ void LaunchyWidget::inputKeyPressEvent(QKeyEvent* key)
 }
 
 
-void LaunchyWidget::parseInput(QString text)
+void LaunchyWidget::parseInput(const QString& text)
 {
 	QStringList split = text.split(input->separatorText());
 
@@ -444,8 +455,7 @@ void LaunchyWidget::parseInput(QString text)
 		inputData = inputData.mid(0, split.count());
 	}
 
-
-	for(int i = 0; i < inputData.size(); i++)
+	for (int i = 0; i < inputData.size(); i++)
 	{
 		if (inputData[i].getText() != split[i])
 		{
@@ -454,20 +464,19 @@ void LaunchyWidget::parseInput(QString text)
 		}
 	}
 
-	for(int i = inputData.count(); i < split.count(); i++)
+	for (int i = inputData.count(); i < split.count(); i++)
 	{
 		InputData data(split[i]);
 		inputData.push_back(data);
 	}
-
 }
 
 
 // Print all of the input up to the last entry
-QString LaunchyWidget::printInput()
+QString LaunchyWidget::formatInput()
 {
 	QString res = "";
-	for(int i = 0; i < inputData.count()-1; ++i)
+	for (int i = 0; i < inputData.count()-1; ++i)
 	{
 		res += inputData[i].getText();
 		res += input->separatorText();
@@ -495,14 +504,14 @@ void LaunchyWidget::doTab()
 			if (info.isDir() && !path.endsWith(QDir::separator()))
 				path += QDir::separator();
 
-			input->setText(printInput() + QDir::toNativeSeparators(path));
+			input->setText(formatInput() + QDir::toNativeSeparators(path));
 		}
 		else
 		{
 			// Looking for a plugin
 			input->setText(input->text() + input->separatorText());
 			inputData.last().setText(searchResults[0].shortName);
-			input->setText(printInput() + searchResults[0].shortName + input->separatorText());
+			input->setText(formatInput() + searchResults[0].shortName + input->separatorText());
 
 			QRect rect = input->rect();
 			repaint(rect);
@@ -526,7 +535,7 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* key)
 {
 	if (key->key() == Qt::Key_F5 && (key->modifiers() & ~Qt::ShiftModifier) == 0)
 	{
-		setSkin(gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString(),"");
+		setSkin(gSettings->value("GenOps/skin", "Default").toString(), true);
 		if ((key->modifiers() & Qt::ShiftModifier) == 0)
 			buildCatalog();
 	}
@@ -565,6 +574,9 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* key)
 		}
 		else if (key->key() == Qt::Key_Down || key->key() == Qt::Key_PageDown)
 		{
+			if (searchResults.count() == 0)
+				searchOnInput();
+
 			dropTimer->stop();
 			showAlternatives();
 			alternatives->activateWindow();
@@ -632,14 +644,16 @@ void LaunchyWidget::inputMethodEvent(QInputMethodEvent *e)
 
 void LaunchyWidget::searchOnInput()
 {
-	if (catalog == NULL) return;
-	if (inputData.count() == 0) return;
+	if (catalog == NULL)
+		return;
 
-	QString stxt = inputData.last().getText();
-	gSearchTxt = stxt;
+	QString searchText = inputData.count() > 0 ? inputData.last().getText() : "";
+	gSearchTxt = searchText;
 	searchResults.clear();
 
-	if (inputData.count() <= 1)
+	if (searchText.length() == 0)
+		searchHistory(searchText, searchResults);
+	else if (inputData.count() == 1)
 		catalog->searchCatalogs(gSearchTxt, searchResults);
 
 	if (searchResults.count() != 0)
@@ -652,33 +666,31 @@ void LaunchyWidget::searchOnInput()
 	//	    qDebug() << gSearchTxt;
 	// Is it a file?
 
-	if (stxt.contains(QDir::separator()) || stxt.startsWith("~") || (stxt.size() == 2 && stxt[1] == ':'))
-	{
-		searchFiles(stxt, searchResults);
-	}
+	if (searchText.contains(QDir::separator()) || searchText.startsWith("~") || (searchText.size() == 2 && searchText[1] == ':'))
+		searchFiles(searchText, searchResults);
+
 	catalog->checkHistory(gSearchTxt, searchResults);
 }
 
 
 void LaunchyWidget::updateDisplay()
 {
-	if (searchResults.count() > 0)
+	if (searchResults.count() > 0 && gSearchTxt.length() > 0)
 	{
+		output->setText(Catalog::decorateText(searchResults[0].shortName, gSearchTxt, true));
 		QIcon icon = iconExtractor.getIcon(searchResults[0]);
-		labelIcon->setPixmap(icon.pixmap(QSize(32,32), QIcon::Normal, QIcon::On));
-		output->setText(searchResults[0].shortName);
+		outputIcon->setPixmap(icon.pixmap(QSize(32,32), QIcon::Normal, QIcon::On));
 
 		// Did the plugin take control of the input?
 		if (inputData.last().getID() != 0)
 			searchResults[0].id = inputData.last().getID();
 
 		inputData.last().setTopResult(searchResults[0]);
-
 	}
 	else
 	{
-		labelIcon->clear();
 		output->clear();
+		outputIcon->clear();
 	}
 }
 
@@ -697,10 +709,10 @@ void LaunchyWidget::iconExtracted(int itemIndex, QIcon icon)
 }
 
 
-void LaunchyWidget::searchFiles(const QString & input, QList<CatItem>& searchResults)
+void LaunchyWidget::searchFiles(const QString& searchText, QList<CatItem>& searchResults)
 {
 	// Split the string on the last slash
-	QString path = QDir::fromNativeSeparators(input);
+	QString path = QDir::fromNativeSeparators(searchText);
 	if (path.startsWith("~"))
 		path.replace("~",QDir::homePath());
 
@@ -757,6 +769,15 @@ void LaunchyWidget::searchFiles(const QString & input, QList<CatItem>& searchRes
 		if (!n.endsWith(QDir::separator()))
 			n += QDir::separator();
 		CatItem item(n);
+		searchResults.push_front(item);
+	}
+}
+
+
+void LaunchyWidget::searchHistory(const QString& /*searchText*/, QList<CatItem>& searchResults)
+{
+	foreach(CatItem item, history)
+	{
 		searchResults.push_front(item);
 	}
 }
@@ -825,17 +846,16 @@ void LaunchyWidget::httpGetFinished(bool error)
 }
 
 
-void LaunchyWidget::setSkin(QString dir, QString name)
+void LaunchyWidget::setSkin(const QString& name, bool show)
 {
-	bool wasShowing = isVisible();
 	QPoint p = pos();
 	hideLaunchy(true);
-	applySkin(dir + "/" + name);
+	applySkin(name);
 
 	move(p);
 	platform->MoveAlphaBorder(p);
 	platform->ShowAlphaBorder();
-	if (wasShowing)
+	if (show)
 		showLaunchy(true);
 }
 
@@ -868,11 +888,9 @@ void LaunchyWidget::updateVersion(int oldVersion)
 		gSettings = new QSettings(origFile, QSettings::IniFormat, this);
 	}
 
-	if (oldVersion < 210)
+	if (oldVersion < 220)
 	{
-		QString oldSkin = gSettings->value("GenOps/skin", dirs["defSkin"][0]).toString();
-		QString newSkin = dirs["skins"][0] + "/" + oldSkin;
-		gSettings->setValue("GenOps/skin", newSkin);
+		gSettings->setValue("GenOps/skin", "Default");
 	}
 
 	if (oldVersion < LAUNCHY_VERSION)
@@ -916,15 +934,8 @@ void LaunchyWidget::updateTimeout()
 	savePosition();
 	gSettings->sync();
 
-	// Perform the database update
-	if (gBuilder == NULL)
-	{
-		gBuilder.reset(new CatalogBuilder(false, &plugins));
-		gBuilder->setPreviousCatalog(catalog);
-		connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
-		gBuilder->start(QThread::IdlePriority);
-	}
-
+	buildCatalog();
+	
 	int time = gSettings->value("GenOps/updatetimer", 10).toInt();
 	updateTimer->stop();
 	if (time != 0)
@@ -946,7 +957,7 @@ void LaunchyWidget::onHotKey()
 		showLaunchy();
 		return;
 	}
-	if (isVisible())
+	if (!alwaysShowLaunchy && isVisible())
 	{
 		hideLaunchy();
 	}
@@ -974,25 +985,29 @@ void LaunchyWidget::closeEvent(QCloseEvent *event)
 }
 
 
-void LaunchyWidget::setAlwaysShow(bool alwaysShow)
+bool LaunchyWidget::setAlwaysShow(bool alwaysShow)
 {
 	alwaysShowLaunchy = alwaysShow;
-	if (!isVisible()  && alwaysShow)
-		showLaunchy();
+	return !isVisible() && alwaysShow;
 }
 
 
-void LaunchyWidget::setAlwaysTop(bool alwaysTop)
+bool LaunchyWidget::setAlwaysTop(bool alwaysTop)
 {
-	if (alwaysTop)	{
-		setWindowFlags( windowFlags() | Qt::WindowStaysOnTopHint);
-	}
-	else
+	if (alwaysTop && (windowFlags() & Qt::WindowStaysOnTopHint) == 0)
 	{
-		if ((windowFlags() & Qt::WindowStaysOnTopHint) != 0)
-			setWindowFlags( windowFlags() & ~Qt::WindowStaysOnTopHint);
+		setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+		alternatives->setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+		return true;
+	}
+	else if (!alwaysTop && (windowFlags() & Qt::WindowStaysOnTopHint) != 0)
+	{
+		setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
+		alternatives->setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
+		return true;
 	}
 
+	return false;
 }
 
 
@@ -1049,20 +1064,22 @@ void LaunchyWidget::setOpaqueness(int val)
 }
 
 
-void LaunchyWidget::applySkin(QString directory)
+void LaunchyWidget::applySkin(const QString& name)
 {
+	if (listDelegate == NULL)
+		return;
+
+	QString directory = dirs["skins"][0] + QString("/") + name;
+
 	// Hide the buttons by default
 	closeButton->hide();
 	optionsButton->hide();
-
-	if (listDelegate == NULL)
-		return;
 
 	// Use default skin if this one doesn't exist
 	if (!QFile::exists(directory + "/misc.txt")) 
 	{
 		directory = dirs["defSkin"][0];
-		gSettings->setValue("GenOps/skin", dirs["defSkin"][0]);
+		gSettings->setValue("GenOps/skin", "Default");
 	}
 
 	// Set positions
@@ -1106,7 +1123,7 @@ void LaunchyWidget::applySkin(QString directory)
 						label->setGeometry(rect);
 					}
 					else if (spl.at(0).trimmed().compare("icon", Qt::CaseInsensitive) == 0)
-						labelIcon->setGeometry(rect);
+						outputIcon->setGeometry(rect);
 					else if (spl.at(0).trimmed().compare("optionsbutton", Qt::CaseInsensitive) == 0)
 					{
 						optionsButton->setGeometry(rect);
@@ -1187,7 +1204,6 @@ void LaunchyWidget::applySkin(QString directory)
 		connectAlpha();
 		platform->MoveAlphaBorder(pos());
 	}
-
 }
 
 
@@ -1195,7 +1211,7 @@ void LaunchyWidget::connectAlpha()
 {
 	shared_ptr<QWidget> w = platform->getAlphaWidget();
 	if (!w) return;
-	connect(w.get(), SIGNAL(menuEvent(QContextMenuEvent*)), this, SLOT(menuEvent(QContextMenuEvent*)));
+	connect(w.get(), SIGNAL(menuEvent(QContextMenuEvent*)), this, SLOT(contextMenuEvent(QContextMenuEvent*)));
 	connect(w.get(), SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
 	connect(w.get(), SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
 }
@@ -1203,7 +1219,6 @@ void LaunchyWidget::connectAlpha()
 
 void LaunchyWidget::mousePressEvent(QMouseEvent *e)
 {
-	//showAlternatives(false);
 	activateWindow();
 	raise();
 	showAlternatives(false);
@@ -1330,15 +1345,14 @@ void LaunchyWidget::fadeOut()
 }
 
 
-void LaunchyWidget::showLaunchy(bool now)
+void LaunchyWidget::showLaunchy(bool noFade)
 {
 	shouldDonate();
 	showAlternatives(false);
 
 	// This gets around the weird Vista bug
-	// where the alpha border would dissappear
+	// where the alpha border would disappear
 	// on sleep or user switch
-
 	move(loadPosition());
 #ifdef Q_WS_WIN
 	platform->CreateAlphaBorder(this, "");
@@ -1351,15 +1365,15 @@ void LaunchyWidget::showLaunchy(bool now)
 	platform->ShowAlphaBorder();
 	this->show();
 
-	if (!now)
-	{
-		fadeIn();
-	}
-	else
+	if (noFade)
 	{
 		double end = (double) gSettings->value("GenOps/opaqueness", 100).toInt();
 		end /= 100.0;
 		setFadeLevel(end);
+	}
+	else
+	{
+		fadeIn();
 	}
 
 #ifdef Q_WS_X11
@@ -1383,27 +1397,29 @@ void LaunchyWidget::showLaunchy(bool now)
 }
 
 
-void LaunchyWidget::hideLaunchy(bool now)
+void LaunchyWidget::hideLaunchy(bool noFade)
 {
 	if (!isVisible())
 		return;
+
 	savePosition();
 	if (dropTimer != NULL && dropTimer->isActive())
 		dropTimer->stop();
 	if (alwaysShowLaunchy)
 		return;
 
-	if (alternatives != NULL)
-		showAlternatives(false);
+	showAlternatives(false);
 
 	if (isVisible())
 	{
-		if (!now)
-			fadeOut();
-		else
+		if (noFade)
 		{
 			setFadeLevel(0.0);
 			finishedFade(0.0);
+		}
+		else
+		{
+			fadeOut();
 		}
 	}
 
