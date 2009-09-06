@@ -1,5 +1,8 @@
 For installation instructions, please refer to the INSTALL.txt file.  This file is for the author's random notes to himself.
 
+Bugs for 2.2:
+Currently, trying to unload gcalc plugin is causing Launchy to crash
+
 
 To be done for 2.2 All:
 . why are there so many checks for updates on some networks?  It seems like it should only happen once..
