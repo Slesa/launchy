@@ -101,6 +101,9 @@ void Gui::newRow()
 	int row = table->rowCount();
 	table->insertRow(row);
 	table->setItem(row, 0, new QTableWidgetItem());
+	table->setItem(row, 1, new QTableWidgetItem());
+	table->setItem(row, 2, new QTableWidgetItem());
+	table->setItem(row, 3, new QTableWidgetItem());
 	table->verticalHeader()->resizeSection(table->rowCount()-1, table->verticalHeader()->fontMetrics().height() + ROW_PADDING);
 	table->setCurrentCell(table->rowCount()-1, 0);
 	table->editItem(table->currentItem());
