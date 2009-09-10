@@ -153,13 +153,14 @@ void VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 		shellExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
 		shellExecInfo.hwnd = NULL;
 		shellExecInfo.lpVerb = L"runas";
-		shellExecInfo.lpFile = (LPCTSTR) noun.utf16();
+		shellExecInfo.lpFile = (LPCTSTR)noun.utf16();
 		shellExecInfo.lpParameters = NULL;
 		QDir dir(noun);
 		QFileInfo info(noun);
 		if (!info.isDir() && info.isFile())
 			dir.cdUp();
-		shellExecInfo.lpDirectory = (LPCTSTR)QDir::toNativeSeparators(dir.absolutePath()).utf16();
+		QString filePath = QDir::toNativeSeparators(dir.absolutePath());
+		shellExecInfo.lpDirectory = (LPCTSTR)filePath.utf16();
 		shellExecInfo.nShow = SW_NORMAL;
 		shellExecInfo.hInstApp = NULL;
 
@@ -174,8 +175,8 @@ void VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 		shellExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
 		shellExecInfo.hwnd = NULL;
 		shellExecInfo.lpVerb = L"properties";
-		QString path = QDir::toNativeSeparators(noun);
-		shellExecInfo.lpFile = (LPCTSTR) path.utf16();
+		QString filePath = QDir::toNativeSeparators(noun);
+		shellExecInfo.lpFile = (LPCTSTR)filePath.utf16();
 		shellExecInfo.lpParameters = NULL;
 		shellExecInfo.lpDirectory = NULL;
 		shellExecInfo.nShow = SW_NORMAL;
