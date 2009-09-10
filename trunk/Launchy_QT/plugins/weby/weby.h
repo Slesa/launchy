@@ -32,21 +32,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <boost/shared_ptr.hpp>
 
+
 class Suggest : public QObject
 {
 	Q_OBJECT
 public:
+	Suggest();
+	void run(QString url, QString query);
+
+	QStringList results;
+
+public slots:
+	void httpGetFinished(int id, bool error);
+
+private:
+	QString query;
 	QHttp http;
 	QEventLoop loop; 
-	QString query;
-	QString url;
-	QStringList results;
-	Suggest() {}
-	Suggest(QString url, QString query) : url(url), query(query) {}
-	void run();
-public slots:
-	void httpGetFinished(bool error);
 };
+
+
 using namespace boost;
 
 class WebyPlugin : public QObject, public PluginInterface
@@ -63,6 +68,8 @@ public:
 
 private:
 	shared_ptr<Gui> gui;
+	Suggest suggest;
+
 public:
 	QString libPath;
 	WebyPlugin() {
@@ -76,9 +83,9 @@ public:
 	void getLabels(QList<InputData>*);
 	void getID(uint*);
 	void getName(QString*);
-	void getResults(QList<InputData>* id, QList<CatItem>* results);
+	void getResults(QList<InputData>* inputData, QList<CatItem>* results);
 	void getCatalog(QList<CatItem>* items);
-	void launchItem(QList<InputData>*, CatItem*);
+	void launchItem(QList<InputData>* inputData, CatItem*);
 	void doDialog(QWidget* parent, QWidget**);
 	void endDialog(bool accept);
 	WebySite getDefault();
