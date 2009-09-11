@@ -34,57 +34,61 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 WebyPlugin* gWebyInstance = NULL;
 
-
+int Suggest::currentId = -1;
 
 Suggest::Suggest()
 {
+    connect(&http, SIGNAL(requestFinished(int, bool)), this, SLOT(httpGetFinished(int, bool)));
 }
 
 
 void Suggest::run(QString url, QString query)
 {
-    connect(&http, SIGNAL(requestFinished(int, bool)), this, SLOT(httpGetFinished(int, bool)));
 	this->query = query;
 	url.replace("%s", QUrl::toPercentEncoding(query));
 	QUrl u = QUrl::fromPercentEncoding(url.toAscii());
 
 	http.setHost(u.host(), u.port(80));	
-	int id = http.get(u.toEncoded(QUrl::RemoveScheme | QUrl::RemoveAuthority));	
-	qDebug() << "requesting " << id;
+	currentId = http.get(u.toEncoded(QUrl::RemoveScheme | QUrl::RemoveAuthority));	
+	qDebug() << "requesting " << currentId;
 	loop.exec();
 } 
 
 
 void Suggest::httpGetFinished(int id, bool error)
 {
-	id;
 	qDebug() << "finished " << id;
 
-	results << query;
-
-	if (!error)
+	if (id >= currentId)
 	{
-		QRegExp regex("\\[.*\\[(.*)\\]\\]");
-		QRegExp rx("\"((?:[^\\\\\"]|\\\\\")*)\"");
-
-		QString text = http.readAll();
-		if (regex.indexIn(text) != -1)
+		if (query.count() > 0)
 		{
-			QString csv = regex.cap(1);
+			results << query;
+		}
 
-			int pos = 0;
-			while ((pos = rx.indexIn(csv, pos)) != -1)
+		if (!error)
+		{
+			QRegExp regex("\\[.*\\[(.*)\\]\\]");
+			QRegExp rx("\"((?:[^\\\\\"]|\\\\\")*)\"");
+
+			QString text = http.readAll();
+			if (regex.indexIn(text) != -1)
 			{
-				QString result = rx.cap(1);
-				if (result.count() > 0)
-					results << result;
+				QString csv = regex.cap(1);
 
-				pos += rx.matchedLength();
+				int pos = 0;
+				while ((pos = rx.indexIn(csv, pos)) != -1)
+				{
+					QString result = rx.cap(1);
+					if (result.count() > 0)
+						results << result;
+
+					pos += rx.matchedLength();
+				}
 			}
 		}
+		loop.exit();
 	}
-
-	loop.exit();
 }
 
 
@@ -237,7 +241,10 @@ void WebyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results
 	{
 		const QString & text = inputData->last().getText();
 		// This is a website, create an entry for it
-		results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
+		if (!text.trimmed().isEmpty())
+		{
+			results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
+		}
 	}
 
 	if (inputData->count() > 1 && (unsigned int) inputData->first().getTopResult().id == HASH_WEBY)
@@ -257,10 +264,10 @@ void WebyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results
 			}
 		}
 
-		if (!suggestUrl.isEmpty())
+		if (!suggestUrl.isEmpty() && !text.trimmed().isEmpty())
 		{
 			// query the web
-			Suggest s;
+			Suggest suggest;
 			suggest.run(suggestUrl, text);
 
 			foreach(QString res, suggest.results)
@@ -270,7 +277,10 @@ void WebyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results
 		}
 		else
 		{
-			results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
+			if (!text.trimmed().isEmpty())
+			{
+				results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
+			}
 		}
 	}
 
@@ -278,7 +288,7 @@ void WebyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results
 	if (results->size() == 0 && inputData->count() <= 1)
 	{
 		const QString & text = inputData->last().getText();
-		if (text != "")
+		if (!text.trimmed().isEmpty())
 		{
 			QString name = getDefault().name;
 			if (name != "")
