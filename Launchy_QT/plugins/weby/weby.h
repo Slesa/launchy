@@ -48,7 +48,8 @@ public slots:
 private:
 	QString query;
 	QHttp http;
-	QEventLoop loop; 
+	QEventLoop loop;
+	static int currentId;
 };
 
 
@@ -68,7 +69,6 @@ public:
 
 private:
 	shared_ptr<Gui> gui;
-	Suggest suggest;
 
 public:
 	QString libPath;
