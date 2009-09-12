@@ -105,10 +105,11 @@ QIcon IconExtractor::getIcon(const CatItem& item)
 {
 	if (item.icon.isNull())
 	{
+#ifdef Q_WS_X11
 		QFileInfo info(item.fullPath);
 		if (info.isDir())
 			return platform->icon(QFileIconProvider::Folder);
-
+#endif
 		return platform->icon(QDir::toNativeSeparators(item.fullPath));
 	}
 	else
