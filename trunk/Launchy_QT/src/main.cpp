@@ -764,63 +764,67 @@ void LaunchyWidget::iconExtracted(int itemIndex, QIcon icon)
 void LaunchyWidget::searchFiles(const QString& searchText, QList<CatItem>& searchResults)
 {
 	// Split the string on the last slash
-	QString path = QDir::fromNativeSeparators(searchText);
-	if (path.startsWith("~"))
-		path.replace("~",QDir::homePath());
+	QString searchPath = QDir::fromNativeSeparators(searchText);
 
-	if (path.size() == 2 && path[1] == ':')
-		path += "/";
+	if (searchPath.startsWith("~"))
+		searchPath.replace("~", QDir::homePath());
+
+#ifdef Q_WS_WIN
+	if (searchPath.startsWith("/"))
+		return;
+	if (searchPath.size() == 2 && searchPath[1] == ':')
+		searchPath += "/";
+#endif
 
 	// Network searches are too slow
-	if (path.startsWith("//"))
+	if (searchPath.startsWith("//"))
 		return;
 
-	QString dir, file;
-	dir = path.mid(0,path.lastIndexOf("/")+1);
-	file = path.mid(path.lastIndexOf("/")+1);
+	QString directoryPart = searchPath.mid(0,searchPath.lastIndexOf("/")+1);
+	QString filePart = searchPath.mid(searchPath.lastIndexOf("/")+1);
 
-
-	QFileInfo info(dir);
+	QFileInfo info(directoryPart);
 	if (!info.isDir())
 		return;
 
 	inputData.last().setLabel(LABEL_FILE);
 
 	// Okay, we have a directory, find files that match "file"
-	QDir qd(dir);
-	QStringList ilist;
+	QDir dir(directoryPart);
+	QStringList fileList;
+	QDir::Filters filters = QDir::Dirs | QDir::Files;
 	if (gSettings->value("GenOps/showHiddenFiles", false).toBool())
-		ilist = qd.entryList(QStringList(file + "*"), QDir::Hidden | QDir::AllDirs | QDir::Files, QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
-	else
-		ilist = qd.entryList(QStringList(file + "*"), QDir::AllDirs | QDir::Files , QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
+		filters |= QDir::Hidden;
+	
+	bool userWildcard = filePart.contains("*") || filePart.contains("?");
+	fileList = dir.entryList(QStringList(filePart + "*"), filters, QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
 
-	for(int i = ilist.size()-1; i >= 0; i--)
+	foreach(QString fileName, fileList)
 	{
-		QString inf = ilist[i];
-
-		if (inf.startsWith("."))
+		// don't include self and parent entries
+		if (fileName == "." || fileName == "..")
 			continue;
-		if (inf.mid(0, file.count()).compare(file,  Qt::CaseInsensitive) == 0)
+
+		if (userWildcard || fileName.indexOf(filePart, 0, Qt::CaseInsensitive) == 0)
 		{
-			QString fp = qd.absolutePath() + "/" + inf;
-			fp = QDir::cleanPath(fp);
-			QFileInfo in(fp);
-			if (in.isDir())
-				fp += "/";
+			QString filePath = dir.absolutePath() + "/" + fileName;
+			filePath = QDir::cleanPath(filePath);
+			if (dir.exists(filePath))
+				filePath += "/";
 
-
-			CatItem item(QDir::toNativeSeparators(fp), inf);
-			searchResults.push_front(item);
+			CatItem item(QDir::toNativeSeparators(filePath), fileName);
+			searchResults.push_back(item);
 		}
 	}
 
 	// Showing a directory
-	if (file == "")
+	if (filePart.count() == 0)
 	{
-		QString n = QDir::toNativeSeparators(dir);
-		if (!n.endsWith(QDir::separator()))
-			n += QDir::separator();
-		CatItem item(n);
+		QString fullPath = QDir::toNativeSeparators(directoryPart);
+		if (!fullPath.endsWith(QDir::separator()))
+			fullPath += QDir::separator();
+		QString name = info.dir().dirName();
+		CatItem item(fullPath, name.count() == 0 ? fullPath : name);
 		searchResults.push_front(item);
 	}
 }
