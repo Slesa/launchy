@@ -1,13 +1,3 @@
-boundary = 0,0,465,145
-input = 15,84,410,18
-inputAlignment = left
-output = 0,54,465,18
-outputAlignment = center
-alternatives = 10,101,445,80
-icon = 217,9,32,32
-optionsButton = 444,23,14,15
-;closeButton = 444,23,14,15
-
 ; These describe the font of the full path in the dropdown box
 ; This should be in style.qss but the style sheet doesn't support it
 dropPathColor = 102,102,102

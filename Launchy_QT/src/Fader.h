@@ -3,6 +3,7 @@
 
 
 #include <QThread>
+#include <QMutex>
 
 
 class Fader : public QThread
@@ -12,25 +13,27 @@ class Fader : public QThread
 public:
 	Fader(QObject* parent = NULL);
 	~Fader();
-	void stop() { keepRunning = false; }
+	
+	void fadeIn(bool quick);
+	void fadeOut(bool quick);
 	void run();
-	void fadeIn();
-	void fadeOut();
-	void setFadeType(bool type);
+
+	inline void stop() { keepRunning = false; }
+	inline bool isFading() const { return delta < 0 && isRunning(); }
+
 signals:
-	void fadeLevel(double);
-	void finishedFade(double);
+	void fadeLevel(double level);
 
 private:
+	QMutex mutex;
 	bool keepRunning;
-	bool fadeType;
+
+	double delta;
+	int delay;
+
+	double level;
+	double targetLevel;
 };
-
-
-inline void Fader::setFadeType(bool type)
-{
-	fadeType = type;
-}
 
 
 #endif

@@ -77,6 +77,10 @@
 				RelativePath=".\platform_win_util.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\WinIconProvider.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -89,6 +93,10 @@
 			</File>
 			<File
 				RelativePath=".\platform_win_util.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WinIconProvider.h"
 				>
 			</File>
 		</Filter>

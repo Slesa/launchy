@@ -59,15 +59,14 @@ public:
 		return shared_ptr<QApplication>(new QApplication(argc, argv));
 	}
 
-	virtual shared_ptr<QWidget> getAlphaWidget() = 0;
 
 	QIcon icon(const QFileInfo & info) { return icons->icon(info); }
 	QIcon icon(QFileIconProvider::IconType type) { return icons->icon(type); }
 	virtual QString GetSettingsDirectory() = 0;
-	virtual QList<Directory> GetInitialDirs() = 0;
+	virtual QList<Directory> GetDefaultCatalogDirectories() = 0;
 	virtual void AddToNotificationArea() = 0;
 	virtual void RemoveFromNotificationArea() = 0;
-	virtual bool Execute(QString path, QString args) { path = path ; args = args; return false; }
+	virtual bool Execute(const QString& path, const QString& args) { path; args; return false; }
 	virtual bool isAlreadyRunning() = 0;
 	virtual void showOtherInstance() { }
 
@@ -75,16 +74,11 @@ public:
 	virtual bool SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot) = 0;
 
 	// Need to alter an indexed item?  e.g. .desktop files
-	virtual void alterItem(CatItem*) {return;};
+	virtual void alterItem(CatItem*) { }
 
 	// Alpha border functions	
-	virtual bool SupportsAlphaBorder() { return false; }
-	virtual bool CreateAlphaBorder(QWidget* w, QString ImageName) { w = w; ImageName = ImageName; return false; }
-	virtual void DestroyAlphaBorder() { return; }
-	virtual void MoveAlphaBorder(QPoint pos) { pos = pos; return; }
-	virtual void HideAlphaBorder() { return; }
-	virtual void ShowAlphaBorder() { return; }
-	virtual void SetAlphaOpacity(double) { return; }
+	virtual bool SupportsAlphaBorder() const { return false; }
+
 	//virtual void KillLaunchys() = 0;
 	virtual QHash<QString, QList<QString> > GetDirectories() = 0;
 

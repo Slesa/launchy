@@ -127,7 +127,7 @@ public:
 		return *this;
 	}
 
-	bool operator==(const CatItem& other) const{
+	bool operator==(const CatItem& other) const {
 		if (fullPath == other.fullPath)
 			return true;
 		return false;
@@ -191,8 +191,8 @@ public:
 	InputData(QString str) : text(str) { id = 0;}
 };
 
-bool CatLess (CatItem* left, CatItem* right); 
-bool CatLessNoPtr (CatItem & a, CatItem & b);
+bool CatLess(CatItem* left, CatItem* right); 
+bool CatLessNoPtr(CatItem& a, CatItem& b);
 
 inline QDataStream &operator<<(QDataStream &out, const CatItem &item) {
 	out << item.fullPath;

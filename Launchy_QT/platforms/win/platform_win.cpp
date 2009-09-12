@@ -17,11 +17,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+
 #include <QtGui>
 #include <QKeyEvent>
 #include <QDir>
 #include <QObject>
 #include "platform_win.h"
+#include "WinIconProvider.h"
 
 
 // Hidden widget that listen for various useful Windows messages
@@ -45,26 +47,35 @@ private:
 
 	virtual bool winEvent(MSG* msg, long* result)
 	{
-		if (msg->message == WM_SETTINGCHANGE)
+		switch (msg->message)
 		{
+		case WM_SETTINGCHANGE:
 			// Refresh Launchy's environment on settings changes
 			if (msg->lParam && _tcscmp((TCHAR*)msg->lParam, _T("Environment")) == 0)
 			{
 				UpdateEnvironment();
 			}
-		}
-		else if (msg->message == activateMessageId)
-		{
-			QEvent event(QEvent::User);
-			foreach (QWidget *widget, QApplication::topLevelWidgets())
+			break;
+
+		case WM_POWERBROADCAST:
+			break;
+		case WM_WTSSESSION_CHANGE:
+			break;
+
+		default:
+			if (msg->message == activateMessageId)
 			{
-				QApplication::sendEvent(widget, &event);
+				QEvent event(QEvent::User);
+				foreach (QWidget *widget, QApplication::topLevelWidgets())
+				{
+					if (widget->objectName() == "main")
+						QApplication::sendEvent(widget, &event);
+				}
 			}
 		}
 		return QWidget::winEvent(msg, result);
 	}
 
-	QWidget* widget;
 	UINT activateMessageId;
 
 	static shared_ptr<WindowMessageListener> instance;

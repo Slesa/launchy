@@ -4,49 +4,50 @@
 <context>
     <name>LaunchyWidget</name>
     <message>
-        <location filename="../src/main.cpp" line="86"/>
+        <location filename="../src/main.cpp" line="91"/>
         <source>Launchy Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="91"/>
+        <location filename="../src/main.cpp" line="97"/>
         <source>Close Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="165"/>
+        <location filename="../src/main.cpp" line="66"/>
+        <location filename="../src/main.cpp" line="166"/>
         <source>Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="165"/>
+        <location filename="../src/main.cpp" line="166"/>
         <source>The hotkey you have chosen is already in use. Please select another from Launchy&apos;s preferences.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="833"/>
+        <location filename="../src/main.cpp" line="876"/>
         <source>A new version of Launchy is available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="834"/>
+        <location filename="../src/main.cpp" line="877"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1244"/>
+        <location filename="../src/main.cpp" line="1300"/>
         <source>Rebuild Catalog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1246"/>
+        <location filename="../src/main.cpp" line="1302"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1249"/>
+        <location filename="../src/main.cpp" line="1305"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -220,13 +221,13 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
     </message>
     <message>
         <location filename="../src/options.cpp" line="193"/>
-        <location filename="../src/options.cpp" line="495"/>
+        <location filename="../src/options.cpp" line="498"/>
         <source>Index has </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="195"/>
-        <location filename="../src/options.cpp" line="495"/>
+        <location filename="../src/options.cpp" line="498"/>
         <source> items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -246,7 +247,7 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="618"/>
+        <location filename="../src/options.cpp" line="621"/>
         <source>Select a directory</source>
         <translation type="unfinished"></translation>
     </message>

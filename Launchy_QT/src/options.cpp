@@ -174,7 +174,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	gSettings->endArray();
 	if (memDirs.count() == 0)
 	{
-		memDirs = gMainWidget->platform->GetInitialDirs();
+		memDirs = gMainWidget->platform->GetDefaultCatalogDirectories();
 	}
 
 	for (int i = 0; i < memDirs.count(); ++i)
@@ -298,9 +298,9 @@ void OptionsDialog::accept()
 
 	QDialog::accept();
 
-	// Now save the options that cause redraws
+	// Now save the options that require launchy to be shown or redrawed
 	bool show = gMainWidget->setAlwaysShow(genAlwaysShow->isChecked());
-	bool redraw = gMainWidget->setAlwaysTop(genAlwaysTop->isChecked());
+	show |= gMainWidget->setAlwaysTop(genAlwaysTop->isChecked());
 	gMainWidget->setOpaqueness(genOpaqueness->value());
 
 	// Apply Skin Options
@@ -309,12 +309,12 @@ void OptionsDialog::accept()
 	if (skinList->currentRow() >= 0 && skinName != prevSkinName)
 	{
 		gSettings->setValue("GenOps/skin", skinName);
-		gMainWidget->setSkin(skinName, true);
-		redraw = false;
+		gMainWidget->setSkin(skinName);
+		show = false;
 	}
 
-	if (redraw || show)
-		gMainWidget->showLaunchy(true);
+	if (show)
+		gMainWidget->showLaunchy();
 }
 
 
@@ -398,10 +398,13 @@ void OptionsDialog::skinChanged(const QString& newSkin)
 			painter.end();
 
 			pix = QPixmap::fromImage(resultImage);
+			QPixmap scaled = pix.scaled(skinPreview->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+			skinPreview->setPixmap(scaled);
 		}
-
-		QPixmap scaled;
-		scaled = pix.scaled(skinPreview->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+	}
+	else if (pix.load(directory + "frame.png"))
+	{
+		QPixmap scaled = pix.scaled(skinPreview->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 		skinPreview->setPixmap(scaled);
 	}
 	else

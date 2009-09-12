@@ -17,66 +17,94 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include "catalog.h"
-#include "globals.h"
-#include <qdebug.h>
-
+#include <QDebug.h>
 #include <QtAlgorithms>
 
+#include "catalog.h"
+#include "globals.h"
 
-bool CatLessNoPtr (CatItem & a, CatItem & b)
+
+bool CatLessNoPtr(CatItem & a, CatItem & b)
 {
-	return CatLess(&a, &b);
+	bool less = CatLess(&a, &b);
+
+/*	if (less)
+		qDebug() << a.lowName << "(" << a.usage << ") < " << b.lowName << " (" << b.usage << ")";
+	else
+		qDebug() << b.lowName << "(" << b.usage << ") < " << a.lowName << " (" << a.usage << ")";
+*/
+	return less;
 }
 
-bool CatLess (CatItem* a, CatItem* b)
+
+bool CatLess(CatItem* a, CatItem* b)
 {
-	/*
-	if (a->isHistory)
-		return true;
-	if (b->isHistory)
-		return false;
-	*/
 	bool localEqual = a->lowName == gSearchTxt;
 	bool otherEqual = b->lowName == gSearchTxt;
 
+	// Exact match between search text and item name has higest priority
 	if (localEqual && !otherEqual)
 		return true;
 	if (!localEqual && otherEqual)
 		return false;
 
-	if(a->usage > b->usage)
-		return true;
-	if (a->usage < b->usage)
-		return false;
-
 	int localFind = a->lowName.indexOf(gSearchTxt);
 	int otherFind = b->lowName.indexOf(gSearchTxt);
 
-	if (localFind != -1  && otherFind == -1)
+	if (gSearchTxt.count() == 1)
+	{
+		// Match at the start
+		if (localFind == 0 && otherFind != 0)
+			return true;
+		else if (localFind != 0 && otherFind == 0)
+			return false;
+
+		// Higher usage
+		if (a->usage > b->usage)
+			return true;
+		if (a->usage < b->usage)
+			return false;
+	}
+
+	// Contiguous text anywhere in the item name
+	if (localFind != -1 && otherFind == -1)
 		return true;
 	else if (localFind == -1 && otherFind != -1)
 		return false;
 
 	if (localFind != -1 && otherFind != -1)
 	{
+		// Both have word matches
+		// Higher usage
+		if (a->usage > b->usage)
+			return true;
+		if (a->usage < b->usage)
+			return false;
+
+		// Contiguous text nearer the start of the item name
 		if (localFind < otherFind)
 			return true;
 		else if (otherFind < localFind)
+			return false;
+	}
+	else
+	{
+		// Higher usage
+		if (a->usage > b->usage)
+			return true;
+		if (a->usage < b->usage)
 			return false;
 	}
 
 	int localLen = a->lowName.count();
 	int otherLen = b->lowName.count();
 
+	// Favour shorter item names
 	if (localLen < otherLen)
 		return true;
 	if (localLen > otherLen)
 		return false;
 
 	// Absolute tiebreaker to prevent loops
-	if (a->fullPath < b->fullPath)
-		return true;
-
-	return false;
+	return a->fullPath < b->fullPath;
 }

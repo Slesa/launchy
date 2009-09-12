@@ -1,9 +1,14 @@
+#launchy {
+}
+
 #input {
 	font: 14px "NoteScrawl";
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
 	color: rgb(157,12,21);
+	qproperty-alignment: AlignLeft;
+	qproperty-geometry: rect(25 130 130 25);
 }
 
 #output {
@@ -12,6 +17,12 @@
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
 	color: rgb(157,12,21);
+	qproperty-alignment: AlignCenter;
+	qproperty-geometry: rect(25 170 170 20);
+}
+
+#outputIcon {
+	qproperty-geometry: rect(180 65 32 32);
 }
 
 #alternatives {
@@ -21,7 +32,8 @@
 	color: rgb(157,12,21);
 	border-style: solid;
 	border-width: 2px;
-	border-color: rgb(255,243,149)
+	border-color: rgb(255,243,149);
+	qproperty-geometry: rect(8 215 256 40);
 }
 
 QScrollBar#altScroll:vertical {

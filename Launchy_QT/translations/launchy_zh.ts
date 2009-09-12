@@ -23,32 +23,33 @@
 <context>
     <name>LaunchyWidget</name>
     <message>
-        <location filename="../src/main.cpp" line="86"/>
+        <location filename="../src/main.cpp" line="91"/>
         <source>Launchy Options</source>
         <translation type="unfinished">Launchy 选项</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="91"/>
+        <location filename="../src/main.cpp" line="97"/>
         <source>Close Launchy</source>
         <translation type="unfinished">关闭 Launchy</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="165"/>
+        <location filename="../src/main.cpp" line="66"/>
+        <location filename="../src/main.cpp" line="166"/>
         <source>Launchy</source>
         <translation type="unfinished">Launchy</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="165"/>
+        <location filename="../src/main.cpp" line="166"/>
         <source>The hotkey you have chosen is already in use. Please select another from Launchy&apos;s preferences.</source>
         <translation type="unfinished">你选择的快捷键已经被占用， 请选择其他的快捷键.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="833"/>
+        <location filename="../src/main.cpp" line="876"/>
         <source>A new version of Launchy is available</source>
         <translation type="unfinished">Launchy 有新版本了！</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="834"/>
+        <location filename="../src/main.cpp" line="877"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
@@ -63,17 +64,17 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
 请到这里下载： 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1244"/>
+        <location filename="../src/main.cpp" line="1300"/>
         <source>Rebuild Catalog</source>
         <translation type="unfinished">重新建立索引</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1246"/>
+        <location filename="../src/main.cpp" line="1302"/>
         <source>Options</source>
         <translation type="unfinished">选项</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1249"/>
+        <location filename="../src/main.cpp" line="1305"/>
         <source>Exit</source>
         <translation type="unfinished">退出</translation>
     </message>
@@ -290,13 +291,13 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
     </message>
     <message>
         <location filename="../src/options.cpp" line="193"/>
-        <location filename="../src/options.cpp" line="495"/>
+        <location filename="../src/options.cpp" line="498"/>
         <source>Index has </source>
         <translation type="unfinished">索引有 </translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="195"/>
-        <location filename="../src/options.cpp" line="495"/>
+        <location filename="../src/options.cpp" line="498"/>
         <source> items</source>
         <translation type="unfinished"></translation>
     </message>
@@ -316,7 +317,7 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="unfinished">你选择的快捷键已经被占用， 请选择其他的快捷键.</translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="618"/>
+        <location filename="../src/options.cpp" line="621"/>
         <source>Select a directory</source>
         <translation type="unfinished">选择一个目录</translation>
     </message>

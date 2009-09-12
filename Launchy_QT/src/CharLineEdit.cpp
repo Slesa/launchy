@@ -9,59 +9,106 @@ CharLineEdit::CharLineEdit(QWidget* parent) :
 }
 
 
-void CharLineEdit::keyPressEvent(QKeyEvent* key)
+void CharLineEdit::keyPressEvent(QKeyEvent* event)
 {
-	if (key->key() == Qt::Key_Backspace && selectionStart() == -1)
+	bool handled = false;
+
+	if (selectionStart() == -1)
 	{
-		int cursor = cursorPosition() - 3;
-		if (text().mid(cursor, 3) == separatorText())
+		switch (event->key())
 		{
-			// Delete separator characters in a single keypress
-			setText(text().left(cursor) + text().mid(cursor+3));
-			setCursorPosition(cursor);
-			key->ignore();
+		case Qt::Key_Backspace:
+			if (isAtEndOfSeparator())
+			{
+				// Delete separator characters in a single keypress.
+				// Don't use setText This method maintains the undo history
+				backspace();
+				backspace();
+				backspace();
+				handled = true;
+			}
+			break;
+
+		case Qt::Key_Delete:
+			if (isAtStartOfSeparator())
+			{
+				del();
+				del();
+				del();
+				handled = true;
+			}
+			break;
+
+		case Qt::Key_Left:
+			if (isAtEndOfSeparator())
+			{
+				cursorBackward(false, 3);
+				handled = true;
+			}
+			break;
+
+		case Qt::Key_Right:
+			if (isAtStartOfSeparator())
+			{
+				cursorForward(false, 3);
+				handled = true;
+			}
+			break;
 		}
-		else
-		{
-			QLineEdit::keyPressEvent(key);
-		}
+	}
+
+	if (handled)
+	{
+		event->ignore();
 	}
 	else
 	{
-		QLineEdit::keyPressEvent(key);
+		QLineEdit::keyPressEvent(event);
 	}
 
-	emit keyPressed(key);
+	emit keyPressed(event);
 }
 
 
 // This is how you pick up the tab key
 bool CharLineEdit::focusNextPrevChild(bool next)
 {
-	next = next; // Remove compiler warning
-	QKeyEvent key(QEvent::KeyPress, Qt::Key_Tab, NULL);
-	emit keyPressed(&key);
+	next; // Remove compiler warning
+	QKeyEvent event(QEvent::KeyPress, Qt::Key_Tab, NULL);
+	emit keyPressed(&event);
+	
 	return true;
+}
+
+
+void CharLineEdit::focusInEvent(QFocusEvent* event)
+{
+	QLineEdit::focusInEvent(event);
+
+	emit focusIn(event);
 }
 
 
 void CharLineEdit::focusOutEvent(QFocusEvent* event)
 {
+	QLineEdit::focusOutEvent(event);
+
 	emit focusOut(event);
 }
 
 
-void CharLineEdit::inputMethodEvent(QInputMethodEvent *e)
+void CharLineEdit::inputMethodEvent(QInputMethodEvent* event)
 {
-	QLineEdit::inputMethodEvent(e);
-	if (e->commitString() != "")
+	QLineEdit::inputMethodEvent(event);
+
+	if (event->commitString() != "")
 	{
-		emit inputMethod(e);
+		emit inputMethod(event);
 	}
 }
 
 
-QChar CharLineEdit::sepChar() const
+QChar CharLineEdit::separatorChar() const
 {
 	QFontMetrics met = fontMetrics();
 	QChar arrow(0x25ba);
@@ -74,5 +121,17 @@ QChar CharLineEdit::sepChar() const
 
 QString CharLineEdit::separatorText() const
 {
-	return QString(" ") + sepChar() + " ";
+	return QString(" ") + separatorChar() + " ";
+}
+
+
+bool CharLineEdit::isAtStartOfSeparator() const
+{
+	return text().mid(cursorPosition(), 3) == separatorText();
+}
+
+
+bool CharLineEdit::isAtEndOfSeparator() const
+{
+	return text().mid(cursorPosition() - 3, 3) == separatorText();
 }
