@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QtGui>
 #include <QFile>
 #include <QDir>
+#include <QClipboard>
 
 #ifdef Q_WS_WIN
 #include <windows.h>
@@ -115,6 +116,7 @@ void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* result
 			results->push_back(CatItem("Run", "Run", 0, getIconPath() + "run.png"));
 			results->push_back(CatItem("Run as", "Run as a different user", HASH_VERBY, getIconPath() + "run.png"));
 			results->push_back(CatItem("Open containing folder", "Open containing folder", HASH_VERBY, getIconPath() + "opencontainer.png"));
+			results->push_back(CatItem("Copy path", "Copy path to clipboard", HASH_VERBY, getIconPath() + "copy.png"));
 			results->push_back(CatItem("Properties", "File properties", HASH_VERBY, getIconPath() + "properties.png"));
 			inputData->first().setID(HASH_VERBY);
 			inputData->first().getTopResult().id = HASH_VERBY;
@@ -135,9 +137,11 @@ void VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 	if (inputData->count() > 1)
 		verb = inputData->last().getTopResult().shortName;
 
-	if (verb == "Open containing folder") {
+	if (verb == "Open containing folder")
+	{
 		QFileInfo info(noun);
-		if (info.isSymLink()) {
+		if (info.isSymLink())
+		{
 			info.setFile(info.symLinkTarget());
 		}
 
@@ -184,6 +188,16 @@ void VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 
 		ShellExecuteEx(&shellExecInfo);
 #endif
+	}
+	else if (verb == "Copy path to clipboard")
+	{
+		QFileInfo info(noun);
+		if (info.isSymLink())
+		{
+			info.setFile(info.symLinkTarget());
+		}
+		QClipboard *clipboard = QApplication::clipboard();
+		clipboard->setText(QDir::toNativeSeparators(info.canonicalFilePath()));
 	}
 	else
 	{

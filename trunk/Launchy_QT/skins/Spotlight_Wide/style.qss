@@ -1,21 +1,15 @@
+#launchy {
+}
+
 #opsButton {
 	border: none;
 	background: url(skins/Spotlight_Wide/opsButton.png);
+	qproperty-geometry: rect(444 23 14 15);
 }
 
 #opsButton:pressed {
 	border: none;
 	background-image: url(skins/Spotlight_Wide/opsButtonPressed.png);
-}
-
-#closeButton {
-	border: none;
-	background: url(skins/Spotlight_Wide/closeButton.png);
-}
-
-#closeButton:pressed {
-	border: none;
-	background-image: url(skins/Spotlight_Wide/closeButtonPressed.png);
 }
 
 #input {
@@ -24,6 +18,8 @@
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
 	color: #666666;
+	qproperty-alignment: AlignLeft;
+	qproperty-geometry: rect(15 84 410 18);
 }
 
 #output {
@@ -32,6 +28,12 @@
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
 	color: white;
+	qproperty-alignment: AlignCenter;
+	qproperty-geometry: rect(0 54 465 18);
+}
+
+#outputIcon {
+	qproperty-geometry: rect(217 9 32 32);
 }
 
 #alternatives {
@@ -41,7 +43,12 @@
 	background: white;
 	selection-background-color: rgb(68,124,184);
 	selection-color: white;
-	border: none; 
+	border: none;
+	qproperty-geometry: rect(10 103 445 80);
+}
+
+#alternatives::item {
+	padding: 2px 0px 2px 0px;
 }
 
 QScrollBar#altScroll:vertical {

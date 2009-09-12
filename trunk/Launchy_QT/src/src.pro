@@ -72,7 +72,9 @@ win32 {
     FORMS = options.ui
     RC_FILE = ../win/launchy.rc
     LIBS += shell32.lib \
-        ole32.lib
+        ole32.lib \
+        user32.lib \
+        gdi32.lib
     if(!debug_and_release|build_pass) { 
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/

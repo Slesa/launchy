@@ -2,8 +2,8 @@
 #include "CharListWidget.h"
 
 
-CharListWidget::CharListWidget(QWidget* /*parent*/) : 
-	QListWidget(NULL)
+CharListWidget::CharListWidget(QWidget* parent) : 
+	QListWidget(parent)
 {
 #ifdef Q_WS_X11
 	setWindowFlags( windowFlags() | Qt::Tool | Qt::SplashScreen);

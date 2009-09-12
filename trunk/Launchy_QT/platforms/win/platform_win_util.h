@@ -1,16 +1,5 @@
-#ifndef PLATFORM_WIN_UTIL
-#define PLATFORM_WIN_UTIL
-
-#define VC_EXTRALEAN
-#define WINVER 0x05100
-#define _WIN32_WINNT 0x0510	
-#define _WIN32_WINDOWS 0x0510 
-#define _WIN32_IE 0x0600
-
-
-#ifndef _UNICODE
-#define _UNICODE
-#endif
+#ifndef __PLATFORM_WIN_UTIL_H
+#define __PLATFORM_WIN_UTIL_H
 
 
 #include <QFileIconProvider>
@@ -30,7 +19,7 @@
 #pragma warning (disable : 4089)
 
 void UpdateEnvironment();
-BOOL GetShellDir(int iType, QString& szPath);
+QString GetShellDirectory(int type);
 
 
 class LimitSingleInstance
@@ -62,67 +51,6 @@ public:
   {
     return (ERROR_ALREADY_EXISTS == m_dwLastError);
   }
-};
-
-
-class WinIconProvider : QFileIconProvider
-{
-public:
-	WinIconProvider() {
-		iconlist = GetSystemImageListHandle(false);
-	}
-	~WinIconProvider() {
-
-	}
-
-	virtual QIcon icon(const QFileInfo& info) const;
-
-private:
-	HIMAGELIST iconlist;	
-
-private:
-	HIMAGELIST GetSystemImageListHandle( bool bSmallIcon );
-	int GetFileIconIndex( QString strFileName , BOOL bSmallIcon ) const;
-	int GetDirIconIndex(BOOL bSmallIcon );
-	HICON GetFileIconHandle(QString strFileName, BOOL bSmallIcon);
-	HICON GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIcon) const;
-	HICON GetFolderIconHandle(BOOL bSmallIcon );
-	QString GetFileType(QString strFileName);
-	QPixmap convertHIconToPixmap( const HICON icon) const;
-};
-
-
-class QLaunchyAlphaBorder : public QWidget {
-
-	Q_OBJECT  
-public:
-	QLaunchyAlphaBorder(QWidget *parent)
-	: QWidget(parent,Qt::Tool | Qt::FramelessWindowHint) {
-	}
-	~QLaunchyAlphaBorder() {}
-	void SetImage(QString name);
-	void RepositionWindow(QPoint pos) {
-		move(pos);
-	}
-
-	void SetAlphaOpacity(double trans);
-	void contextMenuEvent(QContextMenuEvent* evt) {
-	    emit menuEvent(evt);
-	}
-	
-	void mousePressEvent(QMouseEvent *event) {
-	    emit mousePress(event);
-	}
-	void mouseMoveEvent(QMouseEvent *e) {
-	    emit mouseMove(e);
-	}
- signals:
-	void menuEvent(QContextMenuEvent*);
-	void mousePress(QMouseEvent*);
-	void mouseMove(QMouseEvent*);
-
-private:
-	QPoint moveStartPoint;
 };
 
 

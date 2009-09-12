@@ -21,22 +21,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define PLATFORM_WIN
 
 
-#define VC_EXTRALEAN
-#define WINVER 0x05100
-#define _WIN32_WINNT 0x0510	
-#define _WIN32_WINDOWS 0x0510 
-#define _WIN32_IE 0x0600
-
-
-#ifndef _UNICODE
-#define _UNICODE
-#endif
-
 #include <QFileIconProvider>
 #include <windows.h>
 #include <shlobj.h>
 #include <userenv.h>
-#include <TCHAR.h>
+#include <tchar.h>
 
 #include <QIcon>
 #include <QPixmap>
@@ -53,11 +42,6 @@ class PlatformWin : public QObject, public PlatformBase
 	Q_OBJECT
 	Q_INTERFACES(PlatformBase)
 
-private:
-	shared_ptr<QLaunchyAlphaBorder> alpha;
-	HANDLE m1, mg1;
-	QString lastImageName;
-	LimitSingleInstance* instance;
 public:
 	PlatformWin();
 	~PlatformWin();
@@ -84,29 +68,27 @@ public:
 		return GlobalShortcutManager::isConnected(key);
 	}
 
-	QString GetSettingsDirectory() { 
-		QString ret;	
-		GetShellDir(CSIDL_APPDATA, ret);
-		return ret;
-	};
+	QString GetSettingsDirectory()
+	{ 
+		return GetShellDirectory(CSIDL_APPDATA);
+	}
 
 	virtual QHash<QString, QList<QString> > GetDirectories();
 
-	QList<Directory> GetInitialDirs() {
+	QList<Directory> GetDefaultCatalogDirectories()
+	{
 		QList<Directory> list;
 		Directory tmp;
-		QString ret;
-		GetShellDir(CSIDL_COMMON_STARTMENU, ret);
-		tmp.name = ret;
+
+		tmp.name = GetShellDirectory(CSIDL_COMMON_STARTMENU);
 		tmp.types << "*.lnk";
 		list.append(tmp);
-		GetShellDir(CSIDL_STARTMENU, ret);		
-		tmp.name = ret;
+		
+		tmp.name = GetShellDirectory(CSIDL_STARTMENU);
 		list.append(tmp);
 		tmp.name = "Utilities\\";
 		tmp.indexDirs = true;
 		list.append(tmp);
-
 
 		Directory tmp2;
 		tmp2.name = "%appdata%\\Microsoft\\Internet Explorer\\Quick Launch";
@@ -115,65 +97,24 @@ public:
 		return list;
 	}
 
-
-	//	void Execute(QString path, QString args);
 	QString expandEnvironmentVars(QString);
 	void AddToNotificationArea() {};
 	void RemoveFromNotificationArea() {};
 
 	// Alpha border functions	
-	shared_ptr<QWidget> getAlphaWidget() {
-		return alpha;
-	}
-	bool SupportsAlphaBorder() { return true; }
-	bool CreateAlphaBorder(QWidget* w, QString ImageName) { 
-		if (w == NULL) return false;
-		if (ImageName == "")
-			ImageName = lastImageName;
-		if (!QFile::exists(ImageName)) 
-			return false;
+	bool SupportsAlphaBorder() const { return true; }
 
-		if (alpha != NULL) {
-			// Save the position
-			//			RECT r;
-			//			GetWindowRect(alpha->winId(), &r);
-			DestroyAlphaBorder();
-			
-			alpha.reset(new QLaunchyAlphaBorder(w));
-			//			alpha->hide();
-			alpha->SetImage(ImageName);
-			alpha->setGeometry(w->geometry());
-			//QRect rect(r.left, r.top, r.right, r.bottom);
-			//alpha->setGeometry(rect);
-			//			QPoint pos(r.left, r.top);
-			alpha->RepositionWindow(w->pos());
-			// 			alpha->show();
-
-		} else {
-			alpha.reset(new QLaunchyAlphaBorder(w));
-			alpha->SetImage(ImageName);
-		}
-		lastImageName = ImageName;
-		return true;
-	}
-	void DestroyAlphaBorder() { alpha.reset(); /*delete alpha; alpha = NULL;*/ return;}
-	void MoveAlphaBorder(QPoint pos) { if (alpha != NULL) alpha->RepositionWindow(pos); }
-	void HideAlphaBorder() { if (alpha != NULL) alpha->hide(); }
-	void ShowAlphaBorder()
-	{
-		if (alpha != NULL) 
-			alpha->show(); 
-	}
 	bool isAlreadyRunning()
 	{
 		return instance->IsAnotherInstanceRunning();
 	}
 	void showOtherInstance();
-	void SetAlphaOpacity(double trans)
-	{
-		if (alpha != NULL)
-			alpha->SetAlphaOpacity(trans);
-	}
 
+private:
+	HANDLE m1, mg1;
+	QString lastImageName;
+	LimitSingleInstance* instance;
 };
+
+
 #endif

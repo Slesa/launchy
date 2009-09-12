@@ -2,7 +2,7 @@
 #include "globals.h"
 
 
-void FastCatalog::addItem(CatItem item)
+void FastCatalog::addItem(const CatItem& item)
 {
 	catList.push_back(item);
 	int index = catList.count() - 1;
@@ -23,12 +23,13 @@ int FastCatalog::getUsage(const QString& path)
 		{
 			return catList[i].usage;
 		}
-	}	
+	}
+
 	return 0;
 }
 
 
-void FastCatalog::incrementUsage(const CatItem & item)
+void FastCatalog::incrementUsage(const CatItem& item)
 {
 	for (int i = 0; i < catList.size(); ++i)
 	{
@@ -49,12 +50,13 @@ int SlowCatalog::getUsage(const QString& path)
 		{
 			return catList[i].usage;
 		}
-	}	
+	}
+
 	return 0;
 }
 
 
-void SlowCatalog::incrementUsage(const CatItem & item)
+void SlowCatalog::incrementUsage(const CatItem& item)
 {
 	for (int i = 0; i < catList.size(); ++i)
 	{
@@ -67,7 +69,7 @@ void SlowCatalog::incrementUsage(const CatItem & item)
 }
 
 
-void SlowCatalog::addItem(CatItem item)
+void SlowCatalog::addItem(const CatItem& item)
 {
 	catList.push_back(item);
 }
@@ -100,8 +102,14 @@ QString Catalog::decorateText(const QString& text, const QString& match, bool ou
 	int matchLength = match.count();
 	int curChar = 0;
 
-	foreach(QChar c, text)
+	int index = text.toLower().indexOf(match);
+	if (index > 0)
+		decoratedText = text.left(index);
+	else
+		index = 0;
+	for (; index < text.count(); ++index)
 	{
+		QChar c = text[index];
 		if (curChar < matchLength && c.toLower() == match[curChar].toLower())
 		{
 			decoratedText += outputRichText ? QString("<u>") + c + QString("</u>") : QString("&") + c;
@@ -117,20 +125,19 @@ QString Catalog::decorateText(const QString& text, const QString& match, bool ou
 }
 
 
-void Catalog::searchCatalogs(QString txt, QList<CatItem> & out)
+void Catalog::searchCatalogs(const QString& text, QList<CatItem> & out)
 {
-	txt = txt.toLower();
-	QList<CatItem*> catMatches = search(txt);
+	gSearchTxt = text.toLower();
+	QList<CatItem*> catMatches = search(gSearchTxt);
 	
 	// Now prioritize the catalog items
-	gSearchTxt = txt;
 	qSort(catMatches.begin(), catMatches.end(), CatLess);
-	
+
 	// Check for history matches
-	QString location = "History/" + txt;
+	QString location = "History/" + gSearchTxt;
 	QStringList hist;
 	hist = gSettings->value(location, hist).toStringList();
-	if(hist.count() == 2)
+	if (hist.count() == 2)
 	{
 		for (int i = 0; i < catMatches.count(); i++)
 		{
@@ -153,13 +160,13 @@ void Catalog::searchCatalogs(QString txt, QList<CatItem> & out)
 }
 
 
-void Catalog::checkHistory(QString txt, QList<CatItem> & list)
+void Catalog::checkHistory(const QString& text, QList<CatItem> & list)
 {
 	// Check for history matches
-	QString location = "History/" + txt;
+	QString location = "History/" + text;
 	QStringList hist;
 	hist = gSettings->value(location, hist).toStringList();
-	if(hist.count() == 2)
+	if (hist.count() == 2)
 	{
 		for (int i = 0; i < list.count(); i++)
 		{
@@ -175,50 +182,53 @@ void Catalog::checkHistory(QString txt, QList<CatItem> & list)
 }
 
 
-QList<CatItem*> FastCatalog::search(QString searchTxt)
+QList<CatItem*> FastCatalog::search(const QString& searchText)
 {
-	QList<CatItem*> ret;
-	if (searchTxt == "")
-		return ret;
+	QList<CatItem*> result;
 
-
-	// Find the smallest char list
-	QChar leastCommon = -1;
-	foreach(QChar c, searchTxt)
+	if (searchText.count() > 0)
 	{
-		if (leastCommon == -1 || catIndex[c].count() < leastCommon)
-			leastCommon = c;
-	}
-	
-	if (catIndex[leastCommon].count() == 0)
-		return ret;
-
-	// Search the list
-	for (int i = 0; i < catIndex[leastCommon].count(); ++i)
-	{
-		if (matches(catIndex[leastCommon][i], searchTxt))
+		// Find the smallest char list
+		QChar leastCommon = -1;
+		foreach(QChar c, searchText)
 		{
-			ret.push_back(catIndex[leastCommon][i]);
+			if (leastCommon == -1 || catIndex[c].count() < leastCommon)
+				leastCommon = c;
+		}
+		
+		if (catIndex[leastCommon].count() > 0)
+		{
+			// Search the list
+			for (int i = 0; i < catIndex[leastCommon].count(); ++i)
+			{
+				if (matches(catIndex[leastCommon][i], searchText))
+				{
+					result.push_back(catIndex[leastCommon][i]);
+				}
+			}
 		}
 	}
-	return ret;
+
+	return result;
 }
 
 
-QList<CatItem*> SlowCatalog::search(QString searchTxt)
+QList<CatItem*> SlowCatalog::search(const QString& searchText)
 {
-	QList<CatItem*> ret;
-	if (searchTxt == "")
-		return ret;
+	QList<CatItem*> result;
 
-	QString lowSearch = searchTxt.toLower();
-
-	for (int i = 0; i < catList.count(); ++i)
+	if (searchText.count() > 0)
 	{
-		if (matches(&catList[i], lowSearch))
+		QString lowSearch = searchText.toLower();
+
+		for (int i = 0; i < catList.count(); ++i)
 		{
-			ret.push_back(&catList[i]);
+			if (matches(&catList[i], lowSearch))
+			{
+				result.push_back(&catList[i]);
+			}
 		}
 	}
-	return ret;
+
+	return result;
 }

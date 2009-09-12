@@ -31,11 +31,28 @@ IconExtractor::IconExtractor(shared_ptr<PlatformBase> platform)
 }
 
 
-void IconExtractor::processIcons(const QList<CatItem>& newItems)
+void IconExtractor::processIcon(CatItem item, bool highPriority)
 {
 	mutex.lock();
 
-	if (isRunning())
+	item.id = -1;
+	if (highPriority)
+		items.push_front(item);
+	else
+		items.push_back(item);
+
+	mutex.unlock();
+
+	if (!isRunning())
+		start(IdlePriority);
+}
+
+
+void IconExtractor::processIcons(const QList<CatItem>& newItems, bool reset)
+{
+	mutex.lock();
+
+	if (reset && isRunning())
 		items.clear();
 
 	items += newItems;
@@ -63,13 +80,20 @@ void IconExtractor::run()
 	CoInitialize(NULL);
 #endif
 
-	while (items.size() > 0)
+	CatItem item;
+	bool itemsRemaining = true;
+
+	do
 	{
 		mutex.lock();
-		CatItem item = items.dequeue();
+		itemsRemaining = items.size() > 0;
+		if (itemsRemaining)
+			item = items.dequeue();
 		mutex.unlock();
-		emit iconExtracted(item.id, getIcon(item));
+		if (itemsRemaining)
+			emit iconExtracted(item.id, getIcon(item));
 	}
+	while (itemsRemaining);
 
 #ifdef Q_WS_WIN
 	CoUninitialize();

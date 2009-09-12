@@ -1,8 +1,11 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C++ Express 2008
+# Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{1F2DCBE1-0DDA-4643-882F-D46D964F2264}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Launchy", "Launchy.vcproj", "{DB63F725-9F43-48AE-A254-41A4DEC71AA0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E8D4049F-8453-4609-9F5E-66D6E254A618} = {E8D4049F-8453-4609-9F5E-66D6E254A618}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plug_weby", "weby\weby.vcproj", "{4537EEC0-8AF8-4BD3-9A78-4C1A34297045}"
 EndProject

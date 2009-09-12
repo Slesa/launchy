@@ -1,5 +1,6 @@
 #include "Fader.h"
 #include "globals.h"
+#include <QDebug>
 
 
 Fader::Fader(QObject* parent) :
@@ -14,53 +15,91 @@ Fader::~Fader()
 }
 
 
-void Fader::fadeIn()
+void Fader::fadeIn(bool quick)
 {
 	int time = gSettings->value("GenOps/fadein", 0).toInt();
-	double end = (double) gSettings->value("GenOps/opaqueness", 100).toInt() / 100.0;
 
-	if (time != 0)
+	mutex.lock();
+	targetLevel = gSettings->value("GenOps/opaqueness", 100).toInt() / 100.0;
+	delta = 0.05;
+	delay = quick ? 0 : time * delta / targetLevel;
+	if (delay > 10)
 	{
-		double delay = ((double) time) / (end / 0.05);
-
-		for (double i = 0.0; i < end + 0.01 && keepRunning; i += 0.05)
-		{
-			emit fadeLevel(i);
-			msleep(delay);
-		}
+		delta /= 10;
+		delay /= 10;
 	}
+	mutex.unlock();
 
-	emit fadeLevel(end);
-	emit finishedFade(end);
+	if (quick)
+	{
+		// stop any current slow fades
+		stop();
+		wait();
+		emit fadeLevel(targetLevel);
+	}
+	else if (!isRunning())
+	{
+		level = 0;
+		start();
+	}
 }
 
 
-void Fader::fadeOut()
+void Fader::fadeOut(bool quick)
 {
 	int time = gSettings->value("GenOps/fadeout", 0).toInt();
+	double opaqueness = gSettings->value("GenOps/opaqueness", 100).toInt() / 100.0;
 
-	if (time != 0)
+	mutex.lock();
+	targetLevel = 0;
+	delta = -0.05;
+	delay = quick ? 0 : time * -delta / opaqueness;
+	if (delay > 10)
 	{
-		double start = (double) gSettings->value("GenOps/opaqueness", 100).toInt() / 100.0;
-		double delay = ((double) time) / (start / 0.05);
-
-		for (double i = start; i > -0.01 && keepRunning; i -= 0.05)
-		{
-			emit fadeLevel(i);
-			msleep(delay);
-		}
+		delta /= 10;
+		delay /= 10;
 	}
+	mutex.unlock();
 
-	emit fadeLevel(0.0);
-	emit finishedFade(0.0);
+	// qDebug() << level << " to " << targetLevel << " delay " << delay;
+
+	if (quick)
+	{
+		// stop any current slow fades
+		stop();
+		wait();
+		emit fadeLevel(targetLevel);
+	}
+	else if (!isRunning())
+	{
+		level = opaqueness;
+		start();
+	}
 }
 
 
 void Fader::run()
 {
 	keepRunning = true;
-	if (fadeType)
-		fadeIn();
-	else
-		fadeOut();
+
+	while (keepRunning)
+	{
+		mutex.lock();
+		level += delta;
+		keepRunning &= (delta > 0 && level < targetLevel) || (delta < 0 && level > targetLevel);
+		mutex.unlock();
+
+		// qDebug() << delta << level << targetLevel << keepRunning;
+
+		if (keepRunning)
+		{
+			emit fadeLevel(level);
+			msleep(delay);
+		}
+	}
+
+	// qDebug() << delta << targetLevel << targetLevel;
+	// qDebug() << "";
+
+	emit fadeLevel(targetLevel);
 }

@@ -81,7 +81,7 @@ void CatalogBuilder::buildCatalog()
 
 	if (memDirs.count() == 0)
 	{
-		memDirs = gMainWidget->platform->GetInitialDirs();
+		memDirs = gMainWidget->platform->GetDefaultCatalogDirectories();
 	}
 
 	for (int i = 0; i < memDirs.count(); ++i)

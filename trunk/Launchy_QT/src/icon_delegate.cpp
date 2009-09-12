@@ -4,10 +4,9 @@
 #include "globals.h"
 
 
-IconDelegate::IconDelegate(QObject *parent)
-: QAbstractItemDelegate(parent)
+IconDelegate::IconDelegate(QObject *parent) :
+	QStyledItemDelegate(parent)
 {
-
 }
 
 void IconDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
@@ -44,9 +43,8 @@ void IconDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 	painter->setFont(QFont(family, size, weight, italics));
 
 	QString full = index.data(ROLE_FULL).toString();
-	full = painter->fontMetrics().elidedText(full, Qt::ElideLeft, longRect.width());
+	full = painter->fontMetrics().elidedText(full, option.textElideMode, longRect.width());
 	painter->drawText(longRect, Qt::AlignTop, full);
-
 
 	QIcon p = index.data(ROLE_ICON).value<QIcon>();
 	p.paint(painter, iconRect);

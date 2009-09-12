@@ -68,37 +68,39 @@ public:
 	bool setAlwaysShow(bool);
 	bool setAlwaysTop(bool);
 	void setPortable(bool);
-	void setSkin(const QString& name, bool show);
+	void setSkin(const QString& name);
 	void loadOptions();
 
 protected:
-	bool event(QEvent *e);
+	bool event(QEvent* event);
+    void paintEvent(QPaintEvent* event);
 
 public slots:
+    void focusInEvent(QFocusEvent* event);
+	void focusOutEvent(QFocusEvent* event);
+	void mousePressEvent(QMouseEvent* event);
+	void mouseMoveEvent(QMouseEvent* event);
+	void mouseReleaseEvent(QMouseEvent* event);
 	void menuOptions();
+	void contextMenuEvent(QContextMenuEvent* event);
 	void onHotKey();
 	void updateTimeout();
 	void dropTimeout();
-	void mousePressEvent(QMouseEvent *e);
-	void mouseMoveEvent(QMouseEvent *e);
+	void setOpaqueness(int level);
 	void httpGetFinished(bool result);
 	void catalogBuilt();
-	void inputMethodEvent(QInputMethodEvent* e);
-	void keyPressEvent(QKeyEvent*);
-	void inputKeyPressEvent(QKeyEvent* key);
-	void altKeyPressEvent(QKeyEvent* key);
-	void focusOutEvent(QFocusEvent* evt);
-	void setOpaqueness(int val);
-	void setFadeLevel(double);
-	void finishedFade(double d);
+	void inputMethodEvent(QInputMethodEvent* event);
+	void keyPressEvent(QKeyEvent* event);
+	void inputKeyPressEvent(QKeyEvent* event);
+	void alternativesKeyPressEvent(QKeyEvent* event);
+	void setFadeLevel(double level);
 	void buildCatalog();
 	void iconExtracted(int itemIndex, QIcon icon);
 
 private:
 	void connectAlpha();
 	void applySkin(const QString& name);
-	void contextMenuEvent(QContextMenuEvent *event);
-	void closeEvent(QCloseEvent *event);
+	void closeEvent(QCloseEvent* event);
 	void hideLaunchy(bool noFade = false);
 	void updateVersion(int oldVersion);
 	void checkForUpdate();
@@ -110,42 +112,40 @@ private:
 	void resetLaunchy();
 	void updateDisplay();
 	void searchOnInput();
-	void fadeIn();
-	void fadeOut();
-	QPoint loadPosition();
+	void loadPosition();
 	void savePosition() { gSettings->setValue("Display/pos", pos()); }
 	void doTab();
 	void doEnter();
 	QString formatInput();
 	void processKey();
-	void launchObject();
+	void launchItem(CatItem& item);
 	void addToHistory(const CatItem& catalogItem);
 
 	Fader* fader;
-	QPoint moveStartPoint;
-	QLabel* label;
+	QPixmap* frameGraphic;
 	CharLineEdit* input;
 	QLabel* output;
 	QLabel* outputIcon;
 	CharListWidget* alternatives;
+	QRect alternativesRect;
 	QPushButton* optionsButton;
 	QPushButton* closeButton;
 	QScrollBar* altScroll;
 	QTimer* updateTimer;
 	QTimer* dropTimer;
-	QRect altRect;
 	shared_ptr<CatalogBuilder> catalogBuilder;
 	IconExtractor iconExtractor;
 	QList<CatItem> searchResults;
 	QList<InputData> inputData;
 	QList<CatItem> history;
-	bool visible;
 	bool alwaysShowLaunchy;
+	bool dragging;
+	QPoint dragStartPoint;
 	bool menuOpen;
 	bool optionsOpen;
 
 	IconDelegate* listDelegate;
-	QAbstractItemDelegate * defaultDelegate;
+	QAbstractItemDelegate* defaultListDelegate;
 
 	QHttp *http;
 	QBuffer *verBuffer;

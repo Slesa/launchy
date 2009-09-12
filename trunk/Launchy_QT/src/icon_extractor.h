@@ -35,15 +35,17 @@ class IconExtractor : public QThread
 public:
 
 	IconExtractor(shared_ptr<PlatformBase> platform);
-	QIcon getIcon(const CatItem& item);
-	void processIcons(const QList<CatItem>& newItems);
+	void processIcon(CatItem item, bool highPriority = true);
+	void processIcons(const QList<CatItem>& newItems, bool reset = true);
 	void stop();
 	void run();
 
 signals:
     void iconExtracted(int itemIndex, QIcon icon);
-	
+
 private:
+	QIcon getIcon(const CatItem& item);
+
 	QMutex mutex;
 	QQueue<CatItem> items;
 	shared_ptr<PlatformBase> platform;	

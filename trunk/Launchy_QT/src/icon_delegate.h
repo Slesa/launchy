@@ -2,15 +2,15 @@
 #define ICON_DELEGATE
 
 
-#include <QAbstractItemDelegate>
+#include <QStyledItemDelegate>
 
 
-#define ROLE_FULL Qt::UserRole
-#define ROLE_SHORT Qt::UserRole + 1
-#define ROLE_ICON Qt::UserRole + 2
+#define ROLE_SHORT Qt::DisplayRole
+#define ROLE_FULL Qt::ToolTipRole
+#define ROLE_ICON Qt::DecorationRole
 
 
-class IconDelegate : public QAbstractItemDelegate
+class IconDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
 
