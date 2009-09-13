@@ -712,7 +712,8 @@ void LaunchyWidget::searchOnInput()
 	//	    qDebug() << gSearchTxt;
 	// Is it a file?
 
-	if (searchText.contains(QDir::separator()) || searchText.startsWith("~") || (searchText.size() == 2 && searchText[1] == ':'))
+	if (searchText.contains(QDir::separator()) || searchText.startsWith("~") ||
+		(searchText.size() == 2 && searchText[0].isLetter() && searchText[1] == ':'))
 		searchFiles(searchText, searchResults);
 
 	catalog->checkHistory(gSearchTxt, searchResults);
@@ -763,16 +764,31 @@ void LaunchyWidget::iconExtracted(int itemIndex, QIcon icon)
 
 void LaunchyWidget::searchFiles(const QString& searchText, QList<CatItem>& searchResults)
 {
-	// Split the string on the last slash
 	QString searchPath = QDir::fromNativeSeparators(searchText);
 
 	if (searchPath.startsWith("~"))
 		searchPath.replace("~", QDir::homePath());
 
 #ifdef Q_WS_WIN
-	if (searchPath.startsWith("/"))
+	if (searchPath == "/")
+	{
+		// Special case for Windows: list available drives
+		QFileInfoList driveList = QDir::drives();
+		foreach(QFileInfo info, driveList)
+		{
+			// Retrieve volume name
+			QString volumeName;
+			WCHAR volName[MAX_PATH];
+			if (GetVolumeInformation((WCHAR*)info.filePath().utf16(), volName, MAX_PATH, NULL, NULL, NULL, NULL, 0))
+				volumeName = QString::fromUtf16((const ushort*)volName);
+			else
+				volumeName = info.filePath();
+			CatItem item(QDir::toNativeSeparators(info.filePath()), volumeName);
+			searchResults.push_back(item);
+		}
 		return;
-	if (searchPath.size() == 2 && searchPath[1] == ':')
+	}
+	if (searchPath.size() == 2 && searchText[0].isLetter() && searchPath[1] == ':')
 		searchPath += "/";
 #endif
 
@@ -780,6 +796,7 @@ void LaunchyWidget::searchFiles(const QString& searchText, QList<CatItem>& searc
 	if (searchPath.startsWith("//"))
 		return;
 
+	// Split the string on the last slash
 	QString directoryPart = searchPath.mid(0,searchPath.lastIndexOf("/")+1);
 	QString filePart = searchPath.mid(searchPath.lastIndexOf("/")+1);
 
