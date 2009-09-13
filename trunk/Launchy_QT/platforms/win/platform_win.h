@@ -87,7 +87,7 @@ public:
 		tmp.name = GetShellDirectory(CSIDL_STARTMENU);
 		list.append(tmp);
 		tmp.name = "Utilities\\";
-		tmp.indexDirs = true;
+		tmp.indexDirs = false;
 		list.append(tmp);
 
 		Directory tmp2;
@@ -111,8 +111,7 @@ public:
 	void showOtherInstance();
 
 private:
-	HANDLE m1, mg1;
-	QString lastImageName;
+	HANDLE localMutex, globalMutex;
 	LimitSingleInstance* instance;
 };
 

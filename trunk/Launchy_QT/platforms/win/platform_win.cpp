@@ -88,19 +88,21 @@ shared_ptr<WindowMessageListener> WindowMessageListener::instance;
 PlatformWin::PlatformWin() :
 	PlatformBase() 		
 {
-	instance = new LimitSingleInstance(TEXT("Global\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
+	instance = new LimitSingleInstance(TEXT("Local\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
 
-	// Create application mutexes so that installer knows when
+	// Create local and global application mutexes so that installer knows when
 	// Launchy is running
-	m1 = CreateMutex(NULL,0,_T("LaunchyMutex"));
-	mg1 = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
+	localMutex = CreateMutex(NULL,0,_T("LaunchyMutex"));
+	globalMutex = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
 }
 
 
 PlatformWin::~PlatformWin()
 {
-	CloseHandle(m1);
-	CloseHandle(mg1);
+	if (localMutex)
+		CloseHandle(localMutex);
+	if (globalMutex)
+		CloseHandle(globalMutex);
 	delete instance;
 	instance = NULL;
 }
