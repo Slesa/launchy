@@ -269,7 +269,8 @@ void LaunchyWidget::showTrayIcon()
 
 	if (gSettings->value("GenOps/showtrayicon", true).toBool())
 	{
-		trayIcon = new QSystemTrayIcon(this);
+		if (!trayIcon)
+			trayIcon = new QSystemTrayIcon(this);
 		QKeySequence hotkey = platform->getHotkey();
 		trayIcon->setToolTip(tr("Launchy (press %1 to activate)").arg(hotkey.toString()));
 		trayIcon->setIcon(QIcon(":/resources/launchy16.png"));
@@ -286,7 +287,7 @@ void LaunchyWidget::showTrayIcon()
 
 		trayIcon->setContextMenu(trayMenu);
 	}
-	else
+	else if (trayIcon)
 	{
 		delete trayIcon;
 		trayIcon = NULL;
@@ -668,12 +669,14 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 		{
 			if (searchResults.count() == 0)
 				searchOnInput();
-
-			dropTimer->stop();
-			showAlternatives();
-			alternatives->activateWindow();
-			if (alternatives->count() > 0)
-				alternatives->setCurrentRow(0);
+			if (searchResults.count() > 0)
+			{
+				dropTimer->stop();
+				showAlternatives();
+				alternatives->activateWindow();
+				if (alternatives->count() > 0)
+					alternatives->setCurrentRow(0);
+			}
 		}
 	}
 
@@ -1166,35 +1169,29 @@ void LaunchyWidget::applySkin(const QString& name)
 
 	QString directory = dirs["skins"][0] + QString("/") + name + "/";
 
-	// Set a few defaults
-	delete frameGraphic;
-	frameGraphic = NULL;
+	// Use default skin if this one doesn't exist
+	if (!QFile::exists(directory + "style.qss")) 
+	{
+		directory = dirs["defSkin"][0] + "/";
+		gSettings->setValue("GenOps/skin", "Default");
+	}
+
+	// Read the style sheet
+	QFile file(directory + "style.qss");
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+		return;
+	QString styleSheet = QLatin1String(file.readAll());
+	file.close();
+
+	// If it's valid Set a few defaults
 	closeButton->setGeometry(QRect());
 	optionsButton->setGeometry(QRect());
 	input->setAlignment(Qt::AlignLeft);
 	output->setAlignment(Qt::AlignCenter);
-
-	// Load the style sheet
-	if (QFile::exists(directory + "style.qss"))
-	{
-		QFile file(directory + "style.qss");
-		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-		{
-			QString styleSheet = QLatin1String(file.readAll());
-			// This is causing the ::destroyed connect errors
-			qApp->setStyleSheet(styleSheet);
-
-			file.close();
-		}
-	}
 	alternativesRect = QRect();
 
-	// Use default skin if this one doesn't exist
-	if (!QFile::exists(directory + "misc.txt")) 
-	{
-		directory = dirs["defSkin"][0];
-		gSettings->setValue("GenOps/skin", "Default");
-	}
+	// This is causing the ::destroyed connect errors
+	qApp->setStyleSheet(styleSheet);
 
 	// Set positions
 	if (QFile::exists(directory + "misc.txt"))
@@ -1367,6 +1364,23 @@ void LaunchyWidget::contextMenuEvent(QContextMenuEvent* event)
 }
 
 
+void LaunchyWidget::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+	switch (reason)
+	{
+	case QSystemTrayIcon::Trigger:
+	case QSystemTrayIcon::DoubleClick:
+		showLaunchy();
+		break;
+	case QSystemTrayIcon::MiddleClick:
+		buildCatalog();
+		break;
+	default:
+		break;
+	}
+}
+
+
 void LaunchyWidget::buildCatalog()
 {
 	// Perform the database update
@@ -1523,27 +1537,10 @@ void LaunchyWidget::createActions()
 	connect(actRebuild, SIGNAL(triggered()), this, SLOT(buildCatalog()));
 
 	actOptions = new QAction(tr("Options"), this);
-	connect(actOptions, SIGNAL(triggered()), this, SLOT(menuOptions()));
+	connect(actOptions, SIGNAL(triggered()), this, SLOT(showOptionsDialog()));
 
 	actExit = new QAction(tr("Exit"), this);
 	connect(actExit, SIGNAL(triggered()), this, SLOT(close()));
-}
-
-
-void LaunchyWidget::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
-{
-	switch (reason)
-	{
-	case QSystemTrayIcon::Trigger:
-	case QSystemTrayIcon::DoubleClick:
-		showLaunchy();
-		break;
-	case QSystemTrayIcon::MiddleClick:
-		buildCatalog();
-		break;
-	default:
-		break;
-	}
 }
 
 
