@@ -48,6 +48,10 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	tabWidget->setCurrentIndex(currentTab);
 
 	// Load General Options
+	if (QSystemTrayIcon::isSystemTrayAvailable())
+		genShowTrayIcon->setChecked(gSettings->value("GenOps/showtrayicon", true).toBool());
+	else
+		genShowTrayIcon->hide();
 	genAlwaysShow->setChecked(gSettings->value("GenOps/alwaysshow", false).toBool());
 	genAlwaysTop->setChecked(gSettings->value("GenOps/alwaystop", false).toBool());
 	genPortable->setChecked(gSettings->value("GenOps/isportable", false).toBool());
@@ -190,10 +194,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 
 	if (gMainWidget->catalog != NULL)
 	{
-		QString txt = tr("Index has ");
-		txt += QString::number(gMainWidget->catalog->count());
-		txt += tr(" items");
-		catSize->setText(txt);
+		catSize->setText(tr("Index has %n item(s)", "", gMainWidget->catalog->count()));
 	}
 	if (gBuilder != NULL)
 	{
@@ -219,7 +220,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	{
 		plugList->setCurrentRow(currentPlugin);
 	}
-	aboutVer->setText(QString(tr("This is Launchy version ")) + QString(LAUNCHY_VERSION_STRING));
+	aboutVer->setText(tr("This is Launchy version %1").arg(LAUNCHY_VERSION_STRING));
 	catDirectories->installEventFilter(this);
 }
 
@@ -249,11 +250,10 @@ void OptionsDialog::accept()
 		return;
 
 	// See if the new hotkey works, if not we're not leaving the dialog.
-	bool newKey = gMainWidget->setHotkey(iMetaKeys[genModifierBox->currentIndex()], iActionKeys[genKeyBox->currentIndex()]);
-
-	if (!newKey)
+	QKeySequence hotkey(iMetaKeys[genModifierBox->currentIndex()] + iActionKeys[genKeyBox->currentIndex()]);
+	if (!gMainWidget->setHotkey(hotkey))
 	{
-		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey you have chosen is already in use, please select another."));
+		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey %1 is already in use, please select another.").arg(hotkey.toString()));
 		return;
 	}
 
@@ -261,6 +261,7 @@ void OptionsDialog::accept()
 	gSettings->setValue("GenOps/hotkeyAction", iActionKeys[genKeyBox->currentIndex()]);
 
 	// Save General Options
+	gSettings->setValue("GenOps/showtrayicon", genShowTrayIcon->isChecked());
 	gSettings->setValue("GenOps/alwaysshow", genAlwaysShow->isChecked());
 	gSettings->setValue("GenOps/alwaystop", genAlwaysTop->isChecked());
 	gSettings->setValue("GenOps/isportable", genPortable->isChecked());
@@ -280,7 +281,7 @@ void OptionsDialog::accept()
 	gSettings->setValue("WebProxy/hostAddress", genProxyHostname->text());
 	gSettings->setValue("WebProxy/port", genProxyPort->text());
 
-	// Apply General Options	
+	// Apply General Options
 	gMainWidget->setPortable(genPortable->isChecked());
 	gMainWidget->setCondensed(genCondensed->isChecked());
 	gMainWidget->loadOptions();
@@ -301,6 +302,7 @@ void OptionsDialog::accept()
 	// Now save the options that require launchy to be shown or redrawed
 	bool show = gMainWidget->setAlwaysShow(genAlwaysShow->isChecked());
 	show |= gMainWidget->setAlwaysTop(genAlwaysTop->isChecked());
+
 	gMainWidget->setOpaqueness(genOpaqueness->value());
 
 	// Apply Skin Options
@@ -495,7 +497,7 @@ void OptionsDialog::catProgressUpdated(float val)
 void OptionsDialog::catalogBuilt()
 {
 	if (gMainWidget->catalog != NULL)
-		catSize->setText(tr("Index has ") + QString::number(gMainWidget->catalog->count()) + tr(" items"));
+		catSize->setText(tr("Index has %n items", "", gMainWidget->catalog->count()));
 }
 
 

@@ -64,14 +64,13 @@ public:
 	QIcon icon(QFileIconProvider::IconType type) { return icons->icon(type); }
 	virtual QString GetSettingsDirectory() = 0;
 	virtual QList<Directory> GetDefaultCatalogDirectories() = 0;
-	virtual void AddToNotificationArea() = 0;
-	virtual void RemoveFromNotificationArea() = 0;
 	virtual bool Execute(const QString& path, const QString& args) { path; args; return false; }
 	virtual bool isAlreadyRunning() = 0;
 	virtual void showOtherInstance() { }
 
 	// Set hotkey
-	virtual bool SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot) = 0;
+	virtual QKeySequence getHotkey() const = 0;
+	virtual bool setHotkey(const QKeySequence& key, QObject* receiver, const char* slot) = 0;
 
 	// Need to alter an indexed item?  e.g. .desktop files
 	virtual void alterItem(CatItem*) { }
@@ -83,7 +82,7 @@ public:
 	virtual QHash<QString, QList<QString> > GetDirectories() = 0;
 
 	virtual QString expandEnvironmentVars(QString txt)
-	{	    
+	{
 		QStringList list = QProcess::systemEnvironment();
 		txt.replace('~', "$HOME$");
 		QString delim("$");
@@ -119,7 +118,7 @@ public:
 
 protected:
 	QFileIconProvider* icons;
-	QKeySequence oldKey;
+	QKeySequence hotkey;
 };
 
 Q_DECLARE_INTERFACE(PlatformBase, "net.launchy.PlatformBase/1.0")
