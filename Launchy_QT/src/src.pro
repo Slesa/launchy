@@ -88,3 +88,4 @@ TRANSLATIONS = ../translations/launchy_fr.ts \
     ../translations/launchy_ja.ts
 OBJECTS_DIR = build
 MOC_DIR = build
+RESOURCES += launchy.qrc

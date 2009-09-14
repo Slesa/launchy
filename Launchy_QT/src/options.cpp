@@ -91,24 +91,31 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 		iActionKeys << i;
 
 	// Find the current hotkey
-	QKeySequence keys = gSettings->value("Options/hotkey", QKeySequence(Qt::ControlModifier +  Qt::Key_Space)).value<QKeySequence>();
 #ifdef Q_WS_WIN
-	int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::AltModifier).toInt();
+	int meta = Qt::AltModifier;
+#elif Q_WS_X11
+	int meta = Qt::ControlModifier;
 #endif
-#ifdef Q_WS_X11
-	int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::ControlModifier).toInt();
-#endif
-	int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
+	int hotkey = gSettings->value("GenOps/hotkey", 0).toInt();
+	if (hotkey == 0)
+	{
+		meta = gSettings->value("GenOps/hotkeyModifier", meta).toInt();
+		hotkey = meta | gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
+	}
+
+	meta = hotkey & (Qt::AltModifier | Qt::MetaModifier | Qt::ShiftModifier | Qt::ControlModifier);
+	hotkey &= ~(Qt::AltModifier | Qt::MetaModifier | Qt::ShiftModifier | Qt::ControlModifier);
+
 	for (int i = 0; i < metaKeys.count(); ++i)
 	{
 		genModifierBox->addItem(metaKeys[i]);
-		if (iMetaKeys[i] == curMeta) 
+		if (iMetaKeys[i] == meta) 
 			genModifierBox->setCurrentIndex(i);
 	}
 	for (int i = 0; i < actionKeys.count(); ++i)
 	{
 		genKeyBox->addItem(actionKeys[i]);
-		if (iActionKeys[i] == curAction) 
+		if (iActionKeys[i] == hotkey) 
 			genKeyBox->setCurrentIndex(i);
 	}
 
@@ -132,9 +139,10 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 				continue;
 			knownSkins[d] = true;
 
-			QFile f(dir.absolutePath() + "/" + d + "/misc.txt");
+			QFile f(dir.absolutePath() + "/" + d + "/style.qss");
 			// Only look for 2.0+ skins
-			if (!f.exists()) continue;
+			if (!f.exists())
+				continue;
 
 			QListWidgetItem* item = new QListWidgetItem(d);
 			skinList->addItem(item);
@@ -257,8 +265,7 @@ void OptionsDialog::accept()
 		return;
 	}
 
-	gSettings->setValue("GenOps/hotkeyModifier", iMetaKeys[genModifierBox->currentIndex()]);
-	gSettings->setValue("GenOps/hotkeyAction", iActionKeys[genKeyBox->currentIndex()]);
+	gSettings->setValue("GenOps/hotkey", hotkey.count() > 0 ? hotkey[0] : 0);
 
 	// Save General Options
 	gSettings->setValue("GenOps/showtrayicon", genShowTrayIcon->isChecked());

@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/" >
+        <file>resources/launchy128.png</file>
+        <file>resources/launchy16.png</file>
+    </qresource>
+</RCC>
