@@ -60,12 +60,17 @@ public:
 */
 
 	// Mandatory functions
-	bool SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
+	QKeySequence getHotkey() const
 	{
-		GlobalShortcutManager::disconnect(oldKey, receiver, slot);
-		GlobalShortcutManager::connect(key, receiver, slot);
-		oldKey = key;
-		return GlobalShortcutManager::isConnected(key);
+		return hotkey;
+	}
+
+	bool setHotkey(const QKeySequence& newHotkey, QObject* receiver, const char* slot)
+	{
+		GlobalShortcutManager::disconnect(hotkey, receiver, slot);
+		GlobalShortcutManager::connect(newHotkey, receiver, slot);
+		hotkey = newHotkey;
+		return GlobalShortcutManager::isConnected(newHotkey);
 	}
 
 	QString GetSettingsDirectory()

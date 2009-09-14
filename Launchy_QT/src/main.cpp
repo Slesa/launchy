@@ -47,7 +47,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "plugin_interface.h"
 
 
-LaunchyWidget::LaunchyWidget(QWidget *parent, PlatformBase *plat, bool show)
+LaunchyWidget::LaunchyWidget(QWidget *parent, PlatformBase *plat, StartModes startMode)
 :
 #ifdef Q_WS_WIN
 QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
@@ -60,7 +60,8 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	dropTimer(NULL),
 	alternatives(NULL),
 	iconExtractor(platform),
-	frameGraphic(NULL)
+	frameGraphic(NULL),
+	trayIcon(NULL)
 {
 	setObjectName("launchy");
 	setWindowTitle(tr("Launchy"));
@@ -72,6 +73,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	}
 	setFocusPolicy(Qt::ClickFocus);
 
+	createActions();
 
 	gMainWidget = this;
 	menuOpen = false;
@@ -90,7 +92,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	optionsButton->setObjectName("opsButton");
 	optionsButton->setToolTip(tr("Launchy Options"));
 	optionsButton->setGeometry(QRect());
-	connect(optionsButton, SIGNAL(clicked()), this, SLOT(menuOptions()));
+	connect(optionsButton, SIGNAL(clicked()), this, SLOT(showOptionsDialog()));
 
 	closeButton = new QPushButton(this);
 	closeButton->setObjectName("closeButton");
@@ -124,7 +126,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION)
 	{
 		updateVersion(gSettings->value("version", 0).toInt());
-		show = true;
+		startMode |= ShowLaunchy;
 	}
 
 	alternatives = new CharListWidget(this);
@@ -144,7 +146,8 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	plugins.loadPlugins();
 
 	// Set the general options
-	show |= setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool());
+	if (setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool()))
+		startMode |= ShowLaunchy;
 	setAlwaysTop(gSettings->value("GenOps/alwaystop", false).toBool());
 	setPortable(gSettings->value("GenOps/isportable", false).toBool());
 
@@ -156,15 +159,18 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 
 	// Set the hotkey
 #ifdef Q_WS_WIN
-	int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::AltModifier).toInt();
+	int curMeta = Qt::AltModifier;
 #elif Q_WS_X11
-	int curMeta = gSettings->value("GenOps/hotkeyModifier", Qt::ControlModifier).toInt();
+	int curMeta = Qt::ControlModifier;
 #endif
+	curMeta = gSettings->value("GenOps/hotkeyModifier", curMeta).toInt();
 	int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
-	if (!setHotkey(curMeta, curAction))
+
+	QKeySequence hotkey(curMeta + curAction);
+	if (!setHotkey(hotkey))
 	{
-		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey you have chosen is already in use. Please select another from Launchy's preferences."));
-		show = true;
+		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey %1 is already in use, please select another.").arg(hotkey.toString()));
+		startMode = ShowLaunchy | ShowOptions;
 	}
 
 	// Set the timers
@@ -187,13 +193,15 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 
 	// Move to saved position
 	loadPosition();
+	loadOptions();
 
-	if (show)
+	if (startMode & ShowLaunchy)
 		showLaunchy();
 	else
 		hideLaunchy();
 
-	loadOptions();
+	if (startMode & ShowOptions)
+		showOptionsDialog();
 }
 
 
@@ -248,10 +256,41 @@ void LaunchyWidget::setCondensed(int condensed)
 }
 
 
-bool LaunchyWidget::setHotkey(int meta, int key)
+bool LaunchyWidget::setHotkey(QKeySequence hotkey)
 {
-	QKeySequence keys = QKeySequence(meta + key);
-	return platform->SetHotkey(keys, this, SLOT(onHotKey()));
+	return platform->setHotkey(hotkey, this, SLOT(onHotkey()));
+}
+
+
+void LaunchyWidget::showTrayIcon()
+{
+	if (!QSystemTrayIcon::isSystemTrayAvailable())
+		return;
+
+	if (gSettings->value("GenOps/showtrayicon", true).toBool())
+	{
+		trayIcon = new QSystemTrayIcon(this);
+		QKeySequence hotkey = platform->getHotkey();
+		trayIcon->setToolTip(tr("Launchy (press %1 to activate)").arg(hotkey.toString()));
+		trayIcon->setIcon(QIcon(":/resources/launchy16.png"));
+		trayIcon->show();
+		connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+			this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
+
+		QMenu* trayMenu = new QMenu(this);
+		trayMenu->addAction(actShow);
+		trayMenu->addAction(actRebuild);
+		trayMenu->addAction(actOptions);
+		trayMenu->addSeparator();
+		trayMenu->addAction(actExit);
+
+		trayIcon->setContextMenu(trayMenu);
+	}
+	else
+	{
+		delete trayIcon;
+		trayIcon = NULL;
+	}
 }
 
 
@@ -341,7 +380,7 @@ void LaunchyWidget::launchItem(CatItem& item)
 				close();
 				break;
 			case MSG_CONTROL_OPTIONS:
-				menuOptions();
+				showOptionsDialog();
 				break;
 			case MSG_CONTROL_REBUILD:
 				buildCatalog();
@@ -914,7 +953,7 @@ void LaunchyWidget::setSkin(const QString& name)
 {
 	hideLaunchy(true);
 	applySkin(name);
-	showLaunchy();
+	showLaunchy(false);
 }
 
 
@@ -1008,7 +1047,7 @@ void LaunchyWidget::dropTimeout()
 }
 
 
-void LaunchyWidget::onHotKey()
+void LaunchyWidget::onHotkey()
 {
 	if (menuOpen || optionsOpen)
 	{
@@ -1318,13 +1357,10 @@ void LaunchyWidget::mouseReleaseEvent(QMouseEvent* event)
 void LaunchyWidget::contextMenuEvent(QContextMenuEvent* event)
 {
 	QMenu menu(this);
-	QAction* actMenu = menu.addAction(tr("Rebuild Catalog"));
-	connect(actMenu, SIGNAL(triggered()), this, SLOT(buildCatalog()));
-	QAction* actOptions = menu.addAction(tr("Options"));
-	connect(actOptions, SIGNAL(triggered()), this, SLOT(menuOptions()));
+	menu.addAction(actRebuild);
+	menu.addAction(actOptions);
 	menu.addSeparator();
-	QAction* actExit = menu.addAction(tr("Exit"));
-	connect(actExit, SIGNAL(triggered()), this, SLOT(close()));
+	menu.addAction(actExit);
 	menuOpen = true;
 	menu.exec(event->globalPos());
 	menuOpen = false;
@@ -1344,7 +1380,7 @@ void LaunchyWidget::buildCatalog()
 }
 
 
-void LaunchyWidget::menuOptions()
+void LaunchyWidget::showOptionsDialog()
 {
 	dropTimer->stop();
 	showAlternatives(false);
@@ -1432,6 +1468,12 @@ void LaunchyWidget::showLaunchy(bool noFade)
 }
 
 
+void LaunchyWidget::showLaunchy()
+{
+	showLaunchy(false);
+}
+
+
 void LaunchyWidget::hideLaunchy(bool noFade)
 {
 	if (!isVisible())
@@ -1467,8 +1509,42 @@ void LaunchyWidget::loadOptions()
 		proxy.setPort(gSettings->value("WebProxy/port", "").toInt());
 		QNetworkProxy::setApplicationProxy(proxy);
 	}
+
+	showTrayIcon();
 }
 
+
+void LaunchyWidget::createActions()
+{
+	actShow = new QAction(tr("Show Launchy"), this);
+	connect(actShow, SIGNAL(triggered()), this, SLOT(showLaunchy()));
+
+	actRebuild = new QAction(tr("Rebuild catalog"), this);
+	connect(actRebuild, SIGNAL(triggered()), this, SLOT(buildCatalog()));
+
+	actOptions = new QAction(tr("Options"), this);
+	connect(actOptions, SIGNAL(triggered()), this, SLOT(menuOptions()));
+
+	actExit = new QAction(tr("Exit"), this);
+	connect(actExit, SIGNAL(triggered()), this, SLOT(close()));
+}
+
+
+void LaunchyWidget::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+	switch (reason)
+	{
+	case QSystemTrayIcon::Trigger:
+	case QSystemTrayIcon::DoubleClick:
+		showLaunchy();
+		break;
+	case QSystemTrayIcon::MiddleClick:
+		buildCatalog();
+		break;
+	default:
+		break;
+	}
+}
 
 
 int main(int argc, char *argv[])
@@ -1478,7 +1554,8 @@ int main(int argc, char *argv[])
 
 	QStringList args = qApp->arguments();
 	app->setQuitOnLastWindowClosed(false);
-	bool show = false;
+	StartModes startMode = Normal;
+	bool allowMultipleInstances = false;
 
 	if (args.size() > 1)
 	{
@@ -1488,16 +1565,24 @@ int main(int argc, char *argv[])
 			{
 				// Kill all existing Launchys
 				//			platform->KillLaunchys();
-				show = true;
+				startMode = ShowOptions;
 			}
 			else if (arg.compare("/show", Qt::CaseInsensitive) == 0)
 			{
-				show = true;
+				startMode = ShowLaunchy;
+			}
+			else if (arg.compare("/options", Qt::CaseInsensitive) == 0)
+			{
+				startMode = ShowOptions;
+			}
+			else if (arg.compare("/multiple", Qt::CaseInsensitive) == 0)
+			{
+				allowMultipleInstances = true;
 			}
 		}
 	}
 
-	if (platform->isAlreadyRunning())
+	if (!allowMultipleInstances && platform->isAlreadyRunning())
 	{
 		platform->showOtherInstance();
 		exit(1);
@@ -1511,7 +1596,7 @@ int main(int argc, char *argv[])
 	translator.load(QString("tr/launchy_" + locale));
 	app->installTranslator(&translator);
 
-	LaunchyWidget widget(NULL, platform, show);
+	LaunchyWidget widget(NULL, platform, startMode);
 
 	app->exec();
 }
