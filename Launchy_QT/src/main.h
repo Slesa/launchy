@@ -84,6 +84,7 @@ public:
 	void setPortable(bool);
 	void setSkin(const QString& name);
 	void loadOptions();
+	int getHotkey() const;
 
 protected:
 	bool event(QEvent* event);

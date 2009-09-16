@@ -11,7 +11,7 @@
     <x>0</x>
     <y>0</y>
     <width>678</width>
-    <height>533</height>
+    <height>535</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,6 +34,12 @@
           <layout class="QVBoxLayout">
            <item>
             <widget class="QGroupBox" name="groupBox_4">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="title">
               <string>User Interface</string>
              </property>
@@ -66,23 +72,44 @@
                </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="genHCenter">
-                <property name="text">
-                 <string>Always center Launchy horizontally</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="genVCenter">
-                <property name="text">
-                 <string>Always center Launchy vertically</string>
-                </property>
-               </widget>
-              </item>
-              <item>
                <widget class="QCheckBox" name="genShowTrayIcon">
                 <property name="text">
                  <string>Show tray icon</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <item>
+                 <widget class="QLabel" name="label_5">
+                  <property name="text">
+                   <string>Always center Launchy</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>genHCenter</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="genHCenter">
+                  <property name="text">
+                   <string>horizontally</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="genVCenter">
+                  <property name="text">
+                   <string>vertically</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="genShiftDrag">
+                <property name="text">
+                 <string>Only allow dragging whilst Shift is pressed</string>
                 </property>
                </widget>
               </item>
@@ -150,7 +177,7 @@
             <item>
              <widget class="QCheckBox" name="genCondensed">
               <property name="text">
-               <string>Condense suggestion list</string>
+               <string>Compact suggestion list</string>
               </property>
              </widget>
             </item>
@@ -159,6 +186,48 @@
               <property name="fieldGrowthPolicy">
                <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
               </property>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="genAutoSuggestDelay">
+                <property name="suffix">
+                 <string> ms</string>
+                </property>
+                <property name="maximum">
+                 <number>99999</number>
+                </property>
+                <property name="singleStep">
+                 <number>50</number>
+                </property>
+                <property name="value">
+                 <number>1000</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QSpinBox" name="genMaxViewable">
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>999</number>
+                </property>
+                <property name="value">
+                 <number>4</number>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QSpinBox" name="genNumResults">
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>9999</number>
+                </property>
+                <property name="value">
+                 <number>20</number>
+                </property>
+               </widget>
+              </item>
               <item row="0" column="0">
                <widget class="QLabel" name="label_11">
                 <property name="sizePolicy">
@@ -168,30 +237,10 @@
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Auto open delay (ms)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>Auto open delay</string>
                 </property>
                 <property name="buddy">
                  <cstring>genAutoSuggestDelay</cstring>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLineEdit" name="genAutoSuggestDelay">
-                <property name="maximumSize">
-                 <size>
-                  <width>40</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="inputMask">
-                 <string/>
-                </property>
-                <property name="maxLength">
-                 <number>5</number>
                 </property>
                </widget>
               </item>
@@ -205,22 +254,6 @@ p, li { white-space: pre-wrap; }
                 </property>
                </widget>
               </item>
-              <item row="1" column="1">
-               <widget class="QLineEdit" name="genMaxViewable">
-                <property name="maximumSize">
-                 <size>
-                  <width>40</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="inputMask">
-                 <string/>
-                </property>
-                <property name="maxLength">
-                 <number>5</number>
-                </property>
-               </widget>
-              </item>
               <item row="2" column="0">
                <widget class="QLabel" name="label_8">
                 <property name="text">
@@ -231,23 +264,20 @@ p, li { white-space: pre-wrap; }
                 </property>
                </widget>
               </item>
-              <item row="2" column="1">
-               <widget class="QLineEdit" name="genNumResults">
-                <property name="maximumSize">
-                 <size>
-                  <width>40</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="inputMask">
-                 <string/>
-                </property>
-                <property name="maxLength">
-                 <number>5</number>
-                </property>
-               </widget>
-              </item>
              </layout>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -260,6 +290,12 @@ p, li { white-space: pre-wrap; }
           <layout class="QVBoxLayout" name="verticalLayout_6">
            <item>
             <widget class="QGroupBox" name="groupBox_11">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="title">
               <string>Visual Effects</string>
              </property>
@@ -337,19 +373,6 @@ p, li { white-space: pre-wrap; }
                 </item>
                </layout>
               </item>
-              <item>
-               <spacer name="spacer">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>16</width>
-                  <height>16</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
              </layout>
             </widget>
            </item>
@@ -357,21 +380,72 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <widget class="QGroupBox" name="groupBox_6">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="title">
             <string>System Options</string>
            </property>
            <layout class="QVBoxLayout">
             <item>
-             <widget class="QCheckBox" name="genUpdateCheck">
-              <property name="text">
-               <string>Check for updates on startup</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout">
+              <item>
+               <widget class="QCheckBox" name="genUpdateCatalog">
+                <property name="text">
+                 <string>Auto update catalog every</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="genUpdateMinutes">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>80</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="accelerated">
+                 <bool>true</bool>
+                </property>
+                <property name="suffix">
+                 <string> minutes</string>
+                </property>
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="maximum">
+                 <number>99999999</number>
+                </property>
+                <property name="value">
+                 <number>10</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <widget class="QCheckBox" name="genShowHidden">
               <property name="text">
                <string>Show hidden files in browse mode</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="genUpdateCheck">
+              <property name="text">
+               <string>Check for new versions of Launchy on startup</string>
               </property>
              </widget>
             </item>
@@ -383,51 +457,17 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout">
-              <item>
-               <widget class="QLabel" name="label_5">
-                <property name="text">
-                 <string>Minutes between catalog updates</string>
-                </property>
-                <property name="buddy">
-                 <cstring>genUpMinutes</cstring>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="genUpMinutes">
-                <property name="maximumSize">
-                 <size>
-                  <width>40</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="inputMask">
-                 <string/>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_7">
-                <property name="text">
-                 <string>(0 for manual updates only)</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>31</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
+             <spacer>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>31</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -505,22 +545,6 @@ p, li { white-space: pre-wrap; }
           </spacer>
          </item>
         </layout>
-       </item>
-       <item>
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>524</width>
-           <height>500</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -1145,20 +1169,16 @@ p, li { white-space: pre-wrap; }
    <extends>QListWidget</extends>
    <header>DropListWidget.h</header>
   </customwidget>
-  <customwidget>
-   <class>ShortcutEdit</class>
-   <extends>QLineEdit</extends>
-   <header>ShortcutEdit.h</header>
-  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>tabWidget</tabstop>
   <tabstop>genAlwaysShow</tabstop>
   <tabstop>genHideFocus</tabstop>
   <tabstop>genAlwaysTop</tabstop>
+  <tabstop>genShowTrayIcon</tabstop>
   <tabstop>genHCenter</tabstop>
   <tabstop>genVCenter</tabstop>
-  <tabstop>genShowTrayIcon</tabstop>
+  <tabstop>genShiftDrag</tabstop>
   <tabstop>genModifierBox</tabstop>
   <tabstop>genKeyBox</tabstop>
   <tabstop>genCondensed</tabstop>
@@ -1168,24 +1188,25 @@ p, li { white-space: pre-wrap; }
   <tabstop>genOpaqueness</tabstop>
   <tabstop>genFadeIn</tabstop>
   <tabstop>genFadeOut</tabstop>
-  <tabstop>genUpdateCheck</tabstop>
+  <tabstop>genUpdateCatalog</tabstop>
+  <tabstop>genUpdateMinutes</tabstop>
   <tabstop>genShowHidden</tabstop>
+  <tabstop>genUpdateCheck</tabstop>
   <tabstop>genPortable</tabstop>
-  <tabstop>genUpMinutes</tabstop>
   <tabstop>genProxyHostname</tabstop>
   <tabstop>genProxyPort</tabstop>
+  <tabstop>skinList</tabstop>
   <tabstop>catDirectories</tabstop>
   <tabstop>catDirPlus</tabstop>
   <tabstop>catDirMinus</tabstop>
   <tabstop>catTypes</tabstop>
+  <tabstop>catTypesPlus</tabstop>
+  <tabstop>catTypesMinus</tabstop>
   <tabstop>catCheckBinaries</tabstop>
   <tabstop>catCheckDirs</tabstop>
   <tabstop>catDepth</tabstop>
   <tabstop>catRescan</tabstop>
   <tabstop>plugList</tabstop>
-  <tabstop>skinList</tabstop>
-  <tabstop>catTypesPlus</tabstop>
-  <tabstop>catTypesMinus</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
@@ -1199,8 +1220,8 @@ p, li { white-space: pre-wrap; }
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>521</x>
-     <y>539</y>
+     <x>531</x>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -1215,8 +1236,8 @@ p, li { white-space: pre-wrap; }
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>521</x>
-     <y>539</y>
+     <x>531</x>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

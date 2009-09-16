@@ -59,20 +59,25 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	int center = gSettings->value("GenOps/alwayscenter", 3).toInt();
 	genHCenter->setChecked((center & 1) != 0);
 	genVCenter->setChecked((center & 2) != 0);
+	genShiftDrag->setChecked(gSettings->value("GenOps/dragmode", 0) == 1);
 	//    genFastIndex->setChecked(gSettings->value("GenOps/fastindexer",false).toBool());
 	genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
 	genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
 	genCondensed->setChecked(gSettings->value("GenOps/condensedView",false).toBool());
-	genAutoSuggestDelay->setText(gSettings->value("GenOps/autoSuggestDelay","1000").toString());
-	genUpMinutes->setText(gSettings->value("GenOps/updatetimer", "10").toString());
-	genMaxViewable->setText(gSettings->value("GenOps/numviewable", "4").toString());
-	genNumResults->setText(gSettings->value("GenOps/numresults", "10").toString());
+	genAutoSuggestDelay->setValue(gSettings->value("GenOps/autoSuggestDelay", 1000).toInt());
+	int updateInterval = gSettings->value("GenOps/updatetimer", 10).toInt();
+	connect(genUpdateCatalog, SIGNAL(stateChanged(int)), this, SLOT(autoUpdateCheckChanged(int)));
+	genUpdateMinutes->setValue(updateInterval);
+	genUpdateCatalog->setChecked(updateInterval > 0);
+	genMaxViewable->setValue(gSettings->value("GenOps/numviewable", 4).toInt());
+	genNumResults->setValue(gSettings->value("GenOps/numresults", 10).toInt());
 	genOpaqueness->setValue(gSettings->value("GenOps/opaqueness", 100).toInt());
 	genFadeIn->setValue(gSettings->value("GenOps/fadein", 0).toInt());
 	genFadeOut->setValue(gSettings->value("GenOps/fadeout", 20).toInt());
 	connect(genOpaqueness, SIGNAL(sliderMoved(int)), gMainWidget, SLOT(setOpaqueness(int)));
-	metaKeys << tr("") << tr("Alt") << tr("Win") << tr("Shift") << tr("Control");
-	iMetaKeys << Qt::NoModifier << Qt::AltModifier << Qt::MetaModifier << Qt::ShiftModifier << Qt::ControlModifier;
+	metaKeys << tr("") << tr("Alt") << tr("Control") << tr("Shift") << tr("Win") << tr("Ctrl+Alt") << tr("Ctrl+Shift") << tr("Ctrl+Win");
+	iMetaKeys << Qt::NoModifier << Qt::AltModifier << Qt::MetaModifier << Qt::ShiftModifier << Qt::ControlModifier << 
+		(Qt::ControlModifier | Qt::AltModifier) << (Qt::ControlModifier | Qt::ShiftModifier) << (Qt::ControlModifier | Qt::MetaModifier);
 
 	actionKeys << tr("Space") << tr("Tab") << tr("Backspace") << tr("Enter") << tr("Esc") << tr("Home") << 
 		tr("End") << tr("Pause") << tr("Print") << tr("Up") << tr("Down") << tr("Left") << tr("Right") << tr("F1") <<
@@ -91,19 +96,8 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 		iActionKeys << i;
 
 	// Find the current hotkey
-#ifdef Q_WS_WIN
-	int meta = Qt::AltModifier;
-#elif Q_WS_X11
-	int meta = Qt::ControlModifier;
-#endif
-	int hotkey = gSettings->value("GenOps/hotkey", 0).toInt();
-	if (hotkey == 0)
-	{
-		meta = gSettings->value("GenOps/hotkeyModifier", meta).toInt();
-		hotkey = meta | gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
-	}
-
-	meta = hotkey & (Qt::AltModifier | Qt::MetaModifier | Qt::ShiftModifier | Qt::ControlModifier);
+	int hotkey = gMainWidget->getHotkey();
+	int meta = hotkey & (Qt::AltModifier | Qt::MetaModifier | Qt::ShiftModifier | Qt::ControlModifier);
 	hotkey &= ~(Qt::AltModifier | Qt::MetaModifier | Qt::ShiftModifier | Qt::ControlModifier);
 
 	for (int i = 0; i < metaKeys.count(); ++i)
@@ -112,6 +106,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 		if (iMetaKeys[i] == meta) 
 			genModifierBox->setCurrentIndex(i);
 	}
+
 	for (int i = 0; i < actionKeys.count(); ++i)
 	{
 		genKeyBox->addItem(actionKeys[i]);
@@ -275,12 +270,13 @@ void OptionsDialog::accept()
 	gSettings->setValue("GenOps/updatecheck", genUpdateCheck->isChecked());
 	gSettings->setValue("GenOps/hideiflostfocus", genHideFocus->isChecked());
 	gSettings->setValue("GenOps/alwayscenter", (genHCenter->isChecked() ? 1 : 0) | (genVCenter->isChecked() ? 2 : 0));
+	gSettings->setValue("GenOps/dragmode", genShiftDrag->isChecked() ? 1 : 0);
 	gSettings->setValue("GenOps/showHiddenFiles", genShowHidden->isChecked());
 	gSettings->setValue("GenOps/condensedView", genCondensed->isChecked());
-	gSettings->setValue("GenOps/autoSuggestDelay", genAutoSuggestDelay->text());
-	gSettings->setValue("GenOps/updatetimer", genUpMinutes->text());
-	gSettings->setValue("GenOps/numviewable", genMaxViewable->text());
-	gSettings->setValue("GenOps/numresults", genNumResults->text());
+	gSettings->setValue("GenOps/autoSuggestDelay", genAutoSuggestDelay->value());
+	gSettings->setValue("GenOps/updatetimer", genUpdateCatalog->isChecked() ? genUpdateMinutes->value() : 0);
+	gSettings->setValue("GenOps/numviewable", genMaxViewable->value());
+	gSettings->setValue("GenOps/numresults", genNumResults->value());
 	gSettings->setValue("GenOps/opaqueness", genOpaqueness->value());
 	gSettings->setValue("GenOps/fadein", genFadeIn->value());
 	gSettings->setValue("GenOps/fadeout", genFadeOut->value());
@@ -347,6 +343,14 @@ void OptionsDialog::tabChanged(int tab)
 	{
 		skinChanged(skinList->currentItem()->text());
 	}
+}
+
+
+void OptionsDialog::autoUpdateCheckChanged(int state)
+{
+	genUpdateMinutes->setEnabled(state > 0);
+	if (genUpdateMinutes->value() <= 0)
+		genUpdateMinutes->setValue(10);
 }
 
 

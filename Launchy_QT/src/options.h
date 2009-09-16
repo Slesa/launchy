@@ -42,6 +42,7 @@ public:
 public slots:
 	void accept();
 	void reject();
+	void autoUpdateCheckChanged(int state);
 	void tabChanged(int tab);
 	void skinChanged(const QString& newSkin);
 	void dirRowChanged(int row);

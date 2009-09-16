@@ -158,15 +158,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	}
 
 	// Set the hotkey
-#ifdef Q_WS_WIN
-	int curMeta = Qt::AltModifier;
-#elif Q_WS_X11
-	int curMeta = Qt::ControlModifier;
-#endif
-	curMeta = gSettings->value("GenOps/hotkeyModifier", curMeta).toInt();
-	int curAction = gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
-
-	QKeySequence hotkey(curMeta + curAction);
+	QKeySequence hotkey = getHotkey();
 	if (!setHotkey(hotkey))
 	{
 		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey %1 is already in use, please select another.").arg(hotkey.toString()));
@@ -1070,6 +1062,7 @@ void LaunchyWidget::onHotkey()
 
 void LaunchyWidget::closeEvent(QCloseEvent* event)
 {
+	fader->stop();
 	savePosition();
 	gSettings->sync();
 
@@ -1321,8 +1314,11 @@ void LaunchyWidget::mousePressEvent(QMouseEvent *e)
 {
 	if (e->buttons() == Qt::LeftButton)
 	{
-		dragging = true;
-		dragStartPoint = e->pos();
+		if (gSettings->value("GenOps/dragmode", 0).toInt() == 0 || (e->modifiers() & Qt::ShiftModifier))
+		{
+			dragging = true;
+			dragStartPoint = e->pos();
+		}
 	}
 	showAlternatives(false);
 	activateWindow();
@@ -1449,6 +1445,24 @@ void LaunchyWidget::setFadeLevel(double level)
 }
 
 
+#ifdef Q_WS_WIN
+void SetForegroundWindowEx(HWND hWnd)  
+{  
+	// Attach foreground window thread to our thread  
+	const DWORD foreGroundID = GetWindowThreadProcessId(GetForegroundWindow(), NULL);
+	const DWORD currentID = GetCurrentThreadId();
+
+	AttachThreadInput(foreGroundID, currentID, TRUE);  
+	// Do our stuff here  
+	HWND lastActivePopupWnd = GetLastActivePopup(hWnd);  
+	SetForegroundWindow(lastActivePopupWnd);  
+
+	// Detach the attached thread  
+	AttachThreadInput(foreGroundID, currentID, FALSE);  
+}
+#endif
+
+
 void LaunchyWidget::showLaunchy(bool noFade)
 {
 	shouldDonate();
@@ -1473,6 +1487,12 @@ void LaunchyWidget::showLaunchy(bool noFade)
 #endif
 
 	qApp->syncX();
+#ifdef Q_WS_WIN
+	// need to use this method in Windows to ensure that keyboard focus is set when 
+	// being activated via a hook or message from another instance of Launchy
+	SetForegroundWindowEx(winId());
+#endif
+	input->raise();
 	input->activateWindow();
 	input->selectAll();
 	input->setFocus();
@@ -1525,6 +1545,23 @@ void LaunchyWidget::loadOptions()
 	}
 
 	showTrayIcon();
+}
+
+
+int LaunchyWidget::getHotkey() const
+{
+	int hotkey = gSettings->value("GenOps/hotkey", -1).toInt();
+	if (hotkey == -1)
+	{
+#ifdef Q_WS_WIN
+		int meta = Qt::AltModifier;
+#elif Q_WS_X11
+		int meta = Qt::ControlModifier;
+#endif
+		hotkey = gSettings->value("GenOps/hotkeyModifier", meta).toInt() |
+				 gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
+	}
+	return hotkey;
 }
 
 
