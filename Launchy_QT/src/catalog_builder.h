@@ -36,7 +36,7 @@ class CatalogBuilder : public QThread
 
 public:
 	CatalogBuilder(bool fromArchive, PluginHandler * plugs);
-	CatalogBuilder(shared_ptr<Catalog> catalog, PluginHandler * plugs) : plugins(plugs), buildFromStorage(false), catalog(catalog) {}
+	CatalogBuilder(shared_ptr<Catalog> catalog, PluginHandler * plugs) : catalog(catalog), plugins(plugs), buildFromStorage(false) {}
 	bool loadCatalog(const QString& filename);
 	void storeCatalog(const QString& filename);
 	void setPreviousCatalog(shared_ptr<Catalog> cata)

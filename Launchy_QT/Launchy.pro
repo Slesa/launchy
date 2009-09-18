@@ -5,11 +5,3 @@ SUBDIRS = src \
           plugins/runner \
           plugins/weby \
           plugins/verby
-
-unix {
-  SUBDIRS += platforms/unix
-}
-
-win32 {
- SUBDIRS += platforms/win
-}

@@ -49,15 +49,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 using namespace boost;
 
 
-enum StartMode
+enum CommandFlag
 {
-	Normal = 0,
+	None = 0,
 	ShowLaunchy = 1,
 	ShowOptions = 2,
+	ResetPosition = 4,
+	ResetSkin = 8
 };
 
-Q_DECLARE_FLAGS(StartModes, StartMode)
-Q_DECLARE_OPERATORS_FOR_FLAGS(StartModes)
+Q_DECLARE_FLAGS(CommandFlags, CommandFlag)
+Q_DECLARE_OPERATORS_FOR_FLAGS(CommandFlags)
 
 
 class LaunchyWidget : public QWidget
@@ -65,12 +67,12 @@ class LaunchyWidget : public QWidget
 	Q_OBJECT  // Enable signals and slots
 
 public:
-
-	LaunchyWidget(QWidget *parent, PlatformBase*, StartModes startMode);
+	LaunchyWidget(CommandFlags command);
 	~LaunchyWidget();
 
+	void executeCommand(int command);
+
 	QHash<QString, QList<QString> > dirs;
-	shared_ptr<PlatformBase> platform;	
 	shared_ptr<Catalog> catalog;
 	PluginHandler plugins;
 
@@ -87,7 +89,6 @@ public:
 	int getHotkey() const;
 
 protected:
-	bool event(QEvent* event);
     void paintEvent(QPaintEvent* event);
 
 public slots:
@@ -176,6 +177,9 @@ private:
 	QBuffer *counterBuffer;
 
 };
+
+
+LaunchyWidget* createLaunchyWidget(CommandFlags command);
 
 
 #endif

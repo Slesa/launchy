@@ -2,9 +2,6 @@
 #define CHARLINEEDIT_H
 
 
-#include <QtGui/QLineEdit>
-
-
 class CharLineEdit : public QLineEdit
 {
 	Q_OBJECT

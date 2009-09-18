@@ -17,7 +17,7 @@
 #include "FileBrowser.h"
 
 // Browse button
-static const char* const OpenIcon[] =
+static const char* const FileOpenIcon[] =
 {
 	"16 16 5 1",
 	"# c #000000",
@@ -58,7 +58,7 @@ FileBrowser::FileBrowser(QWidget* pParent) :
 	mpFileEdit->setCompleter(pCompleter);
 	mpFileEdit->installEventFilter(this);
 
-	QPixmap pixOpen(OpenIcon);
+	QPixmap pixOpen(FileOpenIcon);
 	pixOpen.setMask(pixOpen.createHeuristicMask());
 	QIcon icnBrowse(pixOpen);
 

@@ -2,10 +2,6 @@
 #define FADER_H
 
 
-#include <QThread>
-#include <QMutex>
-
-
 class Fader : public QThread
 {
 	Q_OBJECT

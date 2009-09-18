@@ -92,6 +92,7 @@ class PlatformUnix : public QObject, public PlatformBase
     }
 
     virtual QHash<QString, QList<QString> > GetDirectories();
+	virtual QString expandEnvironmentVars(QString txt);
 
     bool SupportsAlphaBorder();
     bool CreateAlphaBorder(QWidget* w, QString ImageName);

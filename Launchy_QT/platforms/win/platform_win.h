@@ -21,99 +21,37 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define PLATFORM_WIN
 
 
+#include <QString>
 #include <QFileIconProvider>
+#include <QIcon>
+#include <QPixmap>
+
 #include <windows.h>
 #include <shlobj.h>
 #include <userenv.h>
 #include <tchar.h>
 
-#include <QIcon>
-#include <QPixmap>
-#include <QString>
-#include <QtDebug>
-#include <QMouseEvent>
 #include "platform_base.h"
 #include "platform_win_util.h"
 #include "platform_base_hotkey.h"
 
 
-class PlatformWin : public QObject, public PlatformBase 
+class PlatformWin : public PlatformBase 
 {
 	Q_OBJECT
-	Q_INTERFACES(PlatformBase)
 
 public:
-	PlatformWin();
+	PlatformWin(int& argc, char** argv);
 	~PlatformWin();
 
-	virtual shared_ptr<QApplication> init(int& argc, char** argv);
-
-/*
-	void KillLaunchys() {
-		
-		qint64 mypid = qApp->applicationPid();
-		QString toRun = "TASKKILL /F /FI \"PID lt " + QString::number(mypid) + "\" /IM Launchy.exe";
-		QProcess proc;
-		proc.execute(toRun);	
-		
-	}
-*/
-
-	// Mandatory functions
-	QKeySequence getHotkey() const
-	{
-		return hotkey;
-	}
-
-	bool setHotkey(const QKeySequence& newHotkey, QObject* receiver, const char* slot)
-	{
-		GlobalShortcutManager::disconnect(hotkey, receiver, slot);
-		GlobalShortcutManager::connect(newHotkey, receiver, slot);
-		hotkey = newHotkey;
-		return GlobalShortcutManager::isConnected(newHotkey);
-	}
-
-	QString GetSettingsDirectory()
-	{ 
-		return GetShellDirectory(CSIDL_APPDATA);
-	}
-
-	virtual QHash<QString, QList<QString> > GetDirectories();
-
-	QList<Directory> GetDefaultCatalogDirectories()
-	{
-		QList<Directory> list;
-		Directory tmp;
-
-		tmp.name = GetShellDirectory(CSIDL_COMMON_STARTMENU);
-		tmp.types << "*.lnk";
-		list.append(tmp);
-		
-		tmp.name = GetShellDirectory(CSIDL_STARTMENU);
-		list.append(tmp);
-		tmp.name = "Utilities\\";
-		tmp.indexDirs = false;
-		list.append(tmp);
-
-		Directory tmp2;
-		tmp2.name = "%appdata%\\Microsoft\\Internet Explorer\\Quick Launch";
-		tmp2.types << "*.*";
-		list.append(tmp2);
-		return list;
-	}
-
-	QString expandEnvironmentVars(QString);
-	void AddToNotificationArea() {};
-	void RemoveFromNotificationArea() {};
-
-	// Alpha border functions	
-	bool SupportsAlphaBorder() const { return true; }
-
-	bool isAlreadyRunning()
-	{
-		return instance->IsAnotherInstanceRunning();
-	}
-	void showOtherInstance();
+	virtual QKeySequence getHotkey() const;
+	virtual bool setHotkey(const QKeySequence& newHotkey, QObject* receiver, const char* slot);
+	virtual QHash<QString, QList<QString> > getDirectories();
+	virtual QList<Directory> getDefaultCatalogDirectories();
+	virtual QString expandEnvironmentVars(QString);
+	virtual bool supportsAlphaBorder() const;
+	virtual bool isAlreadyRunning() const;
+	virtual void sendInstanceCommand(int command);
 
 private:
 	HANDLE localMutex, globalMutex;

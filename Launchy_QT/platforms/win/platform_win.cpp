@@ -18,31 +18,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 
-#include <QtGui>
-#include <QKeyEvent>
-#include <QDir>
-#include <QObject>
+#include "precompiled.h"
+#include "main.h"
 #include "platform_win.h"
 #include "WinIconProvider.h"
 
 
-// Hidden widget that listen for various useful Windows messages
-class WindowMessageListener : public QWidget
+// Override the main widget to handle incoming system messages. We could have done this in the QApplication 
+// event handler, but then we'd have to filter out the duplicates for messages like WM_SETTINGCHANGE.
+class LaunchyWidgetWin : public LaunchyWidget
 {
 public:
-	static void Create()
+	LaunchyWidgetWin(CommandFlags command) :
+		LaunchyWidget(command)
 	{
-		if (instance == NULL)
-			instance.reset(new WindowMessageListener());
-	}
-
-private:
-	WindowMessageListener()
-	{
-		// Force creation of the widget's window handle
-		winId();
-
-		activateMessageId = RegisterWindowMessage(_T("LaunchyActivate"));
+		commandMessageId = RegisterWindowMessage(_T("LaunchyCommand"));
 	}
 
 	virtual bool winEvent(MSG* msg, long* result)
@@ -57,36 +47,39 @@ private:
 			}
 			break;
 
+		// Might need to capture these two messages if Vista gives any problems with alpha borders
+		// when restoring from standby
 		case WM_POWERBROADCAST:
 			break;
 		case WM_WTSSESSION_CHANGE:
 			break;
 
 		default:
-			if (msg->message == activateMessageId)
+			if (msg->message == commandMessageId)
 			{
-				QEvent event(QEvent::User);
-				foreach (QWidget *widget, QApplication::topLevelWidgets())
-				{
-					if (widget->objectName() == "main")
-						QApplication::sendEvent(widget, &event);
-				}
+				// A Launchy startup command
+				executeCommand(msg->wParam);
 			}
+			break;
 		}
-		return QWidget::winEvent(msg, result);
+		return LaunchyWidget::winEvent(msg, result);
 	}
 
-	UINT activateMessageId;
-
-	static shared_ptr<WindowMessageListener> instance;
+private:
+	UINT commandMessageId;
 };
 
-shared_ptr<WindowMessageListener> WindowMessageListener::instance;
+
+// Create the main widget for the application
+LaunchyWidget* createLaunchyWidget(CommandFlags command)
+{
+	return new LaunchyWidgetWin(command);
+}
 
 
 
-PlatformWin::PlatformWin() :
-	PlatformBase() 		
+PlatformWin::PlatformWin(int& argc, char** argv) :
+	PlatformBase(argc, argv)
 {
 	instance = new LimitSingleInstance(TEXT("Local\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
 
@@ -94,6 +87,8 @@ PlatformWin::PlatformWin() :
 	// Launchy is running
 	localMutex = CreateMutex(NULL,0,_T("LaunchyMutex"));
 	globalMutex = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
+
+	icons = (QFileIconProvider*)new WinIconProvider();
 }
 
 
@@ -108,32 +103,45 @@ PlatformWin::~PlatformWin()
 }
 
 
-shared_ptr<QApplication> PlatformWin::init(int& argc, char** argv)
-{
-	QApplication* app = new QApplication(argc, argv);
-	icons = (QFileIconProvider*)new WinIconProvider();
-	WindowMessageListener::Create();
-
-	return shared_ptr<QApplication>(app);
-}
-
-
-QHash<QString, QList<QString> > PlatformWin::GetDirectories()
+QHash<QString, QList<QString> > PlatformWin::getDirectories()
 {
     QHash<QString, QList<QString> > out;
+    out["skins"] << qApp->applicationDirPath() + "/skins";
     out["skins"] += qApp->applicationDirPath() + "/skins";
     out["plugins"] += qApp->applicationDirPath() + "/plugins";
     out["portConfig"] += qApp->applicationDirPath() + "/Launchy.ini";
     QSettings tmp(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
     out["config"] += tmp.fileName();
     out["portDB"] += qApp->applicationDirPath() + "/Launchy.db";
-	qDebug() << out["config"][0];
 	QDir d(out["config"][0]);
     d.cdUp();
     out["db"] += d.absoluteFilePath("Launchy.db");
     out["defSkin"] += out["skins"][0] + "/Default";
     out["platforms"] += qApp->applicationDirPath();
     return out;
+}
+
+
+QList<Directory> PlatformWin::getDefaultCatalogDirectories()
+{
+	QList<Directory> list;
+	Directory tmp;
+
+	tmp.name = GetShellDirectory(CSIDL_COMMON_STARTMENU);
+	tmp.types << "*.lnk";
+	list.append(tmp);
+	
+	tmp.name = GetShellDirectory(CSIDL_STARTMENU);
+	list.append(tmp);
+	tmp.name = "Utilities\\";
+	tmp.indexDirs = false;
+	list.append(tmp);
+
+	Directory tmp2;
+	tmp2.name = "%appdata%\\Microsoft\\Internet Explorer\\Quick Launch";
+	tmp2.types << "*.*";
+	list.append(tmp2);
+	return list;
 }
 
 
@@ -166,11 +174,42 @@ QString PlatformWin::expandEnvironmentVars(QString txt)
 }
 
 
-void PlatformWin::showOtherInstance()
+void PlatformWin::sendInstanceCommand(int command)
 {
-	UINT activateMessageId = RegisterWindowMessage(_T("LaunchyActivate"));
-	PostMessage(HWND_BROADCAST, activateMessageId, 0, 0);
+	UINT commandMessageId = RegisterWindowMessage(_T("LaunchyCommand"));
+	PostMessage(HWND_BROADCAST, commandMessageId, command, 0);
 }
 
 
-Q_EXPORT_PLUGIN2(platform_win, PlatformWin) 
+bool PlatformWin::isAlreadyRunning() const
+{
+	return instance->IsAnotherInstanceRunning();
+}
+
+
+// Mandatory functions
+QKeySequence PlatformWin::getHotkey() const
+{
+	return hotkey;
+}
+
+bool PlatformWin::setHotkey(const QKeySequence& newHotkey, QObject* receiver, const char* slot)
+{
+	GlobalShortcutManager::disconnect(hotkey, receiver, slot);
+	GlobalShortcutManager::connect(newHotkey, receiver, slot);
+	hotkey = newHotkey;
+	return GlobalShortcutManager::isConnected(newHotkey);
+}
+
+
+bool PlatformWin::supportsAlphaBorder() const
+{
+	return true;
+}
+
+
+// Create the application object
+QApplication* createApplication(int& argc, char** argv)
+{
+	return new PlatformWin(argc, argv);
+}

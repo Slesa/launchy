@@ -1,3 +1,4 @@
+#include "precompiled.h"
 #include "catalog_types.h"
 #include "globals.h"
 

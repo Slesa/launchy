@@ -21,28 +21,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define PLATFORM_BASE_H
 
 
-#include <QtGui>
-#include <QWidget>
-#include <QPoint>
-#include <QStringList>
-#include <QList>
-#include <QFileIconProvider>
-#include <QObject>
-#include <QProcess>
-#include <QDebug>
 #include "Directory.h"
 #include "catalog.h"
-#include <boost/shared_ptr.hpp>
+#include "globals.h"
 
 
-using namespace boost;
-
-
-class PlatformBase
+class PlatformBase : public QApplication
 {
 public:
-	PlatformBase()
+	PlatformBase(int& argc, char** argv) : 
+	  QApplication(argc, argv)
 	{
+		platform = this;
 	}
 
 	virtual ~PlatformBase()
@@ -54,19 +44,12 @@ public:
 		}
 	}
 
-	virtual shared_ptr<QApplication> init(int & argc, char** argv)
-	{ 
-		return shared_ptr<QApplication>(new QApplication(argc, argv));
-	}
-
-
 	QIcon icon(const QFileInfo & info) { return icons->icon(info); }
 	QIcon icon(QFileIconProvider::IconType type) { return icons->icon(type); }
-	virtual QString GetSettingsDirectory() = 0;
-	virtual QList<Directory> GetDefaultCatalogDirectories() = 0;
-	virtual bool Execute(const QString& path, const QString& args) { path; args; return false; }
-	virtual bool isAlreadyRunning() = 0;
-	virtual void showOtherInstance() { }
+
+	virtual QList<Directory> getDefaultCatalogDirectories() = 0;
+	virtual bool isAlreadyRunning() const = 0;
+	virtual void sendInstanceCommand(int command) { Q_UNUSED(command); }
 
 	// Set hotkey
 	virtual QKeySequence getHotkey() const = 0;
@@ -74,54 +57,18 @@ public:
 
 	// Need to alter an indexed item?  e.g. .desktop files
 	virtual void alterItem(CatItem*) { }
+	virtual QHash<QString, QList<QString> > getDirectories() = 0;
+	virtual QString expandEnvironmentVars(QString txt) = 0;
 
-	// Alpha border functions	
-	virtual bool SupportsAlphaBorder() const { return false; }
-
-	//virtual void KillLaunchys() = 0;
-	virtual QHash<QString, QList<QString> > GetDirectories() = 0;
-
-	virtual QString expandEnvironmentVars(QString txt)
-	{
-		QStringList list = QProcess::systemEnvironment();
-		txt.replace('~', "$HOME$");
-		QString delim("$");
-		QString out = "";
-		int curPos = txt.indexOf(delim, 0);
-		if (curPos == -1) return txt;
-
-		while(curPos != -1)
-		{
-			int nextPos = txt.indexOf("$", curPos+1);
-			if (nextPos == -1) 
-			{
-				out += txt.mid(curPos+1);
-				break;
-			}
-			QString var = txt.mid(curPos+1, nextPos-curPos-1);
-			bool found = false;
-			foreach(QString s, list)
-			{
-				if (s.startsWith(var, Qt::CaseInsensitive))
-				{
-					found = true;
-					out += s.mid(var.length()+1);
-					break;
-				}			
-			}
-			if (!found)
-				out += "$" + var;
-			curPos = nextPos;
-		}
-		return out;
-	}
+	virtual bool supportsAlphaBorder() const { return false; }
 
 protected:
 	QFileIconProvider* icons;
 	QKeySequence hotkey;
 };
 
-Q_DECLARE_INTERFACE(PlatformBase, "net.launchy.PlatformBase/1.0")
+
+QApplication* createApplication(int& argc, char** argv);
 
 
 #endif
