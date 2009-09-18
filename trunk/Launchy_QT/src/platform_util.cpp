@@ -1,3 +1,4 @@
+/*
 #include <QPluginLoader>
 #include <QDebug>
 #include "plugin_interface.h"
@@ -45,3 +46,4 @@ PlatformBase * loadPlatform()
 	
 	return qobject_cast<PlatformBase*>(plugin);
 }
+*/

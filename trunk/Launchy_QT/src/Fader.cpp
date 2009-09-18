@@ -1,6 +1,6 @@
+#include "precompiled.h"
 #include "Fader.h"
 #include "globals.h"
-#include <QDebug>
 
 
 Fader::Fader(QObject* parent) :

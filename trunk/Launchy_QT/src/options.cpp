@@ -17,18 +17,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+
+#include "precompiled.h"
 #include "options.h"
 #include "main.h"
 #include "globals.h"
 #include "plugin_handler.h"
 #include "FileBrowserDelegate.h"
-#include <QSettings>
-#include <QDir>
-#include <QPixmap>
-#include <QBitmap>
-#include <QPainter>
-#include <QFileDialog>
-#include <QTextStream>
 
 
 QByteArray OptionsDialog::windowGeometry;
@@ -75,8 +70,10 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genFadeIn->setValue(gSettings->value("GenOps/fadein", 0).toInt());
 	genFadeOut->setValue(gSettings->value("GenOps/fadeout", 20).toInt());
 	connect(genOpaqueness, SIGNAL(sliderMoved(int)), gMainWidget, SLOT(setOpaqueness(int)));
-	metaKeys << tr("") << tr("Alt") << tr("Control") << tr("Shift") << tr("Win") << tr("Ctrl+Alt") << tr("Ctrl+Shift") << tr("Ctrl+Win");
-	iMetaKeys << Qt::NoModifier << Qt::AltModifier << Qt::MetaModifier << Qt::ShiftModifier << Qt::ControlModifier << 
+
+	metaKeys << tr("") << tr("Alt") << tr("Control") << tr("Shift") << tr("Win") <<
+		tr("Ctrl+Alt") << tr("Ctrl+Shift") << tr("Ctrl+Win");
+	iMetaKeys << Qt::NoModifier << Qt::AltModifier << Qt::ControlModifier << Qt::ShiftModifier << Qt::MetaModifier <<
 		(Qt::ControlModifier | Qt::AltModifier) << (Qt::ControlModifier | Qt::ShiftModifier) << (Qt::ControlModifier | Qt::MetaModifier);
 
 	actionKeys << tr("Space") << tr("Tab") << tr("Backspace") << tr("Enter") << tr("Esc") << tr("Home") << 
@@ -84,16 +81,22 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 		tr("F2") << tr("F3") << tr("F4") << tr("F5") << tr("F6") << tr("F7") << tr("F8") << tr("F9") << tr("F10") <<
 		tr("F11") << tr("F12") << tr("F13") << tr("F14") << tr("F15") << tr("Caps Lock");
 
-	for (int i = 'A'; i <= 'Z'; i++) 
-		actionKeys << QString(QChar(i));
 
 	iActionKeys << Qt::Key_Space << Qt::Key_Tab << Qt::Key_Backspace << Qt::Key_Enter << Qt::Key_Escape << Qt::Key_Home <<
 		Qt::Key_End << Qt::Key_Pause << Qt::Key_Print << Qt::Key_Up << Qt::Key_Down << Qt::Key_Left << Qt::Key_Right << Qt::Key_F1 <<
 		Qt::Key_F2 << Qt::Key_F3 << Qt::Key_F4 << Qt::Key_F5 << Qt::Key_F6 << Qt::Key_F7 << Qt::Key_F8 << Qt::Key_F9 << Qt::Key_F10 <<
 		Qt::Key_F11 << Qt::Key_F12 << Qt::Key_F13 << Qt::Key_F14 << Qt::Key_F15 << Qt::Key_CapsLock;
 
-	for (int i = 'A'; i <= 'Z'; i++) 
+	for (int i = '0'; i <= '9'; i++) 
+	{
+		actionKeys << QString(QChar(i));
 		iActionKeys << i;
+	}
+	for (int i = 'A'; i <= 'Z'; i++) 
+	{
+		actionKeys << QString(QChar(i));
+		iActionKeys << i;
+	}
 
 	// Find the current hotkey
 	int hotkey = gMainWidget->getHotkey();
@@ -181,7 +184,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	gSettings->endArray();
 	if (memDirs.count() == 0)
 	{
-		memDirs = gMainWidget->platform->GetDefaultCatalogDirectories();
+		memDirs = platform->getDefaultCatalogDirectories();
 	}
 
 	for (int i = 0; i < memDirs.count(); ++i)
@@ -193,7 +196,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	if (catDirectories->count() > 0)
 		catDirectories->setCurrentRow(0);
 
-	genOpaqueness->setRange(15,100);
+	genOpaqueness->setRange(15, 100);
 
 	if (gMainWidget->catalog != NULL)
 	{
@@ -362,12 +365,15 @@ void OptionsDialog::skinChanged(const QString& newSkin)
 	QString directory = gMainWidget->dirs["skins"][0] + "/" + newSkin + "/";
 
 	// Load up the author file
+	if (!QFile::exists(directory + "style.qss"))
+	{
+		authorInfo->setText("");
+		return;
+	}
 	QFile author(directory + "author.txt"); 
 	if (!author.open(QIODevice::ReadOnly))
 	{
 		authorInfo->setText("");
-		skinPreview->clear();
-		return;
 	}
 
 	QTextStream in(&author);
@@ -386,16 +392,16 @@ void OptionsDialog::skinChanged(const QString& newSkin)
 	QPixmap pix;
 	if (pix.load(directory + "background.png"))
 	{
-		if (!gMainWidget->platform->SupportsAlphaBorder() && QFile::exists(directory + "background_nc.png"))
+		if (!platform->supportsAlphaBorder() && QFile::exists(directory + "background_nc.png"))
 			pix.load(directory + "background_nc.png");
 		if (pix.hasAlpha())
 			pix.setMask(pix.mask());
-		if (!gMainWidget->platform->SupportsAlphaBorder() && QFile::exists(directory + "mask_nc.png"))
+		if (!platform->supportsAlphaBorder() && QFile::exists(directory + "mask_nc.png"))
 			pix.setMask(QPixmap(directory + "mask_nc.png"));
 		else if (QFile::exists(directory + "mask.png"))
 			pix.setMask(QPixmap(directory + "mask.png"));
 
-		if (gMainWidget->platform->SupportsAlphaBorder())
+		if (platform->supportsAlphaBorder())
 		{
 			// Compose the alpha image with the background
 			QImage sourceImage(pix.toImage());

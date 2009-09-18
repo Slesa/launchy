@@ -211,6 +211,40 @@ void PlatformUnix::alterItem(CatItem* item) {
 }
 
 
+QString PlatformUnix::expandEnvironmentVars(QString txt)
+{
+	QStringList list = QProcess::systemEnvironment();
+	txt.replace('~', "$HOME$");
+	QString delim("$");
+	QString out = "";
+	int curPos = txt.indexOf(delim, 0);
+	if (curPos == -1) return txt;
+
+	while(curPos != -1)
+	{
+		int nextPos = txt.indexOf("$", curPos+1);
+		if (nextPos == -1) 
+		{
+			out += txt.mid(curPos+1);
+			break;
+		}
+		QString var = txt.mid(curPos+1, nextPos-curPos-1);
+		bool found = false;
+		foreach(QString s, list)
+		{
+			if (s.startsWith(var, Qt::CaseInsensitive))
+			{
+				found = true;
+				out += s.mid(var.length()+1);
+				break;
+			}			
+		}
+		if (!found)
+			out += "$" + var;
+		curPos = nextPos;
+	}
+	return out;
+}
 
 
 Q_EXPORT_PLUGIN2(platform_unix, PlatformUnix)

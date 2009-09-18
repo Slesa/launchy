@@ -26,7 +26,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "catalog.h"
 
 #ifdef Q_WS_WIN
+
+#ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN
+#endif
+
 #ifndef WINVER
 #define WINVER 0x05100
 #define _WIN32_WINNT 0x0510	
@@ -36,7 +40,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <windows.h>
 #include <shlobj.h>
+
 #endif
+
 
 #ifndef UNICODE
 #define UNICODE

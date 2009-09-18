@@ -1,4 +1,4 @@
-#include <QKeyEvent>
+#include "precompiled.h"
 #include "CharListWidget.h"
 
 

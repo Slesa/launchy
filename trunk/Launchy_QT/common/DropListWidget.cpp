@@ -1,5 +1,5 @@
+#include "precompiled.h"
 #include "DropListWidget.h"
-#include <QDragEnterEvent>
 
 
 DropListWidget::DropListWidget(QWidget* pParent) :

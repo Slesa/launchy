@@ -1,4 +1,3 @@
-
 /*
 Launchy: Application Launcher
 Copyright (C) 2007  Josh Karlin
@@ -19,15 +18,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 
+#include "precompiled.h"
 #include "catalog_types.h"
 #include "catalog_builder.h"
 #include "globals.h"
 #include "main.h"
 #include "Directory.h"
-#include <QDebug>
-
-#include <QFile>
-#include <QDataStream>
 
 
 CatalogBuilder::CatalogBuilder(bool fromArchive, PluginHandler* plugs) :
@@ -81,13 +77,13 @@ void CatalogBuilder::buildCatalog()
 
 	if (memDirs.count() == 0)
 	{
-		memDirs = gMainWidget->platform->GetDefaultCatalogDirectories();
+		memDirs = platform->getDefaultCatalogDirectories();
 	}
 
 	for (int i = 0; i < memDirs.count(); ++i)
 	{
 		emit(catalogIncrement(100.0 * (float)(i+1) / (float) memDirs.count()));
-		QString cur = gMainWidget->platform->expandEnvironmentVars(memDirs[i].name);
+		QString cur = platform->expandEnvironmentVars(memDirs[i].name);
 		indexDirectory(cur, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth);
 	}
 
@@ -192,7 +188,7 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 			CatItem item(dir + "/" + files[i]);
 			if (currentCatalog != NULL)
 				item.usage = currentCatalog->getUsage(item.fullPath);
-			gMainWidget->platform->alterItem(&item);
+			platform->alterItem(&item);
 			catalog->addItem(item);
 			indexed[dir + "/" + files[i]] = true;
 		}

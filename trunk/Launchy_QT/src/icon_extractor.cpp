@@ -18,16 +18,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+
+#include "precompiled.h"
 #include "icon_extractor.h"
 #include "globals.h"
 #include "main.h"
-#include <QDebug>
-#include <QFile>
 
 
-IconExtractor::IconExtractor(shared_ptr<PlatformBase> platform)
+IconExtractor::IconExtractor()
 {
-	this->platform = platform;
 }
 
 

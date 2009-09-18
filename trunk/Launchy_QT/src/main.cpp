@@ -17,29 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include <QApplication>
-#include <QFont>
-#include <QPushButton>
-#include <QWidget>
-#include <QPalette>
-#include <QLineEdit>
-#include <QPixmap>
-#include <QBitmap>
-#include <QLabel>
-#include <QFile>
-#include <QIcon>
-#include <QSettings>
-#include <QMouseEvent>
-#include <QMessageBox>
-#include <QDir>
-#include <QMenu>
-#include <QSettings>
-#include <QTimer>
-#include <QDateTime>
-#include <QDesktopWidget>
-#include <QTranslator>
-#include <QNetworkProxy>
 
+#include "precompiled.h"
 #include "icon_delegate.h"
 #include "main.h"
 #include "globals.h"
@@ -47,27 +26,43 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "plugin_interface.h"
 
 
-LaunchyWidget::LaunchyWidget(QWidget *parent, PlatformBase *plat, StartModes startMode)
-:
 #ifdef Q_WS_WIN
-QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
+void SetForegroundWindowEx(HWND hWnd)  
+{  
+	// Attach foreground window thread to our thread
+	const DWORD foreGroundID = GetWindowThreadProcessId(GetForegroundWindow(), NULL);
+	const DWORD currentID = GetCurrentThreadId();
+
+	AttachThreadInput(foreGroundID, currentID, TRUE);
+	// Do our stuff here 
+	HWND lastActivePopupWnd = GetLastActivePopup(hWnd);
+	SetForegroundWindow(lastActivePopupWnd);
+
+	// Detach the attached thread
+	AttachThreadInput(foreGroundID, currentID, FALSE);
+}
+#endif
+
+
+LaunchyWidget::LaunchyWidget(CommandFlags command) :
+#ifdef Q_WS_WIN
+	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
 #endif
 #ifdef Q_WS_X11
-QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
+	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
 #endif
-	platform(plat),
-	updateTimer(NULL),
-	dropTimer(NULL),
-	alternatives(NULL),
-	iconExtractor(platform),
 	frameGraphic(NULL),
-	trayIcon(NULL)
+	trayIcon(NULL),
+	alternatives(NULL),
+	updateTimer(NULL),
+	dropTimer(NULL)
 {
 	setObjectName("launchy");
 	setWindowTitle(tr("Launchy"));
+	setWindowIcon(QIcon(":/resources/launchy128.png"));
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);
-	if (platform->SupportsAlphaBorder())
+	if (platform->supportsAlphaBorder())
 	{
 		setAttribute(Qt::WA_TranslucentBackground);
 	}
@@ -114,7 +109,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	outputIcon = new QLabel(this);
 	outputIcon->setObjectName("outputIcon");
 
-	dirs = platform->GetDirectories();
+	dirs = platform->getDirectories();
 
 	// Load settings
 	if (QFile::exists(dirs["portConfig"][0]))
@@ -126,7 +121,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION)
 	{
 		updateVersion(gSettings->value("version", 0).toInt());
-		startMode |= ShowLaunchy;
+		command |= ShowLaunchy;
 	}
 
 	alternatives = new CharListWidget(this);
@@ -147,7 +142,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 
 	// Set the general options
 	if (setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool()))
-		startMode |= ShowLaunchy;
+		command |= ShowLaunchy;
 	setAlwaysTop(gSettings->value("GenOps/alwaystop", false).toBool());
 	setPortable(gSettings->value("GenOps/isportable", false).toBool());
 
@@ -162,7 +157,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	if (!setHotkey(hotkey))
 	{
 		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey %1 is already in use, please select another.").arg(hotkey.toString()));
-		startMode = ShowLaunchy | ShowOptions;
+		command = ShowLaunchy | ShowOptions;
 	}
 
 	// Set the timers
@@ -187,13 +182,7 @@ QWidget(parent, Qt::FramelessWindowHint | Qt::Tool),
 	loadPosition();
 	loadOptions();
 
-	if (startMode & ShowLaunchy)
-		showLaunchy();
-	else
-		hideLaunchy();
-
-	if (startMode & ShowOptions)
-		showOptionsDialog();
+	executeCommand(command);
 }
 
 
@@ -202,25 +191,39 @@ LaunchyWidget::~LaunchyWidget()
 	delete updateTimer;
 	delete dropTimer;
 	delete alternatives;
-	platform.reset();
 }
 
 
-bool LaunchyWidget::event(QEvent* event)
+void LaunchyWidget::executeCommand(int command)
 {
-	if (event->type() == QEvent::User)
+	if (command & ResetPosition)
 	{
-		showLaunchy();
-		return true;
+		QRect r = geometry();
+		int primary = qApp->desktop()->primaryScreen();
+		QRect scr = qApp->desktop()->availableGeometry(primary);
+
+		QPoint pt(scr.width()/2 - r.width()/2, scr.height()/2 - r.height()/2);
+		move(pt);
 	}
 
-	return QWidget::event(event);
+	if (command & ResetSkin)
+	{
+		setOpaqueness(100);
+		showTrayIcon();
+		applySkin("Default");
+	}
+
+	if (command & ShowLaunchy)
+		showLaunchy();
+
+	if (command & ShowOptions)
+		showOptionsDialog();
 }
 
 
 void LaunchyWidget::paintEvent(QPaintEvent* event)
 {
-	// Do the default draw first render stylesheet backgrounds
+	// Do the default draw first to render stylesheet backgrounds
 	QStyleOption styleOption;
 	styleOption.init(this);
 	QPainter painter(this);
@@ -301,9 +304,7 @@ void LaunchyWidget::showAlternatives(bool show)
 		for (int i = 0; i < searchResults.size(); ++i)
 		{
 			QListWidgetItem * item = new QListWidgetItem(QDir::toNativeSeparators(searchResults[i].fullPath), alternatives);
-			QString s;
-			s.sprintf(" (%d)", searchResults[i].usage);
-			item->setData(ROLE_FULL, QDir::toNativeSeparators(searchResults[i].fullPath) + s);
+			item->setData(ROLE_FULL, QDir::toNativeSeparators(searchResults[i].fullPath));
 			item->setData(ROLE_SHORT, searchResults[i].shortName);
 			item->setToolTip(QDir::toNativeSeparators(searchResults[i].fullPath));
 			alternatives->addItem(item);
@@ -359,8 +360,7 @@ void LaunchyWidget::launchItem(CatItem& item)
 		if (inputData.count() > 1)
 			for(int i = 1; i < inputData.count(); ++i)
 				args += inputData[i].getText() + " ";
-		if (!platform->Execute(item.fullPath, args))
-			runProgram(item.fullPath, args);
+		runProgram(item.fullPath, args);
 	}
 	else
 	{
@@ -743,9 +743,7 @@ void LaunchyWidget::searchOnInput()
 	plugins.getResults(&inputData, &searchResults);
 	qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
 
-	//	    qDebug() << gSearchTxt;
 	// Is it a file?
-
 	if (searchText.contains(QDir::separator()) || searchText.startsWith("~") ||
 		(searchText.size() == 2 && searchText[0].isLetter() && searchText[1] == ':'))
 		searchFiles(searchText, searchResults);
@@ -781,7 +779,7 @@ void LaunchyWidget::iconExtracted(int itemIndex, QIcon icon)
 	if (itemIndex == -1)
 	{
 		// An index of -1 means update the output icon
-		outputIcon->setPixmap(icon.pixmap(QSize(32,32), QIcon::Normal, QIcon::On));
+		outputIcon->setPixmap(icon.pixmap(outputIcon->size(), QIcon::Normal, QIcon::On));
 	}
 	else if (itemIndex < alternatives->count())
 	{
@@ -1071,8 +1069,6 @@ void LaunchyWidget::closeEvent(QCloseEvent* event)
 	CatalogBuilder builder(catalog, &plugins);
 	builder.storeCatalog(dest.absoluteFilePath("Launchy.db"));
 
-	platform.reset();
-
 	event->accept();
 	qApp->quit();
 }
@@ -1161,20 +1157,18 @@ void LaunchyWidget::applySkin(const QString& name)
 		return;
 
 	QString directory = dirs["skins"][0] + QString("/") + name + "/";
+	QString stylesheetPath = directory + "style.qss";
 
 	// Use default skin if this one doesn't exist
-	if (!QFile::exists(directory + "style.qss")) 
+	if (!QFile::exists(stylesheetPath)) 
 	{
 		directory = dirs["defSkin"][0] + "/";
 		gSettings->setValue("GenOps/skin", "Default");
 	}
 
-	// Read the style sheet
-	QFile file(directory + "style.qss");
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	// If still no good then fail
+	if (!QFile::exists(stylesheetPath))
 		return;
-	QString styleSheet = QLatin1String(file.readAll());
-	file.close();
 
 	// If it's valid Set a few defaults
 	closeButton->setGeometry(QRect());
@@ -1183,13 +1177,26 @@ void LaunchyWidget::applySkin(const QString& name)
 	output->setAlignment(Qt::AlignCenter);
 	alternativesRect = QRect();
 
-	// This is causing the ::destroyed connect errors
-	qApp->setStyleSheet(styleSheet);
-
-	// Set positions
-	if (QFile::exists(directory + "misc.txt"))
+	if (!QFile::exists(directory + "misc.txt"))
 	{
-		QFile file(directory + "misc.txt");
+		// Loading use file:/// syntax allows relative paths in the stylesheet to be rooted
+		// in the same directory as the stylesheet
+		qApp->setStyleSheet("file:///" + stylesheetPath);
+	}
+	else
+	{
+		// Set positions, this will signify an older launchy skin
+		// Read the style sheet
+		QFile file(directory + "style.qss");
+		if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+			return;
+		QString styleSheet = QLatin1String(file.readAll());
+		file.close();
+
+		// This is causing the ::destroyed connect errors
+		qApp->setStyleSheet(styleSheet);
+
+		file.setFileName(directory + "misc.txt");
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		{
 			QTextStream in(&file);
@@ -1256,7 +1263,7 @@ void LaunchyWidget::applySkin(const QString& name)
 	bool validFrame = false;
 	QPixmap frame;
 
-	if (platform->SupportsAlphaBorder())
+	if (platform->supportsAlphaBorder())
 	{
 		if (frame.load(directory + "frame.png"))
 		{
@@ -1390,6 +1397,7 @@ void LaunchyWidget::buildCatalog()
 }
 
 
+
 void LaunchyWidget::showOptionsDialog()
 {
 	dropTimer->stop();
@@ -1397,6 +1405,11 @@ void LaunchyWidget::showOptionsDialog()
 	optionsOpen = true;
 	OptionsDialog options(this);
 	options.setObjectName("options");
+#ifdef Q_WS_WIN
+	// need to use this method in Windows to ensure that keyboard focus is set when 
+	// being activated via a message from another instance of Launchy
+	SetForegroundWindowEx(options.winId());
+#endif
 	options.exec();
 
 	// Perform the database update
@@ -1443,24 +1456,6 @@ void LaunchyWidget::setFadeLevel(double level)
 			show();
 	}
 }
-
-
-#ifdef Q_WS_WIN
-void SetForegroundWindowEx(HWND hWnd)  
-{  
-	// Attach foreground window thread to our thread  
-	const DWORD foreGroundID = GetWindowThreadProcessId(GetForegroundWindow(), NULL);
-	const DWORD currentID = GetCurrentThreadId();
-
-	AttachThreadInput(foreGroundID, currentID, TRUE);  
-	// Do our stuff here  
-	HWND lastActivePopupWnd = GetLastActivePopup(hWnd);  
-	SetForegroundWindow(lastActivePopupWnd);  
-
-	// Detach the attached thread  
-	AttachThreadInput(foreGroundID, currentID, FALSE);  
-}
-#endif
 
 
 void LaunchyWidget::showLaunchy(bool noFade)
@@ -1555,7 +1550,8 @@ int LaunchyWidget::getHotkey() const
 	{
 #ifdef Q_WS_WIN
 		int meta = Qt::AltModifier;
-#elif Q_WS_X11
+#endif
+#ifdef  Q_WS_X11
 		int meta = Qt::ControlModifier;
 #endif
 		hotkey = gSettings->value("GenOps/hotkeyModifier", meta).toInt() |
@@ -1583,12 +1579,12 @@ void LaunchyWidget::createActions()
 
 int main(int argc, char *argv[])
 {
-	PlatformBase * platform = loadPlatform();
-	shared_ptr<QApplication> app(platform->init(argc, argv));
+	createApplication(argc, argv);
+
+	qApp->setQuitOnLastWindowClosed(false);
 
 	QStringList args = qApp->arguments();
-	app->setQuitOnLastWindowClosed(false);
-	StartModes startMode = Normal;
+	CommandFlags command = None;
 	bool allowMultipleInstances = false;
 
 	if (args.size() > 1)
@@ -1597,17 +1593,15 @@ int main(int argc, char *argv[])
 		{
 			if (arg.compare("/rescue", Qt::CaseInsensitive) == 0)
 			{
-				// Kill all existing Launchys
-				//			platform->KillLaunchys();
-				startMode = ShowOptions;
+				command = ResetSkin | ResetPosition | ShowLaunchy;
 			}
 			else if (arg.compare("/show", Qt::CaseInsensitive) == 0)
 			{
-				startMode = ShowLaunchy;
+				command = ShowLaunchy;
 			}
 			else if (arg.compare("/options", Qt::CaseInsensitive) == 0)
 			{
-				startMode = ShowOptions;
+				command = ShowOptions;
 			}
 			else if (arg.compare("/multiple", Qt::CaseInsensitive) == 0)
 			{
@@ -1618,7 +1612,7 @@ int main(int argc, char *argv[])
 
 	if (!allowMultipleInstances && platform->isAlreadyRunning())
 	{
-		platform->showOtherInstance();
+		platform->sendInstanceCommand(command);
 		exit(1);
 	}
 
@@ -1628,9 +1622,14 @@ int main(int argc, char *argv[])
 	QString locale = QLocale::system().name();
 	QTranslator translator;
 	translator.load(QString("tr/launchy_" + locale));
-	app->installTranslator(&translator);
+	qApp->installTranslator(&translator);
 
-	LaunchyWidget widget(NULL, platform, startMode);
+	LaunchyWidget* widget = createLaunchyWidget(command);
 
-	app->exec();
+	qApp->exec();
+
+	delete widget;
+	widget = NULL;
+	delete platform;
+	platform = NULL;
 }

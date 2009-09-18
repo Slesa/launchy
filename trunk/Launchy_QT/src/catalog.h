@@ -21,12 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define CATALOG_H
 
 #include <QString>
-#include <QStringList>
-#include <QBitArray>
-#include <QIcon>
-#include <QHash>
 #include <QDataStream>
-#include <QDir>
 #include <QSet>
 
 

@@ -2,6 +2,7 @@ TEMPLATE = app
 unix:TARGET = launchy
 win32:TARGET = Launchy
 CONFIG += debug_and_release
+PRECOMPILED_HEADER = precompiled.h
 
 # CONFIG += qt release
 INCLUDEPATH += ../common
@@ -12,7 +13,7 @@ SOURCES = main.cpp \
     catalog.cpp \
     catalog_builder.cpp \
     plugin_handler.cpp \
-    platform_util.cpp \
+    platform_base_hotkey.cpp \
     icon_delegate.cpp \
     plugin_interface.cpp \
     catalog_types.cpp \
@@ -23,8 +24,7 @@ SOURCES = main.cpp \
     Fader.cpp \
     CharListWidget.cpp \
     CharLineEdit.cpp
-HEADERS = platform_util.h \
-    platform_base.h \
+HEADERS = platform_base.h \
     globals.h \
     globals.h \
     main.h \
@@ -41,7 +41,8 @@ HEADERS = platform_util.h \
     ../common/DropListWidget.h \
     CharListWidget.h \
     CharLineEdit.h \
-    Fader.h
+    Fader.h \
+    precompiled.h
 ICON = Launchy.ico
 first.target = blah
 unix { 
@@ -67,14 +68,34 @@ unix {
         desktop
 }
 win32 { 
+    SOURCES += ../platforms/win/platform_win.cpp \
+        ../platforms/win/platform_win_hotkey.cpp \
+        ../platforms/win/platform_win_util.cpp \
+        ../platforms/win/WinIconProvider.cpp
+    HEADERS += ../platforms/win/WinIconProvider.h \
+        platform_base_hotkey.h \
+        platform_base_hottrigger.h \
+        ../platforms/win/platform_win.h \
+        ../platforms/win/platform_win_util.h
     CONFIG += embed_manifest_exe
     INCLUDEPATH += c:/boost/
     FORMS = options.ui
     RC_FILE = ../win/launchy.rc
     LIBS += shell32.lib \
-        ole32.lib \
         user32.lib \
-        gdi32.lib
+        gdi32.lib \
+        ole32.lib \
+        comctl32.lib \
+        advapi32.lib \
+        userenv.lib
+    DEFINES = VC_EXTRALEAN \
+        WIN32 \
+        _UNICODE \
+        UNICODE \
+        WINVER=0x0510 \
+        _WIN32_WINNT=0x0510 \
+        _WIN32_WINDOWS=0x0510 \
+        _WIN32_IE=0x0600
     if(!debug_and_release|build_pass) { 
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/

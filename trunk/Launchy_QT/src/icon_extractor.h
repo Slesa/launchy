@@ -20,21 +20,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef ICON_EXTRACTOR
 #define ICON_EXTRACTOR
 
+#include "precompiled.h"
 #include "platform_base.h"
-#include <QThread>
-#include <QQueue>
 
-#include <boost/shared_ptr.hpp>
-
-using namespace boost;
 
 class IconExtractor : public QThread
 {
 	Q_OBJECT
 
 public:
-
-	IconExtractor(shared_ptr<PlatformBase> platform);
+	IconExtractor();
 	void processIcon(CatItem item, bool highPriority = true);
 	void processIcons(const QList<CatItem>& newItems, bool reset = true);
 	void stop();
@@ -48,7 +43,7 @@ private:
 
 	QMutex mutex;
 	QQueue<CatItem> items;
-	shared_ptr<PlatformBase> platform;	
 };
+
 
 #endif
