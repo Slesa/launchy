@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2009  Josh Karlin
+Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "icon_delegate.h"
 #include "globals.h"
 
+extern QLabel* alternativesPath;
 
 IconDelegate::IconDelegate(QObject *parent) :
 	QStyledItemDelegate(parent)
@@ -55,11 +56,11 @@ void IconDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
 	painter->drawText(shortRect, Qt::AlignTop | Qt::TextShowMnemonic, text);
 
 	if (option.state & QStyle::State_Selected)
-		painter->setPen(hicolor);
+		painter->setPen(alternativesPath->palette().color(QPalette::HighlightedText));
 	else
-		painter->setPen(color);
+		painter->setPen(alternativesPath->palette().color(QPalette::WindowText));
 
-	painter->setFont(QFont(family, size, weight, italics));
+	painter->setFont(alternativesPath->font());
 
 	QString full = index.data(ROLE_FULL).toString();
 	full = painter->fontMetrics().elidedText(full, option.textElideMode, longRect.width());

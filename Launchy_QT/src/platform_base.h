@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007  Josh Karlin
+Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -44,8 +44,9 @@ public:
 		}
 	}
 
-	QIcon icon(const QFileInfo & info) { return icons->icon(info); }
+	QIcon icon(const QFileInfo& info) { return icons->icon(info); }
 	QIcon icon(QFileIconProvider::IconType type) { return icons->icon(type); }
+	virtual void setPreferredIconSize(int size) = 0;
 
 	virtual QList<Directory> getDefaultCatalogDirectories() = 0;
 	virtual bool isAlreadyRunning() const = 0;
@@ -61,6 +62,7 @@ public:
 	virtual QString expandEnvironmentVars(QString txt) = 0;
 
 	virtual bool supportsAlphaBorder() const { return false; }
+
 
 protected:
 	QFileIconProvider* icons;
