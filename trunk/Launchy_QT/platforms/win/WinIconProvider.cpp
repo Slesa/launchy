@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007  Josh Karlin
+Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -23,14 +23,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "WinIconProvider.h"
 
 
-WinIconProvider::WinIconProvider()
+WinIconProvider::WinIconProvider() :
+	preferredSize(32)
 {
-	iconlist = GetSystemImageListHandle(false);
 }
 
 
 WinIconProvider::~WinIconProvider()
 {
+}
+
+
+void WinIconProvider::setPreferredIconSize(int size)
+{
+	preferredSize = size;
 }
 
 
@@ -56,18 +62,32 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const
 	}
 	else
 	{
-		SHFILEINFO sfi;
 		QString filePath = QDir::toNativeSeparators(info.filePath());
-		HIMAGELIST imageList = (HIMAGELIST)SHGetFileInfo(
-			filePath.utf16(), 
-			FILE_ATTRIBUTE_NORMAL,
-			&sfi, sizeof(SHFILEINFO), 
-			SHGFI_SYSICONINDEX | SHGFI_SHELLICONSIZE | SHGFI_USEFILEATTRIBUTES);
+
+		// Get the icon index using SHGetFileInfo
+		SHFILEINFO sfi = {0};
+		SHGetFileInfo(filePath.utf16(), -1, &sfi, sizeof(sfi), SHGFI_SYSICONINDEX);
+
+		// An icon index of 3 is the generic file icon
 		if (sfi.iIcon != 3)
 		{
-			HICON hIcon = ImageList_GetIcon(imageList, sfi.iIcon, ILD_TRANSPARENT);
-		    retIcon = QIcon(convertHIconToPixmap(hIcon));
-			DestroyIcon(hIcon);
+			// Retrieve the system image list.
+			// To get the 48x48 icons, use SHIL_EXTRALARGE
+			// To get the 256x256 icons (Vista only), use SHIL_JUMBO
+			int imageListIndex;
+			if (preferredSize <= 16)
+				imageListIndex = SHIL_SMALL;
+			else if (preferredSize <= 32)
+				imageListIndex = SHIL_LARGE;
+			else
+				imageListIndex = SHIL_EXTRALARGE;
+			// On Windows Vista or 7 we could go up to 256 using SHIL_JUMBO
+			// preferred size > 48 then use SHIL_JUMBO
+
+			addIconFromImageList(imageListIndex, sfi.iIcon, retIcon);
+			// Ensure there's also a 32x32 icon
+			if (imageListIndex == SHIL_EXTRALARGE)
+				addIconFromImageList(SHIL_LARGE, sfi.iIcon, retIcon);
 		}
 		else if (info.isSymLink() || fileExtension == "lnk") // isSymLink is case sensitive when it perhaps shouldn't be
 		{
@@ -84,172 +104,22 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const
 }
 
 
-HIMAGELIST WinIconProvider::GetSystemImageListHandle(bool bSmallIcon) 
+bool WinIconProvider::addIconFromImageList(int imageListIndex, int iconIndex, QIcon& icon) const
 {
-	HIMAGELIST  hSystemImageList; 
-	SHFILEINFO    ssfi; 
-
-	QString winpath = GetShellDirectory(CSIDL_WINDOWS);
-	QString windrive = QDir::toNativeSeparators(winpath.mid(0,3));
-	if (bSmallIcon)
+	HICON hIcon;
+	IImageList* imageList;
+	HRESULT hResult = SHGetImageList(imageListIndex, IID_IImageList, (void**)&imageList);
+	if (hResult == S_OK)
 	{
-		hSystemImageList = 
-			(HIMAGELIST)SHGetFileInfo( 
-			(LPCTSTR) windrive.utf16(), 
-			0, 
-			&ssfi, 
-			sizeof(SHFILEINFO), 
-			SHGFI_SYSICONINDEX | SHGFI_SMALLICON); 
+		hResult = ((IImageList*)imageList)->GetIcon(iconIndex, ILD_TRANSPARENT, &hIcon);
 	}
-	else
+	if (hResult == S_OK)
 	{
-		hSystemImageList = 
-			(HIMAGELIST)SHGetFileInfo( 
-			(LPCTSTR) windrive.utf16(), 
-			0, 
-			&ssfi, 
-			sizeof(SHFILEINFO), 
-			SHGFI_SYSICONINDEX | SHGFI_LARGEICON); 
+		icon.addPixmap(convertHIconToPixmap(hIcon));
+		DestroyIcon(hIcon);
 	}
-	return hSystemImageList;
-}
 
-
-int WinIconProvider::GetFileIconIndex( QString strFileName , BOOL bSmallIcon ) const
-{
-	DWORD_PTR ret;
-	SHFILEINFO    sfi;
-
-	if (bSmallIcon)
-	{
-		ret = SHGetFileInfo(
-			(LPCTSTR) strFileName.utf16(), 
-			FILE_ATTRIBUTE_NORMAL,
-			&sfi, 
-			sizeof(SHFILEINFO), 
-			SHGFI_SYSICONINDEX | SHGFI_SMALLICON | SHGFI_USEFILEATTRIBUTES);
-	}
-	else
-	{
-		ret = SHGetFileInfo(
-			(LPCTSTR) strFileName.utf16(), 
-			FILE_ATTRIBUTE_NORMAL,
-			&sfi, 
-			sizeof(SHFILEINFO), 
-			SHGFI_SYSICONINDEX | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES);
-	}
-	// The following removes the unknown icon
-	//	if (sfi.iIcon == 3)
-	//		sfi.iIcon = -1;
-
-	return sfi.iIcon;
-}
-
-
-int WinIconProvider::GetDirIconIndex(BOOL bSmallIcon )
-{
-	SHFILEINFO    sfi;
-	if (bSmallIcon)
-	{
-		SHGetFileInfo(
-			(LPCTSTR)"Doesn't matter", 
-			FILE_ATTRIBUTE_DIRECTORY,
-			&sfi, 
-			sizeof(SHFILEINFO), 
-			SHGFI_SYSICONINDEX | SHGFI_SMALLICON | SHGFI_USEFILEATTRIBUTES);
-	}
-	else
-	{
-		SHGetFileInfo(
-			(LPCTSTR)"Doesn't matter", 
-			FILE_ATTRIBUTE_DIRECTORY,
-			&sfi, 
-			sizeof(SHFILEINFO), 
-			SHGFI_SYSICONINDEX | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES);
-
-	}
-	return sfi.iIcon;
-
-}
-
-
-HICON WinIconProvider::GetFileIconHandle(QString strFileName, BOOL bSmallIcon)
-{
-
-	SHFILEINFO    sfi;
-	if (bSmallIcon)
-	{
-		SHGetFileInfo(
-			(LPCTSTR) strFileName.utf16(), 
-			FILE_ATTRIBUTE_NORMAL,
-			&sfi, 
-			sizeof(SHFILEINFO), 
-			SHGFI_ICON | SHGFI_SMALLICON | SHGFI_USEFILEATTRIBUTES);
-	}
-	else
-	{
-		SHGetFileInfo(
-			(LPCTSTR) strFileName.utf16(), 
-			FILE_ATTRIBUTE_NORMAL,
-			&sfi, 
-			sizeof(SHFILEINFO), 
-			SHGFI_ICON | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES);
-	}
-	return sfi.hIcon;
-}
-
-
-HICON WinIconProvider::GetIconHandleNoOverlay(QString strFileName, BOOL bSmallIcon) const
-{
-	int index = GetFileIconIndex(strFileName, bSmallIcon);
-
-	HICON nH = ImageList_GetIcon(      
-		iconlist,
-		index,
-		ILD_TRANSPARENT 
-		);
-	return nH;
-}
-
-
-HICON WinIconProvider::GetFolderIconHandle(BOOL bSmallIcon )
-{
-	SHFILEINFO    sfi;
-	if (bSmallIcon)
-	{
-		SHGetFileInfo(
-			(LPCTSTR)"Doesn't matter", 
-			FILE_ATTRIBUTE_DIRECTORY,
-			&sfi, 
-			sizeof(SHFILEINFO), 
-			SHGFI_ICON | SHGFI_SMALLICON | SHGFI_USEFILEATTRIBUTES);
-	}
-	else
-	{
-		SHGetFileInfo(
-			(LPCTSTR)"Does not matter", 
-			FILE_ATTRIBUTE_DIRECTORY,
-			&sfi, 
-			sizeof(SHFILEINFO), 
-			SHGFI_ICON | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES);
-	}
-	return sfi.hIcon;
-}
-
-
-QString WinIconProvider::GetFileType(QString strFileName)
-{
-	SHFILEINFO    sfi;
-
-	SHGetFileInfo(
-		(LPCTSTR) strFileName.utf16(), 
-		FILE_ATTRIBUTE_NORMAL,
-		&sfi, 
-		sizeof(SHFILEINFO), 
-		SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES);
-
-	QString ret = QString::fromUtf16((const ushort*) sfi.szTypeName);
-	return ret;
+	return SUCCEEDED(hResult);
 }
 
 

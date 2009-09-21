@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007  Josh Karlin
+Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -79,7 +79,7 @@ public:
 	void showLaunchy(bool noFade);
 	void showTrayIcon();
 
-	void setCondensed(int condensed);
+	void setCondensed(bool condensed);
 	bool setHotkey(QKeySequence);
 	bool setAlwaysShow(bool);
 	bool setAlwaysTop(bool);
@@ -150,6 +150,7 @@ private:
 	QPushButton* optionsButton;
 	QPushButton* closeButton;
 	QScrollBar* altScroll;
+	QLabel* alternativesPath;
 
 	QAction* actShow;
 	QAction* actRebuild;
@@ -160,6 +161,7 @@ private:
 	QTimer* dropTimer;
 	shared_ptr<CatalogBuilder> catalogBuilder;
 	IconExtractor iconExtractor;
+	QIcon* condensedTempIcon;
 	QList<CatItem> searchResults;
 	QList<InputData> inputData;
 	QList<CatItem> history;

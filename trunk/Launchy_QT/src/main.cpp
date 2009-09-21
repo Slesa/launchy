@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007  Josh Karlin
+Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -27,8 +27,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 #ifdef Q_WS_WIN
-void SetForegroundWindowEx(HWND hWnd)  
-{  
+void SetForegroundWindowEx(HWND hWnd)
+{
 	// Attach foreground window thread to our thread
 	const DWORD foreGroundID = GetWindowThreadProcessId(GetForegroundWindow(), NULL);
 	const DWORD currentID = GetCurrentThreadId();
@@ -55,7 +55,8 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	trayIcon(NULL),
 	alternatives(NULL),
 	updateTimer(NULL),
-	dropTimer(NULL)
+	dropTimer(NULL),
+	condensedTempIcon(NULL)
 {
 	setObjectName("launchy");
 	setWindowTitle(tr("Launchy"));
@@ -129,6 +130,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	alternatives->setWindowFlags(Qt::Window | Qt::Tool | Qt::FramelessWindowHint);
 	alternatives->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	alternatives->setTextElideMode(Qt::ElideLeft);
+	alternatives->setUniformItemSizes(true);
 	listDelegate = new IconDelegate(this);
 	defaultListDelegate = alternatives->itemDelegate();
 	setCondensed(gSettings->value("GenOps/condensedView", false).toBool());
@@ -136,6 +138,11 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	altScroll->setObjectName("altScroll");
 	connect(alternatives, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(alternativesKeyPressEvent(QKeyEvent*)));
 	connect(alternatives, SIGNAL(focusOut(QFocusEvent*)), this, SLOT(focusOutEvent(QFocusEvent*)));
+
+	alternativesPath = new QLabel(alternatives);
+	alternativesPath->setObjectName("alternativesPath");
+	alternativesPath->hide();
+	listDelegate->setAlternativesPathWidget(alternativesPath);
 
 	// Load the plugins
 	plugins.loadPlugins();
@@ -240,14 +247,27 @@ void LaunchyWidget::paintEvent(QPaintEvent* event)
 }
 
 
-void LaunchyWidget::setCondensed(int condensed)
+void LaunchyWidget::setCondensed(bool condensed)
 {
 	if (alternatives == NULL || listDelegate == NULL || defaultListDelegate == NULL)
 		return;
 	if (condensed)
+	{
+		// The condensed mode needs an icon placeholder or it repositions text when the icon becomes available
+		if (!condensedTempIcon)
+		{
+			QPixmap pixmap(16, 16);
+			pixmap.fill(Qt::transparent);
+			condensedTempIcon = new QIcon(pixmap);
+		}
 		alternatives->setItemDelegate(defaultListDelegate);
+	}
 	else
+	{
+		delete condensedTempIcon;
+		condensedTempIcon = NULL;
 		alternatives->setItemDelegate(listDelegate);
+	}
 }
 
 
@@ -303,10 +323,12 @@ void LaunchyWidget::showAlternatives(bool show)
 		alternatives->clear();
 		for (int i = 0; i < searchResults.size(); ++i)
 		{
-			QListWidgetItem * item = new QListWidgetItem(QDir::toNativeSeparators(searchResults[i].fullPath), alternatives);
-			item->setData(ROLE_FULL, QDir::toNativeSeparators(searchResults[i].fullPath));
+			QString fullPath = QDir::toNativeSeparators(searchResults[i].fullPath);
+			QListWidgetItem * item = new QListWidgetItem(fullPath, alternatives);
+			item->setData(ROLE_FULL, fullPath);
 			item->setData(ROLE_SHORT, searchResults[i].shortName);
-			item->setToolTip(QDir::toNativeSeparators(searchResults[i].fullPath));
+			if (condensedTempIcon)
+				item->setData(ROLE_ICON, *condensedTempIcon);
 			alternatives->addItem(item);
 		}
 
@@ -346,6 +368,7 @@ void LaunchyWidget::showAlternatives(bool show)
 	}
 	else
 	{
+		alternatives->clear();
 		alternatives->hide();
 		iconExtractor.stop();
 	}
@@ -779,7 +802,7 @@ void LaunchyWidget::iconExtracted(int itemIndex, QIcon icon)
 	if (itemIndex == -1)
 	{
 		// An index of -1 means update the output icon
-		outputIcon->setPixmap(icon.pixmap(outputIcon->size(), QIcon::Normal, QIcon::On));
+		outputIcon->setPixmap(icon.pixmap(outputIcon->size()));
 	}
 	else if (itemIndex < alternatives->count())
 	{
@@ -1243,7 +1266,9 @@ void LaunchyWidget::applySkin(const QString& name)
 						closeButton->show();
 					}
 					else if (spl.at(0).trimmed().compare("dropPathColor", Qt::CaseInsensitive) == 0)
+					{
 						listDelegate->setColor(spl.at(1));
+					}
 					else if (spl.at(0).trimmed().compare("dropPathSelColor", Qt::CaseInsensitive) == 0)
 						listDelegate->setColor(spl.at(1),true);
 					else if (spl.at(0).trimmed().compare("dropPathFamily", Qt::CaseInsensitive) == 0)
@@ -1314,6 +1339,10 @@ void LaunchyWidget::applySkin(const QString& name)
 			resize(frameGraphic->size());
 		}
 	}
+
+	int maxIconSize = outputIcon->width();
+	maxIconSize = max(maxIconSize, outputIcon->height());
+	platform->setPreferredIconSize(maxIconSize);
 }
 
 
