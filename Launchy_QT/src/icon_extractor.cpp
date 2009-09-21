@@ -1,7 +1,6 @@
-
 /*
 Launchy: Application Launcher
-Copyright (C) 2007  Josh Karlin
+Copyright (C) 2009 Simon Capewell, Josh Karlin
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -43,7 +42,7 @@ void IconExtractor::processIcon(CatItem item, bool highPriority)
 	mutex.unlock();
 
 	if (!isRunning())
-		start(IdlePriority);
+		start(LowestPriority);
 }
 
 
