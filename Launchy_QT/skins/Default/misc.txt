@@ -1,8 +1,0 @@
-; These describe the font of the full path in the dropdown box
-; This should be in style.qss but the style sheet doesn't support it
-dropPathColor = 102,102,102
-dropPathSelColor = 196,220,243
-dropPathFamily = Verdana
-dropPathSize = 8
-dropPathWeight = 0
-dropPathItalics = 0

@@ -3,13 +3,13 @@
 
 #opsButton {
 	border: none;
-	background: url(skins/Spotlight_Wide/opsButton.png);
+	background: url(opsButton.png);
 	qproperty-geometry: rect(444 23 14 15);
 }
 
 #opsButton:pressed {
 	border: none;
-	background-image: url(skins/Spotlight_Wide/opsButtonPressed.png);
+	background-image: url(opsButtonPressed.png);
 }
 
 #input {
@@ -51,8 +51,14 @@
 	padding: 2px 0px 2px 0px;
 }
 
+#alternativesPath {
+	font: 11px "Verdana";
+	color: rgb(102,102,102);
+	/* selected-color: rgb(196,220,243); */
+}
+
 QScrollBar#altScroll:vertical {
-	image: url(skins/Spotlight_Wide/scroller-back.png);
+	image: url(scrollBack.png);
 	width: 16px;
 	margin: 16px 0px 16px 0px;
 }
@@ -66,15 +72,15 @@ QScrollBar#altScroll::sub-line:vertical {
 	height: 16px;
 	subcontrol-position: top;
 	subcontrol-origin: margin; 
-	image: url(skins/Spotlight_Wide/scrollUp.png);
+	image: url(scrollUp.png);
 }
 
 QScrollBar#altScroll::add-page:vertical {
-	background: url(skins/Spotlight_Wide/scrollBack.png);
+	background: url(scrollBack.png);
 }
 
 QScrollBar#altScroll::sub-page:vertical {
-	background: url(skins/Spotlight_Wide/scrollBack.png);
+	background: url(scrollBack.png);
 }
 
 QScrollBar#altScroll::add-line:vertical {
@@ -82,5 +88,5 @@ QScrollBar#altScroll::add-line:vertical {
 	height: 16px; 
 	subcontrol-position: bottom;
 	subcontrol-origin: margin;
-	image: url(skins/Spotlight_Wide/scrollDown.png);
+	image: url(scrollDown.png);
 }
