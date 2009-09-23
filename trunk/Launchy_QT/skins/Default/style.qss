@@ -3,26 +3,16 @@
 
 #opsButton {
 	border: none;
-	background: url(skins/Default/opsButton.png);
+	background: url(opsButton.png);
+    qproperty-geometry: rect(279 23 14 15);
 }
 
 #opsButton:pressed {
 	border: none;
-	background-image: url(skins/Default/opsButtonPressed.png);
+	background-image: url(opsButtonPressed.png);
 }
 
-#closeButton {
-	border: none;
-	background: url(skins/Default/closeButton.png);
-	qproperty-geometry: rect(279 23 14 15);
-}
-
-#closeButton:pressed {
-	border: none;
-	background-image: url(skins/Default/closeButtonPressed.png);
-}
-
-#input { 
+#input {
 	font: 12px "Verdana";
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
@@ -33,13 +23,13 @@
 }
 
 #output {
-	font: 12px "Verdana";
+	font: 12px "Verdana"; 
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
 	color: white;
 	qproperty-alignment: AlignCenter;
-	qproperty-geometry: rect(10 54 290 18);
+	qproperty-geometry: rect(0 54 300 18);
 }
 
 #outputIcon {
@@ -53,14 +43,24 @@
 	background: white;
 	selection-background-color: rgb(68,124,184);
 	selection-color: white;
-	border: none; 
-	qproperty-geometry: rect(10 101 280 80);
+	border: none;
+	qproperty-geometry: rect(10 103 280 80);
+}
+
+#alternatives::item {
+	padding: 2px 0px 2px 0px;
+}
+
+#alternativesPath {
+	font: 11px "Verdana";
+	color: rgb(102,102,102);
+	/* selected-color: rgb(196,220,243); */
 }
 
 QScrollBar#altScroll:vertical {
-	image: url(skins/Default/scroller-back.png);
-	width: 16px; 
-	margin: 16px 0px 16px 0px; 
+	image: url(scrollBack.png);
+	width: 16px;
+	margin: 16px 0px 16px 0px;
 }
 
 QScrollBar#altScroll::handle:vertical {
@@ -72,21 +72,21 @@ QScrollBar#altScroll::sub-line:vertical {
 	height: 16px;
 	subcontrol-position: top;
 	subcontrol-origin: margin; 
-	image: url(skins/Default/scrollUp.png);
+	image: url(scrollUp.png);
 }
 
 QScrollBar#altScroll::add-page:vertical {
-	background: url(skins/Default/scrollBack.png);
+	background: url(scrollBack.png);
 }
 
 QScrollBar#altScroll::sub-page:vertical {
-	background: url(skins/Default/scrollBack.png);
+	background: url(scrollBack.png);
 }
 
 QScrollBar#altScroll::add-line:vertical {
 	width: 16px;
-	height: 16px;
+	height: 16px; 
 	subcontrol-position: bottom;
 	subcontrol-origin: margin;
-	image: url(skins/Default/scrollDown.png);
+	image: url(scrollDown.png);
 }

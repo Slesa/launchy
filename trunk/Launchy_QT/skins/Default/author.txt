@@ -1,7 +1,7 @@
-Spotlight (Version 1.0)
-By Tyler Sticka » www.tylersticka.com
+Skin Title: Mercury
 
-Latest Revision: 11/12/2007
+Author: Josh Karlin and Juan Ignacio Serra
 
-Thanks to Josh Karlin and Peter Wooley
-for assistance and inspiration!
+Version: 1.0
+
+Date: 6/21/2007
