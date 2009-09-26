@@ -15,9 +15,9 @@ TARGET = verby
 win32 { 
     CONFIG -= embed_manifest_dll
     LIBS += shell32.lib
-    % LIBS += user32.lib
-    % LIBS += Gdi32.lib
-    % LIBS += comctl32.lib
+}
+win32:debug {
+	%QMAKE_CXXFLAGS += /ZI
 }
 *:debug:DESTDIR = ../../debug/plugins/
 *:release { 
