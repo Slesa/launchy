@@ -383,7 +383,12 @@ void LaunchyWidget::launchItem(CatItem& item)
 		if (inputData.count() > 1)
 			for(int i = 1; i < inputData.count(); ++i)
 				args += inputData[i].getText() + " ";
+#ifdef Q_WS_X11
+		if (!platform->Execute(item.fullPath, args))
+			runProgram(item.fullPath, args);
+#else
 		runProgram(item.fullPath, args);
+#endif
 	}
 	else
 	{
