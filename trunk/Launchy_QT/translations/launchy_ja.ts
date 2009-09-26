@@ -43,19 +43,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="958"/>
+        <location filename="../src/main.cpp" line="964"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1600"/>
+        <location filename="../src/main.cpp" line="1606"/>
         <source>Show Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1603"/>
+        <location filename="../src/main.cpp" line="1609"/>
         <source>Rebuild catalog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -70,7 +70,7 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
         <translation type="obsolete">選択されたホットキーは既に使われています。Launchy のオプションで他のキーを指定して下さい。</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="957"/>
+        <location filename="../src/main.cpp" line="963"/>
         <source>A new version of Launchy is available</source>
         <translation type="unfinished">新しいバージョンのLaunchyが使用可能です。</translation>
     </message>
@@ -87,12 +87,12 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">カタログを再構築</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1606"/>
+        <location filename="../src/main.cpp" line="1612"/>
         <source>Options</source>
         <translation type="unfinished">オプション</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1609"/>
+        <location filename="../src/main.cpp" line="1615"/>
         <source>Exit</source>
         <translation type="unfinished">終了</translation>
     </message>
