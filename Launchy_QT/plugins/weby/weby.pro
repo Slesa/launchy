@@ -14,7 +14,7 @@ UI_DIR		   = ../../plugins/weby/
  win32 {
  	CONFIG -= embed_manifest_dll
 	LIBS += shell32.lib
-%	LIBS += user32.lib
+	LIBS += user32.lib
 %	LIBS += Gdi32.lib
 %	LIBS += comctl32.lib
 }
