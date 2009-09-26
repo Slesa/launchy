@@ -34,12 +34,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifdef Q_WS_WIN
 int getDesktop() { return DESKTOP_WINDOWS; }
 void runProgram(QString path, QString args) {
+
 	SHELLEXECUTEINFO ShExecInfo;
+	bool elevated = (GetKeyState(VK_SHIFT) & 0x80000000) != 0 && (GetKeyState(VK_CONTROL) & 0x80000000) != 0;
 
 	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
 	ShExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
 	ShExecInfo.hwnd = NULL;
-	ShExecInfo.lpVerb = NULL;
+	ShExecInfo.lpVerb = elevated ? L"runas" : NULL;
 	ShExecInfo.lpFile = (LPCTSTR)path.utf16();
 	if (args != "") {
 		ShExecInfo.lpParameters = (LPCTSTR)args.utf16();
