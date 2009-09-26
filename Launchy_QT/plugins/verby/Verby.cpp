@@ -101,7 +101,6 @@ QString VerbyPlugin::getIconPath() const
 void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results)
 {
 
-	qDebug() << "Hi!";
 	if (inputData->count() == 2)
 	{
 		if (inputData->first().hasLabel(HASH_DIR))

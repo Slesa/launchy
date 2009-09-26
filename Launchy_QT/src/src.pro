@@ -1,7 +1,7 @@
 TEMPLATE = app
 unix:TARGET = launchy
 win32:TARGET = Launchy
-CONFIG += debug_and_release console
+CONFIG += debug_and_release
 PRECOMPILED_HEADER = precompiled.h
 
 # CONFIG += qt release

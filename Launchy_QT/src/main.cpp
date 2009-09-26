@@ -513,6 +513,12 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 				}
 				else
 				{
+					/* Load up the inputData properly before running the command */
+					inputData.last().setTopResult(tmp);
+					doTab();
+					parseInput(input->text());
+					inputData.erase(inputData.end() - 1);
+					
 					doEnter();
 				}
 			}
