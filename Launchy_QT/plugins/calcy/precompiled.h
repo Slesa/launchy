@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007  Josh Karlin
+Copyright (C) 2007-2009  Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,15 +17,27 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#ifndef PRECOMPILED_H
+#define PRECOMPILED_H
 
-
-struct runnerCmd {
-	QString name;
-	QString file;
-	QString args;
-};
-
-
+#ifdef _MSC_VER
+#pragma warning(push,3)
 #endif
+
+#include <QtGui>
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
+#include <stdlib.h>
+#include <boost/shared_ptr.hpp>
+
+using namespace boost;
+
+#define BOOST_SPIRIT_USE_OLD_NAMESPACE
+#include <boost/spirit/include/classic_core.hpp>
+#include <boost/spirit/include/classic_attribute.hpp>
+#include <boost/spirit/include/phoenix1_functions.hpp>
+
+#endif // PRECOMPILED_H

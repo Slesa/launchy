@@ -20,14 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef gcalc_H
 #define gcalc_H
 
-#include <QtGui>
-#include <QUrl>
-#include <QFile>
-#include <QRegExp>
-#include <QHttp>
-#include <QEventLoop>
-#include <QBuffer>
-#include <QString>
+
 #include "plugin_interface.h"
 
 

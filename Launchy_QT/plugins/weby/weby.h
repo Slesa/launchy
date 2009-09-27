@@ -19,18 +19,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifndef WEBY_H
 #define WEBY_H
-#include "gui.h"
-#include "globals.h"
-#include <QtGui>
-#include <QUrl>
-#include <QFile>
-#include <QRegExp>
-#include <QHttp>
-#include <QEventLoop>
-#include <QString>
-#include "plugin_interface.h"
 
-#include <boost/shared_ptr.hpp>
+
+#include "precompiled.h"
+#include "plugin_interface.h"
+#include "globals.h"
+#include "gui.h"
 
 
 class Suggest : public QObject

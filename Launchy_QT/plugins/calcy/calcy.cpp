@@ -17,16 +17,7 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include <QtGui>
-#include <QUrl>
-#include <QFile>
-#include <QRegExp>
-
-#define BOOST_SPIRIT_USE_OLD_NAMESPACE
-#include <boost/spirit/include/classic_core.hpp>
-#include <boost/spirit/include/classic_attribute.hpp>
-#include <boost/spirit/include/phoenix1_functions.hpp>
-
+#include "precompiled.h"
 #include "calcy.h"
 
 using namespace boost::spirit;

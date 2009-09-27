@@ -17,19 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include <QtGui>
-#include <QUrl>
-#include <QFile>
-#include <QRegExp>
-
-#ifdef Q_WS_WIN
-#include <windows.h>
-#include <shlobj.h>
-#include <tchar.h>
-#endif
-
+#include "precompiled.h"
 #include "runner.h"
 #include "gui.h"
+
 
 RunnerPlugin* gRunnerInstance = NULL;
 
@@ -115,11 +106,11 @@ void RunnerPlugin::getCatalog(QList<CatItem>* items)
 
 void RunnerPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results)
 {
-    if ( inputData->count() <= 1 )
+    if (inputData->count() <= 1)
 		return;
 
 	CatItem& catItem = inputData->first().getTopResult();
-	if (catItem.id == HASH_runner)
+	if (catItem.id == HASH_runner && inputData->last().hasText())
 	{
 		const QString & text = inputData->last().getText();
 		// This is user search text, create an entry for it
@@ -201,44 +192,44 @@ int RunnerPlugin::msg(int msgId, void* wParam, void* lParam)
 	bool handled = false;
 	switch (msgId)
 	{		
-		case MSG_INIT:
-			init();
-			handled = true;
-			break;
-		case MSG_GET_ID:
-			getID((uint*) wParam);
-			handled = true;
-			break;
-		case MSG_GET_NAME:
-			getName((QString*) wParam);
-			handled = true;
-			break;
-		case MSG_GET_CATALOG:
-			getCatalog((QList<CatItem>*) wParam);
-			handled = true;
-			break;
-		case MSG_GET_RESULTS:
-			getResults((QList<InputData>*) wParam, (QList<CatItem>*) lParam);
-			handled = true;
-			break;
-		case MSG_LAUNCH_ITEM:
-			launchItem((QList<InputData>*) wParam, (CatItem*) lParam);
-			handled = true;
-			break;
-		case MSG_HAS_DIALOG:
-			handled = true;
-			break;
-		case MSG_DO_DIALOG:
-			doDialog((QWidget*) wParam, (QWidget**) lParam);
-			break;
-		case MSG_END_DIALOG:
-			endDialog((bool) wParam);
-			break;
+	case MSG_INIT:
+		init();
+		handled = true;
+		break;
+	case MSG_GET_ID:
+		getID((uint*) wParam);
+		handled = true;
+		break;
+	case MSG_GET_NAME:
+		getName((QString*) wParam);
+		handled = true;
+		break;
+	case MSG_GET_CATALOG:
+		getCatalog((QList<CatItem>*) wParam);
+		handled = true;
+		break;
+	case MSG_GET_RESULTS:
+		getResults((QList<InputData>*) wParam, (QList<CatItem>*) lParam);
+		handled = true;
+		break;
+	case MSG_LAUNCH_ITEM:
+		launchItem((QList<InputData>*) wParam, (CatItem*) lParam);
+		handled = true;
+		break;
+	case MSG_HAS_DIALOG:
+		handled = true;
+		break;
+	case MSG_DO_DIALOG:
+		doDialog((QWidget*) wParam, (QWidget**) lParam);
+		break;
+	case MSG_END_DIALOG:
+		endDialog(wParam != 0);
+		break;
 	case MSG_PATH:
 	    setPath((QString*) wParam);
 
-		default:
-			break;
+	default:
+		break;
 	}
 		
 	return handled;

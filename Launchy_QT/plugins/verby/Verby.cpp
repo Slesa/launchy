@@ -17,17 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include <QtGui>
-#include <QFile>
-#include <QDir>
-#include <QClipboard>
-
-#ifdef Q_WS_WIN
-#include <windows.h>
-#include <shlobj.h>
-#include <tchar.h>
-#endif
-
+#include "precompiled.h"
 #include "Verby.h"
 #include "gui.h"
 
@@ -39,7 +29,6 @@ void VerbyPlugin::init()
 {
 	if (verbyInstance == NULL)
 		verbyInstance = this;
-
 }
 
 
@@ -100,9 +89,11 @@ QString VerbyPlugin::getIconPath() const
 
 void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results)
 {
-
 	if (inputData->count() == 2)
 	{
+		if (inputData->last().hasText())
+			results->push_back(CatItem(inputData->last().getText(), inputData->last().getText(), 0, inputData->first().getTopResult().icon));
+
 		if (inputData->first().hasLabel(HASH_DIR))
 		{
 			results->push_back(CatItem("Properties", "Directory properties", HASH_VERBY, getIconPath() + "properties.png"));
@@ -114,7 +105,7 @@ void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* result
 		}
 		else if (inputData->first().hasLabel(HASH_LINK))
 		{
-			results->push_back(CatItem("Run", "Run", 0, getIconPath() + "run.png"));
+			results->push_back(CatItem("Run", "Run", HASH_VERBY, getIconPath() + "run.png"));
 			results->push_back(CatItem("Run as", "Run as a different user", HASH_VERBY, getIconPath() + "run.png"));
 			results->push_back(CatItem("Open containing folder", "Open containing folder", HASH_VERBY, getIconPath() + "opencontainer.png"));
 			results->push_back(CatItem("Copy path", "Copy path to clipboard", HASH_VERBY, getIconPath() + "copy.png"));
@@ -138,7 +129,11 @@ void VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 	if (inputData->count() > 1)
 		verb = inputData->last().getTopResult().shortName;
 
-	if (verb == "Open containing folder")
+	if (verb == "Run")
+	{
+		runProgram(noun, "");
+	}
+	else if (verb == "Open containing folder")
 	{
 		QFileInfo info(noun);
 		if (info.isSymLink())
@@ -272,7 +267,7 @@ int VerbyPlugin::msg(int msgId, void* wParam, void* lParam)
 		doDialog((QWidget*) wParam, (QWidget**) lParam);
 		break;
 	case MSG_END_DIALOG:
-		endDialog((bool) wParam);
+		endDialog(wParam != 0);
 		break;
 
 	default:
