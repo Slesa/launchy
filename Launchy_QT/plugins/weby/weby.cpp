@@ -94,7 +94,7 @@ void WebyPlugin::init()
 		set->setValue("name", "Google");
 		set->setValue("base", "http://www.google.com/");
 		set->setValue("query", "search?source=launchy&q=%s");
-		set->setValue("suggest", "http://suggestqueries.google.com/complete/search?output=firefox&q=%s");
+		set->setValue("suggest", "ttp://suggestqueries.google.com/complete/search?output=firefox&q=%s");
 		set->setValue("default", true);
 
 		set->setArrayIndex(1);
@@ -451,9 +451,9 @@ void WebyPlugin::getCatalog(QList<CatItem>* items)
 
 void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 {
+
 	QString file = "";
 	QString args = "";
-
 
 	if (inputData->count() == 2)
 	{
@@ -461,8 +461,6 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 	    args = QUrl::toPercentEncoding(args);
 	    item = &inputData->first().getTopResult();
 	}
-
-
 
 	// Is it a Firefox shortcut?
 	if (item->fullPath.contains(".shortcut"))
@@ -487,7 +485,7 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 						file = "";
 					}
 					tmp.replace("%s", args);
-					file = tmp;
+					file += tmp;
 				}
 				break;
 			}
@@ -502,6 +500,7 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 			}
 		}
 	}
+
 	QUrl url(file);
 	runProgram(url.toString(), "");
 }

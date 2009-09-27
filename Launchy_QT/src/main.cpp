@@ -1200,9 +1200,11 @@ void LaunchyWidget::applySkin(const QString& name)
 		gSettings->setValue("GenOps/skin", "Default");
 	}
 
-	// If still no good then fail
-	if (!QFile::exists(stylesheetPath))
+	// If still no good then fail with an ugly default
+	if (!QFile::exists(stylesheetPath)) {
+		
 		return;
+	}
 
 	// If it's valid Set a few defaults
 	closeButton->setGeometry(QRect());

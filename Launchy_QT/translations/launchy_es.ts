@@ -50,12 +50,12 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1606"/>
+        <location filename="../src/main.cpp" line="1608"/>
         <source>Show Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1609"/>
+        <location filename="../src/main.cpp" line="1611"/>
         <source>Rebuild catalog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -87,12 +87,12 @@ Puedes obtenerla en 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&qu
         <translation type="obsolete">Reconstruir catálogo</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1612"/>
+        <location filename="../src/main.cpp" line="1614"/>
         <source>Options</source>
         <translation type="unfinished">Opciones</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1615"/>
+        <location filename="../src/main.cpp" line="1617"/>
         <source>Exit</source>
         <translation type="unfinished">Salir</translation>
     </message>
