@@ -17,14 +17,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+#include "precompiled.h"
 #include "gui.h"
 #include "runner.h"
-#include <QHeaderView>
-#include <QDragEnterEvent>
-#include <QUrl>
-#include <QDir>
+
 
 #define ROW_PADDING 6
+
 
 Gui::Gui(QWidget* parent) 
 	: QWidget(parent)

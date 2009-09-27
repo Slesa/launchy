@@ -17,18 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include <QtGui>
-#include <QUrl>
-#include <QFile>
-#include <QRegExp>
-#include <QTextCodec>
-
-#ifdef Q_WS_WIN
-#include <windows.h>
-#include <shlobj.h>
-#include <tchar.h>
-#endif
-
+#include "precompiled.h"
 #include "weby.h"
 #include "gui.h"
 
@@ -359,7 +348,7 @@ QString WebyPlugin::getFirefoxPath()
 		if (line.contains("IsRelative"))
 		{
 			QStringList spl = line.split("=");
-			isRel = spl[1].toInt();
+			isRel = spl[1].toInt() != 0;
 		}
 		if (line.contains("Path"))
 		{
@@ -584,7 +573,7 @@ int WebyPlugin::msg(int msgId, void* wParam, void* lParam)
 		doDialog((QWidget*) wParam, (QWidget**) lParam);
 		break;
 	case MSG_END_DIALOG:
-		endDialog((bool) wParam);
+		endDialog(wParam != 0);
 		break;
 	case MSG_PATH:
 		setPath((QString *) wParam);
