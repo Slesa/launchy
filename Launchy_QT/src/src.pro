@@ -23,7 +23,9 @@ SOURCES = main.cpp \
     ../common/DropListWidget.cpp \
     Fader.cpp \
     CharListWidget.cpp \
-    CharLineEdit.cpp
+    CharLineEdit.cpp \
+    CommandHistory.cpp \
+    InputDataList.cpp
 HEADERS = platform_base.h \
     globals.h \
     globals.h \
@@ -42,7 +44,9 @@ HEADERS = platform_base.h \
     CharListWidget.h \
     CharLineEdit.h \
     Fader.h \
-    precompiled.h
+    precompiled.h \
+    CommandHistory.h \
+    InputDataList.h
 ICON = Launchy.ico
 first.target = blah
 unix { 
