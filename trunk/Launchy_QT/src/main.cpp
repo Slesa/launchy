@@ -75,7 +75,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	menuOpen = false;
 	optionsOpen = false;
 	dragging = false;
-	gSearchTxt = "";
+	gSearchText = "";
 
 	alwaysShowLaunchy = false;
 
