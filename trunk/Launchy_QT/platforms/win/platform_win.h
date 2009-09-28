@@ -21,16 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define PLATFORM_WIN
 
 
-#include <QString>
-#include <QFileIconProvider>
-#include <QIcon>
-#include <QPixmap>
-
-#include <windows.h>
-#include <shlobj.h>
-#include <userenv.h>
-#include <tchar.h>
-
 #include "platform_base.h"
 #include "platform_win_util.h"
 #include "platform_base_hotkey.h"

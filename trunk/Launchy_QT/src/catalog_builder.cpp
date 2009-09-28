@@ -26,9 +26,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Directory.h"
 
 
-CatalogBuilder::CatalogBuilder(bool fromArchive, PluginHandler* plugs) :
+CatalogBuilder::CatalogBuilder(PluginHandler* plugs) :
+	plugins(plugs)
+{
+	createCatalog();
+}
+	
+
+CatalogBuilder::CatalogBuilder(PluginHandler* plugs, const QString& fileName) :
 	plugins(plugs),
-	buildFromStorage(fromArchive)
+	filename(fileName)
+{
+	createCatalog();
+}
+
+
+CatalogBuilder::CatalogBuilder(PluginHandler* plugs, shared_ptr<Catalog> catalog) :
+	plugins(plugs),
+	catalog(catalog)
+{
+}
+
+
+void CatalogBuilder::createCatalog()
 {
 	if (gSettings->value("GenOps/fastindexer",false).toBool())
 		catalog.reset((Catalog*) new FastCatalog());
@@ -39,20 +59,13 @@ CatalogBuilder::CatalogBuilder(bool fromArchive, PluginHandler* plugs) :
 
 void CatalogBuilder::run()
 {
-	QString filename = gSettings->fileName();
-	int lastSlash = filename.lastIndexOf(QLatin1Char('/'));
-	if (lastSlash == -1)
-		return;
-	filename = filename.mid(0, lastSlash);
-	filename += "/Launchy.db";
-
-	if (buildFromStorage && loadCatalog(filename))
+	if (filename.length() > 0 && loadCatalog(filename))
 	{
 	}
 	else
 	{
 		buildCatalog();
-		storeCatalog(filename);
+		saveCatalog(filename);
 	}
 	emit catalogFinished();
 }
@@ -82,7 +95,7 @@ void CatalogBuilder::buildCatalog()
 
 	for (int i = 0; i < memDirs.count(); ++i)
 	{
-		emit(catalogIncrement(100.0 * (float)(i+1) / (float) memDirs.count()));
+		emit(catalogIncrement(100.0f * (float)(i+1) / (float) memDirs.count()));
 		QString cur = platform->expandEnvironmentVars(memDirs[i].name);
 		indexDirectory(cur, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth);
 	}
@@ -218,7 +231,7 @@ bool CatalogBuilder::loadCatalog(const QString& filename)
 }
 
 
-void CatalogBuilder::storeCatalog(const QString& filename)
+void CatalogBuilder::saveCatalog(const QString& filename)
 {
 	QByteArray ba;
 	QDataStream out(&ba, QIODevice::ReadWrite); 

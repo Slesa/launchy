@@ -36,6 +36,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	directoryItemDelegate(this, FileBrowser::Directory)
 {
 	setupUi(this);
+
 	curPlugin = -1;
 	needRescan = false;
 
@@ -66,6 +67,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genUpdateCatalog->setChecked(updateInterval > 0);
 	genMaxViewable->setValue(gSettings->value("GenOps/numviewable", 4).toInt());
 	genNumResults->setValue(gSettings->value("GenOps/numresults", 10).toInt());
+	genNumHistory->setValue(gSettings->value("GenOps/maxitemsinhistory", 20).toInt());
 	genOpaqueness->setValue(gSettings->value("GenOps/opaqueness", 100).toInt());
 	genFadeIn->setValue(gSettings->value("GenOps/fadein", 0).toInt());
 	genFadeOut->setValue(gSettings->value("GenOps/fadeout", 20).toInt());
@@ -168,6 +170,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	connect(catCheckDirs, SIGNAL(stateChanged(int)), this, SLOT(catTypesDirChanged(int)));
 	connect(catCheckBinaries, SIGNAL(stateChanged(int)), this, SLOT(catTypesExeChanged(int)));
 	connect(catDepth, SIGNAL(valueChanged(int)),this, SLOT(catDepthChanged(int)));
+	catRescan->setEnabled(gBuilder == NULL);
 	connect(catRescan, SIGNAL(clicked(bool)), this, SLOT(catRescanClicked(bool)));
 	int size = gSettings->beginReadArray("directories");
 	for (int i = 0; i < size; ++i)
@@ -233,6 +236,12 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 
 OptionsDialog::~OptionsDialog()
 {
+	if (gBuilder != NULL)
+	{
+		disconnect(gBuilder.get(), SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
+		disconnect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+	}
+
 	currentTab = tabWidget->currentIndex();
 	windowGeometry = saveGeometry();
 }
@@ -280,6 +289,7 @@ void OptionsDialog::accept()
 	gSettings->setValue("GenOps/updatetimer", genUpdateCatalog->isChecked() ? genUpdateMinutes->value() : 0);
 	gSettings->setValue("GenOps/numviewable", genMaxViewable->value());
 	gSettings->setValue("GenOps/numresults", genNumResults->value());
+	gSettings->setValue("GenOps/maxitemsinhistory", genNumHistory->value());
 	gSettings->setValue("GenOps/opaqueness", genOpaqueness->value());
 	gSettings->setValue("GenOps/fadein", genFadeIn->value());
 	gSettings->setValue("GenOps/fadeout", genFadeOut->value());
@@ -435,6 +445,8 @@ void OptionsDialog::skinChanged(const QString& newSkin)
 
 void OptionsDialog::pluginChanged(int row)
 {
+	plugBox->setTitle(tr("Plugin options"));
+
 	if (plugBox->layout() != NULL)
 		for (int i = 1; i < plugBox->layout()->count(); i++) 
 			plugBox->layout()->removeItem(plugBox->layout()->itemAt(i));
@@ -459,6 +471,8 @@ void OptionsDialog::pluginChanged(int row)
 		if (plugBox->layout() != NULL)
 			plugBox->layout()->addWidget(win);
 		win->show();
+		if (win->windowTitle() != "Form")
+			plugBox->setTitle(win->windowTitle());
 	}
 }
 
@@ -513,6 +527,7 @@ void OptionsDialog::catProgressUpdated(float val)
 
 void OptionsDialog::catalogBuilt()
 {
+	catRescan->setEnabled(true);
 	if (gMainWidget->catalog != NULL)
 		catSize->setText(tr("Index has %n items", "", gMainWidget->catalog->count()));
 }
@@ -527,12 +542,10 @@ void OptionsDialog::catRescanClicked(bool val)
 
 	if (gBuilder == NULL)
 	{
-		gBuilder.reset(new CatalogBuilder(false, &gMainWidget->plugins));
-		gBuilder->setPreviousCatalog(gMainWidget->catalog);
-		connect(gBuilder.get(), SIGNAL(catalogFinished()), gMainWidget, SLOT(catalogBuilt()));
+		catRescan->setEnabled(false);
+		gMainWidget->buildCatalog();
 		connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		connect(gBuilder.get(), SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
-		gBuilder->start(QThread::IdlePriority);
 	}
 }
 

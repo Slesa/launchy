@@ -21,20 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define __PLATFORM_WIN_UTIL_H
 
 
-#include <QFileIconProvider>
-#include <windows.h>
-#include <shlobj.h>
-
-#include <TCHAR.h>
-#include <QT>
-#include <QIcon>
-#include <QPixmap>
-#include <QString>
-#include <QtDebug>
-#include <QMouseEvent>
-#include <QWidget>
-
-
 #pragma warning (disable : 4089)
 
 

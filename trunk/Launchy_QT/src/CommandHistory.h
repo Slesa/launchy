@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
+Copyright (C) 2009  Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,25 +17,29 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef CHARLISTWIDGET_H
-#define CHARLISTWIDGET_H
+#ifndef COMMANDHISTORY_H
+#define COMMANDHISTORY_H
 
 
-class CharListWidget : public QListWidget
+#include "catalog.h"
+#include "InputDataList.h"
+
+
+class CommandHistory
 {
-	Q_OBJECT
-
 public:
-	CharListWidget(QWidget* parent = 0);
-	void keyPressEvent(QKeyEvent* key);
-	void mouseDoubleClickEvent(QMouseEvent* event);
-	void focusInEvent(QFocusEvent* event);
-	void focusOutEvent(QFocusEvent* event);
+	CommandHistory();
 
-signals:
-	void keyPressed(QKeyEvent*);
-	void focusIn(QFocusEvent* event);
-	void focusOut(QFocusEvent* event);
+	bool load(const QString& filename);
+	void save(const QString& filename) const;
+
+	void addItem(const InputDataList& item);
+	void removeAt(int index);
+	InputDataList& getItem(int index);
+	void search(const QString& searchText, QList<CatItem>& searchResults) const;
+
+private:
+	QList<InputDataList> history;
 };
 
 

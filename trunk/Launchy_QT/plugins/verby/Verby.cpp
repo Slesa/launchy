@@ -92,7 +92,7 @@ void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* result
 	if (inputData->count() == 2)
 	{
 		if (inputData->last().hasText())
-			results->push_back(CatItem(inputData->last().getText(), inputData->last().getText(), 0, inputData->first().getTopResult().icon));
+			results->push_front(CatItem(inputData->last().getText(), inputData->last().getText(), 0, inputData->first().getTopResult().icon));
 
 		if (inputData->first().hasLabel(HASH_DIR))
 		{

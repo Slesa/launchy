@@ -40,11 +40,13 @@ using namespace boost;
 
 #ifdef Q_WS_WIN
 #include <windows.h>
+#include <tchar.h>
 #include <shlobj.h>
 #include <shlguid.h>
 #include <shellapi.h>
 #include <commctrl.h>
 #include <commoncontrols.h>
+#include <userenv.h>
 #endif
 
 

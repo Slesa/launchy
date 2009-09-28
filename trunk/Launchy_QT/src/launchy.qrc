@@ -2,5 +2,6 @@
     <qresource prefix="/" >
         <file>resources/launchy128.png</file>
         <file>resources/launchy16.png</file>
+        <file>resources/basicskin.qss</file>
     </qresource>
 </RCC>

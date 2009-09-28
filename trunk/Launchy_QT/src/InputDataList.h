@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
+Copyright (C) 2009  Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,26 +17,19 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef CHARLISTWIDGET_H
-#define CHARLISTWIDGET_H
+#ifndef INPUTDATALIST_H
+#define INPUTDATALIST_H
 
 
-class CharListWidget : public QListWidget
+#include "catalog.h"
+
+
+class InputDataList : public QList<InputData>
 {
-	Q_OBJECT
-
 public:
-	CharListWidget(QWidget* parent = 0);
-	void keyPressEvent(QKeyEvent* key);
-	void mouseDoubleClickEvent(QMouseEvent* event);
-	void focusInEvent(QFocusEvent* event);
-	void focusOutEvent(QFocusEvent* event);
-
-signals:
-	void keyPressed(QKeyEvent*);
-	void focusIn(QFocusEvent* event);
-	void focusOut(QFocusEvent* event);
+	void parse(const QString& text);
+	QString toString(bool omitLast = false) const;
 };
 
 
-#endif
+#endif // INPUTDATALIST_H

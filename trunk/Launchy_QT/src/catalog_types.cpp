@@ -127,18 +127,43 @@ QString Catalog::decorateText(const QString& text, const QString& match, bool ou
 		decoratedText = text.left(index);
 	else
 		index = 0;
+	bool highlighted = false;
 	for (; index < text.count(); ++index)
 	{
 		QChar c = text[index];
-		if (curChar < matchLength && c.toLower() == match[curChar].toLower())
+		// prefix based rendering is buggy with lots of underlines limit it to 15
+		// until we get round to replacing the list widget delegate with a rich text delegate
+		if (curChar < matchLength && c.toLower() == match[curChar].toLower() &&
+			(outputRichText || curChar < 15))
 		{
-			decoratedText += outputRichText ? QString("<u>") + c + QString("</u>") : QString("&") + c;
+			if (outputRichText)
+			{
+				if (!highlighted)
+				{
+					decoratedText += "<u>";
+					highlighted = true;
+				}
+				decoratedText += c;
+			}
+			else
+				decoratedText += QString("&") + c;
 			++curChar;
 		}
 		else
 		{
+			if (outputRichText && highlighted)
+			{
+				decoratedText += "</u>";
+				highlighted = false;
+			}
 			decoratedText += c;
 		}
+	}
+
+	if (outputRichText && highlighted)
+	{
+		decoratedText += "</u>";
+		highlighted = false;
 	}
 
 	return decoratedText;
@@ -147,14 +172,14 @@ QString Catalog::decorateText(const QString& text, const QString& match, bool ou
 
 void Catalog::searchCatalogs(const QString& text, QList<CatItem> & out)
 {
-	gSearchTxt = text.toLower();
-	QList<CatItem*> catMatches = search(gSearchTxt);
+	gSearchText = text.toLower();
+	QList<CatItem*> catMatches = search(gSearchText);
 	
 	// Now prioritize the catalog items
 	qSort(catMatches.begin(), catMatches.end(), CatLess);
 
 	// Check for history matches
-	QString location = "History/" + gSearchTxt;
+	QString location = "History/" + gSearchText;
 	QStringList hist;
 	hist = gSettings->value(location, hist).toStringList();
 	if (hist.count() == 2)
@@ -180,7 +205,7 @@ void Catalog::searchCatalogs(const QString& text, QList<CatItem> & out)
 }
 
 
-void Catalog::checkHistory(const QString& text, QList<CatItem> & list)
+void Catalog::promoteRecentlyUsedItems(const QString& text, QList<CatItem> & list)
 {
 	// Check for history matches
 	QString location = "History/" + text;

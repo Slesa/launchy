@@ -136,6 +136,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	setCondensed(gSettings->value("GenOps/condensedView", false).toBool());
 	altScroll = alternatives->verticalScrollBar();
 	altScroll->setObjectName("altScroll");
+	connect(alternatives, SIGNAL(currentRowChanged(int)), this, SLOT(alternativesRowChanged(int)));
 	connect(alternatives, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(alternativesKeyPressEvent(QKeyEvent*)));
 	connect(alternatives, SIGNAL(focusOut(QFocusEvent*)), this, SLOT(focusOutEvent(QFocusEvent*)));
 
@@ -178,9 +179,12 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 		updateTimer->start(time * 60000);
 
 	// Load the catalog
-	gBuilder.reset(new CatalogBuilder(true, &plugins));
+	gBuilder.reset(new CatalogBuilder(&plugins, dirs["db"][0]));
 	connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 	gBuilder->start();
+
+	// Load the history
+	history.load(dirs["history"][0]);
 
 	// Load the skin
 	applySkin(gSettings->value("GenOps/skin", "Default").toString());
@@ -189,7 +193,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	loadPosition();
 	loadOptions();
 
-	executeCommand(command);
+	executeStartupCommand(command);
 }
 
 
@@ -201,7 +205,7 @@ LaunchyWidget::~LaunchyWidget()
 }
 
 
-void LaunchyWidget::executeCommand(int command)
+void LaunchyWidget::executeStartupCommand(int command)
 {
 	if (command & ResetPosition)
 	{
@@ -230,14 +234,14 @@ void LaunchyWidget::executeCommand(int command)
 
 void LaunchyWidget::paintEvent(QPaintEvent* event)
 {
-	// Do the default draw first to render stylesheet backgrounds
+	// Do the default draw first to render any background specified in the stylesheet
 	QStyleOption styleOption;
 	styleOption.init(this);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 	style()->drawPrimitive(QStyle::PE_Widget, &styleOption, &painter, this);
 
-	// If there's a frame graphic, draw it
+	// Now draw the standard frame.png graphic if there is one
 	if (frameGraphic)
 	{
 		painter.drawPixmap(0,0, *frameGraphic);
@@ -249,8 +253,6 @@ void LaunchyWidget::paintEvent(QPaintEvent* event)
 
 void LaunchyWidget::setCondensed(bool condensed)
 {
-	if (alternatives == NULL || listDelegate == NULL || defaultListDelegate == NULL)
-		return;
 	if (condensed)
 	{
 		// The condensed mode needs an icon placeholder or it repositions text when the icon becomes available
@@ -312,6 +314,8 @@ void LaunchyWidget::showTrayIcon()
 
 void LaunchyWidget::showAlternatives(bool show)
 {
+	dropTimer->stop();
+
 	if (!isVisible())
 		return;
 
@@ -412,33 +416,7 @@ void LaunchyWidget::launchItem(CatItem& item)
 		}
 	}
 	catalog->incrementUsage(item);
-	addToHistory(item);
-}
-
-
-void LaunchyWidget::addToHistory(const CatItem& catalogItem)
-{
-	CatItem item = catalogItem;
-	item.fullPath = "";
-	for (int i = 0; i < inputData.count(); ++i)
-	{
-		if (i > 0)
-			item.fullPath += input->separatorText();
-		item.fullPath += inputData[i].getText();
-	}
-
-	for (int i = 0; i < history.size(); ++i)
-	{
-		if (history[i].fullPath == item.fullPath)
-		{
-			history.removeAt(i);
-			break;
-		}
-	}
-
-	//history.push_front(item);
-	if (history.size() > gSettings->value("GenOps/maxitemsinhistory", 20).toInt())
-		history.pop_back();
+	history.addItem(inputData);
 }
 
 
@@ -464,73 +442,43 @@ void LaunchyWidget::focusOutEvent(QFocusEvent* event)
 }
 
 
-void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
+void LaunchyWidget::alternativesRowChanged(int index)
 {
-	if (event->key() == Qt::Key_Escape)
+	// Check that index is a valid history item index
+	// If the current entry is a history item or there is no text entered
+	if (index >= 0 && index < searchResults.count())
 	{
-		showAlternatives(false);
-		event->ignore();
-	}
-	else if (event->key() == Qt::Key_Up) {event->ignore();}
-	else if (event->key() == Qt::Key_Down) {event->ignore();}
-	else if (event->key() == Qt::Key_PageUp) {event->ignore();}
-	else if (event->key() == Qt::Key_PageDown) {event->ignore();}
-	else if (event->key() == Qt::Key_Control) {event->ignore();}
-	else if (event->key() == Qt::Key_Shift) {event->ignore();}
-	else if (event->key() == Qt::Key_Alt) {event->ignore();}
-	else if (event->key() == Qt::Key_AltGr) {event->ignore();}
-	else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter || event->key() == Qt::Key_Tab)
-	{
-		if (searchResults.count() > 0)
+		CatItem item = searchResults[index];
+		if ((inputData.count() > 0 && inputData.first().hasLabel(LABEL_HISTORY)) || input->text().length() == 0)
 		{
-			int row = alternatives->currentRow();
-			if (row > -1)
+			int historyIndex = (int)item.data;
+			if (item.id == HASH_HISTORY && historyIndex < searchResults.count())
 			{
-				QString location = "History/" + input->text();
-				QStringList hist;
-				hist << searchResults[row].lowName <<
-					searchResults[row].fullPath;
-				gSettings->setValue(location, hist);
-
-				CatItem tmp = searchResults[row];
-				searchResults[row] = searchResults[0];
-				searchResults[0] = tmp;
-
-				updateDisplay();
-
-				showAlternatives(false);
-
-				if (event->key() == Qt::Key_Tab)
-				{
-					doTab();
-					parseInput(input->text());
-					searchOnInput();
-					updateDisplay();
-					dropTimer->stop();
-					int delay = gSettings->value("GenOps/autoSuggestDelay",1000).toInt();
-					if (delay > 0)
-						dropTimer->start(delay);
-				}
-				else
-				{
-					/* Load up the inputData properly before running the command */
-					inputData.last().setTopResult(tmp);
-					doTab();
-					parseInput(input->text());
-					inputData.erase(inputData.end() - 1);
-					
-					doEnter();
-				}
+				inputData = history.getItem(historyIndex);
+				gSearchText = inputData.last().getText();
+				input->selectAll();
+				input->insert(inputData.toString());
+				input->selectAll();
+				output->setText(Catalog::decorateText(item.shortName, gSearchText, true));
+				iconExtractor.processIcon(item);
 			}
 		}
-	}
-	else
-	{
-		activateWindow();
-		input->setFocus();
-		event->ignore();
-		input->keyPressEvent(event);
-		keyPressEvent(event);
+		else if (inputData.count() > 0 && 
+			(inputData.last().hasLabel(LABEL_AUTOSUGGEST) || inputData.last().hasText() == 0))
+		{
+			gSearchText = item.shortName;
+
+			inputData.last().setText(item.shortName);
+			inputData.last().setLabel(LABEL_AUTOSUGGEST);
+
+			QString root = inputData.toString(true);
+			input->selectAll();
+			input->insert(root + gSearchText);
+			input->setSelection(root.length(), gSearchText.length());
+
+			output->setText(Catalog::decorateText(gSearchText, gSearchText, true));
+			iconExtractor.processIcon(item);
+		}
 	}
 }
 
@@ -551,102 +499,68 @@ void LaunchyWidget::inputKeyPressEvent(QKeyEvent* event)
 }
 
 
-void LaunchyWidget::parseInput(const QString& text)
+void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 {
-	QStringList split = text.split(input->separatorText());
-
-	if (split.count() < inputData.count())
+	if (event->key() == Qt::Key_Escape)
 	{
-		inputData = inputData.mid(0, split.count());
+		showAlternatives(false);
+		event->ignore();
 	}
-
-	for (int i = 0; i < inputData.size(); i++)
+	else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter || event->key() == Qt::Key_Tab)
 	{
-		if (inputData[i].getText() != split[i])
+		if (searchResults.count() > 0)
 		{
-			inputData = inputData.mid(0, i);
-			break;
+			int row = alternatives->currentRow();
+			if (row > -1)
+			{
+				QString location = "History/" + input->text();
+				QStringList hist;
+				hist << searchResults[row].lowName << searchResults[row].fullPath;
+				gSettings->setValue(location, hist);
+
+				if (row > 0)
+					searchResults.move(row, 0);
+
+				if (event->key() == Qt::Key_Tab)
+				{
+					doTab();
+					processKey();
+				}
+				else
+				{
+					// Load up the inputData properly before running the command
+					/* commented out until I find a fix for it breaking the history selection
+					inputData.last().setTopResult(searchResults[0]);
+					doTab();
+					inputData.parse(input->text());
+					inputData.erase(inputData.end() - 1);*/
+
+					updateOutputWidgets();
+					keyPressEvent(event);
+				}
+			}
 		}
 	}
-
-	for (int i = inputData.count(); i < split.count(); i++)
+	else if (event->key() == Qt::Key_Delete && (event->modifiers() & Qt::ShiftModifier) != 0)
 	{
-		InputData data(split[i]);
-		inputData.push_back(data);
-	}
-}
-
-
-// Print all of the input up to the last entry
-QString LaunchyWidget::formatInput()
-{
-	QString res = "";
-	for (int i = 0; i < inputData.count()-1; ++i)
-	{
-		res += inputData[i].getText();
-		res += input->separatorText();
-	}
-	return res;
-}
-
-
-void LaunchyWidget::doTab()
-{
-	if (inputData.count() > 0 && searchResults.count() > 0)
-	{
-		// If it's an incomplete file or dir, complete it
-		QFileInfo info(searchResults[0].fullPath);
-
-		if ((inputData.last().hasLabel(LABEL_FILE) || info.isDir())
-			)//	&& input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
+		// Delete selected history entry
+		int row = alternatives->currentRow();
+		if (row > -1)
 		{
-			QString path;
-			if (info.isSymLink())
-				path = info.symLinkTarget();
-			else
-				path = searchResults[0].fullPath;
-
-			if (info.isDir() && !path.endsWith(QDir::separator()))
-				path += QDir::separator();
-
-			input->setText(formatInput() + QDir::toNativeSeparators(path));
-		}
-		else
-		{
-			// Looking for a plugin
-			input->selectAll();
-			input->insert(input->text() + input->separatorText());
-			//input->setText(input->text() + input->separatorText());
-			inputData.last().setText(searchResults[0].shortName);
-			input->selectAll();
-			input->insert(formatInput() + searchResults[0].shortName + input->separatorText());
-			//input->setText(formatInput() + searchResults[0].shortName + input->separatorText());
-
-			QRect rect = input->rect();
-			repaint(rect);
+			history.removeAt(row);
+			processKey();
 		}
 	}
-}
-
-
-void LaunchyWidget::doEnter()
-{
-	if (dropTimer->isActive())
-		dropTimer->stop();
-
-	if (searchResults.count() > 0 || inputData.count() > 1)
+	else if (event->key() == Qt::Key_Left || event->key() == Qt::Key_Right ||
+			 event->text().length() > 0)
 	{
-		CatItem& item = inputData[0].getTopResult();
-		launchItem(item);
+		// Send text entry to the input control
+		activateWindow();
+		input->setFocus();
+		event->ignore();
+		input->keyPressEvent(event);
+		keyPressEvent(event);
 	}
-	hideLaunchy();
-}
-
-
-void LaunchyWidget::inputMethodEvent(QInputMethodEvent* event)
-{
-	event; // Warning removal
-	processKey();
 }
 
 
@@ -672,13 +586,14 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 		doEnter();
 	}
 
-	else if (event->key() == Qt::Key_Down || event->key() == Qt::Key_PageDown ||
-		event->key() == Qt::Key_PageUp)
+	else if (event->key() == Qt::Key_Down || event->key() == Qt::Key_PageDown || 
+			 event->key() == Qt::Key_Up || event->key() == Qt::Key_PageUp)
 	{
 		if (alternatives->isVisible())
 		{
-			if (this->isActiveWindow())
+			if (!alternatives->isActiveWindow())
 			{
+				// Don't refactor the activateWindow outside the if, it won't work properly any other way!
 				if (alternatives->currentRow() < 0 && alternatives->count() > 0)
 				{
 					alternatives->activateWindow();
@@ -693,11 +608,10 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 		}
 		else if (event->key() == Qt::Key_Down || event->key() == Qt::Key_PageDown)
 		{
-			if (searchResults.count() == 0)
-				searchOnInput();
+			// do a search and show the results, selecting the first one
+			searchOnInput();
 			if (searchResults.count() > 0)
 			{
-				dropTimer->stop();
 				showAlternatives();
 				alternatives->activateWindow();
 				if (alternatives->count() > 0)
@@ -706,53 +620,114 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 		}
 	}
 
-	else if (
-		event->key() == Qt::Key_Left ||
-		event->key() == Qt::Key_Right ||
-		event->key() == Qt::Key_Up ||
-		event->key() == Qt::Key_Down ||
-		event->key() == Qt::Key_PageUp ||
-		event->key() == Qt::Key_PageDown ||
-		event->key() == Qt::Key_Control ||
-		event->key() == Qt::Key_Shift ||
-		event->key() == Qt::Key_Alt ||
-		event->key() == Qt::Key_AltGr)
+	else if ((event->key() == Qt::Key_Tab || event->key() == Qt::Key_Backspace) && event->modifiers() == Qt::ShiftModifier)
 	{
-		// Prevent alternatives from being hidden
+		doBackTab();
+		processKey();
 	}
+	else if (event->key() == Qt::Key_Tab)
+	{
+		doTab();
+		processKey();
+	}
+	else if (event->key() == Qt::Key_Slash || event->key() == Qt::Key_Backslash)
+	{
+		if (inputData.count() > 0 && inputData.last().hasLabel(LABEL_FILE))
+			doTab();
+		processKey();
+	}
+	else if (event->text().length() > 0)
+	{
+		// process any other key with character output
+		event->ignore();
+		processKey();
+	}
+}
 
+
+// remove input text back to the previous input section
+void LaunchyWidget::doBackTab()
+{
+	QString text = input->text();
+	int index = text.lastIndexOf(input->separatorText());
+	if (index >= 0)
+	{
+		text.truncate(index);
+		input->selectAll();
+		input->insert(text);
+	}
 	else
 	{
-		if (event->key() == Qt::Key_Tab)
+		input->clear();
+	}
+}
+
+
+void LaunchyWidget::doTab()
+{
+	if (inputData.count() > 0 && searchResults.count() > 0)
+	{
+		// If it's an incomplete file or directory, complete it
+		QFileInfo info(searchResults[0].fullPath);
+
+		if ((inputData.last().hasLabel(LABEL_FILE) || info.isDir())
+			)//	&& input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
 		{
-			doTab();
-		}
-		else if (event->key() == Qt::Key_Slash || event->key() == Qt::Key_Backslash)
-		{
-			if (inputData.size() > 0 && inputData.last().hasLabel(LABEL_FILE))
-				doTab();
+			QString path;
+			if (info.isSymLink())
+				path = info.symLinkTarget();
+			else
+				path = searchResults[0].fullPath;
+
+			if (info.isDir() && !path.endsWith(QDir::separator()))
+				path += QDir::separator();
+
+			input->selectAll();
+			input->insert(inputData.toString(true) + QDir::toNativeSeparators(path));
 		}
 		else
 		{
-			event->ignore();
+			inputData.last().setText(searchResults[0].shortName);
+			input->selectAll();
+			input->insert(inputData.toString() + input->separatorText());
+
+			QRect rect = input->rect();
+			repaint(rect);
 		}
-
-		processKey();
-
 	}
+}
+
+
+void LaunchyWidget::doEnter()
+{
+	showAlternatives(false);
+
+	if (searchResults.count() > 0 || inputData.count() > 1)
+	{
+		CatItem& item = inputData[0].getTopResult();
+		launchItem(item);
+	}
+	hideLaunchy();
+}
+
+
+void LaunchyWidget::inputMethodEvent(QInputMethodEvent* event)
+{
+	event; // Warning removal
+	processKey();
 }
 
 
 void LaunchyWidget::processKey()
 {
-	dropTimer->stop();
-	int delay = gSettings->value("GenOps/autoSuggestDelay", 1000).toInt();
-	if (delay > 0)
-		dropTimer->start(delay);
-
-	parseInput(input->text());
+	inputData.parse(input->text());
 	searchOnInput();
-	updateDisplay();
+	updateOutputWidgets();
+	// Don't schedule a drop down if there's no input text
+	if (input->text().length() > 0)
+		startDropTimer();
+	if (searchResults.count() == 0)
+		showAlternatives(false);
 }
 
 
@@ -762,49 +737,67 @@ void LaunchyWidget::searchOnInput()
 		return;
 
 	QString searchText = inputData.count() > 0 ? inputData.last().getText() : "";
-	gSearchTxt = searchText;
+	gSearchText = searchText;
 	searchResults.clear();
 
-	if (searchText.length() == 0)
-		searchHistory(searchText, searchResults);
-	else if (inputData.count() == 1)
-		catalog->searchCatalogs(gSearchTxt, searchResults);
+	// Add history items on their own and don't sort them so they remain in most recently used order
+	if ((inputData.count() > 0 && inputData.first().hasLabel(LABEL_HISTORY)) || input->text().length() == 0)
+	{
+		history.search(searchText, searchResults);
+	}
+	else
+	{
+		if (inputData.count() == 1)
+			catalog->searchCatalogs(gSearchText, searchResults);
 
-	if (searchResults.count() != 0)
-		inputData.last().setTopResult(searchResults[0]);
+		if (searchResults.count() != 0)	
+			inputData.last().setTopResult(searchResults[0]);
 
-	plugins.getLabels(&inputData);
-	plugins.getResults(&inputData, &searchResults);
-	qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
+		plugins.getLabels(&inputData);
+		plugins.getResults(&inputData, &searchResults);
+		qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
 
-	// Is it a file?
-	if (searchText.contains(QDir::separator()) || searchText.startsWith("~") ||
-		(searchText.size() == 2 && searchText[0].isLetter() && searchText[1] == ':'))
-		searchFiles(searchText, searchResults);
+		// Is it a file?
+		if (searchText.contains(QDir::separator()) || searchText.startsWith("~") ||
+			(searchText.size() == 2 && searchText[0].isLetter() && searchText[1] == ':'))
+			searchFiles(searchText, searchResults);
 
-	catalog->checkHistory(gSearchTxt, searchResults);
+		catalog->promoteRecentlyUsedItems(gSearchText, searchResults);
+	}
 }
 
 
-void LaunchyWidget::updateDisplay()
+// If there are current results, update the output text and icon
+void LaunchyWidget::updateOutputWidgets()
 {
-	if (searchResults.count() > 0 && gSearchTxt.length() > 0)
+	if (searchResults.count() > 0 && gSearchText.length() > 0)
 	{
-		output->setText(Catalog::decorateText(searchResults[0].shortName, gSearchTxt, true));
-
+		output->setText(Catalog::decorateText(searchResults[0].shortName, gSearchText, true));
 		iconExtractor.processIcon(searchResults[0]);
 
-		// Did the plugin take control of the input?
-		if (inputData.last().getID() != 0)
-			searchResults[0].id = inputData.last().getID();
-
-		inputData.last().setTopResult(searchResults[0]);
+		if (searchResults[0].id != HASH_HISTORY)
+		{
+			// Did the plugin take control of the input?
+			if (inputData.last().getID() != 0)
+				searchResults[0].id = inputData.last().getID();
+			inputData.last().setTopResult(searchResults[0]);
+		}
 	}
 	else
 	{
 		output->clear();
 		outputIcon->clear();
 	}
+}
+
+
+void LaunchyWidget::startDropTimer()
+{
+	int delay = gSettings->value("GenOps/autoSuggestDelay", 1000).toInt();
+	if (delay > 0)
+		dropTimer->start(delay);
+	else
+		showAlternatives(false);
 }
 
 
@@ -848,7 +841,7 @@ void LaunchyWidget::searchFiles(const QString& searchText, QList<CatItem>& searc
 			if (GetVolumeInformation((WCHAR*)info.filePath().utf16(), volName, MAX_PATH, NULL, NULL, NULL, NULL, 0))
 				volumeName = QString::fromUtf16((const ushort*)volName);
 			else
-				volumeName = info.filePath();
+				volumeName = QDir::toNativeSeparators(info.filePath());
 			CatItem item(QDir::toNativeSeparators(info.filePath()), volumeName);
 			searchResults.push_back(item);
 		}
@@ -858,7 +851,7 @@ void LaunchyWidget::searchFiles(const QString& searchText, QList<CatItem>& searc
 		searchPath += "/";
 #endif
 
-	// Network searches are too slow
+	// Network searches are too slow to run in the main thread
 	if (searchPath.startsWith("//"))
 		return;
 
@@ -875,7 +868,7 @@ void LaunchyWidget::searchFiles(const QString& searchText, QList<CatItem>& searc
 	// Okay, we have a directory, find files that match "file"
 	QDir dir(directoryPart);
 	QStringList fileList;
-	QDir::Filters filters = QDir::Dirs | QDir::Files;
+	QDir::Filters filters = QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot;
 	if (gSettings->value("GenOps/showHiddenFiles", false).toBool())
 		filters |= QDir::Hidden;
 	
@@ -884,17 +877,10 @@ void LaunchyWidget::searchFiles(const QString& searchText, QList<CatItem>& searc
 
 	foreach(QString fileName, fileList)
 	{
-		// don't include self and parent entries
-		if (fileName == "." || fileName == "..")
-			continue;
-
 		if (userWildcard || fileName.indexOf(filePart, 0, Qt::CaseInsensitive) == 0)
 		{
 			QString filePath = dir.absolutePath() + "/" + fileName;
 			filePath = QDir::cleanPath(filePath);
-			if (dir.exists(filePath))
-				filePath += "/";
-
 			CatItem item(QDir::toNativeSeparators(filePath), fileName);
 			searchResults.push_back(item);
 		}
@@ -913,15 +899,6 @@ void LaunchyWidget::searchFiles(const QString& searchText, QList<CatItem>& searc
 }
 
 
-void LaunchyWidget::searchHistory(const QString& /*searchText*/, QList<CatItem>& searchResults)
-{
-	foreach(CatItem item, history)
-	{
-		searchResults.push_front(item);
-	}
-}
-
-
 void LaunchyWidget::catalogBuilt()
 {
 	catalog = gBuilder->getCatalog();
@@ -931,7 +908,7 @@ void LaunchyWidget::catalogBuilt()
 
 	// Do a search here of the current input text
 	searchOnInput();
-	updateDisplay();
+	updateOutputWidgets();
 }
 
 
@@ -1069,7 +1046,7 @@ void LaunchyWidget::updateTimeout()
 
 void LaunchyWidget::dropTimeout()
 {
-	if (input->text() != "")
+	if (searchResults.count() > 0)
 		showAlternatives();
 }
 
@@ -1098,10 +1075,10 @@ void LaunchyWidget::closeEvent(QCloseEvent* event)
 	savePosition();
 	gSettings->sync();
 
-	QDir dest(gSettings->fileName());
-	dest.cdUp();
-	CatalogBuilder builder(catalog, &plugins);
-	builder.storeCatalog(dest.absoluteFilePath("Launchy.db"));
+	CatalogBuilder builder(&plugins, catalog);
+	builder.saveCatalog(dirs["db"][0]);
+
+	history.save(dirs["history"][0]);
 
 	event->accept();
 	qApp->quit();
@@ -1196,17 +1173,19 @@ void LaunchyWidget::applySkin(const QString& name)
 	// Use default skin if this one doesn't exist
 	if (!QFile::exists(stylesheetPath)) 
 	{
-		directory = dirs["defSkin"][0] + "/";
-		gSettings->setValue("GenOps/skin", "Default");
+		directory = dirs["skins"][0] + QString("/") + name + "/";
+		gSettings->setValue("GenOps/skin", dirs["defSkin"][0]);
 	}
 
 	// If still no good then fail with an ugly default
-	if (!QFile::exists(stylesheetPath)) {
-		
+	if (!QFile::exists(stylesheetPath))
+	{
 		return;
 	}
 
-	// If it's valid Set a few defaults
+	// Set a few defaults
+	delete frameGraphic;
+	frameGraphic = NULL;
 	closeButton->setGeometry(QRect());
 	optionsButton->setGeometry(QRect());
 	input->setAlignment(Qt::AlignLeft);
@@ -1344,11 +1323,9 @@ void LaunchyWidget::applySkin(const QString& name)
 
 	if (validFrame)
 	{
-		QPixmap* newFrame = new QPixmap(frame);
-		if (newFrame)
+		frameGraphic = new QPixmap(frame);
+		if (frameGraphic)
 		{
-			delete frameGraphic;
-			frameGraphic = newFrame;
 			resize(frameGraphic->size());
 		}
 	}
@@ -1414,13 +1391,7 @@ void LaunchyWidget::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 	switch (reason)
 	{
 	case QSystemTrayIcon::Trigger:
-	case QSystemTrayIcon::DoubleClick:
 		showLaunchy();
-		break;
-	case QSystemTrayIcon::MiddleClick:
-		buildCatalog();
-		break;
-	default:
 		break;
 	}
 }
@@ -1431,13 +1402,12 @@ void LaunchyWidget::buildCatalog()
 	// Perform the database update
 	if (gBuilder == NULL)
 	{
-		gBuilder.reset(new CatalogBuilder(false, &plugins));
+		gBuilder.reset(new CatalogBuilder(&plugins));
 		gBuilder->setPreviousCatalog(catalog);
 		connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		gBuilder->start(QThread::IdlePriority);
 	}
 }
-
 
 
 void LaunchyWidget::showOptionsDialog()
@@ -1455,8 +1425,7 @@ void LaunchyWidget::showOptionsDialog()
 	options.exec();
 
 	// Perform the database update
-	if (gBuilder == NULL)
-		buildCatalog();
+	buildCatalog();
 
 	input->activateWindow();
 	input->setFocus();
@@ -1551,12 +1520,10 @@ void LaunchyWidget::hideLaunchy(bool noFade)
 		return;
 
 	savePosition();
-	if (dropTimer != NULL && dropTimer->isActive())
-		dropTimer->stop();
+	showAlternatives(false);
 	if (alwaysShowLaunchy)
 		return;
 
-	showAlternatives(false);
 
 	if (isVisible())
 	{
@@ -1577,7 +1544,7 @@ void LaunchyWidget::loadOptions()
 		QNetworkProxy proxy;
 		proxy.setType((QNetworkProxy::ProxyType)gSettings->value("WebProxy/type", 0).toInt());
 		proxy.setHostName(gSettings->value("WebProxy/hostAddress", "").toString());
-		proxy.setPort(gSettings->value("WebProxy/port", "").toInt());
+		proxy.setPort((quint16)gSettings->value("WebProxy/port", "").toInt());
 		QNetworkProxy::setApplicationProxy(proxy);
 	}
 
@@ -1665,6 +1632,8 @@ int main(int argc, char *argv[])
 	QTranslator translator;
 	translator.load(QString("tr/launchy_" + locale));
 	qApp->installTranslator(&translator);
+
+	qApp->setStyleSheet("file:///:/resources/basicskin.qss");
 
 	LaunchyWidget* widget = createLaunchyWidget(command);
 

@@ -145,7 +145,7 @@ void PluginHandler::loadPlugins()
 				plug->settings = &gSettings;
 				PluginInfo info;
 				uint id;
-				bool handled = plug->msg(MSG_GET_ID, (void*) &id);
+				bool handled = plug->msg(MSG_GET_ID, (void*) &id) != 0;
 				info.id = id;
 				QString name;
 				plug->msg(MSG_GET_NAME, (void*) &name);

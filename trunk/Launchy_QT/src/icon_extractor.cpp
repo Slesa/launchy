@@ -108,6 +108,8 @@ QIcon IconExtractor::getIcon(const CatItem& item)
 		if (info.isDir())
 			return platform->icon(QFileIconProvider::Folder);
 #endif
+		if (item.fullPath.length() == 0)
+			return QIcon();	
 		return platform->icon(QDir::toNativeSeparators(item.fullPath));
 	}
 	else
