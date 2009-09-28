@@ -92,8 +92,7 @@ void CharLineEdit::keyPressEvent(QKeyEvent* event)
 // This is how you pick up the tab key
 bool CharLineEdit::focusNextPrevChild(bool next)
 {
-	next; // Remove compiler warning
-	QKeyEvent event(QEvent::KeyPress, Qt::Key_Tab, NULL);
+	QKeyEvent event(QEvent::KeyPress, Qt::Key_Tab, next ? Qt::NoModifier : Qt::ShiftModifier);
 	emit keyPressed(&event);
 	
 	return true;

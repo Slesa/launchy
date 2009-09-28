@@ -21,9 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define ICON_DELEGATE
 
 
-#include <QStyledItemDelegate>
-
-
 #define ROLE_SHORT Qt::DisplayRole
 #define ROLE_FULL Qt::ToolTipRole
 #define ROLE_ICON Qt::DecorationRole

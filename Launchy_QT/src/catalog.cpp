@@ -38,8 +38,8 @@ bool CatLessNoPtr(CatItem & a, CatItem & b)
 
 bool CatLess(CatItem* a, CatItem* b)
 {
-	bool localEqual = a->lowName == gSearchTxt;
-	bool otherEqual = b->lowName == gSearchTxt;
+	bool localEqual = a->lowName == gSearchText;
+	bool otherEqual = b->lowName == gSearchText;
 
 	// Exact match between search text and item name has higest priority
 	if (localEqual && !otherEqual)
@@ -47,10 +47,10 @@ bool CatLess(CatItem* a, CatItem* b)
 	if (!localEqual && otherEqual)
 		return false;
 
-	int localFind = a->lowName.indexOf(gSearchTxt);
-	int otherFind = b->lowName.indexOf(gSearchTxt);
+	int localFind = a->lowName.indexOf(gSearchText);
+	int otherFind = b->lowName.indexOf(gSearchText);
 
-	if (gSearchTxt.count() == 1)
+	if (gSearchText.count() == 1)
 	{
 		// Match at the start
 		if (localFind == 0 && otherFind != 0)

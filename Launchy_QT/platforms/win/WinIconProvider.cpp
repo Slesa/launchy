@@ -66,10 +66,10 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const
 
 		// Get the icon index using SHGetFileInfo
 		SHFILEINFO sfi = {0};
-		SHGetFileInfo(filePath.utf16(), -1, &sfi, sizeof(sfi), SHGFI_SYSICONINDEX);
+		SHGetFileInfo(filePath.utf16(), 0, &sfi, sizeof(sfi), SHGFI_SYSICONINDEX);
 
 		// An icon index of 3 is the generic file icon
-		if (sfi.iIcon != 3)
+		if (sfi.iIcon > 0 && sfi.iIcon != 3)
 		{
 			// Retrieve the system image list.
 			// To get the 48x48 icons, use SHIL_EXTRALARGE
@@ -106,14 +106,14 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const
 
 bool WinIconProvider::addIconFromImageList(int imageListIndex, int iconIndex, QIcon& icon) const
 {
-	HICON hIcon;
+	HICON hIcon = 0;
 	IImageList* imageList;
 	HRESULT hResult = SHGetImageList(imageListIndex, IID_IImageList, (void**)&imageList);
 	if (hResult == S_OK)
 	{
 		hResult = ((IImageList*)imageList)->GetIcon(iconIndex, ILD_TRANSPARENT, &hIcon);
 	}
-	if (hResult == S_OK)
+	if (hResult == S_OK && hIcon)
 	{
 		icon.addPixmap(convertHIconToPixmap(hIcon));
 		DestroyIcon(hIcon);

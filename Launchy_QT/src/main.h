@@ -21,17 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MAIN_H
 
 
-#include <QWidget>
-#include <QLabel>
-#include <QLineEdit>
-#include <QListWidget>
-#include <QString>
-#include <QtNetwork/QHttp>
-#include <QBuffer>
-#include <QKeyEvent>
-#include <QScrollBar>
-#include <QFlags>
-#include <QSystemTrayIcon>
 #include "plugin_handler.h"
 #include "platform_util.h"
 #include "catalog.h"
@@ -39,7 +28,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "icon_delegate.h"
 #include "icon_extractor.h"
 #include "globals.h"
-#include <boost/shared_ptr.hpp>
+#include "InputDataList.h"
+#include "CommandHistory.h"
 #include "CharLineEdit.h"
 #include "LineEditMenu.h"
 #include "CharListWidget.h"
@@ -70,7 +60,7 @@ public:
 	LaunchyWidget(CommandFlags command);
 	~LaunchyWidget();
 
-	void executeCommand(int command);
+	void executeStartupCommand(int command);
 
 	QHash<QString, QList<QString> > dirs;
 	shared_ptr<Catalog> catalog;
@@ -108,6 +98,7 @@ public slots:
 	void inputMethodEvent(QInputMethodEvent* event);
 	void keyPressEvent(QKeyEvent* event);
 	void inputKeyPressEvent(QKeyEvent* event);
+	void alternativesRowChanged(int index);
 	void alternativesKeyPressEvent(QKeyEvent* event);
 	void setFadeLevel(double level);
 	void showLaunchy();
@@ -127,17 +118,17 @@ private:
 	void searchFiles(const QString& searchText, QList<CatItem>& searchResults);
 	void searchHistory(const QString& searchText, QList<CatItem>& searchResults);
 	void parseInput(const QString& text);
-	void resetLaunchy();
-	void updateDisplay();
+	void updateOutputWidgets();
 	void searchOnInput();
 	void loadPosition();
 	void savePosition() { gSettings->setValue("Display/pos", pos()); }
 	void doTab();
+	void doBackTab();
 	void doEnter();
-	QString formatInput();
 	void processKey();
 	void launchItem(CatItem& item);
-	void addToHistory(const CatItem& catalogItem);
+	void addToHistory(QList<InputData>& item);
+	void startDropTimer();
 
 	Fader* fader;
 	QPixmap* frameGraphic;
@@ -163,8 +154,8 @@ private:
 	IconExtractor iconExtractor;
 	QIcon* condensedTempIcon;
 	QList<CatItem> searchResults;
-	QList<InputData> inputData;
-	QList<CatItem> history;
+	InputDataList inputData;
+	CommandHistory history;
 	bool alwaysShowLaunchy;
 	bool dragging;
 	QPoint dragStartPoint;

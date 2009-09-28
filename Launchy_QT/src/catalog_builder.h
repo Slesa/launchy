@@ -35,10 +35,12 @@ class CatalogBuilder : public QThread
 	Q_OBJECT
 
 public:
-	CatalogBuilder(bool fromArchive, PluginHandler * plugs);
-	CatalogBuilder(shared_ptr<Catalog> catalog, PluginHandler * plugs) : catalog(catalog), plugins(plugs), buildFromStorage(false) {}
+	CatalogBuilder(PluginHandler* plugs);
+	CatalogBuilder(PluginHandler* plugs, const QString& filename);
+	CatalogBuilder(PluginHandler* plugs, shared_ptr<Catalog> catalog);
+
 	bool loadCatalog(const QString& filename);
-	void storeCatalog(const QString& filename);
+	void saveCatalog(const QString& filename);
 	void setPreviousCatalog(shared_ptr<Catalog> cata)
 	{
 		currentCatalog = cata;
@@ -55,13 +57,14 @@ signals:
 	void catalogIncrement(float);
 
 private:
+	void createCatalog();
 	void buildCatalog();
 	void indexDirectory(const QString& dir, const QStringList& filters, bool fdirs, bool fbin, int depth);
 
+	PluginHandler* plugins;
 	shared_ptr<Catalog> currentCatalog;
 	shared_ptr<Catalog> catalog;
-	PluginHandler* plugins;
-	bool buildFromStorage;
+	QString filename;
 	QHash<QString, bool> indexed;
 };
 

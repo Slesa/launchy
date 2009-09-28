@@ -22,10 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "ui_options.h"
 #include "FileBrowserDelegate.h"
-#include <QString>
-#include <QStringList>
-#include <QList>
-#include <QDragEnterEvent>
 #include "Directory.h"
 
 

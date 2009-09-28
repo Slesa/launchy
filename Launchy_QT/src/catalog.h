@@ -154,6 +154,8 @@ public:
 	QSet<uint>  getLabels() { return labels; }
 	/** Apply a label to this query segment */
 	void setLabel(uint l) { labels.insert(l); }
+	/** Remove a label from this query segment */
+	void removeLabel(uint l) { labels.remove(l); }
 	/** Check if it has the given label applied to it */
 	bool hasLabel(uint l) { return labels.contains(l); }
 
@@ -168,13 +170,16 @@ public:
 	void setID(uint i) { id = i; }
 
 	/** Returns the current owner id of the query */
-	uint getID() { return id; }
+	uint getID() const { return id; }
 
 	/** Get the text of the query segment */
-	QString  getText() { return text; }
+	QString  getText() const { return text; }
 
 	/** Set the text of the query segment */
 	void setText(QString t) { text = t; }
+
+	/** Get the text of the query segment */
+	bool hasText() const { return text.length() > 0; }
 
 	/** Get a pointer to the best catalog match for this segment of the query */
 	CatItem&  getTopResult() { return topResult; }
@@ -184,6 +189,9 @@ public:
 
 	InputData() { id = 0; }
 	InputData(QString str) : text(str) { id = 0;}
+
+	friend QDataStream &operator<<(QDataStream &out, const InputData &inputData);
+	friend QDataStream &operator>>(QDataStream &in, InputData &inputData);
 };
 
 bool CatLess(CatItem* left, CatItem* right); 
@@ -206,6 +214,23 @@ inline QDataStream &operator>>(QDataStream &in, CatItem &item) {
 	in >> item.icon;
 	in >> item.usage;
 	in >> item.id;
+	return in;
+}
+
+
+inline QDataStream &operator<<(QDataStream &out, const InputData &inputData) {
+	out << inputData.text;
+	out << inputData.labels;
+	out << inputData.topResult;
+	out << inputData.id;
+	return out;
+}
+
+inline QDataStream &operator>>(QDataStream &in, InputData &inputData) {
+	in >> inputData.text;
+	in >> inputData.labels;
+	in >> inputData.topResult;
+	in >> inputData.id;
 	return in;
 }
 

@@ -58,7 +58,7 @@ public:
 			if (msg->message == commandMessageId)
 			{
 				// A Launchy startup command
-				executeCommand(msg->wParam);
+				executeStartupCommand(msg->wParam);
 			}
 			break;
 		}
@@ -112,18 +112,21 @@ void PlatformWin::setPreferredIconSize(int size)
 QHash<QString, QList<QString> > PlatformWin::getDirectories()
 {
     QHash<QString, QList<QString> > out;
-    out["skins"] << qApp->applicationDirPath() + "/skins";
-    out["skins"] += qApp->applicationDirPath() + "/skins";
-    out["plugins"] += qApp->applicationDirPath() + "/plugins";
-    out["portConfig"] += qApp->applicationDirPath() + "/Launchy.ini";
-    QSettings tmp(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
-    out["config"] += tmp.fileName();
-    out["portDB"] += qApp->applicationDirPath() + "/Launchy.db";
-	QDir d(out["config"][0]);
-    d.cdUp();
-    out["db"] += d.absoluteFilePath("Launchy.db");
-    out["defSkin"] += out["skins"][0] + "/Default";
-    out["platforms"] += qApp->applicationDirPath();
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
+    QString iniFilename = settings.fileName();
+	QFileInfo info(iniFilename);
+	QString userDataPath = info.absolutePath();
+
+	out["config"] << iniFilename;
+    out["db"] << userDataPath + "/Launchy.db";
+    out["history"] << userDataPath + "/history.db";
+	out["skins"] << qApp->applicationDirPath() + "/skins"
+				 << userDataPath + "/skins";
+    out["plugins"] << qApp->applicationDirPath() + "/plugins"
+				   << userDataPath + "/plugins";
+    out["portConfig"] << qApp->applicationDirPath() + "/Launchy.ini";
+    out["portDB"] << qApp->applicationDirPath() + "/Launchy.db";
+    out["defSkin"] << "Default";
     return out;
 }
 
