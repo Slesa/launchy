@@ -25,7 +25,8 @@ SOURCES = main.cpp \
     CharListWidget.cpp \
     CharLineEdit.cpp \
     CommandHistory.cpp \
-    InputDataList.cpp
+    InputDataList.cpp \
+    FileSearch.cpp
 HEADERS = platform_base.h \
     globals.h \
     globals.h \
@@ -46,7 +47,8 @@ HEADERS = platform_base.h \
     Fader.h \
     precompiled.h \
     CommandHistory.h \
-    InputDataList.h
+    InputDataList.h \
+    FileSearch.h
 ICON = Launchy.ico
 first.target = blah
 unix { 
@@ -72,10 +74,7 @@ unix {
         desktop
 }
 win32 { 
-
-	if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
-		CONFIG += console
-	}
+    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):CONFIG += console
     SOURCES += ../platforms/win/platform_win.cpp \
         ../platforms/win/platform_win_hotkey.cpp \
         ../platforms/win/platform_win_util.cpp \
@@ -95,7 +94,8 @@ win32 {
         ole32.lib \
         comctl32.lib \
         advapi32.lib \
-        userenv.lib
+		userenv.lib \
+		netapi32.lib
     DEFINES = VC_EXTRALEAN \
         WIN32 \
         _UNICODE \

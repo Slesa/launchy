@@ -47,6 +47,7 @@ using namespace boost;
 #include <commctrl.h>
 #include <commoncontrols.h>
 #include <userenv.h>
+#include <lm.h>
 #endif
 
 

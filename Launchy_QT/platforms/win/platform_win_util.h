@@ -21,11 +21,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define __PLATFORM_WIN_UTIL_H
 
 
-#pragma warning (disable : 4089)
-
-
 void UpdateEnvironment();
 QString GetShellDirectory(int type);
+bool EnumerateNetworkServers(QList<QString>& items, DWORD serverType, const wchar_t* domain = NULL);
 
 
 class LimitSingleInstance

@@ -59,6 +59,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	//    genFastIndex->setChecked(gSettings->value("GenOps/fastindexer",false).toBool());
 	genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
 	genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
+	genShowNetwork->setChecked(gSettings->value("GenOps/showNetwork", true).toBool());
 	genCondensed->setChecked(gSettings->value("GenOps/condensedView",false).toBool());
 	genAutoSuggestDelay->setValue(gSettings->value("GenOps/autoSuggestDelay", 1000).toInt());
 	int updateInterval = gSettings->value("GenOps/updatetimer", 10).toInt();
@@ -284,6 +285,7 @@ void OptionsDialog::accept()
 	gSettings->setValue("GenOps/alwayscenter", (genHCenter->isChecked() ? 1 : 0) | (genVCenter->isChecked() ? 2 : 0));
 	gSettings->setValue("GenOps/dragmode", genShiftDrag->isChecked() ? 1 : 0);
 	gSettings->setValue("GenOps/showHiddenFiles", genShowHidden->isChecked());
+	gSettings->setValue("GenOps/showNetwork", genShowNetwork->isChecked());
 	gSettings->setValue("GenOps/condensedView", genCondensed->isChecked());
 	gSettings->setValue("GenOps/autoSuggestDelay", genAutoSuggestDelay->value());
 	gSettings->setValue("GenOps/updatetimer", genUpdateCatalog->isChecked() ? genUpdateMinutes->value() : 0);

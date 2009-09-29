@@ -58,6 +58,7 @@ void InputDataList::parse(const QString& text)
 	}
 }
 
+
 QString InputDataList::toString(bool omitLast) const
 {
 	QString result = "";

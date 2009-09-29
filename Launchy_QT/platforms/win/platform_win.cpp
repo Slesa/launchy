@@ -217,6 +217,24 @@ bool PlatformWin::supportsAlphaBorder() const
 }
 
 
+bool PlatformWin::getComputers(QList<CatItem>& searchResults) const
+{
+	QList<QString> computers;
+
+	if (EnumerateNetworkServers(computers, SV_TYPE_WORKSTATION | SV_TYPE_SERVER))
+	{
+		for (int i = 0; i < computers.size(); ++i)
+		{
+			QString name = computers[i];
+			CatItem item(QDir::toNativeSeparators("//") + name, name);
+			searchResults.push_back(item);
+		}
+	}
+
+	return true;
+}
+
+
 // Create the application object
 QApplication* createApplication(int& argc, char** argv)
 {
