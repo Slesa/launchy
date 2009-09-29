@@ -66,7 +66,11 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const
 
 		// Get the icon index using SHGetFileInfo
 		SHFILEINFO sfi = {0};
-		SHGetFileInfo(filePath.utf16(), 0, &sfi, sizeof(sfi), SHGFI_SYSICONINDEX);
+
+		// To avoid network hangs, explicitly fetch the My Computer icon for UNCs
+		QRegExp re("\\\\\\\\([a-z]+\\\\?)?$", Qt::CaseInsensitive);
+		SHGetFileInfo(re.exactMatch(filePath) ? L"::{20D04FE0-3AEA-1069-A2D8-08002B30309D}" : filePath.utf16(),
+			0, &sfi, sizeof(sfi), SHGFI_SYSICONINDEX);
 
 		// An icon index of 3 is the generic file icon
 		if (sfi.iIcon > 0 && sfi.iIcon != 3)

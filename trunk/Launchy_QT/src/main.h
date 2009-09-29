@@ -115,8 +115,6 @@ private:
 	void checkForUpdate();
 	void shouldDonate();
 	void showAlternatives(bool show = true);
-	void searchFiles(const QString& searchText, QList<CatItem>& searchResults);
-	void searchHistory(const QString& searchText, QList<CatItem>& searchResults);
 	void parseInput(const QString& text);
 	void updateOutputWidgets();
 	void searchOnInput();

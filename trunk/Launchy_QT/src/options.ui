@@ -463,6 +463,13 @@
              </widget>
             </item>
             <item>
+             <widget class="QCheckBox" name="genShowNetwork">
+              <property name="text">
+               <string>Show network in browse mode</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QCheckBox" name="genUpdateCheck">
               <property name="text">
                <string>Check for new versions of Launchy on startup</string>
@@ -1212,6 +1219,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>genUpdateCatalog</tabstop>
   <tabstop>genUpdateMinutes</tabstop>
   <tabstop>genShowHidden</tabstop>
+  <tabstop>genShowNetwork</tabstop>
   <tabstop>genUpdateCheck</tabstop>
   <tabstop>genPortable</tabstop>
   <tabstop>genProxyHostname</tabstop>

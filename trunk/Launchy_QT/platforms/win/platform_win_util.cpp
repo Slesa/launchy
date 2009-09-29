@@ -81,3 +81,34 @@ QString GetShellDirectory(int type)
 	SHGetFolderPath(NULL, type, NULL, 0, buffer);
 	return QString::fromUtf16(buffer);
 }
+
+
+bool EnumerateNetworkServers(QList<QString>& items, DWORD serverType, const wchar_t* domain)
+{
+	SERVER_INFO_100* serverInfo = 0;
+	DWORD read, totalOnNetwork;
+
+	NET_API_STATUS result = NetServerEnum(NULL, 100, (BYTE**)&serverInfo, MAX_PREFERRED_LENGTH, 
+		&read, &totalOnNetwork, serverType, domain, 0);
+	if (result == NERR_Success)
+	{
+		for (DWORD i = 0; i < read; ++i)
+		{
+			QString name = QString::fromUtf16((ushort*)serverInfo[i].sv100_name);
+			items.push_back(name);
+		}
+	}
+
+	// Possible error codes
+	// ERROR_ACCESS_DENIED: "The user does not have access to the requested information."
+	// NERR_InvalidComputer: "The computer name is invalid."
+	// ERROR_NO_BROWSER_SERVERS_FOUND: "No browser servers found."
+	// ERROR_MORE_DATA: "More entries are available with subsequent calls."
+
+	if (serverInfo)
+	{
+		NetApiBufferFree((void*)serverInfo);
+	}
+
+	return result == NERR_Success;
+}

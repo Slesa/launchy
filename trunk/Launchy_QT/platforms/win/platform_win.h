@@ -43,6 +43,7 @@ public:
 	virtual bool supportsAlphaBorder() const;
 	virtual bool isAlreadyRunning() const;
 	virtual void sendInstanceCommand(int command);
+	virtual bool getComputers(QList<CatItem>& searchResults) const;
 
 private:
 	HANDLE localMutex, globalMutex;

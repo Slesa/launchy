@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "globals.h"
 #include "options.h"
 #include "plugin_interface.h"
+#include "FileSearch.h"
 
 
 #ifdef Q_WS_WIN
@@ -760,7 +761,7 @@ void LaunchyWidget::searchOnInput()
 		// Is it a file?
 		if (searchText.contains(QDir::separator()) || searchText.startsWith("~") ||
 			(searchText.size() == 2 && searchText[0].isLetter() && searchText[1] == ':'))
-			searchFiles(searchText, searchResults);
+			FileSearch::search(searchText, searchResults, inputData);
 
 		catalog->promoteRecentlyUsedItems(gSearchText, searchResults);
 	}
@@ -817,84 +818,6 @@ void LaunchyWidget::iconExtracted(int itemIndex, QIcon icon)
 
 		QRect rect = alternatives->visualItemRect(listItem);
 		repaint(rect);
-	}
-}
-
-
-void LaunchyWidget::searchFiles(const QString& searchText, QList<CatItem>& searchResults)
-{
-	QString searchPath = QDir::fromNativeSeparators(searchText);
-
-	if (searchPath.startsWith("~"))
-		searchPath.replace("~", QDir::homePath());
-
-#ifdef Q_WS_WIN
-	if (searchPath == "/")
-	{
-		// Special case for Windows: list available drives
-		QFileInfoList driveList = QDir::drives();
-		foreach(QFileInfo info, driveList)
-		{
-			// Retrieve volume name
-			QString volumeName;
-			WCHAR volName[MAX_PATH];
-			if (GetVolumeInformation((WCHAR*)info.filePath().utf16(), volName, MAX_PATH, NULL, NULL, NULL, NULL, 0))
-				volumeName = QString::fromUtf16((const ushort*)volName);
-			else
-				volumeName = QDir::toNativeSeparators(info.filePath());
-			CatItem item(QDir::toNativeSeparators(info.filePath()), volumeName);
-			searchResults.push_back(item);
-		}
-		return;
-	}
-	if (searchPath.size() == 2 && searchText[0].isLetter() && searchPath[1] == ':')
-		searchPath += "/";
-#endif
-
-	// Network searches are too slow to run in the main thread
-	if (searchPath.startsWith("//"))
-		return;
-
-	// Split the string on the last slash
-	QString directoryPart = searchPath.mid(0,searchPath.lastIndexOf("/")+1);
-	QString filePart = searchPath.mid(searchPath.lastIndexOf("/")+1);
-
-	QFileInfo info(directoryPart);
-	if (!info.isDir())
-		return;
-
-	inputData.last().setLabel(LABEL_FILE);
-
-	// Okay, we have a directory, find files that match "file"
-	QDir dir(directoryPart);
-	QStringList fileList;
-	QDir::Filters filters = QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot;
-	if (gSettings->value("GenOps/showHiddenFiles", false).toBool())
-		filters |= QDir::Hidden;
-	
-	bool userWildcard = filePart.contains("*") || filePart.contains("?");
-	fileList = dir.entryList(QStringList(filePart + "*"), filters, QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
-
-	foreach(QString fileName, fileList)
-	{
-		if (userWildcard || fileName.indexOf(filePart, 0, Qt::CaseInsensitive) == 0)
-		{
-			QString filePath = dir.absolutePath() + "/" + fileName;
-			filePath = QDir::cleanPath(filePath);
-			CatItem item(QDir::toNativeSeparators(filePath), fileName);
-			searchResults.push_back(item);
-		}
-	}
-
-	// Showing a directory
-	if (filePart.count() == 0)
-	{
-		QString fullPath = QDir::toNativeSeparators(directoryPart);
-		if (!fullPath.endsWith(QDir::separator()))
-			fullPath += QDir::separator();
-		QString name = info.dir().dirName();
-		CatItem item(fullPath, name.count() == 0 ? fullPath : name);
-		searchResults.push_front(item);
 	}
 }
 

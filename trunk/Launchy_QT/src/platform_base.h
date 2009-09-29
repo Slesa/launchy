@@ -62,6 +62,7 @@ public:
 	virtual QString expandEnvironmentVars(QString txt) = 0;
 
 	virtual bool supportsAlphaBorder() const { return false; }
+	virtual bool getComputers(QList<CatItem>& searchResults) const { Q_UNUSED(searchResults); return false; }
 
 
 protected:
