@@ -52,6 +52,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genAlwaysTop->setChecked(gSettings->value("GenOps/alwaystop", false).toBool());
 	genPortable->setChecked(gSettings->value("GenOps/isportable", false).toBool());
 	genHideFocus->setChecked(gSettings->value("GenOps/hideiflostfocus", false).toBool());
+	genDecorateText->setChecked(gSettings->value("GenOps/decoratetext", false).toBool());
 	int center = gSettings->value("GenOps/alwayscenter", 3).toInt();
 	genHCenter->setChecked((center & 1) != 0);
 	genVCenter->setChecked((center & 2) != 0);
@@ -281,6 +282,7 @@ void OptionsDialog::accept()
 	gSettings->setValue("GenOps/alwaystop", genAlwaysTop->isChecked());
 	gSettings->setValue("GenOps/isportable", genPortable->isChecked());
 	gSettings->setValue("GenOps/updatecheck", genUpdateCheck->isChecked());
+	gSettings->setValue("GenOps/decoratetext", genDecorateText->isChecked());
 	gSettings->setValue("GenOps/hideiflostfocus", genHideFocus->isChecked());
 	gSettings->setValue("GenOps/alwayscenter", (genHCenter->isChecked() ? 1 : 0) | (genVCenter->isChecked() ? 2 : 0));
 	gSettings->setValue("GenOps/dragmode", genShiftDrag->isChecked() ? 1 : 0);

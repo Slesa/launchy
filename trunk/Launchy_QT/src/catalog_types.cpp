@@ -118,6 +118,8 @@ bool Catalog::matches(CatItem* item, const QString& match)
 
 QString Catalog::decorateText(const QString& text, const QString& match, bool outputRichText)
 {
+	if (!gSettings->value("GenOps/decoratetext", false).toBool())
+		return text;
 	QString decoratedText;
 	int matchLength = match.count();
 	int curChar = 0;
