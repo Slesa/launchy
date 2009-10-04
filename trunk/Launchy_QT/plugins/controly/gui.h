@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2009  Simon Capewell
+Copyright (C) 2007  Josh Karlin
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,28 +17,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef PRECOMPILED_H
-#define PRECOMPILED_H
+#ifndef GUI_H
+#define GUI_H
 
-#ifdef _MSC_VER
-#pragma warning(push,3)
-#endif
+#include "ui_dlg.h"
+#include "globals.h"
 
-#include <QtGui>
+class Gui : public QWidget, private Ui::Dlg
+{
+  Q_OBJECT
 
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
+public:
+	Gui(QWidget* parent);
+	~Gui() { this->hide(); }
+	void writeOptions();
+};
 
-#include <stdlib.h>
-
-#ifdef Q_WS_WIN
-#include <windows.h>
-#include <shlobj.h>
-#include <shlwapi.h>
-#include <shellapi.h>
-#include <cpl.h>
-#endif
-
-
-#endif // PRECOMPILED_H
+#endif 
