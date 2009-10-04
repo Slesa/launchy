@@ -156,30 +156,18 @@ QList<Directory> PlatformWin::getDefaultCatalogDirectories()
 
 QString PlatformWin::expandEnvironmentVars(QString txt) 
 {
-	QString delim("%");
-	QString out = "";
-	int curPos = txt.indexOf(delim, 0);
-	if (curPos == -1)
-		return txt;
-	while (curPos != -1) {
-		int nextPos = txt.indexOf(delim, curPos+1);
-		if (nextPos == -1) {
-			out += txt.mid(curPos+1);
-			break;
-		}
-		QString var = txt.mid(curPos+1, nextPos-curPos-1);
-		DWORD size = GetEnvironmentVariableW((LPCTSTR) var.utf16(), NULL, 0);
-		if (size > 0) {
-			LPWSTR tmpString = (LPWSTR) malloc(size*sizeof(TCHAR));
-			GetEnvironmentVariableW((LPCTSTR) var.utf16(), tmpString, size);
-			out += QString::fromUtf16((const ushort*) tmpString);
-			free(tmpString);
-		} else {
-			out += "%" + var + "%";
-		}
-		curPos = nextPos;
+	QString result;
+
+	DWORD size = ExpandEnvironmentStrings((LPCWSTR)txt.utf16(), NULL, 0);
+	if (size > 0)
+	{
+		TCHAR* buffer = new TCHAR[size];
+		ExpandEnvironmentStrings((LPCWSTR)txt.utf16(), buffer, size);
+		result = QString::fromUtf16((const ushort*)buffer);
+		delete[] buffer;
 	}
-	return out;
+
+	return result;
 }
 
 
