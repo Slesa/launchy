@@ -11,7 +11,7 @@
     <x>0</x>
     <y>0</y>
     <width>678</width>
-    <height>535</height>
+    <height>559</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,9 +27,9 @@
       <attribute name="title">
        <string>General</string>
       </attribute>
-      <layout class="QVBoxLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <layout class="QHBoxLayout">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <layout class="QVBoxLayout">
            <item>
@@ -46,7 +46,7 @@
              <property name="alignment">
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
              </property>
-             <layout class="QVBoxLayout">
+             <layout class="QVBoxLayout" name="verticalLayout_2">
               <item>
                <widget class="QCheckBox" name="genAlwaysShow">
                 <property name="text">
@@ -68,6 +68,13 @@
                 </property>
                 <property name="text">
                  <string>Always on top</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="genDecorateText">
+                <property name="text">
+                 <string>Underline matched text</string>
                 </property>
                </widget>
               </item>
