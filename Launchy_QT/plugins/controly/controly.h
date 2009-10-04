@@ -20,26 +20,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef controly_H
 #define controly_H
 
-#include <QHash>
 #include "plugin_interface.h"
 
+#ifdef WITH_GUI
+	#include "gui.h"
+#endif
 
+#include "../fhocommon/fhoicon.h"
 
 class controlyPlugin : public QObject, public PluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
 
-
-public:
+private:
 	uint HASH_controly;
-	QHash<QString, QString> cache;
+
+	FhoIconCreator iconCreator;
+
+	#ifdef WITH_GUI
+		Gui* gui;
+	#endif
 
 public:
-	controlyPlugin() {
-		HASH_controly = qHash(QString("controly"));
-	}
-	~controlyPlugin() {}
+	controlyPlugin();
+	~controlyPlugin();
+
 	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
 
 private:
@@ -51,10 +57,14 @@ private:
 	void getApps(QList<CatItem>* items);
 	void getResults(QList<InputData>* id, QList<CatItem>* results);
 	int launchItem(QList<InputData>* id, CatItem* item);
-	QString getIconPath() const;
+
+	#ifdef WITH_GUI
+		void doDialog(QWidget* parent, QWidget**);
+		void endDialog(bool accept);
+	#endif
+
 };
 
-
-
+extern controlyPlugin* gControlyInstance;
 
 #endif
