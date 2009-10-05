@@ -29,44 +29,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 CatalogBuilder::CatalogBuilder(PluginHandler* plugs) :
 	plugins(plugs)
 {
-	createCatalog();
+	catalog.reset((Catalog*)createCatalog());
 }
-	
 
-CatalogBuilder::CatalogBuilder(PluginHandler* plugs, const QString& fileName) :
+
+CatalogBuilder::CatalogBuilder(PluginHandler* plugs, shared_ptr<Catalog> currentCatalog) :
 	plugins(plugs),
-	filename(fileName)
+	currentCatalog(currentCatalog)
 {
-	createCatalog();
+	catalog.reset((Catalog*)createCatalog());
 }
 
 
-CatalogBuilder::CatalogBuilder(PluginHandler* plugs, shared_ptr<Catalog> catalog) :
-	plugins(plugs),
-	catalog(catalog)
-{
-}
-
-
-void CatalogBuilder::createCatalog()
+Catalog* CatalogBuilder::createCatalog()
 {
 	if (gSettings->value("GenOps/fastindexer",false).toBool())
-		catalog.reset((Catalog*) new FastCatalog());
-	else
-		catalog.reset((Catalog*) new SlowCatalog());
+		return new FastCatalog();
+	return new SlowCatalog();
 }
 
 
 void CatalogBuilder::run()
 {
-	if (filename.length() > 0 && loadCatalog(filename))
-	{
-	}
-	else
-	{
-		buildCatalog();
-		saveCatalog(filename);
-	}
+	buildCatalog();
 	emit catalogFinished();
 }
 
@@ -206,48 +191,4 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 			indexed[dir + "/" + files[i]] = true;
 		}
 	}
-}
-
-
-bool CatalogBuilder::loadCatalog(const QString& filename)
-{
-	QFile inFile(filename);
-	if (!inFile.open(QIODevice::ReadOnly))
-		return false;
-
-	QByteArray ba = inFile.readAll();
-	QByteArray unzipped = qUncompress(ba);
-	QDataStream in(&unzipped, QIODevice::ReadOnly);
-	in.setVersion(QDataStream::Qt_4_2);
-
-	while (!in.atEnd())
-	{
-		CatItem item;
-		in >> item;
-		catalog->addItem(item);
-	}
-
-	return true;
-}
-
-
-void CatalogBuilder::saveCatalog(const QString& filename)
-{
-	QByteArray ba;
-	QDataStream out(&ba, QIODevice::ReadWrite); 
-	out.setVersion(QDataStream::Qt_4_2);
-
-	for (int i = 0; i < this->catalog->count(); i++)
-	{
-		CatItem item = catalog->getItem(i);
-		out << item;
-	}
-
-	// Zip the archive
-	QFile file(filename);
-	if (!file.open(QIODevice::WriteOnly))
-	{
-		qDebug() << "Could not open database for writing";
-	}
-	file.write(qCompress(ba));
 }

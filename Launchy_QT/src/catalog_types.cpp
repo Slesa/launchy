@@ -22,6 +22,52 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "globals.h"
 
 
+bool Catalog::load(const QString& filename)
+{
+	QFile inFile(filename);
+	if (!inFile.open(QIODevice::ReadOnly))
+		return false;
+
+	QByteArray ba = inFile.readAll();
+	QByteArray unzipped = qUncompress(ba);
+	QDataStream in(&unzipped, QIODevice::ReadOnly);
+	in.setVersion(QDataStream::Qt_4_2);
+
+	while (!in.atEnd())
+	{
+		CatItem item;
+		in >> item;
+		addItem(item);
+	}
+
+	return true;
+}
+
+
+bool Catalog::save(const QString& filename)
+{
+	QByteArray ba;
+	QDataStream out(&ba, QIODevice::ReadWrite); 
+	out.setVersion(QDataStream::Qt_4_2);
+
+	for (int i = 0; i < count(); i++)
+	{
+		CatItem item = getItem(i);
+		out << item;
+	}
+
+	// Zip the archive
+	QFile file(filename);
+	if (!file.open(QIODevice::WriteOnly))
+	{
+		qDebug() << "Could not open database for writing";
+		return false;
+	}
+	file.write(qCompress(ba));
+	return true;
+}
+
+
 void FastCatalog::addItem(const CatItem& item)
 {
 	catList.push_back(item);

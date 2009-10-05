@@ -180,9 +180,8 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 		updateTimer->start(time * 60000);
 
 	// Load the catalog
-	gBuilder.reset(new CatalogBuilder(&plugins, dirs["db"][0]));
-	connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
-	gBuilder->start();
+	catalog.reset(CatalogBuilder::createCatalog());
+	catalog->load(dirs["db"][0]);
 
 	// Load the history
 	history.load(dirs["history"][0]);
@@ -832,6 +831,8 @@ void LaunchyWidget::catalogBuilt()
 	// Do a search here of the current input text
 	searchOnInput();
 	updateOutputWidgets();
+
+	catalog->save(dirs["db"][0]);
 }
 
 
@@ -998,9 +999,7 @@ void LaunchyWidget::closeEvent(QCloseEvent* event)
 	savePosition();
 	gSettings->sync();
 
-	CatalogBuilder builder(&plugins, catalog);
-	builder.saveCatalog(dirs["db"][0]);
-
+	catalog->save(dirs["db"][0]);
 	history.save(dirs["history"][0]);
 
 	event->accept();
@@ -1325,8 +1324,7 @@ void LaunchyWidget::buildCatalog()
 	// Perform the database update
 	if (gBuilder == NULL)
 	{
-		gBuilder.reset(new CatalogBuilder(&plugins));
-		gBuilder->setPreviousCatalog(catalog);
+		gBuilder.reset(new CatalogBuilder(&plugins, catalog));
 		connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 		gBuilder->start(QThread::IdlePriority);
 	}

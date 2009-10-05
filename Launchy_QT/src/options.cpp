@@ -647,7 +647,10 @@ void OptionsDialog::catDirMinusClicked(bool c)
 	memDirs.removeAt(dirRow);
 
 	if (dirRow >= catDirectories->count() && catDirectories->count() > 0)
+	{
 		catDirectories->setCurrentRow(catDirectories->count() - 1);
+		dirRowChanged(catDirectories->count() - 1);
+	}
 }
 
 
@@ -689,7 +692,7 @@ void OptionsDialog::catTypesItemChanged(QListWidgetItem* item)
 	if (typesRow == -1)
 		return;
 
-	memDirs[row].types[typesRow] = item->text();
+	memDirs[row].types[typesRow] = catTypes->item(typesRow)->text();
 	
 	needRescan = true;
 }
