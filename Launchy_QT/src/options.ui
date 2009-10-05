@@ -11,7 +11,7 @@
     <x>0</x>
     <y>0</y>
     <width>678</width>
-    <height>559</height>
+    <height>515</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,9 +27,9 @@
       <attribute name="title">
        <string>General</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <layout class="QHBoxLayout">
          <item>
           <layout class="QVBoxLayout">
            <item>
@@ -46,7 +46,7 @@
              <property name="alignment">
               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_2">
+             <layout class="QVBoxLayout">
               <item>
                <widget class="QCheckBox" name="genAlwaysShow">
                 <property name="text">
@@ -68,13 +68,6 @@
                 </property>
                 <property name="text">
                  <string>Always on top</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QCheckBox" name="genDecorateText">
-                <property name="text">
-                 <string>Underline matched text</string>
                 </property>
                </widget>
               </item>
@@ -110,6 +103,19 @@
                    <string>vertically</string>
                   </property>
                  </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_2">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </spacer>
                 </item>
                </layout>
               </item>
@@ -185,6 +191,13 @@
              <widget class="QCheckBox" name="genCondensed">
               <property name="text">
                <string>Compact suggestion list</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="genDecorateText">
+              <property name="text">
+               <string>Underline matched text</string>
               </property>
              </widget>
             </item>
@@ -329,6 +342,9 @@
              <layout class="QVBoxLayout" name="_14">
               <item>
                <layout class="QFormLayout" name="formLayout_3">
+                <property name="fieldGrowthPolicy">
+                 <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                </property>
                 <item row="0" column="0">
                  <widget class="QLabel" name="label_6">
                   <property name="text">
@@ -349,6 +365,16 @@
                   </property>
                  </widget>
                 </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_3">
+                  <property name="text">
+                   <string>Fade in time</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>genFadeIn</cstring>
+                  </property>
+                 </widget>
+                </item>
                 <item row="1" column="1">
                  <widget class="QSlider" name="genFadeIn">
                   <property name="maximum">
@@ -359,16 +385,6 @@
                   </property>
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_3">
-                  <property name="text">
-                   <string>Fade in time</string>
-                  </property>
-                  <property name="buddy">
-                   <cstring>genFadeIn</cstring>
                   </property>
                  </widget>
                 </item>
@@ -395,6 +411,61 @@
                   </property>
                   <property name="tickPosition">
                    <enum>QSlider::NoTicks</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_12">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="title">
+              <string>Internet Proxy</string>
+             </property>
+             <layout class="QVBoxLayout" name="_15">
+              <item>
+               <layout class="QFormLayout" name="formLayout_4">
+                <property name="fieldGrowthPolicy">
+                 <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_24">
+                  <property name="text">
+                   <string>Hostname</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>genProxyHostname</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLineEdit" name="genProxyHostname"/>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_25">
+                  <property name="text">
+                   <string>Port</string>
+                  </property>
+                  <property name="buddy">
+                   <cstring>genProxyPort</cstring>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="genProxyPort">
+                  <property name="inputMask">
+                   <string/>
+                  </property>
+                  <property name="maxLength">
+                   <number>5</number>
                   </property>
                  </widget>
                 </item>
@@ -505,78 +576,6 @@
             </item>
            </layout>
           </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout">
-         <item>
-          <widget class="QGroupBox" name="groupBox_12">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="title">
-            <string>Internet Proxy</string>
-           </property>
-           <layout class="QVBoxLayout" name="_15">
-            <item>
-             <layout class="QFormLayout" name="formLayout_4">
-              <property name="fieldGrowthPolicy">
-               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-              </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_24">
-                <property name="text">
-                 <string>Hostname</string>
-                </property>
-                <property name="buddy">
-                 <cstring>genProxyHostname</cstring>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QLineEdit" name="genProxyHostname"/>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_25">
-                <property name="text">
-                 <string>Port</string>
-                </property>
-                <property name="buddy">
-                 <cstring>genProxyPort</cstring>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLineEdit" name="genProxyPort">
-                <property name="inputMask">
-                 <string/>
-                </property>
-                <property name="maxLength">
-                 <number>5</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <spacer>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
          </item>
         </layout>
        </item>
@@ -1216,6 +1215,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>genModifierBox</tabstop>
   <tabstop>genKeyBox</tabstop>
   <tabstop>genCondensed</tabstop>
+  <tabstop>genDecorateText</tabstop>
   <tabstop>genAutoSuggestDelay</tabstop>
   <tabstop>genMaxViewable</tabstop>
   <tabstop>genNumResults</tabstop>
