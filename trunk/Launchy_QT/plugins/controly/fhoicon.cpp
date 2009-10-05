@@ -13,7 +13,7 @@ QImage FhoIcon::convertHIconToPixmap(const HICON icon) {
     HDC hdc = CreateCompatibleDC(screenDevice);
 
     ICONINFO iconinfo;
-    bool result = GetIconInfo(icon, &iconinfo); //x and y Hotspot describes the icon center
+    BOOL result = GetIconInfo(icon, &iconinfo); //x and y Hotspot describes the icon center
     if (!result)
         qWarning("convertHIconToPixmap(), failed to GetIconInfo()");
 

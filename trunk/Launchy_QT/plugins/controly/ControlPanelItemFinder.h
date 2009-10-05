@@ -3,22 +3,8 @@
 #pragma once
 
 #include "catalog.h"
+#include "fhoicon.h"
 
-#ifdef Q_WS_WIN
-	#define VC_EXTRALEAN
-	#ifndef WINVER
-		#define WINVER 0x05100
-		#define _WIN32_WINNT 0x0510	
-		#define _WIN32_WINDOWS 0x0510 
-		#define _WIN32_IE 0x0600
-	#endif
-#endif
-
-#include "../fhocommon/fhoicon.h"
-
-#include <QFile>
-#include <QTextStream>
-#include <QFileInfo>
 
 struct CachedCplItem {
 	QString path; // path / "launch command"
