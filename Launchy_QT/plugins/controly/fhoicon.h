@@ -3,22 +3,8 @@
 #ifndef FHOICON_H
 #define FHOICON_H
 
-#include <QImage>
-
-#ifdef Q_WS_WIN
-	#define VC_EXTRALEAN
-	#ifndef WINVER
-		#define WINVER 0x05100
-		#define _WIN32_WINNT 0x0510	
-		#define _WIN32_WINDOWS 0x0510 
-		#define _WIN32_IE 0x0600
-	#endif
-#endif
-
-#include <shobjidl.h>
 
 // implement icon/image cache?
-
 // extracts / generates icons (images, as pixmap objects) from file resources, image files, files and handles
 class FhoIcon {
 	private:
@@ -81,5 +67,6 @@ class FhoIconCreator {
 		QString getImageFileName(LPITEMIDLIST pidl);
 		QString getImageFileName(IShellFolder *psfParentItem, LPITEMIDLIST pidlChildItem);
 };
+
 
 #endif

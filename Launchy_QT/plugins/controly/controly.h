@@ -21,12 +21,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define controly_H
 
 #include "plugin_interface.h"
+#include "gui.h"
+#include "fhoicon.h"
 
-#ifdef WITH_GUI
-	#include "gui.h"
-#endif
-
-#include "../fhocommon/fhoicon.h"
 
 class controlyPlugin : public QObject, public PluginInterface
 {

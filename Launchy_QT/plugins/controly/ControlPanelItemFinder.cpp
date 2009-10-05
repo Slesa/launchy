@@ -38,6 +38,8 @@ void ControlPanelItemFinder::findItems() {
 	// CoInitialize has to be called for current thread before calling SHGetFileInfo
 	// getResult() and getCatalog() appear in different threads (main thread vs. catalog update thread!)
 	HRESULT hres = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+	if (FAILED(hres))
+        qWarning("findItems(), CoInitializeEx failed");
 
 	// order in which methods are called affects how details of some items are displayed, e.g. "GUID-path" vs. "normal path" or "GUID-path" vs. exe / shelldll / rundll / CSLID.controly / etc.;
 	// adding items twice is avoided by cplItemNameCache, anyways!
