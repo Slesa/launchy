@@ -28,6 +28,8 @@ class Catalog
 public:
 	Catalog() {}
 	virtual ~Catalog() {}
+	bool load(const QString& filename);
+	bool save(const QString& filename);
 	virtual void addItem(const CatItem& item) = 0;
 	virtual int count() = 0;
 	virtual const CatItem& getItem(int) = 0;
