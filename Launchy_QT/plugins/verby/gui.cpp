@@ -25,16 +25,9 @@ Gui::Gui(QWidget* parent) :
 	QWidget(parent)
 {
 	setupUi(this);
-
-	QSettings* settings = *verbyInstance->settings;
-	if (settings == NULL)
-		return;
 }
 
 
 void Gui::writeOptions()
 {
-	QSettings* settings = *verbyInstance->settings;
-	if (settings == NULL)
-		return;
 }

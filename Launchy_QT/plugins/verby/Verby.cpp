@@ -22,13 +22,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "gui.h"
 
 
-VerbyPlugin* verbyInstance = NULL;
-
-
 void VerbyPlugin::init()
 {
-	if (verbyInstance == NULL)
-		verbyInstance = this;
 }
 
 
@@ -91,9 +86,6 @@ void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* result
 {
 	if (inputData->count() == 2)
 	{
-		if (inputData->last().hasText())
-			results->push_front(CatItem(inputData->last().getText(), inputData->last().getText(), 0, inputData->first().getTopResult().icon));
-
 		if (inputData->first().hasLabel(HASH_DIR))
 		{
 			results->push_back(CatItem("Properties", "Directory properties", HASH_VERBY, getIconPath() + "properties.png"));
@@ -113,6 +105,13 @@ void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* result
 			inputData->first().setID(HASH_VERBY);
 			inputData->first().getTopResult().id = HASH_VERBY;
 		}
+		else
+		{
+			return;
+		}
+
+		if (inputData->last().hasText())
+			results->push_front(CatItem(inputData->last().getText(), inputData->last().getText(), 0, inputData->first().getTopResult().icon));
 	}
 }
 

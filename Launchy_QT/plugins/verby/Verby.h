@@ -66,7 +66,5 @@ private:
 	uint HASH_LINK;
 };
 
-extern VerbyPlugin* verbyInstance;
-
 
 #endif
