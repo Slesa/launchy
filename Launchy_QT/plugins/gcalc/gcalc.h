@@ -31,12 +31,15 @@ public:
 	QHttp http;
 	QBuffer resBuffer;
 	QString result;
-	QEventLoop loop; 
-	Process() {}
-	Process(QString str) : query(str) {}
+	QEventLoop loop;
+	Process(QString url, QString matchExpression);
 	void run();
 public slots:
 	void httpGetFinished(bool error);
+
+private:
+	QString url;
+	QString matchExpression;
 };
 
 class gcalcPlugin : public QObject, public PluginInterface
