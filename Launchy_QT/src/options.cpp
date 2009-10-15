@@ -227,6 +227,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 		else
 			item->setCheckState(Qt::Unchecked);
 	}
+	plugList->sortItems();
 	if (plugList->count() > 0)
 	{
 		plugList->setCurrentRow(currentPlugin);
