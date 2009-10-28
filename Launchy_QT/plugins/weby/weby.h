@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "plugin_interface.h"
 #include "globals.h"
 #include "gui.h"
+#include "IconCache.h"
 
 
 class Suggest : public QObject
@@ -37,12 +38,13 @@ public:
 	QStringList results;
 
 public slots:
-	void httpGetFinished(int id, bool error);
+	void httpGetFinished(bool error);
 
 private:
 	QString query;
 	QHttp http;
 	QEventLoop loop;
+	int id;
 	static int currentId;
 };
 
@@ -63,6 +65,7 @@ public:
 
 private:
 	shared_ptr<Gui> gui;
+	QString iconCachePath;
 
 public:
 	QString libPath;
