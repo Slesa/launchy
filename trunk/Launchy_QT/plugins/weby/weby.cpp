@@ -19,15 +19,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "precompiled.h"
 #include "weby.h"
+#include "IconCache.h"
 #include "gui.h"
 
 WebyPlugin* gWebyInstance = NULL;
 
-int Suggest::currentId = -1;
+int Suggest::currentId = 0;
 
 Suggest::Suggest()
 {
-    connect(&http, SIGNAL(requestFinished(int, bool)), this, SLOT(httpGetFinished(int, bool)));
+	connect(&http, SIGNAL(done(bool)), this, SLOT(httpGetFinished(bool)));
 }
 
 
@@ -37,18 +38,16 @@ void Suggest::run(QString url, QString query)
 	url.replace("%s", QUrl::toPercentEncoding(query));
 	QUrl u = QUrl::fromPercentEncoding(url.toAscii());
 
-	http.setHost(u.host(), u.port(80));	
-	currentId = http.get(u.toEncoded(QUrl::RemoveScheme | QUrl::RemoveAuthority));	
-	qDebug() << "requesting " << currentId;
+	http.setHost(u.host(), u.port(80));
+	http.get(u.toEncoded(QUrl::RemoveScheme | QUrl::RemoveAuthority));
+	id = ++currentId;
 	loop.exec();
-} 
+}
 
 
-void Suggest::httpGetFinished(int id, bool error)
+void Suggest::httpGetFinished(bool error)
 {
-	qDebug() << "finished " << id;
-
-	if (id >= currentId)
+	if (id == currentId)
 	{
 		if (query.count() > 0)
 		{
@@ -81,12 +80,20 @@ void Suggest::httpGetFinished(int id, bool error)
 }
 
 
+
+
 void WebyPlugin::init()
 {
 	if (gWebyInstance == NULL)
 		gWebyInstance = this;
 
 	QSettings* set = *settings;
+
+	// get config / settings directory (base for 'temporary' icon cache dir)
+	QString iniFilename = set->fileName();
+	QFileInfo info(iniFilename);
+	iconCachePath = info.absolutePath() + "/weby-icon-cache/";
+
 	if ( set->value("weby/version", 0.0).toDouble() == 0.0 )
 	{
 		set->beginWriteArray("weby/sites");
@@ -131,18 +138,18 @@ void WebyPlugin::init()
 
 		set->setArrayIndex(7);
 		set->setValue("name", "Wikipedia");
-		set->setValue("base", "http://en.wikipedia.com/");
+		set->setValue("base", "http://en.wikipedia.org/");
 		set->setValue("query", "wiki/Special:Search?search=%s&fulltext=Search");
 		set->setValue("suggest", "http://en.wikipedia.org/w/api.php?action=opensearch&search=%s");
 
 		set->setArrayIndex(8);
 		set->setValue("name", "Dictionary");
-		set->setValue("base", "http://www.dictionary.com/");
+		set->setValue("base", "http://dictionary.reference.com/");
 		set->setValue("query", "browse/%s");		
 
 		set->setArrayIndex(9);
 		set->setValue("name", "Thesaurus");
-		set->setValue("base", "http://www.thesaurus.com/");
+		set->setValue("base", "http://thesaurus.reference.com/");
 		set->setValue("query", "browse/%s");		
 
 		set->setArrayIndex(10);
@@ -241,9 +248,8 @@ void WebyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results
 		const QString & text = inputData->last().getText();
 		// This is user search text, create an entry for it
 		QString suggestUrl;
-		CatItem* item;
-	    item = &inputData->first().getTopResult();
-  
+		CatItem* item = &inputData->first().getTopResult();
+
 		foreach(WebySite site, sites)
 		{
 			if (item->shortName == site.name)
@@ -407,8 +413,8 @@ void WebyPlugin::indexFirefox(QString path, QList<CatItem>* items)
 				else
 				{
 					items->push_back(CatItem(mark.url, mark.name, 0, getIcon()));
-				}	
-			}			
+				}
+			}
 		}
 	}
 }
@@ -429,9 +435,13 @@ WebySite WebyPlugin::getDefault()
 
 void WebyPlugin::getCatalog(QList<CatItem>* items)
 {
+	IconCache* iconCache = new IconCache(iconCachePath);
+
 	foreach(WebySite site, sites)
 	{
-		items->push_back(CatItem(site.name + ".weby", site.name, HASH_WEBY, getIcon()));
+		QString iconName = iconCache->getIconPath(site.base);
+		items->push_back(CatItem(site.name + ".weby", site.name, HASH_WEBY,
+			iconName.length() > 0 ? iconName : getIcon()));
 	}
 
 #ifdef Q_WS_WIN
@@ -457,9 +467,9 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 
 	if (inputData->count() == 2)
 	{
-	    args = inputData->last().getText();
-	    args = QUrl::toPercentEncoding(args);
-	    item = &inputData->first().getTopResult();
+		args = inputData->last().getText();
+		args = QUrl::toPercentEncoding(args);
+		item = &inputData->first().getTopResult();
 	}
 
 	// Is it a Firefox shortcut?
@@ -493,7 +503,7 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 
 		if (!found)
 		{
-			file = item->shortName;	
+			file = item->shortName;
 			if (!file.contains("http://"))
 			{
 				file = "http://" + file;

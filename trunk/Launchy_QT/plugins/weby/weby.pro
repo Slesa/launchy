@@ -14,11 +14,13 @@ HEADERS = plugin_interface.h \
     gui.h \
     globals.h \
     ../../common/DropTableWidget.h \
-    precompiled.h
+    precompiled.h \
+    IconCache.h
 SOURCES = plugin_interface.cpp \
     weby.cpp \
     gui.cpp \
-    ../../common/DropTableWidget.cpp
+    ../../common/DropTableWidget.cpp \
+    IconCache.cpp
 TARGET = weby
 win32 { 
     CONFIG -= embed_manifest_dll
@@ -27,14 +29,9 @@ win32 {
     % LIBS += Gdi32.lib
     % LIBS += comctl32.lib
 }
- 
-if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
-    DESTDIR = ../../debug/plugins
-}
-
-if(!debug_and_release|build_pass):CONFIG(release, debug|release) {
-    DESTDIR = ../../release/plugins
-}unix { 
+if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/plugins
+if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../release/plugins
+unix { 
     PREFIX = /usr
     target.path = $$PREFIX/lib/launchy/plugins/
     icon.path = $$PREFIX/lib/launchy/plugins/icons/
