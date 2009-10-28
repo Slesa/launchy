@@ -21,6 +21,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "gcalc.h"
 
 
+int Process::currentId = 0;
+
+
 Process::Process(QString url, QString matchExpression) :
 	url(url),
 	matchExpression(matchExpression)
@@ -41,6 +44,7 @@ void Process::run()
 		connect(&http, SIGNAL(done(bool)), this, SLOT(httpGetFinished(bool)));
 		http.setHost("www.google.com");
 		http.get(webQuery, &resBuffer);
+		id = ++currentId;
 		loop.exec();
 	}
 }
@@ -48,7 +52,11 @@ void Process::run()
 
 void Process::httpGetFinished(bool error)
 {
-	if (!error)
+	if (id != currentId)
+	{
+		result.clear();
+	}
+	else if (!error)
 	{
 		result = resBuffer.data();
 		QRegExp regex_res(matchExpression, Qt::CaseInsensitive);
@@ -60,7 +68,7 @@ void Process::httpGetFinished(bool error)
 		}
 		else
 		{
-			result.clear();
+			result = tr("Unknown");
 		}
 	}
 	else
@@ -118,11 +126,18 @@ void gcalcPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 	p.query = query;
 	p.run();
 
-	if (p.result.length() == 0)
+	if (p.result.length() > 0)
 	{
-		p.result = tr("Unknown");
+		for (int i = 0; i < results->count(); ++i)
+		{
+			if (results->at(i).id == HASH_gcalc)
+			{
+				results->removeAt(i);
+				break;
+			}
+		}
+		results->push_front(CatItem(p.result + ".gcalc", p.result, HASH_gcalc, getIcon()));
 	}
-	results->push_front(CatItem(p.result + ".gcalc", p.result, HASH_gcalc, getIcon()));
 }
 
 

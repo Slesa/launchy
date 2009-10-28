@@ -1560,6 +1560,11 @@ int main(int argc, char *argv[])
 
 	qApp->exec();
 
+	if (gBuilder != NULL)
+	{
+		gBuilder->wait();
+	}
+
 	delete widget;
 	widget = NULL;
 	delete platform;

@@ -40,6 +40,9 @@ public slots:
 private:
 	QString url;
 	QString matchExpression;
+
+	int id;
+	static int currentId;
 };
 
 class gcalcPlugin : public QObject, public PluginInterface

@@ -547,6 +547,7 @@ void OptionsDialog::catRescanClicked(bool val)
 
 	if (gBuilder == NULL)
 	{
+		needRescan = false;
 		catRescan->setEnabled(false);
 		gMainWidget->buildCatalog();
 		connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
@@ -686,6 +687,8 @@ void OptionsDialog::addDirectory(const QString& directory)
 
 void OptionsDialog::catTypesItemChanged(QListWidgetItem* item)
 {
+	Q_UNUSED(item);
+
 	int row = catDirectories->currentRow();
 	if (row == -1)
 		return;
