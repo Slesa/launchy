@@ -76,7 +76,7 @@ public:
 		HASH_WEBSITE = qHash(QString("website"));
 		HASH_WEBY = qHash(QString("weby"));
 	}
-	~WebyPlugin() {delete iconCache;}
+	~WebyPlugin() {}
 	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
 	void setPath(QString * path);
 	void getLabels(QList<InputData>*);

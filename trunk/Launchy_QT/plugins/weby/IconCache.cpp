@@ -39,15 +39,7 @@ QString IconCache::getIconPath(const QString& site)
 
 	if (!site.startsWith("http"))
 		return "";
-/*
-	qDebug() << cachePath << info.absoluteFilePath();
-	QFile file(cachePath + cachedName + ".ico");
-	if (!file.open(QIODevice::WriteOnly))
-	{
-		qDebug() << "Could not open icon for writing";
-		return "";
-	}
-*/
+
 
 	// Call the main thread to grab the icon in the background
 	emit findIcon(QUrl("http://" + QUrl(site).host() + "/favicon.ico"));

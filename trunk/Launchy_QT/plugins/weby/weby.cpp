@@ -94,6 +94,9 @@ void WebyPlugin::init()
 	QFileInfo info(iniFilename);
 	iconCachePath = info.absolutePath() + "/weby-icon-cache/";
 	iconCache = new IconCache(iconCachePath);
+	iconCache->setParent(this);
+	connect(iconCache, SIGNAL(findIcon(QUrl)), iconCache, SLOT(query(QUrl)));
+
 	double version = set->value("weby/version",0.0).toDouble();
 
 	if ( version == 0.0 )
@@ -452,16 +455,11 @@ WebySite WebyPlugin::getDefault()
 
 void WebyPlugin::getCatalog(QList<CatItem>* items)
 {
-	// This thread's search cache
-	IconCache searchCache(iconCachePath);
 
-	// iconCache is the main thread's cache which will look for icons 
-	// in the background if searchCache can't find it locally
-	connect(&searchCache, SIGNAL(findIcon(QUrl)), iconCache, SLOT(query(QUrl)));
 
 	foreach(WebySite site, sites)
 	{
-		QString iconName = searchCache.getIconPath(site.query);
+		QString iconName = iconCache->getIconPath(site.query);
 		items->push_back(CatItem(site.name + ".weby", site.name, HASH_WEBY,
 			iconName.length() > 0 ? iconName : getIcon()));
 	}
