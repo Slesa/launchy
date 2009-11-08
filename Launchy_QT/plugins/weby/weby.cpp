@@ -93,108 +93,125 @@ void WebyPlugin::init()
 	QString iniFilename = set->fileName();
 	QFileInfo info(iniFilename);
 	iconCachePath = info.absolutePath() + "/weby-icon-cache/";
+	iconCache = new IconCache(iconCachePath);
+	double version = set->value("weby/version",0.0).toDouble();
 
-	if ( set->value("weby/version", 0.0).toDouble() == 0.0 )
+	if ( version == 0.0 )
 	{
 		set->beginWriteArray("weby/sites");
 		set->setArrayIndex(0);
 		set->setValue("name", "Google");
-		set->setValue("base", "http://www.google.com/");
-		set->setValue("query", "search?source=launchy&q=%s");
-		set->setValue("suggest", "ttp://suggestqueries.google.com/complete/search?output=firefox&q=%s");
+		set->setValue("query", "http://www.google.com/search?source=launchy&q=%1");
+		set->setValue("suggest", "http://suggestqueries.google.com/complete/search?output=firefox&q=%1");
 		set->setValue("default", true);
 
 		set->setArrayIndex(1);
 		set->setValue("name", "Live Search");
-		set->setValue("base", "http://search.live.com/");
-		set->setValue("query", "results.aspx?q=%s");
+		set->setValue("query", "http://search.live.com/results.aspx?q=%1");
 
 		set->setArrayIndex(2);
 		set->setValue("name", "Yahoo");
-		set->setValue("base", "http://search.yahoo.com/");
-		set->setValue("query", "search?p=%s");
-		set->setValue("suggest", "http://ff.search.yahoo.com/gossip?output=fxjson&command=%s");
+		set->setValue("query", "http://search.yahoo.com/search?p=%1");
+		set->setValue("suggest", "http://ff.search.yahoo.com/gossip?output=fxjson&command=%1");
 
 		set->setArrayIndex(3);
 		set->setValue("name", "MSN");
-		set->setValue("base", "http://search.msn.com/");
-		set->setValue("query", "results.aspx?q=%s");
+		set->setValue("query", "http://search.msn.com/results.aspx?q=%1");
 
 		set->setArrayIndex(4);
 		set->setValue("name", "Weather");
-		set->setValue("base", "http://www.weather.com/");
-		set->setValue("query", "weather/local/%s");	
+		set->setValue("query", "http://www.weather.com/weather/local/%1");	
 
 		set->setArrayIndex(5);
 		set->setValue("name", "Amazon");
-		set->setValue("base", "http://www.amazon.com/");
-		set->setValue("query", "gp/search/?keywords=%s&index=blended");
+		set->setValue("query", "http://www.amazon.com/gp/search/?keywords=%1&index=blended");
 		//		set->setValue("query", "s/ref=nb_ss_gw/104-5604144-0028745?url=search-alias%3Daps&field-keywords=%s");
 
 		set->setArrayIndex(6);
 		set->setValue("name", "YouTube");
-		set->setValue("base", "http://www.youtube.com/");
-		set->setValue("query", "results?search_query=%s");
+		set->setValue("query", "http://www.youtube.com/results?search_query=%1");
 
 		set->setArrayIndex(7);
 		set->setValue("name", "Wikipedia");
-		set->setValue("base", "http://en.wikipedia.org/");
-		set->setValue("query", "wiki/Special:Search?search=%s&fulltext=Search");
-		set->setValue("suggest", "http://en.wikipedia.org/w/api.php?action=opensearch&search=%s");
+		set->setValue("query", "http://en.wikipedia.org/wiki/Special:Search?search=%1&fulltext=Search");
+		set->setValue("suggest", "http://en.wikipedia.org/w/api.php?action=opensearch&search=%1");
 
 		set->setArrayIndex(8);
 		set->setValue("name", "Dictionary");
-		set->setValue("base", "http://dictionary.reference.com/");
-		set->setValue("query", "browse/%s");		
+		set->setValue("query", "http://dictionary.reference.com/browse/%1");		
 
 		set->setArrayIndex(9);
 		set->setValue("name", "Thesaurus");
-		set->setValue("base", "http://thesaurus.reference.com/");
-		set->setValue("query", "browse/%s");		
+		set->setValue("query", "http://thesaurus.reference.com/browse/%1");		
 
 		set->setArrayIndex(10);
 		set->setValue("name", "Netflix");
-		set->setValue("base", "http://www.netflix.com/");
-		set->setValue("query", "Search?v1=%s");		
+		set->setValue("query", "http://www.netflix.com/Search?v1=%1");		
 
 		set->setArrayIndex(11);
 		set->setValue("name", "MSDN");
-		set->setValue("base", "http://search.msdn.microsoft.com/");
-		set->setValue("query", "search/default.aspx?siteId=0&tab=0&query=%s");
+		set->setValue("query", "http://search.msdn.microsoft.com/search/default.aspx?siteId=0&tab=0&query=%1");
 
 		set->setArrayIndex(11);
 		set->setValue("name", "E-Mail");
-		set->setValue("base", "mailto:");
-		set->setValue("query", "%s");
+		set->setValue("query", "mailto:%1");
 
 		set->setArrayIndex(12);
 		set->setValue("name", "IMDB");
-		set->setValue("base", "http://www.imdb.com/");
-		set->setValue("query", "find?s=all&q=%s");
+		set->setValue("query", "http://www.imdb.com/find?s=all&q=%1");
 
 		set->setArrayIndex(13);
 		set->setValue("name", "Maps");
-		set->setValue("base", "http://maps.google.com/");
-		set->setValue("query", "maps?f=q&hl=en&geocode=&q=%s&ie=UTF8&z=12&iwloc=addr&om=1");
+		set->setValue("query", "http://maps.google.com/maps?f=q&hl=en&geocode=&q=%1&ie=UTF8&z=12&iwloc=addr&om=1");
 		set->endArray();
 	}
-	set->setValue("weby/version", 2.0);
+
+
 
 	// Read in the array of websites
 	sites.clear();
+
 	int count = set->beginReadArray("weby/sites");
 	for (int i = 0; i < count; ++i)
 	{
 		set->setArrayIndex(i);
 		WebySite s;
-		s.base = set->value("base").toString();
 		s.name = set->value("name").toString();
 		s.query = set->value("query").toString();
 		s.suggest = set->value("suggest").toString();
 		s.def = set->value("default", false).toBool();
+
+		// Ditched the 'base' value between 1.0 and 2.0
+		// Also replaced %s with %1,%2,%3...
+		if (version == 2.0) {
+			s.query.replace("%s","%1");
+			s.query = set->value("base").toString() + s.query;			
+			if (s.name == "Google")
+				s.suggest = "http://suggestqueries.google.com/complete/search?output=firefox&q=%1";
+			else if (s.name == "Yahoo")
+				s.suggest = "http://ff.search.yahoo.com/gossip?output=fxjson&command=%1";
+			else if (s.name == "Wikipedia")
+				s.suggest = "http://en.wikipedia.org/w/api.php?action=opensearch&search=%1";
+		}
+		
 		sites.push_back(s);
 	}
 	set->endArray();
+
+	// Save any upgrades we made from 2.0
+	if (version == 2.0) {
+		set->beginWriteArray("weby/sites");
+		for(int i = 0; i < sites.count(); i++) {
+			set->setArrayIndex(i);
+			set->setValue("name", sites[i].name);
+			set->setValue("query", sites[i].query);
+			set->setValue("suggest", sites[i].suggest);
+			set->setValue("default", sites[i].def);
+		}
+		set->endArray();
+	}
+	
+	set->setValue("weby/version", 2.2);
 }
 
 void WebyPlugin::getID(uint* id)
@@ -435,11 +452,16 @@ WebySite WebyPlugin::getDefault()
 
 void WebyPlugin::getCatalog(QList<CatItem>* items)
 {
-	IconCache* iconCache = new IconCache(iconCachePath);
+	// This thread's search cache
+	IconCache searchCache(iconCachePath);
+
+	// iconCache is the main thread's cache which will look for icons 
+	// in the background if searchCache can't find it locally
+	connect(&searchCache, SIGNAL(findIcon(QUrl)), iconCache, SLOT(query(QUrl)));
 
 	foreach(WebySite site, sites)
 	{
-		QString iconName = iconCache->getIconPath(site.base);
+		QString iconName = searchCache.getIconPath(site.query);
 		items->push_back(CatItem(site.name + ".weby", site.name, HASH_WEBY,
 			iconName.length() > 0 ? iconName : getIcon()));
 	}
@@ -463,12 +485,15 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 {
 
 	QString file = "";
-	QString args = "";
+	QStringList args;
 
-	if (inputData->count() == 2)
+	if (inputData->count() >= 2)
 	{
-		args = inputData->last().getText();
-		args = QUrl::toPercentEncoding(args);
+		for(int i = 1; i < inputData->count(); i++) {
+			QString txt = inputData->at(i).getText();
+			txt = QUrl::toPercentEncoding(txt);
+			args.push_back(txt);
+		}
 		item = &inputData->first().getTopResult();
 	}
 
@@ -476,7 +501,7 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 	if (item->fullPath.contains(".shortcut"))
 	{
 		file = item->fullPath.mid(0, item->fullPath.count()-9);
-		file.replace("%s", args);
+		file.replace("%s",args[0]);
 	}
 	else
 	{ // It's a user-specific site
@@ -486,17 +511,11 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 			if (item->shortName == site.name)
 			{
 				found = true;
-				file = site.base;
-				if (args != "")
-				{
-					QString tmp = site.query;
-					if (tmp.startsWith("http://") || tmp.startsWith("https://"))
-					{
-						file = "";
-					}
-					tmp.replace("%s", args);
-					file += tmp;
-				}
+				file = site.query;
+				QString tmp = site.query;
+				for(int i = 0; i < args.size(); i++)
+					tmp = tmp.arg(args[i]);
+				file = tmp;
 				break;
 			}
 		}

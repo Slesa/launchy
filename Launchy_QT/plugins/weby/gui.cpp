@@ -44,9 +44,8 @@ Gui::Gui(QWidget* parent)
 	for(int i = 0; i < count; ++i) {
 		settings->setArrayIndex(i);
 		table->setItem(i, 0, new QTableWidgetItem(settings->value("name").toString()));
-		table->setItem(i, 1, new QTableWidgetItem(settings->value("base").toString()));
-		table->setItem(i, 2, new QTableWidgetItem(settings->value("query").toString()));
-		table->setItem(i, 3, new QTableWidgetItem(settings->value("suggest").toString()));
+		table->setItem(i, 1, new QTableWidgetItem(settings->value("query").toString()));
+		table->setItem(i, 2, new QTableWidgetItem(settings->value("suggest").toString()));
 		bool isDef = settings->value("default",false).toBool();
 		if (isDef) {
 		    defaultName = settings->value("name").toString();
@@ -78,12 +77,8 @@ void Gui::writeOptions()
 		if (table->item(i,0)->text() == "" || table->item(i,1)->text() == "") continue;
 		settings->setArrayIndex(i);
 		settings->setValue("name", table->item(i, 0)->text());
-		settings->setValue("base", table->item(i, 1)->text());
-		if (table->item(i,2) == NULL)
-			settings->setValue("query", "");
-		else
-			settings->setValue("query", table->item(i, 2)->text());
-		settings->setValue("suggest", table->item(i, 3)->text());	
+		settings->setValue("query", table->item(i, 1)->text());
+		settings->setValue("suggest", table->item(i, 2)->text());	
 		if (table->item(i,0)->text() == defaultName)
 		    settings->setValue("default", true);
 		else
@@ -137,14 +132,15 @@ void Gui::drop(QDropEvent *event)
 			foreach(QUrl url, mimeData->urls()) {
 				table->setSortingEnabled(false);
 				QString qs = QUrl::fromPercentEncoding(url.encodedQuery());
-				appendRow(url.path(), url.toString(QUrl::RemoveQuery), qs);
+				appendRow(url.path() ,qs);
+//				appendRow(url.path(), url.toString(QUrl::RemoveQuery), qs);
 				table->setCurrentCell(table->rowCount()-1, 0);
 				table->setSortingEnabled(true);
 			}
 		}
 		else if (mimeData->hasText()) {
 			table->setSortingEnabled(false);
-			appendRow("", mimeData->text(), "");
+			appendRow(mimeData->text(), "");
 			table->setCurrentCell(table->rowCount()-1, 0);
 			table->setSortingEnabled(true);
 		}
@@ -161,13 +157,12 @@ void Gui::makeDefault()
     label_default->setText(defaultName);
 }
 
-void Gui::appendRow(const QString& name, const QString& path, const QString& query)
+void Gui::appendRow(const QString& name, const QString& path)
 {
 	int row = table->rowCount();
 	table->insertRow(row);
 	table->setItem(row, 0, new QTableWidgetItem(name));
 	table->setItem(row, 1, new QTableWidgetItem(path));
-	table->setItem(row, 2, new QTableWidgetItem(query));
-	table->setItem(row, 3, new QTableWidgetItem());
+	table->setItem(row, 2, new QTableWidgetItem());
 	table->verticalHeader()->resizeSection(row, table->verticalHeader()->fontMetrics().height() + ROW_PADDING);
 }

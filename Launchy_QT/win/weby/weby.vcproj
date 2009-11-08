@@ -81,6 +81,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\plugins\weby\IconCache.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\plugins\weby\IconCache.h"
+			>
+		</File>
+		<File
 			RelativePath=".\readme.txt"
 			>
 		</File>

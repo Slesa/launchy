@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Weby - Launch your favorite websites</string>
   </property>
-  <layout class="QVBoxLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QCheckBox" name="booksFirefox">
      <property name="text">
@@ -61,7 +61,7 @@
    <item>
     <widget class="DropTableWidget" name="table">
      <property name="columnCount">
-      <number>4</number>
+      <number>3</number>
      </property>
      <column>
       <property name="text">
@@ -71,11 +71,6 @@
      <column>
       <property name="text">
        <string>URL</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Query</string>
       </property>
      </column>
      <column>

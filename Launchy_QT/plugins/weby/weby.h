@@ -45,7 +45,8 @@ private:
 	QHttp http;
 	QEventLoop loop;
 	int id;
-	static int currentId;
+	static int currentId;	
+
 };
 
 
@@ -66,15 +67,16 @@ public:
 private:
 	shared_ptr<Gui> gui;
 	QString iconCachePath;
-
+	IconCache* iconCache;
 public:
 	QString libPath;
 	WebyPlugin() {
 //		gui = NULL;
+
 		HASH_WEBSITE = qHash(QString("website"));
 		HASH_WEBY = qHash(QString("weby"));
 	}
-	~WebyPlugin() {}
+	~WebyPlugin() {delete iconCache;}
 	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
 	void setPath(QString * path);
 	void getLabels(QList<InputData>*);

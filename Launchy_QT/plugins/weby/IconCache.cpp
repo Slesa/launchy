@@ -5,37 +5,32 @@
 IconCache::IconCache(const QString& path) :
 	cachePath(path)
 {
-}
+	nam.setParent(this);	
+	connect(&nam, SIGNAL(finished(QNetworkReply*)), SLOT(finished(QNetworkReply*)));
 
-
-QNetworkReply* IconCache::query(const QUrl& url, int depth)
-{
-	QNetworkRequest request;
-	request.setUrl(url);
-	QNetworkReply* reply = nam.get(request);
-	QObject::connect(reply, SIGNAL(finished()), this, SLOT(finished()));
-
-	qDebug() << "Entering icon loop " << url.toString();
-	loop.exec();
-	qDebug() << "Leaving icon loop " << url.toString();
-
-	QVariant redirectionTarget = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-	if (redirectionTarget.isValid())
-	{
-		delete reply;
-		reply = depth < 5 ? query(redirectionTarget.toUrl(), depth + 1) : NULL;
+	QFileInfo info(path);
+	if (!info.exists()) {
+		QDir d;
+		d.mkdir(path);
 	}
-
-	return reply;
 }
+
+
 
 
 QString IconCache::getIconPath(const QString& site)
 {
+
 	QString cachedName = site;
-	cachedName = cachedName.replace("http:", "").replace("https:", "").replace("/", "");
+	if (site.contains("http"))
+		cachedName = QUrl(site).host();
+
+	qDebug() << cachedName;
+
+	//cachedName = cachedName.replace("http:", "").replace("https:", "").replace("/", "");
 	QFileInfo info;
 	info.setFile(cachePath, cachedName + ".png");
+
 	if (info.exists())
 		return info.size() > 0 ? info.absoluteFilePath() : QString();
 	info.setFile(cachePath, cachedName + ".ico");
@@ -44,31 +39,57 @@ QString IconCache::getIconPath(const QString& site)
 
 	if (!site.startsWith("http"))
 		return "";
-
+/*
+	qDebug() << cachePath << info.absoluteFilePath();
 	QFile file(cachePath + cachedName + ".ico");
 	if (!file.open(QIODevice::WriteOnly))
 	{
 		qDebug() << "Could not open icon for writing";
 		return "";
 	}
+*/
 
-	QNetworkReply* reply = query(QUrl(site + "/favicon.ico"));
-	if (reply && reply->error() != QNetworkReply::NoError)
-	{
-		QByteArray ba = reply->readAll();
-		file.write(ba);
-
-		delete reply;
-		return file.fileName();
-	}
+	// Call the main thread to grab the icon in the background
+	emit findIcon(QUrl("http://" + QUrl(site).host() + "/favicon.ico"));
 
 	return "";
 }
 
-
-void IconCache::finished()
+void IconCache::query(QUrl url)
 {
-//	QNetworkReply* reply = qobject_cast<QNetworkReply*>(this->sender());
+	qDebug() << "Going for" << url;
+	QNetworkRequest request;
+	request.setUrl(url);
+	request.setAttribute(QNetworkRequest::User, url);
+	
+	nam.get(request);
 
-	loop.exit();
+}
+
+void IconCache::finished(QNetworkReply* reply)
+{
+
+	QUrl url = reply->url();
+	if (reply && reply->error() == QNetworkReply::NoError)
+	{
+		QFile file(cachePath + url.host() + ".ico");
+		if (!file.open(QIODevice::WriteOnly))
+		{
+			qDebug() << "Could not open icon for writing";
+			return;
+		}
+		QByteArray ba = reply->readAll();
+		file.write(ba);
+	}	
+	reply->deleteLater();
+
+	/*
+	QVariant redirectionTarget = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+	if (redirectionTarget.isValid())
+	{
+		delete reply;
+		reply = depth < 5 ? query(redirectionTarget.toUrl(), depth + 1) : NULL;
+	}
+	*/
+
 }

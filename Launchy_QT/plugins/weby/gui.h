@@ -46,7 +46,7 @@ public slots:
 	void makeDefault();
 
 private:
-	void appendRow(const QString& name, const QString& path, const QString& query);
+	void appendRow(const QString& name, const QString& path);
 };
 
 #endif 
