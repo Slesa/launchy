@@ -21,3 +21,13 @@
 	border-style: solid;
 	border-width: 0px;
 }
+
+#alternatives::item {
+	padding: 2px 0px 2px 0px;
+}
+
+#alternativesPath {
+	font: 11px "Verdana";
+	color: rgb(102,102,102);
+	/* selected-color: rgb(196,220,243); */
+}

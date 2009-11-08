@@ -12,14 +12,17 @@ public:
 	QString getIconPath(const QString& site);
 
 public slots:
-	void finished();
+	void finished(QNetworkReply*);
+	void query(QUrl url);
+
+signals:
+	void findIcon(QUrl url);
+
 
 private:
-	QNetworkReply* query(const QUrl& url, int depth = 0);
-
 	QString cachePath;
 	QNetworkAccessManager nam;
-	QEventLoop loop;
+//	QEventLoop loop;
 };
 
 
