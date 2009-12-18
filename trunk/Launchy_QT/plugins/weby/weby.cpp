@@ -105,7 +105,7 @@ void WebyPlugin::init()
 		set->setArrayIndex(0);
 		set->setValue("name", "Google");
 		set->setValue("query", "http://www.google.com/search?source=launchy&q=%1");
-		set->setValue("suggest", "http://suggestqueries.google.com/complete/search?output=firefox&q=%1");
+		//set->setValue("suggest", "http://suggestqueries.google.com/complete/search?output=firefox&q=%1");
 		set->setValue("default", true);
 
 		set->setArrayIndex(1);
@@ -115,7 +115,7 @@ void WebyPlugin::init()
 		set->setArrayIndex(2);
 		set->setValue("name", "Yahoo");
 		set->setValue("query", "http://search.yahoo.com/search?p=%1");
-		set->setValue("suggest", "http://ff.search.yahoo.com/gossip?output=fxjson&command=%1");
+		//set->setValue("suggest", "http://ff.search.yahoo.com/gossip?output=fxjson&command=%1");
 
 		set->setArrayIndex(3);
 		set->setValue("name", "MSN");
@@ -128,7 +128,6 @@ void WebyPlugin::init()
 		set->setArrayIndex(5);
 		set->setValue("name", "Amazon");
 		set->setValue("query", "http://www.amazon.com/gp/search/?keywords=%1&index=blended");
-		//		set->setValue("query", "s/ref=nb_ss_gw/104-5604144-0028745?url=search-alias%3Daps&field-keywords=%s");
 
 		set->setArrayIndex(6);
 		set->setValue("name", "YouTube");
@@ -137,7 +136,7 @@ void WebyPlugin::init()
 		set->setArrayIndex(7);
 		set->setValue("name", "Wikipedia");
 		set->setValue("query", "http://en.wikipedia.org/wiki/Special:Search?search=%1&fulltext=Search");
-		set->setValue("suggest", "http://en.wikipedia.org/w/api.php?action=opensearch&search=%1");
+		//set->setValue("suggest", "http://en.wikipedia.org/w/api.php?action=opensearch&search=%1");
 
 		set->setArrayIndex(8);
 		set->setValue("name", "Dictionary");
@@ -169,8 +168,6 @@ void WebyPlugin::init()
 		set->endArray();
 	}
 
-
-
 	// Read in the array of websites
 	sites.clear();
 
@@ -189,12 +186,15 @@ void WebyPlugin::init()
 		if (version == 2.0) {
 			s.query.replace("%s","%1");
 			s.query = set->value("base").toString() + s.query;			
+/*
+			Out of scope for 2.2
 			if (s.name == "Google")
 				s.suggest = "http://suggestqueries.google.com/complete/search?output=firefox&q=%1";
 			else if (s.name == "Yahoo")
 				s.suggest = "http://ff.search.yahoo.com/gossip?output=fxjson&command=%1";
 			else if (s.name == "Wikipedia")
 				s.suggest = "http://en.wikipedia.org/w/api.php?action=opensearch&search=%1";
+*/
 		}
 		
 		sites.push_back(s);

@@ -61,7 +61,7 @@
    <item>
     <widget class="DropTableWidget" name="table">
      <property name="columnCount">
-      <number>3</number>
+      <number>2</number>
      </property>
      <column>
       <property name="text">
@@ -71,11 +71,6 @@
      <column>
       <property name="text">
        <string>URL</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Suggestion URL</string>
       </property>
      </column>
     </widget>
