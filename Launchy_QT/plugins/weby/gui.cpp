@@ -45,7 +45,7 @@ Gui::Gui(QWidget* parent)
 		settings->setArrayIndex(i);
 		table->setItem(i, 0, new QTableWidgetItem(settings->value("name").toString()));
 		table->setItem(i, 1, new QTableWidgetItem(settings->value("query").toString()));
-		table->setItem(i, 2, new QTableWidgetItem(settings->value("suggest").toString()));
+		//table->setItem(i, 2, new QTableWidgetItem(settings->value("suggest").toString()));
 		bool isDef = settings->value("default",false).toBool();
 		if (isDef) {
 		    defaultName = settings->value("name").toString();
@@ -78,7 +78,7 @@ void Gui::writeOptions()
 		settings->setArrayIndex(i);
 		settings->setValue("name", table->item(i, 0)->text());
 		settings->setValue("query", table->item(i, 1)->text());
-		settings->setValue("suggest", table->item(i, 2)->text());	
+		//settings->setValue("suggest", table->item(i, 2)->text());	
 		if (table->item(i,0)->text() == defaultName)
 		    settings->setValue("default", true);
 		else
