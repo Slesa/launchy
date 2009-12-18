@@ -37,6 +37,15 @@ Name: startmenuicon\common; Description: "For all users"; GroupDescription: {cm:
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 
+[InstallDelete]
+Type: filesandordirs; Name: "..\..\skins\Mercury"
+Type: filesandordirs; Name: "..\..\skins\Quicksilver2"
+Type: filesandordirs; Name: "..\..\skins\Black_Glass"
+Type: filesandordirs; Name: "..\..\skins\Default"
+Type: filesandordirs; Name: "..\..\skins\Spotlight_Wide"
+Type: filesandordirs; Name: "..\..\skins\"
+
+
 [Files]
 Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\platform_win.dll; DestDir: {app}; Flags: ignoreversion
@@ -46,9 +55,9 @@ Source: ..\..\release\platform_win.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtGui4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtNetwork4.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\msvcp90.dll; DestDir: {app}\Microsoft.VC90.CRT\; Flags: ignoreversion
-Source: ..\msvcr90.dll; DestDir: {app}\Microsoft.VC90.CRT\; Flags: ignoreversion
-Source: ..\Microsoft.VC90.CRT.manifest; DestDir: {app}\Microsoft.VC90.CRT\; Flags: ignoreversion
+Source: ..\msvcp80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
+Source: ..\msvcr80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
+Source: ..\Microsoft.VC80.CRT.manifest; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 
 ; Plugins
 Source: ..\..\release\plugins\weby.dll; DestDir: {app}\plugins\; Flags: ignoreversion
