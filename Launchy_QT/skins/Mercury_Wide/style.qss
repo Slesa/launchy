@@ -1,42 +1,54 @@
 #launchy {
 }
 
+#opsButton {
+	border: none;
+	background: url(opsButton.png);
+	qproperty-geometry: rect(696 26 14 15);
+}
+
+#opsButton:pressed {
+	border: none;
+	background-image: url(opsButtonPressed.png);
+}
+
 #input {
-	font: 12px "Verdana";
+	font:  16px "Tahoma";
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
 	color: white;
 	qproperty-alignment: AlignLeft;
-	qproperty-geometry: rect(40 22 160 24);
+	qproperty-geometry: rect(64 30 580 24)
 }
+
 #output {
-	font: 12px "Verdana";
+	font:  12px "Tahoma";
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
 	color: white;
-	qproperty-alignment: AlignCenter;
-	qproperty-geometry: rect(250 22 160 24);
+	qproperty-alignment: AlignLeft;
+	qproperty-geometry: rect(66 60 580 24);
 }
 
 #outputIcon {
-	qproperty-geometry: rect(204 18 32 32);
+	qproperty-geometry: rect(660 40 32 32);
 }
 
 #alternatives {
-	font: 12px "Verdana";
+	font:  12px "Tahoma";
 	background-color: black;
-	alternate-background-color: black;
 	color: white;
 	border-style: solid;
 	border-width: 0px;
-	qproperty-geometry: rect(13 54 416 100);
+	padding: 0px 0px 0px 5px;
+	alternate-background-color: rgb(32,32,32);
+	qproperty-geometry: rect(23 104 703 100);
 }
 
-#alternativesPath {
-	font: 11px "Lucida Sans";
-	color: rgb(221,221,221);
+#alternatives::item {
+	padding: 2px 0px;
 }
 
 QScrollBar::handle:vertical {
@@ -47,9 +59,9 @@ QScrollBar::handle:vertical {
 }
 
 QScrollBar#altScroll:vertical {
-	image: url(scrollBack.png);
+	image: url(scroller-back.png);
 	width: 16px; 
-	margin: 16px 0px 16px 0px;
+	margin: 16px 0px 16px 0px; 
 }
 
 QScrollBar#altScroll::handle:vertical {
@@ -60,7 +72,7 @@ QScrollBar#altScroll::sub-line:vertical {
 	width: 16px;
 	height: 16px;
 	subcontrol-position: top;
-	subcontrol-origin: margin;
+	subcontrol-origin: margin; 
 	image: url(scrollUp.png);
 }
 
