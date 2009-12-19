@@ -38,13 +38,13 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 
 [InstallDelete]
-Type: filesandordirs; Name: "..\..\skins\Mercury"
-Type: filesandordirs; Name: "..\..\skins\Quicksilver2"
-Type: filesandordirs; Name: "..\..\skins\Black_Glass"
-Type: filesandordirs; Name: "..\..\skins\Default"
-Type: filesandordirs; Name: "..\..\skins\Spotlight_Wide"
-Type: filesandordirs; Name: "..\..\skins\"
-
+Type: filesandordirs; Name: "{app}\skins\Black Glass"
+Type: filesandordirs; Name: "{app}\skins\Black Glass Wide"
+Type: filesandordirs; Name: "{app}\skins\Default"
+Type: filesandordirs; Name: "{app}\skins\Mercury"
+Type: filesandordirs; Name: "{app}\skins\Mercury Wide"
+Type: filesandordirs; Name: "{app}\skins\Note"
+Type: filesandordirs; Name: "{app}\skins\Quicksilver2"
 
 [Files]
 Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
@@ -82,52 +82,70 @@ Source: ..\..\readme.pdf; DestDir: {app}; Flags: ignoreversion isreadme
 ; Skins
 Source: ..\..\skins\Mercury\frame.png; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
 Source: ..\..\skins\Mercury\author.txt; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
-Source: ..\..\skins\Mercury\misc.txt; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
 Source: ..\..\skins\Mercury\style.qss; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
+Source: ..\..\skins\Mercury\scrollBack.png; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
+Source: ..\..\skins\Mercury\scrollDown.png; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
+Source: ..\..\skins\Mercury\scrollUp.png; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
+
+Source: ..\..\skins\Mercury_Wide\frame.png; DestDir: {app}\skins\Mercury Wide\; Flags: ignoreversion
+Source: ..\..\skins\Mercury_Wide\author.txt; DestDir: {app}\skins\Mercury Wide\; Flags: ignoreversion
+Source: ..\..\skins\Mercury_Wide\style.qss; DestDir: {app}\skins\Mercury Wide\; Flags: ignoreversion
+Source: ..\..\skins\Mercury_Wide\opsButton.png; DestDir: {app}\skins\Mercury Wide\; Flags: ignoreversion
+Source: ..\..\skins\Mercury_Wide\opsButtonPressed.png; DestDir: {app}\skins\Mercury Wide\; Flags: ignoreversion
+Source: ..\..\skins\Mercury_Wide\scrollBack.png; DestDir: {app}\skins\Mercury Wide\; Flags: ignoreversion
+Source: ..\..\skins\Mercury_Wide\scrollDown.png; DestDir: {app}\skins\Mercury Wide\; Flags: ignoreversion
+Source: ..\..\skins\Mercury_Wide\scrollUp.png; DestDir: {app}\skins\Mercury Wide\; Flags: ignoreversion
 
 Source: ..\..\skins\Quicksilver2\frame.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\..\skins\Quicksilver2\author.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
-Source: ..\..\skins\Quicksilver2\misc.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\..\skins\Quicksilver2\style.qss; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
+Source: ..\..\skins\Quicksilver2\background_nc.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
+Source: ..\..\skins\Quicksilver2\mask_nc.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 
 Source: ..\..\skins\Note\frame.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
 Source: ..\..\skins\Note\author.txt; DestDir: {app}\skins\Note\; Flags: ignoreversion
-Source: ..\..\skins\Note\misc.txt; DestDir: {app}\skins\Note\; Flags: ignoreversion
 Source: ..\..\skins\Note\style.qss; DestDir: {app}\skins\Note\; Flags: ignoreversion
 Source: ..\..\skins\Note\scrollBack.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
 Source: ..\..\skins\Note\scrollDown.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
 Source: ..\..\skins\Note\scrollUp.png; DestDir: {app}\skins\Note\; Flags: ignoreversion
 
-Source: ..\..\skins\Black_Glass\frame.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass\author.txt; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
-Source: ..\..\skins\Black_Glass\misc.txt; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass\frame.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass\style.qss; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass\scrollBack.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass\scrollDown.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass\scrollUp.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass\background_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass\mask_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 
-Source: ..\..\skins\Default\frame.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass_Wide\author.txt; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass_Wide\frame.png; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass_Wide\style.qss; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass_Wide\opsButton.png; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass_Wide\opsButtonPressed.png; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass_Wide\scrollBack.png; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass_Wide\scrollDown.png; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass_Wide\scrollUp.png; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
+
 Source: ..\..\skins\Default\author.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\skins\Default\closeButton.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\skins\Default\closeButtonPressed.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\skins\Default\misc.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\frame.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\style.qss; DestDir: {app}\skins\Default\; Flags: ignoreversion
 Source: ..\..\skins\Default\opsButton.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
 Source: ..\..\skins\Default\opsButtonPressed.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
 Source: ..\..\skins\Default\scrollBack.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
 Source: ..\..\skins\Default\scrollDown.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
-;Source: ..\..\skins\Default\scroller.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
 Source: ..\..\skins\Default\scrollUp.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
-Source: ..\..\skins\Default\style.qss; DestDir: {app}\skins\Default\; Flags: ignoreversion
 
-Source: ..\..\skins\Spotlight_Wide\frame.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 Source: ..\..\skins\Spotlight_Wide\author.txt; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
-Source: ..\..\skins\Spotlight_Wide\closeButton.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
-Source: ..\..\skins\Spotlight_Wide\closeButtonPressed.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
-Source: ..\..\skins\Spotlight_Wide\misc.txt; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight_Wide\frame.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight_Wide\style.qss; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 Source: ..\..\skins\Spotlight_Wide\opsButton.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 Source: ..\..\skins\Spotlight_Wide\opsButtonPressed.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 Source: ..\..\skins\Spotlight_Wide\scrollBack.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 Source: ..\..\skins\Spotlight_Wide\scrollDown.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
-;Source: ..\..\skins\Default\scroller.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
 Source: ..\..\skins\Spotlight_Wide\scrollUp.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
-Source: ..\..\skins\Spotlight_Wide\style.qss; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight_Wide\background_nc.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight_Wide\mask_nc.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 
 Source: ..\Utilities\Special Folders\C Drive.lnk; DestDir: {app}\Utilities\Special Folders\; Flags: ignoreversion
 Source: ..\Utilities\Special Folders\Control Panel.lnk; DestDir: {app}\Utilities\Special Folders\; Flags: ignoreversion
