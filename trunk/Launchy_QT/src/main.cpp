@@ -913,7 +913,7 @@ void LaunchyWidget::updateVersion(int oldVersion)
 		gSettings = new QSettings(origFile, QSettings::IniFormat, this);
 	}
 
-	if (oldVersion < 220)
+	if (oldVersion < 249)
 	{
 		gSettings->setValue("GenOps/skin", "Default");
 	}

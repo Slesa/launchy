@@ -26,7 +26,7 @@ Installing QT:
 
 . Open a Visual Studio 2005 dommand prompt
 . cd c:\qt\2009.05\
-. configure -no-stl -no-qt3support -no-webkit -debug-and-release -platform win32-msvc2005
+. configure 
 . nmake
 
 The configure and nmake commands take a very long time.
@@ -37,7 +37,8 @@ Install Boost libraries to c:\boost
 Building Launchy:
 
 . Download launchy from subversion, the url to use is this: https://launchy.svn.sourceforge.net/svnroot/launchy/trunk/Launchy_QT/
-. Double click on launchy_QT\win\Launchy.sln
+. From the command line, cd to the launchy directory and type 'c:\qt\2009.05\bin\qmake –tp vc –r launchy.pro' to build the Visual Studio .sln files
+. Double click on the resulting launchy.sln
 . F7 to compile!
 
 
