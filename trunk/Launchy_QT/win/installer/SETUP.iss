@@ -45,10 +45,10 @@ Type: filesandordirs; Name: "{app}\skins\Mercury"
 Type: filesandordirs; Name: "{app}\skins\Mercury Wide"
 Type: filesandordirs; Name: "{app}\skins\Note"
 Type: filesandordirs; Name: "{app}\skins\Quicksilver2"
+Type: filesandordirs; Name: "{app}\platform_win.dll"
 
 [Files]
 Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
-;Source: ..\..\release\platform_win.dll; DestDir: {app}; Flags: ignoreversion
 
 ; Libs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
@@ -60,20 +60,26 @@ Source: ..\msvcr80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 Source: ..\Microsoft.VC80.CRT.manifest; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 
 ; Plugins
-Source: ..\..\release\plugins\weby.dll; DestDir: {app}\plugins\; Flags: ignoreversion
-Source: ..\..\release\plugins\calcy.dll; DestDir: {app}\plugins\; Flags: ignoreversion
-Source: ..\..\release\plugins\runner.dll; DestDir: {app}\plugins\; Flags: ignoreversion
-Source: ..\..\release\plugins\gcalc.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 Source: ..\..\release\plugins\controly.dll; DestDir: {app}\plugins\; Flags: ignoreversion
+Source: ..\..\release\plugins\calcy.dll; DestDir: {app}\plugins\; Flags: ignoreversion
+Source: ..\..\release\plugins\gcalc.dll; DestDir: {app}\plugins\; Flags: ignoreversion
+Source: ..\..\release\plugins\runner.dll; DestDir: {app}\plugins\; Flags: ignoreversion
+Source: ..\..\release\plugins\verby.dll; DestDir: {app}\plugins\; Flags: ignoreversion
+Source: ..\..\release\plugins\weby.dll; DestDir: {app}\plugins\; Flags: ignoreversion
 
 ; Plugin icons
-Source: ..\..\plugins\weby\weby.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\calcy\calcy.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\controly\controly.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\controly\controly.exit.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\controly\controly.options.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\controly\controly.rebuild.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\runner\runner.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\verby\copy.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\verby\opencontainer.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\verby\properties.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\verby\run.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\verby\verby.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\weby\weby.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 
 ; Documentation
 Source: ..\..\license.txt; DestDir: {app}; Flags: ignoreversion
@@ -115,7 +121,8 @@ Source: ..\..\skins\Black_Glass\style.qss; DestDir: {app}\skins\Black Glass\; Fl
 Source: ..\..\skins\Black_Glass\scrollBack.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass\scrollDown.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass\scrollUp.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
-
+Source: ..\..\skins\Black_Glass\background_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass\mask_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 
 Source: ..\..\skins\Black_Glass_Wide\author.txt; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass_Wide\frame.png; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
