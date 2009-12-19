@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "catalog_builder.h"
 
-#define LAUNCHY_VERSION 220
-#define LAUNCHY_VERSION_STRING "2.2.0"
+#define LAUNCHY_VERSION 249
+#define LAUNCHY_VERSION_STRING "2.5.0 Beta 1"
 
 #define HASH_LAUNCHY 0
 #define HASH_HISTORY 1
