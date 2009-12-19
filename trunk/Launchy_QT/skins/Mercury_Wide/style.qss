@@ -13,7 +13,7 @@
 }
 
 #input {
-	font:  16px "Tahoma";
+	font: 13px "Verdana";
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
@@ -23,7 +23,7 @@
 }
 
 #output {
-	font:  12px "Tahoma";
+	font: 13px "Verdana";
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
@@ -37,35 +37,29 @@
 }
 
 #alternatives {
-	font:  12px "Tahoma";
+	font: 13px "Verdana";
 	background-color: black;
+	alternate-background-color: rgb(32,32,32);
 	color: white;
 	border-style: solid;
 	border-width: 0px;
-	padding: 0px 0px 0px 5px;
-	alternate-background-color: rgb(32,32,32);
 	qproperty-geometry: rect(23 104 703 100);
+	padding: 0px 0px 0px 5px;
 }
 
-#alternatives::item {
-	padding: 2px 0px;
-}
-
-QScrollBar::handle:vertical {
-	width: 3px;
-	height: 3px;
-	background: pink;
-	image: url(down_arrow.png);
+#alternativesPath {
+	font: 11px "Lucida Sans";
+	color: rgb(102,102,102);
 }
 
 QScrollBar#altScroll:vertical {
-	image: url(scroller-back.png);
-	width: 16px; 
-	margin: 16px 0px 16px 0px; 
+	image: url(scrollBack.png);
+	width: 16px;
+	margin: 16px 0px 16px 0px;
 }
 
 QScrollBar#altScroll::handle:vertical {
-	background: qlineargradient(x1:0, y1:0.5, x2:1, y2:0.5, stop:0 black, stop:0.1 rgb(85,85,85), stop:0.7 rgb(40,40,40), stop:0.9 rgb(60,60,60), stop:1 white);
+	background: qlineargradient(x1:0, y1:0.5, x2:1, y2:0.5, stop:0 black, stop:0.1 rgb(85,85,85), stop:0.7 rgb(40,40,40), stop:0.9 rgb(60,60,60), stop:1 black);
 }
 
 QScrollBar#altScroll::sub-line:vertical {
