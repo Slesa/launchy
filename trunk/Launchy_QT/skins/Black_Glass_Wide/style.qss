@@ -1,6 +1,17 @@
 #launchy {
 }
 
+#opsButton {
+	border: none;
+	background: url(opsButton.png);
+	qproperty-geometry: rect(708 13 14 15);
+}
+
+#opsButton:pressed {
+	border: none;
+	background-image: url(opsButtonPressed.png);
+}
+
 #input {
 	font: 12px "Verdana";
 	border-width: 0px;
@@ -8,30 +19,32 @@
 	border-style: solid;
 	color: white;
 	qproperty-alignment: AlignLeft;
-	qproperty-geometry: rect(40 22 160 24);
+	qproperty-geometry: rect(54 66 660 24);
 }
+
 #output {
 	font: 12px "Verdana";
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
 	color: white;
-	qproperty-alignment: AlignCenter;
-	qproperty-geometry: rect(250 22 160 24);
+	qproperty-alignment: AlignLeft;
+	qproperty-geometry: rect(54 22 660 22);
 }
 
 #outputIcon {
-	qproperty-geometry: rect(204 18 32 32);
+	qproperty-geometry: rect(18 18 32 32);
 }
 
 #alternatives {
 	font: 12px "Verdana";
 	background-color: black;
-	alternate-background-color: black;
+	alternate-background-color: rgb(32,32,32);
 	color: white;
 	border-style: solid;
 	border-width: 0px;
-	qproperty-geometry: rect(13 54 416 100);
+	qproperty-geometry: rect(13 100 714 120);
+	padding: 0px 0px 0px 5px;
 }
 
 #alternativesPath {

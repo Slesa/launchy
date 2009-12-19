@@ -29,7 +29,7 @@
 	color: white;
 	border-style: solid;
 	border-width: 0px;
-	qproperty-geometry: rect(37 61 436 100);
+	qproperty-geometry: rect(37 67 436 100);
 }
 
 #alternatives::item {
