@@ -33,7 +33,7 @@ ControlPanelItemFinder::ControlPanelItemFinder(uint pluginId, FhoIconCreator *pI
 
 ControlPanelItemFinder::~ControlPanelItemFinder() {
 }
-
+#
 void ControlPanelItemFinder::findItems() {
 	// CoInitialize has to be called for current thread before calling SHGetFileInfo
 	// getResult() and getCatalog() appear in different threads (main thread vs. catalog update thread!)
