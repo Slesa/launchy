@@ -134,7 +134,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	alternatives->setUniformItemSizes(true);
 	listDelegate = new IconDelegate(this);
 	defaultListDelegate = alternatives->itemDelegate();
-	setCondensed(gSettings->value("GenOps/condensedView", false).toBool());
+	setSuggestionListMode(gSettings->value("GenOps/condensedView", 0).toInt());
 	altScroll = alternatives->verticalScrollBar();
 	altScroll->setObjectName("altScroll");
 	connect(alternatives, SIGNAL(currentRowChanged(int)), this, SLOT(alternativesRowChanged(int)));
@@ -251,9 +251,9 @@ void LaunchyWidget::paintEvent(QPaintEvent* event)
 }
 
 
-void LaunchyWidget::setCondensed(bool condensed)
+void LaunchyWidget::setSuggestionListMode(int mode)
 {
-	if (condensed)
+	if (mode)
 	{
 		// The condensed mode needs an icon placeholder or it repositions text when the icon becomes available
 		if (!condensedTempIcon)
@@ -324,13 +324,14 @@ void LaunchyWidget::showAlternatives(bool show)
 		if (searchResults.size() < 1)
 			return;
 
+		int mode = gSettings->value("GenOps/condensedView", 0).toInt();
 		alternatives->clear();
 		for (int i = 0; i < searchResults.size(); ++i)
 		{
 			QString fullPath = QDir::toNativeSeparators(searchResults[i].fullPath);
 			QListWidgetItem * item = new QListWidgetItem(fullPath, alternatives);
-			item->setData(ROLE_FULL, fullPath);
-			item->setData(ROLE_SHORT, searchResults[i].shortName);
+			item->setData(mode == 1 ? ROLE_FULL : ROLE_SHORT, searchResults[i].shortName);
+			item->setData(mode == 1 ? ROLE_SHORT : ROLE_FULL, fullPath);
 			if (condensedTempIcon)
 				item->setData(ROLE_ICON, *condensedTempIcon);
 			alternatives->addItem(item);

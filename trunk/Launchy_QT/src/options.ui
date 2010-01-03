@@ -188,13 +188,6 @@
            </property>
            <layout class="QVBoxLayout">
             <item>
-             <widget class="QCheckBox" name="genCondensed">
-              <property name="text">
-               <string>Compact suggestion list</string>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QCheckBox" name="genDecorateText">
               <property name="text">
                <string>Underline matched text</string>
@@ -206,7 +199,7 @@
               <property name="fieldGrowthPolicy">
                <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
               </property>
-              <item row="0" column="1">
+              <item row="1" column="1">
                <widget class="QSpinBox" name="genAutoSuggestDelay">
                 <property name="suffix">
                  <string> ms</string>
@@ -222,7 +215,7 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="1">
+              <item row="2" column="1">
                <widget class="QSpinBox" name="genMaxViewable">
                 <property name="minimum">
                  <number>1</number>
@@ -235,7 +228,7 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="1">
+              <item row="3" column="1">
                <widget class="QSpinBox" name="genNumResults">
                 <property name="minimum">
                  <number>1</number>
@@ -248,7 +241,7 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="0">
+              <item row="1" column="0">
                <widget class="QLabel" name="label_11">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -264,7 +257,7 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="0">
+              <item row="2" column="0">
                <widget class="QLabel" name="label_9">
                 <property name="text">
                  <string>Simultaneously visible suggestions</string>
@@ -274,7 +267,7 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="0">
+              <item row="3" column="0">
                <widget class="QLabel" name="label_8">
                 <property name="text">
                  <string>Maximum number of suggestions</string>
@@ -284,7 +277,7 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="0">
+              <item row="4" column="0">
                <widget class="QLabel" name="label_7">
                 <property name="text">
                  <string>Maximum number of history items</string>
@@ -294,13 +287,42 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="1">
+              <item row="4" column="1">
                <widget class="QSpinBox" name="genNumHistory">
                 <property name="maximum">
                  <number>999</number>
                 </property>
                 <property name="value">
                  <number>20</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="genCondensed">
+                <item>
+                 <property name="text">
+                  <string>Name and path</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Path only</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Name only</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_12">
+                <property name="text">
+                 <string>Suggestions display</string>
+                </property>
+                <property name="buddy">
+                 <cstring>genCondensed</cstring>
                 </property>
                </widget>
               </item>
@@ -1214,8 +1236,8 @@ p, li { white-space: pre-wrap; }
   <tabstop>genShiftDrag</tabstop>
   <tabstop>genModifierBox</tabstop>
   <tabstop>genKeyBox</tabstop>
-  <tabstop>genCondensed</tabstop>
   <tabstop>genDecorateText</tabstop>
+  <tabstop>genCondensed</tabstop>
   <tabstop>genAutoSuggestDelay</tabstop>
   <tabstop>genMaxViewable</tabstop>
   <tabstop>genNumResults</tabstop>
