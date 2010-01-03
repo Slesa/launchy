@@ -69,7 +69,7 @@ public:
 	void showLaunchy(bool noFade);
 	void showTrayIcon();
 
-	void setCondensed(bool condensed);
+	void setSuggestionListMode(int mode);
 	bool setHotkey(QKeySequence);
 	bool setAlwaysShow(bool);
 	bool setAlwaysTop(bool);
