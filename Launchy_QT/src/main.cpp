@@ -783,6 +783,10 @@ void LaunchyWidget::updateOutputWidgets()
 				searchResults[0].id = inputData.last().getID();
 			inputData.last().setTopResult(searchResults[0]);
 		}
+
+		// If the alternatives are already showing, update them
+		if (alternatives->isVisible()) 
+			showAlternatives(true);
 	}
 	else
 	{
