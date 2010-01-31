@@ -43,19 +43,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="865"/>
+        <location filename="../src/main.cpp" line="866"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1496"/>
+        <location filename="../src/main.cpp" line="1497"/>
         <source>Show Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1499"/>
+        <location filename="../src/main.cpp" line="1500"/>
         <source>Rebuild catalog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -70,7 +70,7 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
         <translation type="obsolete">Die  Tastenkombination wird bereits verwendet. Bitte wählen Sie ein  Launchy&apos;s Einstellungen eine andere aus.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="864"/>
+        <location filename="../src/main.cpp" line="865"/>
         <source>A new version of Launchy is available</source>
         <translation type="unfinished">Es ist eine neue Version von Launchy verfügbar</translation>
     </message>
@@ -88,12 +88,12 @@ herunterladen</translation>
         <translation type="obsolete">Katalog neu erstellen</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1502"/>
+        <location filename="../src/main.cpp" line="1503"/>
         <source>Options</source>
         <translation type="unfinished">Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1505"/>
+        <location filename="../src/main.cpp" line="1506"/>
         <source>Exit</source>
         <translation type="unfinished">Beenden</translation>
     </message>
@@ -586,17 +586,17 @@ herunterladen</translation>
         <translation type="obsolete">GUI</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="351"/>
+        <location filename="../src/options.ui" line="373"/>
         <source>Opaqueness</source>
         <translation>Undurchsichtigkeit</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="371"/>
+        <location filename="../src/options.ui" line="393"/>
         <source>Fade in time</source>
         <translation>Einblenden</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="394"/>
+        <location filename="../src/options.ui" line="416"/>
         <source>Fade out time</source>
         <translation>Ausblenden</translation>
     </message>
@@ -609,22 +609,22 @@ herunterladen</translation>
         <translation type="obsolete">Max. Anzahl der Alternativvorschläge</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="270"/>
+        <location filename="../src/options.ui" line="263"/>
         <source>Simultaneously visible suggestions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="280"/>
+        <location filename="../src/options.ui" line="273"/>
         <source>Maximum number of suggestions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="340"/>
+        <location filename="../src/options.ui" line="362"/>
         <source>Visual Effects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="488"/>
+        <location filename="../src/options.ui" line="510"/>
         <source>System Options</source>
         <translation>System Einstellungen</translation>
     </message>
@@ -633,12 +633,12 @@ herunterladen</translation>
         <translation type="obsolete">Beim Start nach Aktualisierungen suchen</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="539"/>
+        <location filename="../src/options.ui" line="561"/>
         <source>Show hidden files in browse mode</source>
         <translation>Versteckte Dateien im Browser Modus anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="560"/>
+        <location filename="../src/options.ui" line="582"/>
         <source>Portable mode (USB stick)</source>
         <translation>Portabler Modus (USB Stick)</translation>
     </message>
@@ -655,52 +655,52 @@ herunterladen</translation>
         <translation type="obsolete">(0 für manuelle Aktualisierung)</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="431"/>
+        <location filename="../src/options.ui" line="453"/>
         <source>Internet Proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="442"/>
+        <location filename="../src/options.ui" line="464"/>
         <source>Hostname</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="455"/>
+        <location filename="../src/options.ui" line="477"/>
         <source>Port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="586"/>
+        <location filename="../src/options.ui" line="608"/>
         <source>Skins</source>
         <translation>Skins</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="606"/>
+        <location filename="../src/options.ui" line="628"/>
         <source>Select a skin</source>
         <translation>Skin auswählen</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="631"/>
+        <location filename="../src/options.ui" line="653"/>
         <source>Author information</source>
         <translation>Autor Information</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="667"/>
+        <location filename="../src/options.ui" line="689"/>
         <source>Skin preview</source>
         <translation>Skin Vorschau</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="693"/>
+        <location filename="../src/options.ui" line="715"/>
         <source>Catalog</source>
         <translation>Katalog</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="786"/>
+        <location filename="../src/options.ui" line="808"/>
         <source>File Types</source>
         <translation>Dateitypen</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1077"/>
+        <location filename="../src/options.ui" line="1099"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -709,7 +709,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1144"/>
+        <location filename="../src/options.ui" line="1166"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -721,39 +721,39 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="727"/>
-        <location filename="../src/options.ui" line="816"/>
+        <location filename="../src/options.ui" line="749"/>
+        <location filename="../src/options.ui" line="838"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="747"/>
-        <location filename="../src/options.ui" line="829"/>
+        <location filename="../src/options.ui" line="769"/>
+        <location filename="../src/options.ui" line="851"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="838"/>
+        <location filename="../src/options.ui" line="860"/>
         <source>Include executables</source>
         <translation>Anwendungsdateien einschliessen</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="845"/>
+        <location filename="../src/options.ui" line="867"/>
         <source>Include directories</source>
         <translation>Ordner einschliessen</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="854"/>
+        <location filename="../src/options.ui" line="876"/>
         <source>Depth:</source>
         <translation>Tiefe:</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="703"/>
+        <location filename="../src/options.ui" line="725"/>
         <source>Directories</source>
         <translation>Ordner</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="200"/>
+        <location filename="../src/options.ui" line="193"/>
         <source>Underline matched text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -778,72 +778,87 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="193"/>
-        <source>Compact suggestion list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/options.ui" line="212"/>
+        <location filename="../src/options.ui" line="205"/>
         <source> ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="260"/>
+        <location filename="../src/options.ui" line="253"/>
         <source>Auto open delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="290"/>
+        <location filename="../src/options.ui" line="283"/>
         <source>Maximum number of history items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="496"/>
+        <location filename="../src/options.ui" line="304"/>
+        <source>Name and path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/options.ui" line="309"/>
+        <source>Path only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/options.ui" line="314"/>
+        <source>Name only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/options.ui" line="322"/>
+        <source>Suggestions display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/options.ui" line="518"/>
         <source>Auto update catalog every</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="521"/>
+        <location filename="../src/options.ui" line="543"/>
         <source> minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="546"/>
+        <location filename="../src/options.ui" line="568"/>
         <source>Show network in browse mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="553"/>
+        <location filename="../src/options.ui" line="575"/>
         <source>Check for new versions of Launchy on startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="888"/>
+        <location filename="../src/options.ui" line="910"/>
         <source>Rescan Catalog</source>
         <translation>Katalog aktualisieren</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="908"/>
+        <location filename="../src/options.ui" line="930"/>
         <source>Indexing 0 items</source>
         <translation>0 Elemente indexieren</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="952"/>
+        <location filename="../src/options.ui" line="974"/>
         <source>Plugins</source>
         <translation>Plugins</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="966"/>
+        <location filename="../src/options.ui" line="988"/>
         <source>Available plugins</source>
         <translation>Verfügbare Plugins</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="988"/>
+        <location filename="../src/options.ui" line="1010"/>
         <source>Plugin options</source>
         <translation>Plugin Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1009"/>
+        <location filename="../src/options.ui" line="1031"/>
         <source>About Launchy</source>
         <translation>Über Launchy</translation>
     </message>
@@ -855,7 +870,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Bitte helfen Sein einem armen Studenten etwas vernünftiges auf den Tisch zu bekommen. Ich habe viel Spaß bei der Entwicklung von Launchy, und ich hoffe dass es Ihnen ebenfalls viel Freude macht damit zu arbeiten. Sie können Launchy kostenlos nutzen. Wenn Sie der Meinung sind, Launchy ist eine wertvolle Anwendung, würde ich mich über Ihre &lt;a href=&quot;http://www.launchy.net/#donate&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Spende&lt;/span&gt;&lt;/a&gt; freuen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1105"/>
+        <location filename="../src/options.ui" line="1127"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;

@@ -43,19 +43,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="865"/>
+        <location filename="../src/main.cpp" line="866"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1496"/>
+        <location filename="../src/main.cpp" line="1497"/>
         <source>Show Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1499"/>
+        <location filename="../src/main.cpp" line="1500"/>
         <source>Rebuild catalog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -70,7 +70,7 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
         <translation type="obsolete">你选择的快捷键已经被占用， 请选择其他的快捷键.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="864"/>
+        <location filename="../src/main.cpp" line="865"/>
         <source>A new version of Launchy is available</source>
         <translation type="unfinished">Launchy 有新版本了！</translation>
     </message>
@@ -87,12 +87,12 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">重新建立索引</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1502"/>
+        <location filename="../src/main.cpp" line="1503"/>
         <source>Options</source>
         <translation type="unfinished">选项</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1505"/>
+        <location filename="../src/main.cpp" line="1506"/>
         <source>Exit</source>
         <translation type="unfinished">退出</translation>
     </message>
@@ -438,17 +438,17 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">界面</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="351"/>
+        <location filename="../src/options.ui" line="373"/>
         <source>Opaqueness</source>
         <translation>透明度</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="371"/>
+        <location filename="../src/options.ui" line="393"/>
         <source>Fade in time</source>
         <translation>淡入时间</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="394"/>
+        <location filename="../src/options.ui" line="416"/>
         <source>Fade out time</source>
         <translation>淡出时间</translation>
     </message>
@@ -461,22 +461,22 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">最多显示建议列表的数目</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="270"/>
+        <location filename="../src/options.ui" line="263"/>
         <source>Simultaneously visible suggestions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="280"/>
+        <location filename="../src/options.ui" line="273"/>
         <source>Maximum number of suggestions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="340"/>
+        <location filename="../src/options.ui" line="362"/>
         <source>Visual Effects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="488"/>
+        <location filename="../src/options.ui" line="510"/>
         <source>System Options</source>
         <translation>系统选项</translation>
     </message>
@@ -485,12 +485,12 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">启动的时候检测是否有新版本</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="539"/>
+        <location filename="../src/options.ui" line="561"/>
         <source>Show hidden files in browse mode</source>
         <translation>显示隐藏的文件</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="560"/>
+        <location filename="../src/options.ui" line="582"/>
         <source>Portable mode (USB stick)</source>
         <translation>移动模式（貌似可放到U盘中方便使用）</translation>
     </message>
@@ -507,52 +507,52 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">(0为手工建立索引)</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="431"/>
+        <location filename="../src/options.ui" line="453"/>
         <source>Internet Proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="442"/>
+        <location filename="../src/options.ui" line="464"/>
         <source>Hostname</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="455"/>
+        <location filename="../src/options.ui" line="477"/>
         <source>Port</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="586"/>
+        <location filename="../src/options.ui" line="608"/>
         <source>Skins</source>
         <translation>皮肤</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="606"/>
+        <location filename="../src/options.ui" line="628"/>
         <source>Select a skin</source>
         <translation>选择皮肤</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="631"/>
+        <location filename="../src/options.ui" line="653"/>
         <source>Author information</source>
         <translation>作者信息</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="667"/>
+        <location filename="../src/options.ui" line="689"/>
         <source>Skin preview</source>
         <translation>预览皮肤</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="693"/>
+        <location filename="../src/options.ui" line="715"/>
         <source>Catalog</source>
         <translation>目录</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="786"/>
+        <location filename="../src/options.ui" line="808"/>
         <source>File Types</source>
         <translation>文件类型</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1077"/>
+        <location filename="../src/options.ui" line="1099"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -561,7 +561,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1144"/>
+        <location filename="../src/options.ui" line="1166"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -573,39 +573,39 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="727"/>
-        <location filename="../src/options.ui" line="816"/>
+        <location filename="../src/options.ui" line="749"/>
+        <location filename="../src/options.ui" line="838"/>
         <source>+</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="747"/>
-        <location filename="../src/options.ui" line="829"/>
+        <location filename="../src/options.ui" line="769"/>
+        <location filename="../src/options.ui" line="851"/>
         <source>-</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="838"/>
+        <location filename="../src/options.ui" line="860"/>
         <source>Include executables</source>
         <translation>包含可执行文件</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="845"/>
+        <location filename="../src/options.ui" line="867"/>
         <source>Include directories</source>
         <translation>包含目录</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="854"/>
+        <location filename="../src/options.ui" line="876"/>
         <source>Depth:</source>
         <translation>深度:</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="703"/>
+        <location filename="../src/options.ui" line="725"/>
         <source>Directories</source>
         <translation>目录</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="200"/>
+        <location filename="../src/options.ui" line="193"/>
         <source>Underline matched text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -630,72 +630,87 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="193"/>
-        <source>Compact suggestion list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/options.ui" line="212"/>
+        <location filename="../src/options.ui" line="205"/>
         <source> ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="260"/>
+        <location filename="../src/options.ui" line="253"/>
         <source>Auto open delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="290"/>
+        <location filename="../src/options.ui" line="283"/>
         <source>Maximum number of history items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="496"/>
+        <location filename="../src/options.ui" line="304"/>
+        <source>Name and path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/options.ui" line="309"/>
+        <source>Path only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/options.ui" line="314"/>
+        <source>Name only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/options.ui" line="322"/>
+        <source>Suggestions display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/options.ui" line="518"/>
         <source>Auto update catalog every</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="521"/>
+        <location filename="../src/options.ui" line="543"/>
         <source> minutes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="546"/>
+        <location filename="../src/options.ui" line="568"/>
         <source>Show network in browse mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="553"/>
+        <location filename="../src/options.ui" line="575"/>
         <source>Check for new versions of Launchy on startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="888"/>
+        <location filename="../src/options.ui" line="910"/>
         <source>Rescan Catalog</source>
         <translation>扫描目录</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="908"/>
+        <location filename="../src/options.ui" line="930"/>
         <source>Indexing 0 items</source>
         <translation>已找到 0 项</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="952"/>
+        <location filename="../src/options.ui" line="974"/>
         <source>Plugins</source>
         <translation>插件</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="966"/>
+        <location filename="../src/options.ui" line="988"/>
         <source>Available plugins</source>
         <translation>有效的插件</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="988"/>
+        <location filename="../src/options.ui" line="1010"/>
         <source>Plugin options</source>
         <translation>插件选项</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1009"/>
+        <location filename="../src/options.ui" line="1031"/>
         <source>About Launchy</source>
         <translation>关于</translation>
     </message>
@@ -707,7 +722,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;&quot;&gt;原作者语：我很高兴开发Launchy，希望你能喜欢它。你可以免费使用，如果你觉得Launchy不错，我期待你的 &lt;a href=&quot;http://www.launchy.net/#donate&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;赞助.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;拼音处理方案采用李先静的 &lt;a href=&quot;http://sourceforge.net/projects/pinyin-kit/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;pinyin-kit&lt;/span&gt;&lt;/a&gt; 谢谢&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1105"/>
+        <location filename="../src/options.ui" line="1127"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;

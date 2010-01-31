@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QFileInfo>
 #include <QDebug>
 #include <QLocale>
-
+#include <QProcessEnvironment>
 
 /*! \file
     \brief A Documented file.
@@ -33,6 +33,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifdef Q_WS_WIN
 int getDesktop() { return DESKTOP_WINDOWS; }
+
+/*
 void runProgram(QString path, QString args) {
 
 	SHELLEXECUTEINFO ShExecInfo;
@@ -51,6 +53,52 @@ void runProgram(QString path, QString args) {
 	QDir dir(path);
 	QFileInfo info(path);
 	if (!info.isDir() && info.isFile())
+		dir.cdUp();	
+	QString filePath = QDir::toNativeSeparators(dir.absolutePath());
+	ShExecInfo.lpDirectory = (LPCTSTR)filePath.utf16();
+	ShExecInfo.nShow = SW_NORMAL;
+	ShExecInfo.hInstApp = NULL;
+
+	ShellExecuteEx(&ShExecInfo);	
+}
+*/
+void runProgram(QString path, QString args) {
+
+	QProcessEnvironment env = QProcessEnvironment::systemEnvironment ();
+	QString pf32 = env.value("PROGRAMFILES");
+	QString pf64 = env.value("PROGRAMW6432");
+
+	// On 64 bit windows, 64 bit shortcuts don't resolve correctly from 32 bit executables, fix it here
+	QFileInfo pInfo(path);
+
+	if (env.contains("PROGRAMW6432") && pInfo.isSymLink() &&
+		pf32 != pf64 && QDir::toNativeSeparators(pInfo.symLinkTarget()).contains(pf32))
+	{
+		QString path64 = QDir::toNativeSeparators(pInfo.symLinkTarget());
+		path64.replace(pf32, pf64);
+		if (QFileInfo(path64).exists()) {
+			path = path64;
+		}
+	}
+
+	SHELLEXECUTEINFO ShExecInfo;
+	bool elevated = (GetKeyState(VK_SHIFT) & 0x80000000) != 0 && (GetKeyState(VK_CONTROL) & 0x80000000) != 0;
+
+	ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+	ShExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
+	ShExecInfo.hwnd = NULL;
+	ShExecInfo.lpVerb = elevated ? L"runas" : NULL;
+	ShExecInfo.lpFile = (LPCTSTR)path.utf16();
+	if (args != "") {
+		ShExecInfo.lpParameters = (LPCTSTR)args.utf16();
+	} else {
+		ShExecInfo.lpParameters = NULL;
+	}
+
+
+	QDir dir(path);
+	QFileInfo info(path);
+	if (!info.isDir() && info.isFile())
 		dir.cdUp();
 	QString filePath = QDir::toNativeSeparators(dir.absolutePath());
 	ShExecInfo.lpDirectory = (LPCTSTR)filePath.utf16();
@@ -59,6 +107,7 @@ void runProgram(QString path, QString args) {
 
 	ShellExecuteEx(&ShExecInfo);	
 }
+
 #endif
 
 #ifdef Q_WS_MAC
