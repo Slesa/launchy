@@ -50,6 +50,13 @@ Type: filesandordirs; Name: "{app}\platform_win.dll"
 [Files]
 Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
 
+
+; Translations
+Source: ..\..\translations\launchy_es.qm; DestDir: {app}\tr\; Flags: ignoreversion
+Source: ..\..\translations\launchy_de.qm; DestDir: {app}\tr\; Flags: ignoreversion
+Source: ..\..\translations\launchy_ja.qm; DestDir: {app}\tr\; Flags: ignoreversion
+Source: ..\..\translations\launchy_zh.qm; DestDir: {app}\tr\; Flags: ignoreversion
+
 ; Libs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
@@ -121,8 +128,8 @@ Source: ..\..\skins\Black_Glass\style.qss; DestDir: {app}\skins\Black Glass\; Fl
 Source: ..\..\skins\Black_Glass\scrollBack.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass\scrollDown.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass\scrollUp.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
-Source: ..\..\skins\Black_Glass\background_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
-Source: ..\..\skins\Black_Glass\mask_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+;Source: ..\..\skins\Black_Glass\background_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+;Source: ..\..\skins\Black_Glass\mask_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 
 Source: ..\..\skins\Black_Glass_Wide\author.txt; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass_Wide\frame.png; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
