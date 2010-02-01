@@ -263,7 +263,7 @@ void WebyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results
 		}
 	}
 
-	if (inputData->count() > 1 && (unsigned int) inputData->first().getTopResult().id == HASH_WEBY)
+	if (inputData->count() > 1 && (unsigned int)inputData->first().getTopResult().id == HASH_WEBY)
 	{
 		const QString & text = inputData->last().getText();
 		// This is user search text, create an entry for it
@@ -287,15 +287,12 @@ void WebyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results
 
 			foreach(QString res, suggest.results)
 			{
-				results->push_back(CatItem(res + ".weby", res, HASH_WEBY, getIcon()));
+				results->push_back(CatItem(res + ".weby", res, HASH_WEBY, item->icon));
 			}
 		}
 		else
 		{
-			if (!text.trimmed().isEmpty())
-			{
-				results->push_front(CatItem(text + ".weby", text, HASH_WEBY, getIcon()));
-			}
+			results->push_front(CatItem(text + ".weby", text, HASH_WEBY, item->icon));
 		}
 	}
 
@@ -310,8 +307,6 @@ void WebyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results
 				results->push_back(CatItem(text + ".weby", name, HASH_WEBY, getIcon()));
 		}
 	}
-
-
 }
 
 
@@ -455,8 +450,6 @@ WebySite WebyPlugin::getDefault()
 
 void WebyPlugin::getCatalog(QList<CatItem>* items)
 {
-
-
 	foreach(WebySite site, sites)
 	{
 		QString iconName = iconCache->getIconPath(site.query);
