@@ -25,30 +25,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QSettings>
 #include "catalog.h"
 
-#ifdef Q_WS_WIN
-
-#ifndef VC_EXTRALEAN
-#define VC_EXTRALEAN
-#endif
-
-#ifndef WINVER
-#define WINVER 0x05100
-#define _WIN32_WINNT 0x0510	
-#define _WIN32_WINDOWS 0x0510 
-#define _WIN32_IE 0x0600
-#endif
-
-#include <windows.h>
-#include <shlobj.h>
-
-#endif
-
-
-#ifndef UNICODE
-#define UNICODE
-#endif
-
-
 #define DESKTOP_WINDOWS 0
 #define DESKTOP_GNOME 1
 #define DESKTOP_KDE 2

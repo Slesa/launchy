@@ -154,7 +154,7 @@ bool WinIconProvider::addIconFromShellFactory(QString filePath, QIcon& icon) con
 			{
 				HBITMAP iconBitmap = NULL;
 				SIZE iconSize = {preferredSize, preferredSize};
-				hr = psiif->GetImage(iconSize, SIIGBF_RESIZETOFIT | SIIGBF_BIGGERSIZEOK | SIIGBF_ICONONLY, &iconBitmap);
+				hr = psiif->GetImage(iconSize, SIIGBF_RESIZETOFIT | SIIGBF_ICONONLY, &iconBitmap);
 				if (hr == S_OK)
 				{
 					QPixmap iconPixmap = QPixmap::fromWinHBITMAP(iconBitmap, QPixmap::PremultipliedAlpha);

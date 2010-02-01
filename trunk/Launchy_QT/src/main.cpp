@@ -391,7 +391,6 @@ void LaunchyWidget::showAlternatives(bool show)
 	}
 	else
 	{
-		alternatives->clear();
 		alternatives->hide();
 		iconExtractor.stop();
 	}
