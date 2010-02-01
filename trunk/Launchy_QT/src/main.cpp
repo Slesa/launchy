@@ -325,17 +325,35 @@ void LaunchyWidget::showAlternatives(bool show)
 			return;
 
 		int mode = gSettings->value("GenOps/condensedView", 0).toInt();
-		alternatives->clear();
-		for (int i = 0; i < searchResults.size(); ++i)
+		int i = 0;
+		for (; i < searchResults.size(); ++i)
 		{
 			QString fullPath = QDir::toNativeSeparators(searchResults[i].fullPath);
-			QListWidgetItem * item = new QListWidgetItem(fullPath, alternatives);
+			
+			QListWidgetItem* item;
+			if (i < alternatives->count())
+			{
+				item = alternatives->item(i);
+			}
+			else
+			{
+				item = new QListWidgetItem(fullPath, alternatives);
+			}
+			if (item->data(mode == 1 ? ROLE_SHORT : ROLE_FULL) != fullPath)
+			{
+				// condensedTempIcon is a blank icon or null
+				item->setData(ROLE_ICON, *condensedTempIcon);
+			}
 			item->setData(mode == 1 ? ROLE_FULL : ROLE_SHORT, searchResults[i].shortName);
 			item->setData(mode == 1 ? ROLE_SHORT : ROLE_FULL, fullPath);
-			if (condensedTempIcon)
-				item->setData(ROLE_ICON, *condensedTempIcon);
-			alternatives->addItem(item);
+			if (i >= alternatives->count())
+				alternatives->addItem(item);
 		}
+		while (alternatives->count() > i)
+		{
+			delete alternatives->takeItem(i);
+		}
+		alternatives->setCurrentRow(0); 
 
 		iconExtractor.processIcons(searchResults);
 
@@ -724,11 +742,6 @@ void LaunchyWidget::processKey()
 	inputData.parse(input->text());
 	searchOnInput();
 	updateOutputWidgets();
-	// Don't schedule a drop down if there's no input text
-	if (input->text().length() > 0)
-		startDropTimer();
-	if (searchResults.count() == 0)
-		showAlternatives(false);
 }
 
 
@@ -771,7 +784,7 @@ void LaunchyWidget::searchOnInput()
 // If there are current results, update the output text and icon
 void LaunchyWidget::updateOutputWidgets()
 {
-	if (searchResults.count() > 0 && gSearchText.length() > 0)
+	if (searchResults.count() > 0 && (inputData.count() > 1 || gSearchText.length() > 0))
 	{
 		output->setText(Catalog::decorateText(searchResults[0].shortName, gSearchText, true));
 		iconExtractor.processIcon(searchResults[0]);
@@ -786,7 +799,12 @@ void LaunchyWidget::updateOutputWidgets()
 
 		// If the alternatives are already showing, update them
 		if (alternatives->isVisible()) 
-			showAlternatives(true);
+			showAlternatives();
+		// Don't schedule a drop down if there's no input text
+		else if (input->text().length() > 0)
+			startDropTimer();
+		if (searchResults.count() == 0)
+			showAlternatives(false);
 	}
 	else
 	{
