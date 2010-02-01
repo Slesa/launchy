@@ -23,9 +23,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "WinIconProvider.h"
 
 
+HRESULT (WINAPI* fnSHCreateItemFromParsingName)(PCWSTR, IBindCtx *, REFIID, void **) = NULL;
+
+
 WinIconProvider::WinIconProvider() :
 	preferredSize(32)
 {
+	// Load Vista/7 specific API pointers
+	HMODULE hLib = GetModuleHandleW(L"shell32");
+	if (hLib)
+	{
+		(FARPROC&)fnSHCreateItemFromParsingName = GetProcAddress(hLib, "SHCreateItemFromParsingName");
+	}
 }
 
 
@@ -85,10 +94,10 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const
 				imageListIndex = SHIL_LARGE;
 			else
 				imageListIndex = SHIL_EXTRALARGE;
-			// On Windows Vista or 7 we could go up to 256 using SHIL_JUMBO
-			// preferred size > 48 then use SHIL_JUMBO
 
-			addIconFromImageList(imageListIndex, sfi.iIcon, retIcon);
+			if (!addIconFromShellFactory(filePath, retIcon))
+				addIconFromImageList(imageListIndex, sfi.iIcon, retIcon);
+
 			// Ensure there's also a 32x32 icon
 			if (imageListIndex == SHIL_EXTRALARGE)
 				addIconFromImageList(SHIL_LARGE, sfi.iIcon, retIcon);
@@ -101,7 +110,7 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const
 		else
 		{
 			retIcon = QFileIconProvider::icon(info);
-		}
+		}		
 	}
 
 	return retIcon;
@@ -124,6 +133,42 @@ bool WinIconProvider::addIconFromImageList(int imageListIndex, int iconIndex, QI
 	}
 
 	return SUCCEEDED(hResult);
+}
+
+
+// On Vista or 7 we could use SHIL_JUMBO to get a 256x256 icon,
+// but we'll use SHCreateItemFromParsingName for its built in image scaling
+bool WinIconProvider::addIconFromShellFactory(QString filePath, QIcon& icon) const
+{
+	HRESULT hr = S_FALSE;
+
+	if (fnSHCreateItemFromParsingName)
+	{
+		IShellItem* psi = NULL;
+		hr = fnSHCreateItemFromParsingName(filePath.utf16(), 0, IID_IShellItem, (void**)&psi);
+		if (hr == S_OK)
+		{
+			IShellItemImageFactory* psiif = NULL;
+			hr = psi->QueryInterface(IID_IShellItemImageFactory, (void**)&psiif);
+			if (hr == S_OK)
+			{
+				HBITMAP iconBitmap = NULL;
+				SIZE iconSize = {preferredSize, preferredSize};
+				hr = psiif->GetImage(iconSize, SIIGBF_RESIZETOFIT | SIIGBF_BIGGERSIZEOK | SIIGBF_ICONONLY, &iconBitmap);
+				if (hr == S_OK)
+				{
+					QPixmap iconPixmap = QPixmap::fromWinHBITMAP(iconBitmap, QPixmap::PremultipliedAlpha);
+					icon.addPixmap(iconPixmap);
+					DeleteObject(iconBitmap);
+				}
+
+				psiif->Release();
+			}
+			psi->Release();
+		}
+	}
+
+	return SUCCEEDED(hr);
 }
 
 
