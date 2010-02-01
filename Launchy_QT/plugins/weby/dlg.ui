@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>411</width>
+    <width>464</width>
     <height>271</height>
    </rect>
   </property>
@@ -56,6 +56,20 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushDefault">
+       <property name="text">
+        <string>Set Default</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushClearDefault">
+       <property name="text">
+        <string>Clear Default</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -94,26 +108,6 @@
       <widget class="QPushButton" name="tableNew">
        <property name="text">
         <string>+</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>28</width>
-         <height>25</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushDefault">
-       <property name="text">
-        <string>Make Default</string>
        </property>
       </widget>
      </item>

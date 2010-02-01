@@ -22,14 +22,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "ui_dlg.h"
 #include "globals.h"
-//#include <QDialog>
 
 
 class Gui : public QWidget, private Ui::Dlg
 {
-	
-
-  Q_OBJECT
+	Q_OBJECT
 private:
 	QList<WebySite> sites;
 public:
@@ -44,6 +41,7 @@ public slots:
 	void dragEnter(QDragEnterEvent *event);
 	void drop(QDropEvent *event);
 	void makeDefault();
+	void clearDefault();
 
 private:
 	void appendRow(const QString& name, const QString& path);
