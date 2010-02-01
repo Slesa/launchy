@@ -50,12 +50,20 @@ void IconExtractor::processIcons(const QList<CatItem>& newItems, bool reset)
 {
 	mutex.lock();
 
-	if (reset && isRunning())
+	int itemCount = items.size();
+	if (reset && itemCount > 0 && isRunning())
+	{
+		// keep the most recent high priority item in the queue
+		CatItem item = items.dequeue();
 		items.clear();
+		if (item.id == -1)
+			items.append(item);
+		itemCount = items.size();
+	}
 
 	items += newItems;
-	for (int i = 0; i < items.size(); ++i)
-		items[i].id = i;
+	for (int i = itemCount; i < items.size(); ++i)
+		items[i].id = i - itemCount;
 
 	mutex.unlock();
 
