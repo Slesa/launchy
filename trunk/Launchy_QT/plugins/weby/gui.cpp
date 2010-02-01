@@ -62,6 +62,7 @@ Gui::Gui(QWidget* parent)
 	connect(tableNew, SIGNAL(clicked(bool)), this, SLOT(newRow(void)));
 	connect(tableRemove, SIGNAL(clicked(bool)), this, SLOT(remRow(void)));
 	connect(pushDefault, SIGNAL(clicked(bool)), this, SLOT(makeDefault(void)));
+	connect(pushClearDefault, SIGNAL(clicked(bool)), this, SLOT(clearDefault(void)));
 }
 
 void Gui::writeOptions()
@@ -150,10 +151,16 @@ void Gui::drop(QDropEvent *event)
 void Gui::makeDefault()
 {
     int row = table->currentRow();
-    if (row == -1)
+    if (row > -1)
+	{
+		defaultName = table->item(row,0)->text();
+		label_default->setText(defaultName);
+	}
+}
+
+void Gui::clearDefault()
+{
 	defaultName = "";
-    else
-	defaultName = table->item(row,0)->text();
     label_default->setText(defaultName);
 }
 
