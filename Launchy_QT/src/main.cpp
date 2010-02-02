@@ -316,6 +316,7 @@ void LaunchyWidget::showAlternatives(bool show)
 {
 	dropTimer->stop();
 
+	// If main launchy window is not visible, do nothing
 	if (!isVisible())
 		return;
 
@@ -353,7 +354,7 @@ void LaunchyWidget::showAlternatives(bool show)
 		{
 			delete alternatives->takeItem(i);
 		}
-		alternatives->setCurrentRow(0); 
+		alternatives->setCurrentRow(0);
 
 		iconExtractor.processIcons(searchResults);
 
@@ -383,14 +384,17 @@ void LaunchyWidget::showAlternatives(bool show)
 				rect.setBottom(qApp->desktop()->height());
 			}
 		}
-		alternatives->setGeometry(rect);
 
+		alternatives->setGeometry(rect);
 		alternatives->show();
 		alternatives->setFocus();
 		qApp->syncX();
 	}
 	else
 	{
+		// clear the selection before hiding to prevent flicker
+		alternatives->setCurrentRow(-1);
+		alternatives->repaint();
 		alternatives->hide();
 		iconExtractor.stop();
 	}
@@ -720,7 +724,7 @@ void LaunchyWidget::doEnter()
 {
 	showAlternatives(false);
 
-	if (searchResults.count() > 0 || inputData.count() > 1)
+	if ((inputData.count() > 0 && searchResults.count() > 0) || inputData.count() > 1)
 	{
 		CatItem& item = inputData[0].getTopResult();
 		launchItem(item);
