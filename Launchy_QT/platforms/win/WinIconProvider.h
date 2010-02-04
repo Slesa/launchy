@@ -31,7 +31,6 @@ public:
 	void setPreferredIconSize(int size);
 
 private:
-	QPixmap convertHIconToPixmap( const HICON icon) const;
 	bool addIconFromImageList(int imageListIndex, int iconIndex, QIcon& icon) const;
 	bool addIconFromShellFactory(QString filePath, QIcon& icon) const;
 
