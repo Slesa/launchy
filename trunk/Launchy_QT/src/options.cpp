@@ -336,6 +336,9 @@ void OptionsDialog::accept()
 		show = false;
 	}
 
+	if (needRescan)
+		gMainWidget->buildCatalog();
+
 	if (show)
 		gMainWidget->showLaunchy();
 }
