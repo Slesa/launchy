@@ -1371,9 +1371,6 @@ void LaunchyWidget::showOptionsDialog()
 #endif
 	options.exec();
 
-	// Perform the database update
-	buildCatalog();
-
 	input->activateWindow();
 	input->setFocus();
 	optionsOpen = false;
