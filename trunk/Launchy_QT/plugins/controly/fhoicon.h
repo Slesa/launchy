@@ -8,8 +8,6 @@
 // extracts / generates icons (images, as pixmap objects) from file resources, image files, files and handles
 class FhoIcon {
 	private:
-		static QImage convertHIconToPixmap(const HICON icon);
-
 		static QImage getDefaultIconFromResource(QString fileName);
 		static QImage getDefaultIconFromLibrary(HINSTANCE hLib);
 		static QImage getDefaultIcon();
