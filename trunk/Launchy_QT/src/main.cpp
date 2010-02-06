@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
+Copyright (C) 2007-2010  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -110,6 +110,10 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 
 	outputIcon = new QLabel(this);
 	outputIcon->setObjectName("outputIcon");
+
+	workingAnimation = new AnimationLabel(this);
+	workingAnimation->setObjectName("workingAnimation");
+	workingAnimation->setGeometry(QRect());
 
 	dirs = platform->getDirectories();
 
@@ -847,6 +851,11 @@ void LaunchyWidget::iconExtracted(int itemIndex, QIcon icon)
 }
 
 
+void LaunchyWidget::catalogProgressUpdated(float val)
+{
+}
+
+
 void LaunchyWidget::catalogBuilt()
 {
 	catalog = gBuilder->getCatalog();
@@ -854,6 +863,7 @@ void LaunchyWidget::catalogBuilt()
 	gBuilder->wait();
 	gBuilder.reset();
 
+	workingAnimation->Stop();
 	// Do a search here of the current input text
 	searchOnInput();
 	updateOutputWidgets();
@@ -1269,6 +1279,11 @@ void LaunchyWidget::applySkin(const QString& name)
 		}
 	}
 
+	if (QFile::exists(directory + "spinner.mng"))
+	{
+		workingAnimation->LoadAnimation(directory + "spinner.mng");
+	}
+
 	if (validFrame)
 	{
 		frameGraphic = new QPixmap(frame);
@@ -1352,6 +1367,8 @@ void LaunchyWidget::buildCatalog()
 	{
 		gBuilder.reset(new CatalogBuilder(&plugins, catalog));
 		connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+		connect(gBuilder.get(), SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
+		workingAnimation->Start();
 		gBuilder->start(QThread::IdlePriority);
 	}
 }

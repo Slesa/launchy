@@ -12,6 +12,10 @@
 	background-image: url(opsButtonPressed.png);
 }
 
+#workingAnimation {
+	qproperty-geometry: rect(695 50 16 16);
+}
+
 #input {
 	font: 13px "Verdana";
 	border-width: 0px;
