@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
+Copyright (C) 2007-2010  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "CharLineEdit.h"
 #include "LineEditMenu.h"
 #include "CharListWidget.h"
+#include "AnimationLabel.h"
 #include "Fader.h"
 
 
@@ -94,6 +95,7 @@ public slots:
 	void dropTimeout();
 	void setOpaqueness(int level);
 	void httpGetFinished(bool result);
+	void catalogProgressUpdated(float);
 	void catalogBuilt();
 	void inputMethodEvent(QInputMethodEvent* event);
 	void keyPressEvent(QKeyEvent* event);
@@ -140,6 +142,7 @@ private:
 	QPushButton* closeButton;
 	QScrollBar* altScroll;
 	QLabel* alternativesPath;
+	AnimationLabel* workingAnimation;
 
 	QAction* actShow;
 	QAction* actRebuild;
