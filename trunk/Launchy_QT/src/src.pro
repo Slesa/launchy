@@ -26,7 +26,8 @@ SOURCES = main.cpp \
     CharLineEdit.cpp \
     CommandHistory.cpp \
     InputDataList.cpp \
-    FileSearch.cpp
+    FileSearch.cpp \
+    AnimationLabel.cpp
 HEADERS = platform_base.h \
     globals.h \
     globals.h \
@@ -48,7 +49,8 @@ HEADERS = platform_base.h \
     precompiled.h \
     CommandHistory.h \
     InputDataList.h \
-    FileSearch.h
+    FileSearch.h \
+    AnimationLabel.h
 ICON = Launchy.ico
 first.target = blah
 unix { 
@@ -74,7 +76,7 @@ unix {
         desktop
 }
 win32 { 
-    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):CONFIG += console
+#    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):CONFIG += console
     SOURCES += ../platforms/win/platform_win.cpp \
         ../platforms/win/platform_win_hotkey.cpp \
         ../platforms/win/platform_win_util.cpp \
@@ -100,10 +102,10 @@ win32 {
         WIN32 \
         _UNICODE \
         UNICODE \
-        WINVER=0x0510 \
-        _WIN32_WINNT=0x0510 \
-        _WIN32_WINDOWS=0x0510 \
-        _WIN32_IE=0x0600
+        WINVER=0x0600 \
+        _WIN32_WINNT=0x0600 \
+        _WIN32_WINDOWS=0x0600 \
+        _WIN32_IE=0x0700
     if(!debug_and_release|build_pass) { 
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/

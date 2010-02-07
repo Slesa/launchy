@@ -24,6 +24,7 @@ AnimationLabel::AnimationLabel(QWidget* parent) :
 	QLabel(parent)
 {
 	animation = new QMovie(this);
+	animation->setCacheMode(QMovie::CacheAll);
 }
 
 
@@ -35,12 +36,16 @@ AnimationLabel::~AnimationLabel()
 
 void AnimationLabel::LoadAnimation(const QString& animationPath)
 {
-	setHidden(true);
+	// Ensure the animation continues to run after loading a new graphic
+	bool running = animation->state() == QMovie::Running;
+	Stop();
 
 	animation->setFileName(animationPath);
 	if (animation->isValid())
 	{
 		setMovie(animation);
+		if (running)
+			Start();
 	}
 }
 
