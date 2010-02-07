@@ -95,12 +95,14 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const
 			else
 				imageListIndex = SHIL_EXTRALARGE;
 
-			if (!addIconFromShellFactory(filePath, retIcon))
+			//if (!addIconFromShellFactory(filePath, retIcon))
 				addIconFromImageList(imageListIndex, sfi.iIcon, retIcon);
 
+			/*
 			// Ensure there's also a 32x32 icon
 			if (imageListIndex == SHIL_EXTRALARGE)
 				addIconFromImageList(SHIL_LARGE, sfi.iIcon, retIcon);
+				*/
 		}
 		else if (info.isSymLink() || fileExtension == "lnk") // isSymLink is case sensitive when it perhaps shouldn't be
 		{
@@ -135,7 +137,7 @@ bool WinIconProvider::addIconFromImageList(int imageListIndex, int iconIndex, QI
 	return SUCCEEDED(hResult);
 }
 
-
+/*
 // On Vista or 7 we could use SHIL_JUMBO to get a 256x256 icon,
 // but we'll use SHCreateItemFromParsingName for its built in image scaling
 bool WinIconProvider::addIconFromShellFactory(QString filePath, QIcon& icon) const
@@ -170,3 +172,4 @@ bool WinIconProvider::addIconFromShellFactory(QString filePath, QIcon& icon) con
 
 	return hr == S_OK;
 }
+*/
