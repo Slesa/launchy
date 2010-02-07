@@ -38,7 +38,6 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	setupUi(this);
 
 	curPlugin = -1;
-	needRescan = false;
 
 	restoreGeometry(windowGeometry);
 	tabWidget->setCurrentIndex(currentTab);
@@ -234,6 +233,8 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	}
 	aboutVer->setText(tr("This is Launchy version %1").arg(LAUNCHY_VERSION_STRING));
 	catDirectories->installEventFilter(this);
+
+	needRescan = false;
 }
 
 

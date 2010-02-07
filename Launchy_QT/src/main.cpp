@@ -851,7 +851,7 @@ void LaunchyWidget::iconExtracted(int itemIndex, QIcon icon)
 }
 
 
-void LaunchyWidget::catalogProgressUpdated(float val)
+void LaunchyWidget::catalogProgressUpdated(float /*val*/)
 {
 }
 
@@ -1367,7 +1367,7 @@ void LaunchyWidget::buildCatalog()
 	{
 		gBuilder.reset(new CatalogBuilder(&plugins, catalog));
 		connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
-		connect(gBuilder.get(), SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
+		connect(gBuilder.get(), SIGNAL(catalogIncrement(float)), this, SLOT(catalogProgressUpdated(float)));
 		workingAnimation->Start();
 		gBuilder->start(QThread::IdlePriority);
 	}
