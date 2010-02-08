@@ -78,22 +78,34 @@ void CatalogBuilder::buildCatalog()
 		memDirs = platform->getDefaultCatalogDirectories();
 	}
 
-	for (int i = 0; i < memDirs.count(); ++i)
+	QHash<uint, PluginInfo> pluginsInfo = plugins->getPlugins();
+	int totalItems = memDirs.count() + pluginsInfo.count();
+	int currentItem = 0;
+
+	for (; currentItem < memDirs.count(); ++currentItem)
 	{
-		emit(catalogIncrement(100.0f * (float)(i+1) / (float) memDirs.count()));
-		QString cur = platform->expandEnvironmentVars(memDirs[i].name);
-		indexDirectory(cur, memDirs[i].types, memDirs[i].indexDirs, memDirs[i].indexExe, memDirs[i].depth);
+		emit(catalogIncrement(100.0f * (currentItem+1) / totalItems));
+		QString cur = platform->expandEnvironmentVars(memDirs[currentItem].name);
+		indexDirectory(cur, memDirs[currentItem].types, memDirs[currentItem].indexDirs, memDirs[currentItem].indexExe, memDirs[currentItem].depth);
 	}
 
-	QList<CatItem> items;
-	plugins->getCatalogs(&items);
-	foreach(CatItem item, items)
+	foreach(PluginInfo info, pluginsInfo)
 	{
-		if (currentCatalog != NULL)
+		emit(catalogIncrement(100.0f * (currentItem+1) / totalItems));
+		if (info.loaded)
 		{
-			item.usage = currentCatalog->getUsage(item.fullPath);
+			QList<CatItem> items;
+			info.obj->msg(MSG_GET_CATALOG, (void*)&items);
+			foreach(CatItem item, items)
+			{
+				if (currentCatalog != NULL)
+				{
+					item.usage = currentCatalog->getUsage(item.fullPath);
+				}
+				catalog->addItem(item);
+			}
 		}
-		catalog->addItem(item);
+		++currentItem;
 	}
 
 	emit(catalogIncrement(0.0));
