@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Launchy"
-#define MyAppVerName "Launchy 2.5 Beta 1"
+#define MyAppVerName "Launchy 2.5 Beta 2"
 #define MyAppPublisher "Code Jelly"
 #define MyAppURL "http://www.launchy.net"
 #define MyAppExeName "Launchy.exe"
@@ -62,6 +62,7 @@ Source: ..\..\translations\launchy_zh.qm; DestDir: {app}\tr\; Flags: ignoreversi
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtGui4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtNetwork4.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\qmng4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\msvcp80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 Source: ..\msvcr80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 Source: ..\Microsoft.VC80.CRT.manifest; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
@@ -108,6 +109,7 @@ Source: ..\..\skins\Mercury_Wide\opsButtonPressed.png; DestDir: {app}\skins\Merc
 Source: ..\..\skins\Mercury_Wide\scrollBack.png; DestDir: {app}\skins\Mercury Wide\; Flags: ignoreversion
 Source: ..\..\skins\Mercury_Wide\scrollDown.png; DestDir: {app}\skins\Mercury Wide\; Flags: ignoreversion
 Source: ..\..\skins\Mercury_Wide\scrollUp.png; DestDir: {app}\skins\Mercury Wide\; Flags: ignoreversion
+Source: ..\..\skins\Mercury_Wide\spinner.mng; DestDir: {app}\skins\Mercury Wide\; Flags: ignoreversion
 
 Source: ..\..\skins\Quicksilver2\frame.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\..\skins\Quicksilver2\author.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
@@ -128,6 +130,7 @@ Source: ..\..\skins\Black_Glass\style.qss; DestDir: {app}\skins\Black Glass\; Fl
 Source: ..\..\skins\Black_Glass\scrollBack.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass\scrollDown.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass\scrollUp.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass\spinner.mng; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 ;Source: ..\..\skins\Black_Glass\background_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 ;Source: ..\..\skins\Black_Glass\mask_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 
@@ -139,6 +142,7 @@ Source: ..\..\skins\Black_Glass_Wide\opsButtonPressed.png; DestDir: {app}\skins\
 Source: ..\..\skins\Black_Glass_Wide\scrollBack.png; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass_Wide\scrollDown.png; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass_Wide\scrollUp.png; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass_Wide\spinner.mng; DestDir: {app}\skins\Black Glass Wide\; Flags: ignoreversion
 
 Source: ..\..\skins\Default\author.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
 Source: ..\..\skins\Default\frame.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
@@ -157,6 +161,7 @@ Source: ..\..\skins\Spotlight_Wide\opsButtonPressed.png; DestDir: {app}\skins\Sp
 Source: ..\..\skins\Spotlight_Wide\scrollBack.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 Source: ..\..\skins\Spotlight_Wide\scrollDown.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 Source: ..\..\skins\Spotlight_Wide\scrollUp.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
+Source: ..\..\skins\Spotlight_Wide\spinner.mng; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 Source: ..\..\skins\Spotlight_Wide\background_nc.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 Source: ..\..\skins\Spotlight_Wide\mask_nc.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 
