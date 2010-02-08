@@ -22,6 +22,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "platform_win_util.h"
 #include "WinIconProvider.h"
 
+// Temporary work around to avoid having to install the latest Windows SDK
+#ifndef __IShellItemImageFactory_INTERFACE_DEFINED__
+#define __IShellItemImageFactory_INTERFACE_DEFINED__
+
+const GUID IID_IShellItemImageFactory = {0xbcc18b79,0xba16,0x442f,{0x80,0xc4,0x8a,0x59,0xc3,0x0c,0x46,0x3b}};
+
+class IShellItemImageFactory : public IUnknown
+{
+public:
+    virtual HRESULT STDMETHODCALLTYPE GetImage(SIZE size, SIIGBF flags, __RPC__deref_out_opt HBITMAP *phbm) = 0;
+};
+
+#endif
 
 HRESULT (WINAPI* fnSHCreateItemFromParsingName)(PCWSTR, IBindCtx *, REFIID, void **) = NULL;
 
@@ -92,14 +105,22 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const
 				imageListIndex = SHIL_SMALL;
 			else if (preferredSize <= 32)
 				imageListIndex = SHIL_LARGE;
-			else
+			else if (preferredSize <= 48)
 				imageListIndex = SHIL_EXTRALARGE;
+			else
+				imageListIndex = SHIL_JUMBO;
 
+			// If the OS supports SHCreateItemFromParsingName, get a 256x256 icon
 			if (!addIconFromShellFactory(filePath, retIcon))
-				addIconFromImageList(imageListIndex, sfi.iIcon, retIcon);
+			{
+				// otherwise get the largest appropriate size
+				if (!addIconFromImageList(imageListIndex, sfi.iIcon, retIcon) && imageListIndex == SHIL_JUMBO)
+					addIconFromImageList(SHIL_EXTRALARGE, sfi.iIcon, retIcon);
+			}
 
-			// Ensure there's also a 32x32 icon
-			if (imageListIndex == SHIL_EXTRALARGE)
+			// Ensure there's also a 32x32 icon - extralarge and above often only contain
+			// a large frame with the 32x32 icon in the middle or looks blurry
+			if (imageListIndex == SHIL_EXTRALARGE || imageListIndex == SHIL_JUMBO)
 				addIconFromImageList(SHIL_LARGE, sfi.iIcon, retIcon);
 		}
 		else if (info.isSymLink() || fileExtension == "lnk") // isSymLink is case sensitive when it perhaps shouldn't be
@@ -125,6 +146,7 @@ bool WinIconProvider::addIconFromImageList(int imageListIndex, int iconIndex, QI
 	if (hResult == S_OK)
 	{
 		hResult = ((IImageList*)imageList)->GetIcon(iconIndex, ILD_TRANSPARENT, &hIcon);
+		imageList->Release();
 	}
 	if (hResult == S_OK && hIcon)
 	{
@@ -137,7 +159,8 @@ bool WinIconProvider::addIconFromImageList(int imageListIndex, int iconIndex, QI
 
 
 // On Vista or 7 we could use SHIL_JUMBO to get a 256x256 icon,
-// but we'll use SHCreateItemFromParsingName for its built in image scaling
+// but we'll use SHCreateItemFromParsingName as it'll give an identical
+// icon to the one shown in explorer and it scales automatically.
 bool WinIconProvider::addIconFromShellFactory(QString filePath, QIcon& icon) const
 {
 	HRESULT hr = S_FALSE;
