@@ -79,10 +79,9 @@ void CommandHistory::addItem(const InputDataList& item)
 	{
 		if (history[i].toString().toLower() == itemText)
 		{
-			// Found a match, promote it
-			if (i > 0)
-				history.move(i, 0);
-			return;
+			// Found a match, remove it and add a replacement
+			history.removeAt(i);
+			break;
 		}
 	}
 
