@@ -139,67 +139,69 @@ void PluginHandler::loadPlugins()
 			if (!QLibrary::isLibrary(fileName)) continue;
 			QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
 			QObject *plugin = loader.instance();
-			if (plugin)
+			if (!plugin)
+				continue;
+			
+			PluginInterface *plug = qobject_cast<PluginInterface *>(plugin);
+			if (!plug)
+				continue;
+				
+			plug->settings = &gSettings;
+			PluginInfo info;
+			uint id;
+			bool handled = plug->msg(MSG_GET_ID, (void*) &id) != 0;
+			info.id = id;
+			QString name;
+			plug->msg(MSG_GET_NAME, (void*) &name);
+			info.name = name;
+			info.obj = plug;
+			info.path = pluginsDir.absoluteFilePath(fileName);
+
+			if (handled && (!loadable.contains(id) || loadable[id]))
 			{
-				PluginInterface *plug = qobject_cast<PluginInterface *>(plugin);
-				plug->settings = &gSettings;
-				PluginInfo info;
-				uint id;
-				bool handled = plug->msg(MSG_GET_ID, (void*) &id) != 0;
-				info.id = id;
-				QString name;
-				plug->msg(MSG_GET_NAME, (void*) &name);
-				info.name = name;
-				info.obj = plug;
-				info.path = pluginsDir.absoluteFilePath(fileName);
+				info.loaded = true;
+				plug->msg(MSG_INIT);
+				plug->msg(MSG_PATH, &szDir);
 
-				if (handled && (!loadable.contains(id) || loadable[id]))
+				// Load any of the plugin's plugins of its own
+				QList<PluginInfo> additionalPlugins;
+				plug->msg(MSG_LOAD_PLUGINS, &additionalPlugins);
+
+				foreach(PluginInfo pluginInfo, additionalPlugins)
 				{
-					info.loaded = true;
-					plug->msg(MSG_INIT);
-					plug->msg(MSG_PATH, &szDir);
-
-					// Load any of the plugin's plugins of its own
-					QList<PluginInfo> additionalPlugins;
-					plug->msg(MSG_LOAD_PLUGINS, &additionalPlugins);
-
-
-					foreach(PluginInfo pluginInfo, additionalPlugins)
+					const bool isValidPlugin = 
+						pluginInfo.obj && 
+						!pluginInfo.name.isNull() &&
+						pluginInfo.id > 0;
+					if (!isValidPlugin)
 					{
-						const bool isValidPlugin = 
-							pluginInfo.obj && 
-							!pluginInfo.name.isNull() &&
-							pluginInfo.id > 0;
-						if (!isValidPlugin)
-						{
-							continue;
-						}
-
-						const bool isPluginLoadable = 
-							!loadable.contains(pluginInfo.id) || loadable[pluginInfo.id];
-
-						if (isPluginLoadable)
-						{
-							pluginInfo.obj->msg(MSG_INIT);
-							pluginInfo.loaded = true;
-						}
-						else
-						{
-							pluginInfo.obj->msg(MSG_UNLOAD_PLUGIN, (void*) pluginInfo.id);
-							pluginInfo.loaded = false;
-						}
-						plugins[pluginInfo.id] = pluginInfo;
+						continue;
 					}
 
+					const bool isPluginLoadable = 
+						!loadable.contains(pluginInfo.id) || loadable[pluginInfo.id];
 
+					if (isPluginLoadable)
+					{
+						pluginInfo.obj->msg(MSG_INIT);
+						pluginInfo.loaded = true;
+					}
+					else
+					{
+						pluginInfo.obj->msg(MSG_UNLOAD_PLUGIN, (void*) pluginInfo.id);
+						pluginInfo.loaded = false;
+					}
+					plugins[pluginInfo.id] = pluginInfo;
 				}
-				else
-				{
-					info.loaded = false;
-					loader.unload();
-				}
-				plugins[id] = info;
+
+
 			}
+			else
+			{
+				info.loaded = false;
+				loader.unload();
+			}
+			plugins[id] = info;
 		}
 	}
 }
