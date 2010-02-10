@@ -573,7 +573,14 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 		int row = alternatives->currentRow();
 		if (row > -1)
 		{
-			history.removeAt(row);
+			if (searchResults[row].id != HASH_HISTORY)
+			{
+				catalog->clearUsage(searchResults[row]);
+			}
+			else
+			{
+				history.removeAt(row);
+			}
 			processKey();
 		}
 	}
@@ -592,11 +599,13 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 
 void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 {
-	if (event->key() == Qt::Key_F5 && (event->modifiers() & ~Qt::ShiftModifier) == 0)
+	if (event->key() == Qt::Key_F5 && event->modifiers() == 0)
+	{
+		buildCatalog();
+	}
+	else if (event->key() == Qt::Key_F5 && event->modifiers() == Qt::ShiftModifier)
 	{
 		setSkin(gSettings->value("GenOps/skin", "Default").toString());
-		if ((event->modifiers() & Qt::ShiftModifier) == 0)
-			buildCatalog();
 	}
 
 	else if (event->key() == Qt::Key_Escape)
@@ -1370,6 +1379,7 @@ void LaunchyWidget::buildCatalog()
 		connect(gBuilder.get(), SIGNAL(catalogIncrement(float)), this, SLOT(catalogProgressUpdated(float)));
 		workingAnimation->Start();
 		gBuilder->start(QThread::IdlePriority);
+		//gBuilder->run();
 	}
 }
 

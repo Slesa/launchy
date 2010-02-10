@@ -108,6 +108,19 @@ void FastCatalog::incrementUsage(const CatItem& item)
 }
 
 
+void FastCatalog::clearUsage(const CatItem& item)
+{
+	for (int i = 0; i < catList.size(); ++i)
+	{
+		if (item == catList[i])
+		{
+			catList[i].usage = 0;
+			break;
+		}
+	}
+}
+
+
 int SlowCatalog::getUsage(const QString& path)
 {
 	for (int i = 0; i < catList.size(); ++i)
@@ -129,6 +142,19 @@ void SlowCatalog::incrementUsage(const CatItem& item)
 		if (item == catList[i])
 		{
 			catList[i].usage += 1;
+			break;
+		}
+	}
+}
+
+
+void SlowCatalog::clearUsage(const CatItem& item)
+{
+	for (int i = 0; i < catList.size(); ++i)
+	{
+		if (item == catList[i])
+		{
+			catList[i].usage = -1;
 			break;
 		}
 	}
