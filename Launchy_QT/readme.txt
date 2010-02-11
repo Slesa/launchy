@@ -1,7 +1,13 @@
 For installation instructions, please refer to the INSTALL.txt file.  This file is for the author's random notes to himself.
 
+2.2 Issues in Linux:
+. Windows fonts don't really apply to Linux, want to use "Sans" instead somehow for anti-aliasing
+. Can't seem to make launchy dissappear with a keystroke at the moment
+. Application launching is funny
+
+
+
 Bugs for 2.2:
-Currently, trying to unload gcalc plugin is causing Launchy to crash
 
 
 To be done for 2.2 All:

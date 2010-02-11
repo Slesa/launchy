@@ -2,7 +2,7 @@
 }
 
 #input {
-	font: 12px "Verdana";
+	font: 12px "Sans";
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
@@ -11,7 +11,7 @@
 	qproperty-geometry: rect(40 22 160 24);
 }
 #output {
-	font: 12px "Verdana";
+	font: 12px "Sans";
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
@@ -25,7 +25,7 @@
 }
 
 #alternatives {
-	font: 12px "Verdana";
+	font: 12px "Sans";
 	background-color: black;
 	alternate-background-color: black;
 	color: white;
@@ -35,7 +35,7 @@
 }
 
 #alternativesPath {
-	font: 11px "Lucida Sans";
+	font: 11px "Sans";
 	color: rgb(221,221,221);
 }
 
