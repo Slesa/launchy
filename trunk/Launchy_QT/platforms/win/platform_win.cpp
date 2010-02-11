@@ -99,7 +99,7 @@ PlatformWin::~PlatformWin()
 	if (globalMutex)
 		CloseHandle(globalMutex);
 	delete instance;
-	instance = NULL;
+        instance = NULL;
 }
 
 

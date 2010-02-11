@@ -22,7 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QFileInfo>
 #include <QDebug>
 #include <QLocale>
-#include <QProcessEnvironment>
 
 /*! \file
     \brief A Documented file.
@@ -32,6 +31,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 #ifdef Q_WS_WIN
+// This doesn't exist until qt 4.6 (currently 4.5 in ubuntu 10.04)
+#include <QProcessEnvironment>
 
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN

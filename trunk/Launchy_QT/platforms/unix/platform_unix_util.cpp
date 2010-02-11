@@ -201,7 +201,7 @@ UnixIconProvider::UnixIconProvider() {
 }
 
 
-QIcon UnixIconProvider::getIcon(const QFileInfo& info)
+QIcon UnixIconProvider::icon(const QFileInfo& info)
 {
     QString name = info.fileName();
 
@@ -210,7 +210,7 @@ QIcon UnixIconProvider::getIcon(const QFileInfo& info)
     if (name.endsWith(".ico", Qt::CaseInsensitive))
 	return QIcon(info.absoluteFilePath());
     if (!name.contains("."))
-	return icon(QFileIconProvider::File);
+        return QFileIconProvider::icon(QFileIconProvider::File);
 
 
     QString end = name.mid(name.lastIndexOf(".")+1);
@@ -250,7 +250,7 @@ QIcon UnixIconProvider::getIcon(const QFileInfo& info)
     QString desktop = mime2desktop[mimeType];
 
     if (desktop == "")
-	return icon(QFileIconProvider::File);
+        return QFileIconProvider::icon(QFileIconProvider::File);
 
     return QIcon(getDesktopIcon(desktop));
 }

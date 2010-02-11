@@ -54,6 +54,14 @@ HEADERS = platform_base.h \
 ICON = Launchy.ico
 first.target = blah
 unix { 
+    SOURCES += ../platforms/unix/platform_unix.cpp \
+               ../platforms/unix/platform_unix_util.cpp \
+               ../platforms/unix/platform_x11_hotkey.cpp
+    HEADERS += ../platforms/unix/platform_unix.h \
+               ../platforms/unix/platform_unix_util.h \
+               ../platforms/unix/platform_x11_hotkey.h \
+                platform_base_hotkey.h \
+                platform_base_hottrigger.h \
     FORMS = options.ui
     PREFIX = /usr
     DEFINES += SKINS_PATH=\\\"$$PREFIX/share/launchy/skins/\\\" \
@@ -63,6 +71,7 @@ unix {
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/
     }
+    SOURCES +=
     target.path = $$PREFIX/bin/
     skins.path = $$PREFIX/share/launchy/skins/
     skins.files = ../skins/*
