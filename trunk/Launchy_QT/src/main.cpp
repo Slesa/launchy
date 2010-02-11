@@ -1256,8 +1256,6 @@ void LaunchyWidget::applySkin(const QString& name)
 	bool validFrame = false;
 	QPixmap frame;
 
-        qDebug() << platform->supportsAlphaBorder();
-        qDebug() << "hi!";
 	if (platform->supportsAlphaBorder())
 	{
 		if (frame.load(directory + "frame.png"))
