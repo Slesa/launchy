@@ -59,7 +59,6 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	dropTimer(NULL),
 	condensedTempIcon(NULL)
 {
-
 	setObjectName("launchy");
 	setWindowTitle(tr("Launchy"));
 	setWindowIcon(QIcon(":/resources/launchy128.png"));
@@ -166,7 +165,6 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 		checkForUpdate();
 	}
 
-
 	// Set the hotkey
 	QKeySequence hotkey = getHotkey();
 	if (!setHotkey(hotkey))
@@ -190,7 +188,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	catalog->load(dirs["db"][0]);
 
 	// Load the history
-        history.load(dirs["history"][0]);
+	history.load(dirs["history"][0]);
 
 	// Load the skin
 	applySkin(gSettings->value("GenOps/skin", "Default").toString());
@@ -235,6 +233,12 @@ void LaunchyWidget::executeStartupCommand(int command)
 
 	if (command & ShowOptions)
 		showOptionsDialog();
+
+	if (command & Rescan)
+		buildCatalog();
+
+	if (command & Exit)
+		close();
 }
 
 
@@ -482,11 +486,12 @@ void LaunchyWidget::alternativesRowChanged(int index)
 		CatItem item = searchResults[index];
 		if ((inputData.count() > 0 && inputData.first().hasLabel(LABEL_HISTORY)) || input->text().length() == 0)
 		{
-                        // Used a void* to hold an int.. ick!
-                        long long hi = reinterpret_cast<long long>(item.data);
-                        int historyIndex = static_cast<int>(hi);
+			// Used a void* to hold an int.. ick!
+			// BUT! Doing so avoids breaking existing catalogs
+			long long hi = reinterpret_cast<long long>(item.data);
+			int historyIndex = static_cast<int>(hi);
 
-                        //int historyIndex = (int)item.data;
+			//int historyIndex = (int)item.data;
 			if (item.id == HASH_HISTORY && historyIndex < searchResults.count())
 			{
 				inputData = history.getItem(historyIndex);
@@ -1312,7 +1317,7 @@ void LaunchyWidget::applySkin(const QString& name)
 	}
 
 	int maxIconSize = outputIcon->width();
-        maxIconSize = qMax(maxIconSize, outputIcon->height());
+	maxIconSize = qMax(maxIconSize, outputIcon->height());
 	platform->setPreferredIconSize(maxIconSize);
 }
 
@@ -1433,8 +1438,8 @@ void LaunchyWidget::shouldDonate()
 
 void LaunchyWidget::setFadeLevel(double level)
 {
-        level = qMin(level, 1.0);
-        level = qMax(level, 1.0);
+	level = qMin(level, 1.0);
+	level = qMax(level, 1.0);
 	setWindowOpacity(level);
 	alternatives->setWindowOpacity(level);
 	if (level <= 0)
@@ -1586,15 +1591,23 @@ int main(int argc, char *argv[])
 			}
 			else if (arg.compare("/show", Qt::CaseInsensitive) == 0)
 			{
-				command = ShowLaunchy;
+				command |= ShowLaunchy;
 			}
 			else if (arg.compare("/options", Qt::CaseInsensitive) == 0)
 			{
-				command = ShowOptions;
+				command |= ShowOptions;
 			}
 			else if (arg.compare("/multiple", Qt::CaseInsensitive) == 0)
 			{
 				allowMultipleInstances = true;
+			}
+			else if (arg.compare("/rescan", Qt::CaseInsensitive) == 0)
+			{
+				command |= Rescan;
+			}
+			else if (arg.compare("/exit", Qt::CaseInsensitive) == 0)
+			{
+				command |= Exit;
 			}
 		}
 	}
