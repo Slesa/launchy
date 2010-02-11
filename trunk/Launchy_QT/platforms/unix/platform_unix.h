@@ -112,7 +112,7 @@ class PlatformUnix :  public PlatformBase
     virtual QHash<QString, QList<QString> > getDirectories();
 	virtual QString expandEnvironmentVars(QString txt);
 
-    bool SupportsAlphaBorder();
+    bool supportsAlphaBorder() const;
     bool CreateAlphaBorder(QWidget* w, QString ImageName);
     void DestroyAlphaBorder() { alpha.reset(); /*delete alpha ; alpha = NULL;*/ return; }
     void MoveAlphaBorder(QPoint pos) { if (alpha) alpha->move(pos); }
