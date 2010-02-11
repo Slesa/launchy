@@ -49,7 +49,7 @@ QString VerbyPlugin::getIcon()
 
 void VerbyPlugin::getLabels(QList<InputData>* inputData)
 {
-	QString & text = inputData->last().getText();
+        QString  text = inputData->last().getText();
 
 	// Is it a file?
 	if (text.contains("\\") || text.contains("/"))
@@ -146,7 +146,9 @@ void VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 	}
 	else if (verb == "Run as")
 	{
-		SHELLEXECUTEINFO shellExecInfo;
+
+#ifdef Q_WS_WIN
+            SHELLEXECUTEINFO shellExecInfo;
 
 		shellExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
 		shellExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
@@ -164,6 +166,7 @@ void VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 		shellExecInfo.hInstApp = NULL;
 
 		ShellExecuteEx(&shellExecInfo);
+#endif
 	}
 	else if (verb == "File properties")
 	{
