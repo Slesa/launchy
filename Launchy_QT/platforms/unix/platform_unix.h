@@ -34,11 +34,11 @@ using namespace boost;
   and sends them off to the hotkey manager
 */
 
-
+/*
 class MyApp : public QApplication {
     Q_OBJECT
     public:
-	MyApp(int & argc, char** argv) : QApplication(argc,argv) {}
+        MyApp(int argc, char** argv) : QApplication(argc,argv) {}
 	bool x11EventFilter ( XEvent * event ) {
 	    if (event->type == KeyPress) {
 		emit xkeyPressed(event);
@@ -48,41 +48,59 @@ class MyApp : public QApplication {
 signals:
     void xkeyPressed(XEvent*);
 };
-
-class PlatformUnix : public QObject, public PlatformBase 
+*/
+class PlatformUnix :  public PlatformBase
 {
     Q_OBJECT
-	Q_INTERFACES(PlatformBase)
+
+    bool x11EventFilter ( XEvent * event ) {
+        if (event->type == KeyPress) {
+            emit xkeyPressed(event);
+        }
+        return false;
+    }
+
+    QKeySequence oldKey;
 	private:
 	shared_ptr<AlphaBorder> alpha;
     QString alphaFile;
  public:
-    PlatformUnix();
+    PlatformUnix(int & argc, char** argv);
     ~PlatformUnix();
     
-    virtual shared_ptr<QApplication> init(int & argc, char** argv);
+    void setPreferredIconSize(int size) { return; }
+
+    //virtual shared_ptr<QApplication> init(int & argc, char** argv);
     // Mandatory functions
     // Mandatory functions
-    bool SetHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
+    bool setHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
     {
+
 	GlobalShortcutManager::disconnect(oldKey, receiver, slot);
 	GlobalShortcutManager::connect(key, receiver, slot);
 	oldKey = key;
+        qDebug() << key << GlobalShortcutManager::isConnected(key);
 	return GlobalShortcutManager::isConnected(key);
     }
     
+
+    QKeySequence getHotkey() const
+    {
+        return oldKey;
+    }
+
     QString GetSettingsDirectory() { 
 	return "";
-    };
+    }
+
     
-    
-    QList<Directory> GetInitialDirs();
+    QList<Directory> getDefaultCatalogDirectories();
     
     
     void AddToNotificationArea() {};
     void RemoveFromNotificationArea() {};
     
-    bool isAlreadyRunning() {
+    bool isAlreadyRunning() const {
 	return false;
     }
     
@@ -91,7 +109,7 @@ class PlatformUnix : public QObject, public PlatformBase
 		return alpha;
     }
 
-    virtual QHash<QString, QList<QString> > GetDirectories();
+    virtual QHash<QString, QList<QString> > getDirectories();
 	virtual QString expandEnvironmentVars(QString txt);
 
     bool SupportsAlphaBorder();
@@ -102,13 +120,17 @@ class PlatformUnix : public QObject, public PlatformBase
     void HideAlphaBorder() { if (alpha) alpha->hide(); }
     void SetAlphaOpacity(double trans ) { if (alpha) alpha->SetAlphaOpacity(trans); }
 
+    /*
     QIcon icon(const QFileInfo& info) {
     	shared_ptr<UnixIconProvider> u(dynamic_pointer_cast<UnixIconProvider>(icons));
   	  	return u->getIcon(info);
 //		return ((UnixIconProvider*) icons.get())->getIcon(info); 
     }
+    */
 
     virtual void alterItem(CatItem*);
+    signals:
+    void xkeyPressed(XEvent*);
 
 };
 

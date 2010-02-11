@@ -1,7 +1,7 @@
 #ifndef ICONCACHE_H
 #define ICONCACHE_H
-
-
+#include <QtGui>
+#include <QtNetwork>
 class IconCache : public QObject
 {
 	Q_OBJECT

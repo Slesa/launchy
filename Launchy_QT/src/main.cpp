@@ -59,6 +59,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	dropTimer(NULL),
 	condensedTempIcon(NULL)
 {
+
 	setObjectName("launchy");
 	setWindowTitle(tr("Launchy"));
 	setWindowIcon(QIcon(":/resources/launchy128.png"));
@@ -164,6 +165,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	{
 		checkForUpdate();
 	}
+
 
 	// Set the hotkey
 	QKeySequence hotkey = getHotkey();
@@ -413,12 +415,15 @@ void LaunchyWidget::launchItem(CatItem& item)
 		if (inputData.count() > 1)
 			for(int i = 1; i < inputData.count(); ++i)
 				args += inputData[i].getText() + " ";
+
+/* UPDATE
 #ifdef Q_WS_X11
 		if (!platform->Execute(item.fullPath, args))
 			runProgram(item.fullPath, args);
 #else
+*/
 		runProgram(item.fullPath, args);
-#endif
+//#endif
 	}
 	else
 	{
@@ -477,7 +482,11 @@ void LaunchyWidget::alternativesRowChanged(int index)
 		CatItem item = searchResults[index];
 		if ((inputData.count() > 0 && inputData.first().hasLabel(LABEL_HISTORY)) || input->text().length() == 0)
 		{
-			int historyIndex = (int)item.data;
+                        // Used a void* to hold an int.. ick!
+                        long long hi = reinterpret_cast<long long>(item.data);
+                        int historyIndex = static_cast<int>(hi);
+
+                        //int historyIndex = (int)item.data;
 			if (item.id == HASH_HISTORY && historyIndex < searchResults.count())
 			{
 				inputData = history.getItem(historyIndex);
@@ -1303,7 +1312,7 @@ void LaunchyWidget::applySkin(const QString& name)
 	}
 
 	int maxIconSize = outputIcon->width();
-	maxIconSize = max(maxIconSize, outputIcon->height());
+        maxIconSize = qMax(maxIconSize, outputIcon->height());
 	platform->setPreferredIconSize(maxIconSize);
 }
 
@@ -1424,8 +1433,8 @@ void LaunchyWidget::shouldDonate()
 
 void LaunchyWidget::setFadeLevel(double level)
 {
-	level = min(level, 1);
-	level = max(level, 0);
+        level = qMin(level, 1.0);
+        level = qMax(level, 1.0);
 	setWindowOpacity(level);
 	alternatives->setWindowOpacity(level);
 	if (level <= 0)
@@ -1606,10 +1615,15 @@ int main(int argc, char *argv[])
 
 	qApp->setStyleSheet("file:///:/resources/basicskin.qss");
 
-	LaunchyWidget* widget = createLaunchyWidget(command);
+#ifdef Q_WS_WIN
+        LaunchyWidget* widget = createLaunchyWidget(command);
+#endif
+#ifdef Q_WS_X11
+        LaunchyWidget* widget = new LaunchyWidget(command);
+#endif
 
 	qApp->exec();
-
+qDebug() << "hi!";
 	if (gBuilder != NULL)
 	{
 		gBuilder->wait();
@@ -1617,6 +1631,7 @@ int main(int argc, char *argv[])
 
 	delete widget;
 	widget = NULL;
+
 	delete platform;
 	platform = NULL;
 }

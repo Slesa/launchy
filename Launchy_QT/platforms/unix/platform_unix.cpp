@@ -17,39 +17,64 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+#include "precompiled.h"
 #include <QtGui>
 #include <QApplication>
 #include <QX11Info>
 #include "platform_unix.h"
 #include <boost/pointer_cast.hpp>  
 #include <X11/Xlib.h>
+#include <QFileIconProvider>
 
 
 
 
 
+PlatformUnix::PlatformUnix(int& argc, char** argv) :
+        PlatformBase(argc, argv)
+{
+    /*
+        instance = new LimitSingleInstance(TEXT("Local\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
+
+        // Create local and global application mutexes so that installer knows when
+        // Launchy is running
+        localMutex = CreateMutex(NULL,0,_T("LaunchyMutex"));
+        globalMutex = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
+        */
+    icons = new UnixIconProvider();
+
+//    init(argc,argv);
+//        alpha.reset();
+  //      icons->reset();
+}
+
+/*
 PlatformUnix::PlatformUnix() : PlatformBase() 		
 {
 	alpha.reset();
 //    alpha = NULL;
     icons.reset();
 }
+*/
 
+/*
 shared_ptr<QApplication> PlatformUnix::init(int & argc, char** argv)
 {        
     //    QApplication * app = new QApplication(*argc, argv);
     shared_ptr<QApplication> app(new MyApp(argc, argv));
-    icons.reset( (QFileIconProvider *) new UnixIconProvider());
+    icons = new UnixIconProvider();
+
+//    icons.reset( (QFileIconProvider *) new UnixIconProvider());
     return app;
 }
-
+*/
 PlatformUnix::~PlatformUnix()
 { 
     GlobalShortcutManager::clear();
 //    delete icons;
 }
 
-QList<Directory> PlatformUnix::GetInitialDirs() {
+QList<Directory> PlatformUnix::getDefaultCatalogDirectories() {
     QList<Directory> list;
     const char *dirs[] = { "/usr/share/applications/",
 			   "/usr/local/share/applications/",
@@ -68,7 +93,7 @@ QList<Directory> PlatformUnix::GetInitialDirs() {
 }
 
 
-QHash<QString, QList<QString> > PlatformUnix::GetDirectories() {
+QHash<QString, QList<QString> > PlatformUnix::getDirectories() {
     QHash<QString, QList<QString> > out;
     QDir d;
     d.mkdir(QDir::homePath() + "/.launchy");
@@ -84,6 +109,7 @@ QHash<QString, QList<QString> > PlatformUnix::GetDirectories() {
     out["config"] += QDir::homePath() + "/.launchy/launchy.ini";
     out["portConfig"] += qApp->applicationDirPath() + "/launchy.ini";
     out["db"] += QDir::homePath() + "/.launchy/launchy.db";
+    out["history"] += QDir::homePath() + "/.launchy/history.db";
     out["portDB"] += qApp->applicationDirPath() + "/launchy.db";
     
     if (QFile::exists(out["skins"].last() + "/Default"))
@@ -199,11 +225,11 @@ void PlatformUnix::alterItem(CatItem* item) {
     item->fullPath = exe + " " + allExe.join(" ");
 
     // Cache the icon for this desktop file
-    shared_ptr<UnixIconProvider> u(dynamic_pointer_cast<UnixIconProvider>(icons));
+    //shared_ptr<UnixIconProvider> u(dynamic_pointer_cast<UnixIconProvider>(icons));
 //    shared_ptr<UnixIconProvider> u((UnixIconProvider*) icons.get());
     
-    icon = u->getDesktopIcon(file.fileName(), icon);
-
+    //icon = u->getDesktopIcon(file.fileName(), icon);
+    icon = ((UnixIconProvider*)icons)->getDesktopIcon(file.fileName(), icon);
     item->icon = icon;
 
     file.close();
@@ -247,4 +273,8 @@ QString PlatformUnix::expandEnvironmentVars(QString txt)
 }
 
 
-Q_EXPORT_PLUGIN2(platform_unix, PlatformUnix)
+// Create the application object
+QApplication* createApplication(int& argc, char** argv)
+{
+        return new PlatformUnix(argc, argv);
+}

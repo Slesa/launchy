@@ -64,7 +64,7 @@ class UnixIconProvider : public QFileIconProvider
  public:
     UnixIconProvider();
     ~UnixIconProvider() {}
-    QIcon getIcon(const QFileInfo& info);
+    virtual QIcon icon(const QFileInfo& info);
     QString getDesktopIcon(QString desktopFile, QString IconName = "");
 };
 
