@@ -190,7 +190,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	catalog->load(dirs["db"][0]);
 
 	// Load the history
-	history.load(dirs["history"][0]);
+        history.load(dirs["history"][0]);
 
 	// Load the skin
 	applySkin(gSettings->value("GenOps/skin", "Default").toString());
@@ -1256,6 +1256,8 @@ void LaunchyWidget::applySkin(const QString& name)
 	bool validFrame = false;
 	QPixmap frame;
 
+        qDebug() << platform->supportsAlphaBorder();
+        qDebug() << "hi!";
 	if (platform->supportsAlphaBorder())
 	{
 		if (frame.load(directory + "frame.png"))

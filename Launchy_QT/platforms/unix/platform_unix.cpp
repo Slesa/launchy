@@ -137,7 +137,7 @@ bool PlatformUnix::CreateAlphaBorder(QWidget* w, QString ImageName)
     return true;
 }
 
-bool PlatformUnix::SupportsAlphaBorder()
+bool PlatformUnix::supportsAlphaBorder() const
 {
     //    return QX11Info::isCompositingManagerRunning();
     
