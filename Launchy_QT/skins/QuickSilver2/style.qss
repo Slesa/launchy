@@ -2,7 +2,7 @@
 }
 
 #input {
-	font: 14px "Verdana";
+	font: 14px Verdana, Arial, Sans;
 	border-width: 0px;
 	background-color: rgb(255,255,255);
 	border-style: solid;
@@ -12,7 +12,7 @@
 }
 
 #output {
-	font: 12px "Verdana";
+	font: 12px Verdana, Arial, Sans;
 	border-width: 0px;
 	background-color: rgba(255,255,255,0%);
 	border-style: solid;
@@ -26,7 +26,7 @@
 }
 
 #alternatives {
-	font: 12px "Verdana";
+	font: 12px Verdana, Arial, Sans;
 	border-width: 0px;
 	background-color: rgb(255,255,255);
 	border-style: solid;

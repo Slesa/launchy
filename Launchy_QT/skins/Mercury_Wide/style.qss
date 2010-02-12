@@ -17,7 +17,7 @@
 }
 
 #input {
-	font: 13px "Verdana";
+	font: 13px Verdana, Arial, Sans;
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
@@ -27,7 +27,7 @@
 }
 
 #output {
-	font: 13px "Verdana";
+	font: 13px Verdana, Arial, Sans;
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
@@ -41,7 +41,7 @@
 }
 
 #alternatives {
-	font: 13px "Verdana";
+	font: 13px Verdana, Arial, Sans;
 	background-color: black;
 	alternate-background-color: rgb(32,32,32);
 	color: white;
@@ -52,7 +52,7 @@
 }
 
 #alternativesPath {
-	font: 11px "Lucida Sans";
+	font: 11px "Lucida Sans", Arial, Sans;
 	color: rgb(102,102,102);
 }
 
