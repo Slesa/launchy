@@ -1439,7 +1439,7 @@ void LaunchyWidget::shouldDonate()
 void LaunchyWidget::setFadeLevel(double level)
 {
 	level = qMin(level, 1.0);
-	level = qMax(level, 1.0);
+	level = qMax(level, 0.0);
 	setWindowOpacity(level);
 	alternatives->setWindowOpacity(level);
 	if (level <= 0)
