@@ -27,6 +27,9 @@
 #include <QX11Info>
 #include <boost/shared_ptr.hpp>
 
+#include <X11/X.h>
+#include <X11/Xlib.h>
+
 using namespace boost;
 
 /*
@@ -61,9 +64,6 @@ class PlatformUnix :  public PlatformBase
     }
 
     QKeySequence oldKey;
-	private:
-	shared_ptr<AlphaBorder> alpha;
-    QString alphaFile;
  public:
     PlatformUnix(int & argc, char** argv);
     ~PlatformUnix();
@@ -103,23 +103,12 @@ class PlatformUnix :  public PlatformBase
     bool isAlreadyRunning() const {
 	return false;
     }
-    
 
-    shared_ptr<QWidget> getAlphaWidget() {
-		return alpha;
-    }
 
     virtual QHash<QString, QList<QString> > getDirectories();
 	virtual QString expandEnvironmentVars(QString txt);
 
     bool supportsAlphaBorder() const;
-    bool CreateAlphaBorder(QWidget* w, QString ImageName);
-    void DestroyAlphaBorder() { alpha.reset(); /*delete alpha ; alpha = NULL;*/ return; }
-    void MoveAlphaBorder(QPoint pos) { if (alpha) alpha->move(pos); }
-    void ShowAlphaBorder() { if (alpha) alpha->show(); }
-    void HideAlphaBorder() { if (alpha) alpha->hide(); }
-    void SetAlphaOpacity(double trans ) { if (alpha) alpha->SetAlphaOpacity(trans); }
-
     /*
     QIcon icon(const QFileInfo& info) {
     	shared_ptr<UnixIconProvider> u(dynamic_pointer_cast<UnixIconProvider>(icons));
