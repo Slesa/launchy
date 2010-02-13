@@ -124,7 +124,7 @@ QHash<QString, QList<QString> > PlatformUnix::getDirectories() {
 }
 
 
-
+/*
 bool PlatformUnix::CreateAlphaBorder(QWidget* w, QString ImageName)
 {
 //   if (alpha)
@@ -136,7 +136,7 @@ bool PlatformUnix::CreateAlphaBorder(QWidget* w, QString ImageName)
     alpha.reset( new AlphaBorder(w, ImageName) ); 
     return true;
 }
-
+*/
 bool PlatformUnix::supportsAlphaBorder() const
 {
     //    return QX11Info::isCompositingManagerRunning();
@@ -193,32 +193,43 @@ void PlatformUnix::alterItem(CatItem* item) {
 	item->lowName = item->shortName.toLower();
     }
 
-        
+    // Don't index desktop items wthout icons
+    if (icon.trimmed() == "")
+        return;
+
+
+    /* fill in some specifiers while we have the info */
+    exe.replace("%i", "--icon " + icon);
+    exe.replace("%c", name);
+    exe.replace("%k", item->fullPath);
+
     QStringList allExe = exe.trimmed().split(" ",QString::SkipEmptyParts);
-    if (allExe.size() == 0)
-	return;
+    if (allExe.size() == 0 || allExe[0].size() == 0 )
+            return;
     exe = allExe[0];
     allExe.removeFirst();
     //    exe = exe.trimmed().split(" ")[0];
 
     
-    // Look for the executable in the path
-    if (!QFile::exists(exe) && exe != "") {
-	foreach(QString line, QProcess::systemEnvironment()) {
-	    if (!line.startsWith("Path", Qt::CaseInsensitive)) 
-		continue;
+    /* if an absolute or relative path is supplied we can just skip this
+       everything else should be checked to avoid picking up [unwanted]
+       stuff from the working directory - if it doesnt exsist, use it anyway */
+    if(!exe.contains(QRegExp("^.?.?/"))){
+        foreach(QString line, QProcess::systemEnvironment()) {
+            if (!line.startsWith("Path", Qt::CaseInsensitive))
+                continue;
 
-	    QStringList spl = line.split("=");
-	    QStringList spl2 = spl[1].split(":");
-	    foreach(QString dir, spl2) {
-		QString tmp = dir + "/" + exe;
-		if (QFile::exists(tmp)) {
-		    exe = tmp;
-		    break;
-		}
-	    }
-	    break;
-	}
+            QStringList spl = line.split("=");
+            QStringList spl2 = spl[1].split(":");
+            foreach(QString dir, spl2) {
+                QString tmp = dir + "/" + exe;
+                if (QFile::exists(tmp)) {
+                    exe = tmp;
+                    break;
+                }
+            }
+            break;
+        }
     }
     
     
@@ -230,6 +241,13 @@ void PlatformUnix::alterItem(CatItem* item) {
     
     //icon = u->getDesktopIcon(file.fileName(), icon);
     icon = ((UnixIconProvider*)icons)->getDesktopIcon(file.fileName(), icon);
+
+    QFileInfo inf(icon);
+    if (!inf.exists()) {
+        qDebug() << "couldn't find icon for" << icon << item->fullPath;
+        return;
+    }
+
     item->icon = icon;
 
     file.close();
