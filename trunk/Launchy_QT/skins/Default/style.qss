@@ -13,7 +13,7 @@
 }
 
 #input {
-	font: 12px Verdana, Arial, Sans;
+	font: 12px Verdana, Sans, Arial;
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
@@ -23,7 +23,7 @@
 }
 
 #output {
-	font: 12px Verdana, Arial, Sans; 
+	font: 12px Verdana, Sans, Arial; 
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
@@ -38,7 +38,7 @@
 
 #alternatives {
 	color:#3c3c3c;
-	font: 12px Verdana, Arial, Sans;
+	font: 12px Verdana, Sans, Arial;
 	alternate-background-color: rgb(217,217,217);
 	background: white;
 	selection-background-color: rgb(68,124,184);
@@ -52,7 +52,7 @@
 }
 
 #alternativesPath {
-	font: 11px Verdana, Arial, Sans;
+	font: 11px Verdana, Sans, Arial;
 	color: rgb(102,102,102);
 	/* selected-color: rgb(196,220,243); */
 }
