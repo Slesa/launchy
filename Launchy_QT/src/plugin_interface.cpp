@@ -133,6 +133,8 @@ void runProgram(QString path, QString args) {
 #endif
 
 #ifdef Q_WS_X11
+
+
 int getDesktop()
 {
     QStringList list = QProcess::systemEnvironment();
@@ -145,6 +147,52 @@ int getDesktop()
 	}
     return -1;
 }
+
+
+
+void runProgram(QString path, QString args) {
+
+    QString fullname = path.split(" ")[0];
+    QFileInfo info(fullname);
+
+    /* I would argue that launchy does not need to fully
+       support the desktop entry specification yet/ever.
+       NOTE: %c, %k, and %i are handled during loading */
+    if( path.contains("%") ){
+        path.replace("%U", args);
+        path.replace("%u", args);
+        path.replace("%F", args);
+        path.replace("%f", args);
+        /* remove specifiers either not yet supported or depricated */
+        path.remove(QRegExp("%."));
+        args = "";
+   }
+
+    QString cmd;
+
+    if( !info.isExecutable() || info.isDir() ){
+        /* if more then one file is passed, then xdg-open will fail.. */
+        cmd = "xdg-open \"" + path.trimmed() + "\"";
+    }else if(getDesktop() == DESKTOP_KDE) {
+        /* special case for KDE since some apps start behind other windows */
+        cmd = "kstart --activate " + path.trimmed() + " " + args.trimmed();
+    } else /* gnome, xfce, etc */ {
+        path.replace("\"", "\\\"");
+        args.replace("\"", "\\\"");
+        cmd = "sh -c \"" + path.trimmed() + " " + args.trimmed() + "\"";
+     }
+
+
+    QProcess::startDetached(cmd);
+
+
+
+    return;
+}
+
+
+
+/*
 
 void runProgram(QString path, QString args) {
     QProcess proc;
@@ -199,7 +247,7 @@ void runProgram(QString path, QString args) {
     
     return;
 }
-
+*/
 
 
 
