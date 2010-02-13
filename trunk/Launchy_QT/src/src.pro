@@ -52,7 +52,7 @@ HEADERS = platform_base.h \
     FileSearch.h \
     AnimationLabel.h
 ICON = Launchy.ico
-first.target = blah
+FORMS = options.ui
 unix { 
     SOURCES += ../platforms/unix/platform_unix.cpp \
                ../platforms/unix/platform_unix_util.cpp \
@@ -62,7 +62,7 @@ unix {
                ../platforms/unix/platform_x11_hotkey.h \
                 platform_base_hotkey.h \
                 platform_base_hottrigger.h \
-    FORMS = options.ui
+
     PREFIX = /usr
     DEFINES += SKINS_PATH=\\\"$$PREFIX/share/launchy/skins/\\\" \
         PLUGINS_PATH=\\\"$$PREFIX/lib/launchy/plugins/\\\" \
@@ -97,7 +97,6 @@ win32 {
         ../platforms/win/platform_win_util.h
     CONFIG += embed_manifest_exe
     INCLUDEPATH += c:/boost/
-    FORMS = options.ui
     RC_FILE = ../win/launchy.rc
     LIBS += shell32.lib \
         user32.lib \
