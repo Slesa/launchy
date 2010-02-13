@@ -26,12 +26,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef __IShellItemImageFactory_INTERFACE_DEFINED__
 #define __IShellItemImageFactory_INTERFACE_DEFINED__
 
+#define SHIL_JUMBO 0x4 
+/* IShellItemImageFactory::GetImage() flags */
+enum _SIIGB {
+    SIIGBF_RESIZETOFIT      = 0x00000000,
+    SIIGBF_BIGGERSIZEOK     = 0x00000001,
+    SIIGBF_MEMORYONLY       = 0x00000002,
+    SIIGBF_ICONONLY         = 0x00000004,
+    SIIGBF_THUMBNAILONLY    = 0x00000008,
+    SIIGBF_INCACHEONLY      = 0x00000010
+};
+typedef int SIIGBF;
+
+
 const GUID IID_IShellItemImageFactory = {0xbcc18b79,0xba16,0x442f,{0x80,0xc4,0x8a,0x59,0xc3,0x0c,0x46,0x3b}};
 
 class IShellItemImageFactory : public IUnknown
 {
 public:
-    virtual HRESULT STDMETHODCALLTYPE GetImage(SIZE size, SIIGBF flags, __RPC__deref_out_opt HBITMAP *phbm) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetImage(SIZE size, SIIGBF flags, /*__RPC__deref_out_opt*/ HBITMAP *phbm) = 0;
 };
 
 #endif
