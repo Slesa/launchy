@@ -130,7 +130,7 @@ void gcalcPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 	{
 		for (int i = 0; i < results->count(); ++i)
 		{
-			if (results->at(i).id == HASH_gcalc)
+                        if (results->at(i).id == (int) HASH_gcalc)
 			{
 				results->removeAt(i);
 				break;

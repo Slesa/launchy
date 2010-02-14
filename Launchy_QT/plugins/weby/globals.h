@@ -25,13 +25,13 @@ struct WebySite {
     QString base;
     QString name;
     QString query;
-	QString suggest;
+    QString suggest;
     bool def;
     
     WebySite() { def = false; }
 
     WebySite(QString b, QString n, QString q, bool d = true, QString s = "") :
-	base(b), name(n), query(q), def(d), suggest(s) {}
+        base(b), name(n), query(q),  suggest(s), def(d) {}
 };
 
 struct Bookmark {

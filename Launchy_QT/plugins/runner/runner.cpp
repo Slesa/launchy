@@ -86,6 +86,7 @@ QString RunnerPlugin::getIcon()
 
 QString RunnerPlugin::getIcon(QString file)
 {
+    file = file; // Warning removal
 #ifdef Q_WS_WIN
 	QRegExp rx("\\.(exe|lnk)$", Qt::CaseInsensitive);
     if (rx.indexIn(file) != -1)
@@ -110,7 +111,7 @@ void RunnerPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* resul
 		return;
 
 	CatItem& catItem = inputData->first().getTopResult();
-	if (catItem.id == HASH_runner && inputData->last().hasText())
+        if (catItem.id == (int) HASH_runner && inputData->last().hasText())
 	{
 		const QString & text = inputData->last().getText();
 		// This is user search text, create an entry for it

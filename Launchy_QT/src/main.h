@@ -109,7 +109,7 @@ public slots:
 	void buildCatalog();
 	void iconExtracted(int itemIndex, QIcon icon);
 	void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
-
+        void reloadSkin();
 private:
 	void createActions();
 	void applySkin(const QString& name);
@@ -132,6 +132,8 @@ private:
 	void addToHistory(QList<InputData>& item);
 	void startDropTimer();
 
+        QString currentSkin;
+
 	Fader* fader;
 	QPixmap* frameGraphic;
 	QSystemTrayIcon* trayIcon;
@@ -148,6 +150,7 @@ private:
 
 	QAction* actShow;
 	QAction* actRebuild;
+        QAction* actReloadSkin;
 	QAction* actOptions;
 	QAction* actExit;
 

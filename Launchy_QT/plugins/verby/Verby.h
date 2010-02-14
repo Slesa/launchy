@@ -47,6 +47,7 @@ public:
 
 private:
 	void getID(uint* id);
+        void setPath(QString * path);
 	void getName(QString* name);
 	void getCatalog(QList<CatItem>* items);
 	void getResults(QList<InputData>* inputData, QList<CatItem>* results);
@@ -59,6 +60,7 @@ private:
 	QString getIconPath() const;
 
 private:
+        QString libPath;
 	Gui* gui;
 	uint HASH_VERBY;
 	uint HASH_FILE;

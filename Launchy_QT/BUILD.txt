@@ -2,8 +2,10 @@ Building on Linux:
 
 For debian and ubuntu:
 sudo apt-get install libqt4-dev libboost-dev g++
-make ; sudo make install
+qmake -r Launchy.pro ; make ; sudo make install
 
+To build a deb package:
+cd linux ; ./build_deb.sh <version> such as ./buid_deb.sh 2.2
 
 
 Building on WINDOWS:
@@ -24,7 +26,7 @@ Installing QT:
 . Variable = QMAKESPEC    Value = win32-msvc2005
 . Variable = QTDIR        Value = c:\qt\2009.05
 
-. Open a Visual Studio 2005 dommand prompt
+. Open a Visual Studio 2005 command prompt
 . cd c:\qt\2009.05\
 . configure 
 . nmake

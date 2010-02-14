@@ -41,9 +41,7 @@ void VerbyPlugin::getName(QString* str)
 
 QString VerbyPlugin::getIcon()
 {
-#ifdef Q_WS_WIN
 	return getIconPath() + "verby.png";
-#endif
 }
 
 
@@ -78,9 +76,14 @@ void VerbyPlugin::getLabels(QList<InputData>* inputData)
 
 QString VerbyPlugin::getIconPath() const
 {
-	return qApp->applicationDirPath() + "/plugins/icons/";
+        return libPath + "/icons/";
 }
 
+
+void VerbyPlugin::setPath(QString * path)
+{
+        libPath = *path;
+}
 
 void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results)
 {

@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifdef Q_WS_WIN
 void SetForegroundWindowEx(HWND hWnd)
 {
-	// Attach foreground window thread to our thread
+        // Attach foreground window thread to our thread
 	const DWORD foreGroundID = GetWindowThreadProcessId(GetForegroundWindow(), NULL);
 	const DWORD currentID = GetCurrentThreadId();
 
@@ -249,7 +249,7 @@ void LaunchyWidget::paintEvent(QPaintEvent* event)
 	styleOption.init(this);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
-	style()->drawPrimitive(QStyle::PE_Widget, &styleOption, &painter, this);
+        style()->drawPrimitive(QStyle::PE_Widget, &styleOption, &painter, this);
 
 	// Now draw the standard frame.png graphic if there is one
 	if (frameGraphic)
@@ -762,7 +762,7 @@ void LaunchyWidget::doEnter()
 
 void LaunchyWidget::inputMethodEvent(QInputMethodEvent* event)
 {
-	event; // Warning removal
+        event = event; // Warning removal
 	processKey();
 }
 
@@ -1157,8 +1157,14 @@ QString LaunchyWidget::getSkinDir(const QString& name) {
     return directory;
 }
 
+void LaunchyWidget::reloadSkin()
+{
+    applySkin(currentSkin);
+}
+
 void LaunchyWidget::applySkin(const QString& name)
 {
+        currentSkin = name;
 
 	if (listDelegate == NULL)
 		return;
@@ -1329,7 +1335,7 @@ void LaunchyWidget::applySkin(const QString& name)
 		if (frameGraphic)
 		{
 			resize(frameGraphic->size());
-		}
+                }
 	}
 
 	int maxIconSize = outputIcon->width();
@@ -1368,7 +1374,7 @@ void LaunchyWidget::mouseMoveEvent(QMouseEvent *e)
 
 void LaunchyWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-	event;
+        event = event; // Warning removal
 	dragging = false;
 	showAlternatives(false);
 	input->setFocus();
@@ -1379,7 +1385,8 @@ void LaunchyWidget::contextMenuEvent(QContextMenuEvent* event)
 {
 	QMenu menu(this);
 	menu.addAction(actRebuild);
-	menu.addAction(actOptions);
+        menu.addAction(actReloadSkin);
+	menu.addAction(actOptions);        
 	menu.addSeparator();
 	menu.addAction(actExit);
 	menuOpen = true;
@@ -1392,9 +1399,14 @@ void LaunchyWidget::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
 	switch (reason)
 	{
-	case QSystemTrayIcon::Trigger:
+        case QSystemTrayIcon::Trigger:
 		showLaunchy();
 		break;
+        case QSystemTrayIcon::Unknown:
+        case QSystemTrayIcon::Context:
+        case QSystemTrayIcon::DoubleClick:
+        case QSystemTrayIcon::MiddleClick:
+                break;
 	}
 }
 
@@ -1458,7 +1470,7 @@ void LaunchyWidget::setFadeLevel(double level)
 	level = qMax(level, 0.0);
 	setWindowOpacity(level);
 	alternatives->setWindowOpacity(level);
-	if (level <= 0)
+        if (level <= 0.1)
 	{
 		hide();
 	}
@@ -1467,6 +1479,12 @@ void LaunchyWidget::setFadeLevel(double level)
 		if (!isVisible())
 			show();
 	}
+
+        // Make sure we grab focus once we've faded in
+        if (level >= 1.0) {
+            activateWindow();
+            raise();
+        }
 }
 
 
@@ -1483,17 +1501,8 @@ void LaunchyWidget::showLaunchy(bool noFade)
 
 	fader->fadeIn(noFade || alwaysShowLaunchy);
 
-#ifdef Q_WS_X11
-	// Terrible hack to steal focus from other apps when using splashscreen
-	for(int i = 0; i < 100; i++)
-	{
-		activateWindow();
-		raise();
-		qApp->syncX();
-	}
-#endif
 
-	qApp->syncX();
+        //qApp->syncX();
 #ifdef Q_WS_WIN
 	// need to use this method in Windows to ensure that keyboard focus is set when 
 	// being activated via a hook or message from another instance of Launchy
@@ -1578,6 +1587,9 @@ void LaunchyWidget::createActions()
 
 	actRebuild = new QAction(tr("Rebuild catalog"), this);
 	connect(actRebuild, SIGNAL(triggered()), this, SLOT(buildCatalog()));
+
+        actReloadSkin = new QAction(tr("Reload skin"), this);
+        connect(actReloadSkin, SIGNAL(triggered()), this, SLOT(reloadSkin()));
 
 	actOptions = new QAction(tr("Options"), this);
 	connect(actOptions, SIGNAL(triggered()), this, SLOT(showOptionsDialog()));
