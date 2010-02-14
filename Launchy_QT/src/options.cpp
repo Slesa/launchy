@@ -381,7 +381,9 @@ void OptionsDialog::skinChanged(const QString& newSkin)
 	if (newSkin.count() == 0)
 		return;
 
-	QString directory = gMainWidget->dirs["skins"][0] + "/" + newSkin + "/";
+        // Find the skin with this name
+        QString directory = gMainWidget->getSkinDir(newSkin);
+        //QString directory = gMainWidget->dirs["skins"][0] + "/" + newSkin + "/";
 
 	// Load up the author file
 	if (!QFile::exists(directory + "style.qss"))

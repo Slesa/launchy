@@ -17,7 +17,8 @@ tar cfz launchy-$ver.tar.gz launchy-$ver/
 cd launchy-$ver
 dh_make -e karlinjf@sourceforge.net -f ../launchy-$ver.tar.gz -c gpl --single
 cp ../debian/* debian/
-dpkg-buildpackage -rfakeroot
+qmake -r Launchy.pro
+INSTALL_ROOT=$DESTDIR dpkg-buildpackage -rfakeroot
 
 cd ..
 

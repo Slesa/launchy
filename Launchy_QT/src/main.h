@@ -80,7 +80,7 @@ public:
 	void setSkin(const QString& name);
 	void loadOptions();
 	int getHotkey() const;
-
+        QString getSkinDir(const QString& name);
 protected:
     void paintEvent(QPaintEvent* event);
 
