@@ -1143,13 +1143,29 @@ void LaunchyWidget::setOpaqueness(int level)
 }
 
 
+QString LaunchyWidget::getSkinDir(const QString& name) {
+    // Find the skin with this name
+    QString directory = dirs["skins"][0] + QString("/") + name + "/";
+    if (!QFileInfo(directory).isDir()) {
+        foreach(QString dir, dirs["skins"]) {
+            if (QFileInfo(dir + QString("/") + name).isDir()) {
+                directory = dir + QString("/") + name + "/";
+                break;
+            }
+        }
+    }
+    return directory;
+}
+
 void LaunchyWidget::applySkin(const QString& name)
 {
+
 	if (listDelegate == NULL)
 		return;
 
-	QString directory = dirs["skins"][0] + QString("/") + name + "/";
-	QString stylesheetPath = directory + "style.qss";
+        QString directory = getSkinDir(name);
+
+        QString stylesheetPath = directory + "style.qss";
 
 	// Use default skin if this one doesn't exist
 	if (!QFile::exists(stylesheetPath)) 

@@ -6,7 +6,7 @@
 }
 
 #input {
-	font:  16px Tahoma, Arial, Sans;
+	font:  16px Sans, Tahoma, Arial;
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border: 2px solid #8f8f91;
@@ -17,7 +17,7 @@
 }
 
 #output {
-	font:  12px Tahoma, Arial, Sans;
+	font:  12px Sans, Tahoma, Arial;
 	color: black;
 	qproperty-alignment: AlignLeft;
 	qproperty-geometry: rect(48 60 580 24);
@@ -28,7 +28,7 @@
 }
 
 #alternatives {
-	font:  12px Tahoma, Arial, Sans;
+	font:  12px Sans, Tahoma, Arial;
 	qproperty-geometry: rect(5 104 690 200);
 }
 

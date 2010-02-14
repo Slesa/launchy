@@ -199,7 +199,11 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 			if (currentCatalog != NULL)
 				item.usage = currentCatalog->getUsage(item.fullPath);
 			platform->alterItem(&item);
+#ifdef Q_WS_X11
+                        if(item.fullPath.endsWith(".desktop") && item.icon == "")
+                            continue;
 			catalog->addItem(item);
+#endif
 			indexed[dir + "/" + files[i]] = true;
 		}
 	}

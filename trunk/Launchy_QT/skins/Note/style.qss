@@ -26,7 +26,7 @@
 }
 
 #alternatives {
-	font: 12px "Verdana";
+	font: 12px Sans, Verdana;
 	background-color: rgb(255,243,149);
 	alternate-background-color: rgb(255,245,120);
 	color: rgb(157,12,21);

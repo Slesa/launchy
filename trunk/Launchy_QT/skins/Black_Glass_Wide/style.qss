@@ -17,7 +17,7 @@
 }
 
 #input {
-	font: 12px Verdana, Arial, Sans;
+	font: 12px Sans, Verdana;
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
@@ -27,7 +27,7 @@
 }
 
 #output {
-	font: 12px Verdana, Arial, Sans;
+	font: 12px Sans, Verdana;
 	border-width: 0px;
 	background-color: rgba(0,244,120,0%);
 	border-style: solid;
@@ -41,7 +41,7 @@
 }
 
 #alternatives {
-	font: 12px Verdana, Arial, Sans;
+	font: 12px Sans, Verdana;
 	background-color: black;
 	alternate-background-color: rgb(32,32,32);
 	color: white;
