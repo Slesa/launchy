@@ -68,7 +68,7 @@ class PlatformUnix :  public PlatformBase
     PlatformUnix(int & argc, char** argv);
     ~PlatformUnix();
     
-    void setPreferredIconSize(int size) { return; }
+    void setPreferredIconSize(int size) { size = size; return; }
 
     //virtual shared_ptr<QApplication> init(int & argc, char** argv);
     // Mandatory functions

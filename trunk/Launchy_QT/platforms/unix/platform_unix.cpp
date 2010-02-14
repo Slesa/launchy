@@ -139,20 +139,7 @@ bool PlatformUnix::CreateAlphaBorder(QWidget* w, QString ImageName)
 */
 bool PlatformUnix::supportsAlphaBorder() const
 {
-    //    return QX11Info::isCompositingManagerRunning();
-    
-    QProcess qp;
-    QString program = "/bin/sh";
-    QStringList args;
-    args << "-c" << "ps ax | grep 'compiz\\|beryl' | grep -v 'grep'";
-    qp.start(program, args);   
-    qp.waitForFinished();
-    QByteArray result = qp.readAll();
-    //    qDebug() << result;
-    if (result.length() > 0)
-	return true;
-    return false;
-    
+    return QX11Info::isCompositingManagerRunning();
 }
 
 //Q_EXPORT_PLUGIN2(platform_unix, PlatformUnix)

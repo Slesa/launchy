@@ -30,3 +30,11 @@ win32:debug:%QMAKE_CXXFLAGS += /ZI
         /GA \
         /WX
 }
+unix {
+    PREFIX = /usr
+    target.path = $$PREFIX/lib/launchy/plugins/
+    icon.path = $$PREFIX/lib/launchy/plugins/icons/
+    icon.files = verby.png copy.png opencontainer.png properties.png run.png
+    INSTALLS += target \
+        icon
+}
