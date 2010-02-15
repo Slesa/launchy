@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef PLATFORM_BASE_H
 #define PLATFORM_BASE_H
 
-
+#include <QtGui> // OSX needs this
 #include "Directory.h"
 #include "catalog.h"
 #include "globals.h"

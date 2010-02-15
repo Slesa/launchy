@@ -1,6 +1,7 @@
 TEMPLATE = app
 unix:TARGET = launchy
 win32:TARGET = Launchy
+macx:TARGET = Launchy
 CONFIG += debug_and_release
 PRECOMPILED_HEADER = precompiled.h
 
@@ -51,9 +52,28 @@ HEADERS = platform_base.h \
     InputDataList.h \
     FileSearch.h \
     AnimationLabel.h
-ICON = Launchy.ico
 FORMS = options.ui
-unix { 
+
+macx {
+    ICON = ../misc/Launchy_Icon/launchy_icon_mac.icns
+    SOURCES += ../platforms/mac/platform_mac.cpp \
+               ../platforms/mac/platform_mac_hotkey.cpp
+    HEADERS += ../platforms/mac/platform_mac.h \
+               ../platforms/mac/platform_mac_hotkey.h \
+                platform_base_hotkey.h \
+                platform_base_hottrigger.h
+    if(!debug_and_release|build_pass) {
+        CONFIG(debug, debug|release):DESTDIR = ../debug/
+        CONFIG(release, debug|release):DESTDIR = ../release/
+    }
+    INCLUDEPATH += /opt/local/include/
+    LIBS += -framework Carbon
+#    INSTALLS += target
+}
+
+unix:!macx {
+    ICON = Launchy.ico
+
     SOURCES += ../platforms/unix/platform_unix.cpp \
                ../platforms/unix/platform_unix_util.cpp \
                ../platforms/unix/platform_x11_hotkey.cpp
@@ -61,7 +81,7 @@ unix {
                ../platforms/unix/platform_unix_util.h \
                ../platforms/unix/platform_x11_hotkey.h \
                 platform_base_hotkey.h \
-                platform_base_hottrigger.h \
+                platform_base_hottrigger.h
 
     PREFIX = /usr
     DEFINES += SKINS_PATH=\\\"$$PREFIX/share/launchy/skins/\\\" \
@@ -85,6 +105,8 @@ unix {
         desktop
 }
 win32 { 
+    ICON = Launchy.ico
+
 #    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):CONFIG += console
     SOURCES += ../platforms/win/platform_win.cpp \
         ../platforms/win/platform_win_hotkey.cpp \
