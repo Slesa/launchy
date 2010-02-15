@@ -135,7 +135,7 @@ int getDesktop() { return DESKTOP_MAC; }
 void runProgram(QString path, QString args)
 {
     QString cmd;
-    cmd = "open \"" + QDir::toNativeSeparators(path) + "\" " + args.trimmed();
+    cmd = "open \"" + QDir::toNativeSeparators(path) + "\" --args " + args.trimmed();
     QProcess::startDetached(cmd.trimmed());
 
     return;
