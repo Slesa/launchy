@@ -114,6 +114,7 @@ void CatalogBuilder::buildCatalog()
 
 void CatalogBuilder::indexDirectory(const QString& directory, const QStringList& filters, bool fdirs, bool fbin, int depth)
 {
+
 	QString dir = QDir::toNativeSeparators(directory);
 	QDir qd(dir);
 	dir = qd.absolutePath();
@@ -128,6 +129,17 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 				QString cur = dirs[i];
 				if (!cur.contains(".lnk"))
 				{
+#ifdef Q_WS_MAC
+                                    // Special handling of app directories
+                                    if (cur.endsWith(".app", Qt::CaseInsensitive)) {
+                                        CatItem item(dir + "/" + cur);
+                                        if (currentCatalog != NULL)
+                                                item.usage = currentCatalog->getUsage(item.fullPath);
+                                        platform->alterItem(&item);
+                                        catalog->addItem(item);
+                                    }
+                                    else
+#endif
 					indexDirectory(dir + "/" + dirs[i], filters, fdirs, fbin, depth-1);
 				}
 			}
@@ -195,6 +207,7 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 	{
 		if (!indexed.contains(dir + "/" + files[i]))
 		{
+
 			CatItem item(dir + "/" + files[i]);
 			if (currentCatalog != NULL)
 				item.usage = currentCatalog->getUsage(item.fullPath);

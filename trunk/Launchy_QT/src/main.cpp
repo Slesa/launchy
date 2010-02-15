@@ -375,7 +375,7 @@ void LaunchyWidget::showAlternatives(bool show)
 		}
 		alternatives->setCurrentRow(0);
 
-		iconExtractor.processIcons(searchResults);
+                iconExtractor.processIcons(searchResults);
 
 		int numViewable = gSettings->value("GenOps/numviewable", "4").toInt();
 		int min = alternatives->count() < numViewable ? alternatives->count() : numViewable;
@@ -826,8 +826,9 @@ void LaunchyWidget::updateOutputWidgets()
 	if (searchResults.count() > 0 && (inputData.count() > 1 || gSearchText.length() > 0))
 	{
 		output->setText(Catalog::decorateText(searchResults[0].shortName, gSearchText, true));
-		iconExtractor.processIcon(searchResults[0]);
+                iconExtractor.processIcon(searchResults[0]);
 
+//outputIcon->setPixmap(platform->icon(searchResults[0].fullPath).pixmap((outputIcon->size())));
 		if (searchResults[0].id != HASH_HISTORY)
 		{
 			// Did the plugin take control of the input?
@@ -1670,16 +1671,12 @@ int main(int argc, char *argv[])
 
 #ifdef Q_WS_WIN
         LaunchyWidget* widget = createLaunchyWidget(command);
-#endif
-#ifdef Q_WS_X11
-        LaunchyWidget* widget = new LaunchyWidget(command);
-#endif
-#ifdef Q_WS_MAC
+#else
         LaunchyWidget* widget = new LaunchyWidget(command);
 #endif
 
 	qApp->exec();
-qDebug() << "hi!";
+
 	if (gBuilder != NULL)
 	{
 		gBuilder->wait();

@@ -38,7 +38,7 @@ public:
 	virtual QString expandEnvironmentVars(QString);
         virtual bool supportsAlphaBorder() const { return true; }
         virtual bool isAlreadyRunning() const;
-
+        virtual void alterItem(CatItem* item);
 private:
         QKeySequence oldKey;
 
