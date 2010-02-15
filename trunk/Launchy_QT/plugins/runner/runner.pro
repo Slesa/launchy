@@ -50,5 +50,8 @@ unix:!macx {
 }
 
 macx {
+  if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/Launchy.app/Contents/MacOS/plugins
+  if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../release/Launchy.app/Contents/MacOS/plugins
+
   INCLUDEPATH += /opt/local/include/
 }

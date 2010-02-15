@@ -39,10 +39,9 @@ QHash<QString, QList<QString> > PlatformMac::getDirectories()
     QDir d;
     QString home = QDir::homePath() + "/Library/Launchy";
 
+
     d.mkdir(home);
-
-
-    out["skins"] += qApp->applicationDirPath() + "/skins";
+    out["skins"] += qApp->applicationDirPath() + "/../Resources/skins";
     out["skins"] += home + "/skins";
     //out["skins"] += SKINS_PATH;
 

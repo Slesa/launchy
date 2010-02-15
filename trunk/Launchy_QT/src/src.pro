@@ -1,5 +1,5 @@
 TEMPLATE = app
-unix:TARGET = launchy
+unix:!macx:TARGET = launchy
 win32:TARGET = Launchy
 macx:TARGET = Launchy
 CONFIG += debug_and_release
@@ -68,7 +68,18 @@ macx {
     }
     INCLUDEPATH += /opt/local/include/
     LIBS += -framework Carbon
-#    INSTALLS += target
+
+    CONFIG(debug, debug|release):skins.path = ../debug/Launchy.app/Contents/Resources/skins/
+    CONFIG(release, debug|release):skins.path = ../release/Launchy.app/Contents/Resources/skins/
+    skins.files = ../skins/*
+
+    CONFIG(debug, debug|release):translations.path = ../debug/Launchy.app/Contents/MacOS/tr/
+    CONFIG(release, debug|release):translations.path = ../release/Launchy.app/Contents/MacOS/tr/
+    translations.files = ../translations/*.qm
+    translations.extra = lupdate src.pro ; lrelease src.pro
+
+    INSTALLS += skins \
+                translations
 }
 
 unix:!macx {
