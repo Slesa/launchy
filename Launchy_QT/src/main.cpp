@@ -67,7 +67,12 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 {
 	setObjectName("launchy");
 	setWindowTitle(tr("Launchy"));
+#ifdef Q_WS_WIN
 	setWindowIcon(QIcon(":/resources/launchy128.png"));
+#endif
+#ifdef Q_WS_MAC
+        setWindowIcon(QIcon("../Resources/launchy_icon_mac.icns"));
+#endif
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);
 	if (platform->supportsAlphaBorder())

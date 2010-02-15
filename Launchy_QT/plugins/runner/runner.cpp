@@ -47,6 +47,12 @@ void RunnerPlugin::init()
 		set->setValue("file", "/usr/bin/xterm");
 		set->setValue("args", "-hold -e $$");
 		#endif
+                /*
+                #ifdef Q_WS_MAC
+                set->setValue("name", "cmd");
+                set->setValue("file", "")
+                #endif
+                */
 		set->endArray();
 	}
 	set->setValue("runner/version", 2.0);
