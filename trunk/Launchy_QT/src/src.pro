@@ -78,8 +78,12 @@ macx {
     translations.files = ../translations/*.qm
     translations.extra = lupdate src.pro ; lrelease src.pro
 
+    dmg.path = ../release/
+    dmg.files = ../mac/Launchy-*.dmg
+    dmg.extra = cd ../mac ; make -f makedmg clean ; make -f makedmg
     INSTALLS += skins \
-                translations
+                translations \
+                dmg
 }
 
 unix:!macx {
