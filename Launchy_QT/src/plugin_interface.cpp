@@ -130,7 +130,15 @@ void runProgram(QString path, QString args) {
 
 #ifdef Q_WS_MAC
 
+int getDesktop() { return DESKTOP_MAC; }
+
+void runProgram(QString path, QString args)
+{
+    return;
+}
+
 #endif
+
 
 #ifdef Q_WS_X11
 

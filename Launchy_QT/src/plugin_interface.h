@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define DESKTOP_WINDOWS 0
 #define DESKTOP_GNOME 1
 #define DESKTOP_KDE 2
+#define DESKTOP_MAC 3
 
 /**
 	\brief This message asks the Plugin for its ID Number.

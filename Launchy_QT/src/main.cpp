@@ -19,6 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 #include "precompiled.h"
+
+#include <QMacStyle>
 #include "icon_delegate.h"
 #include "main.h"
 #include "globals.h"
@@ -52,6 +54,10 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 #ifdef Q_WS_X11
 	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
 #endif
+#ifdef Q_WS_MAC
+        QWidget(NULL, Qt::FramelessWindowHint),
+#endif
+     
 	frameGraphic(NULL),
 	trayIcon(NULL),
 	alternatives(NULL),
@@ -102,6 +108,9 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	output->setAlignment(Qt::AlignHCenter);
 
 	input = new CharLineEdit(this);
+#ifdef Q_WS_MAC
+QMacStyle::setFocusRectPolicy(input, QMacStyle::FocusDisabled);
+#endif
 	input->setObjectName("input");
 	connect(input, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(inputKeyPressEvent(QKeyEvent*)));
 	connect(input, SIGNAL(focusIn(QFocusEvent*)), this, SLOT(focusInEvent(QFocusEvent*)));
@@ -1573,6 +1582,9 @@ int LaunchyWidget::getHotkey() const
 #ifdef  Q_WS_X11
 		int meta = Qt::ControlModifier;
 #endif
+#ifdef Q_WS_MAC
+                int meta = Qt::ControlModifier;
+#endif
 		hotkey = gSettings->value("GenOps/hotkeyModifier", meta).toInt() |
 				 gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
 	}
@@ -1660,6 +1672,9 @@ int main(int argc, char *argv[])
         LaunchyWidget* widget = createLaunchyWidget(command);
 #endif
 #ifdef Q_WS_X11
+        LaunchyWidget* widget = new LaunchyWidget(command);
+#endif
+#ifdef Q_WS_MAC
         LaunchyWidget* widget = new LaunchyWidget(command);
 #endif
 
