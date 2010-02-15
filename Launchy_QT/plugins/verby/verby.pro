@@ -41,6 +41,9 @@ unix:!macx {
 macx {
   if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/Launchy.app/Contents/MacOS/plugins
   if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../release/Launchy.app/Contents/MacOS/plugins
-
+    CONFIG(debug, debug|release):icons.path = ../../debug/Launchy.app/Contents/MacOS/plugins/icons/
+    CONFIG(release, debug|release):icons.path = ../../release/Launchy.app/Contents/MacOS/plugins/icons/
+    icons.files = verby.png copy.png opencontainer.png properties.png run.png
+    INSTALLS += icons
   INCLUDEPATH += /opt/local/include/
 }
