@@ -40,10 +40,13 @@ void IconExtractor::processIcon(CatItem item, bool highPriority)
 		items.push_back(item);
 
 	mutex.unlock();
-
+#ifdef Q_WS_MAC
+        run();
+#else
 	if (!isRunning())
 		start(LowestPriority);
-}
+#endif
+    }
 
 
 void IconExtractor::processIcons(const QList<CatItem>& newItems, bool reset)
@@ -67,8 +70,13 @@ void IconExtractor::processIcons(const QList<CatItem>& newItems, bool reset)
 
 	mutex.unlock();
 
+#ifdef Q_WS_MAC
+run();
+#else
+
 	if (!isRunning())
 		start(IdlePriority);
+#endif
 }
 
 

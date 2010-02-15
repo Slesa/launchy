@@ -24,6 +24,15 @@ bool PlatformMac::setHotkey(const QKeySequence & key, QObject* receiver, const c
     return GlobalShortcutManager::isConnected(key);
 }
 
+
+void PlatformMac::alterItem(CatItem* item) {
+    if (!item->fullPath.endsWith(".app", Qt::CaseInsensitive))
+        return;
+//    item->shortName.chop(4);
+//    item->lowName.chop(4);
+}
+
+
 QHash<QString, QList<QString> > PlatformMac::getDirectories()
 {
     QHash<QString, QList<QString> > out;
