@@ -7,6 +7,12 @@ qmake -r Launchy.pro ; make ; sudo make install
 To build a deb package:
 cd linux ; ./build_deb.sh <version> such as ./buid_deb.sh 2.2
 
+Building on Mac OS X:
+1) Install the QT SDK
+2) qmake -r Launchy.pro
+3) make ; make install
+4) open release/Launchy.app
+
 
 Building on WINDOWS:
 
