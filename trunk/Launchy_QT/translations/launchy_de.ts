@@ -43,24 +43,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="939"/>
+        <location filename="../src/main.cpp" line="941"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1603"/>
+        <location filename="../src/main.cpp" line="1605"/>
         <source>Show Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1606"/>
+        <location filename="../src/main.cpp" line="1608"/>
         <source>Rebuild catalog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1609"/>
+        <location filename="../src/main.cpp" line="1611"/>
         <source>Reload skin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -75,7 +75,7 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
         <translation type="obsolete">Die  Tastenkombination wird bereits verwendet. Bitte wählen Sie ein  Launchy&apos;s Einstellungen eine andere aus.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="938"/>
+        <location filename="../src/main.cpp" line="940"/>
         <source>A new version of Launchy is available</source>
         <translation type="unfinished">Es ist eine neue Version von Launchy verfügbar</translation>
     </message>
@@ -93,12 +93,12 @@ herunterladen</translation>
         <translation type="obsolete">Katalog neu erstellen</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1612"/>
+        <location filename="../src/main.cpp" line="1614"/>
         <source>Options</source>
         <translation type="unfinished">Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1615"/>
+        <location filename="../src/main.cpp" line="1617"/>
         <source>Exit</source>
         <translation type="unfinished">Beenden</translation>
     </message>
