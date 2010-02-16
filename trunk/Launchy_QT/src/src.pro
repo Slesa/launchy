@@ -79,14 +79,12 @@ macx {
     translations.extra = lupdate src.pro ; lrelease src.pro
 
     dmg.path = ../release/
-    dmg.extra = cd ../mac ; make -f makedmg clean ; make -f makedmg
+    dmg.files = ../mac/Launchy-*.dmg
+    dmg.extra = cd ../mac ; make -f makedmg clean ; make -f makedmg ; make ../src
 
-    zdmg.path = ../release/
-    zdmg.files = ../mac/Launchy-*.dmg
-    INSTALLS += skins \
+ INSTALLS += skins \
                 translations \
-                dmg \
-                zdmg
+                dmg
 }
 
 unix:!macx {
