@@ -559,6 +559,7 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 	{
 		showAlternatives(false);
 		event->ignore();
+                this->input->setFocus();
 	}
 	else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter || event->key() == Qt::Key_Tab)
 	{
