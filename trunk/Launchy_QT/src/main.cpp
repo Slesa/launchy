@@ -114,7 +114,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 
 	input = new CharLineEdit(this);
 #ifdef Q_WS_MAC
-QMacStyle::setFocusRectPolicy(input, QMacStyle::FocusDisabled);
+        QMacStyle::setFocusRectPolicy(input, QMacStyle::FocusDisabled);
 #endif
 	input->setObjectName("input");
 	connect(input, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(inputKeyPressEvent(QKeyEvent*)));
@@ -622,6 +622,7 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 		input->keyPressEvent(event);
 		keyPressEvent(event);
 	}
+        alternatives->setFocus();
 }
 
 

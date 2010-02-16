@@ -30,7 +30,7 @@ public:
         PlatformMac(int& argc, char** argv);
         ~PlatformMac();
 
-        virtual void setPreferredIconSize(int size) { return; }
+        virtual void setPreferredIconSize(int size) { size = size; return; }
         virtual QKeySequence getHotkey() const { return oldKey; }
 	virtual bool setHotkey(const QKeySequence& newHotkey, QObject* receiver, const char* slot);
 	virtual QHash<QString, QList<QString> > getDirectories();
