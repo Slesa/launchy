@@ -1,10 +1,9 @@
 For installation instructions, please refer to the INSTALL.txt file.  This file is for the author's random notes to himself.
 
+2.2 Issues in OS X:
+meta key and control seem to be mixed up
+
 2.2 Issues in Linux:
-. Windows fonts don't really apply to Linux. Want to use "Sans" instead for anti-aliasing. Solution: Skins can use css font fallback, e.g. font: 12px Verdana, Sans. -- Does Windows have "Sans" by default?  My linux install has Verdana but it looks bad.  Maybe the ordering should be "Sans, Verdana"
-
-
-. Application launching is funny
 
 
 
