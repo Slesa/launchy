@@ -1,7 +1,8 @@
 For installation instructions, please refer to the INSTALL.txt file.  This file is for the author's random notes to himself.
 
 2.2 Issues in OS X:
-meta key and control seem to be mixed up
+. meta key and control seem to be mixed up
+. need to be able to bring launchy up on any virtual desktop, not have to switch to launchy's desktop
 
 2.2 Issues in Linux:
 
