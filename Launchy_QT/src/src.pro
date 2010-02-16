@@ -80,7 +80,7 @@ macx {
 
     dmg.path = ../release/
     dmg.files = ../mac/Launchy-*.dmg
-    dmg.extra = cd ../mac ; make -f makedmg clean ; make -f makedmg ; make ../src
+    dmg.extra = cd ../mac ; make -f makedmg clean ; make -f makedmg ; cd ../src
 
  INSTALLS += skins \
                 translations \
