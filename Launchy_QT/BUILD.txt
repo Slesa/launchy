@@ -11,7 +11,7 @@ Building and installing on Mac OS X:
 1) Install the QT SDK
 2) qmake Launchy.pro -spec macx-g++ -r CONFIG+=release
 3) make ; make install
-4) open release/Launchy-VERSION.dmg
+4) open mac/Launchy-VERSION.dmg
 5) copy Launchy.app to your Applications folder
 
 
