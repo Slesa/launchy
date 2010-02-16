@@ -43,24 +43,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="939"/>
+        <location filename="../src/main.cpp" line="941"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1603"/>
+        <location filename="../src/main.cpp" line="1605"/>
         <source>Show Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1606"/>
+        <location filename="../src/main.cpp" line="1608"/>
         <source>Rebuild catalog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1609"/>
+        <location filename="../src/main.cpp" line="1611"/>
         <source>Reload skin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -75,7 +75,7 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
         <translation type="obsolete">你选择的快捷键已经被占用， 请选择其他的快捷键.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="938"/>
+        <location filename="../src/main.cpp" line="940"/>
         <source>A new version of Launchy is available</source>
         <translation type="unfinished">Launchy 有新版本了！</translation>
     </message>
@@ -92,12 +92,12 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">重新建立索引</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1612"/>
+        <location filename="../src/main.cpp" line="1614"/>
         <source>Options</source>
         <translation type="unfinished">选项</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1615"/>
+        <location filename="../src/main.cpp" line="1617"/>
         <source>Exit</source>
         <translation type="unfinished">退出</translation>
     </message>

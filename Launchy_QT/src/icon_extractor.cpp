@@ -118,7 +118,7 @@ void IconExtractor::run()
 QIcon IconExtractor::getIcon(const CatItem& item)
 {
 #ifdef Q_WS_MAC
-    if (item.icon.endsWith(".png"))
+    if (item.icon.endsWith(".png") || item.icon.endsWith(".ico"))
         return QIcon(item.icon);
 #endif
 
