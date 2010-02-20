@@ -215,8 +215,9 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 #ifdef Q_WS_X11
                         if(item.fullPath.endsWith(".desktop") && item.icon == "")
                             continue;
-			catalog->addItem(item);
 #endif
+			catalog->addItem(item);
+
 			indexed[dir + "/" + files[i]] = true;
 		}
 	}
