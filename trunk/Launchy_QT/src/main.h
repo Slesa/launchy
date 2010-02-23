@@ -122,7 +122,7 @@ private:
 	void parseInput(const QString& text);
 	void updateOutputWidgets();
 	void searchOnInput();
-	void loadPosition();
+	void loadPosition(QPoint pt);
 	void savePosition() { gSettings->setValue("Display/pos", pos()); }
 	void doTab();
 	void doBackTab();
