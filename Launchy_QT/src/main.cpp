@@ -208,7 +208,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	applySkin(gSettings->value("GenOps/skin", "Default").toString());
 
 	// Move to saved position
-	loadPosition();
+	loadPosition(gSettings->value("Display/pos", QPoint(0,0)).toPoint());
 	loadOptions();
 
 	executeStartupCommand(command);
@@ -1002,9 +1002,8 @@ void LaunchyWidget::updateVersion(int oldVersion)
 }
 
 
-void LaunchyWidget::loadPosition()
+void LaunchyWidget::loadPosition(QPoint pt)
 {
-	QPoint pt = gSettings->value("Display/pos", QPoint(0,0)).toPoint();
 	QRect r = geometry();
 	int primary = qApp->desktop()->primaryScreen();
 	QRect scr = qApp->desktop()->availableGeometry(primary);
@@ -1514,7 +1513,7 @@ void LaunchyWidget::showLaunchy(bool noFade)
 	// There's a problem with alpha layered windows under Vista after resuming
 	// from sleep. The alpha image may need to be reapplied.
 #endif
-	loadPosition();
+	loadPosition(pos());
 
 	fader->fadeIn(noFade || alwaysShowLaunchy);
 
