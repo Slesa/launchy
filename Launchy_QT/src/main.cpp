@@ -1004,25 +1004,26 @@ void LaunchyWidget::updateVersion(int oldVersion)
 
 void LaunchyWidget::loadPosition(QPoint pt)
 {
-	QRect r = geometry();
-	int primary = qApp->desktop()->primaryScreen();
-	QRect scr = qApp->desktop()->availableGeometry(primary);
+	// Get the dimensions of the screen containing the new center point
+	QRect rect = geometry();
+	QPoint newCenter = pt + QPoint(rect.width()/2, rect.height()/2);
+	QRect screen = qApp->desktop()->availableGeometry(newCenter);
 
-	// See if pt is in the current screen resolution, if not pull it inside
-	if (pt.x()+r.width()/2 < 0)
-		pt.setX(0);
-	else if (pt.x()-r.width()/2 > scr.width())
-		pt.setX(scr.width()-r.width());
-	if (pt.y()+r.height()/2 < 0)
-		pt.setY(0);
-	else if (pt.y()-r.height()/2 > scr.height())
-		pt.setY(scr.height()-r.height());
+	// See if the new position is within the screen dimensions, if not pull it inside
+	if (newCenter.x() < screen.left())
+		pt.setX(screen.left());
+	else if (newCenter.x() > screen.right())
+		pt.setX(screen.right()-rect.width());
+	if (newCenter.y() < screen.top())
+		pt.setY(screen.top());
+	else if (newCenter.y() > screen.bottom())
+		pt.setY(screen.bottom()-rect.height());
 
-	int center = gSettings->value("GenOps/alwayscenter", 3).toInt();
-	if (center & 1)
-		pt.setX(scr.width()/2 - r.width()/2);
-	if (center & 2)
-		pt.setY(scr.height()/2 - r.height()/2);
+	int centerOption = gSettings->value("GenOps/alwayscenter", 3).toInt();
+	if (centerOption & 1)
+		pt.setX(screen.center().x() - rect.width()/2);
+	if (centerOption & 2)
+		pt.setY(screen.center().y() - rect.height()/2);
 
 	move(pt);
 }
