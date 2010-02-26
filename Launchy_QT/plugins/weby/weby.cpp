@@ -378,9 +378,8 @@ QString WebyPlugin::getFirefoxPath()
 		{
 			QStringList spl = line.split("=");
 			if (isRel)
-				path = osPath + spl[1].mid(0,spl[1].count()-1) + "/bookmarks.html" ;
-			else
-				path = spl[1].mid(0,spl[1].count()-1);
+				path = osPath;
+			path += spl[1].mid(0,spl[1].count()-1) + "/bookmarks.html";
 			break;
 		}
 	}
