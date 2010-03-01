@@ -7,12 +7,16 @@ qmake -r Launchy.pro ; make ; sudo make install
 To build a deb package:
 cd linux ; ./build_deb.sh <version> such as ./buid_deb.sh 2.2
 
+
+
 Building and installing on Mac OS X:
+
 1) Install the QT SDK
 2) qmake Launchy.pro -spec macx-g++ -r CONFIG+=release
 3) make ; make install
-4) open mac/Launchy-VERSION.dmg
+4) open mac/Launchy.dmg
 5) copy Launchy.app to your Applications folder
+
 
 
 Building on WINDOWS:
@@ -51,7 +55,7 @@ Building Launchy:
 . F7 to compile!
 
 
-Launchy and QT can also be built using Visual Studio 2008, just set use win32-msvc2008 instead of win32-msvc2005. In this scenario, there are binary compatibility issues with plugins built using Visual Studio 2005 which will cause a runtime error and refuse to load.
+Launchy and QT can also be built using Visual Studio 2008, just set use win32-msvc2008 instead of win32-msvc2005. In this scenario, there are binary compatibility issues with plugins built using Visual Studio 2005 which will cause a runtmacdeployqt ../release/Launchy.appime error and refuse to load.
 
 When you run Launchy, note that only one skin is installed in the debug\release directories.  
 Launchy looks awfully funny when it can't find its skin!

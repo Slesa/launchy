@@ -75,6 +75,7 @@ QList<Directory> PlatformMac::getDefaultCatalogDirectories()
 
     list.append(Directory("/Applications", types, false, false, 5));
     list.append(Directory("~/Applications", types, false, false, 5));
+    list.append(Directory("/System/Library/CoreServices", types, false, false, 5));
     list.append(Directory("~", QStringList(), true, false, 0));    
 
     return list;
