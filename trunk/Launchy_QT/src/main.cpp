@@ -1593,7 +1593,7 @@ int LaunchyWidget::getHotkey() const
 		int meta = Qt::ControlModifier;
 #endif
 #ifdef Q_WS_MAC
-                int meta = Qt::ControlModifier;
+                int meta = Qt::MetaModifier;
 #endif
 		hotkey = gSettings->value("GenOps/hotkeyModifier", meta).toInt() |
 				 gSettings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
