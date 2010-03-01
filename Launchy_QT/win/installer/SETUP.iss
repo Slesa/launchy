@@ -31,21 +31,21 @@ AppID=Launchy_21344213
 Name: english; MessagesFile: compiler:Default.isl
 
 [Tasks]
-Name: startmenuicon; Description: "Create start menu icons"; GroupDescription: {cm:StartMenuIcons};
-Name: startmenuicon\user; Description: "For the current user only"; GroupDescription: {cm:StartMenuIcons}; Flags: exclusive
-Name: startmenuicon\common; Description: "For all users"; GroupDescription: {cm:StartMenuIcons}; Flags: exclusive unchecked
+Name: startmenuicon; Description: Create start menu icons; GroupDescription: {cm:StartMenuIcons}
+Name: startmenuicon\user; Description: For the current user only; GroupDescription: {cm:StartMenuIcons}; Flags: exclusive
+Name: startmenuicon\common; Description: For all users; GroupDescription: {cm:StartMenuIcons}; Flags: exclusive unchecked
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 
 [InstallDelete]
-Type: filesandordirs; Name: "{app}\skins\Black Glass"
-Type: filesandordirs; Name: "{app}\skins\Black Glass Wide"
-Type: filesandordirs; Name: "{app}\skins\Default"
-Type: filesandordirs; Name: "{app}\skins\Mercury"
-Type: filesandordirs; Name: "{app}\skins\Mercury Wide"
-Type: filesandordirs; Name: "{app}\skins\Note"
-Type: filesandordirs; Name: "{app}\skins\Quicksilver2"
-Type: filesandordirs; Name: "{app}\platform_win.dll"
+Type: filesandordirs; Name: {app}\skins\Black Glass
+Type: filesandordirs; Name: {app}\skins\Black Glass Wide
+Type: filesandordirs; Name: {app}\skins\Default
+Type: filesandordirs; Name: {app}\skins\Mercury
+Type: filesandordirs; Name: {app}\skins\Mercury Wide
+Type: filesandordirs; Name: {app}\skins\Note
+Type: filesandordirs; Name: {app}\skins\Quicksilver2
+Type: filesandordirs; Name: {app}\platform_win.dll
 
 [Files]
 Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
@@ -62,7 +62,7 @@ Source: ..\..\translations\launchy_zh.qm; DestDir: {app}\tr\; Flags: ignoreversi
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtGui4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtNetwork4.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\qmng4.dll; DestDir: {app}; Flags: ignoreversion
+;Source: ..\..\release\qmng4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\msvcp80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 Source: ..\msvcr80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 Source: ..\Microsoft.VC80.CRT.manifest; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
@@ -200,7 +200,7 @@ Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: deskto
 Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: quicklaunchicon; WorkingDir: {app}
 
 [Run]
-Filename: {app}\{#MyAppExeName}; Parameters: "/show"; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent runasoriginaluser
+Filename: {app}\{#MyAppExeName}; Parameters: /show; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent runasoriginaluser
 
 
 [UninstallDelete]
@@ -224,4 +224,3 @@ SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease 
 
 [CustomMessages]
 StartMenuIcons=Start menu icons:
-

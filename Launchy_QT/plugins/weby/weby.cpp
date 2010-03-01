@@ -106,7 +106,7 @@ void WebyPlugin::init()
 		set->setValue("name", "Google");
 		set->setValue("query", "http://www.google.com/search?source=launchy&q=%1");
 		//set->setValue("suggest", "http://suggestqueries.google.com/complete/search?output=firefox&q=%1");
-		set->setValue("default", true);
+		//set->setValue("default", true);
 
 		set->setArrayIndex(1);
 		set->setValue("name", "Live Search");
