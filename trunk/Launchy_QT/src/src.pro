@@ -79,8 +79,8 @@ macx {
     translations.extra = lupdate src.pro ; lrelease src.pro
 
     dmg.path = ../release/
-    dmg.files = ../mac/Launchy-*.dmg
-    dmg.extra = cd ../mac ; make -f makedmg clean ; make -f makedmg ; cd ../src
+    dmg.files =
+    dmg.extra = cd ../mac ; bash deploy; cd ../src
 
  INSTALLS += skins \
                 translations \

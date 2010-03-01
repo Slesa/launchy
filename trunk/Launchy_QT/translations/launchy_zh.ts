@@ -23,50 +23,50 @@
 <context>
     <name>LaunchyWidget</name>
     <message>
-        <location filename="../src/main.cpp" line="101"/>
+        <location filename="../src/main.cpp" line="103"/>
         <source>Launchy Options</source>
         <translation type="unfinished">Launchy 选项</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="107"/>
+        <location filename="../src/main.cpp" line="109"/>
         <source>Close Launchy</source>
         <translation type="unfinished">关闭 Launchy</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="186"/>
+        <location filename="../src/main.cpp" line="188"/>
         <source>The hotkey %1 is already in use, please select another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="316"/>
+        <location filename="../src/main.cpp" line="318"/>
         <source>Launchy (press %1 to activate)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="941"/>
+        <location filename="../src/main.cpp" line="943"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1605"/>
+        <location filename="../src/main.cpp" line="1607"/>
         <source>Show Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1608"/>
+        <location filename="../src/main.cpp" line="1610"/>
         <source>Rebuild catalog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1611"/>
+        <location filename="../src/main.cpp" line="1613"/>
         <source>Reload skin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="69"/>
-        <location filename="../src/main.cpp" line="186"/>
+        <location filename="../src/main.cpp" line="71"/>
+        <location filename="../src/main.cpp" line="188"/>
         <source>Launchy</source>
         <translation type="unfinished">Launchy</translation>
     </message>
@@ -75,7 +75,7 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
         <translation type="obsolete">你选择的快捷键已经被占用， 请选择其他的快捷键.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="940"/>
+        <location filename="../src/main.cpp" line="942"/>
         <source>A new version of Launchy is available</source>
         <translation type="unfinished">Launchy 有新版本了！</translation>
     </message>
@@ -92,12 +92,12 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">重新建立索引</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1614"/>
+        <location filename="../src/main.cpp" line="1616"/>
         <source>Options</source>
         <translation type="unfinished">选项</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1617"/>
+        <location filename="../src/main.cpp" line="1619"/>
         <source>Exit</source>
         <translation type="unfinished">退出</translation>
     </message>
