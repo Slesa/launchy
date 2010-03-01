@@ -46,7 +46,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 			else
 				volumeName = QDir::toNativeSeparators(info.filePath());
 			CatItem item(QDir::toNativeSeparators(info.filePath()), volumeName);
-			searchResults.push_back(item);
+			searchResults.push_front(item);
 		}
 		return;
 	}
@@ -96,7 +96,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 			QString filePath = dir.absolutePath() + "/" + fileName;
 			filePath = QDir::cleanPath(filePath);
 			CatItem item(QDir::toNativeSeparators(filePath), fileName);
-			searchResults.push_back(item);
+			searchResults.push_front(item);
 		}
 	}
 
