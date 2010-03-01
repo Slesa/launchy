@@ -74,8 +74,13 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genFadeOut->setValue(gSettings->value("GenOps/fadeout", 20).toInt());
 	connect(genOpaqueness, SIGNAL(sliderMoved(int)), gMainWidget, SLOT(setOpaqueness(int)));
 
+#ifdef Q_WS_MAC
+        metaKeys << tr("") << tr("Alt") << tr("Command") << tr("Shift") << tr("Control") <<
+                tr("Command+Alt") << tr("Command+Shift") << tr("Command+Control");
+#else
 	metaKeys << tr("") << tr("Alt") << tr("Control") << tr("Shift") << tr("Win") <<
 		tr("Ctrl+Alt") << tr("Ctrl+Shift") << tr("Ctrl+Win");
+#endif
 	iMetaKeys << Qt::NoModifier << Qt::AltModifier << Qt::ControlModifier << Qt::ShiftModifier << Qt::MetaModifier <<
 		(Qt::ControlModifier | Qt::AltModifier) << (Qt::ControlModifier | Qt::ShiftModifier) << (Qt::ControlModifier | Qt::MetaModifier);
 
