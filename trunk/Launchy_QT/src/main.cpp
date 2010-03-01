@@ -54,7 +54,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
 #endif
 #ifdef Q_WS_X11
-	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
+        QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
 #endif
 #ifdef Q_WS_MAC
         QWidget(NULL, Qt::FramelessWindowHint),
@@ -74,7 +74,9 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 #endif
 #ifdef Q_WS_MAC
         setWindowIcon(QIcon("../Resources/launchy_icon_mac.icns"));
+        //setAttribute(Qt::WA_MacAlwaysShowToolWindow);
 #endif
+
 	setAttribute(Qt::WA_AlwaysShowToolTips);
 	setAttribute(Qt::WA_InputMethodEnabled);
 	if (platform->supportsAlphaBorder())

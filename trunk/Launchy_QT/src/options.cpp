@@ -136,7 +136,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	QHash<QString, bool> knownSkins;
 	foreach(QString szDir, gMainWidget->dirs["skins"])
 	{
-		QDir dir(szDir);
+                QDir dir(szDir);
 		QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
 
 		foreach(QString d, dirs)
