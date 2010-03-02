@@ -1449,21 +1449,24 @@ void LaunchyWidget::buildCatalog()
 
 void LaunchyWidget::showOptionsDialog()
 {
-	dropTimer->stop();
-	showAlternatives(false);
-	optionsOpen = true;
-	OptionsDialog options(this);
-	options.setObjectName("options");
+	if (!optionsOpen)
+	{
+		dropTimer->stop();
+		showAlternatives(false);
+		optionsOpen = true;
+		OptionsDialog options(this);
+		options.setObjectName("options");
 #ifdef Q_WS_WIN
-	// need to use this method in Windows to ensure that keyboard focus is set when 
-	// being activated via a message from another instance of Launchy
-	SetForegroundWindowEx(options.winId());
+		// need to use this method in Windows to ensure that keyboard focus is set when 
+		// being activated via a message from another instance of Launchy
+		SetForegroundWindowEx(options.winId());
 #endif
-	options.exec();
+		options.exec();
 
-	input->activateWindow();
-	input->setFocus();
-	optionsOpen = false;
+		input->activateWindow();
+		input->setFocus();
+		optionsOpen = false;
+	}
 }
 
 
@@ -1633,31 +1636,33 @@ int main(int argc, char *argv[])
 	CommandFlags command = None;
 	bool allowMultipleInstances = false;
 
-	if (args.size() > 1)
+	for (int i = 0; i < args.size(); ++i)
 	{
-		foreach (QString arg, args)
+		QString arg = args[i];
+		if (arg.startsWith("-") || arg.startsWith("/"))
 		{
-			if (arg.compare("/rescue", Qt::CaseInsensitive) == 0)
+			arg = arg.mid(1);
+			if (arg.compare("rescue", Qt::CaseInsensitive) == 0)
 			{
 				command = ResetSkin | ResetPosition | ShowLaunchy;
 			}
-			else if (arg.compare("/show", Qt::CaseInsensitive) == 0)
+			else if (arg.compare("show", Qt::CaseInsensitive) == 0)
 			{
 				command |= ShowLaunchy;
 			}
-			else if (arg.compare("/options", Qt::CaseInsensitive) == 0)
+			else if (arg.compare("options", Qt::CaseInsensitive) == 0)
 			{
 				command |= ShowOptions;
 			}
-			else if (arg.compare("/multiple", Qt::CaseInsensitive) == 0)
+			else if (arg.compare("multiple", Qt::CaseInsensitive) == 0)
 			{
 				allowMultipleInstances = true;
 			}
-			else if (arg.compare("/rescan", Qt::CaseInsensitive) == 0)
+			else if (arg.compare("rescan", Qt::CaseInsensitive) == 0)
 			{
 				command |= Rescan;
 			}
-			else if (arg.compare("/exit", Qt::CaseInsensitive) == 0)
+			else if (arg.compare("exit", Qt::CaseInsensitive) == 0)
 			{
 				command |= Exit;
 			}
