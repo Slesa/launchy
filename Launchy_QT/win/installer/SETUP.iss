@@ -62,7 +62,7 @@ Source: ..\..\translations\launchy_zh.qm; DestDir: {app}\tr\; Flags: ignoreversi
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtGui4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtNetwork4.dll; DestDir: {app}; Flags: ignoreversion
-;Source: ..\..\release\qmng4.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\..\release\qmng4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\msvcp80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 Source: ..\msvcr80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 Source: ..\Microsoft.VC80.CRT.manifest; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion

@@ -7,6 +7,10 @@
     qproperty-geometry: rect(279 23 14 15);
 }
 
+#workingAnimation {
+	qproperty-geometry: rect(279 45 16 16);
+}
+
 #opsButton:pressed {
 	border: none;
 	background-image: url(opsButtonPressed.png);
