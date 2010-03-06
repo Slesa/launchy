@@ -147,7 +147,8 @@ void calcyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 		double res = 0.0;
 		if (!DoCalculation(text, res))
 			return;
-		QString szRes = QString::number(res);
+		QString szRes = QString("%1").arg(res, 0, 'f', 
+			(*settings)->value("calcy/outputPrecision", 30).toInt());
 		results->push_front(CatItem(szRes + ".calcy", szRes, HASH_CALCY, getIcon()));
 	}
 }
