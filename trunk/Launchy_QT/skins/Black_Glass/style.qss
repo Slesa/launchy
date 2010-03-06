@@ -1,6 +1,8 @@
 #launchy {
 }
-
+#workingAnimation {
+	qproperty-geometry: rect(402 25 16 16);
+}
 #input {
 	font: 12px Sans Verdana;
 	border-width: 0px;
