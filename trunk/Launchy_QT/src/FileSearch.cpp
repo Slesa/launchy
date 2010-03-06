@@ -46,6 +46,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 			else
 				volumeName = QDir::toNativeSeparators(info.filePath());
 			CatItem item(QDir::toNativeSeparators(info.filePath()), volumeName);
+			item.id = HASH_LAUNCHYFILE;
 			searchResults.push_front(item);
 		}
 		return;
@@ -96,6 +97,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 			QString filePath = dir.absolutePath() + "/" + fileName;
 			filePath = QDir::cleanPath(filePath);
 			CatItem item(QDir::toNativeSeparators(filePath), fileName);
+			item.id = HASH_LAUNCHYFILE;
 			searchResults.push_front(item);
 		}
 	}
@@ -108,6 +110,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 			fullPath += QDir::separator();
 		QString name = info.dir().dirName();
 		CatItem item(fullPath, name.count() == 0 ? fullPath : name);
+		item.id = HASH_LAUNCHYFILE;
 		searchResults.push_front(item);
 	}
 }

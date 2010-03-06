@@ -431,7 +431,7 @@ void LaunchyWidget::showAlternatives(bool show)
 
 void LaunchyWidget::launchItem(CatItem& item)
 {
-	if (item.id == HASH_LAUNCHY)
+	if (item.id == HASH_LAUNCHY || item.id == HASH_LAUNCHYFILE)
 	{
 		QString args = "";
 		if (inputData.count() > 1)
@@ -699,12 +699,14 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 		doTab();
 		processKey();
 	}
+	/*
 	else if (event->key() == Qt::Key_Slash || event->key() == Qt::Key_Backslash)
 	{
 		if (inputData.count() > 0 && inputData.last().hasLabel(LABEL_FILE))
 			doTab();
 		processKey();
 	}
+	*/
 	else if (event->text().length() > 0)
 	{
 		// process any other key with character output
@@ -742,6 +744,49 @@ void LaunchyWidget::doTab()
 		if ((inputData.last().hasLabel(LABEL_FILE) || info.isDir())
 			)//	&& input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
 		{
+			
+			{ /* If multiple paths exist, select the longest intersection */
+				QStringList paths;
+				int minLength = -1;
+				foreach(const CatItem& item, searchResults) {
+					if (item.id == HASH_LAUNCHYFILE) {
+						QString p = item.fullPath;
+						paths += p;
+						if (minLength == -1 || p.length() < minLength)
+							minLength = p.length();
+						qDebug() << p;
+					}
+				}
+				qDebug() << "";
+
+				if (paths.size() > 1) {
+					// Find the longest prefix common to all of the paths
+					QChar curChar;
+					QString longestPrefix = "";
+					for(int i = 0; i < minLength; i++) {
+						curChar = paths[0][i];
+						bool stop = false;
+						foreach(QString path, paths) {
+#ifdef Q_OS_WIN
+							if (path[i].toLower() != curChar.toLower()) {
+#else
+							if (path[i] != curChar) {
+#endif
+								stop = true;
+								break;
+							}
+						}
+						if (stop) break;
+						longestPrefix += curChar;
+					}
+
+					input->selectAll();
+					input->insert(inputData.toString(true) + longestPrefix);
+					return;
+				}
+			}
+
+
 			QString path;
 			if (info.isSymLink())
 				path = info.symLinkTarget();
