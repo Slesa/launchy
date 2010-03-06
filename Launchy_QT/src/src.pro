@@ -123,7 +123,7 @@ unix:!macx {
 win32 { 
     ICON = Launchy.ico
 
-#    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):CONFIG += console
+    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):CONFIG += console
     SOURCES += ../platforms/win/platform_win.cpp \
         ../platforms/win/platform_win_hotkey.cpp \
         ../platforms/win/platform_win_util.cpp \
