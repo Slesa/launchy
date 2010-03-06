@@ -1494,7 +1494,7 @@ void LaunchyWidget::setFadeLevel(double level)
 	level = qMax(level, 0.0);
 	setWindowOpacity(level);
 	alternatives->setWindowOpacity(level);
-        if (level <= 0.1)
+	if (level <= 0.001)
 	{
 		hide();
 	}
