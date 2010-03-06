@@ -100,6 +100,7 @@ Source: ..\..\skins\Mercury\style.qss; DestDir: {app}\skins\Mercury\; Flags: ign
 Source: ..\..\skins\Mercury\scrollBack.png; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
 Source: ..\..\skins\Mercury\scrollDown.png; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
 Source: ..\..\skins\Mercury\scrollUp.png; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
+Source: ..\..\skins\Mercury\spinner.mng; DestDir: {app}\skins\Mercury\; Flags: ignoreversion
 
 Source: ..\..\skins\Quicksilver2\frame.png; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
 Source: ..\..\skins\Quicksilver2\author.txt; DestDir: {app}\skins\Quicksilver2\; Flags: ignoreversion
@@ -122,7 +123,7 @@ Source: ..\..\skins\Black_Glass\scrollDown.png; DestDir: {app}\skins\Black Glass
 Source: ..\..\skins\Black_Glass\scrollUp.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 ;Source: ..\..\skins\Black_Glass\background_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 ;Source: ..\..\skins\Black_Glass\mask_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
-
+Source: ..\..\skins\Black_Glass\spinner.mng; DestDir: {app}\skins\Black_Glass\; Flags: ignoreversion
 
 Source: ..\..\skins\Default\author.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
 Source: ..\..\skins\Default\frame.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
@@ -132,6 +133,7 @@ Source: ..\..\skins\Default\opsButtonPressed.png; DestDir: {app}\skins\Default\;
 Source: ..\..\skins\Default\scrollBack.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
 Source: ..\..\skins\Default\scrollDown.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
 Source: ..\..\skins\Default\scrollUp.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
+Source: ..\..\skins\Default\spinner.mng; DestDir: {app}\skins\Default\; Flags: ignoreversion
 
 Source: ..\..\skins\Spotlight_Wide\author.txt; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
 Source: ..\..\skins\Spotlight_Wide\frame.png; DestDir: {app}\skins\Spotlight Wide\; Flags: ignoreversion
