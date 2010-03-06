@@ -745,7 +745,7 @@ void LaunchyWidget::doTab()
 			)//	&& input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
 		{
 			
-			{ /* If multiple paths exist, select the longest intersection */
+			{ // If multiple paths exist, select the longest intersection (like the bash shell)
 				QStringList paths;
 				int minLength = -1;
 				foreach(const CatItem& item, searchResults) {
