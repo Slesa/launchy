@@ -147,8 +147,20 @@ void calcyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 		double res = 0.0;
 		if (!DoCalculation(text, res))
 			return;
-		QString szRes = QString("%1").arg(res, 0, 'f', 
-			(*settings)->value("calcy/outputPrecision", 30).toInt());
+		QLocale locale;
+		QString szRes = locale.toString(res, 'f', (*settings)->value("calcy/outputPrecision", 10).toInt());
+		// Remove any trailing factional zeros
+		if (szRes.contains(locale.decimalPoint()))
+		{
+			while (szRes.endsWith(locale.zeroDigit()))
+			{
+				szRes.truncate(szRes.length()-1);
+			}
+			if (szRes.endsWith(locale.decimalPoint()))
+			{
+				szRes.truncate(szRes.length()-1);
+			}
+		}
 		results->push_front(CatItem(szRes + ".calcy", szRes, HASH_CALCY, getIcon()));
 	}
 }
