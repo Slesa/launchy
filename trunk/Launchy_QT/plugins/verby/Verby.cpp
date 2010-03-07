@@ -103,6 +103,7 @@ void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* result
 			results->push_back(CatItem("Run", "Run", HASH_VERBY, getIconPath() + "run.png"));
 			results->push_back(CatItem("Run as", "Run as a different user", HASH_VERBY, getIconPath() + "run.png"));
 			results->push_back(CatItem("Open containing folder", "Open containing folder", HASH_VERBY, getIconPath() + "opencontainer.png"));
+			results->push_back(CatItem("Open shortcut folder", "Open shortcut folder", HASH_VERBY, getIconPath() + "opencontainer.png"));
 			results->push_back(CatItem("Copy path", "Copy path to clipboard", HASH_VERBY, getIconPath() + "copy.png"));
 			results->push_back(CatItem("Properties", "File properties", HASH_VERBY, getIconPath() + "properties.png"));
 			inputData->first().setID(HASH_VERBY);
@@ -147,11 +148,18 @@ void VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 		runProgram("explorer.exe", "\"" + QDir::toNativeSeparators(info.absolutePath()) + "\"");
 #endif
 	}
-	else if (verb == "Run as")
+	else if (verb == "Open shortcut folder")
 	{
+		QFileInfo info(noun);
 
 #ifdef Q_WS_WIN
-            SHELLEXECUTEINFO shellExecInfo;
+		runProgram("explorer.exe", "\"" + QDir::toNativeSeparators(info.absolutePath()) + "\"");
+#endif
+	}
+	else if (verb == "Run as")
+	{
+#ifdef Q_WS_WIN
+		SHELLEXECUTEINFO shellExecInfo;
 
 		shellExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
 		shellExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
@@ -177,11 +185,12 @@ void VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 		SHELLEXECUTEINFO shellExecInfo;
 
 		shellExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
-		shellExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
+		shellExecInfo.fMask = SEE_MASK_FLAG_NO_UI | SEE_MASK_INVOKEIDLIST;
 		shellExecInfo.hwnd = NULL;
 		shellExecInfo.lpVerb = L"properties";
 		QString filePath = QDir::toNativeSeparators(noun);
 		shellExecInfo.lpFile = (LPCTSTR)filePath.utf16();
+		shellExecInfo.lpIDList = NULL; 
 		shellExecInfo.lpParameters = NULL;
 		shellExecInfo.lpDirectory = NULL;
 		shellExecInfo.nShow = SW_NORMAL;
