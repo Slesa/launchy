@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "plugin_interface.h"
 
+class Gui;
 
 
 class mypluginPlugin : public QObject, public PluginInterface
@@ -29,17 +30,13 @@ class mypluginPlugin : public QObject, public PluginInterface
 	Q_OBJECT
 	Q_INTERFACES(PluginInterface)
 
-
 public:
 	uint HASH_myplugin;
-private:
 
 public:
-	mypluginPlugin() {
-		HASH_myplugin = qHash(QString(PLUGIN_NAME));
-	}
-	~mypluginPlugin() {}
-	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
+	mypluginPlugin();
+	~mypluginPlugin();
+	int msg(int msgId, void* wParam = NULL, void* lParam = NULL);
 
 	void getLabels(QList<InputData>*);
 	void getID(uint*);
@@ -51,6 +48,9 @@ public:
 	void endDialog(bool accept);
 	void init();
 	QString getIcon();
+
+private:
+	Gui* gui;
 };
 
 extern mypluginPlugin* gmypluginInstance;
