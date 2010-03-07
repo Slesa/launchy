@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 #include "plugin_interface.h"
+#include "gui.h"
 #include <QRegExp>
 #include <boost/shared_ptr.hpp>
 
@@ -34,18 +35,16 @@ class calcyPlugin : public QObject, public PluginInterface
 	Q_INTERFACES(PluginInterface)
 
 public:
-	calcyPlugin() :
-		reg(".*[\\-\\+\\*\\/]+[\\d\\s\\-\\+\\*\\/\\(\\)\\.]+")
-	{
-		HASH_CALCY = qHash(QString("calcy"));
-	}
-	~calcyPlugin() {}
+	calcyPlugin();
+	~calcyPlugin();
 	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
 	void setPath(QString * path);
 	void getLabels(QList<InputData>*);
 	void getID(uint*);
 	void getName(QString*);
 	void getResults(QList<InputData>* id, QList<CatItem>* results);
+	void doDialog(QWidget* parent, QWidget**);
+	void endDialog(bool accept);
 	void init();
 	QString getIcon();
 
@@ -53,7 +52,11 @@ private:
 	uint HASH_CALCY;
 	QString libPath;
 	QRegExp reg;
+	shared_ptr<Gui> gui;
 };
+
+
+extern calcyPlugin* gPlugin;
 
 
 #endif

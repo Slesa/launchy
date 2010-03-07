@@ -1,6 +1,6 @@
 /*
   Launchy: Application Launcher
-  Copyright (C) 2007  Josh Karlin
+  Copyright (C) 2007-2010 Josh Karlin
   
   This program is free software; you can redistribute it and/or
   modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 
 #include "precompiled.h"
 #include "calcy.h"
+
 
 using namespace boost::spirit;
 using namespace phoenix;
@@ -109,6 +110,22 @@ bool DoCalculation(QString str, double& result)
 }
 
 
+calcyPlugin* gPlugin;
+
+
+calcyPlugin::calcyPlugin() :
+	reg(".*[\\-\\+\\*\\/]+[\\d\\s\\-\\+\\*\\/\\(\\)\\.]+")
+{
+	gPlugin = this;
+	HASH_CALCY = qHash(QString("calcy"));
+}
+
+
+calcyPlugin::~calcyPlugin()
+{
+}
+
+
 void calcyPlugin::init()
 {
 }
@@ -148,7 +165,7 @@ void calcyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 		if (!DoCalculation(text, res))
 			return;
 		QLocale locale;
-		QString szRes = locale.toString(res, 'f', (*settings)->value("calcy/outputPrecision", 10).toInt());
+		QString szRes = locale.toString(res, 'f', (*settings)->value("calcy/outputRounding", 10).toInt());
 		// Remove any trailing factional zeros
 		if (szRes.contains(locale.decimalPoint()))
 		{
@@ -178,6 +195,26 @@ void calcyPlugin::setPath(QString * path)
 }
 
 
+void calcyPlugin::doDialog(QWidget* parent, QWidget** newDlg)
+{
+	if (gui != NULL)
+		return;
+	gui.reset(new Gui(parent));
+	*newDlg = gui.get();
+}
+
+
+void calcyPlugin::endDialog(bool accept)
+{
+	if (accept)
+	{
+		gui->writeOptions();
+		init();
+	}
+	gui.reset();
+}
+
+
 int calcyPlugin::msg(int msgId, void* wParam, void* lParam)
 {
 	bool handled = false;
@@ -202,6 +239,15 @@ int calcyPlugin::msg(int msgId, void* wParam, void* lParam)
 	case MSG_GET_RESULTS:
 		getResults((QList<InputData>*) wParam, (QList<CatItem>*)lParam);
 		handled = true;
+		break;
+	case MSG_HAS_DIALOG:
+		handled = true;
+		break;
+	case MSG_DO_DIALOG:
+		doDialog((QWidget*) wParam, (QWidget**) lParam);
+		break;
+	case MSG_END_DIALOG:
+		endDialog(wParam != 0);
 		break;
 	case MSG_PATH:
 		setPath((QString*) wParam);	    

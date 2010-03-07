@@ -8,9 +8,11 @@ PRECOMPILED_HEADER = precompiled.h
 UI_DIR = ../../plugins/calcy/
 HEADERS = plugin_interface.h \
     calcy.h \
-    precompiled.h
+    precompiled.h \
+    gui.h
 SOURCES = plugin_interface.cpp \
-    calcy.cpp
+    calcy.cpp \
+    gui.cpp
 TARGET = calcy
 win32 { 
     CONFIG -= embed_manifest_dll
@@ -31,6 +33,7 @@ unix:!macx {
     INSTALLS += target \
         icon
 }
+FORMS += dlg.ui
 
 macx {
   if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/Launchy.app/Contents/MacOS/plugins
