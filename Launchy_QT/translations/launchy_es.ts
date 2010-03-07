@@ -43,24 +43,24 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="945"/>
+        <location filename="../src/main.cpp" line="990"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1609"/>
+        <location filename="../src/main.cpp" line="1657"/>
         <source>Show Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1612"/>
+        <location filename="../src/main.cpp" line="1660"/>
         <source>Rebuild catalog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1615"/>
+        <location filename="../src/main.cpp" line="1663"/>
         <source>Reload skin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -75,7 +75,7 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
         <translation type="obsolete">Esa combinación de teclas ya se está utilizando. Por favor, escoje otra en las preferencias de Launchy.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="944"/>
+        <location filename="../src/main.cpp" line="989"/>
         <source>A new version of Launchy is available</source>
         <translation type="unfinished">Hay una nueva versión de Launchy disponible</translation>
     </message>
@@ -92,12 +92,12 @@ Puedes obtenerla en 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&qu
         <translation type="obsolete">Reconstruir catálogo</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1618"/>
+        <location filename="../src/main.cpp" line="1666"/>
         <source>Options</source>
         <translation type="unfinished">Opciones</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1621"/>
+        <location filename="../src/main.cpp" line="1669"/>
         <source>Exit</source>
         <translation type="unfinished">Salir</translation>
     </message>
