@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007  Josh Karlin
+Copyright (C) 2007-2010  Josh Karlin
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -31,18 +31,35 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 
 #include "myplugin.h"
+#include "gui.h"
 
 mypluginPlugin* gmypluginInstance = NULL;
+
+
+mypluginPlugin::mypluginPlugin()
+{
+	HASH_myplugin = qHash(QString(PLUGIN_NAME));
+	gmypluginInstance = this;
+	gui = NULL;
+}
+
+
+mypluginPlugin::~mypluginPlugin()
+{
+}
+
 
 void mypluginPlugin::getID(uint* id)
 {
 	*id = HASH_myplugin;
 }
 
+
 void mypluginPlugin::getName(QString* str)
 {
 	*str = PLUGIN_NAME;
 }
+
 
 void mypluginPlugin::init()
 {
@@ -54,34 +71,48 @@ void mypluginPlugin::getLabels(QList<InputData>* id)
 {
 }
 
+
 void mypluginPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 {
 }
 
 
-
 QString mypluginPlugin::getIcon()
 {
-#ifdef Q_WS_WIN
-	return qApp->applicationDirPath() + "/plugins/icons/myplugin.ico";
-#endif
+        return qApp->applicationDirPath() + "/plugins/icons/myplugin.png";
 }
+
 
 void mypluginPlugin::getCatalog(QList<CatItem>* items)
 {
 }
 
+
 void mypluginPlugin::launchItem(QList<InputData>* id, CatItem* item)
 {
 }
 
+
 void mypluginPlugin::doDialog(QWidget* parent, QWidget** newDlg) 
 {
+	if (gui != NULL)
+		return;
+	gui = new Gui(parent);
+	*newDlg = gui;
 }
+
 
 void mypluginPlugin::endDialog(bool accept) 
 {
+	if (accept)
+	{
+		gui->writeOptions();
+		init();
+	}
+	delete gui;
+	gui = NULL;
 }
+
 
 int mypluginPlugin::msg(int msgId, void* wParam, void* lParam)
 {
