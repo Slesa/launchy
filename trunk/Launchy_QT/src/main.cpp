@@ -191,6 +191,11 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 		command = ShowLaunchy | ShowOptions;
 	}
 
+        sc_options = new QShortcut(QKeySequence(tr("Ctrl+,")), this);
+        sc_options->setContext( Qt::ApplicationShortcut );
+        connect( sc_options, SIGNAL( activated() ), this, SLOT( showOptionsDialog() ) );
+        //showOptionsDialog
+
 	// Set the timers
 	updateTimer = new QTimer(this);
 	dropTimer = new QTimer(this);
