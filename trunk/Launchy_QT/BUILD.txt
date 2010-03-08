@@ -1,7 +1,7 @@
 Building on Linux:
 
 For debian and ubuntu:
-sudo apt-get install libqt4-dev libboost-dev g++
+sudo apt-get install libqt4-dev libboost-dev g++ dh_make
 qmake -r Launchy.pro ; make ; sudo make install
 
 To build a deb package:
