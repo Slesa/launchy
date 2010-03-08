@@ -71,8 +71,9 @@ macx {
 
     CONFIG(debug, debug|release):skins.path = ../debug/Launchy.app/Contents/Resources/skins/
     CONFIG(release, debug|release):skins.path = ../release/Launchy.app/Contents/Resources/skins/
-    skins.files = ../skins/*
-
+    skins.files = 
+    skins.extra = rsync -arvz ../skins/ ../release/Launchy.app/Contents/Resources/skins/ --exclude=\".svn\""
+ 
     CONFIG(debug, debug|release):translations.path = ../debug/Launchy.app/Contents/MacOS/tr/
     CONFIG(release, debug|release):translations.path = ../release/Launchy.app/Contents/MacOS/tr/
     translations.files = ../translations/*.qm

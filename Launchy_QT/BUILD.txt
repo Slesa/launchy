@@ -16,7 +16,7 @@ Building and installing on Mac OS X:
 3) make ; make install
  -- Launchy is now built and installed in release/Launchy.app
 4) cd mac
-5) sh deploy
+5) ./deploy
 6) Now there is a release/Launchy.dmg
 5) copy Launchy.app to your Applications folder
 

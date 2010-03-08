@@ -1,7 +1,7 @@
 #!/bin/bash
 cp Info.plist ../release/Launchy.app/Contents
 
-#macdeployqt ../release/Launchy.app 
+macdeployqt ../release/Launchy.app 
 
 cd ../release/Launchy.app/Contents/MacOS/plugins
 
@@ -14,6 +14,12 @@ do
 		done;
 done;
 
-cd ../../../../
+cd ../../../../../mac
 
-macdeployqt Launchy.app -dmg
+rm -rf files
+rm *.dmg
+mkdir files
+cp -r ../release/Launchy.app files/
+cp ../Readme.pdf files/
+ln -s /Applications files/Applications
+./create-dmg --window-size 500 300 --volname "Launchy" Launchy-$1.dmg files/
