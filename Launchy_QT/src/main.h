@@ -174,6 +174,7 @@ private:
 	QHttp *http;
 	QBuffer *verBuffer;
 	QBuffer *counterBuffer;
+        QShortcut * sc_options;
 
 };
 

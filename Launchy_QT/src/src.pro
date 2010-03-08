@@ -84,7 +84,8 @@ macx {
     dmg.extra = cd ../mac ; bash deploy; cd ../src
 
  INSTALLS += skins \
-                translations 
+                translations \
+                dmg
 }
 
 unix:!macx {
