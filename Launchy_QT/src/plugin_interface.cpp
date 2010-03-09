@@ -106,7 +106,8 @@ void runProgram(QString path, QString args) {
 	ShExecInfo.fMask = SEE_MASK_FLAG_NO_UI;
 	ShExecInfo.hwnd = NULL;
 	ShExecInfo.lpVerb = elevated ? L"runas" : NULL;
-	ShExecInfo.lpFile = (LPCTSTR)path.utf16();
+	QString filePath = QDir::toNativeSeparators(path);
+	ShExecInfo.lpFile = (LPCTSTR)filePath.utf16();
 	if (args != "") {
 		ShExecInfo.lpParameters = (LPCTSTR)args.utf16();
 	} else {
@@ -118,8 +119,8 @@ void runProgram(QString path, QString args) {
 	QFileInfo info(path);
 	if (!info.isDir() && info.isFile())
 		dir.cdUp();
-	QString filePath = QDir::toNativeSeparators(dir.absolutePath());
-	ShExecInfo.lpDirectory = (LPCTSTR)filePath.utf16();
+	QString directory = QDir::toNativeSeparators(dir.absolutePath());
+	ShExecInfo.lpDirectory = (LPCTSTR)directory.utf16();
 	ShExecInfo.nShow = SW_NORMAL;
 	ShExecInfo.hInstApp = NULL;
 
