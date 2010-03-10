@@ -101,70 +101,69 @@ void WebyPlugin::init()
 
 	if ( version == 0.0 )
 	{
+		int i = 0;
 		set->beginWriteArray("weby/sites");
-		set->setArrayIndex(0);
+
+		set->setArrayIndex(i++);
 		set->setValue("name", "Google");
 		set->setValue("query", "http://www.google.com/search?source=launchy&q=%1");
 		//set->setValue("suggest", "http://suggestqueries.google.com/complete/search?output=firefox&q=%1");
 		//set->setValue("default", true);
 
-		set->setArrayIndex(1);
-		set->setValue("name", "Live Search");
-		set->setValue("query", "http://search.live.com/results.aspx?q=%1");
+		set->setArrayIndex(i++);
+		set->setValue("name", "Bing");
+		set->setValue("query", "http://www.bing.com/search?q=%1");
 
-		set->setArrayIndex(2);
+		set->setArrayIndex(i++);
 		set->setValue("name", "Yahoo");
 		set->setValue("query", "http://search.yahoo.com/search?p=%1");
 		//set->setValue("suggest", "http://ff.search.yahoo.com/gossip?output=fxjson&command=%1");
 
-		set->setArrayIndex(3);
-		set->setValue("name", "MSN");
-		set->setValue("query", "http://search.msn.com/results.aspx?q=%1");
-
-		set->setArrayIndex(4);
+		set->setArrayIndex(i++);
 		set->setValue("name", "Weather");
 		set->setValue("query", "http://www.weather.com/weather/local/%1");	
 
-		set->setArrayIndex(5);
+		set->setArrayIndex(i++);
 		set->setValue("name", "Amazon");
-		set->setValue("query", "http://www.amazon.com/gp/search/?keywords=%1&index=blended");
+		set->setValue("query", "http://www.amazon.com/gp/search?keywords=%1&index=blended");
 
-		set->setArrayIndex(6);
+		set->setArrayIndex(i++);
 		set->setValue("name", "YouTube");
 		set->setValue("query", "http://www.youtube.com/results?search_query=%1");
 
-		set->setArrayIndex(7);
+		set->setArrayIndex(i++);
 		set->setValue("name", "Wikipedia");
 		set->setValue("query", "http://en.wikipedia.org/wiki/Special:Search?search=%1&fulltext=Search");
 		//set->setValue("suggest", "http://en.wikipedia.org/w/api.php?action=opensearch&search=%1");
 
-		set->setArrayIndex(8);
+		set->setArrayIndex(i++);
 		set->setValue("name", "Dictionary");
 		set->setValue("query", "http://dictionary.reference.com/browse/%1");		
 
-		set->setArrayIndex(9);
+		set->setArrayIndex(i++);
 		set->setValue("name", "Thesaurus");
 		set->setValue("query", "http://thesaurus.reference.com/browse/%1");		
 
-		set->setArrayIndex(10);
+		set->setArrayIndex(i++);
 		set->setValue("name", "Netflix");
 		set->setValue("query", "http://www.netflix.com/Search?v1=%1");		
 
-		set->setArrayIndex(11);
+		set->setArrayIndex(i++);
 		set->setValue("name", "MSDN");
 		set->setValue("query", "http://search.msdn.microsoft.com/search/default.aspx?siteId=0&tab=0&query=%1");
 
-		set->setArrayIndex(11);
+		set->setArrayIndex(i++);
 		set->setValue("name", "E-Mail");
 		set->setValue("query", "mailto:%1");
 
-		set->setArrayIndex(12);
+		set->setArrayIndex(i++);
 		set->setValue("name", "IMDB");
 		set->setValue("query", "http://www.imdb.com/find?s=all&q=%1");
 
-		set->setArrayIndex(13);
+		set->setArrayIndex(i++);
 		set->setValue("name", "Maps");
 		set->setValue("query", "http://maps.google.com/maps?f=q&hl=en&geocode=&q=%1&ie=UTF8&z=12&iwloc=addr&om=1");
+
 		set->endArray();
 	}
 
@@ -235,18 +234,18 @@ void WebyPlugin::getLabels(QList<InputData>* inputData)
 	// Apply a "website" label if we think it's a website
 	const QString & text = inputData->last().getText();
 
-	if (text.contains("http://", Qt::CaseInsensitive))
+	QString defaultMatchExpression = "^(http|https|ftp)://|^www.|.com|.co.[a-z]{2,}|.net|.org";
+	QString matchExpression = (*settings)->value("weby/UrlRegExp", defaultMatchExpression).toString();
+	QRegExp regex(matchExpression);
+	if (!regex.isValid())
+	{
+		qDebug() << QString("Settings match expression \"%1\" is invalid. Using default.").arg(matchExpression);
+		regex = QRegExp(defaultMatchExpression);
+	}
+	if (regex.indexIn(text) != -1)
+	{
 		inputData->last().setLabel(HASH_WEBSITE);
-	else if (text.contains("https://", Qt::CaseInsensitive)) 
-		inputData->last().setLabel(HASH_WEBSITE);
-	else if (text.contains(".com", Qt::CaseInsensitive)) 
-		inputData->last().setLabel(HASH_WEBSITE);
-	else if (text.contains(".net", Qt::CaseInsensitive))
-		inputData->last().setLabel(HASH_WEBSITE);
-	else if (text.contains(".org", Qt::CaseInsensitive))
-		inputData->last().setLabel(HASH_WEBSITE);
-	else if (text.contains("www.", Qt::CaseInsensitive))
-		inputData->last().setLabel(HASH_WEBSITE);
+	}
 }
 
 
@@ -497,7 +496,8 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 		file.replace("%s",args[0]);
 	}
 	else
-	{ // It's a user-specific site
+	{
+		// It's a user-specific site
 		bool found = false;
 		foreach(WebySite site, sites)
 		{
@@ -505,10 +505,19 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 			{
 				found = true;
 				file = site.query;
-				QString tmp = site.query;
-				for(int i = 0; i < args.size(); i++)
-					tmp = tmp.arg(args[i]);
-				file = tmp;
+				if (args.count() == 0)
+				{
+					QRegExp regex("^(([a-z]*://)?([^/]*))");
+					if (regex.indexIn(file) != -1)
+					{
+						file = regex.cap(0);
+					}
+				}
+				else
+				{
+					for (int i = 0; i < args.size(); i++)
+						file = file.arg(args[i]);
+				}
 				break;
 			}
 		}
@@ -516,7 +525,7 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 		if (!found)
 		{
 			file = item->shortName;
-			if (!file.contains("http://"))
+			if (!file.startsWith("http://") && !file.startsWith("https://") && !file.startsWith("ftp://"))
 			{
 				file = "http://" + file;
 			}
