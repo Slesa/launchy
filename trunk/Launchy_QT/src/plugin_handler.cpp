@@ -129,7 +129,7 @@ void PluginHandler::loadPlugins()
 	}
 	gSettings->endArray();
 
-	foreach(QString szDir, gMainWidget->dirs["plugins"])
+	foreach(QString szDir, settings.directory("plugins"))
 	{
 		// Load up the plugins in the plugins/ directory
 		QDir pluginsDir(szDir);

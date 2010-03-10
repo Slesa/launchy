@@ -49,7 +49,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 		genShowTrayIcon->hide();
 	genAlwaysShow->setChecked(gSettings->value("GenOps/alwaysshow", false).toBool());
 	genAlwaysTop->setChecked(gSettings->value("GenOps/alwaystop", false).toBool());
-	genPortable->setChecked(gSettings->value("GenOps/isportable", false).toBool());
+	genPortable->setChecked(settings.isPortable());
 	genHideFocus->setChecked(gSettings->value("GenOps/hideiflostfocus", false).toBool());
 	genDecorateText->setChecked(gSettings->value("GenOps/decoratetext", false).toBool());
 	int center = gSettings->value("GenOps/alwayscenter", 3).toInt();
@@ -134,7 +134,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 
 	int skinRow = 0;
 	QHash<QString, bool> knownSkins;
-	foreach(QString szDir, gMainWidget->dirs["skins"])
+	foreach(QString szDir, settings.directory("skins"))
 	{
                 QDir dir(szDir);
 		QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
@@ -287,7 +287,6 @@ void OptionsDialog::accept()
 	gSettings->setValue("GenOps/showtrayicon", genShowTrayIcon->isChecked());
 	gSettings->setValue("GenOps/alwaysshow", genAlwaysShow->isChecked());
 	gSettings->setValue("GenOps/alwaystop", genAlwaysTop->isChecked());
-	gSettings->setValue("GenOps/isportable", genPortable->isChecked());
 	gSettings->setValue("GenOps/updatecheck", genUpdateCheck->isChecked());
 	gSettings->setValue("GenOps/decoratetext", genDecorateText->isChecked());
 	gSettings->setValue("GenOps/hideiflostfocus", genHideFocus->isChecked());
@@ -309,7 +308,7 @@ void OptionsDialog::accept()
 	gSettings->setValue("WebProxy/port", genProxyPort->text());
 
 	// Apply General Options
-	gMainWidget->setPortable(genPortable->isChecked());
+	settings.setPortable(genPortable->isChecked());
 	gMainWidget->setSuggestionListMode(genCondensed->currentIndex());
 	gMainWidget->loadOptions();
 
@@ -386,12 +385,11 @@ void OptionsDialog::skinChanged(const QString& newSkin)
 	if (newSkin.count() == 0)
 		return;
 
-        // Find the skin with this name
-        QString directory = gMainWidget->getSkinDir(newSkin);
-        //QString directory = gMainWidget->dirs["skins"][0] + "/" + newSkin + "/";
+    // Find the skin with this name
+    QString directory = settings.skinPath(newSkin);
 
 	// Load up the author file
-	if (!QFile::exists(directory + "style.qss"))
+	if (directory.length() == 0)
 	{
 		authorInfo->setText("");
 		return;

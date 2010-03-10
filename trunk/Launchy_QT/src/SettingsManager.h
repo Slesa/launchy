@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
+Copyright (C) 2010  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,34 +17,35 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef GLOBALS_H
-#define GLOBALS_H
+
+#ifndef SETTINGSMANAGER_H
+#define SETTINGSMANAGER_H
 
 
-#include "catalog_builder.h"
-#include "SettingsManager.h"
+#include <QString>
+#include <QHash>
 
-#define LAUNCHY_VERSION 249
-#define LAUNCHY_VERSION_STRING "2.5.0 Beta 3"
 
-#define HASH_LAUNCHY 0
-#define HASH_HISTORY 1
-#define HASH_LAUNCHYFILE 2
-#define LABEL_FILE 0
-#define LABEL_AUTOSUGGEST 1
-#define LABEL_HISTORY 2
+class SettingsManager
+{
+public:
+	SettingsManager();
+	void load();
 
-class LaunchyWidget;
-class PlatformBase;
+	bool isPortable() const;
+	QList<QString> directory(QString name) const;
+	QString catalogFilename() const;
+	QString historyFilename() const;
+	QString skinPath(const QString& skinName) const;
+	void setPortable(bool makePortable);
+	void removeAll();
 
-extern PlatformBase* platform;
-extern LaunchyWidget* gMainWidget;
-extern QSettings* gSettings;
-extern SettingsManager settings;
-extern shared_ptr<CatalogBuilder> gBuilder;
-extern QString gSearchText;
+private:
+	QString configDirectory(bool portable) const;
 
-void log(QString str);
+	bool portable;
+	QHash<QString, QList<QString> > dirs;
+};
 
 
 #endif
