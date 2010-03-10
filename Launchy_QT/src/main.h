@@ -65,7 +65,6 @@ public:
 
 	void executeStartupCommand(int command);
 
-	QHash<QString, QList<QString> > dirs;
 	shared_ptr<Catalog> catalog;
 	PluginHandler plugins;
 
@@ -76,11 +75,10 @@ public:
 	bool setHotkey(QKeySequence);
 	bool setAlwaysShow(bool);
 	bool setAlwaysTop(bool);
-	void setPortable(bool);
 	void setSkin(const QString& name);
 	void loadOptions();
 	int getHotkey() const;
-        QString getSkinDir(const QString& name);
+
 protected:
     void paintEvent(QPaintEvent* event);
 

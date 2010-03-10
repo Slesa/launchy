@@ -28,7 +28,8 @@ SOURCES = main.cpp \
     CommandHistory.cpp \
     InputDataList.cpp \
     FileSearch.cpp \
-    AnimationLabel.cpp
+	AnimationLabel.cpp \
+	SettingsManager.cpp
 HEADERS = platform_base.h \
     globals.h \
     globals.h \
@@ -51,7 +52,8 @@ HEADERS = platform_base.h \
     CommandHistory.h \
     InputDataList.h \
     FileSearch.h \
-    AnimationLabel.h
+	AnimationLabel.h \
+	SettingsManager.h
 FORMS = options.ui
 
 macx {

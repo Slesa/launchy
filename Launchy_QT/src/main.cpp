@@ -133,13 +133,8 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	workingAnimation->setObjectName("workingAnimation");
 	workingAnimation->setGeometry(QRect());
 
-	dirs = platform->getDirectories();
-
 	// Load settings
-	if (QFile::exists(dirs["portConfig"][0]))
-		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat, this);
-	else
-		gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
+	settings.load();
 
 	// If this is the first time running or a new version, call updateVersion
 	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION)
@@ -175,7 +170,6 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	if (setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool()))
 		command |= ShowLaunchy;
 	setAlwaysTop(gSettings->value("GenOps/alwaystop", false).toBool());
-	setPortable(gSettings->value("GenOps/isportable", false).toBool());
 
 	// Check for udpates?
 	if (gSettings->value("GenOps/updatecheck", true).toBool())
@@ -208,10 +202,10 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 
 	// Load the catalog
 	catalog.reset(CatalogBuilder::createCatalog());
-	catalog->load(dirs["db"][0]);
+	catalog->load(settings.catalogFilename());
 
 	// Load the history
-	history.load(dirs["history"][0]);
+	history.load(settings.historyFilename());
 
 	// Load the skin
 	applySkin(gSettings->value("GenOps/skin", "Default").toString());
@@ -962,7 +956,7 @@ void LaunchyWidget::catalogBuilt()
 	searchOnInput();
 	updateOutputWidgets();
 
-	catalog->save(dirs["db"][0]);
+	catalog->save(settings.catalogFilename());
 }
 
 
@@ -1019,28 +1013,8 @@ void LaunchyWidget::updateVersion(int oldVersion)
 {
 	if (oldVersion < 199)
 	{
-		// We've completely changed the database and ini between 1.25 and 2.0
-		// Erase all of the old information
-		QString origFile = gSettings->fileName();
-		delete gSettings;
-
-		QFile oldIniPerm(dirs["config"][0]);
-		oldIniPerm.remove();
-		oldIniPerm.close();
-
-		QFile oldDbPerm(dirs["db"][0]);
-		oldDbPerm.remove();
-		oldDbPerm.close();
-
-		QFile oldDB(dirs["portDB"][0]);
-		oldDB.remove();
-		oldDB.close();
-
-		QFile oldIni(dirs["portConfig"][0]);
-		oldIni.remove();
-		oldIni.close();
-
-		gSettings = new QSettings(origFile, QSettings::IniFormat, this);
+		settings.removeAll();
+		settings.load();
 	}
 
 	if (oldVersion < 249)
@@ -1112,7 +1086,7 @@ void LaunchyWidget::onHotkey()
 		showLaunchy(true);
 		return;
 	}
-	if (!alwaysShowLaunchy && isVisible() && !fader->isFading())
+	if (!alwaysShowLaunchy && isVisible() && !fader->isFading() && QApplication::activeWindow() !=0)
 	{
 		hideLaunchy();
 	}
@@ -1129,8 +1103,8 @@ void LaunchyWidget::closeEvent(QCloseEvent* event)
 	savePosition();
 	gSettings->sync();
 
-	catalog->save(dirs["db"][0]);
-	history.save(dirs["history"][0]);
+	catalog->save(settings.catalogFilename());
+	history.save(settings.historyFilename());
 
 	event->accept();
 	qApp->quit();
@@ -1163,49 +1137,6 @@ bool LaunchyWidget::setAlwaysTop(bool alwaysTop)
 }
 
 
-void LaunchyWidget::setPortable(bool portable)
-{
-	if (portable && gSettings->fileName().compare(dirs["portConfig"][0], Qt::CaseInsensitive) != 0)
-	{
-		delete gSettings;
-
-		// Copy the old settings
-		QFile oldSet(dirs["config"][0]);
-		oldSet.copy(dirs["portConfig"][0]);
-		oldSet.close();
-
-		QFile oldDB(dirs["db"][0]);
-		oldDB.copy(dirs["portDB"][0]);
-		oldDB.close();
-
-		gSettings = new QSettings(dirs["portConfig"][0], QSettings::IniFormat, this);
-	}
-	else if (!portable && gSettings->fileName().compare(dirs["portConfig"][0], Qt::CaseInsensitive) == 0)
-	{
-		delete gSettings;
-
-		// Remove the ini file we're going to copy to so that copy can work
-		QFile newF(dirs["config"][0]);
-		newF.remove();
-		newF.close();
-
-		// Copy the local ini + db files to the users section
-		QFile oldSet(dirs["portConfig"][0]);
-		oldSet.copy(dirs["config"][0]);
-		oldSet.remove();
-		oldSet.close();
-
-		QFile oldDB(dirs["portDB"][0]);
-		oldDB.copy(dirs["db"][0]);
-		oldDB.remove();
-		oldDB.close();
-
-		// Load up the user section ini file
-		gSettings = new QSettings(dirs["config"][0], QSettings::IniFormat, this);
-	}
-}
-
-
 void LaunchyWidget::setOpaqueness(int level)
 {
 	double value = level / 100.0;
@@ -1214,20 +1145,6 @@ void LaunchyWidget::setOpaqueness(int level)
 }
 
 
-QString LaunchyWidget::getSkinDir(const QString& name) {
-    // Find the skin with this name
-    QString directory = dirs["skins"][0] + QString("/") + name + "/";
-    if (!QFileInfo(directory).isDir()) {
-        foreach(QString dir, dirs["skins"]) {
-            if (QFileInfo(dir + QString("/") + name).isDir()) {
-                directory = dir + QString("/") + name + "/";
-                break;
-            }
-        }
-    }
-    return directory;
-}
-
 void LaunchyWidget::reloadSkin()
 {
     applySkin(currentSkin);
@@ -1235,26 +1152,22 @@ void LaunchyWidget::reloadSkin()
 
 void LaunchyWidget::applySkin(const QString& name)
 {
-        currentSkin = name;
+    currentSkin = name;
 
 	if (listDelegate == NULL)
 		return;
 
-        QString directory = getSkinDir(name);
-
-        QString stylesheetPath = directory + "style.qss";
-
-	// Use default skin if this one doesn't exist
-	if (!QFile::exists(stylesheetPath)) 
+	QString directory = settings.skinPath(name);
+	// Use default skin if this one doesn't exist or isn't valid
+	if (directory.length() == 0)
 	{
-		directory = dirs["skins"][0] + QString("/") + name + "/";
-		gSettings->setValue("GenOps/skin", dirs["defSkin"][0]);
-	}
+		QString defaultSkin = settings.directory("defSkin")[0];
+		directory = settings.skinPath(defaultSkin);
+		// If still no good then fail with an ugly default
+		if (directory.length() == 0)
+			return;
 
-	// If still no good then fail with an ugly default
-	if (!QFile::exists(stylesheetPath))
-	{
-		return;
+		gSettings->setValue("GenOps/skin", defaultSkin);
 	}
 
 	// Set a few defaults
@@ -1270,7 +1183,7 @@ void LaunchyWidget::applySkin(const QString& name)
 	{
 		// Loading use file:/// syntax allows relative paths in the stylesheet to be rooted
 		// in the same directory as the stylesheet
-		qApp->setStyleSheet("file:///" + stylesheetPath);
+		qApp->setStyleSheet("file:///" + directory + "style.qss");
 	}
 	else
 	{

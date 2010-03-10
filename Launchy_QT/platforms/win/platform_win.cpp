@@ -117,16 +117,14 @@ QHash<QString, QList<QString> > PlatformWin::getDirectories()
 	QFileInfo info(iniFilename);
 	QString userDataPath = info.absolutePath();
 
-	out["config"] << iniFilename;
-    out["db"] << userDataPath + "/Launchy.db";
-    out["history"] << userDataPath + "/history.db";
+	out["config"] << userDataPath;
+    out["portableConfig"] << qApp->applicationDirPath();
 	out["skins"] << qApp->applicationDirPath() + "/skins"
 				 << userDataPath + "/skins";
     out["plugins"] << qApp->applicationDirPath() + "/plugins"
 				   << userDataPath + "/plugins";
-    out["portConfig"] << qApp->applicationDirPath() + "/Launchy.ini";
-    out["portDB"] << qApp->applicationDirPath() + "/Launchy.db";
     out["defSkin"] << "Default";
+
     return out;
 }
 

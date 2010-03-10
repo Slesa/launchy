@@ -49,11 +49,8 @@ QHash<QString, QList<QString> > PlatformMac::getDirectories()
     out["plugins"] += home + "/plugins";
     //out["plugins"] += PLUGINS_PATH;
 
-    out["config"] += home + "/launchy.ini";
-    out["portConfig"] += qApp->applicationDirPath() + "/launchy.ini";
-    out["db"] += home + "/launchy.db";
-    out["history"] += home + "/history.db";
-    out["portDB"] += qApp->applicationDirPath() + "/launchy.db";
+    out["config"] += home;
+    out["portableConfig"] += qApp->applicationDirPath();
 
     if (QFile::exists(out["skins"].last() + "/Default"))
         out["defSkin"] += out["skins"].last() + "/Default";
