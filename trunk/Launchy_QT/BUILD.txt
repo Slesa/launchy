@@ -42,7 +42,7 @@ Installing QT:
 
 . Open a Visual Studio 2005 command prompt
 . cd c:\qt\2009.05\
-. configure 
+. configure -opensource -no-webkit 
 . nmake
 
 The configure and nmake commands take a very long time.
