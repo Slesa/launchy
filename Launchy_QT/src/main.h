@@ -116,9 +116,9 @@ private:
 	void updateVersion(int oldVersion);
 	void checkForUpdate();
 	void shouldDonate();
-	void showAlternatives(bool show = true);
+	void showAlternatives(bool show = true, bool resetSelection = true);
 	void parseInput(const QString& text);
-	void updateOutputWidgets();
+	void updateOutputWidgets(bool resetAlternativesSelection = true);
 	void searchOnInput();
 	void loadPosition(QPoint pt);
 	void savePosition() { gSettings->setValue("Display/pos", pos()); }

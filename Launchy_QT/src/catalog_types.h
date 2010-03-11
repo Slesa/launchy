@@ -38,7 +38,7 @@ public:
 
 	void searchCatalogs(const QString&, QList<CatItem>&);
 	virtual void incrementUsage(const CatItem& item) = 0;
-	virtual void clearUsage(const CatItem& item) = 0;
+	virtual void demoteItem(const CatItem& item) = 0;
 	virtual int getUsage(const QString& path) = 0;
 	void promoteRecentlyUsedItems(const QString& text, QList<CatItem> & list);
 
@@ -59,7 +59,7 @@ public:
 	int count() { return catList.count(); }
 	const CatItem& getItem(int i) { return catList[i]; }
 	void incrementUsage(const CatItem& item);
-	void clearUsage(const CatItem& item);
+	void demoteItem(const CatItem& item);
 	int getUsage(const QString& path);
 
 private:
@@ -81,7 +81,7 @@ public:
 	int count() { return catList.count(); }
 	const CatItem& getItem(int i) { return catList[i]; }
 	void incrementUsage(const CatItem& item);
-	void clearUsage(const CatItem& item);
+	void demoteItem(const CatItem& item);
 	int getUsage(const QString& path);
 
 private:

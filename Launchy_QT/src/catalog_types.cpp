@@ -101,20 +101,28 @@ void FastCatalog::incrementUsage(const CatItem& item)
 	{
 		if (item == catList[i])
 		{
-			catList[i].usage += 1;
+			// If an item is demoted, return it to a usage count of 1
+			if (catList[i].usage < 0)
+				catList[i].usage = 1;
+			else
+				++catList[i].usage;
 			break;
 		}
 	}
 }
 
 
-void FastCatalog::clearUsage(const CatItem& item)
+void FastCatalog::demoteItem(const CatItem& item)
 {
 	for (int i = 0; i < catList.size(); ++i)
 	{
 		if (item == catList[i])
 		{
-			catList[i].usage = 0;
+			// If an item is not demoted, demote it
+			if (catList[i].usage > 0)
+				catList[i].usage = -1;
+			else // otherwise demote it further
+				--catList[i].usage;
 			break;
 		}
 	}
@@ -141,20 +149,28 @@ void SlowCatalog::incrementUsage(const CatItem& item)
 	{
 		if (item == catList[i])
 		{
-			catList[i].usage += 1;
+			// If an item is demoted, return it to a usage count of 1
+			if (catList[i].usage < 0)
+				catList[i].usage = 1;
+			else
+				++catList[i].usage;
 			break;
 		}
 	}
 }
 
 
-void SlowCatalog::clearUsage(const CatItem& item)
+void SlowCatalog::demoteItem(const CatItem& item)
 {
 	for (int i = 0; i < catList.size(); ++i)
 	{
 		if (item == catList[i])
 		{
-			catList[i].usage = -1;
+			// If an item is not demoted, demote it
+			if (catList[i].usage > 0)
+				catList[i].usage = -1;
+			else // otherwise demote it further
+				--catList[i].usage;
 			break;
 		}
 	}

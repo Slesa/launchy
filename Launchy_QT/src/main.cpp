@@ -339,7 +339,7 @@ void LaunchyWidget::showTrayIcon()
 }
 
 
-void LaunchyWidget::showAlternatives(bool show)
+void LaunchyWidget::showAlternatives(bool show, bool resetSelection)
 {
 	dropTimer->stop();
 
@@ -381,9 +381,12 @@ void LaunchyWidget::showAlternatives(bool show)
 		{
 			delete alternatives->takeItem(i);
 		}
-		alternatives->setCurrentRow(0);
 
-                iconExtractor.processIcons(searchResults);
+		if (resetSelection)
+		{
+			alternatives->setCurrentRow(0);
+		}
+		iconExtractor.processIcons(searchResults);
 
 		int numViewable = gSettings->value("GenOps/numviewable", "4").toInt();
 		int min = alternatives->count() < numViewable ? alternatives->count() : numViewable;
@@ -607,13 +610,17 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 		{
 			if (searchResults[row].id != HASH_HISTORY)
 			{
-				catalog->clearUsage(searchResults[row]);
+				catalog->demoteItem(searchResults[row]);
+				searchOnInput();
+				updateOutputWidgets(false);
 			}
 			else
 			{
 				history.removeAt(row);
+				input->clear();
+				processKey();
 			}
-			processKey();
+			showAlternatives(true, false);
 		}
 	}
 	else if (event->key() == Qt::Key_Left || event->key() == Qt::Key_Right ||
@@ -876,7 +883,7 @@ void LaunchyWidget::searchOnInput()
 
 
 // If there are current results, update the output text and icon
-void LaunchyWidget::updateOutputWidgets()
+void LaunchyWidget::updateOutputWidgets(bool resetAlternativesSelection)
 {
 	if (searchResults.count() > 0 && (inputData.count() > 1 || gSearchText.length() > 0))
 	{
@@ -894,7 +901,7 @@ void LaunchyWidget::updateOutputWidgets()
 
 		// If the alternatives are already showing, update them
 		if (alternatives->isVisible()) 
-			showAlternatives();
+			showAlternatives(true, resetAlternativesSelection);
 		// Don't schedule a drop down if there's no input text
 		else if (input->text().length() > 0)
 			startDropTimer();
@@ -953,8 +960,7 @@ void LaunchyWidget::catalogBuilt()
 
 	workingAnimation->Stop();
 	// Do a search here of the current input text
-	searchOnInput();
-	updateOutputWidgets();
+	processKey();
 
 	catalog->save(settings.catalogFilename());
 }
