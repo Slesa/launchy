@@ -27,6 +27,12 @@ void VerbyPlugin::init()
 }
 
 
+void VerbyPlugin::setPath(QString * path)
+{
+	libPath = *path;
+}
+
+
 void VerbyPlugin::getID(uint* id)
 {
 	*id = HASH_VERBY;
@@ -47,7 +53,7 @@ QString VerbyPlugin::getIcon()
 
 void VerbyPlugin::getLabels(QList<InputData>* inputData)
 {
-        QString  text = inputData->last().getText();
+	QString  text = inputData->last().getText();
 
 	// Is it a file?
 	if (text.contains("\\") || text.contains("/"))
@@ -76,14 +82,9 @@ void VerbyPlugin::getLabels(QList<InputData>* inputData)
 
 QString VerbyPlugin::getIconPath() const
 {
-        return libPath + "/icons/";
+	return libPath + "/icons/";
 }
 
-
-void VerbyPlugin::setPath(QString * path)
-{
-        libPath = *path;
-}
 
 void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results)
 {
@@ -282,6 +283,9 @@ int VerbyPlugin::msg(int msgId, void* wParam, void* lParam)
 		break;
 	case MSG_END_DIALOG:
 		endDialog(wParam != 0);
+		break;
+	case MSG_PATH:
+		setPath((QString *) wParam);
 		break;
 
 	default:
