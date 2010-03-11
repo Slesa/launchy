@@ -38,6 +38,12 @@ bool CatLessNoPtr(CatItem & a, CatItem & b)
 
 bool CatLess(CatItem* a, CatItem* b)
 {
+	// Items with negative usage are lowest priority
+	if (a->usage < 0 && b->usage >= 0)
+		return false;
+	if (b->usage < 0 && a->usage >= 0)
+		return true;
+
 	bool localEqual = a->lowName == gSearchText;
 	bool otherEqual = b->lowName == gSearchText;
 
