@@ -507,14 +507,20 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 				file = site.query;
 				if (args.count() == 0)
 				{
-					QRegExp regex("^(([a-z]*://)?([^/]*))");
-					if (regex.indexIn(file) != -1)
+					// if no addition parameters have been entered and the weby URL has placeholders to take parameters,
+					// strip the URL down to its root and launch that
+					if (file.contains("%1"))
 					{
-						file = regex.cap(0);
+						QRegExp regex("^(([a-z]*://)?([^/]*))");
+						if (regex.indexIn(file) != -1)
+						{
+							file = regex.cap(0);
+						}
 					}
 				}
 				else
 				{
+					// Fill additional parameter placeholders
 					for (int i = 0; i < args.size(); i++)
 						file = file.arg(args[i]);
 				}
@@ -525,6 +531,7 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 		if (!found)
 		{
 			file = item->shortName;
+			// Make sure we have a protocol
 			if (!file.startsWith("http://") && !file.startsWith("https://") && !file.startsWith("ftp://"))
 			{
 				file = "http://" + file;
