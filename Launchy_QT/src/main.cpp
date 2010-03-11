@@ -59,7 +59,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 #ifdef Q_WS_MAC
         QWidget(NULL, Qt::FramelessWindowHint),
 #endif
-     
+
 	frameGraphic(NULL),
 	trayIcon(NULL),
 	alternatives(NULL),
@@ -511,7 +511,6 @@ void LaunchyWidget::alternativesRowChanged(int index)
 			long long hi = reinterpret_cast<long long>(item.data);
 			int historyIndex = static_cast<int>(hi);
 
-			//int historyIndex = (int)item.data;
 			if (item.id == HASH_HISTORY && historyIndex < searchResults.count())
 			{
 				inputData = history.getItem(historyIndex);
@@ -604,21 +603,23 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 	}
 	else if (event->key() == Qt::Key_Delete && (event->modifiers() & Qt::ShiftModifier) != 0)
 	{
-		// Delete selected history entry
 		int row = alternatives->currentRow();
 		if (row > -1)
 		{
-			if (searchResults[row].id != HASH_HISTORY)
+			if (searchResults[row].id == HASH_HISTORY)
 			{
-				catalog->demoteItem(searchResults[row]);
-				searchOnInput();
-				updateOutputWidgets(false);
-			}
-			else
-			{
+				// Delete selected history entry from the alternatives list
 				history.removeAt(row);
 				input->clear();
 				processKey();
+				alternativesRowChanged(alternatives->currentRow());
+			}
+			else
+			{
+				// Demote the selected item down the alternatives list
+				catalog->demoteItem(searchResults[row]);
+				searchOnInput();
+				updateOutputWidgets(false);
 			}
 			showAlternatives(true, false);
 		}
