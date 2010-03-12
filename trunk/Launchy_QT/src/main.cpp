@@ -185,11 +185,6 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 		command = ShowLaunchy | ShowOptions;
 	}
 
-        sc_options = new QShortcut(QKeySequence(tr("Ctrl+,")), this);
-        sc_options->setContext( Qt::ApplicationShortcut );
-        connect( sc_options, SIGNAL( activated() ), this, SLOT( showOptionsDialog() ) );
-        //showOptionsDialog
-
 	// Set the timers
 	updateTimer = new QTimer(this);
 	dropTimer = new QTimer(this);
@@ -640,16 +635,7 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 
 void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 {
-	if (event->key() == Qt::Key_F5 && event->modifiers() == 0)
-	{
-		buildCatalog();
-	}
-	else if (event->key() == Qt::Key_F5 && event->modifiers() == Qt::ShiftModifier)
-	{
-		setSkin(gSettings->value("GenOps/skin", "Default").toString());
-	}
-
-	else if (event->key() == Qt::Key_Escape)
+	if (event->key() == Qt::Key_Escape)
 	{
 		if (alternatives->isVisible())
 			showAlternatives(false);
@@ -1154,8 +1140,9 @@ void LaunchyWidget::setOpaqueness(int level)
 
 void LaunchyWidget::reloadSkin()
 {
-    applySkin(currentSkin);
+	setSkin(currentSkin);
 }
+
 
 void LaunchyWidget::applySkin(const QString& name)
 {
@@ -1376,7 +1363,7 @@ void LaunchyWidget::contextMenuEvent(QContextMenuEvent* event)
 {
 	QMenu menu(this);
 	menu.addAction(actRebuild);
-        menu.addAction(actReloadSkin);
+    menu.addAction(actReloadSkin);
 	menu.addAction(actOptions);        
 	menu.addSeparator();
 	menu.addAction(actExit);
@@ -1583,13 +1570,19 @@ void LaunchyWidget::createActions()
 	connect(actShow, SIGNAL(triggered()), this, SLOT(showLaunchy()));
 
 	actRebuild = new QAction(tr("Rebuild catalog"), this);
+	actRebuild->setShortcut(QKeySequence(Qt::Key_F5));
 	connect(actRebuild, SIGNAL(triggered()), this, SLOT(buildCatalog()));
+	addAction(actRebuild);
 
-        actReloadSkin = new QAction(tr("Reload skin"), this);
-        connect(actReloadSkin, SIGNAL(triggered()), this, SLOT(reloadSkin()));
+    actReloadSkin = new QAction(tr("Reload skin"), this);
+	actReloadSkin->setShortcut(QKeySequence(Qt::Key_F5 | Qt::SHIFT));
+    connect(actReloadSkin, SIGNAL(triggered()), this, SLOT(reloadSkin()));
+	addAction(actReloadSkin);
 
 	actOptions = new QAction(tr("Options"), this);
+	actOptions->setShortcut(QKeySequence(Qt::Key_Comma | Qt::CTRL));
 	connect(actOptions, SIGNAL(triggered()), this, SLOT(showOptionsDialog()));
+	addAction(actOptions);
 
 	actExit = new QAction(tr("Exit"), this);
 	connect(actExit, SIGNAL(triggered()), this, SLOT(close()));
