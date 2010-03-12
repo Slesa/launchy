@@ -148,7 +148,7 @@ private:
 
 	QAction* actShow;
 	QAction* actRebuild;
-        QAction* actReloadSkin;
+    QAction* actReloadSkin;
 	QAction* actOptions;
 	QAction* actExit;
 
@@ -172,8 +172,6 @@ private:
 	QHttp *http;
 	QBuffer *verBuffer;
 	QBuffer *counterBuffer;
-        QShortcut * sc_options;
-
 };
 
 
