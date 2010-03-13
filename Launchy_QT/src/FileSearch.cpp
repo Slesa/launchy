@@ -84,6 +84,10 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 	QDir dir(directoryPart);
 	QStringList fileList;
 	QDir::Filters filters = QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot;
+#ifndef Q_WS_WIN
+        filters |= QDir::CaseSensitive;
+#endif
+
 	if (gSettings->value("GenOps/showHiddenFiles", false).toBool())
 		filters |= QDir::Hidden;
 

@@ -24,12 +24,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1569"/>
+        <location filename="../src/main.cpp" line="1571"/>
         <source>Show Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1572"/>
+        <location filename="../src/main.cpp" line="1574"/>
         <source>Rebuild catalog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -40,29 +40,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="981"/>
+        <location filename="../src/main.cpp" line="983"/>
         <source>A new version of Launchy is available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="982"/>
+        <location filename="../src/main.cpp" line="984"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1577"/>
+        <location filename="../src/main.cpp" line="1579"/>
         <source>Reload skin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1582"/>
+        <location filename="../src/main.cpp" line="1584"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1587"/>
+        <location filename="../src/main.cpp" line="1589"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
