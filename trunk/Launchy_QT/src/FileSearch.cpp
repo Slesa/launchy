@@ -88,7 +88,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 		filters |= QDir::Hidden;
 
 	bool userWildcard = filePart.contains("*") || filePart.contains("?");
-	fileList = dir.entryList(QStringList(filePart + "*"), filters, QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware);
+	fileList = dir.entryList(QStringList(filePart + "*"), filters, QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware | QDir::Reversed);
 
 	foreach(QString fileName, fileList)
 	{
