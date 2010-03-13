@@ -226,3 +226,5 @@ QApplication* createApplication(int& argc, char** argv)
 {
 	return new PlatformWin(argc, argv);
 }
+
+
