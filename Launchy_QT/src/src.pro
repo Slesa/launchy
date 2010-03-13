@@ -56,39 +56,8 @@ HEADERS = platform_base.h \
 	SettingsManager.h
 FORMS = options.ui
 
-macx {
-    ICON = ../misc/Launchy_Icon/launchy_icon_mac.icns
-    SOURCES += ../platforms/mac/platform_mac.cpp \
-               ../platforms/mac/platform_mac_hotkey.cpp
-    HEADERS += ../platforms/mac/platform_mac.h \
-               ../platforms/mac/platform_mac_hotkey.h \
-                platform_base_hotkey.h \
-                platform_base_hottrigger.h
-    if(!debug_and_release|build_pass) {
-        CONFIG(debug, debug|release):DESTDIR = ../debug/
-        CONFIG(release, debug|release):DESTDIR = ../release/
-    }
-    INCLUDEPATH += /opt/local/include/
-    LIBS += -framework Carbon
 
-    CONFIG(debug, debug|release):skins.path = ../debug/Launchy.app/Contents/Resources/skins/
-    CONFIG(release, debug|release):skins.path = ../release/Launchy.app/Contents/Resources/skins/
-    skins.files = 
-    skins.extra = rsync -arvz ../skins/ ../release/Launchy.app/Contents/Resources/skins/ --exclude=\".svn\""
- 
-    CONFIG(debug, debug|release):translations.path = ../debug/Launchy.app/Contents/MacOS/tr/
-    CONFIG(release, debug|release):translations.path = ../release/Launchy.app/Contents/MacOS/tr/
-    translations.files = ../translations/*.qm
-    translations.extra = lupdate src.pro ; lrelease src.pro
 
-    dmg.path = ../release/
-    dmg.files =
-    dmg.extra = cd ../mac ; bash deploy; cd ../src
-
- INSTALLS += skins \
-                translations \
-                dmg
-}
 
 unix:!macx {
     ICON = Launchy.ico
@@ -160,12 +129,51 @@ win32 {
         CONFIG(release, debug|release):DESTDIR = ../release/
     }
 }
+
+macx {
+    ICON = ../misc/Launchy_Icon/launchy_icon_mac.icns
+    SOURCES += ../platforms/mac/platform_mac.cpp \
+               ../platforms/mac/platform_mac_hotkey.cpp
+    HEADERS += ../platforms/mac/platform_mac.h \
+               ../platforms/mac/platform_mac_hotkey.h \
+                platform_base_hotkey.h \
+                platform_base_hottrigger.h
+    if(!debug_and_release|build_pass) {
+        CONFIG(debug, debug|release):DESTDIR = ../debug/
+        CONFIG(release, debug|release):DESTDIR = ../release/
+    }
+    INCLUDEPATH += /opt/local/include/
+    LIBS += -framework Carbon
+
+    CONFIG(debug, debug|release):skins.path = ../debug/Launchy.app/Contents/Resources/skins/
+    CONFIG(release, debug|release):skins.path = ../release/Launchy.app/Contents/Resources/skins/
+    skins.files = 
+    skins.extra = rsync -arvz ../skins/ ../release/Launchy.app/Contents/Resources/skins/ --exclude=\".svn\"
+ 
+ 
+ 
+    CONFIG(debug, debug|release):translations.path = ../debug/Launchy.app/Contents/MacOS/tr/
+    CONFIG(release, debug|release):translations.path = ../release/Launchy.app/Contents/MacOS/tr/
+    translations.files = ../translations/*.qm
+    translations.extra = lupdate src.pro ; lrelease src.pro
+
+    dmg.path = ../release/
+    dmg.files = 
+    dmg.extra = cd ../mac ; bash deploy; cd ../src
+
+	INSTALLS += skins \
+			 translations \
+			 dmg
+}
+
 TRANSLATIONS = ../translations/launchy_fr.ts \
     ../translations/launchy_nl.ts \
     ../translations/launchy_zh.ts \
     ../translations/launchy_es.ts \
     ../translations/launchy_de.ts \
-    ../translations/launchy_ja.ts
+    ../translations/launchy_ja.ts \
+	../translations/launchy_zh_TW.ts
+	
 OBJECTS_DIR = build
 MOC_DIR = build
 RESOURCES += launchy.qrc
