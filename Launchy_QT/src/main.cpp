@@ -737,8 +737,10 @@ void LaunchyWidget::doTab()
 		if ((inputData.last().hasLabel(LABEL_FILE) || info.isDir())
 			)//	&& input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
 		{
-			
-			{ // If multiple paths exist, select the longest intersection (like the bash shell)
+
+			// If multiple paths exist, select the longest intersection (like the bash shell)
+			if (!alternatives->isActiveWindow())
+			{ 
 				QStringList paths;
 				int minLength = -1;
 				foreach(const CatItem& item, searchResults) {
@@ -760,7 +762,7 @@ void LaunchyWidget::doTab()
 						curChar = paths[0][i];
 						bool stop = false;
 						foreach(QString path, paths) {
-#ifdef Q_OS_WIN
+#ifdef Q_WS_WIN
 							if (path[i].toLower() != curChar.toLower()) {
 #else
 							if (path[i] != curChar) {
