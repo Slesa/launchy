@@ -75,6 +75,34 @@ void WinIconProvider::setPreferredIconSize(int size)
 }
 
 
+// This also exists in plugin_interface, need to remove both if I make a 64 build
+QString wicon_aliasTo64(QString path) 
+{
+	QProcessEnvironment env = QProcessEnvironment::systemEnvironment ();
+	QString pf32 = env.value("PROGRAMFILES");
+	QString pf64 = env.value("PROGRAMW6432");
+
+	// On 64 bit windows, 64 bit shortcuts don't resolve correctly from 32 bit executables, fix it here
+	QFileInfo pInfo(path);
+
+	if (env.contains("PROGRAMW6432") && pInfo.isSymLink() && pf32 != pf64) {
+		if (QDir::toNativeSeparators(pInfo.symLinkTarget()).contains(pf32)) {
+			QString path64 = QDir::toNativeSeparators(pInfo.symLinkTarget());
+			path64.replace(pf32, pf64);
+			if (QFileInfo(path64).exists()) {
+				path = path64;
+			}
+		}
+		else if (pInfo.symLinkTarget().contains("system32")) {
+			QString path32 = QDir::toNativeSeparators(pInfo.symLinkTarget());
+			if (!QFileInfo(path32).exists()) {
+				path = path32.replace("system32", "sysnative");
+			}
+		}
+	}
+	return path;
+}
+
 QIcon WinIconProvider::icon(const QFileInfo& info) const
 {
 	QIcon retIcon;
@@ -97,7 +125,8 @@ QIcon WinIconProvider::icon(const QFileInfo& info) const
 	}
 	else
 	{
-		QString filePath = QDir::toNativeSeparators(info.filePath());
+		// This 64 bit mapping needs to go away if we produce a 64 bit build of launchy
+		QString filePath = wicon_aliasTo64(QDir::toNativeSeparators(info.filePath()));
 
 		// Get the icon index using SHGetFileInfo
 		SHFILEINFO sfi = {0};
