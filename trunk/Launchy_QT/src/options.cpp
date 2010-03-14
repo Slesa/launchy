@@ -84,16 +84,19 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	iMetaKeys << Qt::NoModifier << Qt::AltModifier << Qt::ControlModifier << Qt::ShiftModifier << Qt::MetaModifier <<
 		(Qt::ControlModifier | Qt::AltModifier) << (Qt::ControlModifier | Qt::ShiftModifier) << (Qt::ControlModifier | Qt::MetaModifier);
 
-	actionKeys << tr("Space") << tr("Tab") << tr("Backspace") << tr("Enter") << tr("Esc") << tr("Home") << 
-		tr("End") << tr("Pause") << tr("Print") << tr("Up") << tr("Down") << tr("Left") << tr("Right") << tr("F1") <<
-		tr("F2") << tr("F3") << tr("F4") << tr("F5") << tr("F6") << tr("F7") << tr("F8") << tr("F9") << tr("F10") <<
-		tr("F11") << tr("F12") << tr("F13") << tr("F14") << tr("F15") << tr("Caps Lock");
+	actionKeys << tr("Space") << tr("Tab") << tr("Caps Lock") << tr("Backspace") << tr("Enter") << tr("Esc") <<
+		tr("Insert") << tr("Delete") << tr("Home") << tr("End") << tr("Page Up") << tr("Page Down") <<
+		tr("Print") << tr("Scroll Lock") << tr("Pause") << tr("Num Lock") <<
+		tr("Up") << tr("Down") << tr("Left") << tr("Right") <<
+		tr("F1") << tr("F2") << tr("F3") << tr("F4") << tr("F5") << tr("F6") << tr("F7") << tr("F8") <<
+		tr("F9") << tr("F10") << tr("F11") << tr("F12") << tr("F13") << tr("F14") << tr("F15");
 
-
-	iActionKeys << Qt::Key_Space << Qt::Key_Tab << Qt::Key_Backspace << Qt::Key_Enter << Qt::Key_Escape << Qt::Key_Home <<
-		Qt::Key_End << Qt::Key_Pause << Qt::Key_Print << Qt::Key_Up << Qt::Key_Down << Qt::Key_Left << Qt::Key_Right << Qt::Key_F1 <<
-		Qt::Key_F2 << Qt::Key_F3 << Qt::Key_F4 << Qt::Key_F5 << Qt::Key_F6 << Qt::Key_F7 << Qt::Key_F8 << Qt::Key_F9 << Qt::Key_F10 <<
-		Qt::Key_F11 << Qt::Key_F12 << Qt::Key_F13 << Qt::Key_F14 << Qt::Key_F15 << Qt::Key_CapsLock;
+	iActionKeys << Qt::Key_Space << Qt::Key_Tab << Qt::Key_CapsLock << Qt::Key_Backspace << Qt::Key_Enter << Qt::Key_Escape <<
+		Qt::Key_Insert << Qt::Key_Delete << Qt::Key_Home << Qt::Key_End << Qt::Key_PageUp << Qt::Key_PageDown <<
+		Qt::Key_Print << Qt::Key_ScrollLock << Qt::Key_Pause << Qt::Key_NumLock <<
+		Qt::Key_Up << Qt::Key_Down << Qt::Key_Left << Qt::Key_Right <<
+		Qt::Key_F1 << Qt::Key_F2 << Qt::Key_F3 << Qt::Key_F4 << Qt::Key_F5 << Qt::Key_F6 << Qt::Key_F7 << Qt::Key_F8 <<
+		Qt::Key_F9 << Qt::Key_F10 << Qt::Key_F11 << Qt::Key_F12 << Qt::Key_F13 << Qt::Key_F14 << Qt::Key_F15;
 
 	for (int i = '0'; i <= '9'; i++) 
 	{
@@ -105,6 +108,12 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 		actionKeys << QString(QChar(i));
 		iActionKeys << i;
 	}
+
+	actionKeys << "`" << "-" << "=" << "[" << "]" <<
+		";" << "'" << "#" << "\\" << "," << "." << "/";
+
+	iActionKeys << '`' << '-' << '=' << '[' << ']' <<  
+		';' << '\'' << '#' << '\\' << ',' << '.' << '/';
 
 	// Find the current hotkey
 	int hotkey = gMainWidget->getHotkey();
