@@ -28,14 +28,3 @@ LaunchyWidget* gMainWidget;
 QSettings* gSettings;
 QString gSearchText;
 shared_ptr<CatalogBuilder> gBuilder;
-
-
-void log(QString str) 
-{
-	QFile file("log.txt");
-	file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
-	QTextStream os(&file);
-	os <<"[";
-	os << QDateTime::currentDateTime().toString("hh:mm:ss");
-	os << "] " << str << "\n";
-}

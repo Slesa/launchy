@@ -44,7 +44,5 @@ extern SettingsManager settings;
 extern shared_ptr<CatalogBuilder> gBuilder;
 extern QString gSearchText;
 
-void log(QString str);
-
 
 #endif
