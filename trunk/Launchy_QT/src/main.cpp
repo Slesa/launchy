@@ -796,6 +796,7 @@ void LaunchyWidget::doTab()
 		}
 		else
 		{
+			inputData.last().setTopResult(searchResults[0]);
 			inputData.last().setText(searchResults[0].shortName);
 			input->selectAll();
 			input->insert(inputData.toString() + input->separatorText());
