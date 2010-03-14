@@ -894,13 +894,12 @@ void LaunchyWidget::updateOutputWidgets(bool resetAlternativesSelection)
 		// Don't schedule a drop down if there's no input text
 		else if (input->text().length() > 0)
 			startDropTimer();
-		if (searchResults.count() == 0)
-			showAlternatives(false);
 	}
 	else
 	{
 		output->clear();
 		outputIcon->clear();
+		showAlternatives(false);
 	}
 }
 
@@ -1591,6 +1590,40 @@ void LaunchyWidget::createActions()
 }
 
 
+void fileLogMsgHandler(QtMsgType type, const char *msg)
+{
+	static FILE* file;
+	if (file == 0)
+	{
+		// Create a file for appending in the user's temp directory
+		QString filename = QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::TempLocation) + "/launchylog.txt");
+		file = fopen(filename.toUtf8(), "a");
+	}
+
+	if (file)
+	{
+		switch (type)
+		{
+		case QtDebugMsg:
+			fprintf(file, "Debug: %s\n", msg);
+			break;
+		case QtWarningMsg:
+			fprintf(file, "Warning: %s\n", msg);
+			break;
+		case QtCriticalMsg:
+			fprintf(file, "Critical: %s\n", msg);
+			break;
+		case QtFatalMsg:
+			fprintf(file, "Fatal: %s\n", msg);
+			abort();
+			break;
+		}
+
+		fflush(file);
+	}
+}
+
+
 int main(int argc, char *argv[])
 {
 	createApplication(argc, argv);
@@ -1630,6 +1663,10 @@ int main(int argc, char *argv[])
 			else if (arg.compare("exit", Qt::CaseInsensitive) == 0)
 			{
 				command |= Exit;
+			}
+			else if (arg.compare("log", Qt::CaseInsensitive) == 0)
+			{
+				qInstallMsgHandler(fileLogMsgHandler);
 			}
 		}
 	}

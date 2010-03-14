@@ -50,7 +50,7 @@ void SettingsManager::load()
 	portable = QFile::exists(dirs["portableConfig"][0] + iniName);
 	gSettings = new QSettings(configDirectory(portable) + iniName, QSettings::IniFormat);
 
-	qDebug() << QString("Loading settings in %1 mode from %2").arg(portable ? "portable" : "installed", iniName);
+	qDebug() << QString("Loading settings in %1 mode from %2").arg(portable ? "portable" : "installed", configDirectory(portable));
 }
 
 
@@ -116,15 +116,22 @@ void SettingsManager::setPortable(bool makePortable)
 		QString oldDbName = oldDir + dbName;
 		QString oldHistoryName = oldDir + historyName;
 
-		// Copy the settings to the new location and delete old settings
+		// Copy the settings to the new location
+		// and delete the original settings if they are copied successfully
 		QString newDir = configDirectory(makePortable);
-		QFile::copy(oldIniName, newDir + iniName);
-		QFile::copy(oldDbName, newDir + dbName);
-		QFile::copy(oldHistoryName, newDir + historyName);
-
-		QFile::remove(oldIniName);
-		QFile::remove(oldDbName);
-		QFile::remove(oldHistoryName);
+		if (QFile::copy(oldIniName, newDir + iniName) &&
+			QFile::copy(oldDbName, newDir + dbName) &&
+			QFile::copy(oldHistoryName, newDir + historyName))
+		{
+			QFile::remove(oldIniName);
+			QFile::remove(oldDbName);
+			QFile::remove(oldHistoryName);
+		}
+		else if (makePortable)
+		{
+			QMessageBox::warning(gMainWidget, tr("Launchy"), 
+				tr("Could not convert to portable mode. Please check you have write access to the %1 directory.").arg(newDir));
+		}
 
 		load();
 	}
