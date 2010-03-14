@@ -118,7 +118,7 @@ public:
 					if (!keyboardHook)
 					{
 						// Turn off capslock or scroll lock if they're on and we're not already 
-						// hooked. It's pretty Nobody wants capslock turned on permanently do they?
+						// hooked. Nobody wants capslock turned on permanently do they?
 						if (GetKeyState(VK_CAPITAL) == 1)
 						{
 							keybd_event(VK_CAPITAL, 0, 0, 0 );
@@ -212,9 +212,13 @@ private:
 
                 UINT key = 0;
 //                code &= 0xffff;
-                if (code >= 0x20 && code <= 0x7f)
+				// Some keys map to ASCII keycodes
+                if ((code >= 0x30 && code <= 0x39) ||
+					(code > 0x40 && code <= 0x5a) ||
+					(code > 0x60 && code <= 0x7a))
                         key = code;
                 else {
+					// Others require lookup from a keymap
                         for (int n = 0; qt_vk_table[n].key != Qt::Key_unknown; ++n) {
                                 if (qt_vk_table[n].key == code) {
                                         key = qt_vk_table[n].vk;
@@ -244,7 +248,7 @@ GlobalShortcutManager::KeyTrigger::Impl::qt_vk_table[] = {
         { Qt::Key_Insert,      VK_INSERT },
         { Qt::Key_Delete,      VK_DELETE },
         { Qt::Key_Pause,       VK_PAUSE },
-        { Qt::Key_Print,       VK_PRINT },
+        { Qt::Key_Print,       VK_SNAPSHOT },
         { Qt::Key_SysReq,      0 },
         { Qt::Key_Clear,       VK_CLEAR },
         { Qt::Key_Home,        VK_HOME },
@@ -305,6 +309,22 @@ GlobalShortcutManager::KeyTrigger::Impl::qt_vk_table[] = {
         { Qt::Key_Help,        0 },
         { Qt::Key_Direction_L, 0 },
         { Qt::Key_Direction_R, 0 },
+
+		{ Qt::Key_QuoteLeft,   VK_OEM_8 },
+		{ Qt::Key_Minus,       VK_OEM_MINUS },
+		{ Qt::Key_Equal,       VK_OEM_PLUS },
+
+		{ Qt::Key_BracketLeft, VK_OEM_4 },
+		{ Qt::Key_BracketRight,VK_OEM_6 },
+
+		{ Qt::Key_Semicolon,   VK_OEM_1 },
+		{ Qt::Key_Apostrophe,  VK_OEM_3 },
+		{ Qt::Key_NumberSign,  VK_OEM_7 },
+
+		{ Qt::Key_Backslash,   VK_OEM_5 },
+		{ Qt::Key_Comma,	   VK_OEM_COMMA },
+		{ Qt::Key_Period,      VK_OEM_PERIOD },
+		{ Qt::Key_Slash,       VK_OEM_2 },
 
         { Qt::Key_unknown,     0 },
 };
