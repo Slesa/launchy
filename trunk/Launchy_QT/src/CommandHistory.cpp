@@ -61,7 +61,8 @@ void CommandHistory::save(const QString& filename) const
 	QFile file(filename);
 	if (!file.open(QIODevice::WriteOnly))
 	{
-		qDebug() << "Could not open history for writing";
+		qWarning("Could not open history for writing");
+		return;
 	}
 	file.write(ba);
 }

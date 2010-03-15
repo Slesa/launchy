@@ -26,7 +26,10 @@ bool Catalog::load(const QString& filename)
 {
 	QFile inFile(filename);
 	if (!inFile.open(QIODevice::ReadOnly))
+	{
+		qWarning("Could not open catalog database file for reading");
 		return false;
+	}
 
 	QByteArray ba = inFile.readAll();
 	QByteArray unzipped = qUncompress(ba);
@@ -60,7 +63,7 @@ bool Catalog::save(const QString& filename)
 	QFile file(filename);
 	if (!file.open(QIODevice::WriteOnly))
 	{
-		qDebug() << "Could not open database for writing";
+		qWarning("Could not open catalog database file for writing");
 		return false;
 	}
 	file.write(qCompress(ba));
