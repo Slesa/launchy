@@ -31,6 +31,7 @@ Gui::Gui(QWidget* parent)
 		return;
 
 	txtRounding->setValue(settings->value("calcy/outputRounding", 10).toInt());
+	chkDigitGrouping->setChecked(settings->value("calcy/outputGroupSeparator", true).toBool());
 }
 
 
@@ -47,4 +48,5 @@ void Gui::writeOptions()
 		return;
 
 	settings->setValue("calcy/outputRounding", txtRounding->value());
+	settings->setValue("calcy/outputGroupSeparator", chkDigitGrouping->isChecked());
 }
