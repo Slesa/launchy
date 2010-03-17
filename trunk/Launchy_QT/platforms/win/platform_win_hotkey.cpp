@@ -213,7 +213,8 @@ private:
                 UINT key = 0;
 //                code &= 0xffff;
 				// Some keys map to ASCII keycodes
-                if ((code >= 0x30 && code <= 0x39) ||
+                if (code == 0x20 ||
+					(code >= 0x30 && code <= 0x39) ||
 					(code > 0x40 && code <= 0x5a) ||
 					(code > 0x60 && code <= 0x7a))
                         key = code;
