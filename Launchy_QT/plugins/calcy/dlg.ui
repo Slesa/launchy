@@ -43,6 +43,13 @@
        </property>
       </widget>
      </item>
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="chkCopyToClipboard">
+       <property name="text">
+        <string>Copy result to clipboard when pressing Enter</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>
