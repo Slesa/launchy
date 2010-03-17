@@ -303,7 +303,10 @@ void WebyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results
 		{
 			QString name = getDefault().name;
 			if (name != "")
+			{
+				inputData->first().setLabel(HASH_DEFAULTSEARCH);
 				results->push_back(CatItem(text + ".weby", name, HASH_WEBY, getIcon()));
+			}
 		}
 	}
 }
@@ -475,18 +478,15 @@ void WebyPlugin::getCatalog(QList<CatItem>* items)
 
 void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 {
-
 	QString file = "";
 	QStringList args;
-
-	if (inputData->count() >= 2)
+	
+	int i = inputData->count() == 1 && inputData->first().hasLabel(HASH_DEFAULTSEARCH) ? 0 : 1;
+	for (; i < inputData->count(); i++)
 	{
-		for(int i = 1; i < inputData->count(); i++) {
-			QString txt = inputData->at(i).getText();
-			txt = QUrl::toPercentEncoding(txt);
-			args.push_back(txt);
-		}
-		item = &inputData->first().getTopResult();
+		QString txt = inputData->at(i).getText();
+		txt = QUrl::toPercentEncoding(txt);
+		args.push_back(txt);
 	}
 
 	// Is it a Firefox shortcut?

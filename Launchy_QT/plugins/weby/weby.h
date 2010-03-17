@@ -60,6 +60,7 @@ class WebyPlugin : public QObject, public PluginInterface
 
 public:
 	uint HASH_WEBSITE;
+	uint HASH_DEFAULTSEARCH;
 	uint HASH_WEBY;
 	QList<WebySite> sites;
 	QList<Bookmark> marks;
@@ -74,6 +75,7 @@ public:
 //		gui = NULL;
 
 		HASH_WEBSITE = qHash(QString("website"));
+		HASH_DEFAULTSEARCH = qHash(QString("defaultsearch"));
 		HASH_WEBY = qHash(QString("weby"));
 	}
 	~WebyPlugin() {}
