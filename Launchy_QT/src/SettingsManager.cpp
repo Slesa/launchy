@@ -50,7 +50,7 @@ void SettingsManager::load()
 	portable = QFile::exists(dirs["portableConfig"][0] + iniName);
 	gSettings = new QSettings(configDirectory(portable) + iniName, QSettings::IniFormat);
 
-	qDebug("Loading settings in %s mode from %s", portable ? "portable" : "installed", configDirectory(portable));
+	qDebug("Loading settings in %s mode from %s", portable ? "portable" : "installed", qPrintable(configDirectory(portable)));
 }
 
 
