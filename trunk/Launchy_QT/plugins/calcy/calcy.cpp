@@ -96,6 +96,8 @@ bool DoCalculation(QString str, double& result)
 	calculator calc;
 	double n = 0;
 
+	QLocale locale;
+	str = str.replace(locale.groupSeparator(), "");
 	wchar_t* wstr = new wchar_t[str.length()+1];
 	str.toWCharArray(wstr);
 	wstr[str.length()] = 0;
@@ -165,6 +167,8 @@ void calcyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 		if (!DoCalculation(text, res))
 			return;
 		QLocale locale;
+		locale.setNumberOptions(
+			(*settings)->value("calcy/outputGroupSeparator", true).toBool() ? QLocale::NumberOption() : QLocale::OmitGroupSeparator);
 		QString szRes = locale.toString(res, 'f', (*settings)->value("calcy/outputRounding", 10).toInt());
 		// Remove any trailing factional zeros
 		if (szRes.contains(locale.decimalPoint()))
