@@ -187,6 +187,16 @@ void calcyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 }
 
 
+void calcyPlugin::launchItem(QList<InputData>* /*inputData*/, CatItem* item)
+{
+	if ((*settings)->value("calcy/copyToClipboard", true).toBool())
+	{
+		QClipboard *clipboard = QApplication::clipboard();
+		clipboard->setText(item->shortName);
+	}
+}
+
+
 QString calcyPlugin::getIcon()
 {
 	return libPath + "/icons/calcy.png";
@@ -242,6 +252,10 @@ int calcyPlugin::msg(int msgId, void* wParam, void* lParam)
 		break;
 	case MSG_GET_RESULTS:
 		getResults((QList<InputData>*) wParam, (QList<CatItem>*)lParam);
+		handled = true;
+		break;
+	case MSG_LAUNCH_ITEM:
+		launchItem((QList<InputData>*) wParam, (CatItem*) lParam);
 		handled = true;
 		break;
 	case MSG_HAS_DIALOG:

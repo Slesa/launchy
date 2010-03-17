@@ -43,6 +43,7 @@ public:
 	void getID(uint*);
 	void getName(QString*);
 	void getResults(QList<InputData>* id, QList<CatItem>* results);
+	void launchItem(QList<InputData>* inputData, CatItem* item);
 	void doDialog(QWidget* parent, QWidget**);
 	void endDialog(bool accept);
 	void init();
