@@ -351,6 +351,7 @@ void LaunchyWidget::showAlternatives(bool show, bool resetSelection)
 		int i = 0;
 		for (; i < searchResults.size(); ++i)
 		{
+			qDebug() << "Alternative" << i << ":" << searchResults[i].fullPath;
 			QString fullPath = QDir::toNativeSeparators(searchResults[i].fullPath);
 			
 			QListWidgetItem* item;
@@ -428,7 +429,34 @@ void LaunchyWidget::showAlternatives(bool show, bool resetSelection)
 
 void LaunchyWidget::launchItem(CatItem& item)
 {
-	if (item.id == HASH_LAUNCHY || item.id == HASH_LAUNCHYFILE)
+	int ops = MSG_CONTROL_LAUNCHITEM;
+
+	if (item.id != HASH_LAUNCHY && item.id != HASH_LAUNCHYFILE)
+	{
+		ops = plugins.execute(&inputData, &item);
+		if (ops > 1)
+		{
+			switch (ops)
+			{
+			case MSG_CONTROL_EXIT:
+				close();
+				break;
+			case MSG_CONTROL_OPTIONS:
+				showOptionsDialog();
+				break;
+			case MSG_CONTROL_REBUILD:
+				buildCatalog();
+				break;
+			case MSG_CONTROL_RELOADSKIN:
+				reloadSkin();
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	if (ops == MSG_CONTROL_LAUNCHITEM)
 	{
 		QString args = "";
 		if (inputData.count() > 1)
@@ -444,27 +472,7 @@ void LaunchyWidget::launchItem(CatItem& item)
 		runProgram(item.fullPath, args);
 //#endif
 	}
-	else
-	{
-		int ops = plugins.execute(&inputData, &item);
-		if (ops > 1)
-		{
-			switch (ops)
-			{
-			case MSG_CONTROL_EXIT:
-				close();
-				break;
-			case MSG_CONTROL_OPTIONS:
-				showOptionsDialog();
-				break;
-			case MSG_CONTROL_REBUILD:
-				buildCatalog();
-				break;
-			default:
-				break;
-			}
-		}
-	}
+	
 	catalog->incrementUsage(item);
 	history.addItem(inputData);
 }
@@ -520,6 +528,7 @@ void LaunchyWidget::alternativesRowChanged(int index)
 		else if (inputData.count() > 0 && 
 			(inputData.last().hasLabel(LABEL_AUTOSUGGEST) || inputData.last().hasText() == 0))
 		{
+			qDebug() << "Autosuggest" << item.shortName;
 			gSearchText = item.shortName;
 
 			inputData.last().setText(item.shortName);
@@ -815,7 +824,12 @@ void LaunchyWidget::doEnter()
 	if ((inputData.count() > 0 && searchResults.count() > 0) || inputData.count() > 1)
 	{
 		CatItem& item = inputData[0].getTopResult();
+		qDebug() << "Launching" << item.shortName << ":" << item.fullPath;
 		launchItem(item);
+	}
+	else
+	{
+		qDebug("Nothing to launch");
 	}
 	hideLaunchy();
 }
@@ -848,14 +862,18 @@ void LaunchyWidget::searchOnInput()
 	// Add history items on their own and don't sort them so they remain in most recently used order
 	if ((inputData.count() > 0 && inputData.first().hasLabel(LABEL_HISTORY)) || input->text().length() == 0)
 	{
+		qDebug() << "Searching history for" << searchText;
 		history.search(searchText, searchResults);
 	}
 	else
 	{
 		if (inputData.count() == 1)
+		{
+			qDebug() << "Searching catalog for" << searchText;
 			catalog->searchCatalogs(gSearchText, searchResults);
+		}
 
-		if (searchResults.count() != 0)	
+		if (searchResults.count() != 0)
 			inputData.last().setTopResult(searchResults[0]);
 
 		plugins.getLabels(&inputData);
@@ -877,8 +895,9 @@ void LaunchyWidget::updateOutputWidgets(bool resetAlternativesSelection)
 {
 	if (searchResults.count() > 0 && (inputData.count() > 1 || gSearchText.length() > 0))
 	{
+		qDebug() << "Setting output text to" << searchResults[0].shortName;
 		output->setText(Catalog::decorateText(searchResults[0].shortName, gSearchText, true));
-                iconExtractor.processIcon(searchResults[0]);
+        iconExtractor.processIcon(searchResults[0]);
 
 //outputIcon->setPixmap(platform->icon(searchResults[0].fullPath).pixmap((outputIcon->size())));
 		if (searchResults[0].id != HASH_HISTORY)

@@ -471,6 +471,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MSG_CONTROL_OPTIONS 500
 #define MSG_CONTROL_EXIT 501
 #define MSG_CONTROL_REBUILD 502
+#define MSG_CONTROL_RELOADSKIN 503
+#define MSG_CONTROL_LAUNCHITEM 504
+
 
 /**
 	\brief This is the class that a plugin must implement.

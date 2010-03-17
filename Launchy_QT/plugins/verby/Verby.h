@@ -51,11 +51,13 @@ private:
 	void getName(QString* name);
 	void getCatalog(QList<CatItem>* items);
 	void getResults(QList<InputData>* inputData, QList<CatItem>* results);
-	void launchItem(QList<InputData>* inputData, CatItem* item);
+	int launchItem(QList<InputData>* inputData, CatItem* item);
 	void doDialog(QWidget* parent, QWidget**);
 	void endDialog(bool accept);
 	void getLabels(QList<InputData>* inputData);
 	void init();
+	void addCatItem(QList<CatItem>* results, QString fullName, QString shortName, QString iconName);
+	void updateUsage(CatItem& item);
 	QString getIcon();
 	QString getIconPath() const;
 
