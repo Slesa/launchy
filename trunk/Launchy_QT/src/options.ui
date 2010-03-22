@@ -11,7 +11,7 @@
     <x>0</x>
     <y>0</y>
     <width>678</width>
-    <height>515</height>
+    <height>494</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -566,6 +566,13 @@
              <widget class="QCheckBox" name="genShowNetwork">
               <property name="text">
                <string>Show network in browse mode</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="genUseWildcards">
+              <property name="text">
+               <string>Allow wildcards in browse mode</string>
               </property>
              </widget>
             </item>

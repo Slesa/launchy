@@ -56,10 +56,10 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genHCenter->setChecked((center & 1) != 0);
 	genVCenter->setChecked((center & 2) != 0);
 	genShiftDrag->setChecked(gSettings->value("GenOps/dragmode", 0) == 1);
-	//    genFastIndex->setChecked(gSettings->value("GenOps/fastindexer",false).toBool());
 	genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
 	genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
 	genShowNetwork->setChecked(gSettings->value("GenOps/showNetwork", true).toBool());
+	genUseWildcards->setChecked(gSettings->value("GenOps/wildcardFileSearch", false).toBool());
 	genCondensed->setCurrentIndex(gSettings->value("GenOps/condensedView", 0).toInt());
 	genAutoSuggestDelay->setValue(gSettings->value("GenOps/autoSuggestDelay", 1000).toInt());
 	int updateInterval = gSettings->value("GenOps/updatetimer", 10).toInt();
@@ -303,6 +303,7 @@ void OptionsDialog::accept()
 	gSettings->setValue("GenOps/dragmode", genShiftDrag->isChecked() ? 1 : 0);
 	gSettings->setValue("GenOps/showHiddenFiles", genShowHidden->isChecked());
 	gSettings->setValue("GenOps/showNetwork", genShowNetwork->isChecked());
+	gSettings->setValue("GenOps/wildcardFileSearch", genUseWildcards->isChecked());
 	gSettings->setValue("GenOps/condensedView", genCondensed->currentIndex());
 	gSettings->setValue("GenOps/autoSuggestDelay", genAutoSuggestDelay->value());
 	gSettings->setValue("GenOps/updatetimer", genUpdateCatalog->isChecked() ? genUpdateMinutes->value() : 0);
@@ -377,6 +378,12 @@ void OptionsDialog::tabChanged(int tab)
 	if (tabWidget->currentWidget()->objectName() == "Skins")
 	{
 		skinChanged(skinList->currentItem()->text());
+	}
+	else if (tabWidget->currentWidget()->objectName() == "Plugins")
+	{
+		// We've currently no way of checking is a plugin requires a catalog rescan
+		// assume that 
+		needRescan = true;
 	}
 }
 
