@@ -61,13 +61,27 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 		if (!gSettings->value("GenOps/showNetwork", true).toBool())
 			return;
 
-		QRegExp re("//([a-z]+)?$", Qt::CaseInsensitive);
+		QRegExp re("//([a-z0-9\\-]+)?$", Qt::CaseInsensitive);
 		if (re.exactMatch(searchPath))
 		{
 			inputData.last().setLabel(LABEL_FILE);
-			platform->getComputers(searchResults);
-			return;
+
+			QList<QString> computers;
+			platform->getComputers(computers);
+
+			// Filter computer names by search text
+			foreach(QString computer, computers)
+			{
+				QString computerPath = "//" + computer;
+				if (computerPath.indexOf(searchPath, 0, Qt::CaseInsensitive) == 0)
+				{
+					CatItem item(QDir::toNativeSeparators(computerPath), computer);
+					item.id = HASH_LAUNCHYFILE;
+					searchResults.push_back(item);
+				}
+			}
 		}
+		return;
 	}
 
 	// Split the string on the last slash
@@ -91,8 +105,16 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 	if (gSettings->value("GenOps/showHiddenFiles", false).toBool())
 		filters |= QDir::Hidden;
 
-	bool userWildcard = filePart.contains("*") || filePart.contains("?");
-	fileList = dir.entryList(QStringList(filePart + "*"), filters, QDir::DirsFirst | QDir::IgnoreCase | QDir::LocaleAware | QDir::Reversed);
+	bool userWildcard = false;
+	QString fileSearch;
+	if (gSettings->value("GenOps/wildcardFileSearch", false).toBool())
+	{
+		userWildcard = filePart.contains("*") || filePart.contains("?") || filePart.contains("[");
+		fileSearch = filePart;
+	}
+	fileSearch += "*";
+
+	fileList = dir.entryList(QStringList(fileSearch), filters, QDir::DirsLast | QDir::IgnoreCase | QDir::LocaleAware);
 
 	foreach(QString fileName, fileList)
 	{
@@ -102,7 +124,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 			filePath = QDir::cleanPath(filePath);
 			CatItem item(QDir::toNativeSeparators(filePath), fileName);
 			item.id = HASH_LAUNCHYFILE;
-			searchResults.push_front(item);
+			searchResults.push_back(item);
 		}
 	}
 
