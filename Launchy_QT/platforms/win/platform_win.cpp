@@ -202,22 +202,9 @@ bool PlatformWin::supportsAlphaBorder() const
 	return true;
 }
 
-
-bool PlatformWin::getComputers(QList<CatItem>& searchResults) const
+bool PlatformWin::getComputers(QList<QString>& computers) const
 {
-	QList<QString> computers;
-
-	if (EnumerateNetworkServers(computers, SV_TYPE_WORKSTATION | SV_TYPE_SERVER))
-	{
-		for (int i = 0; i < computers.size(); ++i)
-		{
-			QString name = computers[i];
-			CatItem item(QDir::toNativeSeparators("//") + name, name);
-			searchResults.push_back(item);
-		}
-	}
-
-	return true;
+	return EnumerateNetworkServers(computers, SV_TYPE_WORKSTATION | SV_TYPE_SERVER);
 }
 
 
