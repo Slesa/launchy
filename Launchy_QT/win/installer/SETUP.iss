@@ -16,7 +16,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf}\{#MyAppName}
+DefaultDirName={code:DefaultInstallDirectory}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 LicenseFile=..\..\license.txt
 OutputDir=Release\
@@ -26,16 +26,20 @@ Compression=lzma
 SolidCompression=true
 ShowLanguageDialog=yes
 AppID=Launchy_21344213
+CreateUninstallRegKey=not IsPortable
+UninstallDisplayIcon={app}\{#MyAppExeName}
+PrivilegesRequired=none
+WizardSmallImageFile=header.bmp
+AllowNoIcons=yes
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
 
 [Tasks]
-Name: startmenuicon; Description: Create start menu icons; GroupDescription: {cm:StartMenuIcons}
-Name: startmenuicon\user; Description: For the current user only; GroupDescription: {cm:StartMenuIcons}; Flags: exclusive
-Name: startmenuicon\common; Description: For all users; GroupDescription: {cm:StartMenuIcons}; Flags: exclusive unchecked
-Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
-Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked; Check: not IsPortable
+Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked; OnlyBelowVersion: 0, 6.1; Check: not IsPortable
+Name: iconscurrentuser; Description: {cm:IconsCurrentUser}; GroupDescription: {cm:CreateIconsFor}; Flags: exclusive; Check: not IsRegularUser And not IsPortable
+Name: iconscommon; Description: {cm:IconsAllUsers}; GroupDescription: {cm:CreateIconsFor}; Flags: exclusive unchecked; Check: not IsRegularUser And not IsPortable
 
 [InstallDelete]
 Type: filesandordirs; Name: {app}\skins\Black Glass
@@ -47,8 +51,8 @@ Type: filesandordirs; Name: {app}\skins\Spotlight Wide
 Type: filesandordirs; Name: {app}\platform_win.dll
 
 [Files]
-Source: ..\..\release\Launchy.exe; DestDir: {app}; Flags: ignoreversion
-
+Source: ..\..\release\{#MyAppExeName}; DestDir: {app}; Flags: ignoreversion
+Source: LaunchyPortable.ini; DestDir: {app}; DestName: Launchy.ini; Flags: onlyifdoesntexist; Check: IsPortable
 
 ; Translations
 Source: ..\..\translations\launchy_es.qm; DestDir: {app}\tr\; Flags: ignoreversion
@@ -61,7 +65,7 @@ Source: ..\..\translations\launchy_zh.qm; DestDir: {app}\tr\; Flags: ignoreversi
 Source: ..\..\release\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtGui4.dll; DestDir: {app}; Flags: ignoreversion
 Source: ..\..\release\QtNetwork4.dll; DestDir: {app}; Flags: ignoreversion
-Source: ..\..\release\qmng4.dll; DestDir: {app}\imageformats; Flags: ignoreversion
+Source: ..\..\release\imageformats\qmng4.dll; DestDir: {app}\imageformats; Flags: ignoreversion
 Source: ..\msvcp80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 Source: ..\msvcr80.dll; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
 Source: ..\Microsoft.VC80.CRT.manifest; DestDir: {app}\Microsoft.VC80.CRT\; Flags: ignoreversion
@@ -163,45 +167,90 @@ Source: ..\Utilities\System Power\System Hibernate.lnk; DestDir: {app}\Utilities
 Filename: {app}\{#MyAppUrlName}; Section: InternetShortcut; Key: URL; String: {#MyAppURL}
 
 [Icons]
-Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: startmenuicon\common
-Name: {group}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}; Tasks: startmenuicon\common
-Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}; Tasks: startmenuicon\common
-Name: {commonstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: startmenuicon\common
-Name: {group}\Readme.pdf; Filename: {app}\Readme.pdf; WorkingDir: {app}; Tasks: startmenuicon\common
-;Name: {group}\Launchy Rescue Mode; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Parameters: rescue; Tasks: startmenuicon\common
+Name: {code:UserOrCommonDirectory|programs}\{groupname}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Parameters: /show
+Name: {code:UserOrCommonDirectory|programs}\{groupname}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}
+Name: {code:UserOrCommonDirectory|programs}\{groupname}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
+Name: {code:UserOrCommonDirectory|startup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
+Name: {code:UserOrCommonDirectory|programs}\{groupname}\Readme.pdf; Filename: {app}\Readme.pdf; WorkingDir: {app}
+Name: {code:UserOrCommonDirectory|programs}\{groupname}\Launchy Rescue Mode; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Parameters: /rescue
 
-Name: {userprograms}\{groupname}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: startmenuicon\user
-Name: {userprograms}\{groupname}\{cm:ProgramOnTheWeb,{#MyAppName}}; Filename: {app}\{#MyAppUrlName}; Tasks: startmenuicon\user
-Name: {userprograms}\{groupname}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}; Tasks: startmenuicon\user
-Name: {userstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: startmenuicon\user
-Name: {userprograms}\{groupname}\Readme.pdf; Filename: {app}\Readme.pdf; WorkingDir: {app}; Tasks: startmenuicon\user
-Name: {userprograms}\{groupname}\Launchy Rescue Mode; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Parameters: rescue; Tasks: startmenuicon\user
-
-Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon; WorkingDir: {app}
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: quicklaunchicon; WorkingDir: {app}
+Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Parameters: /show; WorkingDir: {app}; Tasks: desktopicon
+Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}; Parameters: /show; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: quicklaunchicon
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Parameters: /show; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent runasoriginaluser
 
-
 [UninstallDelete]
 Type: files; Name: {app}\{#MyAppUrlName}
 
-
-;[Code]
-;procedure DeinitializeUninstall();
-;var
-;  DeleteConfig: Boolean;
-;begin
-;  DeleteConfig := MsgBox('Would you like to delete the Launchy user configuration files as well?', mbConfirmation, MB_YESNO) = idYes;
-;  if DeleteConfig = True then
-;    DelTree(ExpandConstant('{app}\Users'), True, True, True);
-;  RemoveDir(ExpandConstant('{app}'));
-;end;
-
-
-[Messages]
-SetupAppRunningError=Setup has detected that %1 is currently running.%n%nPlease close and uninstall Launchy now (bring Launchy forward and type Alt+F4), then click OK to continue, or Cancel to exit.
-
 [CustomMessages]
-StartMenuIcons=Start menu icons:
+CreateIconsFor=Create start menu and desktop icons for:
+IconsCurrentUser=The current user only
+IconsAllUsers=All users
+
+[Code]
+var
+  PortablePage: TInputOptionWizardPage;
+
+function IsRegularUser(): Boolean;
+begin
+  Result := not (IsAdminLoggedOn or IsPowerUserLoggedOn);
+end;
+
+function IsPortable(): Boolean;
+begin
+  if PortablePage = nil then
+    Result := false
+  else
+    Result := PortablePage.Values[1];
+end;
+
+function DefaultInstallDirectory(Param: String): String;
+begin
+  if IsPortable then
+    Result := ExpandConstant('{drive:{srcexe}}')
+  else if IsRegularUser then
+    Result := ExpandConstant('{localappdata}')
+  else
+    Result := ExpandConstant('{pf}');
+  Result := Result + '\{#MyAppName}';
+end;
+
+function UserOrCommonDirectory(Param: String): String;
+begin
+  if IsTaskSelected('iconscommon') then
+    Result := ExpandConstant('{common' + Param + '}')
+  else
+    Result := ExpandConstant('{user' + Param + '}')
+end;
+
+procedure InitializeWizard;
+begin
+  PortablePage := CreateInputOptionPage(wpLicense,
+    'Installation Type', 'How should Launchy be installed?',
+    'Launchy can run as an installed application or in portable mode. Please select your preferred mode',
+    True, False);
+  PortablePage.Add('Normal');
+  PortablePage.Add('Portable');
+  PortablePage.Values[0] := True;
+end;
+
+function NextButtonClick(CurPageID: Integer): Boolean;
+begin
+  if (CurPageID = PortablePage.ID) then
+  begin
+    WizardForm.DirEdit.Text := DefaultInstallDirectory('');
+    WizardForm.NoIconsCheck.Checked := IsPortable;
+  end;
+  Result := true;
+end;
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  if (PageID = wpSelectProgramGroup) and IsPortable then
+  begin
+      WizardForm.NoIconsCheck.Checked := true;
+      Result := true;
+  end;
+end;
+
