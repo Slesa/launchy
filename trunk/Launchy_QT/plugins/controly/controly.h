@@ -47,19 +47,25 @@ public:
 
 private:
 	void getID(uint*);
+	void setPath(QString * path);
 	void getName(QString*);
 	void getCatalog(QList<CatItem>*);
 	void init();
 	QString getIcon();
+	QString getIconPath() const;
 	void getApps(QList<CatItem>* items);
-	void getResults(QList<InputData>* id, QList<CatItem>* results);
-	int launchItem(QList<InputData>* id, CatItem* item);
+	bool isMatch(QString text1, QString text2);
+	void addCatItem(QString text, QList<CatItem>* results, QString fullName, QString shortName);
+	void updateUsage(CatItem& item);
+	void getResults(QList<InputData>* inputData, QList<CatItem>* results);
+	int launchItem(QList<InputData>* inputData, CatItem* item);
 
 	#ifdef WITH_GUI
 		void doDialog(QWidget* parent, QWidget**);
 		void endDialog(bool accept);
 	#endif
 
+	QString libPath;
 };
 
 extern controlyPlugin* gControlyInstance;

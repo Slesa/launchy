@@ -86,11 +86,35 @@ QString VerbyPlugin::getIconPath() const
 }
 
 
-void VerbyPlugin::addCatItem(QList<CatItem>* results, QString fullName, QString shortName, QString iconName)
+bool VerbyPlugin::isMatch(QString text1, QString text2)
 {
-	CatItem& item = CatItem(fullName, shortName, HASH_VERBY, getIconPath() + iconName);
-	item.usage = (*settings)->value("verby/" + shortName.replace(" ", "") , 0).toInt();
-	results->push_back(item);
+	int text2Length = text2.count();
+	int curChar = 0;
+
+	foreach(QChar c, text1)
+	{
+		if (c.toLower() == text2[curChar].toLower())
+		{
+			++curChar;
+			if (curChar >= text2Length)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
+void VerbyPlugin::addCatItem(QString text, QList<CatItem>* results, QString fullName, QString shortName, QString iconName)
+{
+	if (text.length() == 0 || isMatch(shortName, text))
+	{
+		CatItem& item = CatItem(fullName, shortName, HASH_VERBY, getIconPath() + iconName);
+		item.usage = (*settings)->value("verby/" + shortName.replace(" ", "") , 0).toInt();
+		results->push_back(item);
+	}
 }
 
 
@@ -104,22 +128,24 @@ void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* result
 {
 	if (inputData->count() == 2)
 	{
+		QString text = inputData->at(1).getText();
+
 		if (inputData->first().hasLabel(HASH_DIR))
 		{
-			addCatItem(results, "Properties", "Directory properties", "properties.png");
+			addCatItem(text, results, "Properties", "Directory properties", "properties.png");
 		}
 		else if (inputData->first().hasLabel(HASH_FILE))
 		{
-			addCatItem(results, "Open containing folder", "Open containing folder", "opencontainer.png");
-			addCatItem(results, "Properties", "File properties", "properties.png");
+			addCatItem(text, results, "Open containing folder", "Open containing folder", "opencontainer.png");
+			addCatItem(text, results, "Properties", "File properties", "properties.png");
 		}
 		else if (inputData->first().hasLabel(HASH_LINK))
 		{
-			addCatItem(results, "Run as", "Run as a different user", "run.png");
-			addCatItem(results, "Open containing folder", "Open containing folder", "opencontainer.png");
-			addCatItem(results, "Open shortcut folder", "Open shortcut folder", "opencontainer.png");
-			addCatItem(results, "Copy path", "Copy path to clipboard", "copy.png");
-			addCatItem(results, "Properties", "File properties", "properties.png");
+			addCatItem(text, results, "Run as", "Run as a different user", "run.png");
+			addCatItem(text, results, "Open containing folder", "Open containing folder", "opencontainer.png");
+			addCatItem(text, results, "Open shortcut folder", "Open shortcut folder", "opencontainer.png");
+			addCatItem(text, results, "Copy path", "Copy path to clipboard", "copy.png");
+			addCatItem(text, results, "Properties", "File properties", "properties.png");
 		}
 		else
 		{
@@ -131,7 +157,7 @@ void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* result
 		inputData->first().getTopResult().id = HASH_VERBY;
 
 		// ensure there's always an item at the top of the list for launching with parameters.
-		QString icon = inputData->first().getTopResult().icon;
+		addCatItem(text, results, "Properties", "File properties", "properties.png");
 		results->push_front(CatItem(
 			"Run",
 			inputData->last().getText(), INT_MAX,
