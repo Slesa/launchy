@@ -47,7 +47,7 @@ public:
 
 private:
 	void getID(uint* id);
-        void setPath(QString * path);
+    void setPath(QString * path);
 	void getName(QString* name);
 	void getCatalog(QList<CatItem>* items);
 	void getResults(QList<InputData>* inputData, QList<CatItem>* results);
@@ -56,13 +56,14 @@ private:
 	void endDialog(bool accept);
 	void getLabels(QList<InputData>* inputData);
 	void init();
-	void addCatItem(QList<CatItem>* results, QString fullName, QString shortName, QString iconName);
+	bool isMatch(QString text1, QString text2);
+	void addCatItem(QString text, QList<CatItem>* results, QString fullName, QString shortName, QString iconName);
 	void updateUsage(CatItem& item);
 	QString getIcon();
 	QString getIconPath() const;
 
 private:
-        QString libPath;
+    QString libPath;
 	Gui* gui;
 	uint HASH_VERBY;
 	uint HASH_FILE;

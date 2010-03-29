@@ -31,6 +31,13 @@ controlyPlugin::controlyPlugin() {
 controlyPlugin::~controlyPlugin() {
 }
 
+
+void controlyPlugin::setPath(QString * path)
+{
+	libPath = *path;
+}
+
+
 void controlyPlugin::init() {
 	if (gControlyInstance == NULL) {
 		// init() is currently called multiple times:
@@ -51,19 +58,26 @@ void controlyPlugin::init() {
 	}
 }
 
-void controlyPlugin::getID(uint* id) {
+void controlyPlugin::getID(uint* id)
+{
 	*id = HASH_controly;
 }
 
-void controlyPlugin::getName(QString* str) {
+void controlyPlugin::getName(QString* str)
+{
 	*str = "Controly";
 }
 
-QString controlyPlugin::getIcon() {
-#ifdef Q_WS_WIN
-	return qApp->applicationDirPath() + "/plugins/icons/controly.png";
-#endif
+QString controlyPlugin::getIcon()
+{
+	return getIconPath() + "/plugins/icons/controly.png";
 }
+
+QString controlyPlugin::getIconPath() const
+{
+	return libPath + "/icons/";
+}
+
 
 #ifdef Q_WS_WIN
 void controlyPlugin::getApps(QList<CatItem>* items) {
@@ -77,7 +91,9 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 }
 #endif
 
-void controlyPlugin::getCatalog(QList<CatItem>* items) {
+
+void controlyPlugin::getCatalog(QList<CatItem>* items)
+{
 	getApps(items);
 
 	CatItem tmp = CatItem("Launchy.controly", "Launchy", HASH_controly, getIcon());
@@ -85,11 +101,50 @@ void controlyPlugin::getCatalog(QList<CatItem>* items) {
 	items->push_back(tmp);
 }
 
-void controlyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
+
+bool controlyPlugin::isMatch(QString text1, QString text2)
+{
+	int text2Length = text2.count();
+	int curChar = 0;
+
+	foreach(QChar c, text1)
+	{
+		if (c.toLower() == text2[curChar].toLower())
+		{
+			++curChar;
+			if (curChar >= text2Length)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
+void controlyPlugin::addCatItem(QString text, QList<CatItem>* results, QString fullName, QString shortName)
+{
+	if (text.length() == 0 || isMatch(shortName, text))
+	{
+		CatItem& item = CatItem(fullName, shortName, HASH_controly, getIconPath() + fullName.toLower() + ".png");
+		item.usage = (*settings)->value("controly/" + shortName.replace(" ", "") , 0).toInt();
+		results->push_back(item);
+	}
+}
+
+
+void controlyPlugin::updateUsage(CatItem& item)
+{
+	(*settings)->setValue("controly/" + item.shortName.replace(" ", ""), item.usage + 1);
+}
+
+
+void controlyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results)
 {
 	// if user enters "*.controly", dynamically return all elements that we added to the primary catalog (for informational / debugging purposes only)
-	if (id->size() == 1) {
-		const QString & text = id->first().getText();
+	if (inputData->size() == 1) {
+		const QString & text = inputData->first().getText();
 
 		if (text.compare("*.controly") == 0) {
 			QList<CatItem> controlyCatalog;
@@ -101,32 +156,23 @@ void controlyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 		}
 	}
 
-	if (id->count() != 2)
+	if (inputData->count() != 2)
 		return;
 
-	if (id->first().getTopResult().id == HASH_controly) {
-		QSettings* set = *settings;
-		if (set == NULL) return;
-
-		CatItem tmp = CatItem("Launchy.options", "Options", HASH_controly, getIcon());
-		tmp.usage = set->value("controly/OptionsCount",0).toInt();
-		results->push_back(tmp);
-
-		tmp = CatItem("Launchy.reindex", "Rebuild Index", HASH_controly, getIcon());
-		tmp.usage = set->value("controly/RebuildCount",0).toInt();
-		results->push_back(tmp);
-
-		tmp = CatItem("Launchy.exit", "Exit", HASH_controly, getIcon());
-		tmp.usage = set->value("controly/ExitCount",0).toInt();
-		results->push_back(tmp);
+	if (inputData->first().getTopResult().id == HASH_controly) {
+		QString text = inputData->at(1).getText();
+		addCatItem(text, results, "Launchy.options", "Options");
+		addCatItem(text, results, "Launchy.rebuild", "Rebuild Catalog");
+		addCatItem(text, results, "Launchy.exit", "Exit");
 	}	
 }
 
-int controlyPlugin::launchItem(QList<InputData>* id, CatItem* item)
+
+int controlyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 {
 	item = item; // Compiler warning
 
-	if (id->count() == 1) {
+	if (inputData->count() == 1) {
 		// no parameters, just the item itsef
 
 		QString path = item->fullPath;
@@ -184,22 +230,23 @@ int controlyPlugin::launchItem(QList<InputData>* id, CatItem* item)
 		return 1;
 	}
 
-	if (id->count() != 2)
+	if (inputData->count() != 2)
 		return 1;
 
-	CatItem last = id->last().getTopResult();
-	QSettings* set = *settings;
-	if (set == NULL) return 1;
-	if (last.shortName == "Options") {
-		set->setValue("controly/OptionsCount", set->value("controly/OptionsCount",0).toInt() + 1);
+	CatItem last = inputData->last().getTopResult();
+	if (last.shortName == "Options")
+	{
+		updateUsage(last);
 		return MSG_CONTROL_OPTIONS;
 	}
-	else if (last.shortName == "Rebuild Index") {
-		set->setValue("controly/RebuildCount", set->value("controly/RebuildCount",0).toInt() + 1);
+	else if (last.shortName == "Rebuild Catalog")
+	{
+		updateUsage(last);
 		return MSG_CONTROL_REBUILD;
 	}
-	else if (last.shortName == "Exit") {
-		set->setValue("controly/ExitCount", set->value("controly/ExitCount",0).toInt() + 1);
+	else if (last.shortName == "Exit")
+	{
+		updateUsage(last);
 		return MSG_CONTROL_EXIT;
 	}
 	return 1;
@@ -264,6 +311,10 @@ int controlyPlugin::msg(int msgId, void* wParam, void* lParam)
 			break;
 		case MSG_END_DIALOG:
 			endDialog(wParam != 0);
+			break;
+
+		case MSG_PATH:
+			setPath((QString *) wParam);
 			break;
 
 		default:
