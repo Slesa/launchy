@@ -124,9 +124,7 @@ Source: ..\..\skins\Black_Glass\style.qss; DestDir: {app}\skins\Black Glass\; Fl
 Source: ..\..\skins\Black_Glass\scrollBack.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass\scrollDown.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 Source: ..\..\skins\Black_Glass\scrollUp.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
-;Source: ..\..\skins\Black_Glass\background_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
-;Source: ..\..\skins\Black_Glass\mask_nc.png; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
-Source: ..\..\skins\Black_Glass\spinner.mng; DestDir: {app}\skins\Black_Glass\; Flags: ignoreversion
+Source: ..\..\skins\Black_Glass\spinner.mng; DestDir: {app}\skins\Black Glass\; Flags: ignoreversion
 
 Source: ..\..\skins\Default\author.txt; DestDir: {app}\skins\Default\; Flags: ignoreversion
 Source: ..\..\skins\Default\frame.png; DestDir: {app}\skins\Default\; Flags: ignoreversion
@@ -253,5 +251,6 @@ begin
       Result := true;
   end;
 end;
+
 
 

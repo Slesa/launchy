@@ -53,29 +53,32 @@ QString VerbyPlugin::getIcon()
 
 void VerbyPlugin::getLabels(QList<InputData>* inputData)
 {
-	QString  text = inputData->last().getText();
-
-	// Is it a file?
-	if (text.contains("\\") || text.contains("/"))
-		return;
-
-	QDir qd;
-	QFile qf;
-
-	QString path = inputData->last().getTopResult().fullPath;
-	QFileInfo info(path);
-
-	if (info.isSymLink())
+	if (inputData->count() == 1)
 	{
-		inputData->last().setLabel(HASH_LINK);
-	}
-	else if (info.isDir())
-	{
-		inputData->last().setLabel(HASH_DIR);
-	}
-	else if (info.isFile()) 
-	{
-		inputData->last().setLabel(HASH_FILE);
+		QString  text = inputData->last().getText();
+
+		// Is it a file?
+		if (text.contains("\\") || text.contains("/"))
+			return;
+
+		QDir qd;
+		QFile qf;
+
+		QString path = inputData->last().getTopResult().fullPath;
+		QFileInfo info(path);
+
+		if (info.isSymLink())
+		{
+			inputData->last().setLabel(HASH_LINK);
+		}
+		else if (info.isDir())
+		{
+			inputData->last().setLabel(HASH_DIR);
+		}
+		else if (info.isFile()) 
+		{
+			inputData->last().setLabel(HASH_FILE);
+		}
 	}
 }
 
@@ -157,7 +160,6 @@ void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* result
 		inputData->first().getTopResult().id = HASH_VERBY;
 
 		// ensure there's always an item at the top of the list for launching with parameters.
-		addCatItem(text, results, "Properties", "File properties", "properties.png");
 		results->push_front(CatItem(
 			"Run",
 			inputData->last().getText(), INT_MAX,
