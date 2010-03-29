@@ -81,9 +81,9 @@ Source: ..\..\release\plugins\weby.dll; DestDir: {app}\plugins\; Flags: ignoreve
 ; Plugin icons
 Source: ..\..\plugins\calcy\calcy.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\controly\controly.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
-Source: ..\..\plugins\controly\controly.exit.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
-Source: ..\..\plugins\controly\controly.options.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
-Source: ..\..\plugins\controly\controly.rebuild.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\controly\launchy.exit.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\controly\launchy.options.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
+Source: ..\..\plugins\controly\launchy.rebuild.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\runner\runner.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\verby\copy.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
 Source: ..\..\plugins\verby\opencontainer.png; DestDir: {app}\plugins\icons\; Flags: ignoreversion
@@ -253,4 +253,5 @@ begin
       Result := true;
   end;
 end;
+
 
