@@ -210,7 +210,7 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
     <message>
         <location filename="../src/options.cpp" line="87"/>
         <source>Space</source>
-        <translation>空白鍵</translation>
+        <translation>Space</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="87"/>
@@ -245,22 +245,22 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
     <message>
         <location filename="../src/options.cpp" line="88"/>
         <source>Insert</source>
-        <translation type="unfinished"></translation>
+        <translation>Insert</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="88"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="88"/>
         <source>Page Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Page Up</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="88"/>
         <source>Page Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Page Down</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="89"/>
@@ -275,12 +275,12 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
     <message>
         <location filename="../src/options.cpp" line="89"/>
         <source>Scroll Lock</source>
-        <translation type="unfinished"></translation>
+        <translation>Scroll Lock</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="89"/>
         <source>Num Lock</source>
-        <translation type="unfinished"></translation>
+        <translation>Num Lock</translation>
     </message>
     <message>
         <location filename="../src/options.cpp" line="90"/>
@@ -748,12 +748,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/options.ui" line="568"/>
         <source>Show network in browse mode</source>
-        <translation>在瀏覽模式顯示網路</translation>
+        <translation>在瀏覽模式下顯示網路</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="575"/>
         <source>Allow wildcards in browse mode</source>
-        <translation type="unfinished"></translation>
+        <translation>在瀏覽模式下使用wildcards</translation>
     </message>
     <message>
         <location filename="../src/options.ui" line="582"/>
@@ -814,12 +814,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/SettingsManager.cpp" line="135"/>
         <source>Launchy</source>
-        <translation type="unfinished">Launchy</translation>
+        <translation>Launchy</translation>
     </message>
     <message>
         <location filename="../src/SettingsManager.cpp" line="136"/>
         <source>Could not convert to portable mode. Please check you have write access to the %1 directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>無法轉換到可攜模式。請確定你有寫入 %1 目錄的權限。</translation>
     </message>
 </context>
 </TS>
