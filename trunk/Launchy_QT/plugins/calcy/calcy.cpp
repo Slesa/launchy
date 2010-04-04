@@ -98,6 +98,7 @@ bool DoCalculation(QString str, double& result)
 
 	QLocale locale;
 	str = str.replace(locale.groupSeparator(), "");
+	str = str.replace(locale.decimalPoint(), ".");
 	wchar_t* wstr = new wchar_t[str.length()+1];
 	str.toWCharArray(wstr);
 	wstr[str.length()] = 0;
