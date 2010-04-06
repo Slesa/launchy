@@ -55,29 +55,26 @@ void VerbyPlugin::getLabels(QList<InputData>* inputData)
 {
 	if (inputData->count() == 1)
 	{
-		QString  text = inputData->last().getText();
-
-		// Is it a file?
-		if (text.contains("\\") || text.contains("/"))
+		// If it's not an item from Launchy's built in catalog, i.e. a file or directory or something added 
+		// by a plugin, don't add verbs.
+		int id = inputData->first().getTopResult().id;
+		if (inputData->first().getTopResult().id != 0)
 			return;
 
-		QDir qd;
-		QFile qf;
-
-		QString path = inputData->last().getTopResult().fullPath;
+		QString path = inputData->first().getTopResult().fullPath;
 		QFileInfo info(path);
 
 		if (info.isSymLink())
 		{
-			inputData->last().setLabel(HASH_LINK);
+			inputData->first().setLabel(HASH_LINK);
 		}
 		else if (info.isDir())
 		{
-			inputData->last().setLabel(HASH_DIR);
+			inputData->first().setLabel(HASH_DIR);
 		}
 		else if (info.isFile()) 
 		{
-			inputData->last().setLabel(HASH_FILE);
+			inputData->first().setLabel(HASH_FILE);
 		}
 	}
 }
@@ -114,7 +111,7 @@ void VerbyPlugin::addCatItem(QString text, QList<CatItem>* results, QString full
 {
 	if (text.length() == 0 || isMatch(shortName, text))
 	{
-                CatItem item = CatItem(fullName, shortName, HASH_VERBY, getIconPath() + iconName);
+        CatItem item = CatItem(fullName, shortName, HASH_VERBY, getIconPath() + iconName);
 		item.usage = (*settings)->value("verby/" + shortName.replace(" ", "") , 0).toInt();
 		results->push_back(item);
 	}

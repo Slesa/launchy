@@ -34,9 +34,9 @@ public:
 	{
 		gui = NULL;
 		HASH_VERBY = qHash(QString("verby"));
-		HASH_DIR = qHash(QString("directory"));
-		HASH_FILE = qHash(QString("file"));
-		HASH_LINK = qHash(QString("link"));
+		HASH_DIR = qHash(QString("verbydirectory"));
+		HASH_FILE = qHash(QString("verbyfile"));
+		HASH_LINK = qHash(QString("verbylink"));
 	}
 
 	~VerbyPlugin()
