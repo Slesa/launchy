@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2009  Simon Capewell
+Copyright (C) 2009-2010  Simon Capewell, Josh Karlin
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -36,8 +36,9 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 	{
 		// Special case for Windows: list available drives
 		QFileInfoList driveList = QDir::drives();
-		foreach(QFileInfo info, driveList)
+		for (int i = driveList.length()-1; i >= 0; --i)
 		{
+			QFileInfo info = driveList[i];
 			// Retrieve volume name
 			QString volumeName;
 			WCHAR volName[MAX_PATH];
@@ -70,14 +71,15 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 			platform->getComputers(computers);
 
 			// Filter computer names by search text
-			foreach(QString computer, computers)
+			for (int i = computers.length()-1; i >= 0; --i)
 			{
+				QString computer = computers[i];
 				QString computerPath = "//" + computer;
 				if (computerPath.indexOf(searchPath, 0, Qt::CaseInsensitive) == 0)
 				{
 					CatItem item(QDir::toNativeSeparators(computerPath), computer);
 					item.id = HASH_LAUNCHYFILE;
-					searchResults.push_back(item);
+					searchResults.push_front(item);
 				}
 			}
 		}
@@ -116,15 +118,16 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 
 	fileList = dir.entryList(QStringList(fileSearch), filters, QDir::DirsLast | QDir::IgnoreCase | QDir::LocaleAware);
 
-	foreach(QString fileName, fileList)
+	for (int i = fileList.length()-1; i >= 0; --i)
 	{
+		QString fileName = fileList[i];
 		if (userWildcard || fileName.indexOf(filePart, 0, Qt::CaseInsensitive) == 0)
 		{
 			QString filePath = dir.absolutePath() + "/" + fileName;
 			filePath = QDir::cleanPath(filePath);
 			CatItem item(QDir::toNativeSeparators(filePath), fileName);
 			item.id = HASH_LAUNCHYFILE;
-			searchResults.push_back(item);
+			searchResults.push_front(item);
 		}
 	}
 
