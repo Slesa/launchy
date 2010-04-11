@@ -158,7 +158,7 @@ void PlatformUnix::alterItem(CatItem* item) {
     QString icon = "";
     QString exe = "";
     while(!file.atEnd()) {
-	QString line = file.readLine();
+	QString line = QString::fromUtf8(file.readLine());
 	
 	if (line.startsWith("Name[" + locale, Qt::CaseInsensitive)) 
 	    name = line.split("=")[1].trimmed();
