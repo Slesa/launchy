@@ -373,6 +373,7 @@ void LaunchyWidget::showAlternatives(bool show, bool resetSelection)
 			if (i >= alternatives->count())
 				alternatives->addItem(item);
 		}
+
 		while (alternatives->count() > i)
 		{
 			delete alternatives->takeItem(i);
@@ -701,14 +702,15 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 		doTab();
 		processKey();
 	}
-	/*
+	
 	else if (event->key() == Qt::Key_Slash || event->key() == Qt::Key_Backslash)
 	{
-		if (inputData.count() > 0 && inputData.last().hasLabel(LABEL_FILE))
-			doTab();
+		doTab();
+		//if (inputData.count() > 0 && inputData.last().hasLabel(LABEL_FILE))
+		//	doTab();
 		processKey();
 	}
-	*/
+	
 	else if (event->text().length() > 0)
 	{
 		// process any other key with character output
@@ -880,12 +882,14 @@ void LaunchyWidget::searchOnInput()
 		plugins.getResults(&inputData, &searchResults);
 		qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
 
+
+
+		catalog->promoteRecentlyUsedItems(gSearchText, searchResults);
+
 		// Is it a file?
 		if (searchText.contains(QDir::separator()) || searchText.startsWith("~") ||
 			(searchText.size() == 2 && searchText[0].isLetter() && searchText[1] == ':'))
 			FileSearch::search(searchText, searchResults, inputData);
-
-		catalog->promoteRecentlyUsedItems(gSearchText, searchResults);
 	}
 }
 
