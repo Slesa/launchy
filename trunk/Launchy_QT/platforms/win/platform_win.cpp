@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "main.h"
 #include "platform_win.h"
 #include "WinIconProvider.h"
+#include "minidump.h"
 
 
 // Override the main widget to handle incoming system messages. We could have done this in the QApplication 
@@ -79,9 +80,10 @@ LaunchyWidget* createLaunchyWidget(CommandFlags command)
 
 
 PlatformWin::PlatformWin(int& argc, char** argv) :
-	PlatformBase(argc, argv)
+	PlatformBase(argc, argv),
+	minidumper(_T("Launchy"))
 {
-	instance = new LimitSingleInstance(TEXT("Local\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
+	instance = new LimitSingleInstance(_T("Local\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
 
 	// Create local and global application mutexes so that installer knows when
 	// Launchy is running

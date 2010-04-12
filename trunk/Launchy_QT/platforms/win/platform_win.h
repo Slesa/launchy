@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "platform_base.h"
 #include "platform_win_util.h"
 #include "platform_base_hotkey.h"
+#include "minidump.h"
 
 
 class PlatformWin : public PlatformBase 
@@ -48,6 +49,7 @@ public:
 private:
 	HANDLE localMutex, globalMutex;
 	LimitSingleInstance* instance;
+	MiniDumper minidumper;
 };
 
 

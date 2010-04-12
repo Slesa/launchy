@@ -16,20 +16,11 @@ SOURCES = plugin_interface.cpp \
 TARGET = verby
 win32 { 
     CONFIG -= embed_manifest_dll
-    LIBS += shell32.lib user32.lib
+	QMAKE_CXXFLAGS_RELEASE += /Zi
+	QMAKE_LFLAGS_RELEASE += /DEBUG
 }
-win32:debug:%QMAKE_CXXFLAGS += /ZI
-*:debug:DESTDIR = ../../debug/plugins/
-*:release { 
-    DESTDIR = ../../release/plugins/
-    %QMAKE_CXXFLAGS += /Ox \
-        /Ob2 \
-        /Oi \
-        /Oy \
-        /GT \
-        /GA \
-        /WX
-}
+if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/plugins
+if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../release/plugins
 unix:!macx {
     PREFIX = /usr
     target.path = $$PREFIX/lib/launchy/plugins/
