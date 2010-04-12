@@ -28,13 +28,10 @@ SOURCES = plugin_interface.cpp \
 TARGET = controly
 win32 { 
     CONFIG -= embed_manifest_dll
-    LIBS += shell32.lib
-    LIBS += user32.lib
-    LIBS += Gdi32.lib
     LIBS += comctl32.lib
-    LIBS += Advapi32.lib
-    LIBS += ole32.lib
     LIBS += shlwapi.lib
+	QMAKE_CXXFLAGS_RELEASE += /Zi
+	QMAKE_LFLAGS_RELEASE += /DEBUG
 }
 
 # *:debug {

@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifdef _MSC_VER
 #pragma warning(push,3)
+#define _CRT_SECURE_NO_WARNINGS
 #endif
 
 #include <QtGui>

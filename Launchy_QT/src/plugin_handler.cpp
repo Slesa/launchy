@@ -138,14 +138,22 @@ void PluginHandler::loadPlugins()
 		{
 			if (!QLibrary::isLibrary(fileName)) continue;
 			QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+			qDebug() << "Loading plugin" << fileName;
 			QObject *plugin = loader.instance();
 			if (!plugin)
+			{
+				qWarning() << fileName << "is not a plugin";
 				continue;
-			
+			}
 			PluginInterface *plug = qobject_cast<PluginInterface *>(plugin);
 			if (!plug)
+			{
+				qWarning() << fileName << "is not a Launchy plugin";
 				continue;
-				
+			}
+
+			qDebug() << "Plugin loaded";
+
 			plug->settings = &gSettings;
 			PluginInfo info;
 			uint id;
@@ -193,8 +201,6 @@ void PluginHandler::loadPlugins()
 					}
 					plugins[pluginInfo.id] = pluginInfo;
 				}
-
-
 			}
 			else
 			{
