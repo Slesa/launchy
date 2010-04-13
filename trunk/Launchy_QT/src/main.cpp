@@ -702,15 +702,12 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 		doTab();
 		processKey();
 	}
-	
 	else if (event->key() == Qt::Key_Slash || event->key() == Qt::Key_Backslash)
 	{
-		doTab();
-		//if (inputData.count() > 0 && inputData.last().hasLabel(LABEL_FILE))
-		//	doTab();
+		if (inputData.count() > 0 && inputData.last().hasLabel(LABEL_FILE))
+			doTab();
 		processKey();
 	}
-	
 	else if (event->text().length() > 0)
 	{
 		// process any other key with character output
@@ -934,7 +931,7 @@ void LaunchyWidget::startDropTimer()
 	if (delay > 0)
 		dropTimer->start(delay);
 	else
-		showAlternatives(false);
+		showAlternatives(true);
 }
 
 

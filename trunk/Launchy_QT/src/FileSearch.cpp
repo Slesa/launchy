@@ -82,8 +82,8 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 					searchResults.push_front(item);
 				}
 			}
+			return;
 		}
-		return;
 	}
 
 	// Split the string on the last slash
