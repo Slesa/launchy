@@ -704,7 +704,8 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 	}
 	else if (event->key() == Qt::Key_Slash || event->key() == Qt::Key_Backslash)
 	{
-		if (inputData.count() > 0 && inputData.last().hasLabel(LABEL_FILE))
+		if (inputData.count() > 0 && inputData.last().hasLabel(LABEL_FILE) &&
+			searchResults.count() > 0 && searchResults[0].id == HASH_LAUNCHYFILE)
 			doTab();
 		processKey();
 	}
