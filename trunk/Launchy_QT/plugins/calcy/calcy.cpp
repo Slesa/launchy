@@ -117,7 +117,7 @@ calcyPlugin* gPlugin;
 
 
 calcyPlugin::calcyPlugin() :
-	reg(".*[\\-\\+\\*\\/]+[\\d\\s\\-\\+\\*\\/\\(\\)\\.]+")
+	reg("^[\\(\\+\\-]*(\\d+(\\.\\d+)?)")
 {
 	gPlugin = this;
 	HASH_CALCY = qHash(QString("calcy"));
@@ -151,8 +151,8 @@ void calcyPlugin::getLabels(QList<InputData>* id)
 	if (id->count() > 1)
 		return;
 
-	const QString& text = id->last().getText();
-	if (reg.indexIn(text) != -1)
+	QString text = id->last().getText().replace(" ", "");
+	if (reg.indexIn(text) == 0)
 	{
 		id->last().setLabel(HASH_CALCY);
 	}
