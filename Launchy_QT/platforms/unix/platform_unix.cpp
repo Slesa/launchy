@@ -106,7 +106,7 @@ QHash<QString, QList<QString> > PlatformUnix::getDirectories() {
     out["plugins"] += QDir::homePath() + "/.launchy/plugins";
     out["plugins"] += PLUGINS_PATH;
 
-    out["config"] += QDir::homePath();
+    out["config"] += QDir::homePath() + "/.launchy";
     out["portableConfig"] += qApp->applicationDirPath();
     
     if (QFile::exists(out["skins"].last() + "/Default"))
