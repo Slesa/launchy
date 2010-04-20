@@ -116,9 +116,11 @@ bool DoCalculation(QString str, double& result)
 calcyPlugin* gPlugin;
 
 
-calcyPlugin::calcyPlugin() :
-	reg("^[\\(\\+\\-]*(\\d+(\\.\\d+)?)")
+calcyPlugin::calcyPlugin()
 {
+	QLocale locale;
+	QString pattern = QString("^[\\(\\+\\-]*([\\d\\%1]+(\\%2\\d+)?)").arg(locale.groupSeparator()).arg(locale.decimalPoint());
+	reg.setPattern(pattern);
 	gPlugin = this;
 	HASH_CALCY = qHash(QString("calcy"));
 }
