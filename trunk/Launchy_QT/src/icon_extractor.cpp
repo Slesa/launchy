@@ -44,7 +44,7 @@ void IconExtractor::processIcon(CatItem item, bool highPriority)
         run();
 #else
 	if (!isRunning())
-		start(LowestPriority);
+		start(LowPriority);
 #endif
     }
 
