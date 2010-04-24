@@ -96,9 +96,7 @@ bool DoCalculation(QString str, double& result)
 	calculator calc;
 	double n = 0;
 
-	QLocale locale;
-	str = str.replace(locale.groupSeparator(), "");
-	str = str.replace(locale.decimalPoint(), ".");
+
 	wchar_t* wstr = new wchar_t[str.length()+1];
 	str.toWCharArray(wstr);
 	wstr[str.length()] = 0;
@@ -118,9 +116,6 @@ calcyPlugin* gPlugin;
 
 calcyPlugin::calcyPlugin()
 {
-	QLocale locale;
-	QString pattern = QString("^[\\(\\+\\-]*([\\d\\%1]+(\\%2\\d+)?)").arg(locale.groupSeparator()).arg(locale.decimalPoint());
-	reg.setPattern(pattern);
 	gPlugin = this;
 	HASH_CALCY = qHash(QString("calcy"));
 }
@@ -133,6 +128,11 @@ calcyPlugin::~calcyPlugin()
 
 void calcyPlugin::init()
 {
+	QString decimal = (*settings)->value("calcy/useCommaForDecimal", false).toBool() ? "," : ".";
+	QString group = (*settings)->value("calcy/useCommaForDecimal", false).toBool() ? "." : ",";
+
+	QString pattern = QString("^[\\(\\+\\-]*([\\d\\%1]+(\\%2\\d+)?)").arg(group.arg(decimal));
+	reg.setPattern(pattern);
 }
 
 
@@ -165,22 +165,30 @@ void calcyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 {   
 	if (id->last().hasLabel(HASH_CALCY))
 	{
-		const QString & text = id->last().getText();
+		QString text = id->last().getText();
 		double res = 0.0;
+
+		QString decimal = (*settings)->value("calcy/useCommaForDecimal", false).toBool() ? "," : ".";
+		QString group = (*settings)->value("calcy/useCommaForDecimal", false).toBool() ? "." : ",";
+
+		text = text.replace(group, "");
+		text = text.replace(decimal, ".");
+
 		if (!DoCalculation(text, res))
 			return;
-		QLocale locale;
-		locale.setNumberOptions(
-			(*settings)->value("calcy/outputGroupSeparator", true).toBool() ? QLocale::NumberOption() : QLocale::OmitGroupSeparator);
-		QString szRes = locale.toString(res, 'f', (*settings)->value("calcy/outputRounding", 10).toInt());
-		// Remove any trailing factional zeros
-		if (szRes.contains(locale.decimalPoint()))
+
+		QString szRes = QString::number(res, 'f', (*settings)->value("calcy/outputRounding", 10).toInt());
+
+		szRes.replace(".", decimal);
+
+		// Remove any trailing fractional zeros
+		if (szRes.contains(decimal))
 		{
-			while (szRes.endsWith(locale.zeroDigit()))
+			while (szRes.endsWith("0"))
 			{
 				szRes.truncate(szRes.length()-1);
 			}
-			if (szRes.endsWith(locale.decimalPoint()))
+			if (szRes.endsWith(decimal))
 			{
 				szRes.truncate(szRes.length()-1);
 			}
@@ -218,6 +226,7 @@ void calcyPlugin::doDialog(QWidget* parent, QWidget** newDlg)
 		return;
 	gui.reset(new Gui(parent));
 	*newDlg = gui.get();
+	init();
 }
 
 

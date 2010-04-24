@@ -33,6 +33,7 @@ Gui::Gui(QWidget* parent)
 	txtRounding->setValue(settings->value("calcy/outputRounding", 10).toInt());
 	chkDigitGrouping->setChecked(settings->value("calcy/outputGroupSeparator", true).toBool());
 	chkCopyToClipboard->setChecked(settings->value("calcy/copyToClipboard", true).toBool());
+	chkComma->setChecked(settings->value("calcy/useCommaForDecimal", false).toBool());
 }
 
 
@@ -51,4 +52,5 @@ void Gui::writeOptions()
 	settings->setValue("calcy/outputRounding", txtRounding->value());
 	settings->setValue("calcy/outputGroupSeparator", chkDigitGrouping->isChecked());
 	settings->setValue("calcy/copyToClipboard", chkCopyToClipboard->isChecked());
+	settings->setValue("calcy/useCommaForDecimal", chkComma->isChecked());
 }
