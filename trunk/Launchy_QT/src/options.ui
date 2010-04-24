@@ -21,7 +21,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="General">
       <attribute name="title">
@@ -1118,7 +1118,7 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QLabel" name="label_2">
+          <widget class="QLabel" name="about_homepage">
            <property name="minimumSize">
             <size>
              <width>321</width>
@@ -1143,7 +1143,7 @@ p, li { white-space: pre-wrap; }
             <set>Qt::AlignCenter</set>
            </property>
            <property name="wordWrap">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="openExternalLinks">
             <bool>true</bool>
