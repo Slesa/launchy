@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2009 Josh Karlin, Simon Capewell
+Copyright (C) 2007-2010 Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -63,7 +63,6 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
 	genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
 	genShowNetwork->setChecked(gSettings->value("GenOps/showNetwork", true).toBool());
-	genUseWildcards->setChecked(gSettings->value("GenOps/wildcardFileSearch", false).toBool());
 	genCondensed->setCurrentIndex(gSettings->value("GenOps/condensedView", 0).toInt());
 	genAutoSuggestDelay->setValue(gSettings->value("GenOps/autoSuggestDelay", 1000).toInt());
 	int updateInterval = gSettings->value("GenOps/updatetimer", 10).toInt();
@@ -307,7 +306,6 @@ void OptionsDialog::accept()
 	gSettings->setValue("GenOps/dragmode", genShiftDrag->isChecked() ? 1 : 0);
 	gSettings->setValue("GenOps/showHiddenFiles", genShowHidden->isChecked());
 	gSettings->setValue("GenOps/showNetwork", genShowNetwork->isChecked());
-	gSettings->setValue("GenOps/wildcardFileSearch", genUseWildcards->isChecked());
 	gSettings->setValue("GenOps/condensedView", genCondensed->currentIndex());
 	gSettings->setValue("GenOps/autoSuggestDelay", genAutoSuggestDelay->value());
 	gSettings->setValue("GenOps/updatetimer", genUpdateCatalog->isChecked() ? genUpdateMinutes->value() : 0);
