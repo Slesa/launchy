@@ -171,27 +171,29 @@ void calcyPlugin::getResults(QList<InputData>* id, QList<CatItem>* results)
 		QString decimal = (*settings)->value("calcy/useCommaForDecimal", false).toBool() ? "," : ".";
 		QString group = (*settings)->value("calcy/useCommaForDecimal", false).toBool() ? "." : ",";
 
+		QLocale c = (*settings)->value("calcy/useCommaForDecimal", false).toBool() ? QLocale(QLocale::German) : QLocale(QLocale::C);
+
+		
 		text = text.replace(group, "");
 		text = text.replace(decimal, ".");
+		
+
+		//double dbl = c.toDouble(text);
+		//qDebug() << text << dbl;
+		//text = QString::number(dbl);
 
 		if (!DoCalculation(text, res))
 			return;
 
-		QString szRes = QString::number(res, 'f', (*settings)->value("calcy/outputRounding", 10).toInt());
-
-		szRes.replace(".", decimal);
+		QString szRes = c.toString(res, 'f', (*settings)->value("calcy/outputRounding", 10).toInt());
 
 		// Remove any trailing fractional zeros
 		if (szRes.contains(decimal))
 		{
 			while (szRes.endsWith("0"))
-			{
-				szRes.truncate(szRes.length()-1);
-			}
+				szRes.chop(1);
 			if (szRes.endsWith(decimal))
-			{
-				szRes.truncate(szRes.length()-1);
-			}
+				szRes.chop(1);
 		}
 		results->push_front(CatItem(szRes + ".calcy", szRes, HASH_CALCY, getIcon()));
 	}
