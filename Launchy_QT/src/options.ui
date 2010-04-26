@@ -570,13 +570,6 @@
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="genUseWildcards">
-              <property name="text">
-               <string>Allow wildcards in browse mode</string>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QCheckBox" name="genUpdateCheck">
               <property name="text">
                <string>Check for new versions of Launchy on startup</string>

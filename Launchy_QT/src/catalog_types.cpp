@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
+Copyright (C) 2007-2010  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -265,22 +265,21 @@ QString Catalog::decorateText(const QString& text, const QString& match, bool ou
 
 void Catalog::searchCatalogs(const QString& text, QList<CatItem> & out)
 {
-	gSearchText = text.toLower();
-	QList<CatItem*> catMatches = search(gSearchText);
-	
+	QList<CatItem*> catMatches = search(text);
+
 	// Now prioritize the catalog items
 	qSort(catMatches.begin(), catMatches.end(), CatLess);
 
 	// Check for history matches
-	QString location = "History/" + gSearchText;
+	QString location = "History/" + text;
 	QStringList hist;
 	hist = gSettings->value(location, hist).toStringList();
 	if (hist.count() == 2)
 	{
 		for (int i = 0; i < catMatches.count(); i++)
 		{
-			if (catMatches[i]->lowName == hist[0] &&
-				catMatches[i]->fullPath == hist[1])
+		if (catMatches[i]->lowName == hist[0] &&
+			catMatches[i]->fullPath == hist[1])
 			{
 				CatItem* tmp = catMatches[i];
 				catMatches.removeAt(i);
@@ -305,15 +304,15 @@ void Catalog::promoteRecentlyUsedItems(const QString& text, QList<CatItem> & lis
 	QStringList hist;
 	hist = gSettings->value(location, hist).toStringList();
 	if (hist.count() == 2)
-	{
-		for (int i = 0; i < list.count(); i++)
 		{
+			for (int i = 0; i < list.count(); i++)
+			{
 			if (list[i].lowName == hist[0] &&
 				list[i].fullPath == hist[1])
-			{
-				CatItem tmp = list[i];
-				list.removeAt(i);
-				list.push_front(tmp);
+				{
+					CatItem tmp = list[i];
+					list.removeAt(i);
+					list.push_front(tmp);
 			}
 		}
 	}

@@ -261,7 +261,7 @@ void LaunchyWidget::paintEvent(QPaintEvent* event)
 	styleOption.init(this);
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
-        style()->drawPrimitive(QStyle::PE_Widget, &styleOption, &painter, this);
+    style()->drawPrimitive(QStyle::PE_Widget, &styleOption, &painter, this);
 
 	// Now draw the standard frame.png graphic if there is one
 	if (frameGraphic)
@@ -353,7 +353,9 @@ void LaunchyWidget::showAlternatives(bool show, bool resetSelection)
 		{
 			qDebug() << "Alternative" << i << ":" << searchResults[i].fullPath;
 			QString fullPath = QDir::toNativeSeparators(searchResults[i].fullPath);
-			
+#ifdef _DEBUG
+			fullPath += QString(" (%1 launches)").arg(searchResults[i].usage);
+#endif			
 			QListWidgetItem* item;
 			if (i < alternatives->count())
 			{
@@ -518,30 +520,32 @@ void LaunchyWidget::alternativesRowChanged(int index)
 			if (item.id == HASH_HISTORY && historyIndex < searchResults.count())
 			{
 				inputData = history.getItem(historyIndex);
-				gSearchText = inputData.last().getText();
 				input->selectAll();
 				input->insert(inputData.toString());
 				input->selectAll();
-				output->setText(Catalog::decorateText(item.shortName, gSearchText, true));
+				output->setText(inputData[0].getTopResult().shortName);
 				iconExtractor.processIcon(item);
+
+				gSearchText = inputData.toString();
 			}
 		}
 		else if (inputData.count() > 0 && 
 			(inputData.last().hasLabel(LABEL_AUTOSUGGEST) || inputData.last().hasText() == 0))
 		{
 			qDebug() << "Autosuggest" << item.shortName;
-			gSearchText = item.shortName;
 
 			inputData.last().setText(item.shortName);
 			inputData.last().setLabel(LABEL_AUTOSUGGEST);
 
 			QString root = inputData.toString(true);
 			input->selectAll();
-			input->insert(root + gSearchText);
-			input->setSelection(root.length(), gSearchText.length());
+			input->insert(root + item.shortName);
+			input->setSelection(root.length(), item.shortName.length());
 
-			output->setText(Catalog::decorateText(gSearchText, gSearchText, true));
+			output->setText(item.shortName);
 			iconExtractor.processIcon(item);
+
+			gSearchText = "";
 		}
 	}
 }
@@ -569,7 +573,7 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 	{
 		showAlternatives(false);
 		event->ignore();
-                this->input->setFocus();
+        this->input->setFocus();
 	}
 	else if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter || event->key() == Qt::Key_Tab)
 	{
@@ -639,7 +643,7 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 		input->keyPressEvent(event);
 		keyPressEvent(event);
 	}
-        alternatives->setFocus();
+    alternatives->setFocus();
 }
 
 
@@ -743,54 +747,8 @@ void LaunchyWidget::doTab()
 		// If it's an incomplete file or directory, complete it
 		QFileInfo info(searchResults[0].fullPath);
 
-		if ((inputData.last().hasLabel(LABEL_FILE) || info.isDir())
-			)//	&& input->text().compare(QDir::toNativeSeparators(searchResults[0].fullPath), Qt::CaseInsensitive) != 0)
+		if (inputData.last().hasLabel(LABEL_FILE) || info.isDir())
 		{
-
-			// If multiple paths exist, select the longest intersection (like the bash shell)
-			if (!alternatives->isActiveWindow())
-			{ 
-				QStringList paths;
-				int minLength = -1;
-				foreach(const CatItem& item, searchResults) {
-					if (item.id == HASH_LAUNCHYFILE) {
-						QString p = item.fullPath;
-						paths += p;
-						if (minLength == -1 || p.length() < minLength)
-							minLength = p.length();
-						qDebug() << p;
-					}
-				}
-				qDebug() << "";
-
-				if (paths.size() > 1) {
-					// Find the longest prefix common to all of the paths
-					QChar curChar;
-					QString longestPrefix = "";
-					for(int i = 0; i < minLength; i++) {
-						curChar = paths[0][i];
-						bool stop = false;
-						foreach(QString path, paths) {
-#ifdef Q_WS_WIN
-							if (path[i].toLower() != curChar.toLower()) {
-#else
-							if (path[i] != curChar) {
-#endif
-								stop = true;
-								break;
-							}
-						}
-						if (stop) break;
-						longestPrefix += curChar;
-					}
-
-					input->selectAll();
-					input->insert(inputData.toString(true) + longestPrefix);
-					return;
-				}
-			}
-
-
 			QString path;
 			if (info.isSymLink())
 				path = info.symLinkTarget();
@@ -809,9 +767,6 @@ void LaunchyWidget::doTab()
 			inputData.last().setText(searchResults[0].shortName);
 			input->selectAll();
 			input->insert(inputData.toString() + input->separatorText());
-
-			QRect rect = input->rect();
-			repaint(rect);
 		}
 	}
 }
@@ -856,21 +811,22 @@ void LaunchyWidget::searchOnInput()
 		return;
 
 	QString searchText = inputData.count() > 0 ? inputData.last().getText() : "";
-	gSearchText = searchText;
+	QString searchTextLower = searchText.toLower();
+	gSearchText = searchTextLower;
 	searchResults.clear();
 
 	// Add history items on their own and don't sort them so they remain in most recently used order
 	if ((inputData.count() > 0 && inputData.first().hasLabel(LABEL_HISTORY)) || input->text().length() == 0)
 	{
 		qDebug() << "Searching history for" << searchText;
-		history.search(searchText, searchResults);
+		history.search(searchTextLower, searchResults);
 	}
 	else
 	{
 		if (inputData.count() == 1)
 		{
 			qDebug() << "Searching catalog for" << searchText;
-			catalog->searchCatalogs(gSearchText, searchResults);
+			catalog->searchCatalogs(searchTextLower, searchResults);
 		}
 
 		if (searchResults.count() != 0)
@@ -880,14 +836,13 @@ void LaunchyWidget::searchOnInput()
 		plugins.getResults(&inputData, &searchResults);
 		qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);
 
+		catalog->promoteRecentlyUsedItems(searchTextLower, searchResults);
 
-
-		catalog->promoteRecentlyUsedItems(gSearchText, searchResults);
-
-		// Is it a file?
 		if (searchText.contains(QDir::separator()) || searchText.startsWith("~") ||
 			(searchText.size() == 2 && searchText[0].isLetter() && searchText[1] == ':'))
+		{
 			FileSearch::search(searchText, searchResults, inputData);
+		}
 	}
 }
 
@@ -895,13 +850,17 @@ void LaunchyWidget::searchOnInput()
 // If there are current results, update the output text and icon
 void LaunchyWidget::updateOutputWidgets(bool resetAlternativesSelection)
 {
-	if (searchResults.count() > 0 && (inputData.count() > 1 || gSearchText.length() > 0))
+	if (searchResults.count() > 0 && (inputData.count() > 1 || input->text().length() > 0))
 	{
 		qDebug() << "Setting output text to" << searchResults[0].shortName;
-		output->setText(Catalog::decorateText(searchResults[0].shortName, gSearchText, true));
+
+		QString outputText = Catalog::decorateText(searchResults[0].shortName, gSearchText, true);
+#ifdef _DEBUG
+		outputText += QString(" (%1 launches)").arg(searchResults[0].usage);
+#endif
+		output->setText(outputText);
         iconExtractor.processIcon(searchResults[0]);
 
-//outputIcon->setPixmap(platform->icon(searchResults[0].fullPath).pixmap((outputIcon->size())));
 		if (searchResults[0].id != HASH_HISTORY)
 		{
 			// Did the plugin take control of the input?
@@ -1375,7 +1334,7 @@ void LaunchyWidget::mouseMoveEvent(QMouseEvent *e)
 
 void LaunchyWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-        event = event; // Warning removal
+	event = event; // Warning removal
 	dragging = false;
 	showAlternatives(false);
 	input->setFocus();
@@ -1497,16 +1456,10 @@ void LaunchyWidget::showLaunchy(bool noFade)
 	shouldDonate();
 	showAlternatives(false);
 
-#ifdef Q_WS_WIN
-	// There's a problem with alpha layered windows under Vista after resuming
-	// from sleep. The alpha image may need to be reapplied.
-#endif
 	loadPosition(pos());
 
 	fader->fadeIn(noFade || alwaysShowLaunchy);
 
-
-        //qApp->syncX();
 #ifdef Q_WS_WIN
 	// need to use this method in Windows to ensure that keyboard focus is set when 
 	// being activated via a hook or message from another instance of Launchy
