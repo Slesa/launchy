@@ -204,8 +204,27 @@ bool PlatformWin::supportsAlphaBorder() const
 	return true;
 }
 
-bool PlatformWin::getComputers(QList<QString>& computers) const
+
+bool PlatformWin::getComputers(QStringList& computers) const
 {
+	// Get a list of domains. This should return nothing or fail when we're on a workgroup
+	QStringList domains;
+	if (EnumerateNetworkServers(domains, SV_TYPE_DOMAIN_ENUM))
+	{
+		foreach(QString domain, domains)
+		{
+			EnumerateNetworkServers(computers, SV_TYPE_WORKSTATION | SV_TYPE_SERVER, domain.utf16());
+		}
+
+		// If names have been retrieved from more than one domain, they'll need sorting
+		if (domains.length() > 1)
+		{
+			computers.sort();
+		}
+
+		return true;
+	}
+
 	return EnumerateNetworkServers(computers, SV_TYPE_WORKSTATION | SV_TYPE_SERVER);
 }
 
@@ -215,5 +234,3 @@ QApplication* createApplication(int& argc, char** argv)
 {
 	return new PlatformWin(argc, argv);
 }
-
-
