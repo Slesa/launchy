@@ -44,7 +44,7 @@ public:
 	virtual bool supportsAlphaBorder() const;
 	virtual bool isAlreadyRunning() const;
 	virtual void sendInstanceCommand(int command);
-	virtual bool getComputers(QList<QString>& computers) const;
+	virtual bool getComputers(QStringList& computers) const;
 
 private:
 	HANDLE localMutex, globalMutex;

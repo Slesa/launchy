@@ -63,6 +63,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 	QString directoryPart = searchPath.section("/", 0, -2);
 	QString filePart = searchPath.section("/", -1);
 	bool isDirectory = filePart.length() == 0;
+	bool sort = true;
 	bool listPopulated = false;
 	QStringList itemList;
 	QDir dir(directoryPart);
@@ -82,6 +83,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 			platform->getComputers(itemList);
 			isDirectory = false;
 			listPopulated = true;
+			sort = false;
 		}
 	}
 
@@ -131,7 +133,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 		item.id = HASH_LAUNCHYFILE;
 		searchResults.push_front(item);
 	}
-	else
+	else if (sort)
 	{
 		// If we're not matching exactly and there's a filename then do a priority sort
 		qSort(searchResults.begin(), searchResults.end(), CatLessNoPtr);

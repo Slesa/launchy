@@ -83,7 +83,7 @@ QString GetShellDirectory(int type)
 }
 
 
-bool EnumerateNetworkServers(QList<QString>& items, DWORD serverType, const wchar_t* domain)
+bool EnumerateNetworkServers(QStringList& items, DWORD serverType, const wchar_t* domain)
 {
 	SERVER_INFO_100* serverInfo = 0;
 	DWORD read, totalOnNetwork;
