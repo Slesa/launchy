@@ -61,6 +61,7 @@ public slots:
 
 private:
 	void addDirectory(const QString& directory);
+	void loadPluginDialog(QListWidgetItem* item);
 
 private:
 	FileBrowserDelegate directoryItemDelegate;

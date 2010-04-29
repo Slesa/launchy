@@ -476,11 +476,16 @@ void OptionsDialog::pluginChanged(int row)
 	// Open the new plugin dialog
 	curPlugin = row;
 	currentPlugin = row;
-	if (row < 0)
-		return;	
-	QListWidgetItem* item = plugList->item(row);
-	QWidget* win = gMainWidget->plugins.doDialog(plugBox, item->data(Qt::UserRole).toUInt());
+	if (row >= 0)
+	{
+		loadPluginDialog(plugList->item(row));
+	}
+}
 
+
+void OptionsDialog::loadPluginDialog(QListWidgetItem* item)
+{
+	QWidget* win = gMainWidget->plugins.doDialog(plugBox, item->data(Qt::UserRole).toUInt());
 	if (win != NULL)
 	{
 		if (plugBox->layout() != NULL)
@@ -529,7 +534,7 @@ void OptionsDialog::pluginItemChanged(QListWidgetItem* iz)
 	// If enabled, reload the dialog
 	if (iz->checkState() == Qt::Checked)
 	{
-		gMainWidget->plugins.doDialog(plugBox, iz->data(Qt::UserRole).toUInt());
+		loadPluginDialog(iz);
 	}
 }
 
