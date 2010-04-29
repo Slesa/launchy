@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifdef Q_WS_WIN
 void SetForegroundWindowEx(HWND hWnd)
 {
-        // Attach foreground window thread to our thread
+	// Attach foreground window thread to our thread
 	const DWORD foreGroundID = GetWindowThreadProcessId(GetForegroundWindow(), NULL);
 	const DWORD currentID = GetCurrentThreadId();
 
@@ -197,7 +197,10 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 
 	// Load the catalog
 	catalog.reset(CatalogBuilder::createCatalog());
-	catalog->load(settings.catalogFilename());
+	if (!catalog->load(settings.catalogFilename()))
+	{
+		command |= Rescan;
+	}
 
 	// Load the history
 	history.load(settings.historyFilename());
@@ -1642,6 +1645,13 @@ int main(int argc, char *argv[])
 			else if (arg.compare("log", Qt::CaseInsensitive) == 0)
 			{
 				qInstallMsgHandler(fileLogMsgHandler);
+			}
+			else if (arg.compare("profile", Qt::CaseInsensitive) == 0)
+			{
+				if (++i < args.length())
+				{
+					settings.setProfileName(args[i]);
+				}
 			}
 		}
 	}

@@ -58,26 +58,7 @@ void CatalogBuilder::run()
 
 void CatalogBuilder::buildCatalog()
 {
-	QList<Directory> memDirs;
-	int size = gSettings->beginReadArray("directories");
-	for (int i = 0; i < size; ++i)
-	{
-		gSettings->setArrayIndex(i);
-		Directory tmp;
-		tmp.name = gSettings->value("name").toString();
-		tmp.types = gSettings->value("types").toStringList();
-		tmp.indexDirs = gSettings->value("indexDirs", false).toBool();
-		tmp.indexExe = gSettings->value("indexExes", false).toBool();
-		tmp.depth = gSettings->value("depth", 100).toInt();
-		memDirs.append(tmp);
-	}
-	gSettings->endArray();
-
-	if (memDirs.count() == 0)
-	{
-		memDirs = platform->getDefaultCatalogDirectories();
-	}
-
+	QList<Directory> memDirs = SettingsManager::readCatalogDirectories();
 	QHash<uint, PluginInfo> pluginsInfo = plugins->getPlugins();
 	int totalItems = memDirs.count() + pluginsInfo.count();
 	int currentItem = 0;

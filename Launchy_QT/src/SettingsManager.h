@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <QString>
 #include <QHash>
+#include "Directory.h"
 
 
 class SettingsManager : public QObject
@@ -39,11 +40,15 @@ public:
 	QString skinPath(const QString& skinName) const;
 	void setPortable(bool makePortable);
 	void removeAll();
+	void setProfileName(const QString& name);
+	static QList<Directory> readCatalogDirectories();
+	static void writeCatalogDirectories(QList<Directory>& directories);
 
 private:
 	QString configDirectory(bool portable) const;
 
 	bool portable;
+	QString profileName;
 	QHash<QString, QList<QString> > dirs;
 };
 

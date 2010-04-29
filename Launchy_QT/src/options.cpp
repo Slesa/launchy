@@ -190,24 +190,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	connect(catDepth, SIGNAL(valueChanged(int)),this, SLOT(catDepthChanged(int)));
 	catRescan->setEnabled(gBuilder == NULL);
 	connect(catRescan, SIGNAL(clicked(bool)), this, SLOT(catRescanClicked(bool)));
-	int size = gSettings->beginReadArray("directories");
-	for (int i = 0; i < size; ++i)
-	{
-		gSettings->setArrayIndex(i);
-		Directory tmp;
-		tmp.name = gSettings->value("name").toString();
-		tmp.types = gSettings->value("types").toStringList();
-		tmp.indexDirs = gSettings->value("indexDirs", false).toBool();
-		tmp.indexExe = gSettings->value("indexExes", false).toBool();
-		tmp.depth = gSettings->value("depth", 100).toInt();
-		memDirs.append(tmp);
-	}
-	gSettings->endArray();
-	if (memDirs.count() == 0)
-	{
-		memDirs = platform->getDefaultCatalogDirectories();
-	}
-
+	memDirs = SettingsManager::readCatalogDirectories();
 	for (int i = 0; i < memDirs.count(); ++i)
 	{
 		catDirectories->addItem(memDirs[i].name);
@@ -325,7 +308,7 @@ void OptionsDialog::accept()
 	gMainWidget->loadOptions();
 
 	// Apply Directory Options
-	saveCatalogOptions();
+	SettingsManager::writeCatalogDirectories(memDirs);
 
 	if (curPlugin >= 0)
 	{
@@ -383,8 +366,8 @@ void OptionsDialog::tabChanged(int tab)
 	}
 	else if (tabWidget->currentWidget()->objectName() == "Plugins")
 	{
-		// We've currently no way of checking is a plugin requires a catalog rescan
-		// assume that 
+		// We've currently no way of checking if a plugin requires a catalog rescan
+		// so assume that we need one if the user has viewed the plugins tab
 		needRescan = true;
 	}
 }
@@ -570,7 +553,7 @@ void OptionsDialog::catRescanClicked(bool val)
 	val = val; // Compiler warning
 
 	// Apply Directory Options
-	saveCatalogOptions();
+	SettingsManager::writeCatalogDirectories(memDirs);
 
 	if (gBuilder == NULL)
 	{
@@ -774,21 +757,4 @@ void OptionsDialog::catDepthChanged(int d)
 		memDirs[row].depth = d;
 
 	needRescan = true;
-}
-
-
-void OptionsDialog::saveCatalogOptions()
-{
-	gSettings->beginWriteArray("directories");
-	for (int i = 0; i < memDirs.count(); ++i)
-	{
-		gSettings->setArrayIndex(i);
-		gSettings->setValue("name", memDirs[i].name);
-		gSettings->setValue("types", memDirs[i].types);
-		gSettings->setValue("indexDirs", memDirs[i].indexDirs);
-		gSettings->setValue("indexExes", memDirs[i].indexExe);
-		gSettings->setValue("depth", memDirs[i].depth);
-	}
-
-	gSettings->endArray();
 }
