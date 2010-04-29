@@ -48,9 +48,16 @@ void SettingsManager::load()
 	// Load settings
 	dirs = platform->getDirectories();
 	portable = QFile::exists(dirs["portableConfig"][0] + iniName);
-	gSettings = new QSettings(configDirectory(portable) + iniName, QSettings::IniFormat);
 
 	qDebug("Loading settings in %s mode from %s", portable ? "portable" : "installed", qPrintable(configDirectory(portable)));
+	QString iniPath = configDirectory(portable) + iniName;
+	gSettings = new QSettings(configDirectory(portable) + iniName, QSettings::IniFormat);
+	if (!QFile::exists(iniPath))
+	{
+		// Ini file doesn't exist, create some defaults and save them to disk
+		QList<Directory> directories = platform->getDefaultCatalogDirectories();
+		writeCatalogDirectories(directories);
+	}
 }
 
 
@@ -158,5 +165,53 @@ void SettingsManager::removeAll()
 // Get the configuration directory
 QString SettingsManager::configDirectory(bool portable) const
 {
-	return dirs[portable ? "portableConfig" : "config"][0];
+	QString result = dirs[portable ? "portableConfig" : "config"][0];
+	if (profileName.length() > 0)
+	{
+		result += "/profiles/" + profileName;
+	}
+	return result;
+}
+
+
+void SettingsManager::setProfileName(const QString& name)
+{
+	profileName = name;
+}
+
+
+QList<Directory> SettingsManager::readCatalogDirectories()
+{
+	QList<Directory> result;
+	int size = gSettings->beginReadArray("directories");
+	for (int i = 0; i < size; ++i)
+	{
+		gSettings->setArrayIndex(i);
+		Directory tmp;
+		tmp.name = gSettings->value("name").toString();
+		tmp.types = gSettings->value("types").toStringList();
+		tmp.indexDirs = gSettings->value("indexDirs", false).toBool();
+		tmp.indexExe = gSettings->value("indexExes", false).toBool();
+		tmp.depth = gSettings->value("depth", 100).toInt();
+		result.append(tmp);
+	}
+	gSettings->endArray();
+
+	return result;
+}
+
+
+void SettingsManager::writeCatalogDirectories(QList<Directory>& directories)
+{
+	gSettings->beginWriteArray("directories");
+	for (int i = 0; i < directories.count(); ++i)
+	{
+		gSettings->setArrayIndex(i);
+		gSettings->setValue("name", directories[i].name);
+		gSettings->setValue("types", directories[i].types);
+		gSettings->setValue("indexDirs", directories[i].indexDirs);
+		gSettings->setValue("indexExes", directories[i].indexExe);
+		gSettings->setValue("depth", directories[i].depth);
+	}
+	gSettings->endArray();
 }

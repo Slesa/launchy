@@ -61,7 +61,6 @@ public slots:
 
 private:
 	void addDirectory(const QString& directory);
-	void saveCatalogOptions();
 
 private:
 	FileBrowserDelegate directoryItemDelegate;
