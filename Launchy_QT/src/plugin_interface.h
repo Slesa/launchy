@@ -579,8 +579,9 @@ public:
 	 This function will run the program along with arguments and is platform independent.
 	\param file The location of the file to run
 	\param args The arguments to the command
+	\param translateSeparators Whether to translate / into native separators
 	*/
-void runProgram(QString file, QString args);
+void runProgram(QString file, QString args, bool translateSeparators = true);
 int getDesktop();
 
 

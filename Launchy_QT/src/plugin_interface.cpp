@@ -106,10 +106,10 @@ void runProgram(QString path, QString args) {
 	ShellExecuteEx(&ShExecInfo);	
 }
 */
-void runProgram(QString path, QString args) {
+void runProgram(QString path, QString args, bool translateSeparators) {
 
 	// This 64 bit aliasing needs to be gotten rid of if we have a 64 bit build
-	path = aliasTo64(QDir::toNativeSeparators(path));
+	path = aliasTo64(path);
 
 
 	SHELLEXECUTEINFO ShExecInfo;
@@ -120,7 +120,7 @@ void runProgram(QString path, QString args) {
 	ShExecInfo.fMask = NULL;
 	ShExecInfo.hwnd = NULL;
 	ShExecInfo.lpVerb = elevated ? L"runas" : NULL;
-	QString filePath = QDir::toNativeSeparators(path);
+	QString filePath = translateSeparators ? QDir::toNativeSeparators(path) : path;
 	ShExecInfo.lpFile = (LPCTSTR)filePath.utf16();
 
 	if (args != "") {
@@ -148,7 +148,7 @@ void runProgram(QString path, QString args) {
 
 int getDesktop() { return DESKTOP_MAC; }
 
-void runProgram(QString path, QString args)
+void runProgram(QString path, QString args, bool translateSeparators)
 {
     QString cmd;
     cmd = "open \"" + QDir::toNativeSeparators(path) + "\" --args " + args.trimmed();
@@ -178,7 +178,7 @@ int getDesktop()
 
 
 
-void runProgram(QString path, QString args) {
+void runProgram(QString path, QString args, bool translateSeparators) {
 
     QString fullname = path.split(" ")[0];
     QFileInfo info(fullname);
@@ -213,182 +213,9 @@ void runProgram(QString path, QString args) {
 
     QProcess::startDetached(cmd);
 
-
-
     return;
 }
 
 
-
-/*
-
-void runProgram(QString path, QString args) {
-    QProcess proc;
-    QStringList largs;
-    QFileInfo info(path);
-
-
-    if (path.contains("%")) {
-	path.replace("%u", args);
-	path.replace("%U", args);
-	path.replace("%f", args);
-	path.replace("%F", args);
-	path.replace("%c", path.split(" ")[0]);
-	path.replace("%k", path.split(" ")[0]);
-	args = "";
-    } 
-
-    QString toRun = path + " " + args;
-    toRun = toRun.simplified();
-    
-
-
-
-
-
-
-    QString r;
-
-    //    r = "xdg-open \"" + path + "\" " + args + " 2>/dev/null || sh -c \"" + path + "\" " + args;
-
-    r = "xdg-open \"" + path.trimmed() + "\" " + args.trimmed() + " 2>/dev/null || sh -c \"" + path.trimmed() + " "  + args + "\"";
-
-
-    //    qDebug() << r.simplified();
-    QStringList ra;
-
-    ra += "-c";
-    ra += r.trimmed().simplified();
-    //    qDebug() << ra;
-
-    // Firefox needs special treatment in KDE
-    // else it falls behind a window
-    if ((path.contains("http://",Qt::CaseInsensitive) ||
-	 path.contains("firefox",Qt::CaseInsensitive)) &&
-	getDesktop() == DESKTOP_KDE) {
-	proc.execute("sh",ra);
-    } else {
-	proc.startDetached("sh",ra);
-    }
-
-    //proc.execute("sh", ra);
-    
-    return;
-}
-*/
-
-
-
-
-
-
-
-
-
-
-/*
-void runProgram(QString path, QString args) {
-    // My own launcher..
-    QString mimetype;
-    QString locale = QLocale::system().name();
-    if (path.startsWith("http", Qt::CaseInsensitive))
-	mimetype = "text/html";
-    if (mimetype == "") {
-
-	QProcess proc;
-	
-	QStringList args;
-	args += "query";
-	args += "filetype";
-	args += path;
-	proc.setReadChannel(QProcess::StandardOutput);
-	proc.start(QString("xdg-mime"),args);
-	proc.waitForFinished(10000);
-	mimetype = proc.readAll().trimmed();
-	proc.close();
-    }
-
-    // Get the default app for the mime-type
-    QString defapp;
-    if (mimetype.startsWith("application", Qt::CaseInsensitive))
-	defapp = path;
-
-    if (mimetype == "")
-	defapp = path;
-
-    if (defapp == "") {
-	QProcess proc;
-	QStringList args;
-	args += "query";
-	args += "default";
-	args += mimetype;
-	proc.start(QString("xdg-mime"),args);
-	proc.waitForFinished(10000);
-	QString desk = proc.readAll().trimmed();
-	if (desk == "")
-	    defapp = path;
-	else {
-	    QString icon;
-	    QString name;
-	    // Read the .desktop file
-	    const char *dirs[] = { "/usr/share/applications/",
-				   "/usr/local/share/applications/",
-				   "/usr/share/gdm/applications/",
-				   "/usr/share/applications/kde/",
-				   "~/.local/share/applications/"};
-	    for(int i = 0; i < 5; i++) {
-		QString dir = dirs[i];
-		QString path = dir + "/" + desk;
-		
-		if (QFile::exists(path)) {
-		    QFile file(path);
-		    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) 
-			break;
-		    while(!file.atEnd()) {
-			QString line = file.readLine();
-			if (line.startsWith("Exec", Qt::CaseInsensitive)) {
-			    defapp = line.split("=")[1].trimmed();
-			}
-			else if (line.startsWith("Icon",Qt::CaseInsensitive))
-			    icon = line.split("=")[1].trimmed();
-			else if (line.startsWith("Name",Qt::CaseInsensitive)) {
-			    if (line.startsWith("Name[" + locale, Qt::CaseInsensitive))
-				name = line.split("=")[1].trimmed();
-			    else if (!line.contains("["))
-				name = line.split("=")[1].trimmed();
-			    
-			}
-		    }
-		    defapp.replace("%k", path);
-		    break;
-		}
-	    }	    
-	    defapp.replace("%u", "\"" + path + "\"");
-	    defapp.replace("%U", "\"" + path + "\"");
-	    defapp.replace("%f", "\"" + path + "\"");
-	    defapp.replace("%F", "\"" + path + "\"");
-	    defapp.replace("%i", "--icon " + icon);
-	    defapp.replace("%c", name);
-	}
-    }
-    
-
-
-    //    qDebug() << mimetype << defapp;
-    QString toRun = defapp + " " + args;
-    QStringList largs = toRun.simplified().split(" ", QString::SkipEmptyParts);
-    
-    qDebug() << largs;
-    QProcess proc;
-
-    QString exec = largs[0];
-    largs.removeFirst();
-    qDebug() << exec << largs.join(" ");
-    proc.startDetached(exec, QStringList(largs.join(" ")));
-
-    //proc.startDetached(exec, largs);
-    return;
-}
-*/
 #endif
 
