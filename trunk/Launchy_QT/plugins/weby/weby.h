@@ -99,8 +99,5 @@ public:
 #endif
 };
 
-extern WebyPlugin* gWebyInstance;
-
-
 
 #endif

@@ -31,7 +31,7 @@ class Gui : public QWidget, private Ui::Dlg
 
   Q_OBJECT
 public:
-	Gui(QWidget* parent);
+	Gui(QWidget* parent, QSettings* settings);
 	~Gui() { this->hide(); }
 	void writeOptions();
 
@@ -44,6 +44,7 @@ private slots:
 private:
 	void appendRow(const QString& name, const QString& file, const QString& args);
 
+	QSettings* settings;
 	FileBrowserDelegate delegate;
 };
 

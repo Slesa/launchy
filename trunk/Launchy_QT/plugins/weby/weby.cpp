@@ -22,7 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "IconCache.h"
 #include "gui.h"
 
-WebyPlugin* gWebyInstance = NULL;
 
 int Suggest::currentId = 0;
 
@@ -84,9 +83,6 @@ void Suggest::httpGetFinished(bool error)
 
 void WebyPlugin::init()
 {
-	if (gWebyInstance == NULL)
-		gWebyInstance = this;
-
 	QSettings* set = *settings;
 
 	// get config / settings directory (base for 'temporary' icon cache dir)
@@ -548,7 +544,7 @@ void WebyPlugin::doDialog(QWidget* parent, QWidget** newDlg)
 {
 	if (gui != NULL)
 		return;
-	gui.reset(new Gui(parent));
+	gui.reset(new Gui(parent, *settings));
 	*newDlg = gui.get();
 }
 
