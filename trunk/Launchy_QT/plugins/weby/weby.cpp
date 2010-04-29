@@ -536,7 +536,7 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 	}
 
 	QUrl url(file);
-	runProgram(url.toString(), "");
+	runProgram(url.toString(), "", false);
 }
 
 
