@@ -24,12 +24,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define ROW_PADDING 6
 
 
-Gui::Gui(QWidget* parent) 
-	: QWidget(parent)
+Gui::Gui(QWidget* parent, QSettings* settings) 
+	: QWidget(parent), settings(settings)
 {
 	setupUi(this);
-	QSettings* settings = *gWebyInstance->settings;
-	if (settings == NULL) return;
+	if (settings == NULL)
+		return;
 	booksFirefox->setChecked(settings->value("weby/firefox", true).toBool());
 	booksIE->setChecked(settings->value("weby/ie", true).toBool());
 
@@ -67,8 +67,8 @@ Gui::Gui(QWidget* parent)
 
 void Gui::writeOptions()
 {
-	QSettings* settings = *gWebyInstance->settings;
-	if (settings == NULL) return;
+	if (settings == NULL)
+		return;
 	settings->setValue("weby/firefox", booksFirefox->isChecked());
 	settings->setValue("weby/ie", booksIE->isChecked());
 

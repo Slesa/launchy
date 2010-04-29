@@ -30,7 +30,7 @@ class Gui : public QWidget, private Ui::Dlg
 private:
 	QList<WebySite> sites;
 public:
-	Gui(QWidget* parent);
+	Gui(QWidget* parent, QSettings* settings);
 	~Gui() { this->hide(); }
 	void writeOptions();
 	QString defaultName;
@@ -45,6 +45,8 @@ public slots:
 
 private:
 	void appendRow(const QString& name, const QString& path);
+
+	QSettings* settings;
 };
 
 #endif 

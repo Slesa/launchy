@@ -57,11 +57,8 @@ private:
 	uint HASH_runner;
 	QList<runnerCmd> cmds;
 	QString libPath;
-        boost::shared_ptr<Gui> gui;
+    boost::shared_ptr<Gui> gui;
 };
-
-
-extern RunnerPlugin* gRunnerInstance;
 
 
 #endif
