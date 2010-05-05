@@ -16,6 +16,7 @@ SOURCES = plugin_interface.cpp \
 TARGET = verby
 win32 { 
     CONFIG -= embed_manifest_dll
+	LIBS += user32.lib shell32.lib
 	QMAKE_CXXFLAGS_RELEASE += /Zi
 	QMAKE_LFLAGS_RELEASE += /DEBUG
 }

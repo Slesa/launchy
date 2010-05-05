@@ -91,18 +91,24 @@ win32 {
     SOURCES += ../platforms/win/platform_win.cpp \
         ../platforms/win/platform_win_hotkey.cpp \
         ../platforms/win/platform_win_util.cpp \
-		../platforms/win/WinIconProvider.cpp \
-		../platforms/win/minidump.cpp
-	HEADERS += ../platforms/win/WinIconProvider.h \
+        ../platforms/win/WinIconProvider.cpp \
+        ../platforms/win/minidump.cpp
+    HEADERS += ../platforms/win/WinIconProvider.h \
         platform_base_hotkey.h \
         platform_base_hottrigger.h \
         ../platforms/win/platform_win.h \
-		../platforms/win/platform_win_util.h \
-		../platforms/win/minidump.h
-	CONFIG += embed_manifest_exe
+        ../platforms/win/platform_win_util.h \
+        ../platforms/win/minidump.h
+    CONFIG += embed_manifest_exe
     INCLUDEPATH += c:/boost/
     RC_FILE = ../win/launchy.rc
-	LIBS += userenv.lib \
+	LIBS += shell32.lib \
+		user32.lib \
+		gdi32.lib \
+		ole32.lib \
+		comctl32.lib \
+		advapi32.lib \
+		userenv.lib \
         netapi32.lib
     DEFINES = VC_EXTRALEAN \
         WIN32 \
@@ -116,8 +122,8 @@ win32 {
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/
     }
-	QMAKE_CXXFLAGS_RELEASE += /Zi
-	QMAKE_LFLAGS_RELEASE += /DEBUG
+    QMAKE_CXXFLAGS_RELEASE += /Zi
+    QMAKE_LFLAGS_RELEASE += /DEBUG
 }
 macx { 
     ICON = ../misc/Launchy_Icon/launchy_icon_mac.icns
