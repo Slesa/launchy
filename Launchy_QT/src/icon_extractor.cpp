@@ -33,11 +33,23 @@ void IconExtractor::processIcon(CatItem item, bool highPriority)
 {
 	mutex.lock();
 
-	item.id = -1;
 	if (highPriority)
-		items.push_front(item);
+	{
+		// use an id of -1 to indicate high priority
+		item.id = -1;
+		if (items.count() > 0 && items[0].id == -1)
+		{
+			items.replace(0, item);
+		}
+		else
+		{
+			items.push_front(item);
+		}
+	}
 	else
+	{
 		items.push_back(item);
+	}
 
 	mutex.unlock();
 #ifdef Q_WS_MAC
@@ -56,7 +68,7 @@ void IconExtractor::processIcons(const QList<CatItem>& newItems, bool reset)
 	int itemCount = items.size();
 	if (reset && itemCount > 0 && isRunning())
 	{
-		// keep the most recent high priority item in the queue
+		// reset the queue, but keep the most recent high priority item
 		CatItem item = items.dequeue();
 		items.clear();
 		if (item.id == -1)
