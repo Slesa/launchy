@@ -36,7 +36,7 @@ public:
 	void run();
 
 signals:
-    void iconExtracted(int itemIndex, QIcon icon);
+    void iconExtracted(int itemIndex, QString path, QIcon icon);
 
 private:
 	QIcon getIcon(const CatItem& item);

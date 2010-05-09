@@ -95,7 +95,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 
 	alwaysShowLaunchy = false;
 
-	connect(&iconExtractor, SIGNAL(iconExtracted(int, QIcon)), this, SLOT(iconExtracted(int, QIcon)));
+	connect(&iconExtractor, SIGNAL(iconExtracted(int, QString, QIcon)), this, SLOT(iconExtracted(int, QString, QIcon)));
 
 	fader = new Fader(this);
 	connect(fader, SIGNAL(fadeLevel(double)), this, SLOT(setFadeLevel(double)));
@@ -898,22 +898,29 @@ void LaunchyWidget::startDropTimer()
 }
 
 
-void LaunchyWidget::iconExtracted(int itemIndex, QIcon icon)
+void LaunchyWidget::iconExtracted(int itemIndex, QString path, QIcon icon)
 {
 	if (itemIndex == -1)
 	{
-		// An index of -1 means update the output icon
+		// An index of -1 means update the output icon, check that it is also
+		// the same item as was originally requested
+		if (searchResults.count() > 0 && path == searchResults[0].fullPath)
+		{
 		outputIcon->setPixmap(icon.pixmap(outputIcon->size()));
+	}
 	}
 	else if (itemIndex < alternatives->count())
 	{
-		// >=0 is an item in the list
-		QListWidgetItem* listItem = alternatives->item(itemIndex);
-		listItem->setIcon(icon);
-		listItem->setData(ROLE_ICON, icon);
+		// >=0 is an item in the alternatives list
+		if (itemIndex < searchResults.count() && path == searchResults[itemIndex].fullPath)
+		{
+			QListWidgetItem* listItem = alternatives->item(itemIndex);
+			listItem->setIcon(icon);
+			listItem->setData(ROLE_ICON, icon);
 
-		QRect rect = alternatives->visualItemRect(listItem);
-		repaint(rect);
+			QRect rect = alternatives->visualItemRect(listItem);
+			repaint(rect);
+		}
 	}
 }
 

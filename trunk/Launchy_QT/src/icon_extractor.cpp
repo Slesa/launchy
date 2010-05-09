@@ -117,7 +117,10 @@ void IconExtractor::run()
 			item = items.dequeue();
 		mutex.unlock();
 		if (itemsRemaining)
-			emit iconExtracted(item.id, getIcon(item));
+		{
+			QIcon icon = getIcon(item);
+			emit iconExtracted(item.id, item.fullPath, icon);
+		}
 	}
 	while (itemsRemaining);
 

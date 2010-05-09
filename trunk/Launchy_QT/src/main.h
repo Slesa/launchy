@@ -105,9 +105,10 @@ public slots:
 	void setFadeLevel(double level);
 	void showLaunchy();
 	void buildCatalog();
-	void iconExtracted(int itemIndex, QIcon icon);
+	void iconExtracted(int index, QString path, QIcon icon);
 	void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
-        void reloadSkin();
+	void reloadSkin();
+
 private:
 	void createActions();
 	void applySkin(const QString& name);
@@ -130,7 +131,7 @@ private:
 	void addToHistory(QList<InputData>& item);
 	void startDropTimer();
 
-        QString currentSkin;
+	QString currentSkin;
 
 	Fader* fader;
 	QPixmap* frameGraphic;
