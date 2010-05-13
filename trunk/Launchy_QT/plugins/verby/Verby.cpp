@@ -57,7 +57,6 @@ void VerbyPlugin::getLabels(QList<InputData>* inputData)
 	{
 		// If it's not an item from Launchy's built in catalog, i.e. a file or directory or something added 
 		// by a plugin, don't add verbs.
-		int id = inputData->first().getTopResult().id;
 		if (inputData->first().getTopResult().id != 0)
 			return;
 

@@ -61,6 +61,8 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 
 	// Split the string on the last slash
 	QString directoryPart = searchPath.section("/", 0, -2);
+        if (directoryPart == "")
+            directoryPart = "/";
 	QString filePart = searchPath.section("/", -1);
 	bool isDirectory = filePart.length() == 0;
 	bool sort = true;
@@ -68,7 +70,8 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 	QStringList itemList;
 	QDir dir(directoryPart);
 
-	// This is a network search
+#ifdef Q_WS_WIN
+        // This is a windows network search
 	if (searchPath.startsWith("//"))
 	{
 		// Exit if the user doesn't want to browse networks
@@ -86,7 +89,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 			sort = false;
 		}
 	}
-
+#endif
 	if (!listPopulated)
 	{
 		// Exit if the path doesn't exist
