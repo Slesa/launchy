@@ -613,7 +613,11 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 			}
 		}
 	}
-        else if ((event->key() == Qt::Key_Delete || event->key() == Qt::Key_Backspace) && (event->modifiers() & Qt::ShiftModifier) != 0)
+#ifdef Q_WS_MAC	
+    else if (event->key() == Qt::Key_Backspace && (event->modifiers() & Qt::ShiftModifier) != 0)
+#else
+    else if (event->key() == Qt::Key_Delete && (event->modifiers() & Qt::ShiftModifier) != 0)
+#endif
 	{
 		int row = alternatives->currentRow();
 		if (row > -1)
@@ -698,8 +702,11 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 			}
 		}
 	}
-
-        else if ((event->key() == Qt::Key_Tab || event->key() == Qt::Key_Backspace || event->key() == Qt::Key_Delete) && event->modifiers() == Qt::ShiftModifier)
+#ifdef Q_WS_MAC
+    else if ((event->key() == Qt::Key_Tab || event->key() == Qt::Key_Delete) && event->modifiers() == Qt::ShiftModifier)
+#else
+    else if ((event->key() == Qt::Key_Tab || event->key() == Qt::Key_Backspace) && event->modifiers() == Qt::ShiftModifier)
+#endif
 	{
 		doBackTab();
 		processKey();
@@ -732,18 +739,24 @@ void LaunchyWidget::doBackTab()
 	int index = text.lastIndexOf(input->separatorText());
 	if (index >= 0)
 	{
-                text.truncate(index+3);
+        text.truncate(index+3);
 		input->selectAll();
 		input->insert(text);
-        }
-        else if (text.lastIndexOf(QDir::separator()) >= 0) {
-            text.truncate(text.lastIndexOf(QDir::separator()+1));
-            input->selectAll();
-            input->insert(text);
-        }
+    }
+	
+    else if (text.lastIndexOf(QDir::separator()) >= 0) {
+        text.truncate(text.lastIndexOf(QDir::separator())+1);
+        input->selectAll();
+        input->insert(text);
+    }
+	else if (text.lastIndexOf(QChar(' ')) >= 0) {
+		text.truncate(text.lastIndexOf(QChar(' '))+1);
+		input->selectAll();
+		input->insert(text);
+	}
 	else
 	{
-                input->clear();
+        input->clear();
 	}
 }
 
