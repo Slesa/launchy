@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "FileBrowserDelegate.h"
 #include "ui_dlg.h"
 #include "globals.h"
-
+#include <QSettings>
 
 class Gui : public QWidget, private Ui::Dlg
 {
