@@ -115,7 +115,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 		QString fileName = itemList[i];
 		QString filePath = QDir::cleanPath(dir.absolutePath() + "/" + fileName);
 		CatItem item(QDir::toNativeSeparators(filePath), fileName);
-		if (filePart.length() == 0 || Catalog::matches(&item, filePart))
+                if (filePart.length() == 0 || Catalog::matches(&item, filePart.toLower()))
 		{
 			item.id = HASH_LAUNCHYFILE;
 			searchResults.push_front(item);
