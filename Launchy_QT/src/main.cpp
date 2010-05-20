@@ -924,8 +924,8 @@ void LaunchyWidget::iconExtracted(int itemIndex, QString path, QIcon icon)
 		// the same item as was originally requested
 		if (searchResults.count() > 0 && path == searchResults[0].fullPath)
 		{
-		outputIcon->setPixmap(icon.pixmap(outputIcon->size()));
-	}
+			outputIcon->setPixmap(icon.pixmap(outputIcon->size()));
+		}
 	}
 	else if (itemIndex < alternatives->count())
 	{
@@ -1198,6 +1198,11 @@ void LaunchyWidget::applySkin(const QString& name)
 			return;
 		QString styleSheet = QLatin1String(file.readAll());
 		file.close();
+
+		// Remove incorrect selectors from the stylesheet
+		styleSheet.replace("QLineEdit#", "#");
+		styleSheet.replace("QPushButton#", "#");
+		styleSheet.replace("QListWidget#", "#");
 
 		// This is causing the ::destroyed connect errors
 		qApp->setStyleSheet(styleSheet);
