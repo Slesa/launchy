@@ -1,7 +1,7 @@
 Building on Linux:
 
-For debian and ubuntu:
-sudo apt-get install libqt4-dev libboost-dev g++ dh_make
+For Debian and Ubuntu:
+sudo apt-get install libqt4-dev libboost-dev g++ dh-make
 qmake -r Launchy.pro ; make ; sudo make install
 
 To build a deb package:
@@ -22,7 +22,7 @@ Building and installing on Mac OS X:
 
 
 
-Building on WINDOWS:
+Building on Windows:
 
 Requirements: 
 1) Visual Studio 2005 w/ SP1
