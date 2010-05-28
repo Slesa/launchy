@@ -30,8 +30,9 @@ MiniDumper::MiniDumper(const TCHAR* appName)
 	if (m_appName == NULL)
 	{
 		m_appName = _tcsdup(appName);
-
+#ifndef DEBUG
 		SetUnhandledExceptionFilter(TopLevelFilter);
+#endif
 	}
 }
 
