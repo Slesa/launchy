@@ -49,7 +49,7 @@ void Fader::fadeIn(bool quick)
 	}
 	mutex.unlock();
 
-	if (quick)
+	if (quick || delay == 0)
 	{
 		// stop any current slow fades
 		stop();
@@ -82,7 +82,7 @@ void Fader::fadeOut(bool quick)
 
 	// qDebug() << level << " to " << targetLevel << " delay " << delay;
 
-	if (quick)
+	if (quick || delay == 0)
 	{
 		// stop any current slow fades
 		stop();
