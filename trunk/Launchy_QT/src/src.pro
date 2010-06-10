@@ -175,7 +175,8 @@ TRANSLATIONS = ../translations/launchy_fr.ts \
     ../translations/launchy_es.ts \
     ../translations/launchy_de.ts \
     ../translations/launchy_ja.ts \
-    ../translations/launchy_zh_TW.ts
+	../translations/launchy_zh_TW.ts \
+	../translations/launchy_rus.ts
 OBJECTS_DIR = build
 MOC_DIR = build
 RESOURCES += launchy.qrc
