@@ -674,18 +674,11 @@ void OptionsDialog::catDirMinusClicked(bool c)
 void OptionsDialog::catDirPlusClicked(bool c)
 {
 	c = c; // Compiler warning
-	QString dir = QFileDialog::getExistingDirectory(this, tr("Select a directory"),
-		lastDir,
-		QFileDialog::ShowDirsOnly);
-	if (dir != "")
-	{
-		lastDir = dir;
-		addDirectory(dir);
-	}
+	addDirectory("", true);
 }
 
 
-void OptionsDialog::addDirectory(const QString& directory)
+void OptionsDialog::addDirectory(const QString& directory, bool edit)
 {
 	QString nativeDir = QDir::toNativeSeparators(directory);
 	Directory dir(nativeDir);
@@ -695,6 +688,10 @@ void OptionsDialog::addDirectory(const QString& directory)
 	QListWidgetItem* item = new QListWidgetItem(nativeDir, catDirectories);
 	item->setFlags(item->flags() | Qt::ItemIsEditable);
 	catDirectories->setCurrentItem(item);
+	if (edit)
+	{
+		catDirectories->editItem(item);
+	}
 
 	needRescan = true;
 }
