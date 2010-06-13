@@ -723,6 +723,12 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 			doTab();
 		processKey();
 	}
+	else if (event->key()== Qt::Key_Insert && event->modifiers() == Qt::ShiftModifier)
+	{
+		// ensure pasting text with Shift+Insert also parses input
+		// longer term parsing should be done using the TextChanged event
+		processKey();
+	}
 	else if (event->text().length() > 0)
 	{
 		// process any other key with character output
