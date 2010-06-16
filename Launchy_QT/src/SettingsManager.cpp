@@ -189,11 +189,14 @@ QList<Directory> SettingsManager::readCatalogDirectories()
 		gSettings->setArrayIndex(i);
 		Directory tmp;
 		tmp.name = gSettings->value("name").toString();
-		tmp.types = gSettings->value("types").toStringList();
-		tmp.indexDirs = gSettings->value("indexDirs", false).toBool();
-		tmp.indexExe = gSettings->value("indexExes", false).toBool();
-		tmp.depth = gSettings->value("depth", 100).toInt();
-		result.append(tmp);
+		if (tmp.name.length() > 0)
+		{
+			tmp.types = gSettings->value("types").toStringList();
+			tmp.indexDirs = gSettings->value("indexDirs", false).toBool();
+			tmp.indexExe = gSettings->value("indexExes", false).toBool();
+			tmp.depth = gSettings->value("depth", 100).toInt();
+			result.append(tmp);
+		}
 	}
 	gSettings->endArray();
 
@@ -206,12 +209,15 @@ void SettingsManager::writeCatalogDirectories(QList<Directory>& directories)
 	gSettings->beginWriteArray("directories");
 	for (int i = 0; i < directories.count(); ++i)
 	{
-		gSettings->setArrayIndex(i);
-		gSettings->setValue("name", directories[i].name);
-		gSettings->setValue("types", directories[i].types);
-		gSettings->setValue("indexDirs", directories[i].indexDirs);
-		gSettings->setValue("indexExes", directories[i].indexExe);
-		gSettings->setValue("depth", directories[i].depth);
+		if (directories[i].name.length() > 0)
+		{
+			gSettings->setArrayIndex(i);
+			gSettings->setValue("name", directories[i].name);
+			gSettings->setValue("types", directories[i].types);
+			gSettings->setValue("indexDirs", directories[i].indexDirs);
+			gSettings->setValue("indexExes", directories[i].indexExe);
+			gSettings->setValue("depth", directories[i].depth);
+		}
 	}
 	gSettings->endArray();
 }

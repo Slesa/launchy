@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2009  Josh Karlin
+Copyright (C) 2007-2010  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,41 +22,41 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 #include <QThread>
-#include <boost/shared_ptr.hpp>
 #include "catalog_types.h"
 #include "plugin_handler.h"
 
 
-using namespace boost;
+#define CATALOG_PROGRESS_MIN 0
+#define CATALOG_PROGRESS_MAX 100
 
 
-class CatalogBuilder : public QThread
+class CatalogBuilder : public QObject, public INotifyProgressStep
 {
 	Q_OBJECT
 
 public:
 	CatalogBuilder(PluginHandler* plugs);
-	CatalogBuilder(PluginHandler* plugs, shared_ptr<Catalog> catalog);
-	static Catalog* createCatalog();
+	Catalog* getCatalog() const { return catalog; }
+	int getProgress() const { return progress; }
+	int isRunning() const { return progress < CATALOG_PROGRESS_MAX; }
+	bool progressStep(int newStep);
 
-	shared_ptr<Catalog> getCatalog()
-	{
-		return catalog;
-	}
-	void run();
+public slots:
+	void buildCatalog();
 
 signals:
+	void catalogIncrement(int);
 	void catalogFinished();
-	void catalogIncrement(float);
 
 private:
-	void buildCatalog();
 	void indexDirectory(const QString& dir, const QStringList& filters, bool fdirs, bool fbin, int depth);
 
 	PluginHandler* plugins;
-	shared_ptr<Catalog> currentCatalog;
-	shared_ptr<Catalog> catalog;
-	QHash<QString, bool> indexed;
+	Catalog* catalog;
+	QSet<QString> indexed;
+	int progress;
+	int currentItem;
+	int totalItems;
 };
 
 

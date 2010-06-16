@@ -20,6 +20,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "precompiled.h"
 #include "plugin_handler.h"
 #include "main.h"
+#include "globals.h"
+
+
+int PluginInfo::sendMessage(int msgId, void* wParam, void* lParam)
+{
+	// This should have some kind of exception guard to prevent
+	// Launchy from crashing when a plugin is misbehaving.
+	// This would consist of a try/catch block to handle C++ exceptions
+	// and on Windows would also include a structured exception handler
+	return obj->msg(msgId, wParam, lParam);
+}
 
 
 PluginHandler::PluginHandler()
@@ -37,7 +48,7 @@ void PluginHandler::showLaunchy()
 	foreach(PluginInfo info, plugins)
 	{
 		if (info.loaded)
-			info.obj->msg(MSG_LAUNCHY_SHOW);
+			info.sendMessage(MSG_LAUNCHY_SHOW);
 	}
 }
 
@@ -47,7 +58,7 @@ void PluginHandler::hideLaunchy()
 	foreach(PluginInfo info, plugins)
 	{
 		if (info.loaded)
-			info.obj->msg(MSG_LAUNCHY_HIDE);
+			info.sendMessage(MSG_LAUNCHY_HIDE);
 	}
 }
 
@@ -59,7 +70,7 @@ void PluginHandler::getLabels(QList<InputData>* inputData)
 		foreach(PluginInfo info, plugins)
 		{
 			if (info.loaded)
-				info.obj->msg(MSG_GET_LABELS, (void*) inputData);
+				info.sendMessage(MSG_GET_LABELS, (void*) inputData);
 		}
 	}
 }
@@ -72,18 +83,32 @@ void PluginHandler::getResults(QList<InputData>* inputData, QList<CatItem>* resu
 		foreach(PluginInfo info, plugins)
 		{
 			if (info.loaded)
-				info.obj->msg(MSG_GET_RESULTS, (void*) inputData, (void*) results);
+				info.sendMessage(MSG_GET_RESULTS, (void*) inputData, (void*) results);
 		}
 	}
 }
 
 
-void PluginHandler::getCatalogs(QList<CatItem>* items)
+void PluginHandler::getCatalogs(Catalog* catalog, INotifyProgressStep* progressStep)
 {
+	int index = 0;
+
 	foreach(PluginInfo info, plugins)
 	{
 		if (info.loaded)
-			info.obj->msg(MSG_GET_CATALOG, (void*) items);
+		{
+			QList<CatItem> items;
+			info.sendMessage(MSG_GET_CATALOG, (void*)&items);
+			foreach(CatItem item, items)
+			{
+				catalog->addItem(item);
+			}
+			if (progressStep)
+			{
+				progressStep->progressStep(index);
+			}
+			++index;
+		}
 	}
 }
 
@@ -92,7 +117,7 @@ int PluginHandler::execute(QList<InputData>* inputData, CatItem* result)
 {
 	if (!plugins.contains(result->id) || !plugins[result->id].loaded) 
 		return 0;
-	return plugins[result->id].obj->msg(MSG_LAUNCH_ITEM, (void*) inputData, (void*) result);
+	return plugins[result->id].sendMessage(MSG_LAUNCH_ITEM, (void*) inputData, (void*) result);
 }
 
 
@@ -101,7 +126,7 @@ QWidget* PluginHandler::doDialog(QWidget* parent, uint id)
 	if (!plugins.contains(id) || !plugins[id].loaded)
 		return NULL;
 	QWidget* newBox = NULL;
-	plugins[id].obj->msg(MSG_DO_DIALOG, (void*) parent, (void*) &newBox);
+	plugins[id].sendMessage(MSG_DO_DIALOG, (void*) parent, (void*) &newBox);
 	return newBox;
 }
 
@@ -110,7 +135,7 @@ void PluginHandler::endDialog(uint id, bool accept)
 {
 	if (!plugins.contains(id) || !plugins[id].loaded)
 		return;
-	plugins[id].obj->msg(MSG_END_DIALOG, (void*) accept);
+	plugins[id].sendMessage(MSG_END_DIALOG, (void*) accept);
 }
 
 
@@ -129,14 +154,14 @@ void PluginHandler::loadPlugins()
 	}
 	gSettings->endArray();
 
-	foreach(QString szDir, settings.directory("plugins"))
+	foreach(QString directory, settings.directory("plugins"))
 	{
 		// Load up the plugins in the plugins/ directory
-		QDir pluginsDir(szDir);
-
+		QDir pluginsDir(directory);
 		foreach (QString fileName, pluginsDir.entryList(QDir::Files))
 		{
-			if (!QLibrary::isLibrary(fileName)) continue;
+			if (!QLibrary::isLibrary(fileName))
+				continue;
 			QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
 			qDebug() << "Loading plugin" << fileName;
 			QObject *plugin = loader.instance();
@@ -156,47 +181,39 @@ void PluginHandler::loadPlugins()
 
 			plug->settings = &gSettings;
 			PluginInfo info;
-			uint id;
-			bool handled = plug->msg(MSG_GET_ID, (void*) &id) != 0;
-			info.id = id;
-			QString name;
-			plug->msg(MSG_GET_NAME, (void*) &name);
-			info.name = name;
 			info.obj = plug;
 			info.path = pluginsDir.absoluteFilePath(fileName);
+			bool handled = info.sendMessage(MSG_GET_ID, (void*) &info.id) != 0;
+			info.sendMessage(MSG_GET_NAME, (void*) &info.name);
 
-			if (handled && (!loadable.contains(id) || loadable[id]))
+			if (handled && (!loadable.contains(info.id) || loadable[info.id]))
 			{
 				info.loaded = true;
-				plug->msg(MSG_INIT);
-				plug->msg(MSG_PATH, &szDir);
+				info.sendMessage(MSG_INIT);
+				info.sendMessage(MSG_PATH, &directory);
 
 				// Load any of the plugin's plugins of its own
 				QList<PluginInfo> additionalPlugins;
-				plug->msg(MSG_LOAD_PLUGINS, &additionalPlugins);
+				info.sendMessage(MSG_LOAD_PLUGINS, &additionalPlugins);
 
 				foreach(PluginInfo pluginInfo, additionalPlugins)
 				{
-					const bool isValidPlugin = 
-						pluginInfo.obj && 
-						!pluginInfo.name.isNull() &&
-						pluginInfo.id > 0;
-					if (!isValidPlugin)
+					if (!pluginInfo.isValid())
 					{
 						continue;
 					}
 
-					const bool isPluginLoadable = 
+					bool isPluginLoadable = 
 						!loadable.contains(pluginInfo.id) || loadable[pluginInfo.id];
 
 					if (isPluginLoadable)
 					{
-						pluginInfo.obj->msg(MSG_INIT);
+						pluginInfo.sendMessage(MSG_INIT);
 						pluginInfo.loaded = true;
 					}
 					else
 					{
-						pluginInfo.obj->msg(MSG_UNLOAD_PLUGIN, (void*) pluginInfo.id);
+						pluginInfo.sendMessage(MSG_UNLOAD_PLUGIN, (void*) pluginInfo.id);
 						pluginInfo.loaded = false;
 					}
 					plugins[pluginInfo.id] = pluginInfo;
@@ -207,7 +224,7 @@ void PluginHandler::loadPlugins()
 				info.loaded = false;
 				loader.unload();
 			}
-			plugins[id] = info;
+			plugins[info.id] = info;
 		}
 	}
 }

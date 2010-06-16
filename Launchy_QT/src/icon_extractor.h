@@ -30,7 +30,7 @@ class IconExtractor : public QThread
 
 public:
 	IconExtractor();
-	void processIcon(CatItem item, bool highPriority = true);
+	void processIcon(const CatItem& item, bool highPriority = true);
 	void processIcons(const QList<CatItem>& newItems, bool reset = true);
 	void stop();
 	void run();
