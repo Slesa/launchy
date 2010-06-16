@@ -53,7 +53,7 @@ public slots:
 	void catTypesDirChanged(int);
 	void catTypesExeChanged(int);
 	void catDepthChanged(int);
-	void catProgressUpdated(float);
+	void catalogProgressUpdated(int);
 	void catalogBuilt();
 	void catRescanClicked(bool);
 	void pluginChanged(int row);
@@ -62,6 +62,7 @@ public slots:
 private:
 	void addDirectory(const QString& directory, bool edit = false);
 	void loadPluginDialog(QListWidgetItem* item);
+	void connectCatalogBuilderEvents();
 
 private:
 	FileBrowserDelegate directoryItemDelegate;

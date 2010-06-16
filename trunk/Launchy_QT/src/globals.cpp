@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
+Copyright (C) 2007-2010  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -27,4 +27,4 @@ PlatformBase* platform;
 LaunchyWidget* gMainWidget;
 QSettings* gSettings;
 QString gSearchText;
-shared_ptr<CatalogBuilder> gBuilder;
+CatalogBuilder* gBuilder;

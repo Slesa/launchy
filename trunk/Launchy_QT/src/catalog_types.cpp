@@ -22,14 +22,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "globals.h"
 
 
+// Load the catalog from the specified filename
 bool Catalog::load(const QString& filename)
 {
 	QFile inFile(filename);
 	if (!inFile.open(QIODevice::ReadOnly))
 	{
-		qWarning("Could not open catalog database file for reading");
+		qWarning("Could not open catalog file for reading");
 		return false;
 	}
+
+	// Remove any existing catalog contents
+	timestamp = 0;
+	clear();
 
 	QByteArray ba = inFile.readAll();
 	QByteArray unzipped = qUncompress(ba);
@@ -47,8 +52,12 @@ bool Catalog::load(const QString& filename)
 }
 
 
+// Save the catalog to the specified filename
 bool Catalog::save(const QString& filename)
 {
+	// Prevent other threads accessing the catalog
+	QMutexLocker locker(&mutex);
+
 	QByteArray ba;
 	QDataStream out(&ba, QIODevice::ReadWrite); 
 	out.setVersion(QDataStream::Qt_4_2);
@@ -59,11 +68,11 @@ bool Catalog::save(const QString& filename)
 		out << item;
 	}
 
-	// Zip the archive
+	// Compress and write the catalog to the specified file
 	QFile file(filename);
 	if (!file.open(QIODevice::WriteOnly))
 	{
-		qWarning("Could not open catalog database file for writing");
+		qWarning("Could not open catalog file for writing");
 		return false;
 	}
 	file.write(qCompress(ba));
@@ -71,121 +80,7 @@ bool Catalog::save(const QString& filename)
 }
 
 
-void FastCatalog::addItem(const CatItem& item)
-{
-	catList.push_back(item);
-	int index = catList.count() - 1;
-	CatItem* pCatItem = &catList[index];
-	foreach(QChar c, item.lowName)
-	{
-		if (catIndex[c].count() == 0 || catIndex[c].last() != pCatItem)
-			catIndex[c].push_back(pCatItem);
-	}
-}
-
-
-int FastCatalog::getUsage(const QString& path)
-{
-	for (int i = 0; i < catList.size(); ++i)
-	{
-		if (path == catList[i].fullPath)
-		{
-			return catList[i].usage;
-		}
-	}
-
-	return 0;
-}
-
-
-void FastCatalog::incrementUsage(const CatItem& item)
-{
-	for (int i = 0; i < catList.size(); ++i)
-	{
-		if (item == catList[i])
-		{
-			// If an item is demoted, return it to a usage count of 1
-			if (catList[i].usage < 0)
-				catList[i].usage = 1;
-			else
-				++catList[i].usage;
-			break;
-		}
-	}
-}
-
-
-void FastCatalog::demoteItem(const CatItem& item)
-{
-	for (int i = 0; i < catList.size(); ++i)
-	{
-		if (item == catList[i])
-		{
-			// If an item is not demoted, demote it
-			if (catList[i].usage > 0)
-				catList[i].usage = -1;
-			else // otherwise demote it further
-				--catList[i].usage;
-			break;
-		}
-	}
-}
-
-
-int SlowCatalog::getUsage(const QString& path)
-{
-	for (int i = 0; i < catList.size(); ++i)
-	{
-		if (path == catList[i].fullPath)
-		{
-			return catList[i].usage;
-		}
-	}
-
-	return 0;
-}
-
-
-void SlowCatalog::incrementUsage(const CatItem& item)
-{
-	for (int i = 0; i < catList.size(); ++i)
-	{
-		if (item == catList[i])
-		{
-			// If an item is demoted, return it to a usage count of 1
-			if (catList[i].usage < 0)
-				catList[i].usage = 1;
-			else
-				++catList[i].usage;
-			break;
-		}
-	}
-}
-
-
-void SlowCatalog::demoteItem(const CatItem& item)
-{
-	for (int i = 0; i < catList.size(); ++i)
-	{
-		if (item == catList[i])
-		{
-			// If an item is not demoted, demote it
-			if (catList[i].usage > 0)
-				catList[i].usage = -1;
-			else // otherwise demote it further
-				--catList[i].usage;
-			break;
-		}
-	}
-}
-
-
-void SlowCatalog::addItem(const CatItem& item)
-{
-	catList.push_back(item);
-}
-
-
+// Return true if the specified catalog item matches the specified string
 bool Catalog::matches(CatItem* item, const QString& match)
 {
 	int matchLength = match.count();
@@ -204,6 +99,67 @@ bool Catalog::matches(CatItem* item, const QString& match)
 	}
 
 	return false;
+}
+
+
+// Search the catalog, for items matching the text parameter and 
+// populate the out parameter
+void Catalog::searchCatalogs(const QString& text, QList<CatItem>& out)
+{
+	// Prevent other threads accessing the catalog
+	QMutexLocker locker(&mutex);
+
+	QList<CatItem*> catMatches = search(text);
+
+	// Now prioritize the catalog items
+	qSort(catMatches.begin(), catMatches.end(), CatLess);
+
+	// Check for history matches
+	QString location = "History/" + text;
+	QStringList hist;
+	hist = gSettings->value(location, hist).toStringList();
+	if (hist.count() == 2)
+	{
+		for (int i = 0; i < catMatches.count(); i++)
+		{
+			if (catMatches[i]->lowName == hist[0] &&
+				catMatches[i]->fullPath == hist[1])
+			{
+				CatItem* tmp = catMatches[i];
+				catMatches.removeAt(i);
+				catMatches.push_front(tmp);
+			}
+		}
+	}
+
+	// Load up the results
+	int max = gSettings->value("GenOps/numresults", 10).toInt();
+	for (int i = 0; i < max && i < catMatches.count(); i++)
+	{
+		out.push_back(*catMatches[i]);
+	}
+}
+
+
+void Catalog::promoteRecentlyUsedItems(const QString& text, QList<CatItem> & list)
+{
+	// Check for history matches
+	QString location = "History/" + text;
+	QStringList hist;
+	hist = gSettings->value(location, hist).toStringList();
+	if (hist.count() == 2)
+	{
+		for (int i = 0; i < list.count(); i++)
+		{
+			if (list[i].lowName == hist[0] &&
+				list[i].fullPath == hist[1])
+			{
+				CatItem tmp = list[i];
+				list.removeAt(i);
+				list.push_front(tmp);
+			}
+		}
+	}
 }
 
 
@@ -263,93 +219,97 @@ QString Catalog::decorateText(const QString& text, const QString& match, bool ou
 }
 
 
-void Catalog::searchCatalogs(const QString& text, QList<CatItem> & out)
+void SlowCatalog::addItem(const CatItem& item)
 {
-	QList<CatItem*> catMatches = search(text);
+	// Prevent other threads accessing the catalog
+	QMutexLocker locker(&mutex);
 
-	// Now prioritize the catalog items
-	qSort(catMatches.begin(), catMatches.end(), CatLess);
+	bool replaced = false;
 
-	// Check for history matches
-	QString location = "History/" + text;
-	QStringList hist;
-	hist = gSettings->value(location, hist).toStringList();
-	if (hist.count() == 2)
+	if (timestamp > 0)
 	{
-		for (int i = 0; i < catMatches.count(); i++)
+		// If we're not loading the catalog, search for an existing matching catalog item
+		// and replace it if it exists
+		for (int i = 0; i < catalogItems.size(); ++i)
 		{
-		if (catMatches[i]->lowName == hist[0] &&
-			catMatches[i]->fullPath == hist[1])
+			if (item == catalogItems[i])
 			{
-				CatItem* tmp = catMatches[i];
-				catMatches.removeAt(i);
-				catMatches.push_front(tmp);
+				int usage = catalogItems[i].usage;
+				catalogItems[i] = CatalogItem(item, timestamp);
+				catalogItems[i].usage = usage;
+				replaced = true;
+				break;
 			}
 		}
 	}
 
-	// Load up the results
-	int max = gSettings->value("GenOps/numresults", 10).toInt();
-	for (int i = 0; i < max && i < catMatches.count(); i++)
+	if (!replaced)
 	{
-		out.push_back(*catMatches[i]);
+		// If no match found, append the item to the catalog
+		qDebug() << "Adding" << item.fullPath;
+		catalogItems.push_back(CatalogItem(item, timestamp));
 	}
 }
 
 
-void Catalog::promoteRecentlyUsedItems(const QString& text, QList<CatItem> & list)
+void SlowCatalog::purgeOldItems()
 {
-	// Check for history matches
-	QString location = "History/" + text;
-	QStringList hist;
-	hist = gSettings->value(location, hist).toStringList();
-	if (hist.count() == 2)
+	// Prevent other threads accessing the catalog
+	QMutexLocker locker(&mutex);
+
+	for (int i = catalogItems.size() - 1; i >= 0; --i)
+	{
+		if (catalogItems.at(i).timestamp < timestamp)
 		{
-			for (int i = 0; i < list.count(); i++)
-			{
-			if (list[i].lowName == hist[0] &&
-				list[i].fullPath == hist[1])
-				{
-					CatItem tmp = list[i];
-					list.removeAt(i);
-					list.push_front(tmp);
-			}
+			qDebug() << "Removing" << catalogItems.at(i).fullPath;
+			catalogItems.remove(i);
 		}
 	}
 }
 
 
-QList<CatItem*> FastCatalog::search(const QString& searchText)
+void SlowCatalog::incrementUsage(const CatItem& item)
 {
-	QList<CatItem*> result;
+	// Prevent other threads accessing the catalog
+	QMutexLocker locker(&mutex);
 
-	if (searchText.count() > 0)
+	for (int i = 0; i < catalogItems.size(); ++i)
 	{
-		// Find the smallest char list
-		QChar leastCommon = -1;
-		foreach(QChar c, searchText)
+		if (item == catalogItems[i])
 		{
-			if (leastCommon == -1 || catIndex[c].count() < leastCommon)
-				leastCommon = c;
-		}
-		
-		if (catIndex[leastCommon].count() > 0)
-		{
-			// Search the list
-			for (int i = 0; i < catIndex[leastCommon].count(); ++i)
-			{
-				if (matches(catIndex[leastCommon][i], searchText))
-				{
-					result.push_back(catIndex[leastCommon][i]);
-				}
-			}
+			// If an item is currently demoted, return it to a usage count of 1
+			if (catalogItems[i].usage < 0)
+				catalogItems[i].usage = 1;
+			else
+				++catalogItems[i].usage;
+			break;
 		}
 	}
-
-	return result;
 }
 
 
+void SlowCatalog::demoteItem(const CatItem& item)
+{
+	// Prevent catalog refreshes whilst searching
+	QMutexLocker locker(&mutex);
+
+	for (int i = 0; i < catalogItems.size(); ++i)
+	{
+		if (item == catalogItems[i])
+		{
+			// If an item is not demoted, demote it
+			if (catalogItems[i].usage > 0)
+				catalogItems[i].usage = -1;
+			else // otherwise demote it further
+				--catalogItems[i].usage;
+			break;
+		}
+	}
+}
+
+
+// Return a list of catalog items that match searchText
+// this method should only be called from within a QMutexLocker protected section
 QList<CatItem*> SlowCatalog::search(const QString& searchText)
 {
 	QList<CatItem*> result;
@@ -358,11 +318,11 @@ QList<CatItem*> SlowCatalog::search(const QString& searchText)
 	{
 		QString lowSearch = searchText.toLower();
 
-		for (int i = 0; i < catList.count(); ++i)
+		for (int i = 0; i < catalogItems.count(); ++i)
 		{
-			if (matches(&catList[i], lowSearch))
+			if (matches(&catalogItems[i], lowSearch))
 			{
-				result.push_back(&catList[i]);
+				result.push_back(&catalogItems[i]);
 			}
 		}
 	}

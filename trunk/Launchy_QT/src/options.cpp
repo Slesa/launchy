@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2010 Josh Karlin, Simon Capewell
+Copyright (C) 2007-2010  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -78,8 +78,8 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	connect(genOpaqueness, SIGNAL(sliderMoved(int)), gMainWidget, SLOT(setOpaqueness(int)));
 
 #ifdef Q_WS_MAC
-        metaKeys << tr("") << tr("Alt") << tr("Command") << tr("Shift") << tr("Control") <<
-                tr("Command+Alt") << tr("Command+Shift") << tr("Command+Control");
+	metaKeys << tr("") << tr("Alt") << tr("Command") << tr("Shift") << tr("Control") <<
+				tr("Command+Alt") << tr("Command+Shift") << tr("Command+Control");
 #else
 	metaKeys << tr("") << tr("Alt") << tr("Control") << tr("Shift") << tr("Win") <<
 		tr("Ctrl+Alt") << tr("Ctrl+Shift") << tr("Ctrl+Win");
@@ -148,7 +148,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	QHash<QString, bool> knownSkins;
 	foreach(QString szDir, settings.directory("skins"))
 	{
-                QDir dir(szDir);
+		QDir dir(szDir);
 		QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
 
 		foreach(QString d, dirs)
@@ -188,8 +188,9 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	connect(catCheckDirs, SIGNAL(stateChanged(int)), this, SLOT(catTypesDirChanged(int)));
 	connect(catCheckBinaries, SIGNAL(stateChanged(int)), this, SLOT(catTypesExeChanged(int)));
 	connect(catDepth, SIGNAL(valueChanged(int)),this, SLOT(catDepthChanged(int)));
-	catRescan->setEnabled(gBuilder == NULL);
 	connect(catRescan, SIGNAL(clicked(bool)), this, SLOT(catRescanClicked(bool)));
+	catProgress->setVisible(false);
+
 	memDirs = SettingsManager::readCatalogDirectories();
 	for (int i = 0; i < memDirs.count(); ++i)
 	{
@@ -206,11 +207,14 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	{
 		catSize->setText(tr("Index has %n item(s)", "", gMainWidget->catalog->count()));
 	}
-	if (gBuilder != NULL)
+
+	connect(gBuilder, SIGNAL(catalogIncrement(int)), this, SLOT(catalogProgressUpdated(int)));
+	connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+	if (gBuilder->isRunning())
 	{
-		connect(gBuilder.get(), SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
-		connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+		catalogProgressUpdated(gBuilder->getProgress());
 	}
+
 	// Load up the plugins		
 	connect(plugList, SIGNAL(currentRowChanged(int)), this, SLOT(pluginChanged(int)));
 	connect(plugList, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(pluginItemChanged(QListWidgetItem*)));
@@ -242,8 +246,8 @@ OptionsDialog::~OptionsDialog()
 {
 	if (gBuilder != NULL)
 	{
-		disconnect(gBuilder.get(), SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
-		disconnect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+		disconnect(gBuilder, SIGNAL(catalogIncrement(int)), this, SLOT(catalogProgressUpdated(int)));
+		disconnect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 	}
 
 	currentTab = tabWidget->currentIndex();
@@ -258,7 +262,7 @@ void OptionsDialog::setVisible(bool visible)
 	if (visible)
 	{
 		connect(skinList, SIGNAL(currentTextChanged(const QString)), this, SLOT(skinChanged(const QString)));
-                skinChanged(skinList->currentItem()->text());
+		skinChanged(skinList->currentItem()->text());
 	}
 }
 
@@ -304,6 +308,7 @@ void OptionsDialog::accept()
 
 	// Apply General Options
 	settings.setPortable(genPortable->isChecked());
+	gMainWidget->startUpdateTimer();
 	gMainWidget->setSuggestionListMode(genCondensed->currentIndex());
 	gMainWidget->loadOptions();
 
@@ -386,8 +391,8 @@ void OptionsDialog::skinChanged(const QString& newSkin)
 	if (newSkin.count() == 0)
 		return;
 
-    // Find the skin with this name
-    QString directory = settings.skinPath(newSkin);
+	// Find the skin with this name
+	QString directory = settings.skinPath(newSkin);
 
 	// Load up the author file
 	if (directory.length() == 0)
@@ -539,17 +544,24 @@ void OptionsDialog::pluginItemChanged(QListWidgetItem* iz)
 }
 
 
-void OptionsDialog::catProgressUpdated(float val)
+void OptionsDialog::catalogProgressUpdated(int value)
 {
-	catProgress->setValue((int) val);
+	catSize->setVisible(false);
+	catProgress->setValue(value);
+	catProgress->setVisible(true);
+	catRescan->setEnabled(false);
 }
 
 
 void OptionsDialog::catalogBuilt()
 {
+	catProgress->setVisible(false);
 	catRescan->setEnabled(true);
 	if (gMainWidget->catalog != NULL)
+	{
 		catSize->setText(tr("Index has %n items", "", gMainWidget->catalog->count()));
+		catSize->setVisible(true);
+	}
 }
 
 
@@ -560,14 +572,9 @@ void OptionsDialog::catRescanClicked(bool val)
 	// Apply Directory Options
 	SettingsManager::writeCatalogDirectories(memDirs);
 
-	if (gBuilder == NULL)
-	{
-		needRescan = false;
-		catRescan->setEnabled(false);
-		gMainWidget->buildCatalog();
-		connect(gBuilder.get(), SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
-		connect(gBuilder.get(), SIGNAL(catalogIncrement(float)), this, SLOT(catProgressUpdated(float)));
-	}
+	needRescan = false;
+	catRescan->setEnabled(false);
+	gMainWidget->buildCatalog();
 }
 
 

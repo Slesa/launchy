@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007-2009  Josh Karlin, Simon Capewell
+Copyright (C) 2007-2010  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "precompiled.h"
 #include "icon_delegate.h"
 #include "globals.h"
+#include "catalog_types.h"
 
 extern QLabel* alternativesPath;
 
