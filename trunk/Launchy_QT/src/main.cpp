@@ -1503,7 +1503,7 @@ void LaunchyWidget::showLaunchy(bool noFade)
 	// need to use this method in Windows to ensure that keyboard focus is set when 
 	// being activated via a hook or message from another instance of Launchy
 	SetForegroundWindowEx(winId());
-#elif Q_WS_X11
+#elif defined(Q_WS_X11)
 	/* Fix for bug 2994680: Not sure why this is necessary, perhaps someone with more
 	   Qt experience can tell, but doing these two calls will force the window to actually
 	   get keyboard focus when it is activated. It seems from the bug reports that this
