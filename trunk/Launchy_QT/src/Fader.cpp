@@ -26,6 +26,7 @@ Fader::Fader(QObject* parent) :
 	QThread(parent),
 	keepRunning(true)
 {
+	setObjectName("Fader");
 }
 
 
