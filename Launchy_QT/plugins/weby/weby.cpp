@@ -517,8 +517,20 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 				else
 				{
 					// Fill additional parameter placeholders
-					for (int i = 0; i < args.size(); i++)
+					int i;
+					for (int i; i < args.size(); ++i)
+					{
 						file = file.arg(args[i]);
+					}
+					// and replace any other %number placeholders with empty space
+					// Qt supports %1 to %99, so bail out if we're still going at 100
+					for (; i < 100; ++i)
+					{
+						QString newFile = file.arg("");
+						if (newFile == file)
+							break;
+						file = newFile;
+					}
 				}
 				break;
 			}
