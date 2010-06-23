@@ -201,6 +201,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	connect(gBuilder, SIGNAL(catalogIncrement(int)), this, SLOT(catalogProgressUpdated(int)));
 	connect(gBuilder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 	builderThread.start(QThread::IdlePriority);
+	builderThread.setObjectName("CatalogBuilder");
 
 	catalog = gBuilder->getCatalog();
 	if (!catalog->load(settings.catalogFilename()))
