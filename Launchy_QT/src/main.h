@@ -106,6 +106,9 @@ public slots:
 	void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 	void reloadSkin();
 
+protected:
+	void saveSettings();
+
 private:
 	void createActions();
 	void applySkin(const QString& name);

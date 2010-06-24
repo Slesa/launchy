@@ -48,6 +48,11 @@ public:
 			}
 			break;
 
+		case WM_ENDSESSION:
+			// Ensure settings are saved
+			saveSettings();
+			break;
+
 		// Might need to capture these two messages if Vista gives any problems with alpha borders
 		// when restoring from standby
 		case WM_POWERBROADCAST:
