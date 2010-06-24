@@ -829,12 +829,12 @@ void LaunchyWidget::doEnter()
 		CatItem& item = inputData[0].getTopResult();
 		qDebug() << "Launching" << item.shortName << ":" << item.fullPath;
 		launchItem(item);
+		hideLaunchy();
 	}
 	else
 	{
 		qDebug("Nothing to launch");
 	}
-	hideLaunchy();
 }
 
 
@@ -1016,9 +1016,7 @@ void LaunchyWidget::catalogProgressUpdated(int value)
 void LaunchyWidget::catalogBuilt()
 {
 	// Save settings and updated catalog, stop the "working" animation 
-	savePosition();
-	gSettings->sync();
-	catalog->save(settings.catalogFilename());
+	saveSettings();
 	workingAnimation->Stop();
 
 	// Now do a search using the updated catalog
@@ -1124,6 +1122,16 @@ void LaunchyWidget::loadPosition(QPoint pt)
 }
 
 
+void LaunchyWidget::saveSettings()
+{
+	qDebug() << "Save settings";
+	savePosition();
+	gSettings->sync();
+	catalog->save(settings.catalogFilename());
+	history.save(settings.historyFilename());
+}
+
+
 void LaunchyWidget::startUpdateTimer()
 {
 	int time = gSettings->value("GenOps/updatetimer", 10).toInt();
@@ -1156,11 +1164,7 @@ void LaunchyWidget::closeEvent(QCloseEvent* event)
 {
 	builderThread.exit();
 	fader->stop();
-	savePosition();
-	gSettings->sync();
-
-	catalog->save(settings.catalogFilename());
-	history.save(settings.historyFilename());
+	saveSettings();
 
 	event->accept();
 	qApp->quit();
@@ -1460,8 +1464,7 @@ void LaunchyWidget::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 void LaunchyWidget::buildCatalog()
 {
 	updateTimer->stop();
-	savePosition();
-	gSettings->sync();
+	saveSettings();
 
 	// Use the catalog builder to refresh the catalog in a worker thread
 	QMetaObject::invokeMethod(gBuilder, "buildCatalog", Qt::AutoConnection);
