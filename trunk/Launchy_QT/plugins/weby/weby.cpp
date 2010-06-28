@@ -517,8 +517,8 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 				else
 				{
 					// Fill additional parameter placeholders
-					int i;
-					for (int i; i < args.size(); ++i)
+					int i = 0;
+					for (; i < args.size(); ++i)
 					{
 						file = file.arg(args[i]);
 					}

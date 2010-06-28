@@ -124,7 +124,7 @@ public:
 
 	bool operator==(const CatItem& other) const
 	{
-		return fullPath == other.fullPath;
+		return fullPath == other.fullPath && shortName == other.shortName;
 	}
 
 	bool operator!=(const CatItem& other) const

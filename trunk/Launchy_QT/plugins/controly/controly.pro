@@ -37,6 +37,9 @@ win32 {
 	LIBS += shlwapi.lib
 	QMAKE_CXXFLAGS_RELEASE += /Zi
 	QMAKE_LFLAGS_RELEASE += /DEBUG
+# disable optimizations to prevent crashes with certain third party control panel
+# applets when Controly is built using VC++ 2005.
+	QMAKE_CXXFLAGS_RELEASE -= -O2
 }
 
 # *:debug {
