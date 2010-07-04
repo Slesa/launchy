@@ -926,10 +926,10 @@ void LaunchyWidget::updateOutputWidgets(bool resetAlternativesSelection)
 		output->setText(outputText);
 		if (outputItem != searchResults[0])
 		{
+			outputItem = searchResults[0];
 			outputIcon->clear();
 			iconExtractor.processIcon(searchResults[0]);
 		}
-		outputItem = searchResults[0];
 
 		if (outputItem.id != HASH_HISTORY)
 		{
