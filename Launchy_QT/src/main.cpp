@@ -625,11 +625,7 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 			}
 		}
 	}
-#ifdef Q_WS_MAC	
-	else if (event->key() == Qt::Key_Backspace && (event->modifiers() & Qt::ShiftModifier) != 0)
-#else
 	else if (event->key() == Qt::Key_Delete && (event->modifiers() & Qt::ShiftModifier) != 0)
-#endif
 	{
 		int row = alternatives->currentRow();
 		if (row > -1)
@@ -712,11 +708,7 @@ void LaunchyWidget::keyPressEvent(QKeyEvent* event)
 			}
 		}
 	}
-#ifdef Q_WS_MAC
-	else if ((event->key() == Qt::Key_Tab || event->key() == Qt::Key_Delete) && event->modifiers() == Qt::ShiftModifier)
-#else
 	else if ((event->key() == Qt::Key_Tab || event->key() == Qt::Key_Backspace) && event->modifiers() == Qt::ShiftModifier)
-#endif
 	{
 		doBackTab();
 		processKey();
