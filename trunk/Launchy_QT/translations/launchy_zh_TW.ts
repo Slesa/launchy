@@ -38,12 +38,12 @@
         <translation>快速鍵 %1 已經被使用，請選擇另一個。</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="317"/>
+        <location filename="../src/main.cpp" line="324"/>
         <source>Launchy (press %1 to activate)</source>
         <translation>Launchy (按 %1 啟動)</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="980"/>
+        <location filename="../src/main.cpp" line="1046"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
@@ -52,17 +52,17 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
 你可以到這裡下載 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1561"/>
+        <location filename="../src/main.cpp" line="1631"/>
         <source>Show Launchy</source>
         <translation>顯示 Launchy</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1564"/>
+        <location filename="../src/main.cpp" line="1634"/>
         <source>Rebuild catalog</source>
         <translation>重新建立索引</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1569"/>
+        <location filename="../src/main.cpp" line="1639"/>
         <source>Reload skin</source>
         <translation>重新載入面板</translation>
     </message>
@@ -77,7 +77,7 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
         <translation type="obsolete">你選擇的快捷鍵已經被占用， 請選擇其他的快捷鍵.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="979"/>
+        <location filename="../src/main.cpp" line="1045"/>
         <source>A new version of Launchy is available</source>
         <translation>Launchy 有新版本</translation>
     </message>
@@ -94,12 +94,12 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">重新建立索引</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1574"/>
+        <location filename="../src/main.cpp" line="1644"/>
         <source>Options</source>
         <translation>選項</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1579"/>
+        <location filename="../src/main.cpp" line="1649"/>
         <source>Exit</source>
         <translation>離開</translation>
     </message>
@@ -383,29 +383,29 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation>Caps Lock</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/options.cpp" line="207"/>
+        <location filename="../src/options.cpp" line="208"/>
         <source>Index has %n item(s)</source>
         <translation>
             <numerusform>索引了 %n 個項目</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="234"/>
+        <location filename="../src/options.cpp" line="238"/>
         <source>This is Launchy version %1</source>
         <translation>Launchy version %1</translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="275"/>
+        <location filename="../src/options.cpp" line="279"/>
         <source>The hotkey %1 is already in use, please select another.</source>
         <translation>快速鍵 %1 已經被使用，請選擇另一個。</translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="463"/>
+        <location filename="../src/options.cpp" line="468"/>
         <source>Plugin options</source>
         <translation>外掛程式選項</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/options.cpp" line="552"/>
+        <location filename="../src/options.cpp" line="562"/>
         <source>Index has %n items</source>
         <translation>
             <numerusform>索引了 %n 個項目</numerusform>
@@ -416,7 +416,7 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">索引有 </translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="275"/>
+        <location filename="../src/options.cpp" line="279"/>
         <source>Launchy</source>
         <translation>Launchy</translation>
     </message>
@@ -425,9 +425,8 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">你選擇的快捷鍵已經被占用， 請選擇其他的快捷鍵.</translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="677"/>
         <source>Select a directory</source>
-        <translation>選擇一個目錄</translation>
+        <translation type="obsolete">選擇一個目錄</translation>
     </message>
 </context>
 <context>
@@ -612,7 +611,7 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation>檔案類型</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1099"/>
+        <location filename="../src/options.ui" line="1075"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -625,7 +624,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;我很喜歡開發 Launchy，希望你也會喜歡它。它是免費的，但如果你認為 Launchy 值得，我會感謝你的&lt;/span&gt;&lt;a href=&quot;http://www.launchy.net/#donate&quot;&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline; color:#0000ff;&quot;&gt;捐款&lt;/span&gt;&lt;/a&gt;。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1166"/>
+        <location filename="../src/options.ui" line="1142"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -760,32 +759,32 @@ p, li { white-space: pre-wrap; }
         <translation>啟動時檢查新版本</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="910"/>
+        <location filename="../src/options.ui" line="905"/>
         <source>Rescan Catalog</source>
         <translation>重新建立索引</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="930"/>
+        <location filename="../src/options.ui" line="937"/>
         <source>Indexing 0 items</source>
         <translation>找到 0 個項目</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="974"/>
+        <location filename="../src/options.ui" line="950"/>
         <source>Plugins</source>
         <translation>外掛程式</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="988"/>
+        <location filename="../src/options.ui" line="964"/>
         <source>Available plugins</source>
         <translation>可用的外掛程式</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1010"/>
+        <location filename="../src/options.ui" line="986"/>
         <source>Plugin options</source>
         <translation>外掛程式選項</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1031"/>
+        <location filename="../src/options.ui" line="1007"/>
         <source>About Launchy</source>
         <translation>關於 Launchy</translation>
     </message>
@@ -797,7 +796,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:11pt;&quot;&gt;原作者語：我很高興開發Launchy，希望你能喜歡它。你可以免費使用，如果你覺得Launchy不錯，我期待你的 &lt;a href=&quot;http://www.launchy.net/#donate&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;贊助.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;拼音處理方案采用李先靜的 &lt;a href=&quot;http://sourceforge.net/projects/pinyin-kit/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;pinyin-kit&lt;/span&gt;&lt;/a&gt; 謝謝&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1127"/>
+        <location filename="../src/options.ui" line="1103"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;

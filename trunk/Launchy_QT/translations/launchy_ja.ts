@@ -38,29 +38,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="317"/>
+        <location filename="../src/main.cpp" line="324"/>
         <source>Launchy (press %1 to activate)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="980"/>
+        <location filename="../src/main.cpp" line="1046"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1561"/>
+        <location filename="../src/main.cpp" line="1631"/>
         <source>Show Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1564"/>
+        <location filename="../src/main.cpp" line="1634"/>
         <source>Rebuild catalog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1569"/>
+        <location filename="../src/main.cpp" line="1639"/>
         <source>Reload skin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -75,7 +75,7 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
         <translation type="obsolete">選択されたホットキーは既に使われています。Launchy のオプションで他のキーを指定して下さい。</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="979"/>
+        <location filename="../src/main.cpp" line="1045"/>
         <source>A new version of Launchy is available</source>
         <translation type="unfinished">新しいバージョンのLaunchyが使用可能です。</translation>
     </message>
@@ -92,12 +92,12 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">カタログを再構築</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1574"/>
+        <location filename="../src/main.cpp" line="1644"/>
         <source>Options</source>
         <translation type="unfinished">オプション</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1579"/>
+        <location filename="../src/main.cpp" line="1649"/>
         <source>Exit</source>
         <translation type="unfinished">終了</translation>
     </message>
@@ -381,29 +381,29 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/options.cpp" line="207"/>
+        <location filename="../src/options.cpp" line="208"/>
         <source>Index has %n item(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="234"/>
+        <location filename="../src/options.cpp" line="238"/>
         <source>This is Launchy version %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="275"/>
+        <location filename="../src/options.cpp" line="279"/>
         <source>The hotkey %1 is already in use, please select another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="463"/>
+        <location filename="../src/options.cpp" line="468"/>
         <source>Plugin options</source>
         <translation type="unfinished">プラグイン・オプション</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/options.cpp" line="552"/>
+        <location filename="../src/options.cpp" line="562"/>
         <source>Index has %n items</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -422,7 +422,7 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">Launchy のバージョン:</translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="275"/>
+        <location filename="../src/options.cpp" line="279"/>
         <source>Launchy</source>
         <translation type="unfinished">Launchy</translation>
     </message>
@@ -431,9 +431,8 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">選択されたホットキーは既に使われています。他のキーを選択して下さい。</translation>
     </message>
     <message>
-        <location filename="../src/options.cpp" line="677"/>
         <source>Select a directory</source>
-        <translation type="unfinished">ディレクトリを選択してください</translation>
+        <translation type="obsolete">ディレクトリを選択してください</translation>
     </message>
 </context>
 <context>
@@ -754,7 +753,7 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation>ファイルの種類</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1099"/>
+        <location filename="../src/options.ui" line="1075"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -763,7 +762,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1166"/>
+        <location filename="../src/options.ui" line="1142"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -887,32 +886,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="910"/>
+        <location filename="../src/options.ui" line="905"/>
         <source>Rescan Catalog</source>
         <translation>カタログを再スキャン</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="930"/>
+        <location filename="../src/options.ui" line="937"/>
         <source>Indexing 0 items</source>
         <translation>0 項目をインデックス化しています</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="974"/>
+        <location filename="../src/options.ui" line="950"/>
         <source>Plugins</source>
         <translation>プラグイン</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="988"/>
+        <location filename="../src/options.ui" line="964"/>
         <source>Available plugins</source>
         <translation>利用可能なプラグイン</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1010"/>
+        <location filename="../src/options.ui" line="986"/>
         <source>Plugin options</source>
         <translation>プラグイン・オプション</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1031"/>
+        <location filename="../src/options.ui" line="1007"/>
         <source>About Launchy</source>
         <translation>Launchy について</translation>
     </message>
@@ -924,7 +923,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;p, li { white-space: pre-wrap; }&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Please help this poor grad student to put ramen on the table. I greatly enjoy developing Launchy, and I hope that you enjoy using it. It&apos;s free to use, but if you think Launchy is a worthwhile application, I would appreciate your &lt;a href=&quot;http://www.launchy.net/#donate&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;donation.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/options.ui" line="1127"/>
+        <location filename="../src/options.ui" line="1103"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
