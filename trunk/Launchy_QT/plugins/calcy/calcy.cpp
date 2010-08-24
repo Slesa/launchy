@@ -131,7 +131,7 @@ void calcyPlugin::init()
 	QString decimal = (*settings)->value("calcy/useCommaForDecimal", false).toBool() ? "," : ".";
 	QString group = (*settings)->value("calcy/useCommaForDecimal", false).toBool() ? "." : ",";
 
-	QString pattern = QString("^[\\(\\+\\-]*([\\d\\%1]+(\\%2\\d+)?)").arg(group).arg(decimal);
+	QString pattern = QString("^[\\(\\+\\-]*([\\d\\%1]?(\\%2\\d+)?)").arg(group).arg(decimal);
 	reg.setPattern(pattern);
 }
 
