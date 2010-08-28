@@ -522,6 +522,10 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 					{
 						file = file.arg(args[i]);
 					}
+                                        /*
+                                          This causes problems because percent-encoded arguments
+                                          like spaces (%20) wind up getting replaced with ""
+
 					// and replace any other %number placeholders with empty space
 					// Qt supports %1 to %99, so bail out if we're still going at 100
 					for (; i < 100; ++i)
@@ -531,6 +535,7 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 							break;
 						file = newFile;
 					}
+                                        */
 				}
 				break;
 			}
