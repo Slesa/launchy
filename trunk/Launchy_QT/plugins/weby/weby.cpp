@@ -481,8 +481,7 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 	for (; i < inputData->count(); i++)
 	{
 		QString txt = inputData->at(i).getText();
-		txt = QUrl::toPercentEncoding(txt);
-		args.push_back(txt);
+		args.push_back(QUrl::toPercentEncoding(txt));
 	}
 
 	// Is it a Firefox shortcut?
@@ -516,26 +515,22 @@ void WebyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 				}
 				else
 				{
-					// Fill additional parameter placeholders
-					int i = 0;
-					for (; i < args.size(); ++i)
-					{
-						file = file.arg(args[i]);
+					// Build the new string
+					QString out;
+					int curArg = 0;
+					for(int i = 0; i < file.size()-1; i++) {
+						QChar curchar = file[i];
+						QChar nextchar = file[i+1];
+						if (curchar == '%' && nextchar >= '0' && nextchar <= '9') {							
+							i += 1;
+							if (curArg < args.size()) {
+								out += args[curArg++];
+							}
+						} else {
+							out += curchar;
+						}
 					}
-                                        /*
-                                          This causes problems because percent-encoded arguments
-                                          like spaces (%20) wind up getting replaced with ""
-
-					// and replace any other %number placeholders with empty space
-					// Qt supports %1 to %99, so bail out if we're still going at 100
-					for (; i < 100; ++i)
-					{
-						QString newFile = file.arg("");
-						if (newFile == file)
-							break;
-						file = newFile;
-					}
-                                        */
+					file = out;
 				}
 				break;
 			}
