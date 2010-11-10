@@ -43,7 +43,7 @@
         <translation>Launchy (按 %1 激活)</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1046"/>
+        <location filename="../src/main.cpp" line="1047"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
@@ -52,17 +52,17 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
 请到这里下载： 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1631"/>
+        <location filename="../src/main.cpp" line="1629"/>
         <source>Show Launchy</source>
         <translation>显示Launchy</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1634"/>
+        <location filename="../src/main.cpp" line="1632"/>
         <source>Rebuild catalog</source>
         <translation>重建索引数据</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1639"/>
+        <location filename="../src/main.cpp" line="1637"/>
         <source>Reload skin</source>
         <translation>重新载入皮肤</translation>
     </message>
@@ -77,7 +77,7 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
         <translation type="obsolete">你选择的快捷键已经被占用， 请选择其他的快捷键.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1045"/>
+        <location filename="../src/main.cpp" line="1046"/>
         <source>A new version of Launchy is available</source>
         <translation>Launchy 有新版本了！</translation>
     </message>
@@ -94,12 +94,12 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">重建索引数据</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1644"/>
+        <location filename="../src/main.cpp" line="1642"/>
         <source>Options</source>
         <translation>选项</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1649"/>
+        <location filename="../src/main.cpp" line="1647"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>

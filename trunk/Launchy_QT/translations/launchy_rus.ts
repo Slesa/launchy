@@ -24,12 +24,12 @@
         <translation>Launchy (нажмите %1 для активации)</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1631"/>
+        <location filename="../src/main.cpp" line="1629"/>
         <source>Show Launchy</source>
         <translation>Показать Launchy</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1634"/>
+        <location filename="../src/main.cpp" line="1632"/>
         <source>Rebuild catalog</source>
         <translation>Обновить каталог</translation>
     </message>
@@ -40,12 +40,12 @@
         <translation>Launchy</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1045"/>
+        <location filename="../src/main.cpp" line="1046"/>
         <source>A new version of Launchy is available</source>
         <translation>Доступна новая версия Launchy</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1046"/>
+        <location filename="../src/main.cpp" line="1047"/>
         <source>A new version of Launchy is available.
 
 You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</source>
@@ -54,17 +54,17 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
 Вы можете скачать её с сайта 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1639"/>
+        <location filename="../src/main.cpp" line="1637"/>
         <source>Reload skin</source>
         <translation>Перезагрузить скин</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1644"/>
+        <location filename="../src/main.cpp" line="1642"/>
         <source>Options</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="1649"/>
+        <location filename="../src/main.cpp" line="1647"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>

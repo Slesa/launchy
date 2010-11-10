@@ -499,8 +499,9 @@ void LaunchyWidget::launchItem(CatItem& item)
 
 void LaunchyWidget::focusInEvent(QFocusEvent* event)
 {
-	if (event->gotFocus() && fader->isFading())
-		fader->fadeIn(false);
+    if (event->gotFocus() && fader->isFading())
+		fader->fadeIn(false);        
+
 
 	QWidget::focusInEvent(event);
 }
@@ -508,10 +509,10 @@ void LaunchyWidget::focusInEvent(QFocusEvent* event)
 
 void LaunchyWidget::focusOutEvent(QFocusEvent* event)
 {
-	if (event->reason() == Qt::ActiveWindowFocusReason)
+        if (event->reason() == Qt::ActiveWindowFocusReason)
 	{
 		if (gSettings->value("GenOps/hideiflostfocus", false).toBool() &&
-			!isActiveWindow() && !alternatives->isActiveWindow() && !optionsOpen)
+                        !isActiveWindow() && !alternatives->isActiveWindow() && !optionsOpen && !fader->isFading())
 		{
 			hideLaunchy();
 		}
@@ -1517,16 +1518,13 @@ void LaunchyWidget::setFadeLevel(double level)
 	}
 	else
 	{
-		if (!isVisible())
-			show();
+            if (!isVisible()) {
+                show();
+                activateWindow();
+                raise();
+                }
 	}
 
-	// Make sure we grab focus once we've faded in
-	if (level >= 1.0)
-	{
-		activateWindow();
-		raise();
-	}
 }
 
 
@@ -1570,8 +1568,8 @@ void LaunchyWidget::showLaunchy()
 
 void LaunchyWidget::hideLaunchy(bool noFade)
 {
-	if (!isVisible())
-		return;
+        if (!isVisible() || isHidden())
+                return;
 
 	savePosition();
 	hideAlternatives();
