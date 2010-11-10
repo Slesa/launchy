@@ -63,7 +63,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
 	genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
 	genShowNetwork->setChecked(gSettings->value("GenOps/showNetwork", true).toBool());
-	genCondensed->setCurrentIndex(gSettings->value("GenOps/condensedView", 0).toInt());
+        genCondensed->setCurrentIndex(gSettings->value("GenOps/condensedView", 2).toInt());
 	genAutoSuggestDelay->setValue(gSettings->value("GenOps/autoSuggestDelay", 1000).toInt());
 	int updateInterval = gSettings->value("GenOps/updatetimer", 10).toInt();
 	connect(genUpdateCatalog, SIGNAL(stateChanged(int)), this, SLOT(autoUpdateCheckChanged(int)));

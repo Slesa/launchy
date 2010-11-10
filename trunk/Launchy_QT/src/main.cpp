@@ -151,7 +151,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	alternatives->setUniformItemSizes(true);
 	listDelegate = new IconDelegate(this);
 	defaultListDelegate = alternatives->itemDelegate();
-	setSuggestionListMode(gSettings->value("GenOps/condensedView", 0).toInt());
+        setSuggestionListMode(gSettings->value("GenOps/condensedView", 2).toInt());
 	altScroll = alternatives->verticalScrollBar();
 	altScroll->setObjectName("altScroll");
 	connect(alternatives, SIGNAL(currentRowChanged(int)), this, SLOT(alternativesRowChanged(int)));
@@ -348,7 +348,7 @@ void LaunchyWidget::showTrayIcon()
 // and set its size and position accordingly.
 void LaunchyWidget::updateAlternatives(bool resetSelection)
 {
-	int mode = gSettings->value("GenOps/condensedView", 0).toInt();
+        int mode = gSettings->value("GenOps/condensedView", 2).toInt();
 	int i = 0;
 	for (; i < searchResults.size(); ++i)
 	{
