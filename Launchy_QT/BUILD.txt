@@ -11,6 +11,7 @@ cd linux ; ./build_deb.sh <version> such as ./buid_deb.sh 2.2
 
 Building and installing on Mac OS X:
 
+0) Install the boost C++ library
 1) Install the QT SDK
 2) qmake Launchy.pro -spec macx-g++ -r CONFIG+=release
 3) make ; make install
