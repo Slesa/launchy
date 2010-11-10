@@ -37,7 +37,7 @@ Fader::~Fader()
 
 void Fader::fadeIn(bool quick)
 {
-	int time = gSettings->value("GenOps/fadein", 0).toInt();
+        int time = gSettings->value("GenOps/fadein", 0).toInt();
 
 	mutex.lock();
 	targetLevel = gSettings->value("GenOps/opaqueness", 100).toInt() / 100.0;
