@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 #include "precompiled.h"
+#include <QMessageBox>
 #include "options.h"
 #include "main.h"
 #include "globals.h"
@@ -42,7 +43,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	restoreGeometry(windowGeometry);
 	tabWidget->setCurrentIndex(currentTab);
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	about_homepage->setText(about_homepage->text() + \
 		"<p><br>If you would like to uninstall Launchy, please close Launchy and run \"Uninstall Launchy\" from the start menu.</br></p>");
 #endif
@@ -77,7 +78,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genFadeOut->setValue(gSettings->value("GenOps/fadeout", 20).toInt());
 	connect(genOpaqueness, SIGNAL(sliderMoved(int)), gMainWidget, SLOT(setOpaqueness(int)));
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 	metaKeys << tr("") << tr("Alt") << tr("Command") << tr("Shift") << tr("Control") <<
 				tr("Command+Alt") << tr("Command+Shift") << tr("Command+Control");
 #else
@@ -363,7 +364,7 @@ void OptionsDialog::reject()
 
 void OptionsDialog::tabChanged(int tab)
 {
-	tab = tab; // Compiler warning
+    Q_UNUSED(tab) // Compiler warning
 	// Redraw the current skin (necessary because of dialog resizing issues)
 	if (tabWidget->currentWidget()->objectName() == "Skins")
 	{
@@ -567,7 +568,7 @@ void OptionsDialog::catalogBuilt()
 
 void OptionsDialog::catRescanClicked(bool val)
 {
-	val = val; // Compiler warning
+    Q_UNUSED(val) // Compiler warning
 
 	// Apply Directory Options
 	SettingsManager::writeCatalogDirectories(memDirs);
@@ -580,7 +581,7 @@ void OptionsDialog::catRescanClicked(bool val)
 
 void OptionsDialog::catTypesDirChanged(int state)
 {
-	state = state; // Compiler warning
+    Q_UNUSED(state) // Compiler warning
 	int row = catDirectories->currentRow();
 	if (row == -1)
 		return;
@@ -592,7 +593,7 @@ void OptionsDialog::catTypesDirChanged(int state)
 
 void OptionsDialog::catTypesExeChanged(int state)
 {
-	state = state; // Compiler warning
+    Q_UNUSED(state) // Compiler warning
 	int row = catDirectories->currentRow();
 	if (row == -1)
 		return;
@@ -662,7 +663,7 @@ void OptionsDialog::dirRowChanged(int row)
 
 void OptionsDialog::catDirMinusClicked(bool c)
 {
-	c = c; // Compiler warning
+    Q_UNUSED(c) // Compiler warning
 	int dirRow = catDirectories->currentRow();
 
 	delete catDirectories->takeItem(dirRow);
@@ -680,7 +681,7 @@ void OptionsDialog::catDirMinusClicked(bool c)
 
 void OptionsDialog::catDirPlusClicked(bool c)
 {
-	c = c; // Compiler warning
+    Q_UNUSED(c) // Compiler warning
 	addDirectory("", true);
 }
 
@@ -723,7 +724,7 @@ void OptionsDialog::catTypesItemChanged(QListWidgetItem* item)
 
 void OptionsDialog::catTypesPlusClicked(bool c)
 {
-	c = c; // Compiler warning
+    Q_UNUSED(c) // Compiler warning
 	int row = catDirectories->currentRow();
 	if (row == -1)
 		return;
@@ -740,7 +741,7 @@ void OptionsDialog::catTypesPlusClicked(bool c)
 
 void OptionsDialog::catTypesMinusClicked(bool c)
 {
-	c = c; // Compiler warning
+    Q_UNUSED(c) // Compiler warning
 	int dirRow = catDirectories->currentRow();
 	if (dirRow == -1)
 		return;

@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef MAIN_H
 #define MAIN_H
 
+#include <QSystemTrayIcon>
 
 #include "plugin_handler.h"
 #include "platform_util.h"
@@ -36,6 +37,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "AnimationLabel.h"
 #include "Fader.h"
 
+class QPushButton;
+// class QNetworkRequest;
 
 enum CommandFlag
 {
@@ -173,7 +176,7 @@ private:
 	IconDelegate* listDelegate;
 	QAbstractItemDelegate* defaultListDelegate;
 
-	QHttp *http;
+   // QNetworkRequest *http;
 	QBuffer *verBuffer;
 	QBuffer *counterBuffer;
 };

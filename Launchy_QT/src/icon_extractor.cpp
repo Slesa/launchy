@@ -52,7 +52,7 @@ void IconExtractor::processIcon(const CatItem& item, bool highPriority)
 	}
 
 	mutex.unlock();
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         run();
 #else
 	if (!isRunning())
@@ -82,7 +82,7 @@ void IconExtractor::processIcons(const QList<CatItem>& newItems, bool reset)
 
 	mutex.unlock();
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 run();
 #else
 
@@ -102,7 +102,7 @@ void IconExtractor::stop()
 
 void IconExtractor::run()
 {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	CoInitialize(NULL);
 #endif
 
@@ -124,7 +124,7 @@ void IconExtractor::run()
 	}
 	while (itemsRemaining);
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	CoUninitialize();
 #endif
 }
@@ -134,14 +134,14 @@ QIcon IconExtractor::getIcon(const CatItem& item)
 {
 	qDebug() << "Fetching icon for" << item.fullPath;
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     if (item.icon.endsWith(".png") || item.icon.endsWith(".ico"))
         return QIcon(item.icon);
 #endif
 
 	if (item.icon.isNull())
 	{
-#ifdef Q_WS_X11
+#ifdef Q_OS_X11
 		QFileInfo info(item.fullPath);
 		if (info.isDir())
 			return platform->icon(QFileIconProvider::Folder);
@@ -152,7 +152,7 @@ QIcon IconExtractor::getIcon(const CatItem& item)
 	}
 	else
 	{
-#ifdef Q_WS_X11
+#ifdef Q_OS_X11
 		if (QFile::exists(item.icon))
 		{
 			return QIcon(item.icon);

@@ -107,10 +107,10 @@ private:
 		// set up our table to all minus ones
 		for (i = 0; i < 256; i++)
 			ttable->transtable[i] = -1;
-
+/* @@@
 		// find the current kchr resource ID
 		ttable->kchrID = (short)GetScriptVariable(smCurrentScript, smScriptKeys);
-
+*/
 		// get the current KCHR resource
 		theKCHRRsrc = GetResource('KCHR', ttable->kchrID);
 		if (theKCHRRsrc == NULL)
@@ -145,7 +145,8 @@ private:
 	 * layouts while we were running.
 	 */
 	static OSStatus validateAscii2KeyCodeTable(Ascii2KeyCodeTable* ttable, Boolean* wasChanged)
-	{
+    {
+        /* @@@
 		short theID;
 		theID = (short) GetScriptVariable(smCurrentScript, smScriptKeys);
 		if (theID != ttable->kchrID) {
@@ -155,8 +156,10 @@ private:
 		else {
 			*wasChanged = false;
 			return noErr;
-		}
-	}
+        } */
+        *wasChanged = false;
+        return noErr;
+    }
 
 	/**
 	 * asciiToKeyCode looks up the ascii character in the key
@@ -176,6 +179,7 @@ private:
 	 */
 	static char keyCodeToAscii(short virtualKeyCode)
 	{
+        /* @@@
 		unsigned long state;
 		long keyTrans;
 		char charCode;
@@ -186,7 +190,8 @@ private:
 		charCode = keyTrans;
 		if (!charCode)
 			charCode = (keyTrans >> 16);
-		return charCode;
+        return charCode; */
+        return 0;
 	}
 
 private:

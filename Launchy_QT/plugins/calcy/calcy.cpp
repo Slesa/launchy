@@ -21,7 +21,7 @@
 #include "calcy.h"
 
 
-using namespace boost::spirit;
+// using namespace boost::spirit;
 using namespace phoenix;
 
 

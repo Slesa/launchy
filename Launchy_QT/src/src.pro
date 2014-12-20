@@ -7,7 +7,7 @@ PRECOMPILED_HEADER = precompiled.h
 
 # CONFIG += qt release
 INCLUDEPATH += ../common
-QT += network
+QT += network widgets
 SOURCES = main.cpp \
     globals.cpp \
     options.cpp \

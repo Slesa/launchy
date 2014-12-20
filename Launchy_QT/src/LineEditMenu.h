@@ -1,8 +1,7 @@
 #ifndef LINEEDITMENU_H
 #define LINEEDITMENU_H
 
-
-#include <QtGui/QLabel>
+#include <QLabel>
 
 
 class LineEditMenu : public QLabel

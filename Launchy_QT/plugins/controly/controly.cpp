@@ -79,7 +79,7 @@ QString controlyPlugin::getIconPath() const
 }
 
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 void controlyPlugin::getApps(QList<CatItem>* items) {
 	ControlPanelItemFinder *pCplFinder = new ControlPanelItemFinder(HASH_controly, &iconCreator, items);
 	pCplFinder->findItems();
