@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "precompiled.h"
 #include "gui.h"
 #include "weby.h"
+#include <QUrl>
 
 #define ROW_PADDING 6
 
@@ -34,7 +35,7 @@ Gui::Gui(QWidget* parent, QSettings* settings)
 	booksIE->setChecked(settings->value("weby/ie", true).toBool());
 
 	// Stretch the last column of the table
-	table->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch); //  column 1
+    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch); //  column 1
 
 	// Read in the array of websites from options
 	table->setSortingEnabled(false);
@@ -132,7 +133,8 @@ void Gui::drop(QDropEvent *event)
 		if (mimeData->hasUrls()) {
 			foreach(QUrl url, mimeData->urls()) {
 				table->setSortingEnabled(false);
-				QString qs = QUrl::fromPercentEncoding(url.encodedQuery());
+                // @@@ QString qs = QUrl::fromPercentEncoding(url.encodedQuery());
+                QString qs = QUrl::fromPercentEncoding(url.query(QUrl::FullyEncoded).toLocal8Bit());
 				appendRow(url.path() ,qs);
 //				appendRow(url.path(), url.toString(QUrl::RemoveQuery), qs);
 				table->setCurrentCell(table->rowCount()-1, 0);

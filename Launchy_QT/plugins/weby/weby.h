@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "globals.h"
 #include "gui.h"
 #include "IconCache.h"
+#include <QSharedPointer>
 
 
 class Suggest : public QObject
@@ -42,15 +43,14 @@ public slots:
 
 private:
 	QString query;
-	QHttp http;
-	QEventLoop loop;
+    QNetworkAccessManager qnam;
+    QNetworkReply *reply;
+    QEventLoop loop;
 	int id;
 	static int currentId;	
 
 };
 
-
-using namespace boost;
 
 class WebyPlugin : public QObject, public PluginInterface
 {
@@ -66,7 +66,7 @@ public:
 	QList<Bookmark> marks;
 
 private:
-	shared_ptr<Gui> gui;
+    QSharedPointer<Gui> gui;
 	QString iconCachePath;
 	IconCache* iconCache;
 public:
@@ -94,7 +94,7 @@ public:
 	QString getFirefoxPath();
 	void indexFirefox(QString path, QList<CatItem>* items);
 	QString getIcon();
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	void indexIE(QString path, QList<CatItem>* items);
 #endif
 };

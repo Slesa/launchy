@@ -27,7 +27,7 @@ int Suggest::currentId = 0;
 
 Suggest::Suggest()
 {
-	connect(&http, SIGNAL(done(bool)), this, SLOT(httpGetFinished(bool)));
+// @@@	connect(&http, SIGNAL(done(bool)), this, SLOT(httpGetFinished(bool)));
 }
 
 
@@ -35,12 +35,16 @@ void Suggest::run(QString url, QString query)
 {
 	this->query = query;
 	url.replace("%s", QUrl::toPercentEncoding(query));
-	QUrl u = QUrl::fromPercentEncoding(url.toAscii());
+    QUrl u = QUrl::fromPercentEncoding(url.toLatin1());
 
-	http.setHost(u.host(), u.port(80));
-	http.get(u.toEncoded(QUrl::RemoveScheme | QUrl::RemoveAuthority));
+    reply = qnam.get(QNetworkRequest(u));
+
+    /* @@@
+    //http.setHost(u.host(), u.port(80));
+    //http.get(u.toEncoded(QUrl::RemoveScheme | QUrl::RemoveAuthority));
 	id = ++currentId;
-	loop.exec();
+    loop.exec();
+    */
 }
 
 
@@ -57,7 +61,7 @@ void Suggest::httpGetFinished(bool error)
 		{
 			QRegExp regex("\\[.*\\[(.*)\\]\\]");
 			QRegExp rx("\"((?:[^\\\\\"]|\\\\\")*)\"");
-
+/* @@@
 			QString text = http.readAll();
 			if (regex.indexIn(text) != -1)
 			{
@@ -72,7 +76,7 @@ void Suggest::httpGetFinished(bool error)
 
 					pos += rx.matchedLength();
 				}
-			}
+            } */
 		}
 		loop.exit();
 	}
@@ -308,7 +312,7 @@ void WebyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* results
 }
 
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 
 QString GetShellDirectory(int type)
 {
@@ -347,15 +351,15 @@ QString WebyPlugin::getFirefoxPath()
 	QString path;
 	QString osPath;
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	osPath = GetShellDirectory(CSIDL_APPDATA) + "/Mozilla/Firefox/";
 #endif
 
-#ifdef Q_WS_X11
+#ifdef Q_OS_X11
 	osPath = QDir::homePath() + "/.mozilla/firefox/";
 #endif
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
         osPath = QDir::homePath() + "/Library/Application Support/Firefox/";
 #endif
 	QString iniPath = osPath + "profiles.ini";
@@ -457,7 +461,7 @@ void WebyPlugin::getCatalog(QList<CatItem>* items)
 			iconName.length() > 0 ? iconName : getIcon()));
 	}
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	if ((*settings)->value("weby/ie", true).toBool())
 	{
 		QString path = GetShellDirectory(CSIDL_FAVORITES);
@@ -557,7 +561,7 @@ void WebyPlugin::doDialog(QWidget* parent, QWidget** newDlg)
 	if (gui != NULL)
 		return;
 	gui.reset(new Gui(parent, *settings));
-	*newDlg = gui.get();
+    *newDlg = gui.data();
 }
 
 
@@ -629,4 +633,4 @@ int WebyPlugin::msg(int msgId, void* wParam, void* lParam)
 	return handled;
 }
 
-Q_EXPORT_PLUGIN2(weby, WebyPlugin)
+// @@@ Q_EXPORT_PLUGIN2(weby, WebyPlugin)

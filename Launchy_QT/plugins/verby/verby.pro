@@ -1,9 +1,10 @@
 TEMPLATE = lib
+QT += widgets
 CONFIG += plugin \
     release
 VPATH += ../../src/
 INCLUDEPATH += ../../src/
-PRECOMPILED_HEADER = precompiled.h
+win32:PRECOMPILED_HEADER = precompiled.h
 UI_DIR = ../../plugins/Verby/
 FORMS = dlg.ui
 HEADERS = plugin_interface.h \

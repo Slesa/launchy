@@ -1,11 +1,12 @@
 TEMPLATE = lib
+QT += widgets
 CONFIG += plugin \
     debug_and_release
 VPATH += ../../src
 INCLUDEPATH += ../../src
 INCLUDEPATH += ../../common
 INCLUDEPATH += c:/boost/
-PRECOMPILED_HEADER = precompiled.h
+win32:PRECOMPILED_HEADER = precompiled.h
 UI_DIR = ../../plugins/runner/
 FORMS = dlg.ui
 HEADERS = plugin_interface.h \

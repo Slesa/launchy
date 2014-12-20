@@ -20,7 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // #include "precompiled.h"
 #include "runner.h"
 #include "gui.h"
-
+#include <QUrl>
+#include <QtPlugin>
 
 void RunnerPlugin::init()
 {
@@ -31,18 +32,18 @@ void RunnerPlugin::init()
 	{
 		set->beginWriteArray("runner/cmds");
 		set->setArrayIndex(0);
-		#ifdef Q_WS_WIN
+        #ifdef Q_OS_WIN
 		set->setValue("name", "cmd");
 		set->setValue("file", "C:\\Windows\\System32\\cmd.exe");
 		set->setValue("args", "/K $$");
 		#endif
-		#ifdef Q_WS_X11
+        #ifdef Q_OS_X11
 		set->setValue("name", "cmd");
 		set->setValue("file", "/usr/bin/xterm");
 		set->setValue("args", "-hold -e $$");
 		#endif
                 /*
-                #ifdef Q_WS_MAC
+                #ifdef Q_OS_MAC
                 set->setValue("name", "cmd");
                 set->setValue("file", "")
                 #endif
@@ -87,7 +88,7 @@ QString RunnerPlugin::getIcon()
 QString RunnerPlugin::getIcon(QString file)
 {
     file = file; // Warning removal
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	QRegExp rx("\\.(exe|lnk)$", Qt::CaseInsensitive);
     if (rx.indexIn(file) != -1)
 		return file;
@@ -122,7 +123,7 @@ void RunnerPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* resul
 
 void RunnerPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 {
-	item = item; // Compiler warning
+    Q_UNUSED(item) // Compiler warning
 
 	QString file = "";
 	QString args = "";
@@ -168,7 +169,7 @@ void RunnerPlugin::doDialog(QWidget* parent, QWidget** newDlg)
 	if (gui != NULL)
 		return;
 	gui.reset(new Gui(parent, *settings));
-	*newDlg = gui.get();
+    *newDlg = gui.data();
 }
 
 
@@ -236,4 +237,4 @@ int RunnerPlugin::msg(int msgId, void* wParam, void* lParam)
 	return handled;
 }
 
-Q_EXPORT_PLUGIN2(runner, RunnerPlugin) 
+// @@@ Q_EXPORT_PLUGIN(RunnerPlugin)

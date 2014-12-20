@@ -1,9 +1,10 @@
 TEMPLATE = lib
+QT += widgets
 CONFIG += plugin \
     release
 VPATH += ../../src/
 INCLUDEPATH += ../../src/
-PRECOMPILED_HEADER = precompiled.h
+win32:PRECOMPILED_HEADER = precompiled.h
 DEFINES += WITH_GUI
 
 # UI_DIR = ../../plugins/controly/

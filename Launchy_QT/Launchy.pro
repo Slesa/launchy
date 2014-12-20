@@ -1,10 +1,10 @@
 TEMPLATE = subdirs
 SUBDIRS =  \
-#			plugins/calcy \
+#          plugins/calcy \
 #          plugins/gcalc \
-#          plugins/runner \
-#          plugins/weby \
-#          plugins/verby \
+          plugins/runner \
+          plugins/weby \
+          plugins/verby \
           src
           
 win32 {

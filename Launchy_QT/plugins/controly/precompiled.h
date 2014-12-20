@@ -20,6 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef PRECOMPILED_H
 #define PRECOMPILED_H
 
+#ifdef Q_OS_WIN
+
 #ifdef _MSC_VER
 #pragma warning(push,3)
 #endif
@@ -42,5 +44,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <cpl.h>
 #endif
 
+#endif
 
 #endif // PRECOMPILED_H

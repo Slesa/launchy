@@ -1,9 +1,9 @@
 TEMPLATE = lib
-QT += network
+QT += network widgets
 CONFIG += plugin \
     debug_and_release
 VPATH += ../../src/
-PRECOMPILED_HEADER = precompiled.h
+win32:PRECOMPILED_HEADER = precompiled.h
 INCLUDEPATH += ../../src/
 INCLUDEPATH += c:/boost/
 INCLUDEPATH += ../../common
