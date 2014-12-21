@@ -16,12 +16,15 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+#include <QString>
 
-#include "precompiled.h"
+#ifdef Q_OS_WIN
+#include "winfiles.h"
+#endif
+
+#include "gui.h"
 #include "weby.h"
 #include "IconCache.h"
-#include "gui.h"
-
 
 int Suggest::currentId = 0;
 
@@ -318,7 +321,7 @@ QString GetShellDirectory(int type)
 {
 	wchar_t buffer[_MAX_PATH];
 	SHGetFolderPath(NULL, type, NULL, 0, buffer);
-	return QString::fromUtf16(buffer);
+    return QString::fromUtf16((const ushort*)buffer);
 }
 
 

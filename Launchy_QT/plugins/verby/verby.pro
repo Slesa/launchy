@@ -4,13 +4,13 @@ CONFIG += plugin \
     release
 VPATH += ../../src/
 INCLUDEPATH += ../../src/
-win32:PRECOMPILED_HEADER = precompiled.h
-UI_DIR = ../../plugins/Verby/
+# UI_DIR = ../../plugins/Verby/
 FORMS = dlg.ui
+
 HEADERS = plugin_interface.h \
+        winfiles.h \
     gui.h \
-    Verby.h \
-    precompiled.h
+    Verby.h
 SOURCES = plugin_interface.cpp \
     gui.cpp \
     Verby.cpp

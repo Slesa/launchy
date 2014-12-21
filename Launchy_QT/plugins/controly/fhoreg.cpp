@@ -1,6 +1,7 @@
 // Copyright 2009 Fabian Hofsaess
 
-#include "precompiled.h"
+#include <QString>
+#include "winfiles.h"
 #include "fhoreg.h"
 
 
@@ -10,7 +11,7 @@ HKEY FhoReg::OpenKey(HKEY baseKey, QString &subKeyName, DWORD options) {
 	HKEY k;
 	
 	LONG l = RegOpenKeyEx(baseKey,
-						  subKeyName.utf16(),
+                          (LPCWSTR)subKeyName.utf16(),
 						  0,
 						  options,
 						  &k);
@@ -52,7 +53,7 @@ QStringList* FhoReg::EnumValues(HKEY parentKey, QString &parentSubKeyName) {
 							 &size2);
 
 			if (l == ERROR_SUCCESS) {
-				QString name = QString::fromUtf16(valueName);
+                QString name = QString::fromUtf16((const ushort*)valueName);
 				QString data = QString::fromUtf16((const ushort*) valueData);
 
 				resultList->append(data);
@@ -87,7 +88,7 @@ QStringList* FhoReg::EnumSubKeys(HKEY key) {
 							 NULL);
 
 			if (l == ERROR_SUCCESS) {
-				QString subKeyName = QString::fromUtf16(keyName);
+                QString subKeyName = QString::fromUtf16((const ushort*)keyName);
 
 				resultList->append(subKeyName);
 			}
@@ -121,7 +122,7 @@ QString FhoReg::GetKeyValue(HKEY key, QString &valueName) {
 	DWORD sz = maxSize;
 
 	LONG l = RegQueryValueEx(key,
-							 (!valueName.isEmpty()) ? valueName.utf16() : NULL,
+                             (!valueName.isEmpty()) ? (LPCWSTR)valueName.utf16() : NULL,
 							 NULL,
 							 &type,
 							 keyVal,

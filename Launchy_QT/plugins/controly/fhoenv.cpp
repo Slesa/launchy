@@ -1,6 +1,6 @@
 // Copyright 2009 Fabian Hofsaess
-
-#include "precompiled.h"
+#include <QString>
+#include "winfiles.h"
 #include "fhoenv.h"
 
 // Launchy already implements expandEnvironmentVars but it's difficult to reuse in plugins

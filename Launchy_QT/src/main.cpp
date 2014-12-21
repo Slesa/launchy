@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 
-#include "precompiled.h"
 #include <QWidget>
 #include <QScrollBar>
 #include <QDesktopWidget>
@@ -48,7 +47,7 @@ void SetForegroundWindowEx(HWND hWnd)
 
 	AttachThreadInput(foreGroundID, currentID, TRUE);
 	// Do our stuff here 
-	HWND lastActivePopupWnd = GetLastActivePopup(hWnd);
+    HWND lastActivePopupWnd = GetLastActivePopup(hWnd);
 	SetForegroundWindow(lastActivePopupWnd);
 
 	// Detach the attached thread
@@ -1489,7 +1488,8 @@ void LaunchyWidget::showOptionsDialog()
 #ifdef Q_OS_WIN
 		// need to use this method in Windows to ensure that keyboard focus is set when 
 		// being activated via a message from another instance of Launchy
-		SetForegroundWindowEx(options.winId());
+        HWND hwnd = getHwnd(this);
+        SetForegroundWindowEx(hwnd);
 #endif
 		options.exec();
 
@@ -1552,7 +1552,8 @@ void LaunchyWidget::showLaunchy(bool noFade)
 #ifdef Q_OS_WIN
 	// need to use this method in Windows to ensure that keyboard focus is set when 
 	// being activated via a hook or message from another instance of Launchy
-	SetForegroundWindowEx(winId());
+    HWND hwnd = getHwnd(this);
+    SetForegroundWindowEx(hwnd);
 #elif defined(Q_OS_X11)
 	/* Fix for bug 2994680: Not sure why this is necessary, perhaps someone with more
 	   Qt experience can tell, but doing these two calls will force the window to actually

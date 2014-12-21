@@ -1,23 +1,25 @@
 TEMPLATE = lib
 QT += widgets
+win32:QT += winextras
 CONFIG += plugin \
     release
 VPATH += ../../src/
 INCLUDEPATH += ../../src/
-win32:PRECOMPILED_HEADER = precompiled.h
 DEFINES += WITH_GUI
 
 # UI_DIR = ../../plugins/controly/
 FORMS = dlg.ui
+
 HEADERS = plugin_interface.h \
+        winfiles.h \
     controly.h \
     gui.h \
     ControlPanelItemFinder.h \
 	fhoicon.h \
 	fhoenv.h \
 	fhoreg.h \
-	fhores.h \
-    precompiled.h
+        fhores.h
+
 SOURCES = plugin_interface.cpp \
     controly.cpp \
     gui.cpp \
@@ -26,7 +28,9 @@ SOURCES = plugin_interface.cpp \
 	fhoenv.cpp \
 	fhoreg.cpp \
 	fhores.cpp
+
 TARGET = controly
+
 win32 { 
     CONFIG -= embed_manifest_dll
 	LIBS += shell32.lib

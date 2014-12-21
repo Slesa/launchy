@@ -3,24 +3,26 @@ QT += network widgets
 CONFIG += plugin \
     debug_and_release
 VPATH += ../../src/
-win32:PRECOMPILED_HEADER = precompiled.h
 INCLUDEPATH += ../../src/
 INCLUDEPATH += c:/boost/
 INCLUDEPATH += ../../common
-UI_DIR = ../../plugins/weby/
+# UI_DIR = ../../plugins/weby/
 FORMS = dlg.ui
+
 HEADERS = plugin_interface.h \
+        winfiles.h \
     weby.h \
     gui.h \
     globals.h \
     ../../common/DropTableWidget.h \
-    precompiled.h \
     IconCache.h
+
 SOURCES = plugin_interface.cpp \
     weby.cpp \
     gui.cpp \
     ../../common/DropTableWidget.cpp \
     IconCache.cpp
+
 TARGET = weby
 win32 { 
     CONFIG -= embed_manifest_dll

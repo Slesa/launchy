@@ -3,6 +3,8 @@
 #ifndef FHOICON_H
 #define FHOICON_H
 
+#include <QString>
+#include "winfiles.h"
 
 // implement icon/image cache?
 // extracts / generates icons (images, as pixmap objects) from file resources, image files, files and handles
@@ -12,8 +14,8 @@ class FhoIcon {
 		static QImage getDefaultIconFromLibrary(HINSTANCE hLib);
 		static QImage getDefaultIcon();
 
-		static QImage getIconForFile(LPCTSTR file, UINT basicFlags);
-		static QImage getIconForFile(LPCTSTR file, UINT basicFlags, DWORD basicAttributes);
+        static QImage getIconForFile(const ushort* file, UINT basicFlags);
+        static QImage getIconForFile(const ushort* file, UINT basicFlags, DWORD basicAttributes);
 
 	public:
 		static QImage getIconFromHandle(HICON hIcon);
@@ -30,8 +32,8 @@ class FhoIcon {
 		static QString getImageIdForFile(QString fileName);
 		static QString getImageIdForFile(LPITEMIDLIST pidl);
 		static QString getImageIdForFile(IShellFolder *psfParentItem, LPITEMIDLIST pidlChildItem);
-		static QString getImageIdForFile(LPCTSTR file, UINT basicFlags);
-		static QString getImageIdForFile(LPCTSTR file, UINT basicFlags, DWORD basicAttributes);
+        static QString getImageIdForFile(const ushort* file, UINT basicFlags);
+        static QString getImageIdForFile(const ushort* file, UINT basicFlags, DWORD basicAttributes);
 };
 
 // returns file names pointing to icons (image files), creating these image files from file resources or handles if necessary

@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifndef controly_H
 #define controly_H
-
+#include <QString>
+#include "winfiles.h"
 #include "plugin_interface.h"
 #include "gui.h"
 #include "fhoicon.h"

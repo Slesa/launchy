@@ -17,8 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-
-#include "precompiled.h"
+#include <QString>
+#include "winfiles.h"
 #include "main.h"
 #include "platform_win.h"
 #include "WinIconProvider.h"
@@ -36,10 +36,11 @@ public:
 		commandMessageId = RegisterWindowMessage(_T("LaunchyCommand"));
 	}
 
-	virtual bool winEvent(MSG* msg, long* result)
-	{
-		switch (msg->message)
-		{
+    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result)
+    {
+        MSG* msg = (MSG*) message;
+        switch (msg->message)
+        {
 		case WM_SETTINGCHANGE:
 			// Refresh Launchy's environment on settings changes
 			if (msg->lParam && _tcscmp((TCHAR*)msg->lParam, _T("Environment")) == 0)
@@ -63,12 +64,12 @@ public:
 		default:
 			if (msg->message == commandMessageId)
 			{
-				// A Launchy startup command
+                // A Launchy startup command
 				executeStartupCommand(msg->wParam);
 			}
 			break;
 		}
-		return LaunchyWidget::winEvent(msg, result);
+        return LaunchyWidget::nativeEvent(eventType, msg, result);
 	}
 
 private:
@@ -218,7 +219,7 @@ bool PlatformWin::getComputers(QStringList& computers) const
 	{
 		foreach(QString domain, domains)
 		{
-			EnumerateNetworkServers(computers, SV_TYPE_WORKSTATION | SV_TYPE_SERVER, domain.utf16());
+            EnumerateNetworkServers(computers, SV_TYPE_WORKSTATION | SV_TYPE_SERVER, (const wchar_t*)domain.utf16());
 		}
 
 		// If names have been retrieved from more than one domain, they'll need sorting

@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef __WINICONPROVIDER_H
 #define __WINICONPROVIDER_H
 
+#include <QFileIconProvider>
 
 class WinIconProvider : QFileIconProvider
 {

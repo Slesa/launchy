@@ -6,17 +6,16 @@ VPATH += ../../src
 INCLUDEPATH += ../../src
 INCLUDEPATH += ../../common
 INCLUDEPATH += c:/boost/
-win32:PRECOMPILED_HEADER = precompiled.h
-UI_DIR = ../../plugins/runner/
+# UI_DIR = ../../plugins/runner/
 FORMS = dlg.ui
 HEADERS = plugin_interface.h \
+        winfiles.h \
     runner.h \
     gui.h \
     globals.h \
     ../../common/FileBrowserDelegate.h \
     ../../common/FileBrowser.h \
-    ../../common/DropTableWidget.h \
-    precompiled.h
+    ../../common/DropTableWidget.h
 SOURCES = plugin_interface.cpp \
     runner.cpp \
     gui.cpp \
