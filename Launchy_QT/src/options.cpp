@@ -63,7 +63,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
 	genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
 	genShowNetwork->setChecked(gSettings->value("GenOps/showNetwork", true).toBool());
-        genCondensed->setCurrentIndex(gSettings->value("GenOps/condensedView", 2).toInt());
+    genCondensed->setCurrentIndex(gSettings->value("GenOps/condensedView", 2).toInt());
 	genAutoSuggestDelay->setValue(gSettings->value("GenOps/autoSuggestDelay", 1000).toInt());
 	int updateInterval = gSettings->value("GenOps/updatetimer", 10).toInt();
 	connect(genUpdateCatalog, SIGNAL(stateChanged(int)), this, SLOT(autoUpdateCheckChanged(int)));
@@ -262,10 +262,16 @@ void OptionsDialog::setVisible(bool visible)
 	if (visible)
 	{
 		connect(skinList, SIGNAL(currentTextChanged(const QString)), this, SLOT(skinChanged(const QString)));
-		skinChanged(skinList->currentItem()->text());
+        signalSkinChanged();
 	}
 }
 
+void OptionsDialog::signalSkinChanged()
+{
+    if(skinList->currentItem()!=NULL){
+        skinChanged(skinList->currentItem()->text());
+    }
+}
 
 void OptionsDialog::accept()
 {
@@ -333,13 +339,15 @@ void OptionsDialog::accept()
 
 	// Apply Skin Options
 	QString prevSkinName = gSettings->value("GenOps/skin", "Default").toString();
-	QString skinName = skinList->currentItem()->text();
-	if (skinList->currentRow() >= 0 && skinName != prevSkinName)
-	{
-		gSettings->setValue("GenOps/skin", skinName);
-		gMainWidget->setSkin(skinName);
-		show = false;
-	}
+    if(skinList->currentItem()!=NULL) {
+        QString skinName = skinList->currentItem()->text();
+        if (skinList->currentRow() >= 0 && skinName != prevSkinName)
+        {
+            gSettings->setValue("GenOps/skin", skinName);
+            gMainWidget->setSkin(skinName);
+            show = false;
+        }
+    }
 
 	if (needRescan)
 		gMainWidget->buildCatalog();
@@ -367,7 +375,7 @@ void OptionsDialog::tabChanged(int tab)
 	// Redraw the current skin (necessary because of dialog resizing issues)
 	if (tabWidget->currentWidget()->objectName() == "Skins")
 	{
-		skinChanged(skinList->currentItem()->text());
+        signalSkinChanged();
 	}
 	else if (tabWidget->currentWidget()->objectName() == "Plugins")
 	{
