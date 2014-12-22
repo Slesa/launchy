@@ -215,10 +215,7 @@ private:
 
         static bool convertKeySequence(const QKeySequence& ks, UINT* mod_, UINT* key_)
         {
-            /* @@@
-                int code = ks;
-                */
-            int code = 0;
+            int code = ks[0];
 
 				// JK: I had to put the code -='s here and comment out code &= 0xffff 
 				// to correctly identify the action key
