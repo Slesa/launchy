@@ -41,7 +41,7 @@ void UpdateEnvironment()
 	wchar_t* currentEnvironment = GetEnvironmentStrings();
 	for (TCHAR* p = currentEnvironment; *p != 0;)
 	{
-        QString variable = QString::fromUtf16((const ushort*)p);
+        QString variable = QString::fromWCharArray(p);
 		QString name = variable.section("=", 0, 0);
 		// Ignore entries for drive current directory entries that have no name
 		if (name.size() > 0)
@@ -79,7 +79,7 @@ QString GetShellDirectory(int type)
 {
 	wchar_t buffer[_MAX_PATH];
 	SHGetFolderPath(NULL, type, NULL, 0, buffer);
-    return QString::fromUtf16((const ushort*)buffer);
+    return QString::fromWCharArray(buffer);
 }
 
 

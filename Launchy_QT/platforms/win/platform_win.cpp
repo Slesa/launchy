@@ -160,7 +160,7 @@ QList<Directory> PlatformWin::getDefaultCatalogDirectories()
 }
 
 
-QString PlatformWin::expandEnvironmentVars(QString txt) 
+QString PlatformWin::expandEnvironmentVars(QString txt)
 {
 	QString result;
 
@@ -168,8 +168,8 @@ QString PlatformWin::expandEnvironmentVars(QString txt)
 	if (size > 0)
 	{
 		TCHAR* buffer = new TCHAR[size];
-		ExpandEnvironmentStrings((LPCWSTR)txt.utf16(), buffer, size);
-		result = QString::fromUtf16((const ushort*)buffer);
+        ExpandEnvironmentStrings((LPCWSTR)txt.utf16(), buffer, size);
+        result = QString::fromWCharArray(buffer);
 		delete[] buffer;
 	}
 

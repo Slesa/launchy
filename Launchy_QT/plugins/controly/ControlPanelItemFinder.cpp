@@ -73,7 +73,7 @@ void ControlPanelItemFinder::addSystem32CplControlPanelItems() {
 	if (GetSystemDirectory(sysDirBuffer, DEFAULT_BUFFER_SIZE)) {
 		// GetSystemDirectory() function is provided primarily for compatibility, it is recommended to use SHGetFolderPath()!
 
-        QString sysDirPath = QString::fromUtf16((const ushort*)sysDirBuffer);
+        QString sysDirPath = QString::fromWCharArray(sysDirBuffer);
 		QDir sysDir(sysDirPath);
 
 		QFileInfoList cplFiles = sysDir.entryInfoList(QStringList("*.cpl"), QDir::Files, QDir::Unsorted);
@@ -248,7 +248,7 @@ void ControlPanelItemFinder::addCplControlPanelItem(QFileInfo *pCplFileInfo) {
 								}
 							}
 							if (name.isEmpty()) {
-                                name = QString::fromUtf16((const ushort*)cplNewInfo.NewCplInfoW.szName);
+                                name = QString::fromWCharArray(cplNewInfo.NewCplInfoW.szName);
 							}
 
 						} else if (cplNewInfo.NewCplInfoA.dwSize == sizeof(NEWCPLINFOA)) {
@@ -523,7 +523,7 @@ void ControlPanelItemFinder::addShellInfoItem(LPITEMIDLIST pidlItems, IShellFold
 		hres = StrRetToBuf(&strDispName, pidlItems, pszDisplayName, MAX_PATH);
 		if (hres == S_OK) {
 			QString cplDesc; // name
-            cplDesc = QString::fromUtf16((const ushort*)pszDisplayName);
+            cplDesc = QString::fromWCharArray(pszDisplayName);
 
 			bool itemAdded = false;			
 
@@ -534,7 +534,7 @@ void ControlPanelItemFinder::addShellInfoItem(LPITEMIDLIST pidlItems, IShellFold
 				if (hres == S_OK) {
 
 					QString cplPath; // launch command
-                    cplPath = QString::fromUtf16((const ushort*)pszDisplayName);
+                    cplPath = QString::fromWCharArray(pszDisplayName);
 
 					QString cacheId = cplDesc + "-" + cplPath; // use all info, because e.g. Mouse and Keyboard both have the path 'c:\windows\system32\main.cpl'!
 
@@ -583,7 +583,7 @@ void ControlPanelItemFinder::addShellInfoItem(LPITEMIDLIST pidlItems, IShellFold
 
 								// we can just use the parse name as the launch command, see above
 								if (hres == S_OK) {
-                                    cplPath = QString::fromUtf16((const ushort*)pszDisplayName); // launch command (e.g. full path!?)
+                                    cplPath = QString::fromWCharArray(pszDisplayName); // launch command (e.g. full path!?)
 
 									cacheId = cplDesc + "-" + cplPath;
 
@@ -692,7 +692,7 @@ void ControlPanelItemFinder::addControlPanel() {
 				SHFILEINFO cplFileInfo;
 				memset(&cplFileInfo, 0, sizeof(SHFILEINFO));
 				if (SHGetFileInfo((LPCTSTR)pidlCpl, 0, &cplFileInfo, sizeof(SHFILEINFO), SHGFI_PIDL | SHGFI_DISPLAYNAME)) {
-                    cplDesc = QString::fromUtf16((const ushort*)cplFileInfo.szDisplayName);
+                    cplDesc = QString::fromWCharArray(cplFileInfo.szDisplayName);
 
 				} else {
 					// similar to addShellInfoItem, fallback may not be necessary!?
@@ -704,7 +704,7 @@ void ControlPanelItemFinder::addControlPanel() {
 					TCHAR pszDisplayName[MAX_PATH];
 					hres = StrRetToBuf(&strDispName, pidlCpl, pszDisplayName, MAX_PATH);
 					if (hres == S_OK) {
-                        cplDesc = QString::fromUtf16((const ushort*)pszDisplayName);
+                        cplDesc = QString::fromWCharArray(pszDisplayName);
 					}
 				}
 

@@ -12,7 +12,7 @@ QString FhoEnv::expand(QString txt) {
 	{
 		TCHAR* buffer = new TCHAR[size];
 		ExpandEnvironmentStrings((LPCWSTR)txt.utf16(), buffer, size);
-		result = QString::fromUtf16((const ushort*)buffer);
+        result = QString::fromWCharArray(buffer);
 		delete[] buffer;
 	}
 

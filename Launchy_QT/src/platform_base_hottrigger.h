@@ -60,7 +60,6 @@ private:
          * Platform-specific helper
          */
         class Impl;
-        /* @@@ shared_ptr<Impl> d; */
         QSharedPointer<Impl> d;
 };
 
