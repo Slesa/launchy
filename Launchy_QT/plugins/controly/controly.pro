@@ -2,7 +2,7 @@ TEMPLATE = lib
 QT += widgets
 win32:QT += winextras
 CONFIG += plugin \
-    release
+    debug_and_release
 VPATH += ../../src/
 INCLUDEPATH += ../../src/
 DEFINES += WITH_GUI

@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 class controlyPlugin : public QObject, public PluginInterface
 {
 	Q_OBJECT
+    Q_PLUGIN_METADATA(IID "org.launchy.ControlyPluginInterface")
 	Q_INTERFACES(PluginInterface)
 
 private:

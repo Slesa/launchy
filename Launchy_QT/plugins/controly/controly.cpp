@@ -323,5 +323,3 @@ int controlyPlugin::msg(int msgId, void* wParam, void* lParam)
 		
 	return handled;
 }
-
-// @@@ Q_EXPORT_PLUGIN2(controly, controlyPlugin)
