@@ -1,2 +1,10 @@
+launchy.sdf
+launchy.opensdf
 bin/
 *.user
+[d|D]ebug
+[r|R]elease
+ui_*.h
+*.filters
+build/
+*.suo
