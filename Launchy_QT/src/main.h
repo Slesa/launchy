@@ -54,7 +54,9 @@ enum CommandFlag
 Q_DECLARE_FLAGS(CommandFlags, CommandFlag)
 Q_DECLARE_OPERATORS_FOR_FLAGS(CommandFlags)
 
+#ifdef Q_OS_WIN
 HWND getHwnd(const QWidget* widget);
+#endif
 
 class LaunchyWidget : public QWidget
 {
