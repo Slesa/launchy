@@ -81,7 +81,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\$(ProjectName).obj\$(Platform)\$(Configuration)</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\$(ProjectName).obj\$(Platform)\$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">controly</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">controly</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
@@ -89,18 +89,18 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)bin\$(ProjectName).obj\$(Platform)\$(Configuration)</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)bin\$(ProjectName).obj\$(Platform)\$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">controly</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">controly</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IntDir>$(SolutionDir)bin\$(ProjectName).obj\$(Platform)\$(Configuration)</IntDir>
+    <IntDir>$(SolutionDir)bin\$(ProjectName).obj\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IntDir>$(SolutionDir)bin\$(ProjectName).obj\$(Platform)\$(Configuration)</IntDir>
+    <IntDir>$(SolutionDir)bin\$(ProjectName).obj\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
