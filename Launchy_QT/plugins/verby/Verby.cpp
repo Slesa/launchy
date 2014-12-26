@@ -16,11 +16,15 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-
-#include "precompiled.h"
+#include <QString>
+#include "winfiles.h"
 #include "Verby.h"
 #include "gui.h"
-
+#include <QFontInfo>
+#include <QFileInfo>
+#include <QDebug>
+#include <QClipboard>
+#include <QDir>
 
 void VerbyPlugin::init()
 {
@@ -166,7 +170,7 @@ void VerbyPlugin::getResults(QList<InputData>* inputData, QList<CatItem>* result
 
 int VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 {
-	item = item; // Compiler Warning
+    Q_UNUSED(item) // Compiler Warning
 
 	if (inputData->count() != 2)
 	{
@@ -191,7 +195,7 @@ int VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 			info.setFile(info.symLinkTarget());
 		}
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 		runProgram("explorer.exe", "\"" + QDir::toNativeSeparators(info.absolutePath()) + "\"");
 #endif
 	}
@@ -199,13 +203,13 @@ int VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 	{
 		QFileInfo info(noun);
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 		runProgram("explorer.exe", "\"" + QDir::toNativeSeparators(info.absolutePath()) + "\"");
 #endif
 	}
 	else if (verb == "Run as")
 	{
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 		SHELLEXECUTEINFO shellExecInfo;
 
 		shellExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -228,7 +232,7 @@ int VerbyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 	}
 	else if (verb == "File properties")
 	{
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 		SHELLEXECUTEINFO shellExecInfo;
 
 		shellExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
@@ -339,5 +343,3 @@ int VerbyPlugin::msg(int msgId, void* wParam, void* lParam)
 	return handled;
 }
 
-
-Q_EXPORT_PLUGIN2(Verby, VerbyPlugin)

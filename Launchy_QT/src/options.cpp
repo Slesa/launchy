@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 
-#include "precompiled.h"
+#include <QMessageBox>
 #include "options.h"
 #include "main.h"
 #include "globals.h"
@@ -42,7 +42,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	restoreGeometry(windowGeometry);
 	tabWidget->setCurrentIndex(currentTab);
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	about_homepage->setText(about_homepage->text() + \
 		"<p><br>If you would like to uninstall Launchy, please close Launchy and run \"Uninstall Launchy\" from the start menu.</br></p>");
 #endif
@@ -63,7 +63,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genUpdateCheck->setChecked(gSettings->value("GenOps/updatecheck", true).toBool());
 	genShowHidden->setChecked(gSettings->value("GenOps/showHiddenFiles", false).toBool());
 	genShowNetwork->setChecked(gSettings->value("GenOps/showNetwork", true).toBool());
-        genCondensed->setCurrentIndex(gSettings->value("GenOps/condensedView", 2).toInt());
+    genCondensed->setCurrentIndex(gSettings->value("GenOps/condensedView", 2).toInt());
 	genAutoSuggestDelay->setValue(gSettings->value("GenOps/autoSuggestDelay", 1000).toInt());
 	int updateInterval = gSettings->value("GenOps/updatetimer", 10).toInt();
 	connect(genUpdateCatalog, SIGNAL(stateChanged(int)), this, SLOT(autoUpdateCheckChanged(int)));
@@ -77,7 +77,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	genFadeOut->setValue(gSettings->value("GenOps/fadeout", 20).toInt());
 	connect(genOpaqueness, SIGNAL(sliderMoved(int)), gMainWidget, SLOT(setOpaqueness(int)));
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 	metaKeys << tr("") << tr("Alt") << tr("Command") << tr("Shift") << tr("Control") <<
 				tr("Command+Alt") << tr("Command+Shift") << tr("Command+Control");
 #else
@@ -262,10 +262,16 @@ void OptionsDialog::setVisible(bool visible)
 	if (visible)
 	{
 		connect(skinList, SIGNAL(currentTextChanged(const QString)), this, SLOT(skinChanged(const QString)));
-		skinChanged(skinList->currentItem()->text());
+        signalSkinChanged();
 	}
 }
 
+void OptionsDialog::signalSkinChanged()
+{
+    if(skinList->currentItem()!=NULL){
+        skinChanged(skinList->currentItem()->text());
+    }
+}
 
 void OptionsDialog::accept()
 {
@@ -333,13 +339,15 @@ void OptionsDialog::accept()
 
 	// Apply Skin Options
 	QString prevSkinName = gSettings->value("GenOps/skin", "Default").toString();
-	QString skinName = skinList->currentItem()->text();
-	if (skinList->currentRow() >= 0 && skinName != prevSkinName)
-	{
-		gSettings->setValue("GenOps/skin", skinName);
-		gMainWidget->setSkin(skinName);
-		show = false;
-	}
+    if(skinList->currentItem()!=NULL) {
+        QString skinName = skinList->currentItem()->text();
+        if (skinList->currentRow() >= 0 && skinName != prevSkinName)
+        {
+            gSettings->setValue("GenOps/skin", skinName);
+            gMainWidget->setSkin(skinName);
+            show = false;
+        }
+    }
 
 	if (needRescan)
 		gMainWidget->buildCatalog();
@@ -363,11 +371,11 @@ void OptionsDialog::reject()
 
 void OptionsDialog::tabChanged(int tab)
 {
-	tab = tab; // Compiler warning
+    Q_UNUSED(tab) // Compiler warning
 	// Redraw the current skin (necessary because of dialog resizing issues)
 	if (tabWidget->currentWidget()->objectName() == "Skins")
 	{
-		skinChanged(skinList->currentItem()->text());
+        signalSkinChanged();
 	}
 	else if (tabWidget->currentWidget()->objectName() == "Plugins")
 	{
@@ -567,7 +575,7 @@ void OptionsDialog::catalogBuilt()
 
 void OptionsDialog::catRescanClicked(bool val)
 {
-	val = val; // Compiler warning
+    Q_UNUSED(val) // Compiler warning
 
 	// Apply Directory Options
 	SettingsManager::writeCatalogDirectories(memDirs);
@@ -580,7 +588,7 @@ void OptionsDialog::catRescanClicked(bool val)
 
 void OptionsDialog::catTypesDirChanged(int state)
 {
-	state = state; // Compiler warning
+    Q_UNUSED(state) // Compiler warning
 	int row = catDirectories->currentRow();
 	if (row == -1)
 		return;
@@ -592,7 +600,7 @@ void OptionsDialog::catTypesDirChanged(int state)
 
 void OptionsDialog::catTypesExeChanged(int state)
 {
-	state = state; // Compiler warning
+    Q_UNUSED(state) // Compiler warning
 	int row = catDirectories->currentRow();
 	if (row == -1)
 		return;
@@ -662,7 +670,7 @@ void OptionsDialog::dirRowChanged(int row)
 
 void OptionsDialog::catDirMinusClicked(bool c)
 {
-	c = c; // Compiler warning
+    Q_UNUSED(c) // Compiler warning
 	int dirRow = catDirectories->currentRow();
 
 	delete catDirectories->takeItem(dirRow);
@@ -680,7 +688,7 @@ void OptionsDialog::catDirMinusClicked(bool c)
 
 void OptionsDialog::catDirPlusClicked(bool c)
 {
-	c = c; // Compiler warning
+    Q_UNUSED(c) // Compiler warning
 	addDirectory("", true);
 }
 
@@ -723,7 +731,7 @@ void OptionsDialog::catTypesItemChanged(QListWidgetItem* item)
 
 void OptionsDialog::catTypesPlusClicked(bool c)
 {
-	c = c; // Compiler warning
+    Q_UNUSED(c) // Compiler warning
 	int row = catDirectories->currentRow();
 	if (row == -1)
 		return;
@@ -740,7 +748,7 @@ void OptionsDialog::catTypesPlusClicked(bool c)
 
 void OptionsDialog::catTypesMinusClicked(bool c)
 {
-	c = c; // Compiler warning
+    Q_UNUSED(c) // Compiler warning
 	int dirRow = catDirectories->currentRow();
 	if (dirRow == -1)
 		return;

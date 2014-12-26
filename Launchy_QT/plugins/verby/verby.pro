@@ -1,18 +1,20 @@
 TEMPLATE = lib
+QT += widgets
 CONFIG += plugin \
-    release
+    debug_and_release
 VPATH += ../../src/
 INCLUDEPATH += ../../src/
-PRECOMPILED_HEADER = precompiled.h
-UI_DIR = ../../plugins/Verby/
 FORMS = dlg.ui
+
 HEADERS = plugin_interface.h \
+        winfiles.h \
     gui.h \
-    Verby.h \
-    precompiled.h
+    Verby.h
+
 SOURCES = plugin_interface.cpp \
     gui.cpp \
     Verby.cpp
+
 TARGET = verby
 win32 { 
     CONFIG -= embed_manifest_dll

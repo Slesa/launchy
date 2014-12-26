@@ -37,19 +37,46 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-
-#include "precompiled.h"
+#include <QWidget>
+#include "winfiles.h"
 #include "platform_base_hotkey.h"
 #include "platform_Base_hottrigger.h"
-
+#include <qpa/qplatformnativeinterface.h>
 
 HHOOK keyboardHook;
 HWND widgetWinId;
 UINT mod, key;
 
+static QWindow* windowForWidget(const QWidget* widget)
+{
+    QWindow* window = widget->windowHandle();
+    if (window)
+        return window;
+    const QWidget* nativeParent = widget->nativeParentWidget();
+    if (nativeParent)
+        return nativeParent->windowHandle();
+    return 0;
+}
+
+HWND getHwnd(const QWidget* widget)
+{
+    QWindow* window = windowForWidget(widget);
+    if (window && window->handle())
+    {
+
+        QPlatformNativeInterface* pi = QGuiApplication::platformNativeInterface();
+
+
+        void* res = pi->nativeResourceForWindow(QByteArrayLiteral("handle"), window);
+        return static_cast<HWND>(res);
+    }
+    return 0;
+}
 
 HINSTANCE GetHInstance()
-{    
+{
+
+
     MEMORY_BASIC_INFORMATION mbi;
     TCHAR szModule[MAX_PATH];
 
@@ -84,7 +111,7 @@ LRESULT CALLBACK KeyboardHookProc(INT nCode, WPARAM wParam, LPARAM lParam)
 					(((mod & MOD_WIN) != 0) == (GetAsyncKeyState(VK_RWIN) >> ((sizeof(SHORT) * 8) - 1)))
 					)
 				{
-					PostMessage(widgetWinId, WM_USER, 0, 0);
+                    PostMessage(widgetWinId, WM_USER, 0, 0);
 					return 1;
 				}
 			}
@@ -107,7 +134,7 @@ public:
                 , id_(0)
 				, connected(false)
         {
-			widgetWinId = winId();
+            widgetWinId = getHwnd(this);
 
 			if (convertKeySequence(ks, &mod, &key))
 			{
@@ -132,7 +159,7 @@ public:
 						connected = true;
 					break;
 				default:
-					if (RegisterHotKey(winId(), nextId, mod, key))
+                    if (RegisterHotKey(widgetWinId, nextId, mod, key))
 					{
 						id_ = nextId++;
 						connected = true;
@@ -147,7 +174,6 @@ public:
          */
         ~Impl()
         {
-			widgetWinId = NULL;
 			if (keyboardHook)
 			{
 				UnhookWindowsHookEx(keyboardHook);
@@ -155,21 +181,23 @@ public:
 				connected = false;
 			}
 			else if (id_) {
-				UnregisterHotKey(winId(), id_);
+                UnregisterHotKey(widgetWinId, id_);
 				connected = false;
 			}
+            widgetWinId = NULL;
         }
 
         /**
          * Triggers activated() signal when the hotkey is activated.
          */
-        bool winEvent(MSG* m, long* result)
+        bool winEvent(const QByteArray& eventType, void* msg, long* result)
 		{
+            MSG* m = (MSG*) msg;
 			if ((m->message == WM_HOTKEY && m->wParam == id_) || m->message == WM_USER) {
 				emit trigger_->activated();
 				return true;
 			}
-			return QWidget::winEvent(m, result);
+            return QWidget::nativeEvent(eventType, msg, result);
 		}
 
 private:
@@ -187,7 +215,7 @@ private:
 
         static bool convertKeySequence(const QKeySequence& ks, UINT* mod_, UINT* key_)
         {
-                int code = ks;
+            int code = ks[0];
 
 				// JK: I had to put the code -='s here and comment out code &= 0xffff 
 				// to correctly identify the action key

@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 
-#include "precompiled.h"
 #include "FileSearch.h"
 #include "main.h"
 #include "globals.h"
@@ -34,7 +33,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 	if (searchPath.startsWith("~"))
 		searchPath.replace("~", QDir::homePath());
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	if (searchPath == "/")
 	{
 		// Special case for Windows: list available drives
@@ -46,7 +45,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 			QString volumeName;
 			WCHAR volName[MAX_PATH];
 			if (GetVolumeInformation((WCHAR*)info.filePath().utf16(), volName, MAX_PATH, NULL, NULL, NULL, NULL, 0))
-				volumeName = QString::fromUtf16((const ushort*)volName);
+                volumeName = QString::fromWCharArray(volName);
 			else
 				volumeName = QDir::toNativeSeparators(info.filePath());
 			CatItem item(QDir::toNativeSeparators(info.filePath()), volumeName);
@@ -70,7 +69,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 	QStringList itemList;
 	QDir dir(directoryPart);
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
         // This is a windows network search
 	if (searchPath.startsWith("//"))
 	{
@@ -98,7 +97,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 
 		// We have a directory, get a list of files and directories within the directory
 		QDir::Filters filters = QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot;
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 		filters |= QDir::CaseSensitive;
 #else
 		filePart = filePart.toLower();

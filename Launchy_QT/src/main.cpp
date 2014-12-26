@@ -18,10 +18,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 
-#include "precompiled.h"
-
-#ifdef Q_WS_MAC
-#include <QMacStyle>
+#include <QWidget>
+#include <QScrollBar>
+#include <QDesktopWidget>
+#include <QMenu>
+#include <QMessageBox>
+#include <QNetworkRequest>
+#include <QNetworkProxy>
+#include <QDesktopServices>
+#ifdef Q_OS_MAC
+//#include <QMacStyle>
 #endif
 #include "icon_delegate.h"
 #include "main.h"
@@ -31,7 +37,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "FileSearch.h"
 
 
-#ifdef Q_WS_WIN
+
+#ifdef Q_OS_WIN
 void SetForegroundWindowEx(HWND hWnd)
 {
 	// Attach foreground window thread to our thread
@@ -40,7 +47,7 @@ void SetForegroundWindowEx(HWND hWnd)
 
 	AttachThreadInput(foreGroundID, currentID, TRUE);
 	// Do our stuff here 
-	HWND lastActivePopupWnd = GetLastActivePopup(hWnd);
+    HWND lastActivePopupWnd = GetLastActivePopup(hWnd);
 	SetForegroundWindow(lastActivePopupWnd);
 
 	// Detach the attached thread
@@ -50,13 +57,13 @@ void SetForegroundWindowEx(HWND hWnd)
 
 
 LaunchyWidget::LaunchyWidget(CommandFlags command) :
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
 #endif
-#ifdef Q_WS_X11
+#ifdef Q_OS_X11
 	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
 #endif
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 	QWidget(NULL, Qt::FramelessWindowHint),
 #endif
 
@@ -69,10 +76,10 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 {
 	setObjectName("launchy");
 	setWindowTitle(tr("Launchy"));
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	setWindowIcon(QIcon(":/resources/launchy128.png"));
 #endif
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 	setWindowIcon(QIcon("../Resources/launchy_icon_mac.icns"));
 	//setAttribute(Qt::WA_MacAlwaysShowToolWindow);
 #endif
@@ -117,8 +124,8 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	output->setAlignment(Qt::AlignHCenter);
 
 	input = new CharLineEdit(this);
-#ifdef Q_WS_MAC
-	QMacStyle::setFocusRectPolicy(input, QMacStyle::FocusDisabled);
+#ifdef Q_OS_MAC
+//	QMacStyle::setFocusRectPolicy(input, QMacStyle::FocusDisabled);
 #endif
 	input->setObjectName("input");
 	connect(input, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(inputKeyPressEvent(QKeyEvent*)));
@@ -428,7 +435,7 @@ void LaunchyWidget::showAlternatives()
 
 	alternatives->show();
 	alternatives->setFocus();
-	qApp->syncX();
+    qApp->sync();
 }
 
 
@@ -483,7 +490,7 @@ void LaunchyWidget::launchItem(CatItem& item)
 				args += inputData[i].getText() + " ";
 
 /* UPDATE
-#ifdef Q_WS_X11
+#ifdef Q_OS_X11
 		if (!platform->Execute(item.fullPath, args))
 			runProgram(item.fullPath, args);
 #else
@@ -833,7 +840,7 @@ void LaunchyWidget::doEnter()
 
 void LaunchyWidget::inputMethodEvent(QInputMethodEvent* event)
 {
-	event = event; // Warning removal
+    Q_UNUSED(event) // Warning removal
 	processKey();
 }
 
@@ -1020,6 +1027,7 @@ void LaunchyWidget::catalogBuilt()
 
 void LaunchyWidget::checkForUpdate()
 {
+    /*
 	http = new QHttp(this);
 	verBuffer = new QBuffer(this);
 	counterBuffer = new QBuffer(this);
@@ -1029,11 +1037,13 @@ void LaunchyWidget::checkForUpdate()
 	connect(http, SIGNAL(done( bool)), this, SLOT(httpGetFinished(bool)));
 	http->setHost("www.launchy.net");
 	http->get("http://www.launchy.net/version2.html", verBuffer);
+    */
 }
 
 
 void LaunchyWidget::httpGetFinished(bool error)
 {
+    /*
 	if (!error)
 	{
 		QString str(verBuffer->data());
@@ -1056,6 +1066,7 @@ void LaunchyWidget::httpGetFinished(bool error)
 	counterBuffer->close();
 	delete verBuffer;
 	delete counterBuffer;
+    */
 }
 
 
@@ -1417,7 +1428,7 @@ void LaunchyWidget::mouseMoveEvent(QMouseEvent *e)
 
 void LaunchyWidget::mouseReleaseEvent(QMouseEvent* event)
 {
-	event = event; // Warning removal
+    Q_UNUSED(event) // Warning removal
 	dragging = false;
 	hideAlternatives();
 	input->setFocus();
@@ -1474,10 +1485,11 @@ void LaunchyWidget::showOptionsDialog()
 		optionsOpen = true;
 		OptionsDialog options(this);
 		options.setObjectName("options");
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 		// need to use this method in Windows to ensure that keyboard focus is set when 
 		// being activated via a message from another instance of Launchy
-		SetForegroundWindowEx(options.winId());
+        HWND hwnd = getHwnd(this);
+        SetForegroundWindowEx(hwnd);
 #endif
 		options.exec();
 
@@ -1497,7 +1509,7 @@ void LaunchyWidget::shouldDonate()
 
 	if (donateTime <= time)
 	{
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 		runProgram("http://www.launchy.net/donate.html", "");
 #endif
 		QDateTime def;
@@ -1537,11 +1549,12 @@ void LaunchyWidget::showLaunchy(bool noFade)
 
 	fader->fadeIn(noFade || alwaysShowLaunchy);
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	// need to use this method in Windows to ensure that keyboard focus is set when 
 	// being activated via a hook or message from another instance of Launchy
-	SetForegroundWindowEx(winId());
-#elif defined(Q_WS_X11)
+    HWND hwnd = getHwnd(this);
+    SetForegroundWindowEx(hwnd);
+#elif defined(Q_OS_X11)
 	/* Fix for bug 2994680: Not sure why this is necessary, perhaps someone with more
 	   Qt experience can tell, but doing these two calls will force the window to actually
 	   get keyboard focus when it is activated. It seems from the bug reports that this
@@ -1554,7 +1567,7 @@ void LaunchyWidget::showLaunchy(bool noFade)
 	input->activateWindow();
 	input->selectAll();
 	input->setFocus();
-	qApp->syncX();
+    qApp->sync();
 	// Let the plugins know
 	plugins.showLaunchy();
 }
@@ -1608,13 +1621,13 @@ int LaunchyWidget::getHotkey() const
 	int hotkey = gSettings->value("GenOps/hotkey", -1).toInt();
 	if (hotkey == -1)
 	{
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 		int meta = Qt::AltModifier;
 #endif
-#ifdef  Q_WS_X11
+#ifdef  Q_OS_X11
 		int meta = Qt::ControlModifier;
 #endif
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 		int meta = Qt::MetaModifier;
 #endif
 		hotkey = gSettings->value("GenOps/hotkeyModifier", meta).toInt() |
@@ -1649,31 +1662,31 @@ void LaunchyWidget::createActions()
 }
 
 
-void fileLogMsgHandler(QtMsgType type, const char *msg)
+void fileLogMsgHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
 	static FILE* file;
 	if (file == 0)
 	{
 		// Create a file for appending in the user's temp directory
-		QString filename = QDir::toNativeSeparators(QDesktopServices::storageLocation(QDesktopServices::TempLocation) + "/launchylog.txt");
+        QString filename = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/launchylog.txt";
 		file = fopen(filename.toUtf8(), "a");
 	}
-
+     QByteArray localMsg = msg.toLocal8Bit();
 	if (file)
 	{
 		switch (type)
 		{
 		case QtDebugMsg:
-			fprintf(file, "Debug: %s\n", msg);
+            fprintf(file, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
 			break;
 		case QtWarningMsg:
-			fprintf(file, "Warning: %s\n", msg);
+            fprintf(file, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
 			break;
 		case QtCriticalMsg:
-			fprintf(file, "Critical: %s\n", msg);
+            fprintf(file, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
 			break;
 		case QtFatalMsg:
-			fprintf(file, "Fatal: %s\n", msg);
+            fprintf(file, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
 			abort();
 			break;
 		}
@@ -1725,7 +1738,7 @@ int main(int argc, char *argv[])
 			}
 			else if (arg.compare("log", Qt::CaseInsensitive) == 0)
 			{
-				qInstallMsgHandler(fileLogMsgHandler);
+                qInstallMessageHandler(fileLogMsgHandler);
 			}
 			else if (arg.compare("profile", Qt::CaseInsensitive) == 0)
 			{
@@ -1753,7 +1766,7 @@ int main(int argc, char *argv[])
 
 	qApp->setStyleSheet("file:///:/resources/basicskin.qss");
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	LaunchyWidget* widget = createLaunchyWidget(command);
 #else
 	LaunchyWidget* widget = new LaunchyWidget(command);

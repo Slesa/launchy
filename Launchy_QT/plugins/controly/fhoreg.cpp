@@ -1,6 +1,7 @@
 // Copyright 2009 Fabian Hofsaess
 
-#include "precompiled.h"
+#include <QString>
+#include "winfiles.h"
 #include "fhoreg.h"
 
 
@@ -10,7 +11,7 @@ HKEY FhoReg::OpenKey(HKEY baseKey, QString &subKeyName, DWORD options) {
 	HKEY k;
 	
 	LONG l = RegOpenKeyEx(baseKey,
-						  subKeyName.utf16(),
+                          (LPCWSTR)subKeyName.utf16(),
 						  0,
 						  options,
 						  &k);
@@ -35,7 +36,7 @@ QStringList* FhoReg::EnumValues(HKEY parentKey, QString &parentSubKeyName) {
 	if (k != 0) {
 		DWORD idx = 0;
 		TCHAR valueName[maxSize];
-		BYTE valueData[maxSize];
+        BYTE valueData[maxSize];
 
 		LONG l;
 		do {
@@ -52,8 +53,8 @@ QStringList* FhoReg::EnumValues(HKEY parentKey, QString &parentSubKeyName) {
 							 &size2);
 
 			if (l == ERROR_SUCCESS) {
-				QString name = QString::fromUtf16(valueName);
-				QString data = QString::fromUtf16((const ushort*) valueData);
+                QString name = QString::fromWCharArray(valueName);
+                QString data = QString::fromUtf16((const ushort*) valueData);
 
 				resultList->append(data);
 			}
@@ -87,7 +88,7 @@ QStringList* FhoReg::EnumSubKeys(HKEY key) {
 							 NULL);
 
 			if (l == ERROR_SUCCESS) {
-				QString subKeyName = QString::fromUtf16(keyName);
+                QString subKeyName = QString::fromWCharArray(keyName);
 
 				resultList->append(subKeyName);
 			}
@@ -121,14 +122,14 @@ QString FhoReg::GetKeyValue(HKEY key, QString &valueName) {
 	DWORD sz = maxSize;
 
 	LONG l = RegQueryValueEx(key,
-							 (!valueName.isEmpty()) ? valueName.utf16() : NULL,
+                             (!valueName.isEmpty()) ? (LPCWSTR)valueName.utf16() : NULL,
 							 NULL,
 							 &type,
 							 keyVal,
 							 &sz);
 
 	if (l == ERROR_SUCCESS) {
-		QString keyValue = QString::fromUtf16((const ushort*) keyVal);
+        QString keyValue = QString::fromUtf16((const ushort*)keyVal);
 		return keyValue;
 	}
 	return NULL;

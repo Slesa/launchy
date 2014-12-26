@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 
-#include "precompiled.h"
 #include "catalog_types.h"
 #include "catalog_builder.h"
 #include "globals.h"
@@ -79,7 +78,7 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 				QString cur = dirs[i];
 				if (!cur.contains(".lnk"))
 				{
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
                                     // Special handling of app directories
                                     if (cur.endsWith(".app", Qt::CaseInsensitive)) {
                                         CatItem item(dir + "/" + cur);
@@ -151,7 +150,7 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 		{
 			CatItem item(dir + "/" + files[i]);
 			platform->alterItem(&item);
-#ifdef Q_WS_X11
+#ifdef Q_OS_X11
                         if(item.fullPath.endsWith(".desktop") && item.icon == "")
                             continue;
 #endif
@@ -165,7 +164,7 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 
 bool CatalogBuilder::progressStep(int newStep)
 {
-	newStep = newStep;
+    Q_UNUSED(newStep)
 
 	++currentItem;
 	int newProgress = (int)(CATALOG_PROGRESS_MAX * (float)currentItem / totalItems);

@@ -20,25 +20,22 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef PRECOMPILED_H
 #define PRECOMPILED_H
 
+#ifdef Q_OS_WIN
+
 #ifdef _MSC_VER
 #pragma warning(push,3)
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
 #include <QtGui>
-#include <QtNetwork>
 #include <QFuture>
-
+#include <QtWinExtras/QtWinExtras>
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
 
 #include <stdlib.h>
-#include <boost/shared_ptr.hpp>
 
-using namespace boost;
-
-#ifdef Q_WS_WIN
 #define _CRT_SECURE_NO_WARNINGS
 #define _WIN32_WINNT 0x0600	
 #define _WIN32_IE 0x0700
@@ -52,6 +49,7 @@ using namespace boost;
 #include <commoncontrols.h>
 #include <userenv.h>
 #include <lm.h>
+
 #endif
 
 

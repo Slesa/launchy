@@ -1,6 +1,6 @@
 // Copyright 2009 Fabian Hofsaess
-
-#include "precompiled.h"
+#include <QString>
+#include "winfiles.h"
 #include "fhoenv.h"
 
 // Launchy already implements expandEnvironmentVars but it's difficult to reuse in plugins
@@ -12,7 +12,7 @@ QString FhoEnv::expand(QString txt) {
 	{
 		TCHAR* buffer = new TCHAR[size];
 		ExpandEnvironmentStrings((LPCWSTR)txt.utf16(), buffer, size);
-		result = QString::fromUtf16((const ushort*)buffer);
+        result = QString::fromWCharArray(buffer);
 		delete[] buffer;
 	}
 

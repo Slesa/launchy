@@ -24,9 +24,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "plugin_interface.h"
 #include "gui.h"
 #include <QRegExp>
-#include <boost/shared_ptr.hpp>
-
-using namespace boost;
 
 
 class calcyPlugin : public QObject, public PluginInterface
@@ -53,7 +50,7 @@ private:
 	uint HASH_CALCY;
 	QString libPath;
 	QRegExp reg;
-	shared_ptr<Gui> gui;
+    QSharedPointer<Gui> gui;
 };
 
 

@@ -17,10 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include "precompiled.h"
 #include "catalog_types.h"
 #include "globals.h"
-
+#include <QFile>
+#include <QDebug>
 
 // Load the catalog from the specified filename
 bool Catalog::load(const QString& filename)

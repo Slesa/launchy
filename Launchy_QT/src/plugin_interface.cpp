@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 // This doesn't exist until qt 4.6 (currently 4.5 in ubuntu 10.04)
 #include <QProcessEnvironment>
 
@@ -144,13 +144,13 @@ void runProgram(QString path, QString args, bool translateSeparators) {
 
 #endif
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 
 int getDesktop() { return DESKTOP_MAC; }
 
 void runProgram(QString path, QString args, bool translateSeparators)
 {
-    translateSeparators = translateSeparators; // kill warning
+    Q_UNUSED(translateSeparators) // kill warning
     QString cmd;
     cmd = "open \"" + QDir::toNativeSeparators(path) + "\" --args " + args.trimmed();
     QProcess::startDetached(cmd.trimmed());
@@ -161,7 +161,7 @@ void runProgram(QString path, QString args, bool translateSeparators)
 #endif
 
 
-#ifdef Q_WS_X11
+#ifdef Q_OS_X11
 
 
 int getDesktop()

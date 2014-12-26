@@ -17,9 +17,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include "precompiled.h"
 #include "gui.h"
 #include "runner.h"
+#include <QDragEnterEvent>
+#include <QMimeData>
+#include <QFontInfo>
+#include <QFileInfo>
+#include <QDir>
 
 
 #define ROW_PADDING 6
@@ -33,7 +37,7 @@ Gui::Gui(QWidget* parent, QSettings* settings)
 		return;
 
 	// Stretch the centre column of the table
-	table->horizontalHeader()->setResizeMode(1, QHeaderView::Stretch); //  column 1
+    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch); //  column 1
 
 	// Read in the array of programs from options
 	table->setSortingEnabled(false);

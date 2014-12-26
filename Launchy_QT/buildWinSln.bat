@@ -1,1 +1,1 @@
-%QTDIR%\qmake\qmake -tp vc -r launchy.pro
+%QTDIR%\bin\qmake -tp vc -r launchy.pro

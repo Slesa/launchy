@@ -19,9 +19,9 @@
  */
 
 
-#include "precompiled.h"
 #include "platform_base_hotkey.h"
 #include "platform_base_hottrigger.h"
+#include <QCoreApplication>
 
 
 /**

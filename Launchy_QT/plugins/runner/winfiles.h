@@ -17,8 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef PRECOMPILED_H
-#define PRECOMPILED_H
+#ifndef WINFILES_H
+#define WINFILES_H
+
+#ifdef Q_OS_WIN
 
 #ifdef _MSC_VER
 #pragma warning(push,3)
@@ -31,16 +33,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 
 #include <stdlib.h>
-
-#ifdef Q_WS_WIN
-#define _WIN32_WINNT 0x0600	
-#define _WIN32_IE 0x0700
 #include <windows.h>
-#include <shlobj.h>
-#include <shlwapi.h>
-#include <shellapi.h>
-#include <cpl.h>
+
 #endif
 
-
-#endif // PRECOMPILED_H
+#endif // WINFILES_H

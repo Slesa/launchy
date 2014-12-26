@@ -17,14 +17,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include "precompiled.h"
 #include "CharListWidget.h"
 
 
 CharListWidget::CharListWidget(QWidget* parent) : 
 	QListWidget(parent)
 {
-#ifdef Q_WS_X11
+#ifdef Q_OS_X11
 	setWindowFlags( windowFlags() | Qt::Tool | Qt::SplashScreen);
 #endif
 	setAttribute(Qt::WA_AlwaysShowToolTips);

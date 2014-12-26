@@ -63,6 +63,7 @@ private:
 	void addDirectory(const QString& directory, bool edit = false);
 	void loadPluginDialog(QListWidgetItem* item);
 	void connectCatalogBuilderEvents();
+    void signalSkinChanged();
 
 private:
 	FileBrowserDelegate directoryItemDelegate;

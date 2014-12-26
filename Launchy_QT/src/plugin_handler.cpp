@@ -17,7 +17,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include "precompiled.h"
 #include "plugin_handler.h"
 #include "main.h"
 #include "globals.h"
@@ -167,13 +166,13 @@ void PluginHandler::loadPlugins()
 			QObject *plugin = loader.instance();
 			if (!plugin)
 			{
-				qWarning() << fileName << "is not a plugin";
+                qWarning() << fileName << "is not a plugin: " << loader.errorString();
 				continue;
 			}
 			PluginInterface *plug = qobject_cast<PluginInterface *>(plugin);
 			if (!plug)
 			{
-				qWarning() << fileName << "is not a Launchy plugin";
+                qWarning() << fileName << "is not a Launchy plugin: " << loader.errorString();
 				continue;
 			}
 

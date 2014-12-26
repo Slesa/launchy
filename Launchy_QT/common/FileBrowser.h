@@ -9,12 +9,11 @@
 
 #ifndef FILEBROWSER_H
 #define FILEBROWSER_H
-
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#include <QtGui/QWidget>
+#include <QWidget>
 
 class Filename;
+class QLineEdit;
+class QPushButton;
 
 /**
  *  A widget to allow the user to browse for files.

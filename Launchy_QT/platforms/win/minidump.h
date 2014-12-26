@@ -20,7 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef MINIDUMP
 #define MINIDUMP
 
-
+#include <QString>
+#include "winfiles.h"
 #include "dbghelp.h"
 
 

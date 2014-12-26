@@ -3,11 +3,13 @@ unix:!macx:TARGET = launchy
 win32:TARGET = Launchy
 macx:TARGET = Launchy
 CONFIG += debug_and_release
-PRECOMPILED_HEADER = precompiled.h
 
 # CONFIG += qt release
-INCLUDEPATH += ../common
-QT += network
+INCLUDEPATH += . \
+        ../common
+QT += network widgets gui-private
+win32:QT += winextras
+
 SOURCES = main.cpp \
     globals.cpp \
     options.cpp \
@@ -31,6 +33,7 @@ SOURCES = main.cpp \
     AnimationLabel.cpp \
 	SettingsManager.cpp
 HEADERS = platform_base.h \
+        winfiles.h \
     globals.h \
     main.h \
     catalog.h \
@@ -47,7 +50,6 @@ HEADERS = platform_base.h \
     CharListWidget.h \
     CharLineEdit.h \
     Fader.h \
-    precompiled.h \
     CommandHistory.h \
     InputDataList.h \
     FileSearch.h \
@@ -118,7 +120,7 @@ win32 {
         _WIN32_WINNT=0x0600 \
         _WIN32_WINDOWS=0x0600 \
         _WIN32_IE=0x0700
-    if(!debug_and_release|build_pass) { 
+    if(!debug_and_release|build_pass) {
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/
     }

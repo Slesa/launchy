@@ -17,35 +17,29 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef PRECOMPILED_H
-#define PRECOMPILED_H
+#ifndef WINFILES_H
+#define WINFILES_H
+
+#ifdef Q_OS_WIN
 
 #ifdef _MSC_VER
 #pragma warning(push,3)
 #endif
 
 #include <QtGui>
-#include <QtNetwork>
-#include <QFuture>
 
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
 
 #include <stdlib.h>
-#include <boost/shared_ptr.hpp>
-
-using namespace boost;
 
 
-#ifdef Q_WS_WIN
 #include <windows.h>
 #include <shlobj.h>
-#include <shlguid.h>
+#include <tchar.h>
 #include <shellapi.h>
-#include <commctrl.h>
-#include <commoncontrols.h>
+
 #endif
 
-
-#endif // PRECOMPILED_H
+#endif // WINFILES_H
