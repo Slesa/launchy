@@ -30,72 +30,73 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 class Suggest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	Suggest();
-	void run(QString url, QString query);
+    Suggest();
+    void run(QString url, QString query);
 
-	QStringList results;
+    QStringList results;
 
 public slots:
-	void httpGetFinished(bool error);
+    void httpFinished();
+    void httpReadyRead();
 
 private:
-	QString query;
+    QString query;
     QNetworkAccessManager qnam;
     QNetworkReply *reply;
     QEventLoop loop;
-	int id;
-	static int currentId;	
-
+    int id;
+    static int currentId;	
+    QString httpMsg;
 };
 
 
 class WebyPlugin : public QObject, public PluginInterface
 {
-	Q_OBJECT
+    Q_OBJECT
     Q_PLUGIN_METADATA(IID "org.launchy.WebyPluginInterface")
     Q_INTERFACES(PluginInterface)
 
 
 public:
-	uint HASH_WEBSITE;
-	uint HASH_DEFAULTSEARCH;
-	uint HASH_WEBY;
-	QList<WebySite> sites;
-	QList<Bookmark> marks;
+    uint HASH_WEBSITE;
+    uint HASH_DEFAULTSEARCH;
+    uint HASH_WEBY;
+    QList<WebySite> sites;
+    QList<Bookmark> marks;
 
 private:
     QSharedPointer<Gui> gui;
-	QString iconCachePath;
-	IconCache* iconCache;
+    QString iconCachePath;
+    IconCache* iconCache;
 public:
-	QString libPath;
-	WebyPlugin() {
+    QString libPath;
+    WebyPlugin() {
 //		gui = NULL;
 
-		HASH_WEBSITE = qHash(QString("website"));
-		HASH_DEFAULTSEARCH = qHash(QString("defaultsearch"));
-		HASH_WEBY = qHash(QString("weby"));
-	}
-	~WebyPlugin() {}
-	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
-	void setPath(QString * path);
-	void getLabels(QList<InputData>*);
-	void getID(uint*);
-	void getName(QString*);
-	void getResults(QList<InputData>* inputData, QList<CatItem>* results);
-	void getCatalog(QList<CatItem>* items);
-	void launchItem(QList<InputData>* inputData, CatItem*);
-	void doDialog(QWidget* parent, QWidget**);
-	void endDialog(bool accept);
-	WebySite getDefault();
-	void init();
-	QString getFirefoxPath();
-	void indexFirefox(QString path, QList<CatItem>* items);
-	QString getIcon();
+        HASH_WEBSITE = qHash(QString("website"));
+        HASH_DEFAULTSEARCH = qHash(QString("defaultsearch"));
+        HASH_WEBY = qHash(QString("weby"));
+    }
+    ~WebyPlugin() {}
+    int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 
+    void setPath(QString * path);
+    void getLabels(QList<InputData>*);
+    void getID(uint*);
+    void getName(QString*);
+    void getResults(QList<InputData>* inputData, QList<CatItem>* results);
+    void getCatalog(QList<CatItem>* items);
+    void launchItem(QList<InputData>* inputData, CatItem*);
+    void doDialog(QWidget* parent, QWidget**);
+    void endDialog(bool accept);
+    WebySite getDefault();
+    void init();
+    QString getFirefoxPath();
+    void indexFirefox(QString path, QList<CatItem>* items);
+    QString getIcon();
 #ifdef Q_OS_WIN
-	void indexIE(QString path, QList<CatItem>* items);
+    void indexIE(QString path, QList<CatItem>* items);
 #endif
 };
 
