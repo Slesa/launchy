@@ -1,14 +1,21 @@
-TEMPLATE = app
 unix:!macx:TARGET = launchy
 win32:TARGET = Launchy
 macx:TARGET = Launchy
+TEMPLATE = app
+
+QT += network widgets gui-private
+win32:QT += winextras
+
 CONFIG += debug_and_release
 
 # CONFIG += qt release
 INCLUDEPATH += . \
         ../common
-QT += network widgets gui-private
-win32:QT += winextras
+
+UI_DIR = .ui
+MOC_DIR = .moc
+
+FORMS = options.ui
 
 SOURCES = main.cpp \
     globals.cpp \
@@ -32,6 +39,7 @@ SOURCES = main.cpp \
     FileSearch.cpp \
     AnimationLabel.cpp \
 	SettingsManager.cpp
+
 HEADERS = platform_base.h \
         winfiles.h \
     globals.h \
@@ -55,7 +63,7 @@ HEADERS = platform_base.h \
     FileSearch.h \
     AnimationLabel.h \
 	SettingsManager.h
-FORMS = options.ui
+
 unix:!macx { 
     ICON = Launchy.ico
     SOURCES += ../platforms/unix/platform_unix.cpp \
@@ -175,6 +183,4 @@ TRANSLATIONS = ../translations/launchy_fr.ts \
     ../translations/launchy_ja.ts \
 	../translations/launchy_zh_TW.ts \
 	../translations/launchy_rus.ts
-OBJECTS_DIR = build
-MOC_DIR = build
 RESOURCES += launchy.qrc

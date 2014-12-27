@@ -1,35 +1,39 @@
+TARGET = controly
 TEMPLATE = lib
+
 QT += widgets
 win32:QT += winextras
+
 CONFIG += plugin \
     debug_and_release
-VPATH += ../../src/
-INCLUDEPATH += ../../src/
 DEFINES += WITH_GUI
 
-# UI_DIR = ../../plugins/controly/
+VPATH += ../../launchy/
+INCLUDEPATH += ../../launchy/
+
+UI_DIR = .ui
+MOC_DIR = .moc
+
 FORMS = dlg.ui
 
 HEADERS = plugin_interface.h \
         winfiles.h \
-    controly.h \
-    gui.h \
-    ControlPanelItemFinder.h \
+        controly.h \
+        gui.h \
+        ControlPanelItemFinder.h \
 	fhoicon.h \
 	fhoenv.h \
 	fhoreg.h \
         fhores.h
 
 SOURCES = plugin_interface.cpp \
-    controly.cpp \
-    gui.cpp \
-    ControlPanelItemFinder.cpp \
+        controly.cpp \
+        gui.cpp \
+        ControlPanelItemFinder.cpp \
 	fhoicon.cpp \
 	fhoenv.cpp \
 	fhoreg.cpp \
 	fhores.cpp
-
-TARGET = controly
 
 win32 { 
     CONFIG -= embed_manifest_dll

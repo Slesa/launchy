@@ -5,7 +5,7 @@ SUBDIRS =  \
           plugins/runner \
           plugins/weby \
           plugins/verby \
-          src
+          launchy
           
 win32 {
 	SUBDIRS += plugins/controly

@@ -1,30 +1,38 @@
+TARGET = runner
 TEMPLATE = lib
+
 QT += widgets
+
 CONFIG += plugin \
     debug_and_release
-VPATH += ../../src
-INCLUDEPATH += ../../src
+
+
+VPATH += ../../launchy
+VPATH += ../../common
+INCLUDEPATH += ../../launchy
 INCLUDEPATH += ../../common
-INCLUDEPATH += c:/boost/
-# UI_DIR = ../../plugins/runner/
+
+UI_DIR = .ui
+MOC_DIR = .moc
+
 FORMS = dlg.ui
+
 HEADERS = plugin_interface.h \
         winfiles.h \
-    runner.h \
-    gui.h \
-    globals.h \
-    ../../common/FileBrowserDelegate.h \
-    ../../common/FileBrowser.h \
-    ../../common/DropTableWidget.h
+        runner.h \
+        gui.h \
+        globals.h \
+        ../../common/FileBrowserDelegate.h \
+        ../../common/FileBrowser.h \
+        ../../common/DropTableWidget.h
+
 SOURCES = plugin_interface.cpp \
-    runner.cpp \
-    gui.cpp \
-	../../common/FileBrowser.cpp \
-	../../common/FileBrowserDelegate.cpp \
-	../../common/DropTableWidget.cpp
-TARGET \
-    = \
-    runner
+        runner.cpp \
+        gui.cpp \
+        ../../common/FileBrowser.cpp \
+        ../../common/FileBrowserDelegate.cpp \
+        ../../common/DropTableWidget.cpp
+
 win32 { 
     CONFIG -= embed_manifest_dll
 	LIBS += user32.lib shell32.lib
