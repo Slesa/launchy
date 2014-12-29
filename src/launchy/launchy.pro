@@ -1,19 +1,20 @@
 unix:!macx:TARGET = launchy
 win32:TARGET = Launchy
 macx:TARGET = Launchy
+CONFIG += debug_and_release
 TEMPLATE = app
 
 QT += network widgets gui-private
 win32:QT += winextras
+unix:!mac:QT += x11extras
 
-CONFIG += debug_and_release
 
-# CONFIG += qt release
 INCLUDEPATH += . \
         ../common
 
 UI_DIR = .ui
 MOC_DIR = .moc
+
 
 FORMS = options.ui
 

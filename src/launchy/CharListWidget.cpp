@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 CharListWidget::CharListWidget(QWidget* parent) : 
 	QListWidget(parent)
 {
-#ifdef Q_OS_X11
+#ifdef Q_OS_UNIX
 	setWindowFlags( windowFlags() | Qt::Tool | Qt::SplashScreen);
 #endif
 	setAttribute(Qt::WA_AlwaysShowToolTips);
