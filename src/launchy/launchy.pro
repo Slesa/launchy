@@ -75,6 +75,7 @@ unix:!macx {
         ../platforms/unix/platform_x11_hotkey.h \
         platform_base_hotkey.h \
         platform_base_hottrigger.h
+    LIBS += -lX11
     PREFIX = /usr
     DEFINES += SKINS_PATH=\\\"$$PREFIX/share/launchy/skins/\\\" \
         PLUGINS_PATH=\\\"$$PREFIX/lib/launchy/plugins/\\\" \
@@ -83,10 +84,9 @@ unix:!macx {
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/
     }
-    SOURCES += 
     target.path = $$PREFIX/bin/
     skins.path = $$PREFIX/share/launchy/skins/
-    skins.files = ../skins/*
+    skins.files = ../../skins/*
     icon.path = $$PREFIX/share/pixmaps
     icon.files = ../misc/Launchy_Icon/launchy_icon.png
     desktop.path = $$PREFIX/share/applications/
@@ -154,10 +154,10 @@ macx {
     CONFIG(debug, debug|release):skins.path = ../debug/Launchy.app/Contents/Resources/skins/
     CONFIG(release, debug|release):skins.path = ../release/Launchy.app/Contents/Resources/skins/
     skins.files = 
-    skins.extra = rsync -arvz ../skins/   ../release/Launchy.app/Contents/Resources/skins/   --exclude=\".svn\"
+    skins.extra = rsync -arvz ../../skins/   ../release/Launchy.app/Contents/Resources/skins/   --exclude=\".svn\"
     CONFIG(debug, debug|release):translations.path = ../debug/Launchy.app/Contents/MacOS/tr/
     CONFIG(release, debug|release):translations.path = ../release/Launchy.app/Contents/MacOS/tr/
-    translations.files = ../translations/*.qm
+    translations.files = ../../translations/*.qm
     translations.extra = lupdate \
         src.pro \
         ; \
@@ -176,12 +176,13 @@ macx {
         translations \
         dmg
 }
-TRANSLATIONS = ../translations/launchy_fr.ts \
-    ../translations/launchy_nl.ts \
-    ../translations/launchy_zh.ts \
-    ../translations/launchy_es.ts \
-    ../translations/launchy_de.ts \
-    ../translations/launchy_ja.ts \
-	../translations/launchy_zh_TW.ts \
-	../translations/launchy_rus.ts
+TRANSLATIONS = \
+        ../../translations/launchy_fr.ts \
+        ../../translations/launchy_nl.ts \
+        ../../translations/launchy_zh.ts \
+        ../../translations/launchy_es.ts \
+        ../../translations/launchy_de.ts \
+        ../../translations/launchy_ja.ts \
+        ../../translations/launchy_zh_TW.ts \
+        ../../translations/launchy_rus.ts
 RESOURCES += launchy.qrc
