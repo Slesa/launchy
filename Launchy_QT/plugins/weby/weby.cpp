@@ -365,12 +365,12 @@ QString WebyPlugin::getFirefoxPath()
     osPath = GetShellDirectory(CSIDL_APPDATA) + "/Mozilla/Firefox/";
 #endif
 
-#ifdef Q_OS_X11
-    osPath = QDir::homePath() + "/.mozilla/firefox/";
+#ifdef Q_OS_UNIX
+	osPath = QDir::homePath() + "/.mozilla/firefox/";
 #endif
 
 #ifdef Q_OS_MAC
-        osPath = QDir::homePath() + "/Library/Application Support/Firefox/";
+    osPath = QDir::homePath() + "/Library/Application Support/Firefox/";
 #endif
     QString iniPath = osPath + "profiles.ini";
 

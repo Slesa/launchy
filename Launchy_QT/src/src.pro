@@ -4,11 +4,11 @@ win32:TARGET = Launchy
 macx:TARGET = Launchy
 CONFIG += debug_and_release
 
-# CONFIG += qt release
 INCLUDEPATH += . \
         ../common
 QT += network widgets gui-private
 win32:QT += winextras
+unix:!mac:QT += x11extras
 
 SOURCES = main.cpp \
     globals.cpp \

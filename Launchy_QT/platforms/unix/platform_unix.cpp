@@ -19,9 +19,7 @@
 
 #include <QtGui>
 #include <QApplication>
-#include <QX11Info>
 #include "platform_unix.h"
-#include <boost/pointer_cast.hpp>  
 #include <X11/Xlib.h>
 #include <QFileIconProvider>
 
@@ -135,7 +133,11 @@ bool PlatformUnix::CreateAlphaBorder(QWidget* w, QString ImageName)
 */
 bool PlatformUnix::supportsAlphaBorder() const
 {
+    /* @@@
+     *
     return QX11Info::isCompositingManagerRunning();
+    */
+    return true;
 }
 
 //Q_EXPORT_PLUGIN2(platform_unix, PlatformUnix)
