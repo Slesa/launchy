@@ -151,7 +151,7 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 		{
 			CatItem item(dir + "/" + files[i]);
 			platform->alterItem(&item);
-#ifdef Q_OS_X11
+#ifdef Q_OS_UNIX
                         if(item.fullPath.endsWith(".desktop") && item.icon == "")
                             continue;
 #endif

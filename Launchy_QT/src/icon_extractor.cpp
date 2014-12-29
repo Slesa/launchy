@@ -141,7 +141,7 @@ QIcon IconExtractor::getIcon(const CatItem& item)
 
 	if (item.icon.isNull())
 	{
-#ifdef Q_OS_X11
+#ifdef Q_OS_UNIX
 		QFileInfo info(item.fullPath);
 		if (info.isDir())
 			return platform->icon(QFileIconProvider::Folder);
@@ -152,7 +152,7 @@ QIcon IconExtractor::getIcon(const CatItem& item)
 	}
 	else
 	{
-#ifdef Q_OS_X11
+#ifdef Q_OS_UNIX
 		if (QFile::exists(item.icon))
 		{
 			return QIcon(item.icon);

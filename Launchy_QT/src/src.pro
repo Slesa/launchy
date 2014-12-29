@@ -8,6 +8,9 @@ PRECOMPILED_HEADER = precompiled.h
 # CONFIG += qt release
 INCLUDEPATH += ../common
 QT += network widgets
+
+unix:!mac:QT += x11extras
+
 SOURCES = main.cpp \
     globals.cpp \
     options.cpp \

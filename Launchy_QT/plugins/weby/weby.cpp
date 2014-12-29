@@ -355,7 +355,7 @@ QString WebyPlugin::getFirefoxPath()
 	osPath = GetShellDirectory(CSIDL_APPDATA) + "/Mozilla/Firefox/";
 #endif
 
-#ifdef Q_OS_X11
+#ifdef Q_OS_UNIX
 	osPath = QDir::homePath() + "/.mozilla/firefox/";
 #endif
 
