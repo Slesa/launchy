@@ -35,6 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "options.h"
 #include "plugin_interface.h"
 #include "FileSearch.h"
+#include "commandlineparser.h"
 
 
 
@@ -1702,10 +1703,50 @@ int main(int argc, char *argv[])
 
 	qApp->setQuitOnLastWindowClosed(false);
 
-	QStringList args = qApp->arguments();
-	CommandFlags command = None;
-	bool allowMultipleInstances = false;
+    QCoreApplication::setApplicationName("Launchy");
+    QCoreApplication::setOrganizationDomain("Launchy");
+    QCoreApplication::setApplicationVersion(LAUNCHY_VERSION_STRING);
 
+    QString locale = QLocale::system().name();
+    QTranslator translator;
+    translator.load(QString("tr/launchy_" + locale));
+    qApp->installTranslator(&translator);
+
+    CommandLineParser parser;
+    parser.process(*qApp);
+
+//	QStringList args = qApp->arguments();
+	CommandFlags command = None;
+
+    bool allowMultipleInstances = parser.doMultiple();
+
+    QString profile = parser.getProfile();
+    if(!profile.isEmpty())
+        settings.setProfileName(profile);
+
+    if(parser.doLog())
+    {
+        qInstallMessageHandler(fileLogMsgHandler);
+    }
+
+    if(parser.doRescue())
+    {
+        command = ResetSkin | ResetPosition | ShowLaunchy;
+    } else
+    if(parser.doShow())
+    {
+        command |= ShowLaunchy;
+    } else
+    if(parser.doOptions())
+    {
+        command |= ShowOptions;
+    }
+    if(parser.doRescan())
+    {
+        command |= Rescan;
+    }
+
+/*
 	for (int i = 0; i < args.size(); ++i)
 	{
 		QString arg = args[i];
@@ -1738,7 +1779,6 @@ int main(int argc, char *argv[])
 			}
 			else if (arg.compare("log", Qt::CaseInsensitive) == 0)
 			{
-                qInstallMessageHandler(fileLogMsgHandler);
 			}
 			else if (arg.compare("profile", Qt::CaseInsensitive) == 0)
 			{
@@ -1749,20 +1789,12 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-
+*/
 	if (!allowMultipleInstances && platform->isAlreadyRunning())
 	{
 		platform->sendInstanceCommand(command);
 		exit(1);
 	}
-
-	QCoreApplication::setApplicationName("Launchy");
-	QCoreApplication::setOrganizationDomain("Launchy");
-
-	QString locale = QLocale::system().name();
-	QTranslator translator;
-	translator.load(QString("tr/launchy_" + locale));
-	qApp->installTranslator(&translator);
 
 	qApp->setStyleSheet("file:///:/resources/basicskin.qss");
 

@@ -1,69 +1,83 @@
+TEMPLATE		= app
 unix:!macx:TARGET = launchy
-win32:TARGET = Launchy
-macx:TARGET = Launchy
-CONFIG += debug_and_release
-TEMPLATE = app
+win32:TARGET	= Launchy
+macx:TARGET		= Launchy
 
-QT += network widgets gui-private
-win32:QT += winextras
-unix:!mac:QT += x11extras
+CONFIG			+= debug_and_release
+QT				+= network widgets gui-private
+win32:QT		+= winextras
+unix:!mac:QT	+= x11extras
 
+INCLUDEPATH		+= . \
+                ../common
 
-INCLUDEPATH += . \
-        ../common
+UI_DIR			= .ui
+MOC_DIR			= .moc
 
-UI_DIR = .ui
-MOC_DIR = .moc
+RESOURCES		+= launchy.qrc
+FORMS			= options.ui
 
+SOURCES			= main.cpp \
+                AnimationLabel.cpp \
+                catalog.cpp \
+                catalog_builder.cpp \
+                catalog_types.cpp \
+                CharLineEdit.cpp \
+                CharListWidget.cpp \
+                CommandHistory.cpp \
+                commandlineparser.cpp \
+                Fader.cpp \
+                FileSearch.cpp \
+                globals.cpp \
+                icon_delegate.cpp \
+                icon_extractor.cpp \
+                InputDataList.cpp \
+                options.cpp \
+                platform_base_hotkey.cpp \
+                plugin_handler.cpp \
+                plugin_interface.cpp \
+                SettingsManager.cpp \
+                ../common/DropListWidget.cpp \
+                ../common/FileBrowserDelegate.cpp \
+                ../common/FileBrowser.cpp
 
-FORMS = options.ui
+HEADERS			= main.h \
+                AnimationLabel.h \
+                catalog.h \
+                catalog_builder.h \
+                catalog_types.h \
+                CharLineEdit.h \
+                CharListWidget.h \
+                CommandHistory.h \
+                commandlineparser.h \
+                Fader.h \
+                FileSearch.h \
+                globals.h \
+                icon_delegate.h \
+                icon_extractor.h \
+                InputDataList.h \
+                options.h \
+                platform_base.h \
+                plugin_handler.h \
+                plugin_interface.h \
+                SettingsManager.h \
+                winfiles.h \
+                ../common/FileBrowserDelegate.h \
+                ../common/FileBrowser.h \
+                ../common/DropListWidget.h
+        
+TRANSLATIONS	= \
+                ../../translations/launchy_fr.ts \
+                ../../translations/launchy_nl.ts \
+                ../../translations/launchy_zh.ts \
+                ../../translations/launchy_es.ts \
+                ../../translations/launchy_de.ts \
+                ../../translations/launchy_ja.ts \
+                ../../translations/launchy_zh_TW.ts \
+                ../../translations/launchy_rus.ts
 
-SOURCES = main.cpp \
-    globals.cpp \
-    options.cpp \
-    catalog.cpp \
-    catalog_builder.cpp \
-    plugin_handler.cpp \
-    platform_base_hotkey.cpp \
-    icon_delegate.cpp \
-    plugin_interface.cpp \
-    catalog_types.cpp \
-    icon_extractor.cpp \
-    ../common/FileBrowserDelegate.cpp \
-    ../common/FileBrowser.cpp \
-    ../common/DropListWidget.cpp \
-    Fader.cpp \
-    CharListWidget.cpp \
-    CharLineEdit.cpp \
-    CommandHistory.cpp \
-    InputDataList.cpp \
-    FileSearch.cpp \
-    AnimationLabel.cpp \
-	SettingsManager.cpp
-
-HEADERS = platform_base.h \
-        winfiles.h \
-    globals.h \
-    main.h \
-    catalog.h \
-    catalog_builder.h \
-    plugin_interface.h \
-    plugin_handler.h \
-    options.h \
-    catalog_types.h \
-    icon_delegate.h \
-    icon_extractor.h \
-    ../common/FileBrowserDelegate.h \
-    ../common/FileBrowser.h \
-    ../common/DropListWidget.h \
-    CharListWidget.h \
-    CharLineEdit.h \
-    Fader.h \
-    CommandHistory.h \
-    InputDataList.h \
-    FileSearch.h \
-    AnimationLabel.h \
-	SettingsManager.h
+DESTDIR		 	= ../../bin/
+DLLDESTDIR		= ../../bin/
 
 unix:!macx { 
     ICON = Launchy.ico
@@ -176,13 +190,3 @@ macx {
         translations \
         dmg
 }
-TRANSLATIONS = \
-        ../../translations/launchy_fr.ts \
-        ../../translations/launchy_nl.ts \
-        ../../translations/launchy_zh.ts \
-        ../../translations/launchy_es.ts \
-        ../../translations/launchy_de.ts \
-        ../../translations/launchy_ja.ts \
-        ../../translations/launchy_zh_TW.ts \
-        ../../translations/launchy_rus.ts
-RESOURCES += launchy.qrc
