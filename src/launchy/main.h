@@ -43,7 +43,7 @@ class QPushButton;
 enum CommandFlag
 {
 	None = 0,
-	ShowLaunchy = 1,
+    ShowView = 1,
 	ShowOptions = 2,
 	ResetPosition = 4,
 	ResetSkin = 8,

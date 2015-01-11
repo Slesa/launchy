@@ -148,7 +148,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	if (gSettings->value("version", 0).toInt() != LAUNCHY_VERSION)
 	{
 		updateVersion(gSettings->value("version", 0).toInt());
-		command |= ShowLaunchy;
+        command |= ShowView;
 	}
 
 	alternatives = new CharListWidget(this);
@@ -176,7 +176,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 
 	// Set the general options
 	if (setAlwaysShow(gSettings->value("GenOps/alwaysshow", false).toBool()))
-		command |= ShowLaunchy;
+        command |= ShowView;
 	setAlwaysTop(gSettings->value("GenOps/alwaystop", false).toBool());
 
 	// Check for udpates?
@@ -190,7 +190,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	if (!setHotkey(hotkey))
 	{
 		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey %1 is already in use, please select another.").arg(hotkey.toString()));
-		command = ShowLaunchy | ShowOptions;
+        command = ShowView | ShowOptions;
 	}
 
 	// Set the timers
@@ -258,7 +258,7 @@ void LaunchyWidget::executeStartupCommand(int command)
 		applySkin("Default");
 	}
 
-	if (command & ShowLaunchy)
+    if (command & ShowView)
 		showLaunchy();
 
 	if (command & ShowOptions)
@@ -1663,39 +1663,8 @@ void LaunchyWidget::createActions()
 }
 
 
-void fileLogMsgHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
-	static FILE* file;
-	if (file == 0)
-	{
-		// Create a file for appending in the user's temp directory
-        QString filename = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/launchylog.txt";
-		file = fopen(filename.toUtf8(), "a");
-	}
-     QByteArray localMsg = msg.toLocal8Bit();
-	if (file)
-	{
-		switch (type)
-		{
-		case QtDebugMsg:
-            fprintf(file, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
-			break;
-		case QtWarningMsg:
-            fprintf(file, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
-			break;
-		case QtCriticalMsg:
-            fprintf(file, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
-			break;
-		case QtFatalMsg:
-            fprintf(file, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
-			abort();
-			break;
-		}
 
-		fflush(file);
-	}
-}
-
+void fileLogMsgHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg);
 
 int main(int argc, char *argv[])
 {
@@ -1715,9 +1684,7 @@ int main(int argc, char *argv[])
     CommandLineParser parser;
     parser.process(*qApp);
 
-//	QStringList args = qApp->arguments();
-	CommandFlags command = None;
-
+    CommandFlags command = None;
     bool allowMultipleInstances = parser.doMultiple();
 
     QString profile = parser.getProfile();
@@ -1731,11 +1698,11 @@ int main(int argc, char *argv[])
 
     if(parser.doRescue())
     {
-        command = ResetSkin | ResetPosition | ShowLaunchy;
+        command = ResetSkin | ResetPosition | ShowView;
     } else
     if(parser.doShow())
     {
-        command |= ShowLaunchy;
+        command |= ShowView;
     } else
     if(parser.doOptions())
     {
@@ -1745,56 +1712,16 @@ int main(int argc, char *argv[])
     {
         command |= Rescan;
     }
+    if(parser.doExit())
+    {
+        command |= Exit;
+    }
 
-/*
-	for (int i = 0; i < args.size(); ++i)
-	{
-		QString arg = args[i];
-		if (arg.startsWith("-") || arg.startsWith("/"))
-		{
-			arg = arg.mid(1);
-			if (arg.compare("rescue", Qt::CaseInsensitive) == 0)
-			{
-				command = ResetSkin | ResetPosition | ShowLaunchy;
-			}
-			else if (arg.compare("show", Qt::CaseInsensitive) == 0)
-			{
-				command |= ShowLaunchy;
-			}
-			else if (arg.compare("options", Qt::CaseInsensitive) == 0)
-			{
-				command |= ShowOptions;
-			}
-			else if (arg.compare("multiple", Qt::CaseInsensitive) == 0)
-			{
-				allowMultipleInstances = true;
-			}
-			else if (arg.compare("rescan", Qt::CaseInsensitive) == 0)
-			{
-				command |= Rescan;
-			}
-			else if (arg.compare("exit", Qt::CaseInsensitive) == 0)
-			{
-				command |= Exit;
-			}
-			else if (arg.compare("log", Qt::CaseInsensitive) == 0)
-			{
-			}
-			else if (arg.compare("profile", Qt::CaseInsensitive) == 0)
-			{
-				if (++i < args.length())
-				{
-					settings.setProfileName(args[i]);
-				}
-			}
-		}
-	}
-*/
-	if (!allowMultipleInstances && platform->isAlreadyRunning())
-	{
-		platform->sendInstanceCommand(command);
-		exit(1);
-	}
+    if (!allowMultipleInstances && platform->isAlreadyRunning())
+    {
+        platform->sendInstanceCommand(command);
+        exit(1);
+    }
 
 	qApp->setStyleSheet("file:///:/resources/basicskin.qss");
 
@@ -1811,4 +1738,35 @@ int main(int argc, char *argv[])
 
 	delete platform;
 	platform = NULL;
+}
+
+void fileLogMsgHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+{
+    static QTextStream* st = NULL;
+    if(st==NULL)
+    {
+        QString fileName = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/graunchy.log";
+        QFile fh(fileName);
+        if(!fh.open(QIODevice::WriteOnly | QIODevice::Text))
+            return;
+        st = new QTextStream(&fh);
+    }
+
+    switch (type)
+    {
+    case QtDebugMsg:
+        *st << "Debug: " << msg << "(" << context.file << ":" << context.line << ", " << context.function << ")";
+        break;
+    case QtWarningMsg:
+        *st << "Warning: " << msg << "(" << context.file << ":" << context.line << ", " << context.function << ")";
+        break;
+    case QtCriticalMsg:
+        *st << "Critical: " << msg << "(" << context.file << ":" << context.line << ", " << context.function << ")";
+        break;
+    case QtFatalMsg:
+        *st << "Fatal: " << msg << "(" << context.file << ":" << context.line << ", " << context.function << ")";
+        abort();
+        break;
+//        fflush(file);
+    }
 }
