@@ -1,12 +1,12 @@
 TEMPLATE		= app
-unix:!macx:TARGET = launchy
+linux:TARGET 	= launchy
 win32:TARGET	= Launchy
 macx:TARGET		= Launchy
 
 CONFIG			+= debug_and_release
 QT				+= network widgets gui-private
 win32:QT		+= winextras
-unix:!mac:QT	+= x11extras
+linux:QT		+= x11extras
 
 INCLUDEPATH		+= . \
                 ../common
@@ -79,7 +79,7 @@ TRANSLATIONS	= \
 DESTDIR		 	= ../../bin/
 DLLDESTDIR		= ../../bin/
 
-unix:!macx { 
+linux {
     ICON = Launchy.ico
     SOURCES += ../platforms/unix/platform_unix.cpp \
         ../platforms/unix/platform_unix_util.cpp \

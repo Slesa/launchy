@@ -61,7 +61,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 #ifdef Q_OS_WIN
 	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
 #endif
-#ifdef Q_OS_UNIX
+#ifdef Q_OS_LINUX
 	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
 #endif
 #ifdef Q_OS_MAC
@@ -491,7 +491,7 @@ void LaunchyWidget::launchItem(CatItem& item)
 				args += inputData[i].getText() + " ";
 
 /* UPDATE
-#ifdef Q_OS_UNIX
+#ifdef Q_OS_LINUX
 		if (!platform->Execute(item.fullPath, args))
 			runProgram(item.fullPath, args);
 #else
@@ -1555,7 +1555,7 @@ void LaunchyWidget::showLaunchy(bool noFade)
 	// being activated via a hook or message from another instance of Launchy
     HWND hwnd = getHwnd(this);
     SetForegroundWindowEx(hwnd);
-#elif defined(Q_OS_UNIX)
+#elif defined(Q_OS_LINUX)
 	/* Fix for bug 2994680: Not sure why this is necessary, perhaps someone with more
 	   Qt experience can tell, but doing these two calls will force the window to actually
 	   get keyboard focus when it is activated. It seems from the bug reports that this
@@ -1625,7 +1625,7 @@ int LaunchyWidget::getHotkey() const
 #ifdef Q_OS_WIN
 		int meta = Qt::AltModifier;
 #endif
-#ifdef Q_OS_UNIX
+#ifdef Q_OS_LINUX
         int meta = Qt::ControlModifier;
 #endif
 #ifdef Q_OS_MAC
