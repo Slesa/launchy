@@ -36,7 +36,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "plugin_interface.h"
 #include "FileSearch.h"
 #include "commandlineparser.h"
+#include "singleapplication.h"
 
+static SingleApplication* _singleApplication;
 
 
 #ifdef Q_OS_WIN
@@ -1717,13 +1719,18 @@ int main(int argc, char *argv[])
         command |= Exit;
     }
 
-    if (!allowMultipleInstances && platform->isAlreadyRunning())
+    if (!allowMultipleInstances)
     {
-        platform->sendInstanceCommand(command);
-        exit(1);
+        _singleApplication = SingleApplication::instance();
+        if(!_singleApplication->start())
+        {
+            qDebug() << "Already running";
+            platform->sendInstanceCommand(command);
+            exit(1);
+        }
     }
 
-	qApp->setStyleSheet("file:///:/resources/basicskin.qss");
+    qApp->setStyleSheet("file:///:/resources/basicskin.qss");
 
 #ifdef Q_OS_WIN
 	LaunchyWidget* widget = createLaunchyWidget(command);
@@ -1731,13 +1738,20 @@ int main(int argc, char *argv[])
 	LaunchyWidget* widget = new LaunchyWidget(command);
 #endif
 
-	qApp->exec();
+    int result = qApp->exec();
+
+    if(_singleApplication!=NULL)
+    {
+        _singleApplication->release();
+    }
 
 	delete widget;
 	widget = NULL;
 
 	delete platform;
 	platform = NULL;
+
+    return result;
 }
 
 void fileLogMsgHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)

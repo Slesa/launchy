@@ -1,6 +1,7 @@
 #include <QCoreApplication>
 #include <QtTest>
 #include "commandlineparser.specs.h"
+#include "singleapplication.specs.h"
 
 int main(int argc, char** argv) 
 {
@@ -10,6 +11,9 @@ int main(int argc, char** argv)
 
     CommandLineParserSpecs commandLineParserSpecs;
     success |= QTest::qExec(&commandLineParserSpecs, argc, argv);
+
+    SingleApplicationSpecs singleApplicationSpecs;
+    success |= QTest::qExec(&singleApplicationSpecs, argc, argv);
 
     return success;
 }

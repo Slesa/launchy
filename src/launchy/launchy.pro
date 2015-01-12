@@ -37,6 +37,7 @@ SOURCES			= main.cpp \
                 plugin_handler.cpp \
                 plugin_interface.cpp \
                 SettingsManager.cpp \
+                singleapplication.cpp \
                 ../common/DropListWidget.cpp \
                 ../common/FileBrowserDelegate.cpp \
                 ../common/FileBrowser.cpp
@@ -61,6 +62,7 @@ HEADERS			= main.h \
                 plugin_handler.h \
                 plugin_interface.h \
                 SettingsManager.h \
+                singleapplication.h \
                 winfiles.h \
                 ../common/FileBrowserDelegate.h \
                 ../common/FileBrowser.h \

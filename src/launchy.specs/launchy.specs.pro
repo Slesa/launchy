@@ -6,10 +6,14 @@ INCLUDEPATH		+= ../launchy
 
 HEADERS 		= \
                 commandlineparser.specs.h \
-                ../launchy/commandlineparser.h
+                singleapplication.specs.h \
+                ../launchy/commandlineparser.h \
+                ../launchy/singleapplication.h
 
 SOURCES 		= main.cpp \
                 commandlineparser.specs.cpp \
-                ../launchy/commandlineparser.cpp
+                singleapplication.specs.cpp \
+                ../launchy/commandlineparser.cpp \
+                ../launchy/singleapplication.cpp
 
 DESTDIR 		= ../../specs/
