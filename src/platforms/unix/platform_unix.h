@@ -97,10 +97,6 @@ class PlatformUnix :  public PlatformBase
     void AddToNotificationArea() {};
     void RemoveFromNotificationArea() {};
     
-    bool isAlreadyRunning() const {
-	return false;
-    }
-
 
     virtual QHash<QString, QList<QString> > getDirectories();
 	virtual QString expandEnvironmentVars(QString txt);

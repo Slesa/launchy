@@ -28,36 +28,4 @@ QString GetShellDirectory(int type);
 bool EnumerateNetworkServers(QStringList& items, DWORD serverType, const wchar_t* domain = NULL);
 
 
-class LimitSingleInstance
-{
-public:
-	LimitSingleInstance(TCHAR *strMutexName)
-	{
-		//Make sure that you use a name that is unique for this application otherwise
-		//two apps may think they are the same if they are using same name for
-		//3rd parm to CreateMutex
-		mutex = CreateMutex(NULL, FALSE, strMutexName); //do early
-		lastError = GetLastError(); //save for use later...
-	}
-
-	~LimitSingleInstance() 
-	{
-		if (mutex)  //Do not forget to close handles.
-		{
-			CloseHandle(mutex); //Do as late as possible.
-			mutex = NULL; //Good habit to be in.
-		}
-	}
-
-	bool IsAnotherInstanceRunning() 
-	{
-		return (ERROR_ALREADY_EXISTS == lastError);
-	}
-
-private:
-	HANDLE mutex;
-	DWORD  lastError;
-};
-
-
 #endif

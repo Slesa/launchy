@@ -112,11 +112,6 @@ QString PlatformMac::expandEnvironmentVars(QString txt)
     return out;
 }
 
-bool PlatformMac::isAlreadyRunning() const
-{
-    return false;
-}
-
 // Create the application object
 QApplication* createApplication(int& argc, char** argv)
 {

@@ -51,7 +51,6 @@ public:
 	virtual void setPreferredIconSize(int size) = 0;
 
 	virtual QList<Directory> getDefaultCatalogDirectories() = 0;
-	virtual bool isAlreadyRunning() const = 0;
 	virtual void sendInstanceCommand(int command) { Q_UNUSED(command); }
 
 	// Set hotkey

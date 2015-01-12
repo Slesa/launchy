@@ -42,7 +42,6 @@ public:
 	virtual QList<Directory> getDefaultCatalogDirectories();
 	virtual QString expandEnvironmentVars(QString);
 	virtual bool supportsAlphaBorder() const;
-	virtual bool isAlreadyRunning() const;
 	virtual void sendInstanceCommand(int command);
 	virtual bool getComputers(QStringList& computers) const;
 

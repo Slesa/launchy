@@ -184,12 +184,6 @@ void PlatformWin::sendInstanceCommand(int command)
 }
 
 
-bool PlatformWin::isAlreadyRunning() const
-{
-	return instance->IsAnotherInstanceRunning();
-}
-
-
 // Mandatory functions
 QKeySequence PlatformWin::getHotkey() const
 {
