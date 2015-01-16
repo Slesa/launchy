@@ -138,13 +138,7 @@ win32 {
     QMAKE_LFLAGS_RELEASE += /DEBUG
 }
 macx { 
-    ICON = ../misc/Launchy_Icon/launchy_icon_mac.icns
-    SOURCES += ../platforms/mac/platform_mac.cpp \
-        ../platforms/mac/platform_mac_hotkey.cpp
-    HEADERS += ../platforms/mac/platform_mac.h \
-        ../platforms/mac/platform_mac_hotkey.h \
-        platform_base_hotkey.h \
-        platform_base_hottrigger.h
+    ICON		= ../misc/Launchy_Icon/launchy_icon_mac.icns
     if(!debug_and_release|build_pass) { 
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/

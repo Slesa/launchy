@@ -1,20 +1,21 @@
-#include "platform_mac.h"
+#include "mac_platform.h"
+#include <QDir>
+#include <QDebug>
+#include <QProcess>
 
 
-PlatformMac::PlatformMac(int& argc, char** argv) :
-        PlatformBase(argc,argv)
+MacPlatform::MacPlatform(int& argc, char** argv)
+    : PlatformBase(argc,argv)
 {
-
     icons = new QFileIconProvider();
 }
 
-PlatformMac::~PlatformMac()
+MacPlatform::~MacPlatform()
 {
-
 }
 
 
-bool PlatformMac::setHotkey(const QKeySequence & key, QObject* receiver, const char* slot)
+bool MacPlatform::setHotkey(const QKeySequence & key, QObject* receiver, const char* slot)
 {
     GlobalShortcutManager::disconnect(oldKey, receiver, slot);
     GlobalShortcutManager::connect(key, receiver, slot);
@@ -24,7 +25,7 @@ bool PlatformMac::setHotkey(const QKeySequence & key, QObject* receiver, const c
 }
 
 
-void PlatformMac::alterItem(CatItem* item) {
+void MacPlatform::alterItem(CatItem* item) {
     if (!item->fullPath.endsWith(".app", Qt::CaseInsensitive))
         return;
 //    item->shortName.chop(4);
@@ -32,7 +33,7 @@ void PlatformMac::alterItem(CatItem* item) {
 }
 
 
-QHash<QString, QList<QString> > PlatformMac::getDirectories()
+QHash<QString, QList<QString> > MacPlatform::getDirectories()
 {
     QHash<QString, QList<QString> > out;
     QDir d;
@@ -63,7 +64,7 @@ QHash<QString, QList<QString> > PlatformMac::getDirectories()
 
 }
 
-QList<Directory> PlatformMac::getDefaultCatalogDirectories()
+QList<Directory> MacPlatform::getDefaultCatalogDirectories()
 {
     QList<Directory> list;
     QStringList types;
@@ -77,7 +78,7 @@ QList<Directory> PlatformMac::getDefaultCatalogDirectories()
     return list;
 }
 
-QString PlatformMac::expandEnvironmentVars(QString txt)
+QString MacPlatform::expandEnvironmentVars(QString txt)
 {
     QStringList list = QProcess::systemEnvironment();
     txt.replace('~', "$HOME$");
@@ -111,10 +112,3 @@ QString PlatformMac::expandEnvironmentVars(QString txt)
     }
     return out;
 }
-
-// Create the application object
-QApplication* createApplication(int& argc, char** argv)
-{
-        return new PlatformMac(argc, argv);
-}
-

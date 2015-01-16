@@ -1,14 +1,14 @@
-#pragma once
+#ifndef MACKEYTRIGGER_H
+#define MACKEYTRIGGER_H
 
-#include "platform_base_hotkey.h"
-#include "platform_base_hottrigger.h"
+#include "globalshortcutmanager.h"
+#include "globalshortcuttrigger.h"
 
 // TODO:
 //  - don't invoke hotkey if there is a modal dialog?
 //  - do multi-mapping, like the x11 version
 
 #include <QCoreApplication>
-
 #include <Carbon/Carbon.h>
 
 class MacKeyTrigger
@@ -238,3 +238,5 @@ public:
 		return true;
 	}
 };
+
+#endif

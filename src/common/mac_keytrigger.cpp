@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-#include "platform_mac_hotkey.h"
+#include "mac_platform.h"
 
 MacKeyTriggerManager* MacKeyTriggerManager::instance_   = NULL;
 EventHandlerUPP MacKeyTriggerManager::hot_key_function_ = NULL;

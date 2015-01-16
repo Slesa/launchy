@@ -16,30 +16,32 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+#ifndef MACPLATFORM_H
+#define MACPLATFORM_H
 
-#pragma once
 #include "platform_base.h"
-#include "platform_base_hotkey.h"
-#include "platform_base_hottrigger.h"
+#include "globalshortcutmanager.h"
+#include "globalshortcuttrigger.h"
 
-class PlatformMac : public PlatformBase
+class MacPlatform: public PlatformBase
 {
 	Q_OBJECT
 
 public:
-        PlatformMac(int& argc, char** argv);
-        ~PlatformMac();
+    MacPlatform(int& argc, char** argv);
+    ~MacPlatform();
 
-        virtual void setPreferredIconSize(int size) { Q_UNUSED(size) return; }
-        virtual QKeySequence getHotkey() const { return oldKey; }
+    virtual void setPreferredIconSize(int size) { Q_UNUSED(size) return; }
+    virtual QKeySequence getHotkey() const { return oldKey; }
 	virtual bool setHotkey(const QKeySequence& newHotkey, QObject* receiver, const char* slot);
 	virtual QHash<QString, QList<QString> > getDirectories();
 	virtual QList<Directory> getDefaultCatalogDirectories();
 	virtual QString expandEnvironmentVars(QString);
-        virtual bool supportsAlphaBorder() const { return true; }
-        virtual void alterItem(CatItem* item);
+    virtual bool supportsAlphaBorder() const { return true; }
+    virtual void alterItem(CatItem* item);
 private:
-        QKeySequence oldKey;
+    QKeySequence oldKey;
 
 };
 
+#endif
