@@ -16,16 +16,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-
-
 #ifndef SETTINGSMANAGER_H
 #define SETTINGSMANAGER_H
 
-
+#include "directory.h"
 #include <QString>
 #include <QHash>
-#include "Directory.h"
-
 
 class SettingsManager : public QObject
 {
@@ -38,7 +34,7 @@ public:
 	QString catalogFilename() const;
 	QString historyFilename() const;
 	QString skinPath(const QString& skinName) const;
-	void setPortable(bool makePortable);
+    void setPortable(bool makePortable, QWidget* parent);
 	void removeAll();
 	void setProfileName(const QString& name);
 	static QList<Directory> readCatalogDirectories();

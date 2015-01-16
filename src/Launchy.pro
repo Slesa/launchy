@@ -2,6 +2,7 @@ TEMPLATE		= app
 
 TEMPLATE		= subdirs
 SUBDIRS			=  \
+                common \
 #          plugins/calcy \
 #          plugins/gcalc \
                 plugins/runner \

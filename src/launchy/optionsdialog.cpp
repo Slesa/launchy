@@ -313,7 +313,7 @@ void OptionsDialog::accept()
 	gSettings->setValue("WebProxy/port", genProxyPort->text());
 
 	// Apply General Options
-	settings.setPortable(genPortable->isChecked());
+    settings.setPortable(genPortable->isChecked(), this);
 	gMainWidget->startUpdateTimer();
 	gMainWidget->setSuggestionListMode(genCondensed->currentIndex());
 	gMainWidget->loadOptions();

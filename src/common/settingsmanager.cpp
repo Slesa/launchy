@@ -16,10 +16,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-
-
-#include "SettingsManager.h"
-#include "launchywidget.h"
+#include "settingsmanager.h"
+#include "platform_base.h"
+//#include "launchywidget.h"
 #include "globals.h"
 #include <QMessageBox>
 
@@ -104,7 +103,7 @@ QString SettingsManager::skinPath(const QString& skinName) const
 
 
 // Switch between portable and installed mode
-void SettingsManager::setPortable(bool makePortable)
+void SettingsManager::setPortable(bool makePortable, QWidget* parent)
 {
 	if (makePortable != portable)
 	{
@@ -138,7 +137,7 @@ void SettingsManager::setPortable(bool makePortable)
 			qWarning("Could not convert to %s mode", makePortable ? "portable" : "installed");
 			if (makePortable)
 			{
-				QMessageBox::warning(gMainWidget, tr("Launchy"), 
+                QMessageBox::warning(parent, tr("Launchy"),
 					tr("Could not convert to portable mode. Please check you have write access to the %1 directory.").arg(newDir));
 			}
 		}

@@ -1,6 +1,6 @@
 /*
 Launchy: Application Launcher
-Copyright (C) 2007  Josh Karlin
+Copyright (C) 2007-2010  Josh Karlin, Simon Capewell
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,45 +17,32 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef DIRECTORY_H
-#define DIRECTORY_H
+#ifndef GLOBALS_H
+#define GLOBALS_H
 
 
-#include <QString>
-#include <QStringList>
+#include "settingsmanager.h"
+#include <QSettings> // need this for os x
+#define LAUNCHY_VERSION 261
+#define LAUNCHY_VERSION_STRING "2.6.1 Beta 1"
 
-struct Directory
-{
-	Directory() :
-		indexDirs(false),
-		indexExe(false),
-		depth(100)
-	{
-	}
+#define HASH_LAUNCHY 0
+#define HASH_HISTORY 1
+#define HASH_LAUNCHYFILE 2
+#define LABEL_FILE 0
+#define LABEL_AUTOSUGGEST 1
+#define LABEL_HISTORY 2
 
-	Directory(const QString& n) :
-		indexDirs(false),
-		indexExe(false),
-		name(n),
-		depth(100)
-	{
-	}
+class LaunchyWidget;
+class PlatformBase;
+class CatalogBuilder;
 
-	Directory(const QString& n, const QStringList& t, bool d, bool e, int dep) :
-		indexDirs(d),
-		indexExe(e),
-		name(n),
-		types(t),
-		depth(dep)
-	{
-	}
-
-	bool indexDirs;
-	bool indexExe;
-	QString name;
-	QStringList types;
-	int depth;
-};
+extern PlatformBase* platform;
+extern LaunchyWidget* gMainWidget;
+extern QSettings* gSettings;
+extern SettingsManager settings;
+extern CatalogBuilder* gBuilder;
+extern QString gSearchText;
 
 
 #endif

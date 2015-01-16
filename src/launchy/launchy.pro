@@ -8,8 +8,7 @@ QT				+= network widgets gui-private
 win32:QT		+= winextras
 linux:QT		+= x11extras
 
-INCLUDEPATH		+= . \
-                ../common
+INCLUDEPATH		+= ../common
 
 UI_DIR			= .ui
 MOC_DIR			= .moc
@@ -19,7 +18,6 @@ FORMS			= options.ui
 
 SOURCES			= main.cpp \
                 AnimationLabel.cpp \
-                catalog.cpp \
                 catalog_builder.cpp \
                 catalog_types.cpp \
                 CharLineEdit.cpp \
@@ -28,15 +26,12 @@ SOURCES			= main.cpp \
                 commandlineparser.cpp \
                 Fader.cpp \
                 FileSearch.cpp \
-                globals.cpp \
                 icon_delegate.cpp \
                 icon_extractor.cpp \
                 InputDataList.cpp \
                 launchywidget.cpp \
-                platform_base_hotkey.cpp \
                 plugin_handler.cpp \
                 plugin_interface.cpp \
-                SettingsManager.cpp \
                 singleapplication.cpp \
                 ../common/DropListWidget.cpp \
                 ../common/FileBrowserDelegate.cpp \
@@ -45,7 +40,6 @@ SOURCES			= main.cpp \
 
 HEADERS			= main.h \
                 AnimationLabel.h \
-                catalog.h \
                 catalog_builder.h \
                 catalog_types.h \
                 CharLineEdit.h \
@@ -54,15 +48,12 @@ HEADERS			= main.h \
                 commandlineparser.h \
                 Fader.h \
                 FileSearch.h \
-                globals.h \
                 icon_delegate.h \
                 icon_extractor.h \
                 InputDataList.h \
                 launchywidget.h \
-                platform_base.h \
                 plugin_handler.h \
                 plugin_interface.h \
-                SettingsManager.h \
                 singleapplication.h \
                 winfiles.h \
                 ../common/FileBrowserDelegate.h \
@@ -83,22 +74,14 @@ TRANSLATIONS	= \
 DESTDIR		 	= ../../bin/
 DLLDESTDIR		= ../../bin/
 
+//LIBS			+= launchy.common
+
 linux {
-    ICON = Launchy.ico
-    SOURCES += ../platforms/unix/platform_unix.cpp \
-        ../platforms/unix/platform_unix_util.cpp \
-        ../platforms/unix/platform_x11_hotkey.cpp
-    HEADERS += ../platforms/unix/platform_unix.h \
-        ../platforms/unix/platform_unix_util.h \
-        ../platforms/unix/platform_x11_hotkey.h \
-        platform_base_hotkey.h \
-        platform_base_hottrigger.h
-    LIBS += -lX11
-    PREFIX = /usr
-    DEFINES += SKINS_PATH=\\\"$$PREFIX/share/launchy/skins/\\\" \
-        PLUGINS_PATH=\\\"$$PREFIX/lib/launchy/plugins/\\\" \
-        PLATFORMS_PATH=\\\"$$PREFIX/lib/launchy/\\\"
-    if(!debug_and_release|build_pass) { 
+    ICON		= Launchy.ico
+    LIBS		+= -L../../lib \
+                -llaunchy.common \
+                -lX11
+    if(!debug_and_release|build_pass) {
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/
     }

@@ -1,7 +1,8 @@
-#pragma once
+#ifndef X11KEYTRIGGER_H
+#define X11KEYTRIGGER_H
 
-#include "platform_base_hotkey.h"
-#include "platform_base_hottrigger.h"
+#include "globalshortcutmanager.h"
+#include "globalshortcuttrigger.h"
 
 #include <QWidget>
 #include <QX11Info>
@@ -14,7 +15,6 @@
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 
-#include "platform_x11_hotkey.h"
 
 #ifdef KeyPress
 // defined by X11 headers
@@ -251,3 +251,4 @@ public:
         }
 };
 
+#endif

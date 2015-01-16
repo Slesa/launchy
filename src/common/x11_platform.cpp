@@ -17,17 +17,14 @@
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include <QtGui>
-#include <QApplication>
-#include "platform_unix.h"
+#include "x11_platform.h"
 #include <X11/Xlib.h>
 #include <QFileIconProvider>
+#include <QtGui>
+#include <QX11Info>
 
 
-
-
-
-PlatformUnix::PlatformUnix(int& argc, char** argv) :
+X11Platform::X11Platform(int& argc, char** argv) :
         PlatformBase(argc, argv)
 {
     /*
@@ -38,7 +35,7 @@ PlatformUnix::PlatformUnix(int& argc, char** argv) :
         localMutex = CreateMutex(NULL,0,_T("LaunchyMutex"));
         globalMutex = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
         */
-    icons = new UnixIconProvider();
+    icons = new X11IconProvider();
 
 //    init(argc,argv);
 //        alpha.reset();
@@ -65,13 +62,13 @@ shared_ptr<QApplication> PlatformUnix::init(int & argc, char** argv)
     return app;
 }
 */
-PlatformUnix::~PlatformUnix()
+X11Platform::~X11Platform()
 { 
     GlobalShortcutManager::clear();
 //    delete icons;
 }
 
-QList<Directory> PlatformUnix::getDefaultCatalogDirectories() {
+QList<Directory> X11Platform::getDefaultCatalogDirectories() {
     QList<Directory> list;
     const char *dirs[] = { "/usr/share/applications/",
 			   "/usr/local/share/applications/",
@@ -90,7 +87,7 @@ QList<Directory> PlatformUnix::getDefaultCatalogDirectories() {
 }
 
 
-QHash<QString, QList<QString> > PlatformUnix::getDirectories() {
+QHash<QString, QList<QString> > X11Platform::getDirectories() {
     QHash<QString, QList<QString> > out;
     QDir d;
     d.mkdir(QDir::homePath() + "/.launchy");
@@ -131,19 +128,14 @@ bool PlatformUnix::CreateAlphaBorder(QWidget* w, QString ImageName)
     return true;
 }
 */
-bool PlatformUnix::supportsAlphaBorder() const
+bool X11Platform::supportsAlphaBorder() const
 {
-    /* @@@
-     *
-    return QX11Info::isCompositingManagerRunning();
-    */
+    // @@@ return QX11Info::isCompositingManagerRunning();
     return true;
 }
 
-//Q_EXPORT_PLUGIN2(platform_unix, PlatformUnix)
 
-
-void PlatformUnix::alterItem(CatItem* item) {
+void X11Platform::alterItem(CatItem* item) {
     if (!item->fullPath.endsWith(".desktop", Qt::CaseInsensitive))
 	return;
 
@@ -225,7 +217,7 @@ void PlatformUnix::alterItem(CatItem* item) {
 //    shared_ptr<UnixIconProvider> u((UnixIconProvider*) icons.get());
     
     //icon = u->getDesktopIcon(file.fileName(), icon);
-    icon = ((UnixIconProvider*)icons)->getDesktopIcon(file.fileName(), icon);
+    icon = ((X11IconProvider*)icons)->getDesktopIcon(file.fileName(), icon);
 
     QFileInfo inf(icon);
     if (!inf.exists()) {
@@ -240,7 +232,7 @@ void PlatformUnix::alterItem(CatItem* item) {
 }
 
 
-QString PlatformUnix::expandEnvironmentVars(QString txt)
+QString X11Platform::expandEnvironmentVars(QString txt)
 {
 	QStringList list = QProcess::systemEnvironment();
 	txt.replace('~', "$HOME$");
@@ -273,11 +265,4 @@ QString PlatformUnix::expandEnvironmentVars(QString txt)
 		curPos = nextPos;
 	}
 	return out;
-}
-
-
-// Create the application object
-QApplication* createApplication(int& argc, char** argv)
-{
-        return new PlatformUnix(argc, argv);
 }

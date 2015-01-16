@@ -18,7 +18,7 @@
  *
  */
 
-#include "platform_x11_hotkey.h"
+#include "x11_keytrigger.h"
 
 X11KeyTriggerManager* X11KeyTriggerManager::instance_;
 
@@ -217,7 +217,7 @@ GlobalShortcutManager::KeyTrigger::~KeyTrigger()
 
 bool GlobalShortcutManager::KeyTrigger::isConnected()
 {
-  	if (!d) return false;	
+    if (!d.get()) return false;
 	return !GlobalShortcutManager::KeyTrigger::Impl::failed;
 }
 

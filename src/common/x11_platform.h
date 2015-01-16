@@ -19,37 +19,16 @@
 
 #pragma once
 
-#include "platform_unix_util.h"
+#include "x11_iconprovider.h"
 #include "platform_base.h"
-#include "platform_base_hotkey.h"
-#include "platform_base_hottrigger.h"
+#include "globalshortcutmanager.h"
+#include "globalshortcuttrigger.h"
 
-// @@@ #include <QX11Info>
 
 #include <X11/X.h>
 #include <X11/Xlib.h>
 
-/*
-  This QAPP scans all x events for keypresses
-  and sends them off to the hotkey manager
-*/
-
-/*
-class MyApp : public QApplication {
-    Q_OBJECT
-    public:
-        MyApp(int argc, char** argv) : QApplication(argc,argv) {}
-	bool x11EventFilter ( XEvent * event ) {
-	    if (event->type == KeyPress) {
-		emit xkeyPressed(event);
-	    }
-	return false;
-    }    
-signals:
-    void xkeyPressed(XEvent*);
-};
-*/
-class PlatformUnix :  public PlatformBase
+class X11Platform:  public PlatformBase
 {
     Q_OBJECT
 
@@ -62,8 +41,8 @@ class PlatformUnix :  public PlatformBase
 
     QKeySequence oldKey;
  public:
-    PlatformUnix(int & argc, char** argv);
-    ~PlatformUnix();
+    X11Platform(int & argc, char** argv);
+    ~X11Platform();
     
     void setPreferredIconSize(int size) { size = size; return; }
 

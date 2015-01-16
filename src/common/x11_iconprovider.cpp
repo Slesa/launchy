@@ -1,13 +1,11 @@
-#include "platform_unix_util.h"
-
-
+#include "x11_iconprovider.h"
 #include <QPixmap>
 #include <QIcon>
 #include <QDebug>
 #include <QPainter>
 #include <QProcess>
 
-UnixIconProvider::UnixIconProvider() {
+X11IconProvider::X11IconProvider() {
     foreach(QString line, QProcess::systemEnvironment()) {
 	if (!line.startsWith("XDG_DATA_DIRS", Qt::CaseInsensitive))
 	    continue;
@@ -18,7 +16,7 @@ UnixIconProvider::UnixIconProvider() {
 }
 
 
-QIcon UnixIconProvider::icon(const QFileInfo& info)
+QIcon X11IconProvider::icon(const QFileInfo& info)
 {
     QString name = info.fileName();
 
@@ -72,7 +70,7 @@ QIcon UnixIconProvider::icon(const QFileInfo& info)
     return QIcon(getDesktopIcon(desktop));
 }
 
-QString UnixIconProvider::getDesktopIcon(QString desktopFile, QString IconName) {    
+QString X11IconProvider::getDesktopIcon(QString desktopFile, QString IconName) {
     if (QFile::exists(desktopFile)) 
 	desktopFile = desktopFile.mid(desktopFile.lastIndexOf("/")+1);	
     

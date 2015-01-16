@@ -20,31 +20,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef PLATFORM_BASE_H
 #define PLATFORM_BASE_H
 
-#include <QtGui> // OSX needs this
+#include "catalog.h"
+#include "directory.h"
 #include <QApplication>
 #include <QFileIconProvider>
-#include "Directory.h"
-#include "catalog.h"
+#include <QKeySequence>
+/*
+#include <QtGui> // OSX needs this
 #include "globals.h"
-
+*/
 
 class PlatformBase : public QApplication
 {
 public:
-	PlatformBase(int& argc, char** argv) : 
-	  QApplication(argc, argv)
-	{
-		platform = this;
-	}
-
-	virtual ~PlatformBase()
-	{
-		if (icons)
-		{
-			delete icons;
-			icons = NULL;
-		}
-	}
+    PlatformBase(int& argc, char** argv);
+    virtual ~PlatformBase();
 
 	QIcon icon(const QFileInfo& info) { return icons->icon(info); }
 	QIcon icon(QFileIconProvider::IconType type) { return icons->icon(type); }
@@ -70,9 +60,5 @@ protected:
 	QFileIconProvider* icons;
 	QKeySequence hotkey;
 };
-
-
-QApplication* createApplication(int& argc, char** argv);
-
 
 #endif

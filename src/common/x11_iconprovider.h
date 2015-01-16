@@ -1,13 +1,11 @@
-#pragma once
+#ifndef X11ICONPROVIDER_H
+#define X11ICONPROVIDER_H
+
 #include <QtGui>
-
-
 #include <QFileIconProvider>
-
 #include <QWidget>
 
-
-class UnixIconProvider : public QFileIconProvider
+class X11IconProvider : public QFileIconProvider
 {
  private:
     QHash<QString, QString> file2mime;
@@ -16,9 +14,10 @@ class UnixIconProvider : public QFileIconProvider
     QHash<QString, QString> icon2path;
     QStringList xdgDataDirs;
  public:
-    UnixIconProvider();
-    ~UnixIconProvider() {}
+    X11IconProvider();
+    ~X11IconProvider() {}
     virtual QIcon icon(const QFileInfo& info);
     QString getDesktopIcon(QString desktopFile, QString IconName = "");
 };
 
+#endif
