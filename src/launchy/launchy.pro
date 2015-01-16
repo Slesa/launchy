@@ -32,7 +32,7 @@ SOURCES			= main.cpp \
                 icon_delegate.cpp \
                 icon_extractor.cpp \
                 InputDataList.cpp \
-                options.cpp \
+                launchywidget.cpp \
                 platform_base_hotkey.cpp \
                 plugin_handler.cpp \
                 plugin_interface.cpp \
@@ -40,7 +40,8 @@ SOURCES			= main.cpp \
                 singleapplication.cpp \
                 ../common/DropListWidget.cpp \
                 ../common/FileBrowserDelegate.cpp \
-                ../common/FileBrowser.cpp
+                ../common/FileBrowser.cpp \
+                optionsdialog.cpp
 
 HEADERS			= main.h \
                 AnimationLabel.h \
@@ -57,7 +58,7 @@ HEADERS			= main.h \
                 icon_delegate.h \
                 icon_extractor.h \
                 InputDataList.h \
-                options.h \
+                launchywidget.h \
                 platform_base.h \
                 plugin_handler.h \
                 plugin_interface.h \
@@ -66,7 +67,8 @@ HEADERS			= main.h \
                 winfiles.h \
                 ../common/FileBrowserDelegate.h \
                 ../common/FileBrowser.h \
-                ../common/DropListWidget.h
+                ../common/DropListWidget.h \
+                optionsdialog.h
         
 TRANSLATIONS	= \
                 ../../translations/launchy_fr.ts \
