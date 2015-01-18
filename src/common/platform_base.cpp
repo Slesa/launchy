@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 PlatformBase::PlatformBase(int& argc, char** argv) :
 	  QApplication(argc, argv)
 {
-    platform = this;
+    g_platform = this;
 }
 
 PlatformBase::~PlatformBase()

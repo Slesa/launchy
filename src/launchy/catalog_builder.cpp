@@ -47,7 +47,7 @@ void CatalogBuilder::buildCatalog()
 
 	while (currentItem < memDirs.count())
 	{
-		QString cur = platform->expandEnvironmentVars(memDirs[currentItem].name);
+        QString cur = g_platform->expandEnvironmentVars(memDirs[currentItem].name);
 		indexDirectory(cur, memDirs[currentItem].types, memDirs[currentItem].indexDirs, memDirs[currentItem].indexExe, memDirs[currentItem].depth);
 		progressStep(currentItem);
 	}
@@ -149,7 +149,7 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 		if (!indexed.contains(dir + "/" + files[i]))
 		{
 			CatItem item(dir + "/" + files[i]);
-			platform->alterItem(&item);
+            g_platform->alterItem(&item);
 #ifdef Q_OS_LINUX
                         if(item.fullPath.endsWith(".desktop") && item.icon == "")
                             continue;

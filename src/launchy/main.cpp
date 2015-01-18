@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
         {
             _singleApplication->release();
             qDebug() << "Already running";
-            platform->sendInstanceCommand(command);
+            g_platform->sendInstanceCommand(command);
             exit(1);
         }
     }
@@ -126,8 +126,8 @@ int main(int argc, char *argv[])
 	delete widget;
 	widget = NULL;
 
-	delete platform;
-	platform = NULL;
+    delete g_platform;
+    g_platform = NULL;
 
     return result;
 }
