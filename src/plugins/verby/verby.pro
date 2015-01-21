@@ -7,7 +7,8 @@ CONFIG += plugin \
     debug_and_release
 
 VPATH += ../../launchy/
-INCLUDEPATH += ../../launchy/
+INCLUDEPATH += ../../launchy/ \
+        ../../common
 
 UI_DIR = .ui
 MOC_DIR = .moc

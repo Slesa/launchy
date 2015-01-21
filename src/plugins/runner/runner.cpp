@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 void RunnerPlugin::init()
 {
-	QSettings* set = *settings;
+    QSettings* set = settings;
 	cmds.clear();
 
 	if ( set->value("runner/version", 0.0).toDouble() == 0.0 )
@@ -169,7 +169,7 @@ void RunnerPlugin::doDialog(QWidget* parent, QWidget** newDlg)
 {
 	if (gui != NULL)
 		return;
-	gui.reset(new Gui(parent, *settings));
+    gui.reset(new Gui(parent, settings));
     *newDlg = gui.data();
 }
 

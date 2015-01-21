@@ -97,7 +97,7 @@ void Suggest::httpReadyRead()
 
 void WebyPlugin::init()
 {
-    QSettings* set = *settings;
+    QSettings* set = settings;
 
     // get config / settings directory (base for 'temporary' icon cache dir)
     QString iniFilename = set->fileName();
@@ -245,7 +245,7 @@ void WebyPlugin::getLabels(QList<InputData>* inputData)
     const QString & text = inputData->last().getText();
 
     QString defaultMatchExpression = "^(http|https|ftp)://|^www.|.com|.co.[a-z]{2,}|.net|.org";
-    QString matchExpression = (*settings)->value("weby/UrlRegExp", defaultMatchExpression).toString();
+    QString matchExpression = settings->value("weby/UrlRegExp", defaultMatchExpression).toString();
     QRegExp regex(matchExpression);
     if (!regex.isValid())
     {
@@ -478,7 +478,7 @@ void WebyPlugin::getCatalog(QList<CatItem>* items)
         indexIE(path, items);
     }
 #endif
-    if ((*settings)->value("weby/firefox", true).toBool())
+    if (settings->value("weby/firefox", true).toBool())
     {
         QString path = getFirefoxPath();
         indexFirefox(path, items);
@@ -570,7 +570,7 @@ void WebyPlugin::doDialog(QWidget* parent, QWidget** newDlg)
 {
     if (gui != NULL)
         return;
-    gui.reset(new Gui(parent, *settings));
+    gui.reset(new Gui(parent, settings));
     *newDlg = gui.data();
 }
 

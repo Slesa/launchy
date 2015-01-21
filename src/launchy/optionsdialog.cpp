@@ -48,33 +48,33 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 #endif
 	// Load General Options
 	if (QSystemTrayIcon::isSystemTrayAvailable())
-        genShowTrayIcon->setChecked(g_settings->value("GenOps/showtrayicon", true).toBool());
+        genShowTrayIcon->setChecked(g_settings.showTrayIcon());
 	else
 		genShowTrayIcon->hide();
-    genAlwaysShow->setChecked(g_settings->value("GenOps/alwaysshow", false).toBool());
-    genAlwaysTop->setChecked(g_settings->value("GenOps/alwaystop", false).toBool());
-	genPortable->setChecked(settings.isPortable());
-    genHideFocus->setChecked(g_settings->value("GenOps/hideiflostfocus", false).toBool());
-    genDecorateText->setChecked(g_settings->value("GenOps/decoratetext", false).toBool());
-    int center = g_settings->value("GenOps/alwayscenter", 3).toInt();
+    genAlwaysShow->setChecked(g_settings.doAlwaysShow());
+    genAlwaysTop->setChecked(g_settings.alwaysOnTop());
+    genPortable->setChecked(g_settings.isPortable());
+    genHideFocus->setChecked(g_settings.hideIfLostFocus());
+    genDecorateText->setChecked(g_settings.doDecorateText());
+    int center = g_settings.getAutoSuggestDelay();
 	genHCenter->setChecked((center & 1) != 0);
 	genVCenter->setChecked((center & 2) != 0);
-    genShiftDrag->setChecked(g_settings->value("GenOps/dragmode", 0) == 1);
-    genUpdateCheck->setChecked(g_settings->value("GenOps/updatecheck", true).toBool());
-    genShowHidden->setChecked(g_settings->value("GenOps/showHiddenFiles", false).toBool());
-    genShowNetwork->setChecked(g_settings->value("GenOps/showNetwork", true).toBool());
-    genCondensed->setCurrentIndex(g_settings->value("GenOps/condensedView", 2).toInt());
-    genAutoSuggestDelay->setValue(g_settings->value("GenOps/autoSuggestDelay", 1000).toInt());
-    int updateInterval = g_settings->value("GenOps/updatetimer", 10).toInt();
+    genShiftDrag->setChecked(g_settings.getDragMode() == 1);
+    genUpdateCheck->setChecked(g_settings.checkForUpdates());
+    genShowHidden->setChecked(g_settings.showHiddenFiles());
+    genShowNetwork->setChecked(g_settings.showNetwork());
+    genCondensed->setCurrentIndex(g_settings.getCondensedView());
+    genAutoSuggestDelay->setValue(g_settings.getAutoSuggestDelay());
+    int updateInterval = g_settings.getUpdateTimer();
 	connect(genUpdateCatalog, SIGNAL(stateChanged(int)), this, SLOT(autoUpdateCheckChanged(int)));
 	genUpdateMinutes->setValue(updateInterval);
 	genUpdateCatalog->setChecked(updateInterval > 0);
-    genMaxViewable->setValue(g_settings->value("GenOps/numviewable", 4).toInt());
-    genNumResults->setValue(g_settings->value("GenOps/numresults", 10).toInt());
-    genNumHistory->setValue(g_settings->value("GenOps/maxitemsinhistory", 20).toInt());
-    genOpaqueness->setValue(g_settings->value("GenOps/opaqueness", 100).toInt());
-    genFadeIn->setValue(g_settings->value("GenOps/fadein", 0).toInt());
-    genFadeOut->setValue(g_settings->value("GenOps/fadeout", 20).toInt());
+    genMaxViewable->setValue(g_settings.getNumViewable());
+    genNumResults->setValue(g_settings.maxNumberOfResults());
+    genNumHistory->setValue(g_settings.getMaxItemsInHistory());
+    genOpaqueness->setValue(g_settings.getOpaqness());
+    genFadeIn->setValue(g_settings.getFadeInTime());
+    genFadeOut->setValue(g_settings.getFadeOutTime());
     connect(genOpaqueness, SIGNAL(sliderMoved(int)), g_mainWidget, SLOT(setOpaqueness(int)));
 
 #ifdef Q_OS_MAC
@@ -138,15 +138,15 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	}
 
 	// Load up web proxy settings
-    genProxyHostname->setText(g_settings->value("WebProxy/hostAddress").toString());
-    genProxyPort->setText(g_settings->value("WebProxy/port").toString());
+    genProxyHostname->setText(g_settings.getProxyAddress());
+    genProxyPort->setText(QString::number(g_settings.getProxyPort()));
 
 	// Load up the skins list
-    QString skinName = g_settings->value("GenOps/skin", "Default").toString();
+    QString skinName = g_settings.getSkin();
 
 	int skinRow = 0;
 	QHash<QString, bool> knownSkins;
-	foreach(QString szDir, settings.directory("skins"))
+    foreach(QString szDir, g_settings.directory("skins"))
 	{
 		QDir dir(szDir);
 		QStringList dirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name);
@@ -191,7 +191,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	connect(catRescan, SIGNAL(clicked(bool)), this, SLOT(catRescanClicked(bool)));
 	catProgress->setVisible(false);
 
-	memDirs = SettingsManager::readCatalogDirectories();
+    memDirs = g_settings.readCatalogDirectories();
 	for (int i = 0; i < memDirs.count(); ++i)
 	{
 		catDirectories->addItem(memDirs[i].name);
@@ -275,9 +275,6 @@ void OptionsDialog::signalSkinChanged()
 
 void OptionsDialog::accept()
 {
-    if (g_settings == NULL)
-		return;
-
 	// See if the new hotkey works, if not we're not leaving the dialog.
 	QKeySequence hotkey(iMetaKeys[genModifierBox->currentIndex()] + iActionKeys[genKeyBox->currentIndex()]);
     if (!g_mainWidget->setHotkey(hotkey))
@@ -289,28 +286,28 @@ void OptionsDialog::accept()
     g_settings->setValue("GenOps/hotkey", hotkey.count() > 0 ? hotkey[0] : 0);
 
 	// Save General Options
-    g_settings->setValue("GenOps/showtrayicon", genShowTrayIcon->isChecked());
-    g_settings->setValue("GenOps/alwaysshow", genAlwaysShow->isChecked());
-    g_settings->setValue("GenOps/alwaystop", genAlwaysTop->isChecked());
-    g_settings->setValue("GenOps/updatecheck", genUpdateCheck->isChecked());
-    g_settings->setValue("GenOps/decoratetext", genDecorateText->isChecked());
-    g_settings->setValue("GenOps/hideiflostfocus", genHideFocus->isChecked());
-    g_settings->setValue("GenOps/alwayscenter", (genHCenter->isChecked() ? 1 : 0) | (genVCenter->isChecked() ? 2 : 0));
-    g_settings->setValue("GenOps/dragmode", genShiftDrag->isChecked() ? 1 : 0);
-    g_settings->setValue("GenOps/showHiddenFiles", genShowHidden->isChecked());
-    g_settings->setValue("GenOps/showNetwork", genShowNetwork->isChecked());
-    g_settings->setValue("GenOps/condensedView", genCondensed->currentIndex());
-    g_settings->setValue("GenOps/autoSuggestDelay", genAutoSuggestDelay->value());
-    g_settings->setValue("GenOps/updatetimer", genUpdateCatalog->isChecked() ? genUpdateMinutes->value() : 0);
-    g_settings->setValue("GenOps/numviewable", genMaxViewable->value());
-    g_settings->setValue("GenOps/numresults", genNumResults->value());
-    g_settings->setValue("GenOps/maxitemsinhistory", genNumHistory->value());
-    g_settings->setValue("GenOps/opaqueness", genOpaqueness->value());
-    g_settings->setValue("GenOps/fadein", genFadeIn->value());
-    g_settings->setValue("GenOps/fadeout", genFadeOut->value());
+    g_settings.setShowTrayIcon(genShowTrayIcon->isChecked());
+    g_settings.setAlwaysShow(genAlwaysShow->isChecked());
+    g_settings.setAlwaysOnTop(enAlwaysTop->isChecked());
+    g_settings.setCheckForUpdates(genUpdateCheck->isChecked());
+    g_settings.setDoDecorateText(genDecorateText->isChecked());
+    g_settings.setHideIfLostFocus(genHideFocus->isChecked());
+    g_settings.setAlwaysCenterOption((genHCenter->isChecked() ? 1 : 0) | (genVCenter->isChecked() ? 2 : 0));
+    g_settings.setDragMode(genShiftDrag->isChecked() ? 1 : 0);
+    g_settings.setShowHiddenFiles(genShowHidden->isChecked());
+    g_settings.setShowNetwork(genShowNetwork->isChecked());
+    g_settings.setCondesedView(genCondensed->currentIndex());
+    g_settings.setAutoSuggestDelay(genAutoSuggestDelay->value());
+    g_settings.setUpdateTimer(genUpdateCatalog->isChecked() ? genUpdateMinutes->value() : 0);
+    g_settings.setNumViewable(genMaxViewable->value());
+    g_settings.setMaxNumberOfResults(genNumResults->value());
+    g_settings.setMaxItemsInHistory(genNumHistory->value());
+    g_settings.setOpaqness(genOpaqueness->value());
+    g_settings.setFadeInTime(genFadeIn->value());
+    g_settings.setFadeOutTime(genFadeOut->value());
 
-    g_settings->setValue("WebProxy/hostAddress", genProxyHostname->text());
-    g_settings->setValue("WebProxy/port", genProxyPort->text());
+    g_settings.setProxyAddress(genProxyHostname->text());
+    g_settings.setProxyPort(genProxyPort->text());
 
 	// Apply General Options
     settings.setPortable(genPortable->isChecked(), this);

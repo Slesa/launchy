@@ -606,7 +606,7 @@ void LaunchyWidget::alternativesKeyPressEvent(QKeyEvent* event)
 				QString location = "History/" + input->text();
 				QStringList hist;
 				hist << searchResults[row].lowName << searchResults[row].fullPath;
-                g_settings->setValue(location, hist);
+                g_settings.setHistory(location, hist);
 
 				if (row > 0)
 					searchResults.move(row, 0);
@@ -1132,7 +1132,7 @@ void LaunchyWidget::saveSettings()
 {
 	qDebug() << "Save settings";
 	savePosition();
-    g_settings.sync();
+    // @@@ g_settings.sync();
     catalog->save(g_settings.catalogFilename());
     history.save(g_settings.historyFilename());
 }
@@ -1224,17 +1224,17 @@ void LaunchyWidget::applySkin(const QString& name)
 	if (listDelegate == NULL)
 		return;
 
-	QString directory = settings.skinPath(name);
+    QString directory = g_settings.skinPath(name);
 	// Use default skin if this one doesn't exist or isn't valid
 	if (directory.length() == 0)
 	{
-		QString defaultSkin = settings.directory("defSkin")[0];
-		directory = settings.skinPath(defaultSkin);
+        QString defaultSkin = g_settings.directory("defSkin")[0];
+        directory = g_settings.skinPath(defaultSkin);
 		// If still no good then fail with an ugly default
 		if (directory.length() == 0)
 			return;
 
-        g_settings->setSkin(defaultSkin);
+        g_settings.setSkin(defaultSkin);
 	}
 
 	// Set a few defaults
@@ -1404,7 +1404,7 @@ void LaunchyWidget::mousePressEvent(QMouseEvent *e)
 {
 	if (e->buttons() == Qt::LeftButton)
 	{
-        if (g_settings->value("GenOps/dragmode", 0).toInt() == 0 || (e->modifiers() & Qt::ShiftModifier))
+        if (g_settings.getDragMode() == 0 || (e->modifiers() & Qt::ShiftModifier))
 		{
 			dragging = true;
 			dragStartPoint = e->pos();
@@ -1505,9 +1505,9 @@ void LaunchyWidget::showOptionsDialog()
 void LaunchyWidget::shouldDonate()
 {
 	QDateTime time = QDateTime::currentDateTime();
-    QDateTime donateTime = g_settings->value("donateTime",time.addDays(21)).toDateTime();
+    QDateTime donateTime = g_settings.getDonateTime(time.addDays(21));
 	if (donateTime.isNull()) return;
-    g_settings->setValue("donateTime", donateTime);
+    g_settings.setDonateTime(donateTime);
 
 	if (donateTime <= time)
 	{
@@ -1515,7 +1515,7 @@ void LaunchyWidget::shouldDonate()
 		runProgram("http://www.launchy.net/donate.html", "");
 #endif
 		QDateTime def;
-        g_settings->setValue("donateTime", def);
+        g_settings.setDonateTime(def);
 	}
 }
 

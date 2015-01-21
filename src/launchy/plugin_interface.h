@@ -21,9 +21,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define PLUGIN_INTERFACE_H
 
 
+#include "catalog.h"
 #include <QObject>
 #include <QSettings>
-#include "catalog.h"
 
 #define DESKTOP_WINDOWS 0
 #define DESKTOP_GNOME 1
@@ -569,7 +569,7 @@ public:
 	double value = set->value("weby/version", 0.0);
 	\endverbatim
 	*/
-	QSettings** settings;
+    QSettings* settings;
 };
 
 

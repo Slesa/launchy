@@ -38,6 +38,10 @@ SettingsManager::SettingsManager()
 	portable = false;
 }
 
+QSettings* SettingsManager::getQSettings()
+{
+    return _settings;
+}
 
 void SettingsManager::load()
 {
@@ -224,9 +228,32 @@ void SettingsManager::writeCatalogDirectories(QList<Directory>& directories)
     _settings->endArray();
 }
 
+LoadablePlugins SettingsManager::readLoadablePlugins()
+{
+    LoadablePlugins loadable;
+    int size = _settings->beginReadArray("plugins");
+    for(int i = 0; i < size; ++i)
+    {
+        _settings->setArrayIndex(i);
+        uint id = _settings->value("id").toUInt();
+        bool toLoad = _settings->value("load").toBool();
+        loadable[id] = toLoad;
+    }
+    _settings->endArray();
+    return loadable;
+}
+
 void SettingsManager::adjustDonateTime()
 {
     _settings->setValue("donateTime", QDateTime::currentDateTime().addDays(21));
+}
+QDateTime SettingsManager::getDonateTime(const QDateTime& def) const
+{
+    return _settings->value("donateTime", def).toDateTime();
+}
+void SettingsManager::setDonateTime(const QDateTime& donateTime)
+{
+    _settings->setValue("donateTime", donateTime);
 }
 
 int SettingsManager::getVersion() const
@@ -238,19 +265,36 @@ void SettingsManager::setVersion(int version)
     _settings->setValue("version", version);
 }
 
+void SettingsManager::setHistory(const QString& location, const QStringList& history)
+{
+    _settings->setValue(location, history);
+}
+
 int SettingsManager::getFadeInTime() const
 {
     return _settings->value("GenOps/fadein", 0).toInt();
+}
+void SettingsManager::setFadeInTime(int time)
+{
+    _settings->setValue("GenOps/fadein", time);
 }
 
 int SettingsManager::getFadeOutTime() const
 {
     return _settings->value("GenOps/fadeout", 0).toInt();
 }
+void SettingsManager::setFadeOutTime(int time)
+{
+    _settings->setValue("GenOps/fadeout", time);
+}
 
 int SettingsManager::getMaxItemsInHistory() const
 {
     return _settings->value("GenOps/maxitemsinhistory", 20).toInt();
+}
+void SettingsManager::setMaxItemsInHistory(int max)
+{
+    _settings->setValue("GenOps/maxitemsinhistory", max);
 }
 
 QStringList SettingsManager::getHistoryFor(const QString& location)
@@ -263,40 +307,81 @@ int SettingsManager::maxNumberOfResults() const
 {
     return _settings->value("GenOps/numresults", 10).toInt();
 }
+void SettingsManager::setMaxNumberOfResults(int max)
+{
+    _settings->setValue("GenOps/numresults", max);
+}
 
 bool SettingsManager::doDecorateText() const
 {
     return _settings->value("GenOps/decoratetext", false).toBool();
+}
+void SettingsManager::setDoDecorateText(bool on)
+{
+    _settings->setValue("GenOps/decoratetext", on);
 }
 
 double SettingsManager::getOpaqness() const
 {
     return _settings->value("GenOps/opaqueness", 100).toInt() / 100.0;
 }
+void SettingsManager::setOpaqness(double value)
+{
+    _settings->setValue("GenOps/opaqueness", value);
+}
 
 bool SettingsManager::showHiddenFiles() const
 {
     return _settings->value("GenOps/showHiddenFiles", false).toBool();
+}
+void SettingsManager::setShowHiddenFiles(int show)
+{
+    _settings->setValue("GenOps/showHiddenFiles", show);
+}
+
+bool SettingsManager::showNetwork() const
+{
+    return _settings->value("GenOps/showNetwork", true).toBool();
+}
+void SettingsManager::setShowNetwork(bool show)
+{
+    _settings->setValue("GenOps/showNetwork", show);
 }
 
 int SettingsManager::getCondensedView() const
 {
     return _settings->value("GenOps/condensedView", 2).toInt();
 }
+void SettingsManager::setCondesedView(int view)
+{
+    _settings->setValue("GenOps/condensedView", view);
+}
 
 bool SettingsManager::doAlwaysShow() const
 {
     return _settings->value("GenOps/alwaysshow", false).toBool();
+}
+void SettingsManager::setAlwaysShow(bool show)
+{
+    _settings->setValue("GenOps/alwaysshow", show);
 }
 
 bool SettingsManager::alwaysOnTop() const
 {
     return _settings->value("GenOps/alwaystop", false).toBool();
 }
+void SettingsManager::setAlwaysOnTop(bool on)
+{
+    _settings->setValue("GenOps/alwaystop", on);
+}
 
 bool SettingsManager::checkForUpdates() const
 {
     return _settings->value("GenOps/updatecheck", true).toBool();
+}
+void SettingsManager::setCheckForUpdates(bool on)
+{
+    _settings->setValue("GenOps/updatecheck", on);
 }
 
 QString SettingsManager::getSkin() const
@@ -321,28 +406,64 @@ bool SettingsManager::showTrayIcon() const
 {
     return _settings->value("GenOps/showtrayicon", true).toBool();
 }
+void SettingsManager::setShowTrayIcon(bool show)
+{
+    _settings->setValue("GenOps/showtrayicon", show);
+}
 
 int SettingsManager::getNumViewable() const
 {
     return _settings->value("GenOps/numviewable", "4").toInt();
+}
+void SettingsManager::setNumViewable(int view)
+{
+    _settings->setValue("GenOps/numviewable", view);
 }
 
 bool SettingsManager::hideIfLostFocus() const
 {
     return _settings->value("GenOps/hideiflostfocus", false).toBool();
 }
+void SettingsManager::setHideIfLostFocus(bool on)
+{
+    _settings->setValue("GenOps/hideiflostfocus", on);
+}
 
 int SettingsManager::getAutoSuggestDelay() const
 {
     return _settings->value("GenOps/autoSuggestDelay", 1000).toInt();
 }
+void SettingsManager::setAutoSuggestDelay(int delay)
+{
+    _settings->setValue("GenOps/autoSuggestDelay", delay);
+}
+
 int SettingsManager::getUpdateTimer() const
 {
     return _settings->value("GenOps/updatetimer", 10).toInt();
 }
+void SettingsManager::setUpdateTimer(int delay)
+{
+    _settings->setValue("GenOps/updatetimer", delay);
+}
+
 int SettingsManager::getAlwaysCenterOption() const
 {
     return _settings->value("GenOps/alwayscenter", 3).toInt();
+}
+
+void SettingsManager::setAlwaysCenterOption(int option)
+{
+    _settings->setValue("GenOps/alwayscenter", option);
+}
+
+int SettingsManager::getDragMode() const
+{
+    return _settings->value("GenOps/dragmode", 0).toInt();
+}
+void SettingsManager::setDragMode(int mode)
+{
+    _settings->setValue("GenOps/dragmode", mode);
 }
 
 int SettingsManager::getHotkey() const
@@ -368,7 +489,16 @@ QString SettingsManager::getProxyAddress() const
 {
     return _settings->value("WebProxy/hostAddress", "").toString();
 }
+void SettingsManager::setProxyAddress(const QString& address)
+{
+    _settings->setValue("WebProxy/hostAddress", address);
+}
+
 int SettingsManager::getProxyPort() const
 {
-
+    return _settings->value("WebProxy/port", 0).toInt();
+}
+void SettingsManager::setProxyPort(int port)
+{
+    _settings->setValue("WebProxy/port", port);
 }

@@ -115,7 +115,7 @@ void VerbyPlugin::addCatItem(QString text, QList<CatItem>* results, QString full
 	if (text.length() == 0 || isMatch(shortName, text))
 	{
         CatItem item = CatItem(fullName, shortName, HASH_VERBY, getIconPath() + iconName);
-		item.usage = (*settings)->value("verby/" + shortName.replace(" ", "") , 0).toInt();
+        item.usage = settings->value("verby/" + shortName.replace(" ", "") , 0).toInt();
 		results->push_back(item);
 	}
 }
@@ -123,7 +123,7 @@ void VerbyPlugin::addCatItem(QString text, QList<CatItem>* results, QString full
 
 void VerbyPlugin::updateUsage(CatItem& item)
 {
-	(*settings)->setValue("verby/" + item.shortName.replace(" ", ""), item.usage + 1);
+    settings->setValue("verby/" + item.shortName.replace(" ", ""), item.usage + 1);
 }
 
 

@@ -141,19 +141,9 @@ void PluginHandler::endDialog(uint id, bool accept)
 void PluginHandler::loadPlugins()
 {
 	// Get the list of loadable plugins
-	QHash<uint,bool> loadable;
+    LoadablePlugins loadable = g_settings.readLoadablePlugins();
 
-    int size = g_settings->beginReadArray("plugins");
-	for(int i = 0; i < size; ++i)
-	{
-        g_settings->setArrayIndex(i);
-        uint id = g_settings->value("id").toUInt();
-        bool toLoad = g_settings->value("load").toBool();
-		loadable[id] = toLoad;
-	}
-    g_settings->endArray();
-
-	foreach(QString directory, settings.directory("plugins"))
+    foreach(QString directory, g_settings.directory("plugins"))
 	{
 		// Load up the plugins in the plugins/ directory
 		QDir pluginsDir(directory);
@@ -178,7 +168,7 @@ void PluginHandler::loadPlugins()
 
 			qDebug() << "Plugin loaded";
 
-            plug->settings = &g_settings;
+            plug->settings = g_settings.getQSettings();
 			PluginInfo info;
 			info.obj = plug;
 			info.path = pluginsDir.absoluteFilePath(fileName);

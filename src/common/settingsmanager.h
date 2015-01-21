@@ -25,13 +25,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 class QSettings;
 
+class LoadablePlugins : public QHash<uint, bool> {};
+
 class SettingsManager : public QObject
 {
 public:
     static const char* SkinDefault;
 
 public:
-	SettingsManager();
+    SettingsManager();
+    QSettings* getQSettings();
 	void load();
 
 	bool isPortable() const;
@@ -45,24 +48,53 @@ public:
     QList<Directory> readCatalogDirectories();
     void writeCatalogDirectories(QList<Directory>& directories);
 
+    LoadablePlugins readLoadablePlugins();
+
     // Settings properties
     void adjustDonateTime();
+    QDateTime getDonateTime(const QDateTime& def) const;
+    void setDonateTime(const QDateTime& donateTime);
 
     int getVersion() const;
     void setVersion(int version);
 
+    void setHistory(const QString& location, const QStringList& history);
+
     int getFadeInTime() const;
+    void setFadeInTime(int time);
     int getFadeOutTime() const;
+    void setFadeOutTime(int time);
+
     int getMaxItemsInHistory() const;
+    void setMaxItemsInHistory(int max);
+
     QStringList getHistoryFor(const QString& location);
     int maxNumberOfResults() const;
+    void setMaxNumberOfResults(int max);
+
     bool doDecorateText() const;
+    void setDoDecorateText(bool on);
+
     double getOpaqness() const;
+    void setOpaqness(double value);
+
     bool showHiddenFiles() const;
+    void setShowHiddenFiles(int show);
+
+    bool showNetwork() const;
+    void setShowNetwork(bool show);
+
     int getCondensedView() const;
+    void setCondesedView(int view);
+
     bool doAlwaysShow() const;
+    void setAlwaysShow(bool show);
+
     bool alwaysOnTop() const;
+    void setAlwaysOnTop(bool on);
+
     bool checkForUpdates() const;
+    void setCheckForUpdates(bool on);
 
     QString getSkin() const;
     void setSkin(const QString& skin);
@@ -71,11 +103,25 @@ public:
     void setStoredPosition(const QPoint& point);
 
     bool showTrayIcon() const;
+    void setShowTrayIcon(bool show);
+
     int getNumViewable() const;
+    void setNumViewable(int view);
+
     bool hideIfLostFocus() const;
+    void setHideIfLostFocus(bool on);
+
     int getAutoSuggestDelay() const;
+    void setAutoSuggestDelay(int delay);
+
     int getUpdateTimer() const;
+    void setUpdateTimer(int delay);
+
     int getAlwaysCenterOption() const;
+    void setAlwaysCenterOption(int option);
+
+    int getDragMode() const;
+    void setDragMode(int mode);
 
     int getHotkey() const;
     int getHotkeyModifier(int def) const;
@@ -83,7 +129,9 @@ public:
 
     int getProxyType() const;
     QString getProxyAddress() const;
+    void setProxyAddress(const QString& address);
     int getProxyPort() const;
+    void setProxyPort(int port);
 
 private:
 	QString configDirectory(bool portable) const;
