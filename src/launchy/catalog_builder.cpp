@@ -40,7 +40,7 @@ void CatalogBuilder::buildCatalog()
 	catalog->incrementTimestamp();
 	indexed.clear();
 
-	QList<Directory> memDirs = SettingsManager::readCatalogDirectories();
+    QList<Directory> memDirs = g_settings.readCatalogDirectories();
 	QHash<uint, PluginInfo> pluginsInfo = plugins->getPlugins();
 	totalItems = memDirs.count() + pluginsInfo.count();
 	currentItem = 0;

@@ -116,8 +116,7 @@ void Catalog::searchCatalogs(const QString& text, QList<CatItem>& out)
 
 	// Check for history matches
 	QString location = "History/" + text;
-	QStringList hist;
-    hist = g_settings->value(location, hist).toStringList();
+    QStringList hist = g_settings.getHistoryFor(location);
 	if (hist.count() == 2)
 	{
 		for (int i = 0; i < catMatches.count(); i++)
@@ -133,7 +132,7 @@ void Catalog::searchCatalogs(const QString& text, QList<CatItem>& out)
 	}
 
 	// Load up the results
-    int max = g_settings->value("GenOps/numresults", 10).toInt();
+    int max = g_settings.maxNumberOfResults();
 	for (int i = 0; i < max && i < catMatches.count(); i++)
 	{
 		out.push_back(*catMatches[i]);
@@ -145,8 +144,7 @@ void Catalog::promoteRecentlyUsedItems(const QString& text, QList<CatItem> & lis
 {
 	// Check for history matches
 	QString location = "History/" + text;
-	QStringList hist;
-    hist = g_settings->value(location, hist).toStringList();
+    QStringList hist = g_settings.getHistoryFor(location);
 	if (hist.count() == 2)
 	{
 		for (int i = 0; i < list.count(); i++)
@@ -165,7 +163,7 @@ void Catalog::promoteRecentlyUsedItems(const QString& text, QList<CatItem> & lis
 
 QString Catalog::decorateText(const QString& text, const QString& match, bool outputRichText)
 {
-    if (!g_settings->value("GenOps/decoratetext", false).toBool())
+    if (!g_settings.doDecorateText())
 		return text;
 	QString decoratedText;
 	int matchLength = match.count();

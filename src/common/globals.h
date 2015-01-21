@@ -39,8 +39,7 @@ class CatalogBuilder;
 
 extern PlatformBase* g_platform;
 extern LaunchyWidget* g_mainWidget;
-extern QSettings* g_settings;
-extern SettingsManager settings;
+extern SettingsManager g_settings;
 extern CatalogBuilder* g_builder;
 extern QString g_searchText;
 

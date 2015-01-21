@@ -23,8 +23,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QString>
 #include <QHash>
 
+class QSettings;
+
 class SettingsManager : public QObject
 {
+public:
+    static const char* SkinDefault;
+
 public:
 	SettingsManager();
 	void load();
@@ -37,15 +42,57 @@ public:
     void setPortable(bool makePortable, QWidget* parent);
 	void removeAll();
 	void setProfileName(const QString& name);
-	static QList<Directory> readCatalogDirectories();
-	static void writeCatalogDirectories(QList<Directory>& directories);
+    QList<Directory> readCatalogDirectories();
+    void writeCatalogDirectories(QList<Directory>& directories);
+
+    // Settings properties
+    void adjustDonateTime();
+
+    int getVersion() const;
+    void setVersion(int version);
+
+    int getFadeInTime() const;
+    int getFadeOutTime() const;
+    int getMaxItemsInHistory() const;
+    QStringList getHistoryFor(const QString& location);
+    int maxNumberOfResults() const;
+    bool doDecorateText() const;
+    double getOpaqness() const;
+    bool showHiddenFiles() const;
+    int getCondensedView() const;
+    bool doAlwaysShow() const;
+    bool alwaysOnTop() const;
+    bool checkForUpdates() const;
+
+    QString getSkin() const;
+    void setSkin(const QString& skin);
+
+    QPoint getStoredPosition() const;
+    void setStoredPosition(const QPoint& point);
+
+    bool showTrayIcon() const;
+    int getNumViewable() const;
+    bool hideIfLostFocus() const;
+    int getAutoSuggestDelay() const;
+    int getUpdateTimer() const;
+    int getAlwaysCenterOption() const;
+
+    int getHotkey() const;
+    int getHotkeyModifier(int def) const;
+    int getHotkeyAction() const;
+
+    int getProxyType() const;
+    QString getProxyAddress() const;
+    int getProxyPort() const;
 
 private:
 	QString configDirectory(bool portable) const;
 
-	bool portable;
+private:
+    bool portable;
 	QString profileName;
-	QHash<QString, QList<QString> > dirs;
+    QHash<QString, QList<QString> > dirs;
+    QSettings* _settings;
 };
 
 

@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 
     QString profile = parser.getProfile();
     if(!profile.isEmpty())
-        settings.setProfileName(profile);
+        g_settings.setProfileName(profile);
 
     if(parser.doLog())
     {

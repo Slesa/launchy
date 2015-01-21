@@ -36,10 +36,10 @@ Fader::~Fader()
 
 void Fader::fadeIn(bool quick)
 {
-        int time = g_settings->value("GenOps/fadein", 0).toInt();
+    int time = g_settings.getFadeInTime();
 
 	mutex.lock();
-    targetLevel = g_settings->value("GenOps/opaqueness", 100).toInt() / 100.0;
+    targetLevel = g_settings.getOpaqness();
 	delta = 0.05;
 	delay = quick ? 0 : (int)(time * delta / targetLevel);
 	if (delay > 10)
@@ -66,8 +66,8 @@ void Fader::fadeIn(bool quick)
 
 void Fader::fadeOut(bool quick)
 {
-    int time = g_settings->value("GenOps/fadeout", 0).toInt();
-    double opaqueness = g_settings->value("GenOps/opaqueness", 100).toInt() / 100.0;
+    int time = g_settings.getFadeOutTime();
+    double opaqueness = g_settings.getOpaqness();
 
 	mutex.lock();
 	targetLevel = 0;

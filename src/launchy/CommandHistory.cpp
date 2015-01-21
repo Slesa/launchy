@@ -89,7 +89,7 @@ void CommandHistory::addItem(const InputDataList& item)
 	historyItem.first().setLabel(LABEL_HISTORY);
 	history.push_front(historyItem);
 
-    if (history.size() > g_settings->value("GenOps/maxitemsinhistory", 20).toInt())
+    if (history.size() > g_settings.getMaxItemsInHistory())
 	{
 		history.pop_back();
 	}

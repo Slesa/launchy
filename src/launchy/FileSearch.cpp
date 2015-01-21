@@ -103,7 +103,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 		filePart = filePart.toLower();
 #endif
 
-        if (g_settings->value("GenOps/showHiddenFiles", false).toBool())
+        if (g_settings.showHiddenFiles())
 			filters |= QDir::Hidden;
 
 		itemList = dir.entryList(filters, QDir::DirsLast | QDir::IgnoreCase | QDir::LocaleAware);

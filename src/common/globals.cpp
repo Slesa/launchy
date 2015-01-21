@@ -22,6 +22,5 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 PlatformBase* g_platform;
 LaunchyWidget* g_mainWidget;
-QSettings* g_settings;
 QString g_searchText;
 CatalogBuilder* g_builder;

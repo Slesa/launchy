@@ -139,12 +139,12 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	workingAnimation->setGeometry(QRect());
 
 	// Load settings
-	settings.load();
+    g_settings.load();
 
 	// If this is the first time running or a new version, call updateVersion
-    if (g_settings->value("version", 0).toInt() != LAUNCHY_VERSION)
+    if (g_settings.getVersion() != LAUNCHY_VERSION)
 	{
-        updateVersion(g_settings->value("version", 0).toInt());
+        updateVersion(g_settings.getVersion());
         command |= ShowView;
 	}
 
@@ -156,7 +156,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	alternatives->setUniformItemSizes(true);
 	listDelegate = new IconDelegate(this);
 	defaultListDelegate = alternatives->itemDelegate();
-    setSuggestionListMode(g_settings->value("GenOps/condensedView", 2).toInt());
+    setSuggestionListMode(g_settings.getCondensedView());
 	altScroll = alternatives->verticalScrollBar();
 	altScroll->setObjectName("altScroll");
 	connect(alternatives, SIGNAL(currentRowChanged(int)), this, SLOT(alternativesRowChanged(int)));
@@ -172,12 +172,12 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	plugins.loadPlugins();
 
 	// Set the general options
-    if (setAlwaysShow(g_settings->value("GenOps/alwaysshow", false).toBool()))
+    if (setAlwaysShow(g_settings.doAlwaysShow()))
         command |= ShowView;
-    setAlwaysTop(g_settings->value("GenOps/alwaystop", false).toBool());
+    setAlwaysTop(g_settings.alwaysOnTop());
 
 	// Check for udpates?
-    if (g_settings->value("GenOps/updatecheck", true).toBool())
+    if (g_settings.checkForUpdates())
 	{
 		checkForUpdate();
 	}
@@ -209,19 +209,19 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	builderThread.setObjectName("CatalogBuilder");
 
     catalog = g_builder->getCatalog();
-	if (!catalog->load(settings.catalogFilename()))
+    if (!catalog->load(g_settings.catalogFilename()))
 	{
 		command |= Rescan;
 	}
 
 	// Load the history
-	history.load(settings.historyFilename());
+    history.load(g_settings.historyFilename());
 
 	// Load the skin
-    applySkin(g_settings->value("GenOps/skin", "Default").toString());
+    applySkin(g_settings.getSkin());
 
 	// Move to saved position
-    loadPosition(g_settings->value("Display/pos", QPoint(0,0)).toPoint());
+    loadPosition(g_settings.getStoredPosition());
 	loadOptions();
 
 	executeStartupCommand(command);
@@ -252,7 +252,7 @@ void LaunchyWidget::executeStartupCommand(int command)
 	{
 		setOpaqueness(100);
 		showTrayIcon();
-		applySkin("Default");
+        applySkin(SettingsManager::SkinDefault);
 	}
 
     if (command & ShowView)
@@ -321,7 +321,7 @@ void LaunchyWidget::showTrayIcon()
 	if (!QSystemTrayIcon::isSystemTrayAvailable())
 		return;
 
-    if (g_settings->value("GenOps/showtrayicon", true).toBool())
+    if (g_settings.showTrayIcon())
 	{
 		if (!trayIcon)
 			trayIcon = new QSystemTrayIcon(this);
@@ -353,7 +353,7 @@ void LaunchyWidget::showTrayIcon()
 // and set its size and position accordingly.
 void LaunchyWidget::updateAlternatives(bool resetSelection)
 {
-    int mode = g_settings->value("GenOps/condensedView", 2).toInt();
+    int mode = g_settings.getCondensedView();
 	int i = 0;
 	for (; i < searchResults.size(); ++i)
 	{
@@ -394,7 +394,7 @@ void LaunchyWidget::updateAlternatives(bool resetSelection)
 	iconExtractor.processIcons(searchResults);
 
 	// Now resize and reposition the list
-    int numViewable = g_settings->value("GenOps/numviewable", "4").toInt();
+    int numViewable = g_settings.getNumViewable();
 	int min = alternatives->count() < numViewable ? alternatives->count() : numViewable;
 
 	// The stylesheet doesn't load immediately, so we cache the placement rectangle here
@@ -516,7 +516,7 @@ void LaunchyWidget::focusOutEvent(QFocusEvent* event)
 {
     if (event->reason() == Qt::ActiveWindowFocusReason)
 	{
-        if (g_settings->value("GenOps/hideiflostfocus", false).toBool() &&
+        if (g_settings.hideIfLostFocus() &&
                         !isActiveWindow() && !alternatives->isActiveWindow() && !optionsOpen && !fader->isFading())
 		{
 			hideLaunchy();
@@ -956,7 +956,7 @@ void LaunchyWidget::updateOutputWidgets(bool resetAlternativesSelection)
 
 void LaunchyWidget::startDropTimer()
 {
-    int delay = g_settings->value("GenOps/autoSuggestDelay", 1000).toInt();
+    int delay = g_settings.getAutoSuggestDelay();
 	if (delay > 0)
 		dropTimer->start(delay);
 	else
@@ -1080,19 +1080,19 @@ void LaunchyWidget::updateVersion(int oldVersion)
 {
 	if (oldVersion < 199)
 	{
-		settings.removeAll();
-		settings.load();
+        g_settings.removeAll();
+        g_settings.load();
 	}
 
 	if (oldVersion < 249)
 	{
-        g_settings->setValue("GenOps/skin", "Default");
+        g_settings.setSkin(SettingsManager::SkinDefault);
 	}
 
 	if (oldVersion < LAUNCHY_VERSION)
 	{
-        g_settings->setValue("donateTime", QDateTime::currentDateTime().addDays(21));
-        g_settings->setValue("version", LAUNCHY_VERSION);
+        g_settings.adjustDonateTime();
+        g_settings.setVersion(LAUNCHY_VERSION);
 	}
 }
 
@@ -1114,7 +1114,7 @@ void LaunchyWidget::loadPosition(QPoint pt)
 	else if (newCenter.y() > screen.bottom())
 		pt.setY(screen.bottom()-rect.height());
 
-    int centerOption = g_settings->value("GenOps/alwayscenter", 3).toInt();
+    int centerOption = g_settings.getAutoSuggestDelay();
 	if (centerOption & 1)
 		pt.setX(screen.center().x() - rect.width()/2);
 	if (centerOption & 2)
@@ -1123,20 +1123,24 @@ void LaunchyWidget::loadPosition(QPoint pt)
 	move(pt);
 }
 
+void LaunchyWidget::savePosition()
+{
+    g_settings.setStoredPosition(pos());
+}
 
 void LaunchyWidget::saveSettings()
 {
 	qDebug() << "Save settings";
 	savePosition();
-    g_settings->sync();
-	catalog->save(settings.catalogFilename());
-	history.save(settings.historyFilename());
+    g_settings.sync();
+    catalog->save(g_settings.catalogFilename());
+    history.save(g_settings.historyFilename());
 }
 
 
 void LaunchyWidget::startUpdateTimer()
 {
-    int time = g_settings->value("GenOps/updatetimer", 10).toInt();
+    int time = g_settings.getUpdateTimer();
 	if (time != 0)
 		updateTimer->start(time * 60000);
 	else
@@ -1230,7 +1234,7 @@ void LaunchyWidget::applySkin(const QString& name)
 		if (directory.length() == 0)
 			return;
 
-        g_settings->setValue("GenOps/skin", defaultSkin);
+        g_settings->setSkin(defaultSkin);
 	}
 
 	// Set a few defaults
@@ -1600,13 +1604,13 @@ void LaunchyWidget::hideLaunchy(bool noFade)
 void LaunchyWidget::loadOptions()
 {
 	// If a network proxy server is specified, apply an application wide NetworkProxy setting
-    QString proxyHost = g_settings->value("WebProxy/hostAddress", "").toString();
+    QString proxyHost = g_settings.getProxyAddress();
 	if (proxyHost.length() > 0)
 	{
 		QNetworkProxy proxy;
-        proxy.setType((QNetworkProxy::ProxyType)g_settings->value("WebProxy/type", 0).toInt());
-        proxy.setHostName(g_settings->value("WebProxy/hostAddress", "").toString());
-        proxy.setPort((quint16)g_settings->value("WebProxy/port", "").toInt());
+        proxy.setType((QNetworkProxy::ProxyType)g_settings.getProxyType());
+        proxy.setHostName(proxyHost);
+        proxy.setPort((quint16)g_settings.getProxyPort());
 		QNetworkProxy::setApplicationProxy(proxy);
 	}
 
@@ -1616,7 +1620,7 @@ void LaunchyWidget::loadOptions()
 
 int LaunchyWidget::getHotkey() const
 {
-    int hotkey = g_settings->value("GenOps/hotkey", -1).toInt();
+    int hotkey = g_settings.getHotkey();
 	if (hotkey == -1)
 	{
 #ifdef Q_OS_WIN
@@ -1628,8 +1632,7 @@ int LaunchyWidget::getHotkey() const
 #ifdef Q_OS_MAC
 		int meta = Qt::MetaModifier;
 #endif
-        hotkey = g_settings->value("GenOps/hotkeyModifier", meta).toInt() |
-                 g_settings->value("GenOps/hotkeyAction", Qt::Key_Space).toInt();
+        hotkey = g_settings.getHotkeyModifier(meta) | g_settings.getHotkeyAction();
 	}
 	return hotkey;
 }
