@@ -49,6 +49,7 @@ public:
     void writeCatalogDirectories(QList<Directory>& directories);
 
     LoadablePlugins readLoadablePlugins();
+    void writeLoadablePlugins(LoadablePlugins& plugins);
 
     // Settings properties
     void adjustDonateTime();
@@ -124,6 +125,7 @@ public:
     void setDragMode(int mode);
 
     int getHotkey() const;
+    void setHotkey(int key);
     int getHotkeyModifier(int def) const;
     int getHotkeyAction() const;
 

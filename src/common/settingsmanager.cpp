@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QMessageBox>
 #include <QDateTime>
 
-SettingsManager settings;
+SettingsManager g_settings;
 
 const char* SettingsManager::SkinDefault = "Default";
 
@@ -241,6 +241,19 @@ LoadablePlugins SettingsManager::readLoadablePlugins()
     }
     _settings->endArray();
     return loadable;
+}
+void SettingsManager::writeLoadablePlugins(LoadablePlugins& plugins)
+{
+    _settings->beginWriteArray("plugins");
+    int count = 0;
+    QHashIterator<uint, bool> iterx(plugins);
+    while(iterx.hasNext())
+    {
+        _settings->setArrayIndex(count++);
+        _settings->setValue("id", iterx.key());
+        _settings->setValue("load", iterx.value());
+    }
+    _settings->endArray();
 }
 
 void SettingsManager::adjustDonateTime()
@@ -469,6 +482,10 @@ void SettingsManager::setDragMode(int mode)
 int SettingsManager::getHotkey() const
 {
     return _settings->value("GenOps/hotkey", -1).toInt();
+}
+void SettingsManager::setHotkey(int key)
+{
+    _settings->setValue("GenOps/hotkey", key);
 }
 
 int SettingsManager::getHotkeyModifier(int def) const

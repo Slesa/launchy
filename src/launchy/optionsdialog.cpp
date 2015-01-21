@@ -283,12 +283,12 @@ void OptionsDialog::accept()
 		return;
 	}
 
-    g_settings->setValue("GenOps/hotkey", hotkey.count() > 0 ? hotkey[0] : 0);
+    g_settings.setHotkey(hotkey.count() > 0 ? hotkey[0] : 0);
 
 	// Save General Options
     g_settings.setShowTrayIcon(genShowTrayIcon->isChecked());
     g_settings.setAlwaysShow(genAlwaysShow->isChecked());
-    g_settings.setAlwaysOnTop(enAlwaysTop->isChecked());
+    g_settings.setAlwaysOnTop(genAlwaysTop->isChecked());
     g_settings.setCheckForUpdates(genUpdateCheck->isChecked());
     g_settings.setDoDecorateText(genDecorateText->isChecked());
     g_settings.setHideIfLostFocus(genHideFocus->isChecked());
@@ -307,16 +307,16 @@ void OptionsDialog::accept()
     g_settings.setFadeOutTime(genFadeOut->value());
 
     g_settings.setProxyAddress(genProxyHostname->text());
-    g_settings.setProxyPort(genProxyPort->text());
+    g_settings.setProxyPort(genProxyPort->text().toInt());
 
 	// Apply General Options
-    settings.setPortable(genPortable->isChecked(), this);
+    g_settings.setPortable(genPortable->isChecked(), this);
     g_mainWidget->startUpdateTimer();
     g_mainWidget->setSuggestionListMode(genCondensed->currentIndex());
     g_mainWidget->loadOptions();
 
 	// Apply Directory Options
-	SettingsManager::writeCatalogDirectories(memDirs);
+    g_settings.writeCatalogDirectories(memDirs);
 
 	if (curPlugin >= 0)
 	{
@@ -324,7 +324,7 @@ void OptionsDialog::accept()
         g_mainWidget->plugins.endDialog(item->data(Qt::UserRole).toUInt(), true);
 	}
 
-    g_settings->sync();
+    //@@@ g_settings.sync();
 
 	QDialog::accept();
 
@@ -335,12 +335,12 @@ void OptionsDialog::accept()
     g_mainWidget->setOpaqueness(genOpaqueness->value());
 
 	// Apply Skin Options
-    QString prevSkinName = g_settings->value("GenOps/skin", "Default").toString();
+    QString prevSkinName = g_settings.getSkin();
     if(skinList->currentItem()!=NULL) {
         QString skinName = skinList->currentItem()->text();
         if (skinList->currentRow() >= 0 && skinName != prevSkinName)
         {
-            g_settings->setValue("GenOps/skin", skinName);
+            g_settings.setSkin(skinName);
             g_mainWidget->setSkin(skinName);
             show = false;
         }
@@ -397,7 +397,7 @@ void OptionsDialog::skinChanged(const QString& newSkin)
 		return;
 
 	// Find the skin with this name
-	QString directory = settings.skinPath(newSkin);
+    QString directory = g_settings.skinPath(newSkin);
 
 	// Load up the author file
 	if (directory.length() == 0)
@@ -521,6 +521,16 @@ void OptionsDialog::pluginItemChanged(QListWidgetItem* iz)
 	}
 
 	// Write out the new config
+    LoadablePlugins loadable;
+    for (int i = 0; i < plugList->count(); i++)
+    {
+        QListWidgetItem* item = plugList->item(i);
+        int id = item->data(Qt::UserRole).toUInt();
+        loadable[id] = item->checkState()==Qt::Checked ? true : false;
+    }
+    g_settings.writeLoadablePlugins(loadable);
+
+   /*
     g_settings->beginWriteArray("plugins");
 	for (int i = 0; i < plugList->count(); i++)
 	{
@@ -537,12 +547,13 @@ void OptionsDialog::pluginItemChanged(QListWidgetItem* iz)
 		}
 	}
     g_settings->endArray();
+    */
 
 	// Reload the plugins
     g_mainWidget->plugins.loadPlugins();
 
 	// If enabled, reload the dialog
-	if (iz->checkState() == Qt::Checked)
+    if (iz->checkState() == Qt::Checked)
 	{
 		loadPluginDialog(iz);
 	}
@@ -575,7 +586,7 @@ void OptionsDialog::catRescanClicked(bool val)
     Q_UNUSED(val) // Compiler warning
 
 	// Apply Directory Options
-	SettingsManager::writeCatalogDirectories(memDirs);
+    g_settings.writeCatalogDirectories(memDirs);
 
 	needRescan = false;
 	catRescan->setEnabled(false);
