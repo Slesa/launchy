@@ -21,7 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define __PLATFORM_WIN_UTIL_H
 
 #include <QString>
-#include "winfiles.h"
 
 void UpdateEnvironment();
 QString GetShellDirectory(int type);

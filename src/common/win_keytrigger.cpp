@@ -38,10 +38,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include <QWidget>
-#include "winfiles.h"
-#include "platform_base_hotkey.h"
-#include "platform_Base_hottrigger.h"
-#include <qpa/qplatformnativeinterface.h>
+#include "globalshortcutmanager.h"
+#include "globalshortcuttrigger.h"
+//#include <qpa/qplatformnativeinterface.h>
 
 HHOOK keyboardHook;
 HWND widgetWinId;
