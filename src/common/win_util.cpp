@@ -18,10 +18,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include <QString>
-#include "winfiles.h"
-#include "platform_win.h"
+#include "win_files.h"
+#include "win_platform.h"
 #include "globals.h"
-#include "main.h"
+//#include "main.h"
 
 
 // Replace this process' environment with the current system environment

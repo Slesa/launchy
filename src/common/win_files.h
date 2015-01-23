@@ -17,8 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef PRECOMPILED_H
-#define PRECOMPILED_H
+#ifndef WIN_FILES_H
+#define WIN_FILES_H
 
 #ifdef Q_OS_WIN
 
@@ -37,8 +37,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <stdlib.h>
 
 #define _CRT_SECURE_NO_WARNINGS
-#define _WIN32_WINNT 0x0600	
-#define _WIN32_IE 0x0700
+//#define _WIN32_WINNT 0x0600
+//#define _WIN32_IE 0x0700
 #include <windows.h>
 #include <tchar.h>
 #include <shlobj.h>
@@ -53,4 +53,4 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 
 
-#endif // PRECOMPILED_H
+#endif

@@ -17,8 +17,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#include "minidump.h"
-
+#include "win_minidump.h"
+#include "win_files.h"
 
 TCHAR* MiniDumper::m_appName;
 MINIDUMPWRITEDUMP MiniDumper::m_dumpFunction;

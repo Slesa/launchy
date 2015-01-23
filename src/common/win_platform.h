@@ -22,9 +22,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 #include "platform_base.h"
-//#include "platform_win_util.h"
+#include "win_util.h"
 //#include "platform_base_hotkey.h"
 #include "win_minidump.h"
+#include "win_files.h"
 
 
 class WinPlatform : public PlatformBase 
@@ -32,8 +33,8 @@ class WinPlatform : public PlatformBase
 	Q_OBJECT
 
 public:
-	PlatformWin(int& argc, char** argv);
-	~PlatformWin();
+    WinPlatform(int& argc, char** argv);
+    ~WinPlatform();
 
 	virtual void setPreferredIconSize(int size);
 	virtual QKeySequence getHotkey() const;
@@ -45,9 +46,9 @@ public:
 	virtual void sendInstanceCommand(int command);
 	virtual bool getComputers(QStringList& computers) const;
 
-//private:
-//	HANDLE localMutex, globalMutex;
-//	LimitSingleInstance* instance;
+private:
+    HANDLE localMutex, globalMutex;
+//   LimitSingleInstance* instance;
     MiniDumper minidumper;
 };
 

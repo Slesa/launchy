@@ -1,6 +1,7 @@
 TEMPLATE		= lib
 TARGET			= launchy.common
 CONFIG			+= qt_warn debug_and_release staticlib
+win:CONFIG		+= qpa
 QT				+= widgets
 win:QT			+= winextras
 linux:QT    	+= x11extras
@@ -20,6 +21,7 @@ linux:HEADERS	+= \
 				x11_keytrigger.h
 win32:HEADERS	+= \
                 win_iconprovider.h \
+                win_files.h \
                 win_platform.h \
                 win_minidump.h \
                 win_util.h

@@ -3,5 +3,5 @@
 // Create the application object
 QApplication* createApplication(int& argc, char** argv)
 {
-	return new PlatformWin(argc, argv);
+    return new WinPlatform(argc, argv);
 }

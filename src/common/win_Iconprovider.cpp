@@ -18,9 +18,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include <QString>
-#include "winfiles.h"
-#include "platform_win_util.h"
-#include "WinIconProvider.h"
+#include "win_files.h"
+#include "win_util.h"
+#include "win_iconprovider.h"
 
 // Temporary work around to avoid having to install the latest Windows SDK
 #ifndef __IShellItemImageFactory_INTERFACE_DEFINED__

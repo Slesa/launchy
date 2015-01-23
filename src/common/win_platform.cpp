@@ -18,11 +18,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include <QString>
-//#include "winfiles.h"
 //#include "main.h"
 #include "win_platform.h"
-//#include "WinIconProvider.h"
-//#include "minidump.h"
+#include "win_iconprovider.h"
+#include "win_minidump.h"
 
 
 // Override the main widget to handle incoming system messages. We could have done this in the QApplication 
@@ -85,7 +84,7 @@ LaunchyWidget* createLaunchyWidget(CommandFlags command)
 
 
 
-PlatformWin::PlatformWin(int& argc, char** argv) :
+WinPlatform::WinPlatform(int& argc, char** argv) :
 	PlatformBase(argc, argv),
 	minidumper(_T("Launchy"))
 {
@@ -93,14 +92,14 @@ PlatformWin::PlatformWin(int& argc, char** argv) :
 
 	// Create local and global application mutexes so that installer knows when
 	// Launchy is running
-	localMutex = CreateMutex(NULL,0,_T("LaunchyMutex"));
+    localMutex = CreateMutex(NULL,0,_T("LaunchyMutex"));
 	globalMutex = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
 
 	icons = (QFileIconProvider*)new WinIconProvider();
 }
 
 
-PlatformWin::~PlatformWin()
+WinPlatform::~WinPlatform()
 {
 	if (localMutex)
 		CloseHandle(localMutex);
@@ -111,13 +110,13 @@ PlatformWin::~PlatformWin()
 }
 
 
-void PlatformWin::setPreferredIconSize(int size)
+void WinPlatform::setPreferredIconSize(int size)
 {
 	((WinIconProvider*)icons)->setPreferredIconSize(size);
 }
 
 
-QHash<QString, QList<QString> > PlatformWin::getDirectories()
+QHash<QString, QList<QString> > WinPlatform::getDirectories()
 {
     QHash<QString, QList<QString> > out;
     QSettings settings(QSettings::IniFormat, QSettings::UserScope, "Launchy", "Launchy");
@@ -137,7 +136,7 @@ QHash<QString, QList<QString> > PlatformWin::getDirectories()
 }
 
 
-QList<Directory> PlatformWin::getDefaultCatalogDirectories()
+QList<Directory> WinPlatform::getDefaultCatalogDirectories()
 {
 	QList<Directory> list;
 	Directory tmp;
@@ -160,7 +159,7 @@ QList<Directory> PlatformWin::getDefaultCatalogDirectories()
 }
 
 
-QString PlatformWin::expandEnvironmentVars(QString txt)
+QString WinPlatform::expandEnvironmentVars(QString txt)
 {
 	QString result;
 
@@ -177,7 +176,7 @@ QString PlatformWin::expandEnvironmentVars(QString txt)
 }
 
 
-void PlatformWin::sendInstanceCommand(int command)
+void WinPlatform::sendInstanceCommand(int command)
 {
 	UINT commandMessageId = RegisterWindowMessage(_T("LaunchyCommand"));
 	PostMessage(HWND_BROADCAST, commandMessageId, command, 0);
@@ -185,12 +184,12 @@ void PlatformWin::sendInstanceCommand(int command)
 
 
 // Mandatory functions
-QKeySequence PlatformWin::getHotkey() const
+QKeySequence WinPlatform::getHotkey() const
 {
 	return hotkey;
 }
 
-bool PlatformWin::setHotkey(const QKeySequence& newHotkey, QObject* receiver, const char* slot)
+bool WinPlatform::setHotkey(const QKeySequence& newHotkey, QObject* receiver, const char* slot)
 {
 	GlobalShortcutManager::disconnect(hotkey, receiver, slot);
 	GlobalShortcutManager::connect(newHotkey, receiver, slot);
@@ -199,13 +198,13 @@ bool PlatformWin::setHotkey(const QKeySequence& newHotkey, QObject* receiver, co
 }
 
 
-bool PlatformWin::supportsAlphaBorder() const
+bool WinPlatform::supportsAlphaBorder() const
 {
 	return true;
 }
 
 
-bool PlatformWin::getComputers(QStringList& computers) const
+bool WinPlatform::getComputers(QStringList& computers) const
 {
 	// Get a list of domains. This should return nothing or fail when we're on a workgroup
 	QStringList domains;
