@@ -82,7 +82,7 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
                                     // Special handling of app directories
                                     if (cur.endsWith(".app", Qt::CaseInsensitive)) {
                                         CatItem item(dir + "/" + cur);
-                                        platform->alterItem(&item);
+                                        g_platform->alterItem(&item);
                                         catalog->addItem(item);
                                     }
                                     else

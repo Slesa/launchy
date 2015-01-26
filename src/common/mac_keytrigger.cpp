@@ -18,6 +18,7 @@
  *
  */
 #include "mac_platform.h"
+#include "mac_keytrigger.h"
 
 MacKeyTriggerManager* MacKeyTriggerManager::instance_   = NULL;
 EventHandlerUPP MacKeyTriggerManager::hot_key_function_ = NULL;
@@ -186,6 +187,6 @@ GlobalShortcutManager::KeyTrigger::~KeyTrigger()
 
 bool GlobalShortcutManager::KeyTrigger::isConnected()
 {
-  	if (!d) return false;	
+    if (!d.get()) return false;
 		return !GlobalShortcutManager::KeyTrigger::Impl::failed;
 }
