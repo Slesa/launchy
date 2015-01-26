@@ -35,6 +35,7 @@ bool SingleApplication::start()
 {
     if(!_appLock.create(1))
     {
+        qDebug() << "Could not create shared mem: " << _appLock.errorString();
         return false;
     }
     return true;

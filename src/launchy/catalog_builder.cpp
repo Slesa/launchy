@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "catalog_builder.h"
 #include "globals.h"
 #include "main.h"
-#include "Directory.h"
+#include "directory.h"
 
 
 CatalogBuilder::CatalogBuilder(PluginHandler* plugs) :
@@ -40,14 +40,14 @@ void CatalogBuilder::buildCatalog()
 	catalog->incrementTimestamp();
 	indexed.clear();
 
-	QList<Directory> memDirs = SettingsManager::readCatalogDirectories();
+    QList<Directory> memDirs = g_settings.readCatalogDirectories();
 	QHash<uint, PluginInfo> pluginsInfo = plugins->getPlugins();
 	totalItems = memDirs.count() + pluginsInfo.count();
 	currentItem = 0;
 
 	while (currentItem < memDirs.count())
 	{
-		QString cur = platform->expandEnvironmentVars(memDirs[currentItem].name);
+        QString cur = g_platform->expandEnvironmentVars(memDirs[currentItem].name);
 		indexDirectory(cur, memDirs[currentItem].types, memDirs[currentItem].indexDirs, memDirs[currentItem].indexExe, memDirs[currentItem].depth);
 		progressStep(currentItem);
 	}
@@ -82,7 +82,7 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
                                     // Special handling of app directories
                                     if (cur.endsWith(".app", Qt::CaseInsensitive)) {
                                         CatItem item(dir + "/" + cur);
-                                        platform->alterItem(&item);
+                                        g_platform->alterItem(&item);
                                         catalog->addItem(item);
                                     }
                                     else
@@ -149,7 +149,7 @@ void CatalogBuilder::indexDirectory(const QString& directory, const QStringList&
 		if (!indexed.contains(dir + "/" + files[i]))
 		{
 			CatItem item(dir + "/" + files[i]);
-			platform->alterItem(&item);
+            g_platform->alterItem(&item);
 #ifdef Q_OS_LINUX
                         if(item.fullPath.endsWith(".desktop") && item.icon == "")
                             continue;

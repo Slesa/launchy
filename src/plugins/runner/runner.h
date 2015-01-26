@@ -31,11 +31,7 @@ class RunnerPlugin : public QObject, public PluginInterface
     Q_INTERFACES(PluginInterface)
 
 public:
-	RunnerPlugin()
-	{
-		gui.reset();
-		HASH_runner = qHash(QString("runner"));
-	}
+    RunnerPlugin();
 	~RunnerPlugin() {}
 	
 	int msg(int msgId, void* wParam = NULL, void* lParam = NULL); 

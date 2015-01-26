@@ -97,104 +97,102 @@ void Suggest::httpReadyRead()
 
 void WebyPlugin::init()
 {
-    QSettings* set = *settings;
-
     // get config / settings directory (base for 'temporary' icon cache dir)
-    QString iniFilename = set->fileName();
+    QString iniFilename = _settings->fileName();
     QFileInfo info(iniFilename);
     iconCachePath = info.absolutePath() + "/weby-icon-cache/";
     iconCache = new IconCache(iconCachePath);
     iconCache->setParent(this);
     connect(iconCache, SIGNAL(findIcon(QUrl)), iconCache, SLOT(query(QUrl)));
 
-    double version = set->value("weby/version",0.0).toDouble();
+    double version = _settings->value("weby/version",0.0).toDouble();
 
     if ( version == 0.0 )
     {
         int i = 0;
-        set->beginWriteArray("weby/sites");
+        _settings->beginWriteArray("weby/sites");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "Google");
-        set->setValue("query", "http://www.google.com/search?source=launchy&q=%1");
-        //set->setValue("suggest", "http://suggestqueries.google.com/complete/search?output=firefox&q=%1");
-        //set->setValue("default", true);
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "Google");
+        _settings->setValue("query", "http://www.google.com/search?source=launchy&q=%1");
+        //_settings->setValue("suggest", "http://suggestqueries.google.com/complete/search?output=firefox&q=%1");
+        //_settings->setValue("default", true);
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "Bing");
-        set->setValue("query", "http://www.bing.com/search?q=%1");
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "Bing");
+        _settings->setValue("query", "http://www.bing.com/search?q=%1");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "Yahoo");
-        set->setValue("query", "http://search.yahoo.com/search?p=%1");
-        //set->setValue("suggest", "http://ff.search.yahoo.com/gossip?output=fxjson&command=%1");
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "Yahoo");
+        _settings->setValue("query", "http://search.yahoo.com/search?p=%1");
+        //_settings->setValue("suggest", "http://ff.search.yahoo.com/gossip?output=fxjson&command=%1");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "Weather");
-        set->setValue("query", "http://www.weather.com/weather/local/%1");	
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "Weather");
+        _settings->setValue("query", "http://www.weather.com/weather/local/%1");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "Amazon");
-        set->setValue("query", "http://www.amazon.com/gp/search?keywords=%1&index=blended");
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "Amazon");
+        _settings->setValue("query", "http://www.amazon.com/gp/search?keywords=%1&index=blended");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "YouTube");
-        set->setValue("query", "http://www.youtube.com/results?search_query=%1");
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "YouTube");
+        _settings->setValue("query", "http://www.youtube.com/results?search_query=%1");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "Wikipedia");
-        set->setValue("query", "http://en.wikipedia.org/wiki/Special:Search?search=%1&fulltext=Search");
-        //set->setValue("suggest", "http://en.wikipedia.org/w/api.php?action=opensearch&search=%1");
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "Wikipedia");
+        _settings->setValue("query", "http://en.wikipedia.org/wiki/Special:Search?search=%1&fulltext=Search");
+        //_settings->setValue("suggest", "http://en.wikipedia.org/w/api.php?action=opensearch&search=%1");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "Dictionary");
-        set->setValue("query", "http://dictionary.reference.com/browse/%1");		
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "Dictionary");
+        _settings->setValue("query", "http://dictionary.reference.com/browse/%1");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "Thesaurus");
-        set->setValue("query", "http://thesaurus.reference.com/browse/%1");		
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "Thesaurus");
+        _settings->setValue("query", "http://thesaurus.reference.com/browse/%1");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "Netflix");
-        set->setValue("query", "http://www.netflix.com/Search?v1=%1");		
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "Netflix");
+        _settings->setValue("query", "http://www.netflix.com/Search?v1=%1");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "MSDN");
-        set->setValue("query", "http://search.msdn.microsoft.com/search/default.aspx?siteId=0&tab=0&query=%1");
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "MSDN");
+        _settings->setValue("query", "http://search.msdn.microsoft.com/search/default.aspx?siteId=0&tab=0&query=%1");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "E-Mail");
-        set->setValue("query", "mailto:%1");
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "E-Mail");
+        _settings->setValue("query", "mailto:%1");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "IMDB");
-        set->setValue("query", "http://www.imdb.com/find?s=all&q=%1");
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "IMDB");
+        _settings->setValue("query", "http://www.imdb.com/find?s=all&q=%1");
 
-        set->setArrayIndex(i++);
-        set->setValue("name", "Maps");
-        set->setValue("query", "http://maps.google.com/maps?f=q&hl=en&geocode=&q=%1&ie=UTF8&z=12&iwloc=addr&om=1");
+        _settings->setArrayIndex(i++);
+        _settings->setValue("name", "Maps");
+        _settings->setValue("query", "http://maps.google.com/maps?f=q&hl=en&geocode=&q=%1&ie=UTF8&z=12&iwloc=addr&om=1");
 
-        set->endArray();
+        _settings->endArray();
     }
 
     // Read in the array of websites
     sites.clear();
 
-    int count = set->beginReadArray("weby/sites");
+    int count = _settings->beginReadArray("weby/sites");
     for (int i = 0; i < count; ++i)
     {
-        set->setArrayIndex(i);
+        _settings->setArrayIndex(i);
         WebySite s;
-        s.name = set->value("name").toString();
-        s.query = set->value("query").toString();
-        s.suggest = set->value("suggest").toString();
-        s.def = set->value("default", false).toBool();
+        s.name = _settings->value("name").toString();
+        s.query = _settings->value("query").toString();
+        s.suggest = _settings->value("suggest").toString();
+        s.def = _settings->value("default", false).toBool();
 
         // Ditched the 'base' value between 1.0 and 2.0
         // Also replaced %s with %1,%2,%3...
         if (version == 2.0) {
             s.query.replace("%s","%1");
-            s.query = set->value("base").toString() + s.query;			
+            s.query = _settings->value("base").toString() + s.query;
 /*
             Out of scope for 2.2
             if (s.name == "Google")
@@ -208,22 +206,22 @@ void WebyPlugin::init()
         
         sites.push_back(s);
     }
-    set->endArray();
+    _settings->endArray();
 
     // Save any upgrades we made from 2.0
     if (version == 2.0) {
-        set->beginWriteArray("weby/sites");
+        _settings->beginWriteArray("weby/sites");
         for(int i = 0; i < sites.count(); i++) {
-            set->setArrayIndex(i);
-            set->setValue("name", sites[i].name);
-            set->setValue("query", sites[i].query);
-            set->setValue("suggest", sites[i].suggest);
-            set->setValue("default", sites[i].def);
+            _settings->setArrayIndex(i);
+            _settings->setValue("name", sites[i].name);
+            _settings->setValue("query", sites[i].query);
+            _settings->setValue("suggest", sites[i].suggest);
+            _settings->setValue("default", sites[i].def);
         }
-        set->endArray();
+        _settings->endArray();
     }
     
-    set->setValue("weby/version", 2.2);
+    _settings->setValue("weby/version", 2.2);
 }
 
 void WebyPlugin::getID(uint* id)
@@ -245,7 +243,7 @@ void WebyPlugin::getLabels(QList<InputData>* inputData)
     const QString & text = inputData->last().getText();
 
     QString defaultMatchExpression = "^(http|https|ftp)://|^www.|.com|.co.[a-z]{2,}|.net|.org";
-    QString matchExpression = (*settings)->value("weby/UrlRegExp", defaultMatchExpression).toString();
+    QString matchExpression = _settings->value("weby/UrlRegExp", defaultMatchExpression).toString();
     QRegExp regex(matchExpression);
     if (!regex.isValid())
     {
@@ -472,13 +470,13 @@ void WebyPlugin::getCatalog(QList<CatItem>* items)
     }
 
 #ifdef Q_OS_WIN
-    if ((*settings)->value("weby/ie", true).toBool())
+    if (_settings->value("weby/ie", true).toBool())
     {
         QString path = GetShellDirectory(CSIDL_FAVORITES);
         indexIE(path, items);
     }
 #endif
-    if ((*settings)->value("weby/firefox", true).toBool())
+    if (_settings->value("weby/firefox", true).toBool())
     {
         QString path = getFirefoxPath();
         indexFirefox(path, items);
@@ -570,7 +568,7 @@ void WebyPlugin::doDialog(QWidget* parent, QWidget** newDlg)
 {
     if (gui != NULL)
         return;
-    gui.reset(new Gui(parent, *settings));
+    gui.reset(new Gui(parent, _settings));
     *newDlg = gui.data();
 }
 

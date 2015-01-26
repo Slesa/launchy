@@ -29,6 +29,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     Details.
 */
 
+void PluginInterface::initialize(QSettings* settings)
+{
+    _settings = settings;
+}
 
 #ifdef Q_OS_WIN
 // This doesn't exist until qt 4.6 (currently 4.5 in ubuntu 10.04)

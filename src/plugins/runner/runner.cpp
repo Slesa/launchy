@@ -24,24 +24,29 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <QUrl>
 #include <QtPlugin>
 
+RunnerPlugin::RunnerPlugin()
+{
+    gui.reset();
+    HASH_runner = qHash(QString("runner"));
+}
+
 void RunnerPlugin::init()
 {
-	QSettings* set = *settings;
 	cmds.clear();
 
-	if ( set->value("runner/version", 0.0).toDouble() == 0.0 )
+    if ( _settings->value("runner/version", 0.0).toDouble() == 0.0 )
 	{
-		set->beginWriteArray("runner/cmds");
-		set->setArrayIndex(0);
+        _settings->beginWriteArray("runner/cmds");
+        _settings->setArrayIndex(0);
         #ifdef Q_OS_WIN
-		set->setValue("name", "cmd");
-		set->setValue("file", "C:\\Windows\\System32\\cmd.exe");
-		set->setValue("args", "/K $$");
+        _settings->setValue("name", "cmd");
+        _settings->setValue("file", "C:\\Windows\\System32\\cmd.exe");
+        _settings->setValue("args", "/K $$");
 		#endif
         #ifdef Q_OS_LINUX
-		set->setValue("name", "cmd");
-		set->setValue("file", "/usr/bin/xterm");
-		set->setValue("args", "-hold -e $$");
+        _settings->setValue("name", "cmd");
+        _settings->setValue("file", "/usr/bin/xterm");
+        _settings->setValue("args", "-hold -e $$");
 		#endif
                 /*
                 #ifdef Q_OS_MAC
@@ -49,22 +54,22 @@ void RunnerPlugin::init()
                 set->setValue("file", "")
                 #endif
                 */
-		set->endArray();
+        _settings->endArray();
 	}
-	set->setValue("runner/version", 2.0);
+    _settings->setValue("runner/version", 2.0);
 
 	// Read in the array of websites
-	int count = set->beginReadArray("runner/cmds");
+    int count = _settings->beginReadArray("runner/cmds");
 	for(int i = 0; i < count; ++i)
 	{
-		set->setArrayIndex(i);
+        _settings->setArrayIndex(i);
 		runnerCmd cmd;
-		cmd.file = set->value("file").toString();
-		cmd.name = set->value("name").toString();
-		cmd.args = set->value("args").toString();
+        cmd.file = _settings->value("file").toString();
+        cmd.name = _settings->value("name").toString();
+        cmd.args = _settings->value("args").toString();
 		cmds.push_back(cmd);
 	}
-	set->endArray();
+    _settings->endArray();
 }
 
 
@@ -169,7 +174,7 @@ void RunnerPlugin::doDialog(QWidget* parent, QWidget** newDlg)
 {
 	if (gui != NULL)
 		return;
-	gui.reset(new Gui(parent, *settings));
+    gui.reset(new Gui(parent, _settings));
     *newDlg = gui.data();
 }
 

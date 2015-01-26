@@ -46,7 +46,7 @@ void controlyPlugin::init() {
 		gControlyInstance = this;
 
 		// get config / settings directory (base for 'temporary' icon cache dir)
-		QString iniFilename = (*settings)->fileName();
+        QString iniFilename = _settings->fileName();
 		QFileInfo info(iniFilename);
 		QString userDataPath = info.absolutePath();
 		
@@ -128,7 +128,7 @@ void controlyPlugin::addCatItem(QString text, QList<CatItem>* results, QString f
 	if (text.length() == 0 || isMatch(shortName, text))
 	{
 		CatItem& item = CatItem(fullName, shortName, HASH_controly, getIconPath() + fullName.toLower() + ".png");
-		item.usage = (*settings)->value("controly/" + shortName.replace(" ", "") , 0).toInt();
+        item.usage = _settings->value("controly/" + shortName.replace(" ", "") , 0).toInt();
 		results->push_back(item);
 	}
 }
@@ -136,7 +136,7 @@ void controlyPlugin::addCatItem(QString text, QList<CatItem>* results, QString f
 
 void controlyPlugin::updateUsage(CatItem& item)
 {
-	(*settings)->setValue("controly/" + item.shortName.replace(" ", ""), item.usage + 1);
+    _settings->setValue("controly/" + item.shortName.replace(" ", ""), item.usage + 1);
 }
 
 

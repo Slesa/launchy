@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F7D9F8E7-7A14-3D99-971A-D524E4E6F58F}</ProjectGuid>
+    <ProjectGuid>{30DA5EBA-AF5D-3AF2-AEF6-1B3B8E9B8068}</ProjectGuid>
     <RootNamespace>weby</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
   </PropertyGroup>
@@ -80,32 +80,24 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\$(ProjectName).obj\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\release\plugins\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">weby</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">weby</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)bin\$(ProjectName).obj\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\debug\plugins\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">weby</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">weby</TargetName>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\</OutDir>
-    <IntDir>$(SolutionDir)bin\$(ProjectName).obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\</OutDir>
-    <IntDir>$(SolutionDir)bin\$(ProjectName).obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>"..\..\src";"..\..\common";"D:\dev\qt540\5.4\msvc2013_64\include";"D:\dev\qt540\5.4\msvc2013_64\include\QtWidgets";"D:\dev\qt540\5.4\msvc2013_64\include\QtGui";"D:\dev\qt540\5.4\msvc2013_64\include\QtANGLE";"D:\dev\qt540\5.4\msvc2013_64\include\QtNetwork";"D:\dev\qt540\5.4\msvc2013_64\include\QtCore";"release";".";D:\dev\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>"..\..\launchy";"..\..\common";"D:\work\qt540\5.4\msvc2013_64\include";"D:\work\qt540\5.4\msvc2013_64\include\QtWidgets";"D:\work\qt540\5.4\msvc2013_64\include\QtGui";"D:\work\qt540\5.4\msvc2013_64\include\QtANGLE";"D:\work\qt540\5.4\msvc2013_64\include\QtNetwork";"D:\work\qt540\5.4\msvc2013_64\include\QtCore";".moc";".ui";D:\work\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm200 -Zc:strictStrings -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -124,8 +116,8 @@
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>user32.lib;shell32.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Widgets.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Gui.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Network.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\dev\qt540\5.4\msvc2013_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>user32.lib;shell32.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Widgets.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Gui.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Network.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\work\qt540\5.4\msvc2013_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
@@ -135,6 +127,7 @@
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <Midl>
       <DefaultCharType>Unsigned</DefaultCharType>
@@ -147,7 +140,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>"..\..\src";"..\..\common";"D:\dev\qt540\5.4\msvc2013_64\include";"D:\dev\qt540\5.4\msvc2013_64\include\QtWidgets";"D:\dev\qt540\5.4\msvc2013_64\include\QtGui";"D:\dev\qt540\5.4\msvc2013_64\include\QtANGLE";"D:\dev\qt540\5.4\msvc2013_64\include\QtNetwork";"D:\dev\qt540\5.4\msvc2013_64\include\QtCore";"release";".";D:\dev\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>"..\..\launchy";"..\..\common";"D:\work\qt540\5.4\msvc2013_64\include";"D:\work\qt540\5.4\msvc2013_64\include\QtWidgets";"D:\work\qt540\5.4\msvc2013_64\include\QtGui";"D:\work\qt540\5.4\msvc2013_64\include\QtANGLE";"D:\work\qt540\5.4\msvc2013_64\include\QtNetwork";"D:\work\qt540\5.4\msvc2013_64\include\QtCore";".moc";".ui";D:\work\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm200 -Zc:strictStrings -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -166,8 +159,8 @@
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>user32.lib;shell32.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Widgets.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Gui.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Network.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\dev\qt540\5.4\msvc2013_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>user32.lib;shell32.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Widgets.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Gui.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Network.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\work\qt540\5.4\msvc2013_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
@@ -177,6 +170,7 @@
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <Midl>
       <DefaultCharType>Unsigned</DefaultCharType>
@@ -189,7 +183,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>"..\..\src";"..\..\common";"D:\dev\qt540\5.4\msvc2013_64\include";"D:\dev\qt540\5.4\msvc2013_64\include\QtWidgets";"D:\dev\qt540\5.4\msvc2013_64\include\QtGui";"D:\dev\qt540\5.4\msvc2013_64\include\QtANGLE";"D:\dev\qt540\5.4\msvc2013_64\include\QtNetwork";"D:\dev\qt540\5.4\msvc2013_64\include\QtCore";"debug";".";D:\dev\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>"..\..\launchy";"..\..\common";"D:\work\qt540\5.4\msvc2013_64\include";"D:\work\qt540\5.4\msvc2013_64\include\QtWidgets";"D:\work\qt540\5.4\msvc2013_64\include\QtGui";"D:\work\qt540\5.4\msvc2013_64\include\QtANGLE";"D:\work\qt540\5.4\msvc2013_64\include\QtNetwork";"D:\work\qt540\5.4\msvc2013_64\include\QtCore";".moc";".ui";D:\work\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -206,8 +200,8 @@
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>user32.lib;shell32.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Widgetsd.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Guid.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Networkd.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\dev\qt540\5.4\msvc2013_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>user32.lib;shell32.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Widgetsd.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Guid.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Networkd.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\work\qt540\5.4\msvc2013_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
@@ -229,7 +223,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>"..\..\src";"..\..\common";"D:\dev\qt540\5.4\msvc2013_64\include";"D:\dev\qt540\5.4\msvc2013_64\include\QtWidgets";"D:\dev\qt540\5.4\msvc2013_64\include\QtGui";"D:\dev\qt540\5.4\msvc2013_64\include\QtANGLE";"D:\dev\qt540\5.4\msvc2013_64\include\QtNetwork";"D:\dev\qt540\5.4\msvc2013_64\include\QtCore";"debug";".";D:\dev\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>"..\..\launchy";"..\..\common";"D:\work\qt540\5.4\msvc2013_64\include";"D:\work\qt540\5.4\msvc2013_64\include\QtWidgets";"D:\work\qt540\5.4\msvc2013_64\include\QtGui";"D:\work\qt540\5.4\msvc2013_64\include\QtANGLE";"D:\work\qt540\5.4\msvc2013_64\include\QtNetwork";"D:\work\qt540\5.4\msvc2013_64\include\QtCore";".moc";".ui";D:\work\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -246,8 +240,8 @@
       <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>user32.lib;shell32.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Widgetsd.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Guid.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Networkd.lib;D:\dev\qt540\5.4\msvc2013_64\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\dev\qt540\5.4\msvc2013_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>user32.lib;shell32.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Widgetsd.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Guid.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Networkd.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\work\qt540\5.4\msvc2013_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
@@ -256,6 +250,7 @@
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <Midl>
       <DefaultCharType>Unsigned</DefaultCharType>
@@ -270,7 +265,7 @@
     <ClCompile Include="..\..\common\DropTableWidget.cpp" />
     <ClCompile Include="IconCache.cpp" />
     <ClCompile Include="gui.cpp" />
-    <ClCompile Include="..\..\src\plugin_interface.cpp" />
+    <ClCompile Include="..\..\launchy\plugin_interface.cpp" />
     <ClCompile Include="weby.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -279,68 +274,68 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\common\DropTableWidget.h;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore ..\..\common\DropTableWidget.h -o release\moc_DropTableWidget.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore ..\..\common\DropTableWidget.h -o .moc\moc_DropTableWidget.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore ..\..\common\DropTableWidget.h -o release\moc_DropTableWidget.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore ..\..\common\DropTableWidget.h -o .moc\moc_DropTableWidget.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC ..\..\common\DropTableWidget.h</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC ..\..\common\DropTableWidget.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\moc_DropTableWidget.cpp;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_DropTableWidget.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_DropTableWidget.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_DropTableWidget.cpp;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\common\DropTableWidget.h;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\common\DropTableWidget.h;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore ..\..\common\DropTableWidget.h -o debug\moc_DropTableWidget.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore ..\..\common\DropTableWidget.h -o .moc\moc_DropTableWidget.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore ..\..\common\DropTableWidget.h -o debug\moc_DropTableWidget.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore ..\..\common\DropTableWidget.h -o .moc\moc_DropTableWidget.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC ..\..\common\DropTableWidget.h</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC ..\..\common\DropTableWidget.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\moc_DropTableWidget.cpp;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\moc_DropTableWidget.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_DropTableWidget.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_DropTableWidget.cpp;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="IconCache.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">IconCache.h;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">IconCache.h;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore IconCache.h -o release\moc_IconCache.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore IconCache.h -o .moc\moc_IconCache.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore IconCache.h -o release\moc_IconCache.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore IconCache.h -o .moc\moc_IconCache.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC IconCache.h</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC IconCache.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\moc_IconCache.cpp;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_IconCache.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_IconCache.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_IconCache.cpp;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">IconCache.h;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">IconCache.h;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore IconCache.h -o debug\moc_IconCache.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore IconCache.h -o .moc\moc_IconCache.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore IconCache.h -o debug\moc_IconCache.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore IconCache.h -o .moc\moc_IconCache.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC IconCache.h</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC IconCache.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\moc_IconCache.cpp;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\moc_IconCache.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_IconCache.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_IconCache.cpp;%(Outputs)</Outputs>
     </CustomBuild>
     <ClInclude Include="globals.h" />
     <CustomBuild Include="gui.h">
@@ -348,106 +343,77 @@ endlocal</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gui.h;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore gui.h -o release\moc_gui.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore gui.h -o .moc\moc_gui.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore gui.h -o release\moc_gui.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore gui.h -o .moc\moc_gui.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC gui.h</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC gui.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\moc_gui.cpp;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_gui.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_gui.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_gui.cpp;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gui.h;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gui.h;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore gui.h -o debug\moc_gui.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore gui.h -o .moc\moc_gui.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore gui.h -o debug\moc_gui.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore gui.h -o .moc\moc_gui.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC gui.h</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC gui.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\moc_gui.cpp;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\moc_gui.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_gui.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_gui.cpp;%(Outputs)</Outputs>
     </CustomBuild>
-    <ClInclude Include="..\..\src\plugin_interface.h" />
+    <ClInclude Include="..\..\launchy\plugin_interface.h" />
     <CustomBuild Include="weby.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">weby.h;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">weby.h;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore weby.h -o release\moc_weby.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore weby.h -o .moc\moc_weby.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore weby.h -o release\moc_weby.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore weby.h -o .moc\moc_weby.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC weby.h</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC weby.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\moc_weby.cpp;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_weby.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.moc\moc_weby.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.moc\moc_weby.cpp;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">weby.h;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">weby.h;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore weby.h -o debug\moc_weby.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore weby.h -o .moc\moc_weby.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/dev/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/dev/github/launchy/Launchy_QT/plugins/weby -ID:/dev/github/launchy/Launchy_QT/src -ID:/dev/github/launchy/Launchy_QT/common -ID:/dev/qt540/5.4/msvc2013_64/include -ID:/dev/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/dev/qt540/5.4/msvc2013_64/include/QtGui -ID:/dev/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/dev/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/dev/qt540/5.4/msvc2013_64/include/QtCore weby.h -o debug\moc_weby.cpp
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_PLUGIN -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/plugins/weby -ID:/work/github/launchy/src/launchy -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtNetwork -ID:/work/qt540/5.4/msvc2013_64/include/QtCore weby.h -o .moc\moc_weby.cpp
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC weby.h</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC weby.h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\moc_weby.cpp;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\moc_weby.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.moc\moc_weby.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.moc\moc_weby.cpp;%(Outputs)</Outputs>
     </CustomBuild>
-    <ClInclude Include="winfiles.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="debug\moc_DropTableWidget.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="release\moc_DropTableWidget.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="debug\moc_IconCache.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="release\moc_IconCache.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="debug\moc_gui.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="release\moc_gui.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="debug\moc_weby.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="release\moc_weby.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClInclude Include="ui_dlg.h" />
+    <ClCompile Include=".moc\moc_DropTableWidget.cpp" />
+    <ClCompile Include=".moc\moc_IconCache.cpp" />
+    <ClCompile Include=".moc\moc_gui.cpp" />
+    <ClCompile Include=".moc\moc_weby.cpp" />
+    <ClInclude Include=".ui\ui_dlg.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="dlg.ui">
@@ -456,34 +422,34 @@ endlocal</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">dlg.ui;DropTableWidget.h;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\uic.exe dlg.ui -o ui_dlg.h
+D:\work\qt540\5.4\msvc2013_64\bin\uic.exe dlg.ui -o .ui\ui_dlg.h
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\uic.exe dlg.ui -o ui_dlg.h
+D:\work\qt540\5.4\msvc2013_64\bin\uic.exe dlg.ui -o .ui\ui_dlg.h
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC dlg.ui</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UIC dlg.ui</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ui_dlg.h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ui_dlg.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.ui\ui_dlg.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.ui\ui_dlg.h;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">dlg.ui;DropTableWidget.h;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">dlg.ui;DropTableWidget.h;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\uic.exe dlg.ui -o ui_dlg.h
+D:\work\qt540\5.4\msvc2013_64\bin\uic.exe dlg.ui -o .ui\ui_dlg.h
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
 if errorlevel 1 goto VCEnd
-D:\dev\qt540\5.4\msvc2013_64\bin\uic.exe dlg.ui -o ui_dlg.h
+D:\work\qt540\5.4\msvc2013_64\bin\uic.exe dlg.ui -o .ui\ui_dlg.h
 if errorlevel 1 goto VCEnd
 endlocal</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC dlg.ui</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UIC dlg.ui</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ui_dlg.h;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ui_dlg.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.ui\ui_dlg.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.ui\ui_dlg.h;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

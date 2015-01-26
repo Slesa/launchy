@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{266668A6-1463-32D7-B87C-34B4CE5B2D69}</ProjectGuid>
+    <RootNamespace>launchy.specs</RootNamespace>
+    <Keyword>Qt4VSv1.0</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>..\..\specs\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>launchy.specs</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>..\..\specs\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>Application</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>launchy.specs</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists(&apos;$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props&apos;)" />
+  </ImportGroup>
+  <ImportGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists(&apos;$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props&apos;)" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">..\..\specs\</OutDir>
+    <IntDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">release\</IntDir>
+    <TargetName Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">launchy.specs</TargetName>
+    <IgnoreImportLibrary Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">false</LinkIncremental>
+    <OutDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">..\..\specs\</OutDir>
+    <IntDir Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">debug\</IntDir>
+    <TargetName Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">launchy.specs</TargetName>
+    <IgnoreImportLibrary Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">true</IgnoreImportLibrary>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">
+    <ClCompile>
+      <AdditionalIncludeDirectories>&quot;..\launchy&quot;;&quot;..\..\..\..\qt540\5.4\msvc2013_64\include&quot;;&quot;..\..\..\..\qt540\5.4\msvc2013_64\include\QtWidgets&quot;;&quot;..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui&quot;;&quot;..\..\..\..\qt540\5.4\msvc2013_64\include\QtANGLE&quot;;&quot;..\..\..\..\qt540\5.4\msvc2013_64\include\QtTest&quot;;&quot;..\..\..\..\qt540\5.4\msvc2013_64\include\QtCore&quot;;&quot;.moc&quot;;..\..\..\..\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 -Zc:strictStrings -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>release\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_CONSOLE;UNICODE;WIN32;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_TESTLIB_LIB;QT_CORE_LIB;QT_TESTCASE_BUILDDIR=&quot;D:/work/github/launchy/src/launchy.specs&quot;;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName></ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>D:\work\qt540\5.4\msvc2013_64\lib\Qt5Widgets.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Gui.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Test.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\work\qt540\5.4\msvc2013_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <LinkIncremental>false</LinkIncremental>
+      <OutputFile>$(OutDir)\launchy.specs.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CONSOLE;UNICODE;WIN32;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_GUI_LIB;QT_TESTLIB_LIB;QT_CORE_LIB;QT_TESTCASE_BUILDDIR=\&quot;D:/work/github/launchy/src/launchy.specs\&quot;;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">
+    <ClCompile>
+      <AdditionalIncludeDirectories>&quot;..\launchy&quot;;&quot;..\..\..\..\qt540\5.4\msvc2013_64\include&quot;;&quot;..\..\..\..\qt540\5.4\msvc2013_64\include\QtWidgets&quot;;&quot;..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui&quot;;&quot;..\..\..\..\qt540\5.4\msvc2013_64\include\QtANGLE&quot;;&quot;..\..\..\..\qt540\5.4\msvc2013_64\include\QtTest&quot;;&quot;..\..\..\..\qt540\5.4\msvc2013_64\include\QtCore&quot;;&quot;.moc&quot;;..\..\..\..\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>debug\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_CONSOLE;UNICODE;WIN32;QT_WIDGETS_LIB;QT_GUI_LIB;QT_TESTLIB_LIB;QT_CORE_LIB;QT_TESTCASE_BUILDDIR=&quot;D:/work/github/launchy/src/launchy.specs&quot;;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>D:\work\qt540\5.4\msvc2013_64\lib\Qt5Widgetsd.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Guid.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Testd.lib;D:\work\qt540\5.4\msvc2013_64\lib\Qt5Cored.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\work\qt540\5.4\msvc2013_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>&quot;/MANIFESTDEPENDENCY:type=&apos;win32&apos; name=&apos;Microsoft.Windows.Common-Controls&apos; version=&apos;6.0.0.0&apos; publicKeyToken=&apos;6595b64144ccf1df&apos; language=&apos;*&apos; processorArchitecture=&apos;*&apos;&quot; %(AdditionalOptions)</AdditionalOptions>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreImportLibrary>true</IgnoreImportLibrary>
+      <OutputFile>$(OutDir)\launchy.specs.exe</OutputFile>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Link>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CONSOLE;UNICODE;WIN32;QT_WIDGETS_LIB;QT_GUI_LIB;QT_TESTLIB_LIB;QT_CORE_LIB;QT_TESTCASE_BUILDDIR=\&quot;D:/work/github/launchy/src/launchy.specs\&quot;;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\launchy\commandlineparser.cpp" />
+    <ClCompile Include="commandlineparser.specs.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\launchy\singleapplication.cpp" />
+    <ClCompile Include="singleapplication.specs.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\launchy\commandlineparser.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">..\launchy\commandlineparser.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">setlocal&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR=\&quot;D:/work/github/launchy/src/launchy.specs\&quot; -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/launchy.specs -ID:/work/github/launchy/src/launchy -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtTest -ID:/work/qt540/5.4/msvc2013_64/include/QtCore ..\launchy\commandlineparser.h -o .moc\moc_commandlineparser.cpp&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;endlocal</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">MOC ..\launchy\commandlineparser.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">.moc\moc_commandlineparser.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">..\launchy\commandlineparser.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">setlocal&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR=\&quot;D:/work/github/launchy/src/launchy.specs\&quot; -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/launchy.specs -ID:/work/github/launchy/src/launchy -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtTest -ID:/work/qt540/5.4/msvc2013_64/include/QtCore ..\launchy\commandlineparser.h -o .moc\moc_commandlineparser.cpp&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;endlocal</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">MOC ..\launchy\commandlineparser.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">.moc\moc_commandlineparser.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="commandlineparser.specs.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">commandlineparser.specs.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">setlocal&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR=\&quot;D:/work/github/launchy/src/launchy.specs\&quot; -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/launchy.specs -ID:/work/github/launchy/src/launchy -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtTest -ID:/work/qt540/5.4/msvc2013_64/include/QtCore commandlineparser.specs.h -o .moc\moc_commandlineparser.specs.cpp&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;endlocal</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">MOC commandlineparser.specs.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">.moc\moc_commandlineparser.specs.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">commandlineparser.specs.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">setlocal&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR=\&quot;D:/work/github/launchy/src/launchy.specs\&quot; -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/launchy.specs -ID:/work/github/launchy/src/launchy -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtTest -ID:/work/qt540/5.4/msvc2013_64/include/QtCore commandlineparser.specs.h -o .moc\moc_commandlineparser.specs.cpp&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;endlocal</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">MOC commandlineparser.specs.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">.moc\moc_commandlineparser.specs.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="..\launchy\singleapplication.h" />
+    <CustomBuild Include="singleapplication.specs.h">
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">singleapplication.specs.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">setlocal&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR=\&quot;D:/work/github/launchy/src/launchy.specs\&quot; -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/launchy.specs -ID:/work/github/launchy/src/launchy -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtTest -ID:/work/qt540/5.4/msvc2013_64/include/QtCore singleapplication.specs.h -o .moc\moc_singleapplication.specs.cpp&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;endlocal</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">MOC singleapplication.specs.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Release|Win32&apos;">.moc\moc_singleapplication.specs.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">singleapplication.specs.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">setlocal&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_TESTLIB_LIB -DQT_CORE_LIB -DQT_TESTCASE_BUILDDIR=\&quot;D:/work/github/launchy/src/launchy.specs\&quot; -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/launchy.specs -ID:/work/github/launchy/src/launchy -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtTest -ID:/work/qt540/5.4/msvc2013_64/include/QtCore singleapplication.specs.h -o .moc\moc_singleapplication.specs.cpp&#x000D;&#x000A;if errorlevel 1 goto VCEnd&#x000D;&#x000A;endlocal</Command>
+      <Message Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">MOC singleapplication.specs.h</Message>
+      <Outputs Condition="&apos;$(Configuration)|$(Platform)&apos;==&apos;Debug|Win32&apos;">.moc\moc_singleapplication.specs.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include=".moc\moc_commandlineparser.cpp" />
+    <ClCompile Include=".moc\moc_commandlineparser.specs.cpp" />
+    <ClCompile Include=".moc\moc_singleapplication.specs.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

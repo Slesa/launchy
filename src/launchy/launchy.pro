@@ -8,8 +8,7 @@ QT				+= network widgets gui-private
 win32:QT		+= winextras
 linux:QT		+= x11extras
 
-INCLUDEPATH		+= . \
-                ../common
+INCLUDEPATH		+= ../common
 
 UI_DIR			= .ui
 MOC_DIR			= .moc
@@ -19,7 +18,6 @@ FORMS			= options.ui
 
 SOURCES			= main.cpp \
                 AnimationLabel.cpp \
-                catalog.cpp \
                 catalog_builder.cpp \
                 catalog_types.cpp \
                 CharLineEdit.cpp \
@@ -28,23 +26,21 @@ SOURCES			= main.cpp \
                 commandlineparser.cpp \
                 Fader.cpp \
                 FileSearch.cpp \
-                globals.cpp \
                 icon_delegate.cpp \
                 icon_extractor.cpp \
                 InputDataList.cpp \
-                options.cpp \
-                platform_base_hotkey.cpp \
+                launchywidget.cpp \
                 plugin_handler.cpp \
                 plugin_interface.cpp \
-                SettingsManager.cpp \
                 singleapplication.cpp \
                 ../common/DropListWidget.cpp \
                 ../common/FileBrowserDelegate.cpp \
-                ../common/FileBrowser.cpp
+                ../common/FileBrowser.cpp \
+                optionsdialog.cpp
+win32:SOURCES	+= win_launchywidget.cpp
 
 HEADERS			= main.h \
                 AnimationLabel.h \
-                catalog.h \
                 catalog_builder.h \
                 catalog_types.h \
                 CharLineEdit.h \
@@ -53,21 +49,19 @@ HEADERS			= main.h \
                 commandlineparser.h \
                 Fader.h \
                 FileSearch.h \
-                globals.h \
                 icon_delegate.h \
                 icon_extractor.h \
                 InputDataList.h \
-                options.h \
-                platform_base.h \
+                launchywidget.h \
                 plugin_handler.h \
                 plugin_interface.h \
-                SettingsManager.h \
                 singleapplication.h \
-                winfiles.h \
                 ../common/FileBrowserDelegate.h \
                 ../common/FileBrowser.h \
-                ../common/DropListWidget.h
-        
+                ../common/DropListWidget.h \
+                optionsdialog.h
+win32:HEADERS	+= win_launchywidget.h
+
 TRANSLATIONS	= \
                 ../../translations/launchy_fr.ts \
                 ../../translations/launchy_nl.ts \
@@ -81,70 +75,52 @@ TRANSLATIONS	= \
 DESTDIR		 	= ../../bin/
 DLLDESTDIR		= ../../bin/
 
+//LIBS			+= launchy.common
+
 linux {
-    ICON = Launchy.ico
-    SOURCES += ../platforms/unix/platform_unix.cpp \
-        ../platforms/unix/platform_unix_util.cpp \
-        ../platforms/unix/platform_x11_hotkey.cpp
-    HEADERS += ../platforms/unix/platform_unix.h \
-        ../platforms/unix/platform_unix_util.h \
-        ../platforms/unix/platform_x11_hotkey.h \
-        platform_base_hotkey.h \
-        platform_base_hottrigger.h
-    LIBS += -lX11
-    PREFIX = /usr
-    DEFINES += SKINS_PATH=\\\"$$PREFIX/share/launchy/skins/\\\" \
-        PLUGINS_PATH=\\\"$$PREFIX/lib/launchy/plugins/\\\" \
-        PLATFORMS_PATH=\\\"$$PREFIX/lib/launchy/\\\"
-    if(!debug_and_release|build_pass) { 
+    ICON		= Launchy.ico
+    LIBS		+= -L../../lib \
+                -llaunchy.common \
+                -lX11
+    if(!debug_and_release|build_pass) {
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/
     }
-    target.path = $$PREFIX/bin/
-    skins.path = $$PREFIX/share/launchy/skins/
-    skins.files = ../../skins/*
-    icon.path = $$PREFIX/share/pixmaps
-    icon.files = ../misc/Launchy_Icon/launchy_icon.png
-    desktop.path = $$PREFIX/share/applications/
-    desktop.files = ../linux/launchy.desktop
-    INSTALLS += target \
-        skins \
-        icon \
-        desktop
+    target.path	= $$PREFIX/bin/
+    skins.path	= $$PREFIX/share/launchy/skins/
+    skins.files	= ../../skins/*
+    icon.path	= $$PREFIX/share/pixmaps
+    icon.files	= ../misc/Launchy_Icon/launchy_icon.png
+    desktop.path	= $$PREFIX/share/applications/
+    desktop.files	= ../linux/launchy.desktop
+    INSTALLS	+= target \
+                skins \
+                icon \
+                desktop
 }
 win32 { 
-    ICON = Launchy.ico
+    ICON		= Launchy.ico
     if(!debug_and_release|build_pass):CONFIG(debug, debug|release):CONFIG += console
-    SOURCES += ../platforms/win/platform_win.cpp \
-        ../platforms/win/platform_win_hotkey.cpp \
-        ../platforms/win/platform_win_util.cpp \
-        ../platforms/win/WinIconProvider.cpp \
-        ../platforms/win/minidump.cpp
-    HEADERS += ../platforms/win/WinIconProvider.h \
-        platform_base_hotkey.h \
-        platform_base_hottrigger.h \
-        ../platforms/win/platform_win.h \
-        ../platforms/win/platform_win_util.h \
-        ../platforms/win/minidump.h
-    CONFIG += embed_manifest_exe
-    INCLUDEPATH += c:/boost/
-    RC_FILE = ../win/launchy.rc
-	LIBS += shell32.lib \
-		user32.lib \
-		gdi32.lib \
-		ole32.lib \
-		comctl32.lib \
-		advapi32.lib \
-		userenv.lib \
-        netapi32.lib
-    DEFINES = VC_EXTRALEAN \
-        WIN32 \
-        _UNICODE \
-        UNICODE \
-        WINVER=0x0600 \
-        _WIN32_WINNT=0x0600 \
-        _WIN32_WINDOWS=0x0600 \
-        _WIN32_IE=0x0700
+    CONFIG		+= embed_manifest_exe
+    RC_FILE		= ../win/launchy.rc
+    LIBS		+= -L../../lib \
+                ../../lib/launchy.common.lib \
+                shell32.lib \
+                user32.lib \
+                gdi32.lib \
+                ole32.lib \
+                comctl32.lib \
+                advapi32.lib \
+                userenv.lib \
+                netapi32.lib
+    DEFINES		= VC_EXTRALEAN \
+                WIN32 \
+                _UNICODE \
+                UNICODE \
+                WINVER=0x0600 \
+                _WIN32_WINNT=0x0600 \
+                _WIN32_WINDOWS=0x0600 \
+                _WIN32_IE=0x0700
     if(!debug_and_release|build_pass) {
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/
@@ -153,23 +129,20 @@ win32 {
     QMAKE_LFLAGS_RELEASE += /DEBUG
 }
 macx { 
-    ICON = ../misc/Launchy_Icon/launchy_icon_mac.icns
-    SOURCES += ../platforms/mac/platform_mac.cpp \
-        ../platforms/mac/platform_mac_hotkey.cpp
-    HEADERS += ../platforms/mac/platform_mac.h \
-        ../platforms/mac/platform_mac_hotkey.h \
-        platform_base_hotkey.h \
-        platform_base_hottrigger.h
+    ICON		= ../misc/Launchy_Icon/launchy_icon_mac.icns
     if(!debug_and_release|build_pass) { 
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/
     }
     INCLUDEPATH += /opt/local/include/
     LIBS += -framework \
-        Carbon
+        Carbon \
+        ../../lib/liblaunchy.common.a
+
     CONFIG(debug, debug|release):skins.path = ../debug/Launchy.app/Contents/Resources/skins/
     CONFIG(release, debug|release):skins.path = ../release/Launchy.app/Contents/Resources/skins/
     skins.files = 
+
     skins.extra = rsync -arvz ../../skins/   ../release/Launchy.app/Contents/Resources/skins/   --exclude=\".svn\"
     CONFIG(debug, debug|release):translations.path = ../debug/Launchy.app/Contents/MacOS/tr/
     CONFIG(release, debug|release):translations.path = ../release/Launchy.app/Contents/MacOS/tr/
