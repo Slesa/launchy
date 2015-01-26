@@ -1,49 +1,48 @@
-TARGET = controly
-TEMPLATE = lib
+TEMPLATE		= lib
+TARGET			= controly
 
-QT += widgets
-win32:QT += winextras
+QT				+= widgets
+win32:QT		+= winextras
 
-CONFIG += plugin \
-    debug_and_release
-DEFINES += WITH_GUI
+CONFIG			+= plugin debug_and_release
+DEFINES			+= WITH_GUI
 
-VPATH += ../../launchy/
-INCLUDEPATH += ../../launchy/
+VPATH			+= ../../launchy/
+INCLUDEPATH		+= ../../launchy/
 
-UI_DIR = .ui
-MOC_DIR = .moc
+UI_DIR			= .ui
+MOC_DIR			= .moc
 
-FORMS = dlg.ui
+FORMS			= dlg.ui
 
-HEADERS = plugin_interface.h \
-        winfiles.h \
-        controly.h \
-        gui.h \
-        ControlPanelItemFinder.h \
-	fhoicon.h \
-	fhoenv.h \
-	fhoreg.h \
-        fhores.h
+HEADERS			= plugin_interface.h \
+                winfiles.h \
+                controly.h \
+                gui.h \
+                ControlPanelItemFinder.h \
+                fhoicon.h \
+                fhoenv.h \
+                fhoreg.h \
+                fhores.h
 
-SOURCES = plugin_interface.cpp \
-        controly.cpp \
-        gui.cpp \
-        ControlPanelItemFinder.cpp \
-	fhoicon.cpp \
-	fhoenv.cpp \
-	fhoreg.cpp \
-	fhores.cpp
+SOURCES			= plugin_interface.cpp \
+                controly.cpp \
+                gui.cpp \
+                ControlPanelItemFinder.cpp \
+                fhoicon.cpp \
+                fhoenv.cpp \
+                fhoreg.cpp \
+                fhores.cpp
 
 win32 { 
-    CONFIG -= embed_manifest_dll
-	LIBS += shell32.lib
-	LIBS += user32.lib
-	LIBS += Gdi32.lib
-	LIBS += comctl32.lib
-	LIBS += Advapi32.lib
-	LIBS += ole32.lib
-	LIBS += shlwapi.lib
+    CONFIG		-= embed_manifest_dll
+    LIBS		+= shell32.lib \
+                user32.lib \
+                Gdi32.lib \
+                comctl32.lib \
+                Advapi32.lib \
+                ole32.lib \
+                shlwapi.lib
 	QMAKE_CXXFLAGS_RELEASE += /Zi
 	QMAKE_LFLAGS_RELEASE += /DEBUG
 # disable optimizations to prevent crashes with certain third party control panel

@@ -47,9 +47,9 @@ public:
 	virtual bool getComputers(QStringList& computers) const;
 
 private:
-    HANDLE localMutex, globalMutex;
+    HANDLE _localMutex, _globalMutex;
 //   LimitSingleInstance* instance;
-    MiniDumper minidumper;
+    MiniDumper _minidumper;
 };
 
 

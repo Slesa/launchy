@@ -10,10 +10,10 @@ int main(int argc, char** argv)
     bool success = true;
 
     CommandLineParserSpecs commandLineParserSpecs;
-    success |= QTest::qExec(&commandLineParserSpecs, argc, argv);
+    success |= QTest::qExec(&commandLineParserSpecs, argc, argv)==0;
 
     SingleApplicationSpecs singleApplicationSpecs;
-    success |= QTest::qExec(&singleApplicationSpecs, argc, argv);
+    success |= QTest::qExec(&singleApplicationSpecs, argc, argv)==0;
 
     return success;
 }

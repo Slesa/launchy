@@ -74,7 +74,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 	if (searchPath.startsWith("//"))
 	{
 		// Exit if the user doesn't want to browse networks
-		if (!gSettings->value("GenOps/showNetwork", true).toBool())
+        if (!g_settings.showNetwork())
 			return;
 
 		// Check for a search against just the network name
@@ -82,7 +82,7 @@ void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults
 		if (re.exactMatch(searchPath))
 		{
 			// Get a list of devices on the network. This will be filtered and sorted later.
-			platform->getComputers(itemList);
+            g_platform->getComputers(itemList);
 			isDirectory = false;
 			listPopulated = true;
 			sort = false;

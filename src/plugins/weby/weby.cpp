@@ -472,7 +472,7 @@ void WebyPlugin::getCatalog(QList<CatItem>* items)
     }
 
 #ifdef Q_OS_WIN
-    if ((*settings)->value("weby/ie", true).toBool())
+    if (settings->value("weby/ie", true).toBool())
     {
         QString path = GetShellDirectory(CSIDL_FAVORITES);
         indexIE(path, items);

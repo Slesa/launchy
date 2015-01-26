@@ -57,7 +57,7 @@ public:
 
 
 protected:
-	QFileIconProvider* icons;
+    QFileIconProvider* icons;
 	QKeySequence hotkey;
 };
 

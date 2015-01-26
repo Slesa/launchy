@@ -22,91 +22,31 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "win_platform.h"
 #include "win_iconprovider.h"
 #include "win_minidump.h"
-
-
-// Override the main widget to handle incoming system messages. We could have done this in the QApplication 
-// event handler, but then we'd have to filter out the duplicates for messages like WM_SETTINGCHANGE.
-class LaunchyWidgetWin : public LaunchyWidget
-{
-public:
-	LaunchyWidgetWin(CommandFlags command) :
-		LaunchyWidget(command)
-	{
-		commandMessageId = RegisterWindowMessage(_T("LaunchyCommand"));
-	}
-
-    virtual bool nativeEvent(const QByteArray& eventType, void* message, long* result)
-    {
-        MSG* msg = (MSG*) message;
-        switch (msg->message)
-        {
-		case WM_SETTINGCHANGE:
-			// Refresh Launchy's environment on settings changes
-			if (msg->lParam && _tcscmp((TCHAR*)msg->lParam, _T("Environment")) == 0)
-			{
-				UpdateEnvironment();
-			}
-			break;
-
-		case WM_ENDSESSION:
-			// Ensure settings are saved
-			saveSettings();
-			break;
-
-		// Might need to capture these two messages if Vista gives any problems with alpha borders
-		// when restoring from standby
-		case WM_POWERBROADCAST:
-			break;
-		case WM_WTSSESSION_CHANGE:
-			break;
-
-		default:
-			if (msg->message == commandMessageId)
-			{
-                // A Launchy startup command
-				executeStartupCommand(msg->wParam);
-			}
-			break;
-		}
-        return LaunchyWidget::nativeEvent(eventType, msg, result);
-	}
-
-private:
-	UINT commandMessageId;
-};
-
-
-// Create the main widget for the application
-LaunchyWidget* createLaunchyWidget(CommandFlags command)
-{
-	return new LaunchyWidgetWin(command);
-}
-
-
+#include "globalshortcutmanager.h"
 
 WinPlatform::WinPlatform(int& argc, char** argv) :
 	PlatformBase(argc, argv),
-	minidumper(_T("Launchy"))
+    _minidumper(_T("Launchy"))
 {
-	instance = new LimitSingleInstance(_T("Local\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
+//	instance = new LimitSingleInstance(_T("Local\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
 
 	// Create local and global application mutexes so that installer knows when
 	// Launchy is running
-    localMutex = CreateMutex(NULL,0,_T("LaunchyMutex"));
-	globalMutex = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
+    _localMutex = CreateMutex(NULL,0,_T("LaunchyMutex"));
+    _globalMutex = CreateMutex(NULL,0,_T("Global\\LaunchyMutex"));
 
-	icons = (QFileIconProvider*)new WinIconProvider();
+    icons = (QFileIconProvider*)new WinIconProvider();
 }
 
 
 WinPlatform::~WinPlatform()
 {
-	if (localMutex)
-		CloseHandle(localMutex);
-	if (globalMutex)
-		CloseHandle(globalMutex);
-	delete instance;
-        instance = NULL;
+    if (_localMutex)
+        CloseHandle(_localMutex);
+    if (_globalMutex)
+        CloseHandle(_globalMutex);
+//	delete instance;
+//  instance = NULL;
 }
 
 
@@ -178,7 +118,7 @@ QString WinPlatform::expandEnvironmentVars(QString txt)
 
 void WinPlatform::sendInstanceCommand(int command)
 {
-	UINT commandMessageId = RegisterWindowMessage(_T("LaunchyCommand"));
+    UINT commandMessageId = RegisterWindowMessage(_T("LaunchyCommand"));
 	PostMessage(HWND_BROADCAST, commandMessageId, command, 0);
 }
 

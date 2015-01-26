@@ -37,6 +37,7 @@ SOURCES			= main.cpp \
                 ../common/FileBrowserDelegate.cpp \
                 ../common/FileBrowser.cpp \
                 optionsdialog.cpp
+win32:SOURCES	+= win_launchywidget.cpp
 
 HEADERS			= main.h \
                 AnimationLabel.h \
@@ -60,7 +61,8 @@ HEADERS			= main.h \
                 ../common/FileBrowser.h \
                 ../common/DropListWidget.h \
                 optionsdialog.h
-        
+win32:HEADERS	+= win_launchywidget.h
+
 TRANSLATIONS	= \
                 ../../translations/launchy_fr.ts \
                 ../../translations/launchy_nl.ts \
@@ -85,51 +87,41 @@ linux {
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/
     }
-    target.path = $$PREFIX/bin/
-    skins.path = $$PREFIX/share/launchy/skins/
-    skins.files = ../../skins/*
-    icon.path = $$PREFIX/share/pixmaps
-    icon.files = ../misc/Launchy_Icon/launchy_icon.png
-    desktop.path = $$PREFIX/share/applications/
-    desktop.files = ../linux/launchy.desktop
-    INSTALLS += target \
-        skins \
-        icon \
-        desktop
+    target.path	= $$PREFIX/bin/
+    skins.path	= $$PREFIX/share/launchy/skins/
+    skins.files	= ../../skins/*
+    icon.path	= $$PREFIX/share/pixmaps
+    icon.files	= ../misc/Launchy_Icon/launchy_icon.png
+    desktop.path	= $$PREFIX/share/applications/
+    desktop.files	= ../linux/launchy.desktop
+    INSTALLS	+= target \
+                skins \
+                icon \
+                desktop
 }
 win32 { 
-    ICON = Launchy.ico
+    ICON		= Launchy.ico
     if(!debug_and_release|build_pass):CONFIG(debug, debug|release):CONFIG += console
-    SOURCES += ../platforms/win/platform_win.cpp \
-        ../platforms/win/platform_win_hotkey.cpp \
-        ../platforms/win/platform_win_util.cpp \
-        ../platforms/win/WinIconProvider.cpp \
-        ../platforms/win/minidump.cpp
-    HEADERS += ../platforms/win/WinIconProvider.h \
-        platform_base_hotkey.h \
-        platform_base_hottrigger.h \
-        ../platforms/win/platform_win.h \
-        ../platforms/win/platform_win_util.h \
-        ../platforms/win/minidump.h
-    CONFIG += embed_manifest_exe
-    INCLUDEPATH += c:/boost/
-    RC_FILE = ../win/launchy.rc
-	LIBS += shell32.lib \
-		user32.lib \
-		gdi32.lib \
-		ole32.lib \
-		comctl32.lib \
-		advapi32.lib \
-		userenv.lib \
-        netapi32.lib
-    DEFINES = VC_EXTRALEAN \
-        WIN32 \
-        _UNICODE \
-        UNICODE \
-        WINVER=0x0600 \
-        _WIN32_WINNT=0x0600 \
-        _WIN32_WINDOWS=0x0600 \
-        _WIN32_IE=0x0700
+    CONFIG		+= embed_manifest_exe
+    RC_FILE		= ../win/launchy.rc
+    LIBS		+= -L../../lib \
+                ../../lib/launchy.common.lib \
+                shell32.lib \
+                user32.lib \
+                gdi32.lib \
+                ole32.lib \
+                comctl32.lib \
+                advapi32.lib \
+                userenv.lib \
+                netapi32.lib
+    DEFINES		= VC_EXTRALEAN \
+                WIN32 \
+                _UNICODE \
+                UNICODE \
+                WINVER=0x0600 \
+                _WIN32_WINNT=0x0600 \
+                _WIN32_WINDOWS=0x0600 \
+                _WIN32_IE=0x0700
     if(!debug_and_release|build_pass) {
         CONFIG(debug, debug|release):DESTDIR = ../debug/
         CONFIG(release, debug|release):DESTDIR = ../release/

@@ -110,12 +110,7 @@ int main(int argc, char *argv[])
 
     qApp->setStyleSheet("file:///:/resources/basicskin.qss");
 
-#ifdef Q_OS_WIN
-	LaunchyWidget* widget = createLaunchyWidget(command);
-#else
-	LaunchyWidget* widget = new LaunchyWidget(command);
-#endif
-
+    LaunchyWidget* widget = createLaunchyWidget(command);
     int result = qApp->exec();
 
     if(_singleApplication!=NULL)
@@ -162,3 +157,17 @@ void fileLogMsgHandler(QtMsgType type, const QMessageLogContext& context, const 
 //        fflush(file);
     }
 }
+
+#ifdef Q_OS_WIN
+#include "win_launchywidget.h"
+#endif
+
+LaunchyWidget* createLaunchyWidget(CommandFlags command)
+{
+#ifdef Q_OS_WIN
+    return new WinLaunchyWidget(command);
+#else
+    return new LaunchyWidget(command);
+#endif
+}
+

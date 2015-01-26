@@ -40,7 +40,7 @@ LONG MiniDumper::TopLevelFilter(struct _EXCEPTION_POINTERS *exceptionInfo)
 {
 	LONG result = EXCEPTION_CONTINUE_SEARCH;
 
-	if (CreateMiniDump(_T("Mini"), exceptionInfo, MiniDumpNormal) &&
+    if (CreateMiniDump(_T("Mini"), exceptionInfo, MiniDumpNormal) &&
 		CreateMiniDump(_T("Midi"), exceptionInfo, MiniDumpWithPrivateReadWriteMemory))
 	{
 		MessageBox(NULL, 

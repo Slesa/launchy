@@ -375,6 +375,6 @@ GlobalShortcutManager::KeyTrigger::~KeyTrigger()
 
 bool GlobalShortcutManager::KeyTrigger::isConnected() 
 {
-	if (!d) return false;
+    if (!d.get()) return false;
 	return d->connected;
 }
