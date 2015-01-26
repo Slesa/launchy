@@ -46,7 +46,7 @@ void controlyPlugin::init() {
 		gControlyInstance = this;
 
 		// get config / settings directory (base for 'temporary' icon cache dir)
-		QString iniFilename = (*settings)->fileName();
+        QString iniFilename = settings->fileName();
 		QFileInfo info(iniFilename);
 		QString userDataPath = info.absolutePath();
 		

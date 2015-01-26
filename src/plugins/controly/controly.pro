@@ -7,8 +7,10 @@ win32:QT		+= winextras
 CONFIG			+= plugin debug_and_release
 DEFINES			+= WITH_GUI
 
-VPATH			+= ../../launchy/
-INCLUDEPATH		+= ../../launchy/
+VPATH			+= ../../launchy \
+                ../../common
+INCLUDEPATH		+= ../../launchy \
+                ../../common
 
 UI_DIR			= .ui
 MOC_DIR			= .moc
