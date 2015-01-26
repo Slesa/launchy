@@ -56,7 +56,6 @@ HEADERS			= main.h \
                 plugin_handler.h \
                 plugin_interface.h \
                 singleapplication.h \
-                winfiles.h \
                 ../common/FileBrowserDelegate.h \
                 ../common/FileBrowser.h \
                 ../common/DropListWidget.h \

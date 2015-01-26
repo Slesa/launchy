@@ -1,0 +1,340 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5BE955C9-9783-3B62-99A3-C36F5AF49A7B}</ProjectGuid>
+    <RootNamespace>launchy.common</RootNamespace>
+    <Keyword>Qt4VSv1.0</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>..\..\lib\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>launchy.common</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>..\..\lib\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <IntermediateDirectory>release\</IntermediateDirectory>
+    <PrimaryOutput>launchy.common</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>..\..\lib\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>launchy.common</PrimaryOutput>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <PlatformToolSet>v120</PlatformToolSet>
+    <OutputDirectory>..\..\lib\</OutputDirectory>
+    <ATLMinimizesCRunTimeLibraryUsage>false</ATLMinimizesCRunTimeLibraryUsage>
+    <CharacterSet>NotSet</CharacterSet>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <IntermediateDirectory>debug\</IntermediateDirectory>
+    <PrimaryOutput>launchy.common</PrimaryOutput>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">launchy.common</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">launchy.common</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</IgnoreImportLibrary>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">launchy.common</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">launchy.common</TargetName>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</IgnoreImportLibrary>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>"..\..\..\..\qt540\5.4\msvc2013_64\include";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtWidgets";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtWinExtras";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui\5.4.0";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui\5.4.0\QtGui";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtANGLE";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtCore";"release";..\..\..\..\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 -Zc:strictStrings -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>release\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;UNICODE;_UNICODE;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_WINEXTRAS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>
+      </ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)\launchy.common.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;UNICODE;_UNICODE;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_WINEXTRAS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ResourceOutputFileName>$(OutDir)\$(InputName).res</ResourceOutputFileName>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>"..\..\..\..\qt540\5.4\msvc2013_64\include";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtWidgets";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtWinExtras";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui\5.4.0";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui\5.4.0\QtGui";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtANGLE";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtCore";"release";..\..\..\..\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 -Zc:strictStrings -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>release\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>release\</ObjectFileName>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;UNICODE;_UNICODE;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_WINEXTRAS_LIB;QT_GUI_LIB;QT_CORE_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <ProgramDataBaseFileName>
+      </ProgramDataBaseFileName>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)\launchy.common.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;UNICODE;_UNICODE;QT_NO_DEBUG;QT_WIDGETS_LIB;QT_WINEXTRAS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ResourceOutputFileName>$(OutDir)\$(InputName).res</ResourceOutputFileName>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>"..\..\..\..\qt540\5.4\msvc2013_64\include";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtWidgets";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtWinExtras";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui\5.4.0";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui\5.4.0\QtGui";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtANGLE";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtCore";"debug";..\..\..\..\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>debug\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;UNICODE;_UNICODE;QT_WIDGETS_LIB;QT_WINEXTRAS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)\launchy.common.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;UNICODE;_UNICODE;QT_WIDGETS_LIB;QT_WINEXTRAS_LIB;QT_GUI_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ResourceOutputFileName>$(OutDir)\$(InputName).res</ResourceOutputFileName>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>"..\..\..\..\qt540\5.4\msvc2013_64\include";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtWidgets";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtWinExtras";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui\5.4.0";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui\5.4.0\QtGui";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtGui";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtANGLE";"..\..\..\..\qt540\5.4\msvc2013_64\include\QtCore";"debug";..\..\..\..\qt540\5.4\msvc2013_64\mkspecs\win32-msvc2013;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>-Zm200 -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <AssemblerListingLocation>debug\</AssemblerListingLocation>
+      <BrowseInformation>false</BrowseInformation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ObjectFileName>debug\</ObjectFileName>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;UNICODE;_UNICODE;QT_WIDGETS_LIB;QT_WINEXTRAS_LIB;QT_GUI_LIB;QT_CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)\launchy.common.lib</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
+    <Midl>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+      <WarningLevel>0</WarningLevel>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_WINDOWS;UNICODE;WIN32;UNICODE;_UNICODE;QT_WIDGETS_LIB;QT_WINEXTRAS_LIB;QT_GUI_LIB;QT_CORE_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ResourceOutputFileName>$(OutDir)\$(InputName).res</ResourceOutputFileName>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="catalog.cpp" />
+    <ClCompile Include="globals.cpp" />
+    <ClCompile Include="globalshortcutmanager.cpp" />
+    <ClCompile Include="platform_base.cpp" />
+    <ClCompile Include="settingsmanager.cpp" />
+    <ClCompile Include="win.cpp" />
+    <ClCompile Include="win_iconprovider.cpp" />
+    <ClCompile Include="win_keytrigger.cpp" />
+    <ClCompile Include="win_minidump.cpp" />
+    <ClCompile Include="win_platform.cpp" />
+    <ClCompile Include="win_util.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="catalog.h" />
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="globalshortcutmanager.h" />
+    <CustomBuild Include="globalshortcuttrigger.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">globalshortcuttrigger.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">globalshortcuttrigger.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+if errorlevel 1 goto VCEnd
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DUNICODE -D_UNICODE -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_WINEXTRAS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtWinExtras -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0 -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtCore globalshortcuttrigger.h -o release\moc_globalshortcuttrigger.cpp
+if errorlevel 1 goto VCEnd
+endlocal</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+if errorlevel 1 goto VCEnd
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DUNICODE -D_UNICODE -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_WINEXTRAS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtWinExtras -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0 -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtCore globalshortcuttrigger.h -o release\moc_globalshortcuttrigger.cpp
+if errorlevel 1 goto VCEnd
+endlocal</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC globalshortcuttrigger.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC globalshortcuttrigger.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\moc_globalshortcuttrigger.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_globalshortcuttrigger.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">globalshortcuttrigger.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">globalshortcuttrigger.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+if errorlevel 1 goto VCEnd
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DUNICODE -D_UNICODE -DQT_WIDGETS_LIB -DQT_WINEXTRAS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtWinExtras -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0 -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtCore globalshortcuttrigger.h -o debug\moc_globalshortcuttrigger.cpp
+if errorlevel 1 goto VCEnd
+endlocal</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+if errorlevel 1 goto VCEnd
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DUNICODE -D_UNICODE -DQT_WIDGETS_LIB -DQT_WINEXTRAS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtWinExtras -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0 -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtCore globalshortcuttrigger.h -o debug\moc_globalshortcuttrigger.cpp
+if errorlevel 1 goto VCEnd
+endlocal</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC globalshortcuttrigger.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC globalshortcuttrigger.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\moc_globalshortcuttrigger.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\moc_globalshortcuttrigger.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="platform_base.h" />
+    <ClInclude Include="settingsmanager.h" />
+    <ClInclude Include="win_files.h" />
+    <ClInclude Include="win_iconprovider.h" />
+    <ClInclude Include="win_minidump.h" />
+    <CustomBuild Include="win_platform.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">win_platform.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">win_platform.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+if errorlevel 1 goto VCEnd
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DUNICODE -D_UNICODE -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_WINEXTRAS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtWinExtras -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0 -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtCore win_platform.h -o release\moc_win_platform.cpp
+if errorlevel 1 goto VCEnd
+endlocal</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+if errorlevel 1 goto VCEnd
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DUNICODE -D_UNICODE -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_WINEXTRAS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtWinExtras -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0 -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtCore win_platform.h -o release\moc_win_platform.cpp
+if errorlevel 1 goto VCEnd
+endlocal</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC win_platform.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MOC win_platform.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\moc_win_platform.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_win_platform.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">win_platform.h;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">win_platform.h;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+if errorlevel 1 goto VCEnd
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DUNICODE -D_UNICODE -DQT_WIDGETS_LIB -DQT_WINEXTRAS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtWinExtras -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0 -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtCore win_platform.h -o debug\moc_win_platform.cpp
+if errorlevel 1 goto VCEnd
+endlocal</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+if errorlevel 1 goto VCEnd
+D:\work\qt540\5.4\msvc2013_64\bin\moc.exe  -DUNICODE -DWIN32 -DUNICODE -D_UNICODE -DQT_WIDGETS_LIB -DQT_WINEXTRAS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -D_MSC_VER=1800 -D_WIN32 -ID:/work/qt540/5.4/msvc2013_64/mkspecs/win32-msvc2013 -ID:/work/github/launchy/src/common -ID:/work/qt540/5.4/msvc2013_64/include -ID:/work/qt540/5.4/msvc2013_64/include/QtWidgets -ID:/work/qt540/5.4/msvc2013_64/include/QtWinExtras -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0 -ID:/work/qt540/5.4/msvc2013_64/include/QtGui/5.4.0/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtGui -ID:/work/qt540/5.4/msvc2013_64/include/QtANGLE -ID:/work/qt540/5.4/msvc2013_64/include/QtCore win_platform.h -o debug\moc_win_platform.cpp
+if errorlevel 1 goto VCEnd
+endlocal</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC win_platform.h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">MOC win_platform.h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\moc_win_platform.cpp;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">debug\moc_win_platform.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="win_util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="debug\moc_globalshortcuttrigger.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_globalshortcuttrigger.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\moc_win_platform.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\moc_win_platform.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

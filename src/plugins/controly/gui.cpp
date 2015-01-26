@@ -25,14 +25,14 @@ Gui::Gui(QWidget* parent)
 {
 	setupUi(this);
 
-	QSettings* settings = *gControlyInstance->settings;
+    QSettings* settings = gControlyInstance->_settings;
 	if (settings == NULL)
 		return;
 }
 
 void Gui::writeOptions()
 {
-	QSettings* settings = *gControlyInstance->settings;
+    QSettings* settings = gControlyInstance->_settings;
 	if (settings == NULL)
 		return;
 }

@@ -18,7 +18,6 @@ MOC_DIR			= .moc
 FORMS			= dlg.ui
 
 HEADERS			= plugin_interface.h \
-                winfiles.h \
                 controly.h \
                 gui.h \
                 ControlPanelItemFinder.h \

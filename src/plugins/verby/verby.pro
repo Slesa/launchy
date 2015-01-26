@@ -15,7 +15,6 @@ MOC_DIR			= .moc
 FORMS			= dlg.ui
 
 HEADERS			= plugin_interface.h \
-                winfiles.h \
                 gui.h \
                 Verby.h
 

@@ -16,7 +16,6 @@ MOC_DIR			= .moc
 FORMS			= dlg.ui
 
 HEADERS			= plugin_interface.h \
-                winfiles.h \
                 runner.h \
                 gui.h \
                 globals.h \
