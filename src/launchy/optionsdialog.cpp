@@ -72,7 +72,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
     genMaxViewable->setValue(g_settings.getNumViewable());
     genNumResults->setValue(g_settings.maxNumberOfResults());
     genNumHistory->setValue(g_settings.getMaxItemsInHistory());
-    genOpaqueness->setValue(g_settings.getOpaqness());
+    genOpaqueness->setValue(g_settings.getOpaqness()*100.0);
     genFadeIn->setValue(g_settings.getFadeInTime());
     genFadeOut->setValue(g_settings.getFadeOutTime());
     connect(genOpaqueness, SIGNAL(sliderMoved(int)), g_mainWidget, SLOT(setOpaqueness(int)));
@@ -302,7 +302,7 @@ void OptionsDialog::accept()
     g_settings.setNumViewable(genMaxViewable->value());
     g_settings.setMaxNumberOfResults(genNumResults->value());
     g_settings.setMaxItemsInHistory(genNumHistory->value());
-    g_settings.setOpaqness(genOpaqueness->value());
+    g_settings.setOpaqness(genOpaqueness->value()/100.0);
     g_settings.setFadeInTime(genFadeIn->value());
     g_settings.setFadeOutTime(genFadeOut->value());
 

@@ -340,7 +340,7 @@ double SettingsManager::getOpaqness() const
 }
 void SettingsManager::setOpaqness(double value)
 {
-    _settings->setValue("GenOps/opaqueness", value);
+    _settings->setValue("GenOps/opaqueness", value*100);
 }
 
 bool SettingsManager::showHiddenFiles() const
