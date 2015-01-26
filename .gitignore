@@ -8,3 +8,6 @@ ui_*.h
 *.filters
 build/
 *.suo
+.moc
+.ui/
+
