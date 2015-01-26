@@ -147,7 +147,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
         updateVersion(g_settings.getVersion());
         command |= ShowView;
 	}
-/*
+
 	alternatives = new CharListWidget(this);
 	alternatives->setObjectName("alternatives");
 	alternatives->setWindowFlags(Qt::Window | Qt::Tool | Qt::FramelessWindowHint);
@@ -167,7 +167,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	alternativesPath->setObjectName("alternativesPath");
 	alternativesPath->hide();
 	listDelegate->setAlternativesPathWidget(alternativesPath);
-*/
+
 	// Load the plugins
 	plugins.loadPlugins();
 

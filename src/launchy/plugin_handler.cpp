@@ -168,7 +168,7 @@ void PluginHandler::loadPlugins()
 
 			qDebug() << "Plugin loaded";
 
-            plug->settings = g_settings.getQSettings();
+            plug->initialize(g_settings.getQSettings());
 			PluginInfo info;
 			info.obj = plug;
 			info.path = pluginsDir.absoluteFilePath(fileName);
