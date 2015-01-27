@@ -56,7 +56,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
     genPortable->setChecked(g_settings.isPortable());
     genHideFocus->setChecked(g_settings.hideIfLostFocus());
     genDecorateText->setChecked(g_settings.doDecorateText());
-    int center = g_settings.getAutoSuggestDelay();
+    int center = g_settings.getAlwaysCenterOption();
 	genHCenter->setChecked((center & 1) != 0);
 	genVCenter->setChecked((center & 2) != 0);
     genShiftDrag->setChecked(g_settings.getDragMode() == 1);

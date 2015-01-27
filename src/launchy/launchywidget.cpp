@@ -1114,7 +1114,7 @@ void LaunchyWidget::loadPosition(QPoint pt)
 	else if (newCenter.y() > screen.bottom())
 		pt.setY(screen.bottom()-rect.height());
 
-    int centerOption = g_settings.getAutoSuggestDelay();
+    int centerOption = g_settings.getAlwaysCenterOption();
 	if (centerOption & 1)
 		pt.setX(screen.center().x() - rect.width()/2);
 	if (centerOption & 2)
