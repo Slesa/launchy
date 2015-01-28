@@ -76,7 +76,7 @@ DESTDIR	 		= ../../app/
 #DLLDESTDIR	= ../../release/
 
 #LIBS			+= launchy.common
-QMAKE_PRE_LINK	+= $$quote($${QTDIR}/bin/lupdate ../Launchy.pro)
+QMAKE_PRE_LINK	+= $$quote(lupdate $${PWD}/../Launchy.pro)
 
 linux {
     ICON		= Launchy.ico
@@ -84,7 +84,7 @@ linux {
                 -llaunchy.common \
                 -lX11
 
-    QMAKE_POST_LINK	+= $$quote(cp -r ../../../skins $${DESTDIR}/)
+    QMAKE_POST_LINK	+= $$quote(cp -r ../../../skins $${DESTDIR}/ $$escape_expand(\n\t))
 
 #    if(!debug_and_release|build_pass) {
 #        CONFIG(debug, debug|release):DESTDIR = ../debug/
@@ -144,9 +144,9 @@ macx {
                 Carbon \
                 ../../lib/liblaunchy.common.a
 
-    QMAKE_POST_LINK	+= $$quote(cp -r ../../../skins $${DESTDIR}/Launchy.app/Contents/Resources/)
-    QMAKE_POST_LINK	+= $$quote(md $${DESTDIR}/Launchy.app/Contents/MacOS/tr)
-    QMAKE_POST_LINK	+= $$quote(cp ../../../translations/*.qm $${DESTDIR}/Launchy.app/MacOS/tr/)
+    QMAKE_POST_LINK	+= $$quote(cp -r ../../../skins $${DESTDIR}/Launchy.app/Contents/Resources/ $$escape_expand(\n\t))
+    QMAKE_POST_LINK	+= $$quote(md $${DESTDIR}/Launchy.app/Contents/MacOS/tr$$ escape_expand(\n\t))
+    QMAKE_POST_LINK	+= $$quote(cp ../../../translations/*.qm $${DESTDIR}/Launchy.app/MacOS/tr/ $$escape_expand(\n\t))
 
     skins.path	= $${DESTDIR}/Launchy.app/Contents/Resources/skins/
 #    CONFIG(debug, debug|release):skins.path = ../../debug/Launchy.app/Contents/Resources/skins/
