@@ -4,16 +4,16 @@ UI_DIR				= .ui
 MOC_DIR				= .moc
 
 
-DESTDIR = ../../../app/plugins
-# if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../../debug/plugins
-# if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../../release/plugins
+# DESTDIR = $${PWD}/../../../bin/app/plugins
+#if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = $${PWD}/../../../bin/app/plugins
+#if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = $${PWD}/../../../bin/app/plugins
 
 
-macx {
-    DESTDIR = ../../../app/Launchy.app/Contents/MacOS/plugins
+#macx {
+#    DESTDIR = $${PWD}/../../../bin/app/Launchy.app/Contents/MacOS/plugins
 #    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../../debug/Launchy.app/Contents/MacOS/plugins
 #    if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../../release/Launchy.app/Contents/MacOS/plugins
-}
+#}
 
 
 

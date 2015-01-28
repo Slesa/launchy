@@ -32,6 +32,8 @@ SOURCES			= plugin_interface.cpp \
                 fhoreg.cpp \
                 fhores.cpp
 
+DESTDIR			= $${PWD}/../../../bin/app/plugins
+
 TRANSLATIONS	= \
                 ../../../translations/controly_fr.ts \
                 ../../../translations/controly_nl.ts \
@@ -57,13 +59,3 @@ win32 {
 # applets when Controly is built using VC++ 2005.
 	QMAKE_CXXFLAGS_RELEASE -= -O2
 }
-
-# *:debug {
-# DESTDIR = ../../debug/plugins/
-# }
-# *:release {
-# DESTDIR = ../../release/plugins/
-# %QMAKE_CXXFLAGS += /Ox /Ob2 /Oi /Oy /GT /GA /WX
-# }
-#if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/plugins
-#if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../release/plugins

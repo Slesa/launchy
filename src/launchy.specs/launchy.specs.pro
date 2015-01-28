@@ -16,4 +16,4 @@ SOURCES 		= main.cpp \
                 ../launchy/commandlineparser.cpp \
                 ../launchy/singleapplication.cpp
 
-DESTDIR 		= ../../specs/
+DESTDIR 		= $${PWD}../../../bin/specs/

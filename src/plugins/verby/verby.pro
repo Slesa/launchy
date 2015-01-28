@@ -19,6 +19,8 @@ SOURCES			= plugin_interface.cpp \
                 gui.cpp \
                 Verby.cpp
 
+DESTDIR			= $${PWD}/../../../bin/app/plugins
+
 TRANSLATIONS	= \
                 ../../../translations/verby_fr.ts \
                 ../../../translations/verby_nl.ts \
@@ -36,9 +38,6 @@ win32 {
 	QMAKE_LFLAGS_RELEASE += /DEBUG
 }
 
-#if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/plugins
-#if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../release/plugins
-
 linux {
     PREFIX		= /usr
     target.path	= $$PREFIX/lib/launchy/plugins/
@@ -46,14 +45,11 @@ linux {
     icon.files	= verby.png copy.png opencontainer.png properties.png run.png
     INSTALLS	+= target icon
 }
+
 macx {
-#    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/Launchy.app/Contents/MacOS/plugins
-#    if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../release/Launchy.app/Contents/MacOS/plugins
+    DESTDIR		= $${PWD}/../../../bin/app/Launchy.app/Contents/MacOS/plugins
 
     icons.path	= ../../../app/Launchy.app/Contents/MacOS/plugins/icons/
-#    CONFIG(debug, debug|release):icons.path = ../../../debug/Launchy.app/Contents/MacOS/plugins/icons/
-#    CONFIG(release, debug|release):icons.path = ../../../release/Launchy.app/Contents/MacOS/plugins/icons/
-
     icons.files	= verby.png copy.png opencontainer.png properties.png run.png
     INSTALLS	+= icons
 }

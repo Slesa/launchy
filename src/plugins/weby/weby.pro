@@ -24,6 +24,8 @@ SOURCES			= plugin_interface.cpp \
                 ../../common/DropTableWidget.cpp \
                 IconCache.cpp
 
+DESTDIR			= $${PWD}/../../../bin/app/plugins
+
 TRANSLATIONS	= \
                 ../../../translations/weby_fr.ts \
                 ../../../translations/weby_nl.ts \
@@ -34,14 +36,10 @@ TRANSLATIONS	= \
                 ../../../translations/weby_zh_TW.ts \
                 ../../../translations/weby_rus.ts
 
-
 win32 { 
     CONFIG		-= embed_manifest_dll
     LIBS		+= user32.lib shell32.lib
 }
-
-#if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/plugins
-#if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../release/plugins
 
 linux {
     PREFIX		= /usr
@@ -52,13 +50,9 @@ linux {
 }
 
 macx {
-#    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../../debug/Launchy.app/Contents/MacOS/plugins
-#    if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../../release/Launchy.app/Contents/MacOS/plugins
+    DESTDIR		= $${PWD}/../../../bin/app/Launchy.app/Contents/MacOS/plugins
 
     icons.path	 = ../../../app/Launchy.app/Contents/MacOS/plugins/icons/
-#    CONFIG(debug, debug|release):icons.path = ../../../debug/Launchy.app/Contents/MacOS/plugins/icons/
-#    CONFIG(release, debug|release):icons.path = ../../../release/Launchy.app/Contents/MacOS/plugins/icons/
-
     icons.files = weby.png
     INSTALLS	+= icons
 }

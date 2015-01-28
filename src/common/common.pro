@@ -60,19 +60,12 @@ TRANSLATIONS	= \
                 ../../translations/common_zh_TW.ts \
                 ../../translations/common_rus.ts
 
-DESTDIR 		= ../../lib/
+DESTDIR 		= $${PWD}../../../bin/lib/
 
 unix {
     PREFIX		= /usr
     DEFINES		+= SKINS_PATH=\\\"$$PREFIX/share/launchy/skins/\\\" \
                 PLUGINS_PATH=\\\"$$PREFIX/lib/launchy/plugins/\\\" \
-                PLATFORMS_PATH=\\\"$$PREFIX/lib/launchy/\\\"}
-
-#if(!debug_and_release|build_pass):CONFIG(debug, debug|release) {
-#        DESTDIR = ../../lib/
-#}
-
-#if(!debug_and_release|build_pass):CONFIG(release, debug|release) {
-#        DESTDIR = ../../lib/
-#}
+                PLATFORMS_PATH=\\\"$$PREFIX/lib/launchy/\\\"
+}
 
