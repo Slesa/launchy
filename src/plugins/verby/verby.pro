@@ -19,7 +19,17 @@ SOURCES			= plugin_interface.cpp \
                 gui.cpp \
                 Verby.cpp
 
-win32 { 
+TRANSLATIONS	= \
+                ../../../translations/verby_fr.ts \
+                ../../../translations/verby_nl.ts \
+                ../../../translations/verby_zh.ts \
+                ../../../translations/verby_es.ts \
+                ../../../translations/verby_de.ts \
+                ../../../translations/verby_ja.ts \
+                ../../../translations/verby_zh_TW.ts \
+                ../../../translations/verby_rus.ts
+
+win32 {
     CONFIG		-= embed_manifest_dll
     LIBS		+= user32.lib shell32.lib
 	QMAKE_CXXFLAGS_RELEASE += /Zi

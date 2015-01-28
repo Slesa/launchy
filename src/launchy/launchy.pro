@@ -76,16 +76,21 @@ DESTDIR	 		= ../../app/
 #DLLDESTDIR	= ../../release/
 
 #LIBS			+= launchy.common
+QMAKE_PRE_LINK	+= $$quote($${QTDIR}/bin/lupdate ../Launchy.pro)
 
 linux {
     ICON		= Launchy.ico
     LIBS		+= -L../../lib \
                 -llaunchy.common \
                 -lX11
-    if(!debug_and_release|build_pass) {
-        CONFIG(debug, debug|release):DESTDIR = ../debug/
-        CONFIG(release, debug|release):DESTDIR = ../release/
-    }
+
+    QMAKE_POST_LINK	+= $$quote(cp -r ../../../skins $${DESTDIR}/)
+
+#    if(!debug_and_release|build_pass) {
+#        CONFIG(debug, debug|release):DESTDIR = ../debug/
+#        CONFIG(release, debug|release):DESTDIR = ../release/
+#    }
+
     target.path	= $$PREFIX/bin/
     skins.path	= $$PREFIX/share/launchy/skins/
     skins.files	= ../../skins/*
@@ -100,7 +105,8 @@ linux {
 }
 win32 { 
     ICON		= Launchy.ico
-    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):CONFIG += console
+    debug:CONFIG += console
+#    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):CONFIG += console
     CONFIG		+= embed_manifest_exe
     RC_FILE		= ../win/launchy.rc
     LIBS		+= -L../../lib \
@@ -138,7 +144,11 @@ macx {
                 Carbon \
                 ../../lib/liblaunchy.common.a
 
-    skins.path	= ../../app/Launchy.app/Contents/Resources/skins/
+    QMAKE_POST_LINK	+= $$quote(cp -r ../../../skins $${DESTDIR}/Launchy.app/Contents/Resources/)
+    QMAKE_POST_LINK	+= $$quote(md $${DESTDIR}/Launchy.app/Contents/MacOS/tr)
+    QMAKE_POST_LINK	+= $$quote(cp ../../../translations/*.qm $${DESTDIR}/Launchy.app/MacOS/tr/)
+
+    skins.path	= $${DESTDIR}/Launchy.app/Contents/Resources/skins/
 #    CONFIG(debug, debug|release):skins.path = ../../debug/Launchy.app/Contents/Resources/skins/
 #    CONFIG(release, debug|release):skins.path = ../../release/Launchy.app/Contents/Resources/skins/
     skins.files	=

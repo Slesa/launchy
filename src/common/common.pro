@@ -50,6 +50,16 @@ mac:SOURCES		+= mac.cpp \
                 mac_platform.cpp \
                 mac_keytrigger.cpp
 
+TRANSLATIONS	= \
+                ../../translations/common_fr.ts \
+                ../../translations/common_nl.ts \
+                ../../translations/common_zh.ts \
+                ../../translations/common_es.ts \
+                ../../translations/common_de.ts \
+                ../../translations/common_ja.ts \
+                ../../translations/common_zh_TW.ts \
+                ../../translations/common_rus.ts
+
 DESTDIR 		= ../../lib/
 
 unix {

@@ -32,6 +32,16 @@ SOURCES			= plugin_interface.cpp \
                 fhoreg.cpp \
                 fhores.cpp
 
+TRANSLATIONS	= \
+                ../../../translations/controly_fr.ts \
+                ../../../translations/controly_nl.ts \
+                ../../../translations/controly_zh.ts \
+                ../../../translations/controly_es.ts \
+                ../../../translations/controly_de.ts \
+                ../../../translations/controly_ja.ts \
+                ../../../translations/controly_zh_TW.ts \
+                ../../../translations/controly_rus.ts
+
 win32 { 
     CONFIG		-= embed_manifest_dll
     LIBS		+= shell32.lib \

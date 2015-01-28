@@ -1,3 +1,5 @@
+.qmake.stash
+Makefil
 launchy.sdf
 launchy.opensdf
 bin/
@@ -10,4 +12,5 @@ build/
 *.suo
 .moc
 .ui/
+translations/*.qm
 

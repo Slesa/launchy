@@ -24,6 +24,17 @@ SOURCES			= plugin_interface.cpp \
                 ../../common/DropTableWidget.cpp \
                 IconCache.cpp
 
+TRANSLATIONS	= \
+                ../../../translations/weby_fr.ts \
+                ../../../translations/weby_nl.ts \
+                ../../../translations/weby_zh.ts \
+                ../../../translations/weby_es.ts \
+                ../../../translations/weby_de.ts \
+                ../../../translations/weby_ja.ts \
+                ../../../translations/weby_zh_TW.ts \
+                ../../../translations/weby_rus.ts
+
+
 win32 { 
     CONFIG		-= embed_manifest_dll
     LIBS		+= user32.lib shell32.lib

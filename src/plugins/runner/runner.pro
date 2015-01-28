@@ -27,6 +27,16 @@ SOURCES			= plugin_interface.cpp \
                 ../../common/FileBrowserDelegate.cpp \
                 ../../common/DropTableWidget.cpp
 
+TRANSLATIONS	= \
+                ../../../translations/runner_fr.ts \
+                ../../../translations/runner_nl.ts \
+                ../../../translations/runner_zh.ts \
+                ../../../translations/runner_es.ts \
+                ../../../translations/runner_de.ts \
+                ../../../translations/runner_ja.ts \
+                ../../../translations/runner_zh_TW.ts \
+                ../../../translations/runner_rus.ts
+
 win32 { 
     CONFIG		-= embed_manifest_dll
     LIBS		+= user32.lib shell32.lib

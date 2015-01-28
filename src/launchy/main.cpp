@@ -56,9 +56,12 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(LAUNCHY_VERSION_STRING);
 
     QString locale = QLocale::system().name();
-    QTranslator translator;
-    translator.load(QString("tr/launchy_" + locale));
-    qApp->installTranslator(&translator);
+    QTranslator transcommon;
+    transcommon.load(QString("tr/common_" + locale));
+    qApp->installTranslator(&transcommon);
+    QTranslator transmain;
+    transmain.load(QString("tr/launchy_" + locale));
+    qApp->installTranslator(&transmain);
 
     CommandLineParser parser;
     parser.process(*qApp);
