@@ -1,4 +1,4 @@
-TEMPLATE		= lib
+include(../plugins.pri)
 TARGET			= runner
 
 QT				+= widgets
@@ -9,9 +9,6 @@ VPATH			+= ../../launchy \
                 ../../common
 INCLUDEPATH		+= ../../launchy \
                 ../../common
-
-UI_DIR			= .ui
-MOC_DIR			= .moc
 
 FORMS			= dlg.ui
 
@@ -37,8 +34,8 @@ win32 {
 	QMAKE_LFLAGS_RELEASE += /DEBUG
 }
  
-if(!debug_and_release|build_pass):CONFIG(debug, debug|release) DESTDIR = ../../debug/plugins
-if(!debug_and_release|build_pass):CONFIG(release, debug|release) DESTDIR = ../../release/plugins
+#if(!debug_and_release|build_pass):CONFIG(debug, debug|release) DESTDIR = ../../debug/plugins
+#if(!debug_and_release|build_pass):CONFIG(release, debug|release) DESTDIR = ../../release/plugins
 
 linux {
     PREFIX		= /usr
@@ -49,13 +46,13 @@ linux {
 }
 
 macx {
-    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/Launchy.app/Contents/MacOS/plugins
-    if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../release/Launchy.app/Contents/MacOS/plugins
+#    if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/Launchy.app/Contents/MacOS/plugins
+#    if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../release/Launchy.app/Contents/MacOS/plugins
 
-    CONFIG(debug, debug|release):icons.path = ../../debug/Launchy.app/Contents/MacOS/plugins/icons/
-    CONFIG(release, debug|release):icons.path = ../../release/Launchy.app/Contents/MacOS/plugins/icons/
+    icons.path	= ../../../app/Launchy.app/Contents/MacOS/plugins/icons/
+#    CONFIG(debug, debug|release):icons.path = ../../../debug/Launchy.app/Contents/MacOS/plugins/icons/
+#    CONFIG(release, debug|release):icons.path = ../../../release/Launchy.app/Contents/MacOS/plugins/icons/
 
     icons.files	= runner.png
     INSTALLS	+= icons
-    INCLUDEPATH	+= /opt/local/include/
 }

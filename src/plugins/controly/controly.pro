@@ -1,4 +1,4 @@
-TEMPLATE		= lib
+include(../plugins.pri)
 TARGET			= controly
 
 QT				+= widgets
@@ -11,9 +11,6 @@ VPATH			+= ../../launchy \
                 ../../common
 INCLUDEPATH		+= ../../launchy \
                 ../../common
-
-UI_DIR			= .ui
-MOC_DIR			= .moc
 
 FORMS			= dlg.ui
 
@@ -58,5 +55,5 @@ win32 {
 # DESTDIR = ../../release/plugins/
 # %QMAKE_CXXFLAGS += /Ox /Ob2 /Oi /Oy /GT /GA /WX
 # }
-if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/plugins
-if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../release/plugins
+#if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = ../../debug/plugins
+#if(!debug_and_release|build_pass):CONFIG(release, debug|release):DESTDIR = ../../release/plugins
