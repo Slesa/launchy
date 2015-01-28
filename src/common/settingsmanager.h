@@ -29,6 +29,7 @@ class LoadablePlugins : public QHash<uint, bool> {};
 
 class SettingsManager : public QObject
 {
+    Q_OBJECT
 public:
     static const char* SkinDefault;
 
