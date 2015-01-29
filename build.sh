@@ -1,4 +1,5 @@
-$QTDIR/bin/qmake -recursive src/Launchy.pro
+cd src
+$QTDIR/bin/qmake -recursive Launchy.pro
 
 # $QTDIR/bin/lupdate src/Launchy.pro
 
