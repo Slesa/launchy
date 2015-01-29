@@ -56,6 +56,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(LAUNCHY_VERSION_STRING);
 
     QString locale = QLocale::system().name();
+    QTranslator transqt;
+    transqt.load(QString("tr/qt_" + locale));
+    qApp->installTranslator(&transqt);
     QTranslator transcommon;
     transcommon.load(QString("tr/common_" + locale));
     qApp->installTranslator(&transcommon);

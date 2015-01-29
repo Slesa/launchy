@@ -1,13 +1,12 @@
-TEMPLATE		= app
-
 TEMPLATE		= subdirs
+CONFIG			+= ordered
 SUBDIRS			=  \
                 common \
 #          plugins/calcy \
 #          plugins/gcalc \
                 plugins/runner \
-                plugins/weby \
                 plugins/verby \
+                plugins/weby \
                 launchy.specs \
                 launchy
           

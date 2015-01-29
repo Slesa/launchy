@@ -44,6 +44,16 @@ TRANSLATIONS	= \
                 ../../../translations/controly_zh_TW.ts \
                 ../../../translations/controly_rus.ts
 
+lupdate.target	= lupdate
+lupdate.depends	= $${OBJECTS}
+lupdate.commands = $$quote(lupdate $${PWD}/controly.pro)
+makeqm.target	= makeqm
+makeqm.depends	= $${OBJECTS}
+makeqm.commands	= $$quote(lrelease $${PWD}/controly.pro)
+
+QMAKE_EXTRA_TARGETS += lupdate makeqm
+PRE_TARGETDEPS	+= lupdate makeqm
+
 win32 { 
     CONFIG		-= embed_manifest_dll
     LIBS		+= shell32.lib \

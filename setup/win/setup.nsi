@@ -24,16 +24,15 @@ Section "Core files (required)"
 
 	SetOutPath $INSTDIR
 
-	File "..\..\bin\release\release\Launchy.exe"
+	File "..\..\bin\app\Launchy.exe"
+	File "..\..\bin\app\*.dll"
 
 	SetOutPath $INSTDIR\plugins
-	File "..\..\bin\release\release\plugins\controly.dll"
-	File "..\..\bin\release\release\plugins\runner.dll"
-	File "..\..\bin\release\release\plugins\verby.dll"
-	File "..\..\bin\release\release\plugins\weby.dll"
-
+	File /r "..\..\bin\app\plugins\*"
 	SetOutPath $INSTDIR\skins
-	File /r "..\..\bin\release\release\skins\*"
+	File /r "..\..\bin\app\skins\*"
+	SetOutPath $INSTDIR\tr
+	File /r "..\..\bin\app\tr\*"
 
 	WriteRegStr HKLM SOFTWARE\Launchy "Install_Dir" "$INSTDIR"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Launchy" "DisplayName" "Launchy"
@@ -41,6 +40,8 @@ Section "Core files (required)"
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Launchy" "NoModify" 1
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Launchy" "NoRepair" 1
 	WriteUninstaller "uninstall.exe"
+
+	Exec '"$INSTDIR\Launchy.exe"'
 
 SectionEnd
 
@@ -50,6 +51,7 @@ Section "Start Menu Shortcuts"
 	CreateDirectory "$SMPROGRAMS\Launchy"
 	CreateShortcut "$SMPROGRAMS\Launchy\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
 	CreateShortcut "$SMPROGRAMS\Launchy\Launchy.lnk" "$INSTDIR\Launchy.exe" "" "$INSTDIR\Launchy.exe" 0
+	CreateShortcut "$SMSTARTUP\Launchy.lnk" "$INSTDIR\Launchy.exe" "" "$INSTDIR\Launchy.exe" 0
 
 SectionEnd
 
@@ -70,6 +72,7 @@ Section "Uninstall"
 	Delete $INSTDIR\uninstall.exe
 
 	; Remove shortcuts, if any
+	Delete "$SMSTARTUP\Launchy.lnk"
 	Delete "$SMPROGRAMS\Launchy\*.*"
 
 	Delete $APPDATA\Launchy\*.*

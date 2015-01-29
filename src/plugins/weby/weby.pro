@@ -36,6 +36,17 @@ TRANSLATIONS	= \
                 ../../../translations/weby_zh_TW.ts \
                 ../../../translations/weby_rus.ts
 
+lupdate.target	= lupdate
+lupdate.depends	= $${OBJECTS}
+lupdate.commands = $$quote(lupdate $${PWD}/weby.pro)
+makeqm.target	= makeqm
+makeqm.depends	= $${OBJECTS}
+makeqm.commands	= $$quote(lrelease $${PWD}/weby.pro)
+
+QMAKE_EXTRA_TARGETS += lupdate makeqm
+PRE_TARGETDEPS	+= lupdate makeqm
+
+
 win32 { 
     CONFIG		-= embed_manifest_dll
     LIBS		+= user32.lib shell32.lib

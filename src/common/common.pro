@@ -50,6 +50,8 @@ mac:SOURCES		+= mac.cpp \
                 mac_platform.cpp \
                 mac_keytrigger.cpp
 
+DESTDIR 		= $${PWD}../../../bin/lib/
+
 TRANSLATIONS	= \
                 ../../translations/common_fr.ts \
                 ../../translations/common_nl.ts \
@@ -60,7 +62,15 @@ TRANSLATIONS	= \
                 ../../translations/common_zh_TW.ts \
                 ../../translations/common_rus.ts
 
-DESTDIR 		= $${PWD}../../../bin/lib/
+lupdate.target	= lupdate
+lupdate.depends	= $${OBJECTS}
+lupdate.commands = $$quote(lupdate $${PWD}/common.pro)
+makeqm.target	= makeqm
+makeqm.depends	= $${OBJECTS}
+makeqm.commands	= $$quote(lrelease $${PWD}/common.pro)
+
+QMAKE_EXTRA_TARGETS += lupdate makeqm
+PRE_TARGETDEPS	+= lupdate makeqm
 
 unix {
     PREFIX		= /usr

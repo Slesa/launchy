@@ -74,7 +74,21 @@ TRANSLATIONS	= \
 
 DESTDIR 		= $${PWD}/../../bin/app/
 
-QMAKE_PRE_LINK	+= $$quote(lupdate $${PWD}/../Launchy.pro)
+lupdate.target	= lupdate
+lupdate.depends	= $${OBJECTS}
+lupdate.commands = $$quote(lupdate $${PWD}/launchy.pro)
+makeqm.target	= makeqm
+makeqm.depends	= $${OBJECTS}
+makeqm.commands	= $$quote(lrelease $${PWD}/launchy.pro)
+skins.target	= skins
+skins.depends	= $${OBJECTS}
+skins.output	= $${DESTDIR}/skins
+copytr.target	= copytr
+copytr.depends	= $${OBJECTS}
+copytr.output	= $${DESTDIR}/tr
+
+QMAKE_EXTRA_TARGETS += lupdate makeqm skins copytr
+PRE_TARGETDEPS	+= lupdate makeqm skins copytr
 
 linux {
     ICON		= Launchy.ico
@@ -82,18 +96,16 @@ linux {
                 -llaunchy.common \
                 -lX11
 
-#    QMAKE_POST_LINK	+= $$quote(mkdir $${PWD}/../../suchmich $$escape_expand(\n\t))
-    QMAKE_POST_LINK	+= $$quote(cp -r $${PWD}/../../skins $${DESTDIR}/ $$escape_expand(\n\t))
-    QMAKE_POST_LINK	+= $$quote(mkdir -p $${DESTDIR}/tr $$escape_expand(\n\t))
-    QMAKE_POST_LINK	+= $$quote(cp $${PWD}/../../translations/*.qm $${DESTDIR}/tr/ $$escape_expand(\n\t))
+    skins.commands	= $$quote(cp -r $${PWD}/../../skins $${DESTDIR}/Launchy.app/Contents/Resources/ $$escape_expand(\n\t))
+    copytr.commands	= $$quote(cp $${PWD}/../../translations/*.qm $${DESTDIR}/Launchy.app/MacOS/tr/ $$escape_expand(\n\t))
 
-    target.path	= $$PREFIX/bin/
-    skins.path	= $$PREFIX/share/launchy/skins/
-    skins.files	= ../../skins/*
-    icon.path	= $$PREFIX/share/pixmaps
-    icon.files	= ../misc/Launchy_Icon/launchy_icon.png
-    desktop.path	= $$PREFIX/share/applications/
-    desktop.files	= ../linux/launchy.desktop
+#    target.path	= $$PREFIX/bin/
+#    skins.path	= $$PREFIX/share/launchy/skins/
+#    skins.files	= ../../skins/*
+#    icon.path	= $$PREFIX/share/pixmaps
+#    icon.files	= ../misc/Launchy_Icon/launchy_icon.png
+#    desktop.path	= $$PREFIX/share/applications/
+#    desktop.files	= ../linux/launchy.desktop
     INSTALLS	+= target \
                 skins \
                 icon \
@@ -102,7 +114,7 @@ linux {
 
 win32 { 
     ICON		= Launchy.ico
-    debug:CONFIG += console
+    Debug:CONFIG += console
     CONFIG		+= embed_manifest_exe
     RC_FILE		= ../win/launchy.rc
     LIBS		+= -L../../lib \
@@ -125,6 +137,10 @@ win32 {
                 _WIN32_IE=0x0700
     QMAKE_CXXFLAGS_RELEASE += /Zi
     QMAKE_LFLAGS_RELEASE += /DEBUG
+
+    skins.commands	= xcopy /I /E /Y $$shell_path($${PWD}/../../skins) $$shell_path($${DESTDIR}/skins/)
+    copytr.commands	= xcopy /I /Y $$shell_path($${PWD}/../../translations/*.qm) $$shell_path($${DESTDIR}/tr/ )
+
 }
 
 macx { 
@@ -133,30 +149,29 @@ macx {
                 Carbon \
                 ../../lib/liblaunchy.common.a
 
-    QMAKE_POST_LINK	+= $$quote(cp -r $${PWD}/../../skins $${DESTDIR}/Launchy.app/Contents/Resources/ $$escape_expand(\n\t))
-    QMAKE_POST_LINK	+= $$quote(mkdir $${DESTDIR}/Launchy.app/Contents/MacOS/tr $$escape_expand(\n\t))
-    QMAKE_POST_LINK	+= $$quote(cp $${PWD}/../../translations/*.qm $${DESTDIR}/Launchy.app/MacOS/tr/ $$escape_expand(\n\t))
+    skins.commands	= $$quote(cp -r $${PWD}/../../skins $${DESTDIR}/Launchy.app/Contents/Resources/ $$escape_expand(\n\t))
+    copytr.commands	= $$quote(cp $${PWD}/../../translations/*.qm $${DESTDIR}/Launchy.app/MacOS/tr/ $$escape_expand(\n\t))
 
-    skins.path	= $${DESTDIR}/Launchy.app/Contents/Resources/skins/
-    skins.files	=
-    skins.extra	= rsync -arvz ../../../skins/   ../../app/Launchy.app/Contents/Resources/skins/   --exclude=\".svn\"
+#    skins.path	= $${DESTDIR}/Launchy.app/Contents/Resources/skins/
+#    skins.files	=
+#    skins.extra	= rsync -arvz ../../../skins/   ../../app/Launchy.app/Contents/Resources/skins/   --exclude=\".svn\"
 
-    trans.path	= ../../app/Launchy.app/Contents/MacOS/tr/
-    trans.files = ../../../translations/*.qm
-    trans.extra = lupdate \
-        src.pro \
-        ; \
-        lrelease \
-        src.pro
-    dmg.path 			= ../../bin
-    dmg.files 			=
-    dmg.extra 			= cd \
-        ../mac \
-        ; \
-        bash \
-        deploy; \
-        cd \
-        ../src
+#    trans.path	= ../../app/Launchy.app/Contents/MacOS/tr/
+#    trans.files = ../../../translations/*.qm
+#    trans.extra = lupdate \
+#        src.pro \
+#        ; \
+#        lrelease \
+#        src.pro
+#    dmg.path 			= ../../bin
+#    dmg.files 			=
+#    dmg.extra 			= cd \
+#        ../mac \
+#        ; \
+#        bash \
+#        deploy; \
+#        cd \
+#        ../src
     INSTALLS += skins \
         trans \
         dmg

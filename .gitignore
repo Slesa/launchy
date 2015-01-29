@@ -13,4 +13,4 @@ build/
 .moc
 .ui/
 translations/*.qm
-
+*.pro.user.*
