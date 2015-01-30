@@ -134,7 +134,7 @@ public:
                 , id_(0)
                 , connected(false)
         {
-            widgetWinId = getHwnd(g_mainWidget);
+            widgetWinId = getHwnd(this);
 
             if (convertKeySequence(ks, &mod, &key))
             {
@@ -190,9 +190,9 @@ public:
         /**
          * Triggers activated() signal when the hotkey is activated.
          */
-        bool winEvent(const QByteArray& eventType, void* msg, long* result)
+        bool nativeEvent(const QByteArray& eventType, void* msg, long* result)
         {
-            MSG* m = (MSG*) msg;
+            MSG* m = reinterpret_cast<MSG*>(msg);
             if ((m->message == WM_HOTKEY && m->wParam == id_) || m->message == WM_USER) {
                 emit trigger_->activated();
                 return true;
