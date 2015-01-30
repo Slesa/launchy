@@ -24,24 +24,25 @@
 #include <QKeySequence>
 #include <QMap>
 
-class QObject;
 class KeyTrigger;
 
 class GlobalShortcutManager : public QObject
 {
+	Q_OBJECT
 public:
-        static GlobalShortcutManager* instance();
-        static void connect(const QKeySequence& key, QObject* receiver, const char* slot);
-        static void disconnect(const QKeySequence& key, QObject* receiver, const char* slot);
-		static bool isConnected(const QKeySequence& key);
-		static void clear();
-        GlobalShortcutManager();
-        ~GlobalShortcutManager();
+	static GlobalShortcutManager* instance();
+	static void connect(const QKeySequence& key, QObject* receiver, const char* slot);
+	static void disconnect(const QKeySequence& key, QObject* receiver, const char* slot);
+	static bool isConnected(const QKeySequence& key);
+	static void clear();
+	GlobalShortcutManager();
+	~GlobalShortcutManager();
+private slots:
+	void KeyboardTriggered();
 private:
-
-        static GlobalShortcutManager* instance_;
-        class KeyTrigger;
-        QMap<QKeySequence, KeyTrigger*> triggers_;
+	static GlobalShortcutManager* instance_;
+	class KeyTrigger;
+	QMap<QKeySequence, KeyTrigger*> triggers_;
 };
 
 #endif

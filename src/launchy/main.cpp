@@ -39,6 +39,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "FileSearch.h"
 */
 
+// https://github.com/Chronial/launchy/commits/master?page=4
+
 QApplication* createApplication(int& argc, char** argv);
 static SingleApplication* _singleApplication;
 

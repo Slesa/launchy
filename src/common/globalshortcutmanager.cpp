@@ -17,12 +17,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-
-
 #include "globalshortcutmanager.h"
 #include "globalshortcuttrigger.h"
 #include <QCoreApplication>
-
+#include <QDebug>
 
 /**
  * \brief Constructs new GlobalShortcutManager.
@@ -30,6 +28,7 @@
 GlobalShortcutManager::GlobalShortcutManager()
         : QObject(QCoreApplication::instance())
 {
+    qDebug() << "ctor";
 }
 
 GlobalShortcutManager::~GlobalShortcutManager()
@@ -45,7 +44,10 @@ GlobalShortcutManager* GlobalShortcutManager::instance_;
 GlobalShortcutManager* GlobalShortcutManager::instance()
 {
     if (!instance_)
+    {
+        qDebug() << "Creating new instance";
         instance_ = new GlobalShortcutManager();
+    }
     return instance_;
 }
 
@@ -57,21 +59,28 @@ GlobalShortcutManager* GlobalShortcutManager::instance()
  */
 void GlobalShortcutManager::connect(const QKeySequence& key, QObject* receiver, const char* slot)
 {
+    qDebug() << "connecting " << key;
     KeyTrigger* t = instance()->triggers_[key];
     if (!t) {
         t = new KeyTrigger(key);
         instance()->triggers_.insert(key, t);
     }
 
+    QObject::connect(t, SIGNAL(activated()), instance(), SLOT(KeyboardTriggered));
     QObject::connect(t, SIGNAL(activated()), receiver, slot);
 }
 
 bool GlobalShortcutManager::isConnected(const QKeySequence& key)
 {
-	KeyTrigger* t = instance()->triggers_[key];
-	if (!t)
-		return false;
-	return t->isConnected();
+    KeyTrigger* t = instance()->triggers_[key];
+    if (!t)
+        return false;
+    return t->isConnected();
+}
+
+void GlobalShortcutManager::KeyboardTriggered()
+{
+    qDebug() << "Key triggered";
 }
 
 /**
@@ -89,8 +98,8 @@ void GlobalShortcutManager::disconnect(const QKeySequence& key, QObject* receive
 
     QObject::disconnect(t, SIGNAL(activated()), receiver, slot);
 
-	delete instance()->triggers_.take(key);
-	//        if (!t->isUsed()) {
+    delete instance()->triggers_.take(key);
+    //        if (!t->isUsed()) {
         //        delete instance()->triggers_.take(key);
         //}
 }
