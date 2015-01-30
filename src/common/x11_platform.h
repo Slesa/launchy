@@ -16,8 +16,8 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-
-#pragma once
+#ifndef X11PLATFORM_H
+#define X11PLATFORM_H
 
 #include "x11_iconprovider.h"
 #include "platform_base.h"
@@ -32,14 +32,6 @@ class X11Platform:  public PlatformBase
 {
     Q_OBJECT
 
-    bool x11EventFilter ( XEvent * event ) {
-        if (event->type == KeyPress) {
-            emit xkeyPressed(event);
-        }
-        return false;
-    }
-
-    QKeySequence oldKey;
  public:
     X11Platform(int & argc, char** argv);
     ~X11Platform();
@@ -62,18 +54,19 @@ class X11Platform:  public PlatformBase
     {
         return oldKey;
     }
-
+/*
     QString GetSettingsDirectory()
     {
         return "";
     }
-
+*/
     
     QList<Directory> getDefaultCatalogDirectories();
     
-    
+   /*
     void AddToNotificationArea() {};
     void RemoveFromNotificationArea() {};
+    */
     
 
     virtual QHash<QString, QList<QString> > getDirectories();
@@ -91,8 +84,9 @@ class X11Platform:  public PlatformBase
     virtual void alterItem(CatItem*);
 signals:
     void xkeyPressed(XEvent*);
+private:
+    bool x11EventFilter (XEvent* event);
+    QKeySequence oldKey;
 };
 
-
-
-
+#endif

@@ -22,10 +22,10 @@
 #include <QFileIconProvider>
 #include <QtGui>
 #include <QX11Info>
+#include <QDebug>
 
-
-X11Platform::X11Platform(int& argc, char** argv) :
-        PlatformBase(argc, argv)
+X11Platform::X11Platform(int& argc, char** argv)
+    : PlatformBase(argc, argv)
 {
     /*
         instance = new LimitSingleInstance(TEXT("Local\\{ASDSAD0-DCC6-49b5-9C61-ASDSADIIIJJL}"));
@@ -66,6 +66,15 @@ X11Platform::~X11Platform()
 { 
     GlobalShortcutManager::clear();
     delete icons;
+}
+
+bool X11Platform::x11EventFilter ( XEvent * event )
+{
+    if (event->type == KeyPress) {
+        qDebug() << "x11 key pressed";
+        emit xkeyPressed(event);
+    }
+    return false;
 }
 
 QList<Directory> X11Platform::getDefaultCatalogDirectories() {
@@ -138,7 +147,7 @@ bool X11Platform::supportsAlphaBorder() const
 void X11Platform::alterItem(CatItem* item)
 {
     if (!item->fullPath.endsWith(".desktop", Qt::CaseInsensitive))
-	return;
+        return;
 
     QString locale = QLocale::system().name();
     
@@ -146,29 +155,29 @@ void X11Platform::alterItem(CatItem* item)
 
     QFile file(item->fullPath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-	return;
+        return;
 
     QString name = "";
     QString icon = "";
     QString exe = "";
     while(!file.atEnd()) {
-	QString line = QString::fromUtf8(file.readLine());
-	
-	if (line.startsWith("Name[" + locale, Qt::CaseInsensitive)) 
-	    name = line.split("=")[1].trimmed();
-	
+        QString line = QString::fromUtf8(file.readLine());
 
-	else if (line.startsWith("Name=", Qt::CaseInsensitive)) 
-	    name = line.split("=")[1].trimmed();
+        if (line.startsWith("Name[" + locale, Qt::CaseInsensitive))
+            name = line.split("=")[1].trimmed();
 
-	else if (line.startsWith("Icon", Qt::CaseInsensitive))
-	    icon = line.split("=")[1].trimmed();
-	else if (line.startsWith("Exec", Qt::CaseInsensitive))
-	    exe = line.split("=")[1].trimmed();	
+
+        else if (line.startsWith("Name=", Qt::CaseInsensitive))
+            name = line.split("=")[1].trimmed();
+
+        else if (line.startsWith("Icon", Qt::CaseInsensitive))
+            icon = line.split("=")[1].trimmed();
+        else if (line.startsWith("Exec", Qt::CaseInsensitive))
+            exe = line.split("=")[1].trimmed();
     }
     if (name.size() >= item->shortName.size() - 8) {
-	item->shortName = name;
-	item->lowName = item->shortName.toLower();
+        item->shortName = name;
+        item->lowName = item->shortName.toLower();
     }
 
     // Don't index desktop items wthout icons
@@ -183,7 +192,7 @@ void X11Platform::alterItem(CatItem* item)
 
     QStringList allExe = exe.trimmed().split(" ",QString::SkipEmptyParts);
     if (allExe.size() == 0 || allExe[0].size() == 0 )
-            return;
+        return;
     exe = allExe[0];
     allExe.removeFirst();
     //    exe = exe.trimmed().split(" ")[0];
