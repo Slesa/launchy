@@ -151,7 +151,8 @@ macx {
                 ../../lib/liblaunchy.common.a
 
     skins.commands	= $$quote(cp -r $${PWD}/../../skins $${DESTDIR}/Launchy.app/Contents/Resources/ $$escape_expand(\n\t))
-    copytr.commands	= $$quote(cp $${PWD}/../../translations/*.qm $${DESTDIR}/Launchy.app/MacOS/tr/ $$escape_expand(\n\t))
+    copytr.commands	= $$quote(mkdir -p $${DESTDIR}/Launchy.app/Contents/MacOS/tr $$escape_expand(\n\t) \
+                        cp $${PWD}/../../translations/*.qm $${DESTDIR}/Launchy.app/Contents/MacOS/tr/ $$escape_expand(\n\t))
 
 #    skins.path	= $${DESTDIR}/Launchy.app/Contents/Resources/skins/
 #    skins.files	=
@@ -173,7 +174,7 @@ macx {
 #        deploy; \
 #        cd \
 #        ../src
-    INSTALLS += skins \
-        trans \
-        dmg
+#    INSTALLS += skins \
+#        trans \
+#        dmg
 }
