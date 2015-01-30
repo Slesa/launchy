@@ -65,7 +65,7 @@ shared_ptr<QApplication> PlatformUnix::init(int & argc, char** argv)
 X11Platform::~X11Platform()
 { 
     GlobalShortcutManager::clear();
-//    delete icons;
+    delete icons;
 }
 
 QList<Directory> X11Platform::getDefaultCatalogDirectories() {
@@ -135,7 +135,8 @@ bool X11Platform::supportsAlphaBorder() const
 }
 
 
-void X11Platform::alterItem(CatItem* item) {
+void X11Platform::alterItem(CatItem* item)
+{
     if (!item->fullPath.endsWith(".desktop", Qt::CaseInsensitive))
 	return;
 

@@ -19,6 +19,7 @@ private:
 private:
     static SingleApplication* _instance;
     static QSharedMemory _appLock;
+    bool _creator;
 };
 
 #endif

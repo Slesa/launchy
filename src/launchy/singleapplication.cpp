@@ -33,11 +33,13 @@ bool SingleApplication::isRunning()
 
 bool SingleApplication::start()
 {
+return true;
     if(!_appLock.create(1))
     {
         qDebug() << "Could not create shared mem: " << _appLock.errorString();
         return false;
     }
+    _creator = true;
     return true;
 }
 
@@ -55,16 +57,17 @@ void SingleApplication::release()
 }
 
 SingleApplication::SingleApplication()
+    : _creator(false)
 {
     _appLock.setKey(applicationKey());
 }
 
 SingleApplication::~SingleApplication()
 {
-//    release();
+    if(_creator) release();
 }
 
 QString SingleApplication::applicationKey()
 {
-    return qApp->applicationName() + "@applock";
+    return qApp->applicationName() + "@singleapp";
 }

@@ -96,8 +96,9 @@ linux {
                 -llaunchy.common \
                 -lX11
 
-    skins.commands	= $$quote(cp -r $${PWD}/../../skins $${DESTDIR}/Launchy.app/Contents/Resources/ $$escape_expand(\n\t))
-    copytr.commands	= $$quote(cp $${PWD}/../../translations/*.qm $${DESTDIR}/Launchy.app/MacOS/tr/ $$escape_expand(\n\t))
+    skins.commands	= $$quote(cp -r $${PWD}/../../skins $${DESTDIR}/ $$escape_expand(\n\t))
+    copytr.commands	= $$quote(mkdir -p $${DESTDIR}/tr $$escape_expand(\n\t) \
+                        cp $${PWD}/../../translations/*.qm $${DESTDIR}/tr/ $$escape_expand(\n\t))
 
 #    target.path	= $$PREFIX/bin/
 #    skins.path	= $$PREFIX/share/launchy/skins/

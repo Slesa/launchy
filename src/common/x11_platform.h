@@ -48,15 +48,13 @@ class X11Platform:  public PlatformBase
 
     //virtual shared_ptr<QApplication> init(int & argc, char** argv);
     // Mandatory functions
-    // Mandatory functions
     bool setHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
     {
-
-	GlobalShortcutManager::disconnect(oldKey, receiver, slot);
-	GlobalShortcutManager::connect(key, receiver, slot);
-	oldKey = key;
+        GlobalShortcutManager::disconnect(oldKey, receiver, slot);
+        GlobalShortcutManager::connect(key, receiver, slot);
+        oldKey = key;
         qDebug() << key << GlobalShortcutManager::isConnected(key);
-	return GlobalShortcutManager::isConnected(key);
+        return GlobalShortcutManager::isConnected(key);
     }
     
 
@@ -65,8 +63,9 @@ class X11Platform:  public PlatformBase
         return oldKey;
     }
 
-    QString GetSettingsDirectory() { 
-	return "";
+    QString GetSettingsDirectory()
+    {
+        return "";
     }
 
     
@@ -90,9 +89,8 @@ class X11Platform:  public PlatformBase
     */
 
     virtual void alterItem(CatItem*);
-    signals:
+signals:
     void xkeyPressed(XEvent*);
-
 };
 
 
