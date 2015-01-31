@@ -43,6 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "globalshortcuttrigger.h"
 #include "win_files.h"
 #include <qpa/qplatformnativeinterface.h>
+#include <QDebug>
 
 HHOOK keyboardHook;
 HWND widgetWinId;
@@ -51,12 +52,18 @@ UINT mod, key;
 // http://stackoverflow.com/questions/14048565/get-hwnd-on-windows-with-qt5-from-wid
 static QWindow* windowForWidget(const QWidget* widget)
 {
+    qDebug() << "Searching window";
     QWindow* window = widget->windowHandle();
-    if (window)
+    if (window) {
+        qDebug() << "Window handle found";
         return window;
+    }
     const QWidget* nativeParent = widget->nativeParentWidget();
-    if (nativeParent)
+    if (nativeParent) {
+        qDebug() << "Native parent found";
         return nativeParent->windowHandle();
+    }
+    qDebug() << "Nothing found, no handle available";
     return 0;
 }
 
@@ -126,144 +133,146 @@ class GlobalShortcutManager::KeyTrigger::Impl : public QWidget
 public:
     
     bool connected;
-        /**
-         * Constructor registers the hotkey.
-         */
-        Impl(GlobalShortcutManager::KeyTrigger* t, const QKeySequence& ks)
-                : trigger_(t)
-                , id_(0)
-                , connected(false)
-        {
-            widgetWinId = getHwnd(this);
 
-            if (convertKeySequence(ks, &mod, &key))
+    /**
+     * Constructor registers the hotkey.
+     */
+    Impl(GlobalShortcutManager::KeyTrigger* t, const QKeySequence& ks)
+        : _trigger(t)
+        , _id(0)
+        , connected(false)
+    {
+        qDebug() << "searching main widget ";
+        widgetWinId = getHwnd(GlobalShortcutManager::_mainWidget);
+
+        if (convertKeySequence(ks, &mod, &key))
+        {
+            switch (key)
             {
-                switch (key)
+            case VK_CAPITAL:
+            case VK_SCROLL:
+                if (!keyboardHook)
                 {
-                case VK_CAPITAL:
-                case VK_SCROLL:
-                    if (!keyboardHook)
+                    // Turn off capslock or scroll lock if they're on and we're not already
+                    // hooked. Nobody wants capslock turned on permanently do they?
+                    if (GetKeyState(VK_CAPITAL) == 1)
                     {
-                        // Turn off capslock or scroll lock if they're on and we're not already 
-                        // hooked. Nobody wants capslock turned on permanently do they?
-                        if (GetKeyState(VK_CAPITAL) == 1)
-                        {
-                            keybd_event(VK_CAPITAL, 0, 0, 0 );
-                            keybd_event(VK_CAPITAL, 0, KEYEVENTF_KEYUP, 0 );
-                        }
+                        keybd_event(VK_CAPITAL, 0, 0, 0 );
+                        keybd_event(VK_CAPITAL, 0, KEYEVENTF_KEYUP, 0 );
                     }
-                case VK_NUMLOCK:
-                    if (!keyboardHook)
-                        keyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardHookProc, GetHInstance(), 0);
-                    if (keyboardHook)
-                        connected = true;
-                    break;
-                default:
-                    if (RegisterHotKey(widgetWinId, nextId, mod, key))
-                    {
-                        id_ = nextId++;
-                        connected = true;
-                    }
-                    break;
                 }
+            case VK_NUMLOCK:
+                if (!keyboardHook)
+                    keyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardHookProc, GetHInstance(), 0);
+                if (keyboardHook)
+                    connected = true;
+                break;
+            default:
+                if (RegisterHotKey(widgetWinId, nextId, mod, key))
+                {
+                    _id = nextId++;
+                    connected = true;
+                }
+                break;
             }
         }
+    }
 
-        /**
-         * Destructor unregisters the hotkey.
-         */
-        ~Impl()
+    /**
+     * Destructor unregisters the hotkey.
+     */
+    ~Impl()
+    {
+        if (keyboardHook)
         {
-            if (keyboardHook)
-            {
-                UnhookWindowsHookEx(keyboardHook);
-                keyboardHook = NULL;
-                connected = false;
-            }
-            else if (id_) {
-                UnregisterHotKey(widgetWinId, id_);
-                connected = false;
-            }
-            widgetWinId = NULL;
+            UnhookWindowsHookEx(keyboardHook);
+            keyboardHook = NULL;
+            connected = false;
         }
+        else if (_id) {
+            UnregisterHotKey(widgetWinId, _id);
+            connected = false;
+        }
+        widgetWinId = NULL;
+    }
 
-        /**
-         * Triggers activated() signal when the hotkey is activated.
-         */
-        bool nativeEvent(const QByteArray& eventType, void* msg, long* result)
-        {
-            MSG* m = reinterpret_cast<MSG*>(msg);
-            if ((m->message == WM_HOTKEY && m->wParam == id_) || m->message == WM_USER) {
-                emit trigger_->activated();
-                return true;
-            }
-            return QWidget::nativeEvent(eventType, msg, result);
+    /**
+     * Triggers activated() signal when the hotkey is activated.
+     */
+    bool nativeEvent(const QByteArray& eventType, void* msg, long* result)
+    {
+        MSG* m = reinterpret_cast<MSG*>(msg);
+        if ((m->message == WM_HOTKEY && m->wParam == _id) || m->message == WM_USER) {
+            emit _trigger->activated();
+            return true;
         }
+        return QWidget::nativeEvent(eventType, msg, result);
+    }
 
 private:
-        KeyTrigger* trigger_;
-        int id_;
-        static int nextId;
+    KeyTrigger* _trigger;
+    int _id;
+    static int nextId;
 
 private:
-        struct Qt_VK_Keymap
-        {
-            int key;
-            UINT vk;
-        };
-        static Qt_VK_Keymap qt_vk_table[];
+    struct Qt_VK_Keymap
+    {
+        int key;
+        UINT vk;
+    };
+    static Qt_VK_Keymap qt_vk_table[];
 
-        static bool convertKeySequence(const QKeySequence& ks, UINT* mod_, UINT* key_)
-        {
-            int code = ks[0];
+    static bool convertKeySequence(const QKeySequence& ks, UINT* mod_, UINT* key_)
+    {
+        int code = ks[0];
 
-                // JK: I had to put the code -='s here and comment out code &= 0xffff 
-                // to correctly identify the action key
+        // JK: I had to put the code -='s here and comment out code &= 0xffff
+        // to correctly identify the action key
 
-                UINT mod = 0;
-                if (code & Qt::META) {
-                        mod |= MOD_WIN;
-                        code -= Qt::META;
-                }
-                if (code & Qt::SHIFT) {
-                        mod |= MOD_SHIFT;
-                        code -= Qt::SHIFT;
-                }
-                if (code & Qt::CTRL) {
-                        mod |= MOD_CONTROL;
-                        code -= Qt::CTRL;
-                }
-                if (code & Qt::ALT) {
-                        mod |= MOD_ALT;
-                        code -= Qt::ALT;
-                }
-
-                UINT key = 0;
-//                code &= 0xffff;
-                // Some keys map to ASCII keycodes
-                if (code == 0x20 ||
-                    (code >= 0x30 && code <= 0x39) ||
-                    (code > 0x40 && code <= 0x5a) ||
-                    (code > 0x60 && code <= 0x7a))
-                        key = code;
-                else {
-                    // Others require lookup from a keymap
-                        for (int n = 0; qt_vk_table[n].key != Qt::Key_unknown; ++n) {
-                                if (qt_vk_table[n].key == code) {
-                                        key = qt_vk_table[n].vk;
-                                        break;
-                                }
-                        }
-                        if (!key)
-                                return false;
-                }
-
-                *mod_ = mod;
-                if (key)
-                        *key_ = key;
-
-                return true;
+        UINT mod = 0;
+        if (code & Qt::META) {
+            mod |= MOD_WIN;
+            code -= Qt::META;
         }
+        if (code & Qt::SHIFT) {
+            mod |= MOD_SHIFT;
+            code -= Qt::SHIFT;
+        }
+        if (code & Qt::CTRL) {
+            mod |= MOD_CONTROL;
+            code -= Qt::CTRL;
+        }
+        if (code & Qt::ALT) {
+            mod |= MOD_ALT;
+            code -= Qt::ALT;
+        }
+
+        UINT key = 0;
+    //                code &= 0xffff;
+        // Some keys map to ASCII keycodes
+        if (code == 0x20 ||
+            (code >= 0x30 && code <= 0x39) ||
+            (code > 0x40 && code <= 0x5a) ||
+            (code > 0x60 && code <= 0x7a))
+            key = code;
+        else {
+            // Others require lookup from a keymap
+            for (int n = 0; qt_vk_table[n].key != Qt::Key_unknown; ++n) {
+                if (qt_vk_table[n].key == code) {
+                    key = qt_vk_table[n].vk;
+                    break;
+                }
+            }
+            if (!key)
+                return false;
+        }
+
+        *mod_ = mod;
+        if (key)
+            *key_ = key;
+
+        return true;
+    }
 };
 
 GlobalShortcutManager::KeyTrigger::Impl::Qt_VK_Keymap
@@ -362,7 +371,7 @@ int GlobalShortcutManager::KeyTrigger::Impl::nextId = 1;
 
 GlobalShortcutManager::KeyTrigger::KeyTrigger(const QKeySequence& key)
 {
-        d.reset(new Impl(this, key));
+    d.reset(new Impl(this, key));
 }
 
 GlobalShortcutManager::KeyTrigger::~KeyTrigger()

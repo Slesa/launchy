@@ -16,13 +16,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-
-#include <QString>
-//#include "main.h"
 #include "win_platform.h"
 #include "win_iconprovider.h"
 #include "win_minidump.h"
 #include "globalshortcutmanager.h"
+#include <QString>
+#include <QDebug>
 
 WinPlatform::WinPlatform(int& argc, char** argv) :
 	PlatformBase(argc, argv),
@@ -131,6 +130,7 @@ QKeySequence WinPlatform::getHotkey() const
 
 bool WinPlatform::setHotkey(const QKeySequence& newHotkey, QObject* receiver, const char* slot)
 {
+    qDebug() << "Setting global hotkey";
 	GlobalShortcutManager::disconnect(hotkey, receiver, slot);
 	GlobalShortcutManager::connect(newHotkey, receiver, slot);
 	hotkey = newHotkey;

@@ -1,5 +1,5 @@
 #include "commandlineparser.specs.h"
-#include "commandlineparser.h"
+#include "../launchy/commandlineparser.h"
 #include <QtTest/QtTest>
 
 

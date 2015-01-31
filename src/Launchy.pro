@@ -7,7 +7,7 @@ SUBDIRS			=  \
                 plugins/runner \
                 plugins/verby \
                 plugins/weby \
-                launchy.specs \
+#                launchy.specs \
                 launchy
           
 win32 {

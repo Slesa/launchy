@@ -92,7 +92,7 @@ PRE_TARGETDEPS	+= lupdate makeqm skins copytr
 
 linux {
     ICON		= Launchy.ico
-    LIBS		+= -L../../lib \
+    LIBS		+= -L$${PWD}/../../bin/lib \
                 -llaunchy.common \
                 -lX11
 
@@ -118,8 +118,8 @@ win32 {
     Debug:CONFIG += console
     CONFIG		+= embed_manifest_exe
     RC_FILE		= ../win/launchy.rc
-    LIBS		+= -L../../lib \
-                ../../lib/launchy.common.lib \
+    LIBS		+= -L$${PWD}/../../bin/lib \
+                launchy.common.lib \
                 shell32.lib \
                 user32.lib \
                 gdi32.lib \

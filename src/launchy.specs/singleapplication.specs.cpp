@@ -1,5 +1,5 @@
 #include "singleapplication.specs.h"
-#include "singleapplication.h"
+#include "../launchy/singleapplication.h"
 #include <QtTest/QtTest>
 
 void SingleApplicationSpecs::runs_as_singleton()

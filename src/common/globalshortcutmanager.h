@@ -25,12 +25,14 @@
 #include <QMap>
 
 class KeyTrigger;
+class QWidget;
 
 class GlobalShortcutManager : public QObject
 {
 	Q_OBJECT
 public:
 	static GlobalShortcutManager* instance();
+    static void setMainWidget(QWidget* widget);
 	static void connect(const QKeySequence& key, QObject* receiver, const char* slot);
 	static void disconnect(const QKeySequence& key, QObject* receiver, const char* slot);
 	static bool isConnected(const QKeySequence& key);
@@ -40,9 +42,10 @@ public:
 private slots:
 	void KeyboardTriggered();
 private:
-	static GlobalShortcutManager* instance_;
+    static GlobalShortcutManager* _instance;
+    static QWidget* _mainWidget;
 	class KeyTrigger;
-	QMap<QKeySequence, KeyTrigger*> triggers_;
+    QMap<QKeySequence, KeyTrigger*> _triggers;
 };
 
 #endif

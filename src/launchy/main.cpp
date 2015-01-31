@@ -19,25 +19,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "launchywidget.h"
 #include "commandlineparser.h"
 #include "singleapplication.h"
-/*
-#include <QWidget>
-#include <QScrollBar>
-#include <QDesktopWidget>
-#include <QMenu>
-#include <QMessageBox>
-#include <QNetworkRequest>
-#include <QNetworkProxy>
-#include <QDesktopServices>
-#ifdef Q_OS_MAC
-//#include <QMacStyle>
-#endif
-#include "icon_delegate.h"
-#include "main.h"
-#include "globals.h"
-#include "options.h"
-#include "plugin_interface.h"
-#include "FileSearch.h"
-*/
 
 // https://github.com/Chronial/launchy/commits/master?page=4
 
@@ -119,6 +100,7 @@ int main(int argc, char *argv[])
     qApp->setStyleSheet("file:///:/resources/basicskin.qss");
 
     LaunchyWidget* widget = createLaunchyWidget(command);
+
     int result = qApp->exec();
 
     if(_singleApplication!=NULL)

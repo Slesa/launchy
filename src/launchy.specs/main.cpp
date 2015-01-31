@@ -1,7 +1,7 @@
+//#include "commandlineparser.specs.h"
+//#include "singleapplication.specs.h"
 #include <QCoreApplication>
 #include <QtTest>
-#include "commandlineparser.specs.h"
-#include "singleapplication.specs.h"
 
 int main(int argc, char** argv) 
 {

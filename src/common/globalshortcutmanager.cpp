@@ -26,7 +26,7 @@
  * \brief Constructs new GlobalShortcutManager.
  */
 GlobalShortcutManager::GlobalShortcutManager()
-        : QObject(QCoreApplication::instance())
+    : QObject(QCoreApplication::instance())
 {
     qDebug() << "ctor";
 }
@@ -36,19 +36,26 @@ GlobalShortcutManager::~GlobalShortcutManager()
     clear();
 }
 
-GlobalShortcutManager* GlobalShortcutManager::instance_;
+GlobalShortcutManager* GlobalShortcutManager::_instance;
+QWidget* GlobalShortcutManager::_mainWidget;
 
 /**
  * \brief Returns the instance of GlobalShortcutManager.
  */
 GlobalShortcutManager* GlobalShortcutManager::instance()
 {
-    if (!instance_)
+    if (!_instance)
     {
         qDebug() << "Creating new instance";
-        instance_ = new GlobalShortcutManager();
+        _instance = new GlobalShortcutManager();
     }
-    return instance_;
+    return _instance;
+}
+
+void GlobalShortcutManager::setMainWidget(QWidget* widget)
+{
+    qDebug() << "setting main widget ";
+    _mainWidget = widget;
 }
 
 /**
@@ -60,10 +67,10 @@ GlobalShortcutManager* GlobalShortcutManager::instance()
 void GlobalShortcutManager::connect(const QKeySequence& key, QObject* receiver, const char* slot)
 {
     qDebug() << "connecting " << key;
-    KeyTrigger* t = instance()->triggers_[key];
+    KeyTrigger* t = instance()->_triggers[key];
     if (!t) {
         t = new KeyTrigger(key);
-        instance()->triggers_.insert(key, t);
+        instance()->_triggers.insert(key, t);
     }
 
     QObject::connect(t, SIGNAL(activated()), instance(), SLOT(KeyboardTriggered));
@@ -72,7 +79,7 @@ void GlobalShortcutManager::connect(const QKeySequence& key, QObject* receiver, 
 
 bool GlobalShortcutManager::isConnected(const QKeySequence& key)
 {
-    KeyTrigger* t = instance()->triggers_[key];
+    KeyTrigger* t = instance()->_triggers[key];
     if (!t)
         return false;
     return t->isConnected();
@@ -91,14 +98,14 @@ void GlobalShortcutManager::KeyboardTriggered()
  */
 void GlobalShortcutManager::disconnect(const QKeySequence& key, QObject* receiver, const char* slot)
 {
-    KeyTrigger* t = instance()->triggers_[key];
+    KeyTrigger* t = instance()->_triggers[key];
     if (!t) {
-            return;
+        return;
     }
 
     QObject::disconnect(t, SIGNAL(activated()), receiver, slot);
 
-    delete instance()->triggers_.take(key);
+    delete instance()->_triggers.take(key);
     //        if (!t->isUsed()) {
         //        delete instance()->triggers_.take(key);
         //}
@@ -106,7 +113,7 @@ void GlobalShortcutManager::disconnect(const QKeySequence& key, QObject* receive
 
 void GlobalShortcutManager::clear()
 {
-    foreach (KeyTrigger* t, instance()->triggers_)
+    foreach (KeyTrigger* t, instance()->_triggers)
             delete t;
-    instance()->triggers_.clear();
+    instance()->_triggers.clear();
 }
