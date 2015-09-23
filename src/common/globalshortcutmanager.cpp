@@ -66,14 +66,14 @@ void GlobalShortcutManager::setMainWidget(QWidget* widget)
  */
 void GlobalShortcutManager::connect(const QKeySequence& key, QObject* receiver, const char* slot)
 {
-    qDebug() << "connecting " << key;
+    qDebug() << "connecting " << key << " with " << slot;
     KeyTrigger* t = instance()->_triggers[key];
     if (!t) {
         t = new KeyTrigger(key);
         instance()->_triggers.insert(key, t);
     }
 
-    QObject::connect(t, SIGNAL(activated()), instance(), SLOT(KeyboardTriggered));
+    QObject::connect(t, SIGNAL(activated()), instance(), SLOT(KeyboardTriggered()));
     QObject::connect(t, SIGNAL(activated()), receiver, slot);
 }
 

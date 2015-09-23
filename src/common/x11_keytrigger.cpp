@@ -18,6 +18,7 @@
  *
  */
 
+// https://bitbucket.org/libqxt/
 #include "x11_keytrigger.h"
 
 X11KeyTriggerManager* X11KeyTriggerManager::instance_;
@@ -25,88 +26,90 @@ X11KeyTriggerManager* X11KeyTriggerManager::instance_;
 class GlobalShortcutManager::KeyTrigger::Impl : public X11KeyTrigger
 {
 public:
-        static bool failed;
+    static bool failed;
+
 private:
-        KeyTrigger* trigger_;
-        int qkey_;
+    KeyTrigger* trigger_;
+    int qkey_;
 
-        struct GrabbedKey {
-                int code;
-                uint mod;
-        };
-        QList<GrabbedKey> grabbedKeys_;
+    struct GrabbedKey {
+        int code;
+        uint mod;
+    };
+        
+    QList<GrabbedKey> grabbedKeys_;
 
 
-        static int XGrabErrorHandler(Display *, XErrorEvent *)
-        {
-                qWarning("failed to grab key");
-                failed = true;
-                return 0;
+    static int XGrabErrorHandler(Display *, XErrorEvent *)
+    {
+        qWarning("failed to grab key");
+        failed = true;
+        return 0;
+    }
+
+    void bind(int keysym, unsigned int mod)
+    {
+        int code = XKeysymToKeycode(QX11Info::display(), keysym);
+
+        // don't grab keys with empty code (because it means just the modifier key)
+        if (keysym && !code)
+            return;
+
+        failed = false;
+        XErrorHandler savedErrorHandler = XSetErrorHandler(XGrabErrorHandler);
+
+        WId w = QX11Info::appRootWindow();
+
+        qDebug() << "X11 hotkey says root is:" << w;
+        foreach(long mask_mod, X11KeyTriggerManager::ignModifiersList()) {
+            qDebug() << "Grabbing X1 key " << code << " mask " << (int) (mod|mask_mod);
+            XGrabKey(QX11Info::display(), code, mod | mask_mod, w, False, GrabModeAsync, GrabModeAsync);
+            GrabbedKey grabbedKey;
+            grabbedKey.code = code;
+            grabbedKey.mod  = mod | mask_mod;
+            grabbedKeys_ << grabbedKey;
         }
-
-        void bind(int keysym, unsigned int mod)
-        {
-                int code = XKeysymToKeycode(QX11Info::display(), keysym);
-
-                // don't grab keys with empty code (because it means just the modifier key)
-                if (keysym && !code)
-                        return;
-
-                failed = false;
-                XErrorHandler savedErrorHandler = XSetErrorHandler(XGrabErrorHandler);
-
-		WId w = QX11Info::appRootWindow();
-		//		qDebug() << "X11 hotkey says root is:" << w;
-		foreach(long mask_mod, X11KeyTriggerManager::ignModifiersList()) {
-                        XGrabKey(QX11Info::display(), code, mod | mask_mod, w, False, GrabModeAsync, GrabModeAsync);
-                        GrabbedKey grabbedKey;
-                        grabbedKey.code = code;
-                        grabbedKey.mod  = mod | mask_mod;
-                        grabbedKeys_ << grabbedKey;
-                }
-                XSync(QX11Info::display(), False);
-                XSetErrorHandler(savedErrorHandler);
-        }
+        XSync(QX11Info::display(), False);
+        XSetErrorHandler(savedErrorHandler);
+    }
 
 public:
-        /**
-         * Constructor registers the hotkey.
-         */
-        Impl(GlobalShortcutManager::KeyTrigger* t, const QKeySequence& ks)
-                : trigger_(t)
-                , qkey_(ks[0])
-        {
-                X11KeyTriggerManager::instance()->addTrigger(this);
+    /**
+     * Constructor registers the hotkey.
+     */
+    Impl(GlobalShortcutManager::KeyTrigger* t, const QKeySequence& ks)
+        : trigger_(t)
+        , qkey_(ks[0])
+    {
+        X11KeyTriggerManager::instance()->addTrigger(this);
 
-                X11KeyTriggerManager::Qt_XK_Keygroup kg;
-                unsigned int mod;
-                if (X11KeyTriggerManager::convertKeySequence(ks, &mod, &kg))
-                        for (int n = 0; n < kg.num; ++n)
-                                bind(kg.sym[n], mod);
-        }
+        X11KeyTriggerManager::Qt_XK_Keygroup kg;
+        unsigned int mod;
+        if (X11KeyTriggerManager::convertKeySequence(ks, &mod, &kg))
+            for (int n = 0; n < kg.num; ++n)
+                bind(kg.sym[n], mod);
+    }
 
-        /**
-         * Destructor unregisters the hotkey.
-         */
-        ~Impl()
-        {
-                X11KeyTriggerManager::instance()->removeTrigger(this);
-		//	XUngrabKey(QX11Info::display(),AnyKey,AnyModifier,QX11Info::appRootWindow());
-		foreach(GrabbedKey key, grabbedKeys_) 
-		    XUngrabKey(QX11Info::display(), key.code, key.mod, QX11Info::appRootWindow());
-		
-		
-        }
+    /**
+     * Destructor unregisters the hotkey.
+     */
+    ~Impl()
+    {
+        X11KeyTriggerManager::instance()->removeTrigger(this);
+        // XUngrabKey(QX11Info::display(),AnyKey,AnyModifier,QX11Info::appRootWindow());
+        foreach(GrabbedKey key, grabbedKeys_)
+            XUngrabKey(QX11Info::display(), key.code, key.mod, QX11Info::appRootWindow());
+    }
 
-        void activate()
-        {
-                emit trigger_->activated();
-        }
+    void activate()
+    {
+        emit trigger_->activated();
+    }
 
-        bool isAccepted(int qkey) const
-        {
-                return qkey_ == qkey;
-        }
+    bool isAccepted(int qkey) const
+    {
+        return qkey_ == qkey;
+    }
 };
 
 bool GlobalShortcutManager::KeyTrigger::Impl::failed;
@@ -203,22 +206,22 @@ X11KeyTriggerManager::qt_xk_table[] = {
 
 GlobalShortcutManager::KeyTrigger::KeyTrigger(const QKeySequence& key)
 {
-        d.reset(new Impl(this, key));
+    d.reset(new Impl(this, key));
 }
 
 GlobalShortcutManager::KeyTrigger::~KeyTrigger()
 {
-	d.reset();
-	/*
+    d.reset();
+    /*
         delete d;
         d = 0;
-        */
+    */
 }
 
 bool GlobalShortcutManager::KeyTrigger::isConnected()
 {
     if (!d.get()) return false;
-	return !GlobalShortcutManager::KeyTrigger::Impl::failed;
+    return !GlobalShortcutManager::KeyTrigger::Impl::failed;
 }
 
 
@@ -226,7 +229,7 @@ bool GlobalShortcutManager::KeyTrigger::isConnected()
 //typedef GlobalShortcutManager::KeyTrigger::Impl mytrigger;
 
 void X11KeyTriggerManager::xkeyPressed(XEvent* event) {
-    //    qDebug() << "Receieved key press!";
+    qDebug() << "Received key press!";
     Display* dsp = QX11Info::display();
 	
     unsigned int mod = event->xkey.state & (meta_mask | ShiftMask | ControlMask | alt_mask);
@@ -237,10 +240,10 @@ void X11KeyTriggerManager::xkeyPressed(XEvent* event) {
     bool found = false;
     uint n = 0;
     for (n = 0; qt_xk_table[n].key != Qt::Key_unknown; ++n) {
-    if ((unsigned int) qt_xk_table[n].xk.sym[0] == *keysym) {
-	    found = true;
-	    break;
-	}
+        if ((unsigned int) qt_xk_table[n].xk.sym[0] == *keysym) {
+            found = true;
+            break;
+        }
     }
     if (!found) return;
     
@@ -248,23 +251,22 @@ void X11KeyTriggerManager::xkeyPressed(XEvent* event) {
     keyout = qt_xk_table[n].key;
     
     if (mod & meta_mask)
-	keyout |= Qt::META;
+        keyout |= Qt::META;
     if (mod & ShiftMask)
-	keyout |= Qt::SHIFT;
+        keyout |= Qt::SHIFT;
     if (mod & ControlMask)
-	keyout |= Qt::CTRL;
+        keyout |= Qt::CTRL;
     if (mod & alt_mask)
-	keyout |= Qt::ALT;
+        keyout |= Qt::ALT;
 
-    //    QKeySequence out(keyout);
-    //qDebug() << mod << keysym << out;
-
+    QKeySequence out(keyout);
+    qDebug() << mod << keysym << out;
 
 
     foreach(X11KeyTrigger* trigger, triggers_) {
-	if (trigger->isAccepted(keyout)) {
-	    trigger->activate();
-	    return;
-	}
+        if (trigger->isAccepted(keyout)) {
+            trigger->activate();
+            return;
+        }
     }        
 }
