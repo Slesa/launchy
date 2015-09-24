@@ -1,6 +1,7 @@
 TEMPLATE		= subdirs
 CONFIG			+= ordered
 SUBDIRS			=  \
+                libqxt \
                 common \
 #          plugins/calcy \
 #          plugins/gcalc \
