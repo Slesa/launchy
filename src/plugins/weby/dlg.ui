@@ -152,7 +152,7 @@
   <customwidget>
    <class>DropTableWidget</class>
    <extends>QTableWidget</extends>
-   <header>DropTableWidget.h</header>
+   <header>common/DropTableWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

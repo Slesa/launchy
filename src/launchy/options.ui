@@ -1198,7 +1198,7 @@ p, li { white-space: pre-wrap; }
   <customwidget>
    <class>DropListWidget</class>
    <extends>QListWidget</extends>
-   <header>DropListWidget.h</header>
+   <header>common/DropListWidget.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
