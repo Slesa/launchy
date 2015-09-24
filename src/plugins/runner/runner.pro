@@ -8,7 +8,7 @@ CONFIG			+= plugin debug_and_release
 VPATH			+= ../../launchy \
                 ../../common
 INCLUDEPATH		+= ../../launchy \
-                ../../common
+                ../../
 
 FORMS			= dlg.ui
 

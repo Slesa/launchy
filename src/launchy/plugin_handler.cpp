@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "plugin_handler.h"
 #include "main.h"
-#include "globals.h"
+#include "common/globals.h"
 
 
 int PluginInfo::sendMessage(int msgId, void* wParam, void* lParam)

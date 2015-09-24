@@ -76,22 +76,22 @@
 <context>
     <name>LaunchyWidget</name>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="110"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="112"/>
         <source>Launchy Options</source>
         <translation>Launchy 选项</translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="116"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="118"/>
         <source>Close Launchy</source>
         <translation>关闭 Launchy</translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="189"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="191"/>
         <source>The hotkey %1 is already in use, please select another.</source>
         <translation>热键 %1 已经被占用了,请选择另外一个热键.</translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="329"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="335"/>
         <source>Launchy (press %1 to activate)</source>
         <translation>Launchy (按 %1 激活)</translation>
     </message>
@@ -104,23 +104,23 @@ You can download it at 						   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.ne
 请到这里下载： 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/&quot;&gt;http://www.launchy.net&lt;/a&gt;&lt;/qt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="1643"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="1649"/>
         <source>Show Launchy</source>
         <translation>显示Launchy</translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="1646"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="1652"/>
         <source>Rebuild catalog</source>
         <translation>重建索引数据</translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="1651"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="1657"/>
         <source>Reload skin</source>
         <translation>重新载入皮肤</translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="76"/>
-        <location filename="../src/launchy/launchywidget.cpp" line="189"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="78"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="191"/>
         <source>Launchy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -145,12 +145,12 @@ You can download it at 				   &lt;qt&gt;&lt;a href=&quot;http://www.launchy.net/
         <translation type="obsolete">重建索引数据</translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="1656"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="1662"/>
         <source>Options</source>
         <translation>选项</translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="1661"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="1667"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>

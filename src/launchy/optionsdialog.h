@@ -21,8 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define OPTIONSDIALOG_H
 
 #include "ui_options.h"
-#include "FileBrowserDelegate.h"
-#include "directory.h"
+#include "common/FileBrowserDelegate.h"
+#include "common/directory.h"
 
 
 class OptionsDialog : public QDialog, private Ui::OptionsDlg

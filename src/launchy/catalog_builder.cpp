@@ -20,9 +20,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "catalog_types.h"
 #include "catalog_builder.h"
-#include "globals.h"
+#include "common/globals.h"
 #include "main.h"
-#include "directory.h"
+#include "common/directory.h"
 
 
 CatalogBuilder::CatalogBuilder(PluginHandler* plugs) :

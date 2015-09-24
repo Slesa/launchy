@@ -24,11 +24,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "plugin_handler.h"
 #include "platform_util.h"
-#include "catalog.h"
+#include "common/catalog.h"
 #include "catalog_builder.h"
 #include "icon_delegate.h"
 #include "icon_extractor.h"
-#include "globals.h"
+#include "common/globals.h"
 #include "InputDataList.h"
 #include "CommandHistory.h"
 #include "CharLineEdit.h"

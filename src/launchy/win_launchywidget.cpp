@@ -18,8 +18,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include "win_launchywidget.h"
-#include "win_files.h"
-#include "win_util.h"
+#include "common/win_files.h"
+#include "common/win_util.h"
 
 WinLaunchyWidget::WinLaunchyWidget(CommandFlags command) :
     LaunchyWidget(command)

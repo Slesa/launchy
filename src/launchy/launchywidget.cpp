@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "launchywidget.h"
 #include "FileSearch.h"
 #include "optionsdialog.h"
-#include "globalshortcutmanager.h"
+//#include "globalshortcutmanager.h"
+#include "libqxt/qxtglobalshortcut.h"
 #include <QDesktopWidget>
 #include <QMenu>
 #include <QMessageBox>
@@ -313,8 +314,11 @@ void LaunchyWidget::setSuggestionListMode(int mode)
 
 bool LaunchyWidget::setHotkey(QKeySequence hotkey)
 {
-    GlobalShortcutManager::setMainWidget(this);
-    return g_platform->setHotkey(hotkey, this, SLOT(onHotkey()));
+    QxtGlobalShortcut* shortcut = new QxtGlobalShortcut(this);
+    connect(shortcut, SIGNAL(activated()), this, SLOT(onHotkey()));
+    return shortcut->setShortcut(hotkey);
+//    GlobalShortcutManager::setMainWidget(this);
+//    return g_platform->setHotkey(hotkey, this, SLOT(onHotkey()));
 }
 
 

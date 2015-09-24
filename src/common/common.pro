@@ -1,12 +1,15 @@
 TEMPLATE		= lib
 TARGET			= launchy.common
+
 CONFIG			+= qt_warn debug_and_release staticlib
 win:CONFIG		+= qpa
 QT				+= widgets
 win32:QT		+= winextras gui-private
 linux:QT    	+= x11extras
 mac:QT			+= macextras
+
 win32:DEFINES	+= UNICODE _UNICODE
+INCLUDEPATH		+= ../
 
 HEADERS 		= \
                 catalog.h \

@@ -20,9 +20,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "optionsdialog.h"
 #include "launchywidget.h"
-#include "globals.h"
+#include "common/globals.h"
 #include "plugin_handler.h"
-#include "FileBrowserDelegate.h"
+#include "common/FileBrowserDelegate.h"
 #include <QMessageBox>
 
 

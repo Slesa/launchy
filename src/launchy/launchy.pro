@@ -8,7 +8,7 @@ QT				+= network widgets gui-private
 win32:QT		+= winextras
 linux:QT		+= x11extras
 
-INCLUDEPATH		+= ../common
+INCLUDEPATH		+= ../
 
 UI_DIR			= .ui
 MOC_DIR			= .moc
@@ -73,6 +73,8 @@ TRANSLATIONS	= \
                 ../../translations/launchy_rus.ts
 
 DESTDIR 		= $${PWD}/../../bin/app/
+LIBS	 		= -L$${PWD}/../../bin/lib/ \
+                -llaunchy.qxt
 
 lupdate.target	= lupdate
 lupdate.depends	= $${OBJECTS}

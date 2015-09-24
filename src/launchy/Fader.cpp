@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include "Fader.h"
-#include "globals.h"
+#include "common/globals.h"
 
 
 Fader::Fader(QObject* parent) :

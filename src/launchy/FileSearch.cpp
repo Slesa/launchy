@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "FileSearch.h"
 #include "main.h"
-#include "globals.h"
+#include "common/globals.h"
 
 
 void FileSearch::search(const QString& searchText, QList<CatItem>& searchResults, InputDataList& inputData)
