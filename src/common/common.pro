@@ -26,8 +26,7 @@ win32:HEADERS	+= \
                 win_minidump.h \
                 win_util.h
 mac:HEADERS		+= \
-                mac_platform.h \
-                mac_keytrigger.h
+                mac_platform.h
 
 SOURCES 		= \
                 catalog.cpp \
@@ -43,8 +42,7 @@ win32:SOURCES	+= win.cpp \
                 win_minidump.cpp \
                 win_util.cpp
 mac:SOURCES		+= mac.cpp \
-                mac_platform.cpp \
-                mac_keytrigger.cpp
+                mac_platform.cpp
 
 DESTDIR 		= $${PWD}../../../bin/lib/
 
