@@ -88,19 +88,27 @@ skins.output	= $${DESTDIR}/skins
 copytr.target	= copytr
 copytr.depends	= $${OBJECTS}
 copytr.output	= $${DESTDIR}/tr
-setup.target    = setup
-setup.depends   = copytr skins lupdate
 
-# target.path     = $${PWD}/../../bin/app
+CONFIG(release, debug|release) {
+    setup.target    = setup
+#    setup.depends   = copytr skins lupdate
+    setup.path     = $${PWD}/../../bin/app
 
-win32 {
-    setup.output = $${PWD}/../../bin/setup.exe
-    setup.commands = $${PWD}/../../tools/nsis/Bin/makensis.exe $${PWD}/../../setup\win\setup.nsi
+    win32 {
+        setup.output = $${PWD}/../../bin/setup.exe
+        setup.commands = $${PWD}/../../tools/nsis/Bin/makensis.exe $${PWD}/../../setup\win\setup.nsi
+    }
+
+    macx {
+        setup.output    =$${PWD}/../../bin/launchy-setup.dmg
+        setup.commands = hdiutil create -size 200m -volname LaunchySetup -srcfolder $${PWD}/../../bin/app/ -ov -format UDZO $${PWD}/../../bin/launchy-setup.dmg
+    }
+
+    POST_TARGETDEPS    += setup
 }
 
 QMAKE_EXTRA_TARGETS += lupdate makeqm skins copytr setup
 PRE_TARGETDEPS	+= lupdate makeqm skins copytr
-PRE_TARGETDEPS	+= setup
 
 linux {
     ICON		= Launchy.ico
@@ -153,7 +161,6 @@ win32 {
 
     skins.commands	= xcopy /I /E /Y $$shell_path($${PWD}/../../skins) $$shell_path($${DESTDIR}/skins/)
     copytr.commands	= xcopy /I /Y $$shell_path($${PWD}/../../translations/*.qm) $$shell_path($${DESTDIR}/tr/ )
-
 }
 
 macx { 
