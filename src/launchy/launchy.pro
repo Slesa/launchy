@@ -88,9 +88,19 @@ skins.output	= $${DESTDIR}/skins
 copytr.target	= copytr
 copytr.depends	= $${OBJECTS}
 copytr.output	= $${DESTDIR}/tr
+setup.target    = setup
+setup.depends   = copytr skins lupdate
 
-QMAKE_EXTRA_TARGETS += lupdate makeqm skins copytr
+# target.path     = $${PWD}/../../bin/app
+
+win32 {
+    setup.output = $${PWD}/../../bin/setup.exe
+    setup.commands = $${PWD}/../../tools/nsis/Bin/makensis.exe $${PWD}/../../setup\win\setup.nsi
+}
+
+QMAKE_EXTRA_TARGETS += lupdate makeqm skins copytr setup
 PRE_TARGETDEPS	+= lupdate makeqm skins copytr
+PRE_TARGETDEPS	+= setup
 
 linux {
     ICON		= Launchy.ico
