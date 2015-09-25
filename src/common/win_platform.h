@@ -23,7 +23,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "platform_base.h"
 #include "win_util.h"
-//#include "platform_base_hotkey.h"
 #include "win_minidump.h"
 #include "win_files.h"
 
@@ -37,8 +36,6 @@ public:
     ~WinPlatform();
 
 	virtual void setPreferredIconSize(int size);
-	virtual QKeySequence getHotkey() const;
-	virtual bool setHotkey(const QKeySequence& newHotkey, QObject* receiver, const char* slot);
 	virtual QHash<QString, QList<QString> > getDirectories();
 	virtual QList<Directory> getDefaultCatalogDirectories();
 	virtual QString expandEnvironmentVars(QString);

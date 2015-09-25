@@ -2,9 +2,9 @@ TEMPLATE		= lib
 TARGET			= launchy.common
 
 CONFIG			+= qt_warn debug_and_release staticlib
-win:CONFIG		+= qpa
+#win:CONFIG		+= qpa
 QT				+= widgets
-#win32:QT		+= winextras gui-private
+win32:QT		+= winextras gui-private
 #mac:QT			+= macextras
 
 win32:DEFINES	+= UNICODE _UNICODE
@@ -40,7 +40,6 @@ linux:SOURCES	+= x11.cpp \
 win32:SOURCES	+= win.cpp \
                 win_iconprovider.cpp \
                 win_platform.cpp \
-                win_keytrigger.cpp \
                 win_minidump.cpp \
                 win_util.cpp
 mac:SOURCES		+= mac.cpp \

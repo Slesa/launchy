@@ -4,8 +4,8 @@ win32:TARGET	= Launchy
 macx:TARGET		= Launchy
 
 CONFIG			+= debug_and_release
-QT				+= network widgets gui-private
-#win32:QT		+= winextras
+QT				+= network widgets
+win32:QT		+= winextras gui-private
 #linux:QT		+= x11extras
 
 INCLUDEPATH		+= ../

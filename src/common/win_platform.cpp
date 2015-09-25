@@ -19,9 +19,40 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "win_platform.h"
 #include "win_iconprovider.h"
 #include "win_minidump.h"
-#include "globalshortcutmanager.h"
 #include <QString>
 #include <QDebug>
+#include <qpa/qplatformnativeinterface.h>
+
+static QWindow* windowForWidget(const QWidget* widget)
+{
+    qDebug() << "Searching window";
+    QWindow* window = widget->windowHandle();
+    if (window) {
+        qDebug() << "Window handle found";
+        return window;
+    }
+    const QWidget* nativeParent = widget->nativeParentWidget();
+    if (nativeParent) {
+        qDebug() << "Native parent found";
+        return nativeParent->windowHandle();
+    }
+    qDebug() << "Nothing found, no handle available";
+    return 0;
+}
+
+HWND getHwnd(const QWidget* widget)
+{
+    QWindow* window = windowForWidget(widget);
+    if (window && window->handle())
+    {
+        QPlatformNativeInterface* pi = QGuiApplication::platformNativeInterface();
+
+        void* res = pi->nativeResourceForWindow(QByteArrayLiteral("handle"), window);
+        return static_cast<HWND>(res);
+    }
+    return 0;
+}
+
 
 WinPlatform::WinPlatform(int& argc, char** argv) :
 	PlatformBase(argc, argv),
@@ -119,22 +150,6 @@ void WinPlatform::sendInstanceCommand(int command)
 {
     UINT commandMessageId = RegisterWindowMessage(_T("LaunchyCommand"));
 	PostMessage(HWND_BROADCAST, commandMessageId, command, 0);
-}
-
-
-// Mandatory functions
-QKeySequence WinPlatform::getHotkey() const
-{
-	return hotkey;
-}
-
-bool WinPlatform::setHotkey(const QKeySequence& newHotkey, QObject* receiver, const char* slot)
-{
-    qDebug() << "Setting global hotkey";
-	GlobalShortcutManager::disconnect(hotkey, receiver, slot);
-	GlobalShortcutManager::connect(newHotkey, receiver, slot);
-	hotkey = newHotkey;
-	return GlobalShortcutManager::isConnected(newHotkey);
 }
 
 

@@ -10,7 +10,7 @@ DEFINES			+= WITH_GUI
 VPATH			+= ../../launchy \
                 ../../common
 INCLUDEPATH		+= ../../launchy \
-                ../../common
+                ../../
 
 FORMS			= dlg.ui
 

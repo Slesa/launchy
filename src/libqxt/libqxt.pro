@@ -10,7 +10,7 @@ DEFINES	         += BUILD_QXT_GUI
 win32:DEFINES   += UNICODE _UNICODE
 
 QT               = core gui core-private gui-private
-win32:QT        += winextras
+#win32:QT        += winextras
 macx:QT          += macextras
 
 
