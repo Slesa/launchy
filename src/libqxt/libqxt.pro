@@ -1,7 +1,7 @@
 TEMPLATE            = lib
 TARGET              = launchy.qxt
 
-CONFIG          += qt_warn debug_and_release staticlib qpa
+CONFIG          += qt_warn debug_and_release staticlib
 #unix:!macx:CONFIG      += qpa
 #win:CONFIG      += qpa
 
@@ -11,7 +11,6 @@ win32:DEFINES   += UNICODE _UNICODE
 
 QT               = core gui core-private gui-private
 win32:QT        += winextras
-#unix:!macx:QT        += gui-private x11extras
 macx:QT          += macextras
 
 
