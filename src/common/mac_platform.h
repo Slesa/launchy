@@ -32,16 +32,11 @@ public:
     ~MacPlatform();
 
     virtual void setPreferredIconSize(int size) { Q_UNUSED(size) return; }
-    virtual QKeySequence getHotkey() const { return oldKey; }
-	virtual bool setHotkey(const QKeySequence& newHotkey, QObject* receiver, const char* slot);
-	virtual QHash<QString, QList<QString> > getDirectories();
-	virtual QList<Directory> getDefaultCatalogDirectories();
-	virtual QString expandEnvironmentVars(QString);
+    virtual QHash<QString, QList<QString> > getDirectories();
+    virtual QList<Directory> getDefaultCatalogDirectories();
+    virtual QString expandEnvironmentVars(QString);
     virtual bool supportsAlphaBorder() const { return true; }
     virtual void alterItem(CatItem* item);
-private:
-    QKeySequence oldKey;
-
 };
 
 #endif

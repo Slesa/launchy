@@ -2,11 +2,10 @@ TEMPLATE		= lib
 TARGET			= launchy.common
 
 CONFIG			+= qt_warn debug_and_release staticlib
-win:CONFIG		+= qpa
+#win:CONFIG		+= qpa
 QT				+= widgets
 win32:QT		+= winextras gui-private
-linux:QT    	+= x11extras
-mac:QT			+= macextras
+#mac:QT			+= macextras
 
 win32:DEFINES	+= UNICODE _UNICODE
 INCLUDEPATH		+= ../
@@ -15,14 +14,11 @@ HEADERS 		= \
                 catalog.h \
                 globals.h \
                 platform_base.h \
-                globalshortcutmanager.h \
-                globalshortcuttrigger.h \
                 settingsmanager.h
 linux:HEADERS	+= \
                 directory.h \
                 x11_iconprovider.h \
-                x11_platform.h \
-				x11_keytrigger.h
+                x11_platform.h
 win32:HEADERS	+= \
                 win_iconprovider.h \
                 win_files.h \
@@ -30,28 +26,23 @@ win32:HEADERS	+= \
                 win_minidump.h \
                 win_util.h
 mac:HEADERS		+= \
-                mac_platform.h \
-                mac_keytrigger.h
+                mac_platform.h
 
 SOURCES 		= \
                 catalog.cpp \
                 globals.cpp \
                 platform_base.cpp \
-                globalshortcutmanager.cpp \
                 settingsmanager.cpp
 linux:SOURCES	+= x11.cpp \
                 x11_iconprovider.cpp \
-                x11_platform.cpp \
-				x11_keytrigger.cpp
+                x11_platform.cpp
 win32:SOURCES	+= win.cpp \
                 win_iconprovider.cpp \
                 win_platform.cpp \
-                win_keytrigger.cpp \
                 win_minidump.cpp \
                 win_util.cpp
 mac:SOURCES		+= mac.cpp \
-                mac_platform.cpp \
-                mac_keytrigger.cpp
+                mac_platform.cpp
 
 DESTDIR 		= $${PWD}../../../bin/lib/
 

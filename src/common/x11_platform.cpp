@@ -21,7 +21,7 @@
 #include <X11/Xlib.h>
 #include <QFileIconProvider>
 #include <QtGui>
-#include <QX11Info>
+//#include <QX11Info>
 #include <QDebug>
 
 X11Platform::X11Platform(int& argc, char** argv)
@@ -64,18 +64,7 @@ shared_ptr<QApplication> PlatformUnix::init(int & argc, char** argv)
 */
 X11Platform::~X11Platform()
 { 
-    GlobalShortcutManager::clear();
     delete icons;
-}
-
-bool X11Platform::x11EventFilter ( XEvent * event )
-{
-    qDebug() << "x11 event filter";
-    if (event->type == KeyPress) {
-        qDebug() << "x11 key pressed";
-        emit xkeyPressed(event);
-    }
-    return false;
 }
 
 QList<Directory> X11Platform::getDefaultCatalogDirectories() {

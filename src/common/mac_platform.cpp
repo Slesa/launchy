@@ -15,16 +15,6 @@ MacPlatform::~MacPlatform()
 }
 
 
-bool MacPlatform::setHotkey(const QKeySequence & key, QObject* receiver, const char* slot)
-{
-    GlobalShortcutManager::disconnect(oldKey, receiver, slot);
-    GlobalShortcutManager::connect(key, receiver, slot);
-    oldKey = key;
-    qDebug() << key << GlobalShortcutManager::isConnected(key);
-    return GlobalShortcutManager::isConnected(key);
-}
-
-
 void MacPlatform::alterItem(CatItem* item) {
     if (!item->fullPath.endsWith(".app", Qt::CaseInsensitive))
         return;

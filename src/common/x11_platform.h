@@ -21,8 +21,6 @@
 
 #include "x11_iconprovider.h"
 #include "platform_base.h"
-#include "globalshortcutmanager.h"
-#include "globalshortcuttrigger.h"
 
 
 #include <X11/X.h>
@@ -39,21 +37,6 @@ class X11Platform:  public PlatformBase
     void setPreferredIconSize(int size) { size = size; return; }
 
     //virtual shared_ptr<QApplication> init(int & argc, char** argv);
-    // Mandatory functions
-    bool setHotkey(const QKeySequence& key, QObject* receiver, const char* slot)
-    {
-        GlobalShortcutManager::disconnect(oldKey, receiver, slot);
-        GlobalShortcutManager::connect(key, receiver, slot);
-        oldKey = key;
-        qDebug() << key << GlobalShortcutManager::isConnected(key);
-        return GlobalShortcutManager::isConnected(key);
-    }
-    
-
-    QKeySequence getHotkey() const
-    {
-        return oldKey;
-    }
 /*
     QString GetSettingsDirectory()
     {
@@ -82,11 +65,6 @@ class X11Platform:  public PlatformBase
     */
 
     virtual void alterItem(CatItem*);
-signals:
-    void xkeyPressed(XEvent*);
-private:
-    bool x11EventFilter (XEvent* event);
-    QKeySequence oldKey;
 };
 
 #endif
