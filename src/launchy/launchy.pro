@@ -2,6 +2,7 @@ TEMPLATE		= app
 linux:TARGET 	= launchy
 win32:TARGET	= Launchy
 macx:TARGET		= Launchy
+VERSION         = 2.7.0
 
 CONFIG			+= debug_and_release
 QT				+= network widgets gui-private
@@ -101,7 +102,7 @@ CONFIG(release, debug|release) {
 
     macx {
         setup.output    =$${PWD}/../../bin/launchy-setup.dmg
-        setup.commands = hdiutil create -size 200m -volname LaunchySetup -srcfolder $${PWD}/../../bin/app/ -ov -format UDZO $${PWD}/../../bin/launchy-setup.dmg
+        setup.commands = hdiutil create -size 200m -volname LaunchySetup -srcfolder $${PWD}/../../bin/app/ -ov -format UDZO $${PWD}/../../bin/launchy-$${VERSION}.dmg
     }
 
     POST_TARGETDEPS    += setup
