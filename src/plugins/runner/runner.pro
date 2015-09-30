@@ -3,12 +3,11 @@ TARGET			= runner
 
 QT				+= widgets
 
-CONFIG			+= plugin debug_and_release
+CONFIG			+= plugin
 
 VPATH			+= ../../launchy \
                 ../../common
-INCLUDEPATH		+= ../../launchy \
-                ../../
+INCLUDEPATH		+= ../../launchy
 
 FORMS			= dlg.ui
 
@@ -27,17 +26,15 @@ SOURCES			= plugin_interface.cpp \
                 ../../common/FileBrowserDelegate.cpp \
                 ../../common/DropTableWidget.cpp
 
-DESTDIR			= $${PWD}/../../../bin/app/plugins
-
 TRANSLATIONS	= \
-                ../../../translations/runner_fr.ts \
-                ../../../translations/runner_nl.ts \
-                ../../../translations/runner_zh.ts \
-                ../../../translations/runner_es.ts \
-                ../../../translations/runner_de.ts \
-                ../../../translations/runner_ja.ts \
-                ../../../translations/runner_zh_TW.ts \
-                ../../../translations/runner_rus.ts
+                $${PWD}/../../../translations/runner_fr.ts \
+                $${PWD}/../../../translations/runner_nl.ts \
+                $${PWD}/../../../translations/runner_zh.ts \
+                $${PWD}/../../../translations/runner_es.ts \
+                $${PWD}/../../../translations/runner_de.ts \
+                $${PWD}/../../../translations/runner_ja.ts \
+                $${PWD}/../../../translations/runner_zh_TW.ts \
+                $${PWD}/../../../translations/runner_rus.ts
 
 lupdate.target	= lupdate
 lupdate.depends	= $${OBJECTS}

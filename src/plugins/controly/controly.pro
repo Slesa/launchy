@@ -4,13 +4,12 @@ TARGET			= controly
 QT				+= widgets
 win32:QT		+= winextras
 
-CONFIG			+= plugin debug_and_release
+CONFIG			+= plugin
 DEFINES			+= WITH_GUI
 
 VPATH			+= ../../launchy \
                 ../../common
-INCLUDEPATH		+= ../../launchy \
-                ../..
+INCLUDEPATH		+= ../../launchy
 
 FORMS			= dlg.ui
 
@@ -32,17 +31,15 @@ SOURCES			= plugin_interface.cpp \
                 fhoreg.cpp \
                 fhores.cpp
 
-DESTDIR			= $${PWD}/../../../bin/app/plugins
-
 TRANSLATIONS	= \
-                ../../../translations/controly_fr.ts \
-                ../../../translations/controly_nl.ts \
-                ../../../translations/controly_zh.ts \
-                ../../../translations/controly_es.ts \
-                ../../../translations/controly_de.ts \
-                ../../../translations/controly_ja.ts \
-                ../../../translations/controly_zh_TW.ts \
-                ../../../translations/controly_rus.ts
+                $${PWD}/../../../translations/controly_fr.ts \
+                $${PWD}/../../../translations/controly_nl.ts \
+                $${PWD}/../../../translations/controly_zh.ts \
+                $${PWD}/../../../translations/controly_es.ts \
+                $${PWD}/../../../translations/controly_de.ts \
+                $${PWD}/../../../translations/controly_ja.ts \
+                $${PWD}/../../../translations/controly_zh_TW.ts \
+                $${PWD}/../../../translations/controly_rus.ts
 
 lupdate.target	= lupdate
 lupdate.depends	= $${OBJECTS}

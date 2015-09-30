@@ -3,11 +3,10 @@ TARGET			= verby
 
 QT				+= widgets
 
-CONFIG			+= plugin debug_and_release
+CONFIG			+= plugin
 
 VPATH			+= ../../launchy/
-INCLUDEPATH		+= ../../launchy/ \
-                ../../
+INCLUDEPATH		+= ../../launchy/
 
 FORMS			= dlg.ui
 
@@ -19,17 +18,15 @@ SOURCES			= plugin_interface.cpp \
                 gui.cpp \
                 Verby.cpp
 
-DESTDIR			= $${PWD}/../../../bin/app/plugins
-
 TRANSLATIONS	= \
-                ../../../translations/verby_fr.ts \
-                ../../../translations/verby_nl.ts \
-                ../../../translations/verby_zh.ts \
-                ../../../translations/verby_es.ts \
-                ../../../translations/verby_de.ts \
-                ../../../translations/verby_ja.ts \
-                ../../../translations/verby_zh_TW.ts \
-                ../../../translations/verby_rus.ts
+                $${PWD}/../../../translations/verby_fr.ts \
+                $${PWD}/../../../translations/verby_nl.ts \
+                $${PWD}/../../../translations/verby_zh.ts \
+                $${PWD}/../../../translations/verby_es.ts \
+                $${PWD}/../../../translations/verby_de.ts \
+                $${PWD}/../../../translations/verby_ja.ts \
+                $${PWD}/../../../translations/verby_zh_TW.ts \
+                $${PWD}/../../../translations/verby_rus.ts
 
 lupdate.target	= lupdate
 lupdate.depends	= $${OBJECTS}

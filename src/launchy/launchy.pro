@@ -1,3 +1,4 @@
+include(../global.pri)
 TEMPLATE		= app
 linux:TARGET 	= launchy
 win32:TARGET	= Launchy
@@ -8,8 +9,6 @@ CONFIG			+= debug_and_release
 QT				+= network widgets gui-private
 win32:QT		+= winextras
 linux:QT		+= x11extras
-
-INCLUDEPATH		+= ../
 
 UI_DIR			= .ui
 MOC_DIR			= .moc
@@ -64,18 +63,26 @@ HEADERS			= main.h \
 win32:HEADERS	+= win_launchywidget.h
 
 TRANSLATIONS	= \
-                ../../translations/launchy_fr.ts \
-                ../../translations/launchy_nl.ts \
-                ../../translations/launchy_zh.ts \
-                ../../translations/launchy_es.ts \
-                ../../translations/launchy_de.ts \
-                ../../translations/launchy_ja.ts \
-                ../../translations/launchy_zh_TW.ts \
-                ../../translations/launchy_rus.ts
+                $${PWD}/../../translations/launchy_fr.ts \
+                $${PWD}/../../translations/launchy_nl.ts \
+                $${PWD}/../../translations/launchy_zh.ts \
+                $${PWD}/../../translations/launchy_es.ts \
+                $${PWD}/../../translations/launchy_de.ts \
+                $${PWD}/../../translations/launchy_ja.ts \
+                $${PWD}/../../translations/launchy_zh_TW.ts \
+                $${PWD}/../../translations/launchy_rus.ts
 
-DESTDIR 		= $${PWD}/../../bin/app/
-LIBS	 		= -L$${PWD}/../../bin/lib/ \
-                -llaunchy.qxt
+DESTDIR 		= $$join($${DESTDIR},,,app/)
+
+CONFIG(debug, debug|release) {
+    LIBS	 	+= -L$${PWD}/../../bin/debug/lib/
+}
+CONFIG(release, debug|release) {
+    LIBS	 	+= -L$${PWD}/../../bin/release/lib/
+}
+LIBS	 		+= \
+                -llaunchy.qxt \
+                -llaunchy.common
 
 lupdate.target	= lupdate
 lupdate.depends	= $${OBJECTS}
@@ -90,14 +97,40 @@ copytr.target	= copytr
 copytr.depends	= $${OBJECTS}
 copytr.output	= $${DESTDIR}/tr
 
+deployqt.target = deployqt
+#deployqt.output = $${DESTDIR}/
+moveqtqm.target = moveqtqm
+moveqtqm.depends = deployqt
+
 CONFIG(release, debug|release) {
+    deployqt.commands = %QTDIR%\bin\windeployqt --release --no-plugins --no-webkit $${DESTDIR}/
+}
+#CONFIG(debug, debug|release) {
+#    deployqt.commands = %QTDIR%\bin\windeployqt --no-plugins --no-webkit $${DESTDIR}/
+#}
+
+CONFIG(release, debug|release) {
+
     setup.target    = setup
 #    setup.depends   = copytr skins lupdate
-    setup.path     = $${PWD}/../../bin/app
+    setup.path     = $${PWD}/../../bin/release/app
+
+    moveqtqm.commands = $$quote(@move $${setup.path}\*.qm $${setup.path}\tr)
 
     win32 {
-        setup.output = $${PWD}/../../bin/setup.exe
-        setup.commands = $${PWD}/../../tools/nsis/Bin/makensis.exe $${PWD}/../../setup\win\setup.nsi
+        outfile = $${PWD}/../../setup/win/setup.nsi
+        outfile = $$absolute_path($${outfile})
+        outfile = $$system_path($${outfile})
+        setupexe = $$absolute_path($${PWD}/../../bin/$${TARGET}-$${VERSION}.exe)
+        setupexe = $$system_path($${setupexe})
+        setup.output = $${PWD}/../../bin/launchy-$${VERSION}.exe
+        setup.commands = \
+            $$system(echo "!include \"MUI2.nsh\"" > $${outfile}) \
+            $$system(echo "Name \"$${TARGET}\"" >> $${outfile}) \
+            $$system(echo "OutFile \"$${setupexe}\"" >> $${outfile}) \
+            $$system(type $${outfile}.template >> $${outfile})
+
+#            $${PWD}/../../tools/nsis/Bin/makensis.exe /DVERSION=$${VERSION} $${PWD}\..\..\setup\win\setup.nsi
     }
 
     macx {
@@ -113,8 +146,7 @@ PRE_TARGETDEPS	+= lupdate makeqm skins copytr
 
 linux {
     ICON		= Launchy.ico
-    LIBS		+= -L$${PWD}/../../bin/lib \
-                -llaunchy.common \
+    LIBS		+= \
                 -lX11
 
     skins.commands	= $$quote(cp -r $${PWD}/../../skins $${DESTDIR}/ $$escape_expand(\n\t))
@@ -139,8 +171,7 @@ win32 {
     Debug:CONFIG += console
     CONFIG		+= embed_manifest_exe
     RC_FILE		= ../win/launchy.rc
-    LIBS		+= -L$${PWD}/../../bin/lib \
-                launchy.common.lib \
+    LIBS		+= \
                 shell32.lib \
                 user32.lib \
                 gdi32.lib \
@@ -149,10 +180,8 @@ win32 {
                 advapi32.lib \
                 userenv.lib \
                 netapi32.lib
-    DEFINES		= VC_EXTRALEAN \
+    DEFINES		+= VC_EXTRALEAN \
                 WIN32 \
-                _UNICODE \
-                UNICODE \
                 WINVER=0x0600 \
                 _WIN32_WINNT=0x0600 \
                 _WIN32_WINDOWS=0x0600 \

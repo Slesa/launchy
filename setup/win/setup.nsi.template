@@ -1,7 +1,7 @@
-!include "MUI2.nsh"
+;!include "MUI2.nsh"
 
-Name "Launchy"
-Outfile "..\..\bin\Launchy-setup.exe"
+;Name "Launchy"
+;Outfile "..\..\bin\Launchy-setup.exe"
 
 InstallDir $PROGRAMFILES\Launchy
 InstallDirRegKey HKLM "Software\Launchy" "Install_Dir"
@@ -24,15 +24,15 @@ Section "Core files (required)"
 
 	SetOutPath $INSTDIR
 
-	File "..\..\bin\app\Launchy.exe"
-	File "..\..\bin\app\*.dll"
+	File "..\..\bin\release\app\Launchy.exe"
+	File "..\..\bin\release\app\*.dll"
 
 	SetOutPath $INSTDIR\plugins
-	File /r "..\..\bin\app\plugins\*"
+	File /r "..\..\bin\release\app\plugins\*"
 	SetOutPath $INSTDIR\skins
-	File /r "..\..\bin\app\skins\*"
+	File /r "..\..\bin\release\app\skins\*"
 	SetOutPath $INSTDIR\tr
-	File /r "..\..\bin\app\tr\*"
+	File /r "..\..\bin\release\app\tr\*"
 
 	WriteRegStr HKLM SOFTWARE\Launchy "Install_Dir" "$INSTDIR"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Launchy" "DisplayName" "Launchy"

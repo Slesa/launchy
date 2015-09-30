@@ -3,11 +3,10 @@ TARGET 			= weby
 
 QT				+= network widgets
 
-CONFIG			+= plugin debug_and_release
+CONFIG			+= plugin
 
 VPATH			+= ../../launchy/
-INCLUDEPATH		+= ../../launchy/ \
-                ../../
+INCLUDEPATH		+= ../../launchy/
 
 FORMS			= dlg.ui
 
@@ -24,17 +23,15 @@ SOURCES			= plugin_interface.cpp \
                 ../../common/DropTableWidget.cpp \
                 IconCache.cpp
 
-DESTDIR			= $${PWD}/../../../bin/app/plugins
-
 TRANSLATIONS	= \
-                ../../../translations/weby_fr.ts \
-                ../../../translations/weby_nl.ts \
-                ../../../translations/weby_zh.ts \
-                ../../../translations/weby_es.ts \
-                ../../../translations/weby_de.ts \
-                ../../../translations/weby_ja.ts \
-                ../../../translations/weby_zh_TW.ts \
-                ../../../translations/weby_rus.ts
+                $${PWD}/../../../translations/weby_fr.ts \
+                $${PWD}/../../../translations/weby_nl.ts \
+                $${PWD}/../../../translations/weby_zh.ts \
+                $${PWD}/../../../translations/weby_es.ts \
+                $${PWD}/../../../translations/weby_de.ts \
+                $${PWD}/../../../translations/weby_ja.ts \
+                $${PWD}/../../../translations/weby_zh_TW.ts \
+                $${PWD}/../../../translations/weby_rus.ts
 
 lupdate.target	= lupdate
 lupdate.depends	= $${OBJECTS}
