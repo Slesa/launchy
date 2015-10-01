@@ -125,6 +125,7 @@ CONFIG(release, debug|release) {
         setupexe = $$system_path($${setupexe})
         setup.output = $${PWD}/../../bin/launchy-$${VERSION}.exe
         setup.commands = \
+            $$system(rm $${outfile}) \
             $$system(echo "!include \"MUI2.nsh\"" > $${outfile}) \
             $$system(echo "Name \"$${TARGET}\"" >> $${outfile}) \
             $$system(echo "OutFile \"$${setupexe}\"" >> $${outfile}) \
