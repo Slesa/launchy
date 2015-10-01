@@ -1,10 +1,10 @@
 include(../global.pri)
-TEMPLATE			= lib
+TEMPLATE        = lib
 
-UI_DIR				= .ui
-MOC_DIR				= .moc
+UI_DIR          = .ui
+MOC_DIR         = .moc
 
-DESTDIR 		= $$join(DESTDIR,,,app/plugins/)
+DESTDIR         = $${DESTDIR}app/plugins/
 
 # DESTDIR = $${PWD}/../../../bin/app/plugins
 #if(!debug_and_release|build_pass):CONFIG(debug, debug|release):DESTDIR = $${PWD}/../../../bin/app/plugins

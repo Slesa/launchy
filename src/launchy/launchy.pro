@@ -1,22 +1,22 @@
 include(../global.pri)
-TEMPLATE		= app
-linux:TARGET 	= launchy
-win32:TARGET	= Launchy
-macx:TARGET		= Launchy
+TEMPLATE        = app
+linux:TARGET    = launchy
+win32:TARGET    = Launchy
+macx:TARGET     = Launchy
 VERSION         = 2.7.0
 
-CONFIG			+= debug_and_release
-QT				+= network widgets gui-private
-win32:QT		+= winextras
-linux:QT		+= x11extras
+CONFIG          += debug_and_release
+QT              += network widgets gui-private
+win32:QT        += winextras
+linux:QT        += x11extras
 
-UI_DIR			= .ui
-MOC_DIR			= .moc
+UI_DIR          = .ui
+MOC_DIR         = .moc
 
-RESOURCES		+= launchy.qrc
-FORMS			= options.ui
+RESOURCES       += launchy.qrc
+FORMS           = options.ui
 
-SOURCES			= main.cpp \
+SOURCES         = main.cpp \
                 AnimationLabel.cpp \
                 catalog_builder.cpp \
                 catalog_types.cpp \
@@ -72,7 +72,7 @@ TRANSLATIONS	= \
                 $${PWD}/../../translations/launchy_zh_TW.ts \
                 $${PWD}/../../translations/launchy_rus.ts
 
-DESTDIR 		= $$join($${DESTDIR},,,app/)
+DESTDIR         = $${DESTDIR}app/
 
 CONFIG(debug, debug|release) {
     LIBS	 	+= -L$${PWD}/../../bin/debug/lib/
@@ -151,7 +151,7 @@ linux {
 
     skins.commands	= $$quote(cp -r $${PWD}/../../skins $${DESTDIR}/ $$escape_expand(\n\t))
     copytr.commands	= $$quote(mkdir -p $${DESTDIR}/tr $$escape_expand(\n\t) \
-                        cp $${PWD}/../../translations/*.qm $${DESTDIR}/tr/ $$escape_expand(\n\t))
+                     cp $${PWD}/../../translations/*.qm $${DESTDIR}/tr/ $$escape_expand(\n\t))
 
 #    target.path	= $$PREFIX/bin/
 #    skins.path	= $$PREFIX/share/launchy/skins/
