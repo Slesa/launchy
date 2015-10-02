@@ -75,12 +75,12 @@ TRANSLATIONS	= \
 DESTDIR         = $${DESTDIR}app/
 
 CONFIG(debug, debug|release) {
-    LIBS	 	+= -L$${PWD}/../../bin/debug/lib/
+    LIBS        += -L$${PWD}/../../bin/debug/lib/
 }
 CONFIG(release, debug|release) {
-    LIBS	 	+= -L$${PWD}/../../bin/release/lib/
+    LIBS        += -L$${PWD}/../../bin/release/lib/
 }
-LIBS	 		+= \
+LIBS            += \
                 -llaunchy.qxt \
                 -llaunchy.common
 
@@ -130,13 +130,22 @@ CONFIG(release, debug|release) {
             $$system(echo "Name \"$${TARGET}\"" >> $${outfile}) \
             $$system(echo "OutFile \"$${setupexe}\"" >> $${outfile}) \
             $$system(type $${outfile}.template >> $${outfile})
-
 #            $${PWD}/../../tools/nsis/Bin/makensis.exe /DVERSION=$${VERSION} $${PWD}\..\..\setup\win\setup.nsi
     }
 
     macx {
-        setup.output    =$${PWD}/../../bin/launchy-setup.dmg
-        setup.commands = hdiutil create -size 200m -volname LaunchySetup -srcfolder $${PWD}/../../bin/app/ -ov -format UDZO $${PWD}/../../bin/launchy-$${VERSION}.dmg
+        outfile = $${PWD}/../../setup/mac/create-setup.sh
+        outfile = $$absolute_path($${outfile})
+        outfile = $$system_path($${outfile})
+        setupdmg = $$absolute_path($${PWD}/../../bin/$${TARGET}-$${VERSION}.dmg)
+        setupdmg = $$system_path($${setupdmg})
+        setup.output    =$${outfile}
+        source = $${DESTDIR}
+        source = $$absolute_path($${source})
+        source = $$system_path($${source})
+#        setup.commands = hdiutil create -size 200m -volname LaunchySetup -srcfolder $${PWD}/../../bin/app/ -ov -format UDZO $${PWD}/../../bin/launchy-$${VERSION}.dmg
+        setup.commands = \
+            $$system(echo "hdiutil create -size 200m -volname LaunchySetup -srcfolder $${source} -ov -format UDZO $${setupdmg}" > $${outfile})
     }
 
     POST_TARGETDEPS    += setup
@@ -195,10 +204,10 @@ win32 {
 }
 
 macx { 
-    ICON		= ../misc/Launchy_Icon/launchy_icon_mac.icns
-    LIBS		+= -framework \
-                Carbon \
-                ../../lib/liblaunchy.common.a
+    ICON        = ../misc/Launchy_Icon/launchy_icon_mac.icns
+    LIBS        += -framework \
+                Carbon
+#                ../../lib/liblaunchy.common.a
 
     skins.commands	= $$quote(cp -r $${PWD}/../../skins $${DESTDIR}/Launchy.app/Contents/Resources/ $$escape_expand(\n\t))
     copytr.commands	= $$quote(mkdir -p $${DESTDIR}/Launchy.app/Contents/MacOS/tr $$escape_expand(\n\t) \

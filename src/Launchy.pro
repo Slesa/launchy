@@ -1,6 +1,6 @@
-TEMPLATE		= subdirs
-CONFIG			+= ordered
-SUBDIRS			=  \
+TEMPLATE        = subdirs
+CONFIG          += ordered
+SUBDIRS         =  \
                 libqxt \
                 common \
 #          plugins/calcy \
@@ -12,5 +12,5 @@ SUBDIRS			=  \
                 launchy
           
 win32 {
-    SUBDIRS		+= plugins/controly
+    SUBDIRS     += plugins/controly
 }

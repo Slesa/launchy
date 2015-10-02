@@ -1,23 +1,22 @@
 include(../plugins.pri)
-TARGET 			= weby
+TARGET          = weby
+QT              += network widgets
 
-QT				+= network widgets
+CONFIG          += plugin
 
-CONFIG			+= plugin
+VPATH           += ../../launchy/
+INCLUDEPATH     += ../../launchy/
 
-VPATH			+= ../../launchy/
-INCLUDEPATH		+= ../../launchy/
+FORMS           = dlg.ui
 
-FORMS			= dlg.ui
-
-HEADERS			= plugin_interface.h \
+HEADERS         = plugin_interface.h \
                 weby.h \
                 gui.h \
                 globals.h \
                 ../../common/DropTableWidget.h \
                 IconCache.h
 
-SOURCES			= plugin_interface.cpp \
+SOURCES         = plugin_interface.cpp \
                 weby.cpp \
                 gui.cpp \
                 ../../common/DropTableWidget.cpp \
@@ -33,11 +32,11 @@ TRANSLATIONS	= \
                 $${PWD}/../../../translations/weby_zh_TW.ts \
                 $${PWD}/../../../translations/weby_rus.ts
 
-lupdate.target	= lupdate
+lupdate.target  = lupdate
 lupdate.depends	= $${OBJECTS}
 lupdate.commands = $$quote(lupdate $${PWD}/weby.pro)
-makeqm.target	= makeqm
-makeqm.depends	= $${OBJECTS}
+makeqm.target   = makeqm
+makeqm.depends  = $${OBJECTS}
 makeqm.commands	= $$quote(lrelease $${PWD}/weby.pro)
 
 QMAKE_EXTRA_TARGETS += lupdate makeqm
@@ -45,22 +44,20 @@ PRE_TARGETDEPS	+= lupdate makeqm
 
 
 win32 { 
-    CONFIG		-= embed_manifest_dll
-    LIBS		+= user32.lib shell32.lib
+    CONFIG      -= embed_manifest_dll
+    LIBS        += user32.lib shell32.lib
 }
 
 linux {
-    PREFIX		= /usr
+    PREFIX      = /usr
     target.path	= $$PREFIX/lib/launchy/plugins/
-    icon.path	= $$PREFIX/lib/launchy/plugins/icons/
-    icon.files	= weby.png
-    INSTALLS	+= target icon
+    icon.path   = $$PREFIX/lib/launchy/plugins/icons/
+    icon.files  = weby.png
+    INSTALLS    += target icon
 }
 
 macx {
-    DESTDIR		= $${PWD}/../../../bin/app/Launchy.app/Contents/MacOS/plugins
-
-    icons.path	 = ../../../app/Launchy.app/Contents/MacOS/plugins/icons/
+    icons.path   = $${DESTDIR}icons/
     icons.files = weby.png
-    INSTALLS	+= icons
+    INSTALLS    += icons
 }
