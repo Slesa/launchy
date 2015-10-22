@@ -77,6 +77,7 @@ private:
 	QList<QPair<QString, uint> > pluginNames;
 	QVBoxLayout* pluginLayout;
 	QString lastDir;
+    int _lastHotkey;
 
 	static QByteArray windowGeometry;
 	static int currentTab;

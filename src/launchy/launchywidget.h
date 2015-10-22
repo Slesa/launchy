@@ -38,6 +38,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Fader.h"
 
 class QPushButton;
+class QxtGlobalShortcut;
 // class QNetworkRequest;
 
 enum CommandFlag
@@ -177,8 +178,10 @@ private:
 	QAbstractItemDelegate* defaultListDelegate;
 
    // QNetworkRequest *http;
-	QBuffer *verBuffer;
-	QBuffer *counterBuffer;
+    QBuffer *verBuffer;
+    QBuffer *counterBuffer;
+
+    QxtGlobalShortcut* _globalShortcut;
 };
 
 #endif

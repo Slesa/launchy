@@ -1,18 +1,19 @@
-TARGET			= launchy.specs
-QT				+= widgets testlib
+TARGET          = launchy.specs
+QT              += widgets testlib
+CONFIG          += testcase
 
-MOC_DIR 		= .moc
+MOC_DIR         = .moc
 
-HEADERS 		= \
+HEADERS         = \
                 commandlineparser.specs.h \
                 singleapplication.specs.h \
                 ../launchy/commandlineparser.h \
                 ../launchy/singleapplication.h
 
-SOURCES 		= main.cpp \
+SOURCES         = main.cpp \
                 commandlineparser.specs.cpp \
                 singleapplication.specs.cpp \
                 ../launchy/commandlineparser.cpp \
                 ../launchy/singleapplication.cpp
 
-DESTDIR 		= $${PWD}../../../bin/specs/
+DESTDIR         = $${PWD}../../../bin/specs/

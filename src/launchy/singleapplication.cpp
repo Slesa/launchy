@@ -25,6 +25,7 @@ bool SingleApplication::isRunning()
     sharedMemory.setKey(applicationKey());
     if(sharedMemory.attach())
     {
+        qDebug() << "Could not attach shared mem: " << _appLock.errorString();
         sharedMemory.detach();
         return true;
     }

@@ -24,6 +24,7 @@ void SingleApplicationSpecs::reports_running_when_started()
 {
     SingleApplication* app = SingleApplication::instance();
     QCOMPARE(app->start(), true);
+    QThread::msleep(500);
     QCOMPARE(app->isRunning(), true);
     app->release();
     //delete app;
@@ -33,6 +34,7 @@ void SingleApplicationSpecs::does_not_start_twice()
 {
     SingleApplication* app = SingleApplication::instance();
     QCOMPARE(app->start(), true);
+    QThread::msleep(500);
     QCOMPARE(app->start(), false);
     delete app;
     //app->release();

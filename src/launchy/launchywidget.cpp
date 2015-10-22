@@ -58,21 +58,22 @@ void SetForegroundWindowEx(HWND hWnd)
 
 LaunchyWidget::LaunchyWidget(CommandFlags command) :
 #ifdef Q_OS_WIN
-	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
+    QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool)
 #endif
 #ifdef Q_OS_LINUX
-	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
+    QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool)
 #endif
 #ifdef Q_OS_MAC
-	QWidget(NULL, Qt::FramelessWindowHint),
+    QWidget(NULL, Qt::FramelessWindowHint)
 #endif
 
-	frameGraphic(NULL),
-	trayIcon(NULL),
-	alternatives(NULL),
-	updateTimer(NULL),
-	dropTimer(NULL),
-	condensedTempIcon(NULL)
+    , frameGraphic(NULL)
+    , trayIcon(NULL)
+    , alternatives(NULL)
+    , updateTimer(NULL)
+    , dropTimer(NULL)
+    , condensedTempIcon(NULL)
+    , _globalShortcut(NULL)
 {
 	setObjectName("launchy");
 	setWindowTitle(tr("Launchy"));
@@ -235,6 +236,8 @@ LaunchyWidget::~LaunchyWidget()
 	delete updateTimer;
 	delete dropTimer;
 	delete alternatives;
+    if( _globalShortcut!=Q_NULLPTR)
+        delete _globalShortcut;
 }
 
 
@@ -314,11 +317,21 @@ void LaunchyWidget::setSuggestionListMode(int mode)
 
 bool LaunchyWidget::setHotkey(QKeySequence hotkey)
 {
-    QxtGlobalShortcut* shortcut = new QxtGlobalShortcut(this);
-    connect(shortcut, SIGNAL(activated()), this, SLOT(onHotkey()));
-    return shortcut->setShortcut(hotkey);
+    QKeySequence formerSeq;
+    if( _globalShortcut==Q_NULLPTR) {
+        _globalShortcut = new QxtGlobalShortcut(this);
+        connect(_globalShortcut, SIGNAL(activated()), this, SLOT(onHotkey()));
+        formerSeq = _globalShortcut->shortcut();
+    }
+
+    bool success = _globalShortcut->setShortcut(hotkey);
+    if( !success ) {
+        if( !formerSeq.isEmpty() )
+            _globalShortcut->setShortcut(formerSeq);
+    }
 //    GlobalShortcutManager::setMainWidget(this);
 //    return g_platform->setHotkey(hotkey, this, SLOT(onHotkey()));
+   return success;
 }
 
 

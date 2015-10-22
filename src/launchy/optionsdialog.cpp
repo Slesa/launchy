@@ -119,8 +119,9 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 		';' << '\'' << '#' << '\\' << ',' << '.' << '/';
 
 	// Find the current hotkey
-    int hotkey = g_mainWidget->getHotkey();
-	int meta = hotkey & (Qt::AltModifier | Qt::MetaModifier | Qt::ShiftModifier | Qt::ControlModifier);
+    _lastHotkey = g_mainWidget->getHotkey();
+    int hotkey = _lastHotkey;
+    int meta = hotkey & (Qt::AltModifier | Qt::MetaModifier | Qt::ShiftModifier | Qt::ControlModifier);
 	hotkey &= ~(Qt::AltModifier | Qt::MetaModifier | Qt::ShiftModifier | Qt::ControlModifier);
 
 	for (int i = 0; i < metaKeys.count(); ++i)
@@ -133,7 +134,7 @@ OptionsDialog::OptionsDialog(QWidget * parent) :
 	for (int i = 0; i < actionKeys.count(); ++i)
 	{
 		genKeyBox->addItem(actionKeys[i]);
-		if (iActionKeys[i] == hotkey) 
+        if (iActionKeys[i] == hotkey)
 			genKeyBox->setCurrentIndex(i);
 	}
 
@@ -275,15 +276,17 @@ void OptionsDialog::signalSkinChanged()
 
 void OptionsDialog::accept()
 {
-	// See if the new hotkey works, if not we're not leaving the dialog.
-	QKeySequence hotkey(iMetaKeys[genModifierBox->currentIndex()] + iActionKeys[genKeyBox->currentIndex()]);
-    if (!g_mainWidget->setHotkey(hotkey))
-	{
-		QMessageBox::warning(this, tr("Launchy"), tr("The hotkey %1 is already in use, please select another.").arg(hotkey.toString()));
-		return;
-	}
-
-    g_settings.setHotkey(hotkey.count() > 0 ? hotkey[0] : 0);
+    int hotkey = iMetaKeys[genModifierBox->currentIndex()] + iActionKeys[genKeyBox->currentIndex()];
+    if( hotkey!=g_mainWidget->getHotkey() ) {
+        // See if the new hotkey works, if not we're not leaving the dialog.
+        QKeySequence sequence(hotkey);
+        if( !g_mainWidget->setHotkey(sequence) ){
+            QMessageBox::warning(this, tr("Launchy"), tr("The hotkey %1 is already in use, please select another.")
+                .arg(sequence.toString()));
+            return;
+        }
+        g_settings.setHotkey(sequence.count() > 0 ? sequence[0] : 0);
+    }
 
 	// Save General Options
     g_settings.setShowTrayIcon(genShowTrayIcon->isChecked());

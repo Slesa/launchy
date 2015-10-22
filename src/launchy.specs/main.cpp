@@ -1,5 +1,5 @@
-//#include "commandlineparser.specs.h"
-//#include "singleapplication.specs.h"
+#include "commandlineparser.specs.h"
+#include "singleapplication.specs.h"
 #include <QCoreApplication>
 #include <QtTest>
 
