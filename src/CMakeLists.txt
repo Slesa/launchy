@@ -8,5 +8,7 @@ configure_file (
 	"${PROJECT_SOURCE_DIR}/version.h"
 	)
 
+add_subdirectory(common)
+add_subdirectory(libqxt)
 add_subdirectory(launchy)
 # add_executable(Launchy main.cpp)
