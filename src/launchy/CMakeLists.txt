@@ -1,5 +1,8 @@
 cmake_minimum_required (VERSION 2.8.12)
-project (Launchy)
+project (launchy)
+
+find_package(Qt5Core)
+find_package(Qt5 COMPONENTS Gui Widgets)
 
 set(launchy_srcs
 	AnimationLabel.cpp
@@ -24,4 +27,11 @@ set(launchy_srcs
 	plugin_interface.cpp
 	singleapplication.cpp
    )
-add_executable(Launchy ${launchy_srcs})
+
+include_directories(BEFORE ${CMAKE_SOURCE_DIR}/common)
+include_directories(BEFORE ${CMAKE_SOURCE_DIR}/libqxt)
+
+
+
+add_executable(launchy ${launchy_srcs})
+qt5_use_modules(launchy Core Gui Widgets)
