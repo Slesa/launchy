@@ -1,3 +1,0 @@
-#pragma once
-
-#define LAUNCHY_VERSION "@Launchy_VERSION_MAJOR@.@Launchy_VERSION_MINOR@"

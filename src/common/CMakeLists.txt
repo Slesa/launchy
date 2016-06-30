@@ -1,6 +1,28 @@
 cmake_minimum_required (VERSION 2.8.12)
 project (common)
 
+set (Launchy_VERSION_MAJOR 3)
+set (Launchy_VERSION_MINOR 0)
+
+configure_file (
+	"${PROJECT_SOURCE_DIR}/version.h.in"
+	"${PROJECT_SOURCE_DIR}/version.h"
+	)
+
+find_package(Qt5Core)
+find_package(Qt5Widgets)
+include_directories(${Qt5Widgets_INCLUDES})
+add_definitions(${Qt5Widgets_DEFINITIONS})
+set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+
+if(UNIX)
+	find_package(Qt5 COMPONENTS X11Extras)
+elseif(WIN32)
+	find_package(Qt5 COMPONENTS winextras)
+elseif(APPLE)
+	find_package(Qt5 COMPONENTS macextras)
+endif()
+
 set(launchy_common_srcs
 	catalog.cpp
 	DropListWidget.cpp
@@ -36,3 +58,5 @@ set(launchy_common_extras
    )
 endif()
 add_library(common ${launchy_common_srcs} ${launchy_common_extras})
+qt5_use_modules(common Core Widgets)
+
