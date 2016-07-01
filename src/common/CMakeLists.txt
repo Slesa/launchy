@@ -34,6 +34,17 @@ set(launchy_common_srcs
 	platform_base.cpp
 	settingsmanager.cpp
    )
+set(launchy_common_hdrs
+    catalog.h
+    directory.h
+    DropListWidget.h
+    DropTableWidget.h
+    FileBrowser.h
+    FileBrowserDelegate.h
+    globals.h
+    globalshortcutmanager.h
+    globalshortcuttrigger.h
+   )
 if(WIN32)
 set(launchy_common_extras
 	win.cpp
@@ -57,6 +68,6 @@ set(launchy_common_extras
 	x11_platform.cpp
    )
 endif()
-add_library(common ${launchy_common_srcs} ${launchy_common_extras})
+add_library(common ${launchy_common_srcs} ${launchy_common_hdrs} ${launchy_common_extras})
 qt5_use_modules(common Core Widgets)
 
