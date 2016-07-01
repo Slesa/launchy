@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 2.8.12)
 project (libqxt)
 
 find_package(Qt5Core)
-find_package(Qt5 COMPONENTS Gui Widgets)
+find_package(Qt5 COMPONENTS Gui Widgets Qpa)
 
 set(launchy_qxt_srcs
 	qxtglobalshortcut.cpp
@@ -22,4 +22,4 @@ set(launchy_qxt_extras
 endif()
 
 add_library(libqxt ${launchy_qxt_srcs} ${launchy_qxt_extras})
-qt5_use_modules(libqxt Core Gui Widgets)
+qt5_use_modules(libqxt Core Gui Widgets Qpa)

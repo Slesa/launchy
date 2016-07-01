@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 2.8.12)
 project (Launchy)
 
+# // http://www.executionunit.com/blog/2014/01/22/moving-from-qmake-to-cmake/
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	set(__WIN__ TRUE)
@@ -22,6 +23,13 @@ if(__MAC__)
 	set(BIN_INSTALL_DIR "${BUNDLE_NAME}/Contents/MacOS")
 else()
 	set(BIN_INSTALL_DIR "bin")
+endif()
+
+if(__LIN__)
+    add_definitions(-DPREFIX="/usr")
+    add_definitions(-DSKINS_PATH="$$PREFIX/share/launchy/skins/")
+    add_definitions(-DPLUGINS_PATH="$$PREFIX/lib/launchy/plugins/")
+    add_definitions(-DPLATFORMS_PATH="$$PREFIX/lib/launchy/")
 endif()
 
 # Qt
