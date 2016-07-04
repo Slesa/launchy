@@ -28,11 +28,17 @@ set(launchy_srcs
 	singleapplication.cpp
    )
 
+QT5_WRAP_UI(launchy_form_hdr options.ui)
+
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/common)
 include_directories(${CMAKE_SOURCE_DIR}/libqxt)
 
+add_executable(launchy ${launchy_srcs} ${launchy_form_hdr} ${launchy_common_hdrs} ${launchy_hdr_moc})
 
-
-add_executable(launchy ${launchy_srcs} ${launchy_common_hdrs})
 qt5_use_modules(launchy Core Gui Widgets Network)
+
+target_link_libraries(launchy common libqxt)
+if (__MAC__)
+	target_link_libraries(launchy ${CARBON_FRAMEWORK})
+endif()

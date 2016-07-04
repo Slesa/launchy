@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.8.12)
-project (Launchy)
+project (LaunchyApp)
 
 # // http://www.executionunit.com/blog/2014/01/22/moving-from-qmake-to-cmake/
 
@@ -14,16 +14,21 @@ endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${BIN_INSTALL_DIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${LIB_INSTALL_DIR})
+set(CMAKE_AUTOUIC ON)
 
 if(__MAC__)
 	set(BUNDLE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 	set(BUNDLE_NAME "Launchy.app")
 	set(BIN_INSTALL_DIR "${BUNDLE_NAME}/Contents/MacOS")
+
+	#set(CMAKE_FIND_FRAMEWORK ONLY)
+	find_library(CARBON_FRAMEWORK Carbon)
 else()
 	set(BIN_INSTALL_DIR "bin")
 endif()
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${BIN_INSTALL_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${LIB_INSTALL_DIR})
 
 if(__LIN__)
     add_definitions(-DPREFIX="/usr")
@@ -44,5 +49,5 @@ include_directories(BEFORE ${CMAKE_SOURCE_DIR}/libqxt)
 
 add_subdirectory(common)
 add_subdirectory(libqxt)
+add_subdirectory(plugins)
 add_subdirectory(launchy)
-# add_executable(Launchy main.cpp)

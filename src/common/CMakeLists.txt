@@ -11,9 +11,9 @@ configure_file (
 
 find_package(Qt5Core)
 find_package(Qt5Widgets)
-include_directories(${Qt5Widgets_INCLUDES})
-add_definitions(${Qt5Widgets_DEFINITIONS})
-set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+#include_directories(${Qt5Widgets_INCLUDES})
+#add_definitions(${Qt5Widgets_DEFINITIONS})
+#set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
 if(__LIN__)
 	find_package(Qt5 COMPONENTS X11Extras)
@@ -90,6 +90,6 @@ set(launchy_common_extras
     x11_platform.h
    )
 endif()
-add_library(common ${launchy_common_srcs} ${launchy_common_hdrs} ${launchy_common_extras})
+add_library(common STATIC ${launchy_common_srcs} ${launchy_common_hdrs} ${launchy_common_extras})
 qt5_use_modules(common Core Widgets ${launchy_common_mods})
 
