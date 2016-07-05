@@ -1,27 +1,40 @@
 cmake_minimum_required (VERSION 2.8.12)
-project (libqxt)
+project (verby)
 
 find_package(Qt5Core)
 find_package(Qt5 COMPONENTS Gui Widgets)
-include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
+find_package(Qt5LinguistTools)
 
+#include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 
-set(launchy_qxt_srcs
-	qxtglobalshortcut.cpp
+set(launchy_verby_trans
+    ../../../translations/verby_fr.ts
+    ../../../translations/verby_nl.ts
+    ../../../translations/verby_zh.ts
+    ../../../translations/verby_es.ts
+    ../../../translations/verby_de.ts
+    ../../../translations/verby_ja.ts
+    ../../../translations/verby_zh_TW.ts
+    ../../../translations/verby_rus.ts   
+    )
+set(launchy_verby_srcs
+	gui.cpp
+	verby.cpp
+    ../../launchy/plugin_interface.cpp
    )
-if(__WIN__)
-set(launchy_qxt_extras
-	qxtglobalshortcut_win.cpp
+set(launchy_verby_hdrs
+	gui.h
+	verby.h
+    ../../launchy/plugin_interface.h
    )
-elseif(__MAC__)
-set(launchy_qxt_extras
-	qxtglobalshortcut_mac.cpp
-   )
-elseif(__LIN__)
-set(launchy_qxt_extras
-	qxtglobalshortcut_x11.cpp
-   )
-endif()
 
-add_library(libqxt STATIC ${launchy_qxt_srcs} ${launchy_qxt_extras})
-qt5_use_modules(libqxt Core Gui Widgets)
+include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/common)
+include_directories(${CMAKE_SOURCE_DIR}/launchy)
+
+QT5_WRAP_UI(launchy_verby_form dlg.ui)
+QT5_ADD_TRANSLATION(launchy_verby_qms ${launchy_verby_trans})
+
+add_library(verby SHARED ${launchy_verby_srcs} ${launchy_verby_hdrs} ${launchy_verby_form} ${launchy_verby_qms})
+#target_link_libraries(verby common)
+qt5_use_modules(verby Core Gui Widgets)
