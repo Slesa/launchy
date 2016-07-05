@@ -4,7 +4,10 @@ project (LaunchyApp)
 # // http://www.executionunit.com/blog/2014/01/22/moving-from-qmake-to-cmake/
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-	set(__WIN__ TRUE)
+    set (CMAKE_PREFIX_PATH $ENV{QTDIR})
+    set(__WIN__ TRUE)
+    ADD_DEFINITIONS(-DUNICODE)
+    ADD_DEFINITIONS(-D_UNICODE)
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	set(__LIN__ TRUE)
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
