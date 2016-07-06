@@ -5,8 +5,9 @@ TARGET			= launchy.common
 CONFIG			+= staticlib
 win:CONFIG		+= qpa
 QT				+= widgets
-win32:QT		+= winextras gui-private
-#mac:QT			+= macextras
+win32:QT        += winextras gui-private
+linux:QT        += x11extras
+macx:QT         += macextras
 
 HEADERS 		= \
                 catalog.h \
@@ -23,24 +24,27 @@ win32:HEADERS	+= \
                 win_platform.h \
                 win_minidump.h \
                 win_util.h
-mac:HEADERS		+= \
-                mac_platform.h
+macx:HEADERS    += \
+                mac_platform.h \
+                mac_keytrigger.h
 
-SOURCES 		= \
+SOURCES         = \
                 catalog.cpp \
                 globals.cpp \
                 platform_base.cpp \
                 settingsmanager.cpp
-linux:SOURCES	+= x11.cpp \
+linux:SOURCES   += x11.cpp \
                 x11_iconprovider.cpp \
-                x11_platform.cpp
-win32:SOURCES	+= win.cpp \
+                x11_platform.cpp \
+                x11_keytrigger.cpp
+win32:SOURCES   += win.cpp \
                 win_iconprovider.cpp \
                 win_platform.cpp \
                 win_minidump.cpp \
                 win_util.cpp
-mac:SOURCES		+= mac.cpp \
-                mac_platform.cpp
+macx:SOURCES    += mac.cpp \
+                mac_platform.cpp \
+                mac_keytrigger.cpp
 
 DESTDIR 		= $$join(DESTDIR,,,lib/)
 

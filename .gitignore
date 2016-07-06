@@ -15,3 +15,5 @@ build/
 translations/*.qm
 *.pro.user.*
 setup/win/setup.nsi
+src/common/version.h
+src/build
