@@ -1,7 +1,8 @@
+include(../global.pri)
 TEMPLATE            = lib
 TARGET              = launchy.qxt
 
-CONFIG          += qt_warn debug_and_release staticlib
+CONFIG          += staticlib qpa
 #unix:!macx:CONFIG      += qpa
 #win:CONFIG      += qpa
 
@@ -49,7 +50,7 @@ win32:LIBS      += -luser32
 macx:LIBS       += -framework Carbon
 
 
-DESTDIR         = $${PWD}../../../bin/lib/
+DESTDIR 		= $$join(DESTDIR,,,lib/)
 
 # Debian and derivatives pass --no-undefined to the linker, which
 # means that each library must explicitly link to all dependencies 

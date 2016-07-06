@@ -1,41 +1,38 @@
 include(../plugins.pri)
-TARGET			= verby
+TARGET          = verby
 
-QT				+= widgets
+QT              += widgets
 
-CONFIG			+= plugin debug_and_release
+CONFIG          += plugin
 
-VPATH			+= ../../launchy/
-INCLUDEPATH		+= ../../launchy/ \
-                ../../
+VPATH           += ../../launchy/
+INCLUDEPATH     += ../../launchy/
 
-FORMS			= dlg.ui
+FORMS           = dlg.ui
 
-HEADERS			= plugin_interface.h \
+HEADERS         = plugin_interface.h \
                 gui.h \
                 Verby.h
 
-SOURCES			= plugin_interface.cpp \
+SOURCES         = plugin_interface.cpp \
                 gui.cpp \
                 Verby.cpp
 
-DESTDIR			= $${PWD}/../../../bin/app/plugins
+TRANSLATIONS    = \
+                $${PWD}/../../../translations/verby_fr.ts \
+                $${PWD}/../../../translations/verby_nl.ts \
+                $${PWD}/../../../translations/verby_zh.ts \
+                $${PWD}/../../../translations/verby_es.ts \
+                $${PWD}/../../../translations/verby_de.ts \
+                $${PWD}/../../../translations/verby_ja.ts \
+                $${PWD}/../../../translations/verby_zh_TW.ts \
+                $${PWD}/../../../translations/verby_rus.ts
 
-TRANSLATIONS	= \
-                ../../../translations/verby_fr.ts \
-                ../../../translations/verby_nl.ts \
-                ../../../translations/verby_zh.ts \
-                ../../../translations/verby_es.ts \
-                ../../../translations/verby_de.ts \
-                ../../../translations/verby_ja.ts \
-                ../../../translations/verby_zh_TW.ts \
-                ../../../translations/verby_rus.ts
-
-lupdate.target	= lupdate
+lupdate.target  = lupdate
 lupdate.depends	= $${OBJECTS}
 lupdate.commands = $$quote(lupdate $${PWD}/verby.pro)
-makeqm.target	= makeqm
-makeqm.depends	= $${OBJECTS}
+makeqm.target   = makeqm
+makeqm.depends  = $${OBJECTS}
 makeqm.commands	= $$quote(lrelease $${PWD}/verby.pro)
 
 QMAKE_EXTRA_TARGETS += lupdate makeqm
@@ -43,24 +40,22 @@ PRE_TARGETDEPS	+= lupdate makeqm
 
 
 win32 {
-    CONFIG		-= embed_manifest_dll
-    LIBS		+= user32.lib shell32.lib
-	QMAKE_CXXFLAGS_RELEASE += /Zi
-	QMAKE_LFLAGS_RELEASE += /DEBUG
+    CONFIG      -= embed_manifest_dll
+    LIBS        += user32.lib shell32.lib
+    QMAKE_CXXFLAGS_RELEASE += /Zi
+    QMAKE_LFLAGS_RELEASE += /DEBUG
 }
 
 linux {
-    PREFIX		= /usr
+    PREFIX      = /usr
     target.path	= $$PREFIX/lib/launchy/plugins/
-    icon.path	= $$PREFIX/lib/launchy/plugins/icons/
-    icon.files	= verby.png copy.png opencontainer.png properties.png run.png
-    INSTALLS	+= target icon
+    icon.path   = $$PREFIX/lib/launchy/plugins/icons/
+    icon.files  = verby.png copy.png opencontainer.png properties.png run.png
+    INSTALLS    += target icon
 }
 
 macx {
-    DESTDIR		= $${PWD}/../../../bin/app/Launchy.app/Contents/MacOS/plugins
-
-    icons.path	= ../../../app/Launchy.app/Contents/MacOS/plugins/icons/
+    icons.path   = $${DESTDIR}icons/
     icons.files	= verby.png copy.png opencontainer.png properties.png run.png
-    INSTALLS	+= icons
+    INSTALLS    += icons
 }

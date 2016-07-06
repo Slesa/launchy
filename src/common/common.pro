@@ -1,14 +1,12 @@
+include(../global.pri)
 TEMPLATE		= lib
 TARGET			= launchy.common
 
-CONFIG			+= qt_warn debug_and_release staticlib
-#win:CONFIG		+= qpa
+CONFIG			+= staticlib
+win:CONFIG		+= qpa
 QT				+= widgets
 win32:QT		+= winextras gui-private
 #mac:QT			+= macextras
-
-win32:DEFINES	+= UNICODE _UNICODE
-INCLUDEPATH		+= ../
 
 HEADERS 		= \
                 catalog.h \
@@ -44,7 +42,7 @@ win32:SOURCES	+= win.cpp \
 mac:SOURCES		+= mac.cpp \
                 mac_platform.cpp
 
-DESTDIR 		= $${PWD}../../../bin/lib/
+DESTDIR 		= $$join(DESTDIR,,,lib/)
 
 TRANSLATIONS	= \
                 ../../translations/common_fr.ts \
