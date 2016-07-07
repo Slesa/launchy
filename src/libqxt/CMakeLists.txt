@@ -21,6 +21,10 @@ elseif(__LIN__)
 set(launchy_qxt_extras
 	qxtglobalshortcut_x11.cpp
    )
+elseif(__BSD__)
+set(launchy_qxt_extras
+	qxtglobalshortcut_x11.cpp
+   )
 endif()
 
 add_library(libqxt STATIC ${launchy_qxt_srcs} ${launchy_qxt_extras})

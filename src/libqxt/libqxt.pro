@@ -33,7 +33,9 @@ HEADERS	+= \
 SOURCES	+= \
     qxtglobalshortcut.cpp
 
-unix:!macx:SOURCES += \
+linux:SOURCES += \
+    qxtglobalshortcut_x11.cpp
+bsd:SOURCES += \
     qxtglobalshortcut_x11.cpp
 
 macx:SOURCES += \

@@ -18,6 +18,10 @@ linux:HEADERS	+= \
                 directory.h \
                 x11_iconprovider.h \
                 x11_platform.h
+bsd:HEADERS 	+= \
+                directory.h \
+                x11_iconprovider.h \
+                x11_platform.h
 win32:HEADERS	+= \
                 win_iconprovider.h \
                 win_files.h \
@@ -37,6 +41,9 @@ linux:SOURCES   += x11.cpp \
                 x11_iconprovider.cpp \
                 x11_platform.cpp \
                 x11_keytrigger.cpp
+bsd:SOURCES     += x11.cpp \
+                x11_iconprovider.cpp \
+                x11_platform.cpp
 win32:SOURCES   += win.cpp \
                 win_iconprovider.cpp \
                 win_platform.cpp \

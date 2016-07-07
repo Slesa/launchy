@@ -3,6 +3,7 @@ project (LaunchyApp)
 
 # // http://www.executionunit.com/blog/2014/01/22/moving-from-qmake-to-cmake/
 
+MESSAGE( STATUS "CMAKE SYSTEM NAME: " ${CMAKE_SYSTEM_NAME})
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set (CMAKE_PREFIX_PATH $ENV{QTDIR})
     set(__WIN__ TRUE)
@@ -12,6 +13,8 @@ elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	set(__LIN__ TRUE)
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	set(__MAC__ TRUE)
+elseif (${CMAKE_SYSTEM_NAME} MATCHES "BSD")
+	set(__BSD__ TRUE)
 endif()
 
 
@@ -38,6 +41,12 @@ set(BIN_PLUGINS_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/plugins")
 
 if(__LIN__)
     add_definitions(-DPREFIX="/usr")
+    add_definitions(-DSKINS_PATH="$$PREFIX/share/launchy/skins/")
+    add_definitions(-DPLUGINS_PATH="$$PREFIX/lib/launchy/plugins/")
+    add_definitions(-DPLATFORMS_PATH="$$PREFIX/lib/launchy/")
+endif()
+if(__BSD__)
+    add_definitions(-DPREFIX="/usr/local")
     add_definitions(-DSKINS_PATH="$$PREFIX/share/launchy/skins/")
     add_definitions(-DPLUGINS_PATH="$$PREFIX/lib/launchy/plugins/")
     add_definitions(-DPLATFORMS_PATH="$$PREFIX/lib/launchy/")

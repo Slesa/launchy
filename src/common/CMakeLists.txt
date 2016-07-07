@@ -20,6 +20,11 @@ if(__LIN__)
     set(launchy_common_mods
       X11Extras
       )
+elseif(__BSD__)
+	find_package(Qt5 COMPONENTS X11Extras)
+    set(launchy_common_mods
+      X11Extras
+      )
 elseif(__WIN__)
 	find_package(Qt5 COMPONENTS winextras)
     set(launchy_common_mods
@@ -86,6 +91,16 @@ set(launchy_common_extras
     x11_iconprovider.h
 #	x11_keytrigger.cpp
 #    x11_keytrigger.h
+	x11_platform.cpp
+    x11_platform.h
+   )
+elseif(__BSD__)
+set(launchy_common_extras
+	x11.cpp
+	x11_iconprovider.cpp
+    x11_iconprovider.h
+#	x11_keytrigger.cpp
+ #   x11_keytrigger.h
 	x11_platform.cpp
     x11_platform.h
    )

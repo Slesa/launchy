@@ -26,7 +26,10 @@ CharListWidget::CharListWidget(QWidget* parent) :
 #ifdef Q_OS_LINUX
 	setWindowFlags( windowFlags() | Qt::Tool | Qt::SplashScreen);
 #endif
-	setAttribute(Qt::WA_AlwaysShowToolTips);
+#ifdef Q_OS_BSD4
+    setWindowFlags( windowFlags() | Qt::Tool | Qt::SplashScreen);
+#endif
+    setAttribute(Qt::WA_AlwaysShowToolTips);
 
 	setAlternatingRowColors(true);
 }

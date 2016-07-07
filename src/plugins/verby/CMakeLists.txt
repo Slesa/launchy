@@ -19,12 +19,12 @@ set(launchy_verby_trans
     )
 set(launchy_verby_srcs
 	gui.cpp
-	verby.cpp
+	Verby.cpp
     ../../launchy/plugin_interface.cpp
    )
 set(launchy_verby_hdrs
 	gui.h
-	verby.h
+	Verby.h
     ../../launchy/plugin_interface.h
    )
 

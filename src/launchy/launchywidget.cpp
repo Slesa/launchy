@@ -63,6 +63,9 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 #ifdef Q_OS_LINUX
     QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool)
 #endif
+#ifdef Q_OS_BSD4
+    QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool)
+#endif
 #ifdef Q_OS_MAC
     QWidget(NULL, Qt::FramelessWindowHint)
 #endif
@@ -1646,6 +1649,9 @@ int LaunchyWidget::getHotkey() const
 		int meta = Qt::AltModifier;
 #endif
 #ifdef Q_OS_LINUX
+        int meta = Qt::ControlModifier;
+#endif
+#ifdef Q_OS_BSD4
         int meta = Qt::ControlModifier;
 #endif
 #ifdef Q_OS_MAC

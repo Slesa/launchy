@@ -165,7 +165,7 @@ void runProgram(QString path, QString args, bool translateSeparators)
 #endif
 
 
-#ifdef Q_OS_LINUX
+#if (defined Q_OS_BSD4 || Q_OS_LINUX)
 
 
 int getDesktop()

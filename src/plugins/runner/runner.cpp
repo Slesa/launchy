@@ -48,6 +48,11 @@ void RunnerPlugin::init()
         _settings->setValue("file", "/usr/bin/xterm");
         _settings->setValue("args", "-hold -e $$");
 		#endif
+        #ifdef Q_OS_BSD4
+        _settings->setValue("name", "cmd");
+        _settings->setValue("file", "/usr/local/bin/xterm");
+        _settings->setValue("args", "-hold -e $$");
+        #endif
                 /*
                 #ifdef Q_OS_MAC
                 set->setValue("name", "cmd");

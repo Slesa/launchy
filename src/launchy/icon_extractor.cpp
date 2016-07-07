@@ -145,13 +145,18 @@ QIcon IconExtractor::getIcon(const CatItem& item)
 		if (info.isDir())
             return g_platform->icon(QFileIconProvider::Folder);
 #endif
-		if (item.fullPath.length() == 0)
+#ifdef Q_OS_BSD4
+        QFileInfo info(item.fullPath);
+        if (info.isDir())
+            return g_platform->icon(QFileIconProvider::Folder);
+#endif
+        if (item.fullPath.length() == 0)
 			return QIcon();	
         return g_platform->icon(QDir::toNativeSeparators(item.fullPath));
 	}
 	else
 	{
-#ifdef Q_OS_LINUX
+#if (defined Q_OS_BSD4 || Q_OS_LINUX)
 		if (QFile::exists(item.icon))
 		{
 			return QIcon(item.icon);

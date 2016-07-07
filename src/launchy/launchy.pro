@@ -9,6 +9,7 @@ CONFIG          += debug_and_release
 QT              += network widgets gui-private
 win32:QT        += winextras
 linux:QT        += x11extras
+bsd4:QT         += x11extras
 
 UI_DIR          = .ui
 MOC_DIR         = .moc
@@ -174,6 +175,10 @@ linux {
                 skins \
                 icon \
                 desktop
+}
+
+bsd4 {
+bla
 }
 
 win32 { 
