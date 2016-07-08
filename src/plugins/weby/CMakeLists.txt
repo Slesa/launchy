@@ -41,5 +41,9 @@ QT5_WRAP_UI(launchy_weby_form dlg.ui)
 QT5_ADD_TRANSLATION(launchy_weby_qms ${launchy_weby_trans})
 
 add_library(weby SHARED ${launchy_weby_srcs} ${launchy_weby_hdrs} ${launchy_weby_form} ${launchy_weby_qms})
-#target_link_libraries(weby common)
+set_target_properties(weby PROPERTIES 
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/plugins
+    RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/plugins
+    )
 qt5_use_modules(weby Core Gui Widgets Network)
+file(COPY ${launchy_weby_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)

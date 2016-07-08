@@ -36,5 +36,9 @@ QT5_WRAP_UI(launchy_verby_form dlg.ui)
 QT5_ADD_TRANSLATION(launchy_verby_qms ${launchy_verby_trans})
 
 add_library(verby SHARED ${launchy_verby_srcs} ${launchy_verby_hdrs} ${launchy_verby_form} ${launchy_verby_qms})
-#target_link_libraries(verby common)
+set_target_properties(verby PROPERTIES 
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/plugins
+    RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/plugins
+    )
 qt5_use_modules(verby Core Gui Widgets)
+file(COPY ${launchy_verby_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
