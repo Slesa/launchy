@@ -19,12 +19,12 @@ set(launchy_verby_trans
     )
 set(launchy_verby_srcs
 	gui.cpp
-	verby.cpp
+	Verby.cpp
     ../../launchy/plugin_interface.cpp
    )
 set(launchy_verby_hdrs
 	gui.h
-	verby.h
+	Verby.h
     ../../launchy/plugin_interface.h
    )
 
@@ -41,4 +41,6 @@ set_target_properties(verby PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/plugins
     )
 qt5_use_modules(verby Core Gui Widgets)
-file(COPY ${launchy_verby_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
+if(EXISTS "${PROJECT_BINARY_DIR}/verby_fr.qm")
+    file(COPY ${launchy_verby_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
+endif()

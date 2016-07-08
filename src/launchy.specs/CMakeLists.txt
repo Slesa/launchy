@@ -1,27 +1,28 @@
 cmake_minimum_required (VERSION 2.8.12)
-project (libqxt)
+project (launchy_specs)
 
 find_package(Qt5Core)
-find_package(Qt5 COMPONENTS Gui Widgets)
+find_package(Qt5 COMPONENTS Gui Widgets Test)
 include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 
 
-set(launchy_qxt_srcs
-	qxtglobalshortcut.cpp
+set(launchy_specs_hdrs
+    commandlineparser.specs.h
+    singleapplication.specs.h
+    ../launchy/commandlineparser.h
+    ../launchy/singleapplication.h
    )
-if(__WIN__)
-set(launchy_qxt_extras
-	qxtglobalshortcut_win.cpp
+set(launchy_specs_srcs
+	main.cpp
+    commandlineparser.specs.cpp
+    singleapplication.specs.cpp
+    ../launchy/commandlineparser.cpp
+    ../launchy/singleapplication.cpp
    )
-elseif(__MAC__)
-set(launchy_qxt_extras
-	qxtglobalshortcut_mac.cpp
-   )
-elseif(__LIN__)
-set(launchy_qxt_extras
-	qxtglobalshortcut_x11.cpp
-   )
-endif()
 
-add_library(libqxt STATIC ${launchy_qxt_srcs} ${launchy_qxt_extras})
-qt5_use_modules(libqxt Core Gui Widgets)
+add_executable(launchy_specs ${launchy_specs_srcs} ${launchy_specs_hdrs})
+qt5_use_modules(launchy_specs Core Gui Widgets Test)
+
+MESSAGE( STATUS "RUNTIME_OUTPUT_DIRECTORY:         " ${RUNTIME_OUTPUT_DIRECTORY} )
+
+add_test( NAME launchy_specs COMMAND ${RUNTIME_OUTPUT_DIRECTORY}/launcy_specs/launchy_specs )

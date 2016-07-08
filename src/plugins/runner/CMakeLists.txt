@@ -5,23 +5,6 @@ find_package(Qt5Core)
 find_package(Qt5 COMPONENTS Gui Widgets)
 find_package(Qt5LinguistTools)
 
-#include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
-
-# if(__MAC__)
-#    set(BUNDLE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
-#    set(BUNDLE_NAME "Launchy.app")
-#    set(BIN_INSTALL_DIR "${BUNDLE_NAME}/Contents/MacOS")
-
-    #set(CMAKE_FIND_FRAMEWORK ONLY)
-#    find_library(CARBON_FRAMEWORK Carbon)
-#else()
-#    set(BIN_INSTALL_DIR "bin")
-#endif()
-
-#set(BIN_PLUGINS_DIR "${PROJECT_BINARY_DIR}/${BIN_INSTALL_DIR}/plugins")
-#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${BIN_INSTALL_DIR}/plugins)
-#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${BIN_INSTALL_DIR}/plugins)
-
 set(launchy_runner_trans
     ../../../translations/runner_fr.ts
     ../../../translations/runner_nl.ts
@@ -64,4 +47,6 @@ set_target_properties(runner PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/plugins
     )
 qt5_use_modules(runner Core Gui Widgets)
-file(COPY ${launchy_runner_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
+if(EXISTS "${PROJECT_BINARY_DIR}/runner_fr.qm")
+    file(COPY ${launchy_runner_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
+endif()

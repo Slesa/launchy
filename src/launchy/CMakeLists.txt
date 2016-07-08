@@ -4,6 +4,11 @@ project (launchy)
 find_package(Qt5Core)
 find_package(Qt5 COMPONENTS Gui Widgets Network)
 find_package(Qt5LinguistTools)
+if(__LIN__)
+    find_package(X11 REQUIRED)
+elseif(__MAC__)
+    find_package(X11 REQUIRED)
+endif()
 
 set(launchy_trans
     ../../translations/launchy_fr.ts
@@ -50,8 +55,14 @@ add_executable(launchy ${launchy_srcs} ${launchy_form_hdr} ${launchy_common_hdrs
 qt5_use_modules(launchy Core Gui Widgets Network)
 
 target_link_libraries(launchy common libqxt)
-if (__MAC__)
+if(__LIN__)
+    target_link_libraries(launchy ${X11_LIBRARIES})
+elseif (__MAC__)
+    target_link_libraries(launchy ${X11_LIBRARIES})
 	target_link_libraries(launchy ${CARBON_FRAMEWORK})
 endif()
-file(COPY ${launchy_qms} DESTINATION ${PROJECT_BINARY_DIR}/../${BIN_INSTALL_DIR}/tr)
+
+if(EXISTS ${PROJECT_BINARY_DIR}/launchy_fr.qm)
+    file(COPY ${launchy_qms} DESTINATION ${PROJECT_BINARY_DIR}/../${BIN_INSTALL_DIR}/tr)
+endif()
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins DESTINATION ${PROJECT_BINARY_DIR}/../${RES_INSTALL_DIR})

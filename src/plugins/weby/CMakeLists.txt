@@ -46,4 +46,6 @@ set_target_properties(weby PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/plugins
     )
 qt5_use_modules(weby Core Gui Widgets Network)
-file(COPY ${launchy_weby_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
+if(EXISTS "${PROJECT_BINARY_DIR}/weby_fr.qm")
+    file(COPY ${launchy_weby_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
+endif()

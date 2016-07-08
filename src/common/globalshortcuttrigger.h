@@ -25,7 +25,7 @@
 #include <QObject>
 #include <QSharedPointer>
 #ifdef Q_OS_LINUX
-#include <auto_ptr.h>
+#include <memory>
 #endif
 #ifdef Q_OS_WIN
 #include <memory>
@@ -66,7 +66,7 @@ private:
          * Platform-specific helper
          */
         class Impl;
-        std::auto_ptr<Impl> d;
+        std::unique_ptr<Impl> d;
 };
 
 #endif
