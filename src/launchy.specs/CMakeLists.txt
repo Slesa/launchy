@@ -23,6 +23,4 @@ set(launchy_specs_srcs
 add_executable(launchy_specs ${launchy_specs_srcs} ${launchy_specs_hdrs})
 qt5_use_modules(launchy_specs Core Gui Widgets Test)
 
-MESSAGE( STATUS "RUNTIME_OUTPUT_DIRECTORY:         " ${RUNTIME_OUTPUT_DIRECTORY} )
-
-add_test( NAME launchy_specs COMMAND ${RUNTIME_OUTPUT_DIRECTORY}/launcy_specs/launchy_specs )
+add_test( NAME launchy_specs COMMAND ${RUNTIME_OUTPUT_DIRECTORY}/launcy.specs/launchy_specs )
