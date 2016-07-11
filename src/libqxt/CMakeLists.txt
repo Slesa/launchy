@@ -5,6 +5,8 @@ find_package(Qt5Core)
 find_package(Qt5 COMPONENTS Gui Widgets)
 include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 
+add_definitions(-DQXT_STATIC)
+
 
 set(launchy_qxt_srcs
 	qxtglobalshortcut.cpp

@@ -25,6 +25,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "gui.h"
 #include "fhoicon.h"
 
+#pragma comment(lib, "Comctl32.lib")
+#pragma comment(lib, "Shlwapi.lib")
 
 class controlyPlugin : public QObject, public PluginInterface
 {
@@ -37,9 +39,9 @@ private:
 
 	FhoIconCreator iconCreator;
 
-	#ifdef WITH_GUI
-		Gui* gui;
-	#endif
+	//#ifdef WITH_GUI
+	Gui* gui;
+	//#endif
 
 public:
 	controlyPlugin();
@@ -62,10 +64,10 @@ private:
 	void getResults(QList<InputData>* inputData, QList<CatItem>* results);
 	int launchItem(QList<InputData>* inputData, CatItem* item);
 
-	#ifdef WITH_GUI
-		void doDialog(QWidget* parent, QWidget**);
-		void endDialog(bool accept);
-	#endif
+	//#ifdef WITH_GUI
+	void doDialog(QWidget* parent, QWidget**);
+	void endDialog(bool accept);
+	//#endif
 
 	QString libPath;
 };

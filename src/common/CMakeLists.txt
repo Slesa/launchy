@@ -68,6 +68,10 @@ set(launchy_common_hdrs
 )
 
 if(__WIN__)
+	include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
+	set(launchy_common_extra_moc_hdrs
+		win_platform.h
+	)
 	set(launchy_common_extras
 		win.cpp
 		win_Iconprovider.cpp
@@ -77,7 +81,6 @@ if(__WIN__)
 		win_minidump.cpp
 		win_minidump.h
 		win_platform.cpp
-		win_platform.h
 		win_util.cpp
 		win_util.h
 	)

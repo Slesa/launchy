@@ -79,7 +79,7 @@ QString controlyPlugin::getIconPath() const
 }
 
 
-#ifdef Q_OS_WIN
+//#ifdef Q_OS_WIN
 void controlyPlugin::getApps(QList<CatItem>* items) {
 	ControlPanelItemFinder *pCplFinder = new ControlPanelItemFinder(HASH_controly, &iconCreator, items);
 	pCplFinder->findItems();
@@ -89,7 +89,7 @@ void controlyPlugin::getApps(QList<CatItem>* items) {
 		pCplFinder = NULL;
 	}
 }
-#endif
+//#endif
 
 
 void controlyPlugin::getCatalog(QList<CatItem>* items)
@@ -253,7 +253,7 @@ int controlyPlugin::launchItem(QList<InputData>* inputData, CatItem* item)
 
 }
 
-#ifdef WITH_GUI
+//#ifdef WITH_GUI
 void controlyPlugin::doDialog(QWidget* parent, QWidget** newDlg) {
 	if (gui != NULL) {
 		return;
@@ -272,7 +272,7 @@ void controlyPlugin::endDialog(bool accept) {
 	}
 	gui = NULL;
 }
-#endif
+//#endif
 
 int controlyPlugin::msg(int msgId, void* wParam, void* lParam)
 {

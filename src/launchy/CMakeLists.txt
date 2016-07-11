@@ -42,6 +42,16 @@ set(launchy_srcs
 	plugin_interface.cpp
 	singleapplication.cpp
    )
+if(__WIN__)
+	set(launchy_win_srcs
+		win_launchywidget.cpp
+		win_launchywidget.h
+	)
+    find_package(Qt5 COMPONENTS winextras)
+    set(launchy_mods
+        WinExtras
+    )
+endif()
 
 QT5_WRAP_UI(launchy_form_hdr options.ui)
 QT5_ADD_TRANSLATION(launchy_qms ${launchy_trans})
@@ -50,9 +60,9 @@ include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/common)
 include_directories(${CMAKE_SOURCE_DIR}/libqxt)
 
-add_executable(launchy ${launchy_srcs} ${launchy_form_hdr} ${launchy_common_hdrs} ${launchy_hdr_moc} ${launchy_qms})
+add_executable(launchy ${launchy_srcs} ${launchy_form_hdr} ${launchy_common_hdrs} ${launchy_hdr_moc} ${launchy_qms} ${launchy_win_srcs})
 
-qt5_use_modules(launchy Core Gui Widgets Network)
+qt5_use_modules(launchy Core Gui Widgets Network ${launchy_mods})
 
 target_link_libraries(launchy common libqxt)
 if(__LIN__)

@@ -20,6 +20,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "commandlineparser.h"
 #include "singleapplication.h"
 
+#ifdef Q_OS_WIN
+#pragma comment(lib, "Userenv.lib")
+#pragma comment(lib, "Netapi32.lib")
+#endif
+
 // https://github.com/Chronial/launchy/commits/master?page=4
 
 QApplication* createApplication(int& argc, char** argv);
