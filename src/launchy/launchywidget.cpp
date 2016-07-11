@@ -60,7 +60,7 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 #ifdef Q_OS_WIN
 	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
 #endif
-#ifdef Q_OS_LINUX
+#if (defined Q_OS_BSD4 || Q_OS_LINUX)
 	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
 #endif
 #ifdef Q_OS_MAC
@@ -174,12 +174,12 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	plugins.loadPlugins();
 
 	// Set the general options
-    if (setAlwaysShow(g_settings.doAlwaysShow()))
-        command |= ShowView;
-    setAlwaysTop(g_settings.alwaysOnTop());
+	if (setAlwaysShow(g_settings.doAlwaysShow()))
+		command |= ShowView;
+	setAlwaysTop(g_settings.alwaysOnTop());
 
 	// Check for udpates?
-    if (g_settings.checkForUpdates())
+	if (g_settings.checkForUpdates())
 	{
 		checkForUpdate();
 	}
@@ -203,10 +203,10 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	startUpdateTimer();
 
 	// Load the catalog
-    g_builder = new CatalogBuilder(&plugins);
-    g_builder->moveToThread(&builderThread);
-    connect(g_builder, SIGNAL(catalogIncrement(int)), this, SLOT(catalogProgressUpdated(int)));
-    connect(g_builder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
+	g_builder = new CatalogBuilder(&plugins);
+	g_builder->moveToThread(&builderThread);
+	connect(g_builder, SIGNAL(catalogIncrement(int)), this, SLOT(catalogProgressUpdated(int)));
+	connect(g_builder, SIGNAL(catalogFinished()), this, SLOT(catalogBuilt()));
 	builderThread.start(QThread::IdlePriority);
 	builderThread.setObjectName("CatalogBuilder");
 
@@ -217,13 +217,13 @@ LaunchyWidget::LaunchyWidget(CommandFlags command) :
 	}
 
 	// Load the history
-    history.load(g_settings.historyFilename());
+	history.load(g_settings.historyFilename());
 
 	// Load the skin
-    applySkin(g_settings.getSkin());
+	applySkin(g_settings.getSkin());
 
 	// Move to saved position
-    loadPosition(g_settings.getStoredPosition());
+	loadPosition(g_settings.getStoredPosition());
 	loadOptions();
 
 	executeStartupCommand(command);
@@ -254,10 +254,10 @@ void LaunchyWidget::executeStartupCommand(int command)
 	{
 		setOpaqueness(100);
 		showTrayIcon();
-        applySkin(SettingsManager::SkinDefault);
+		applySkin(SettingsManager::SkinDefault);
 	}
 
-    if (command & ShowView)
+	if (command & ShowView)
 		showLaunchy();
 
 	if (command & ShowOptions)
@@ -314,9 +314,9 @@ void LaunchyWidget::setSuggestionListMode(int mode)
 
 bool LaunchyWidget::setHotkey(QKeySequence hotkey)
 {
-    QxtGlobalShortcut* shortcut = new QxtGlobalShortcut(this);
-    connect(shortcut, SIGNAL(activated()), this, SLOT(onHotkey()));
-    return shortcut->setShortcut(hotkey);
+	QxtGlobalShortcut* shortcut = new QxtGlobalShortcut(this);
+	connect(shortcut, SIGNAL(activated()), this, SLOT(onHotkey()));
+	return shortcut->setShortcut(hotkey);
 //    GlobalShortcutManager::setMainWidget(this);
 //    return g_platform->setHotkey(hotkey, this, SLOT(onHotkey()));
 }
@@ -327,7 +327,7 @@ void LaunchyWidget::showTrayIcon()
 	if (!QSystemTrayIcon::isSystemTrayAvailable())
 		return;
 
-    if (g_settings.showTrayIcon())
+	if (g_settings.showTrayIcon())
 	{
 		if (!trayIcon)
 			trayIcon = new QSystemTrayIcon(this);
@@ -359,7 +359,7 @@ void LaunchyWidget::showTrayIcon()
 // and set its size and position accordingly.
 void LaunchyWidget::updateAlternatives(bool resetSelection)
 {
-    int mode = g_settings.getCondensedView();
+	int mode = g_settings.getCondensedView();
 	int i = 0;
 	for (; i < searchResults.size(); ++i)
 	{
@@ -400,7 +400,7 @@ void LaunchyWidget::updateAlternatives(bool resetSelection)
 	iconExtractor.processIcons(searchResults);
 
 	// Now resize and reposition the list
-    int numViewable = g_settings.getNumViewable();
+	int numViewable = g_settings.getNumViewable();
 	int min = alternatives->count() < numViewable ? alternatives->count() : numViewable;
 
 	// The stylesheet doesn't load immediately, so we cache the placement rectangle here
@@ -439,7 +439,7 @@ void LaunchyWidget::showAlternatives()
 
 	alternatives->show();
 	alternatives->setFocus();
-    qApp->sync();
+	qApp->sync();
 }
 
 
@@ -520,10 +520,10 @@ void LaunchyWidget::focusInEvent(QFocusEvent* event)
 
 void LaunchyWidget::focusOutEvent(QFocusEvent* event)
 {
-    if (event->reason() == Qt::ActiveWindowFocusReason)
+	if (event->reason() == Qt::ActiveWindowFocusReason)
 	{
-        if (g_settings.hideIfLostFocus() &&
-                        !isActiveWindow() && !alternatives->isActiveWindow() && !optionsOpen && !fader->isFading())
+		if (g_settings.hideIfLostFocus() &&
+			!isActiveWindow() && !alternatives->isActiveWindow() && !optionsOpen && !fader->isFading())
 		{
 			hideLaunchy();
 		}
@@ -1562,7 +1562,7 @@ void LaunchyWidget::showLaunchy(bool noFade)
 	// being activated via a hook or message from another instance of Launchy
     HWND hwnd = getHwnd(this);
     SetForegroundWindowEx(hwnd);
-#elif defined(Q_OS_LINUX)
+#elif (defined Q_OS_BSD4 || Q_OS_LINUX)
 	/* Fix for bug 2994680: Not sure why this is necessary, perhaps someone with more
 	   Qt experience can tell, but doing these two calls will force the window to actually
 	   get keyboard focus when it is activated. It seems from the bug reports that this
@@ -1632,8 +1632,8 @@ int LaunchyWidget::getHotkey() const
 #ifdef Q_OS_WIN
 		int meta = Qt::AltModifier;
 #endif
-#ifdef Q_OS_LINUX
-        int meta = Qt::ControlModifier;
+#if (defined Q_OS_BSD4 || Q_OS_LINUX)
+		int meta = Qt::ControlModifier;
 #endif
 #ifdef Q_OS_MAC
 		int meta = Qt::MetaModifier;

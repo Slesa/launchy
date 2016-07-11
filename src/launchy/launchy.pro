@@ -1,6 +1,7 @@
 include(../global.pri)
 TEMPLATE        = app
 linux:TARGET    = launchy
+bsd4:TARGET     = launchy
 win32:TARGET    = Launchy
 macx:TARGET     = Launchy
 VERSION         = 2.7.0
@@ -9,6 +10,7 @@ CONFIG          += debug_and_release
 QT              += network widgets gui-private
 win32:QT        += winextras
 linux:QT        += x11extras
+bsd4:QT         += x11extras
 
 UI_DIR          = .ui
 MOC_DIR         = .moc
@@ -154,7 +156,7 @@ CONFIG(release, debug|release) {
 QMAKE_EXTRA_TARGETS += lupdate makeqm skins copytr setup
 PRE_TARGETDEPS	+= lupdate makeqm skins copytr
 
-linux {
+linux || bsd4 {
     ICON		= Launchy.ico
     LIBS		+= \
                 -lX11

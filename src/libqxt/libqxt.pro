@@ -27,24 +27,26 @@ INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
 HEADERS	+= \
-    qxtglobal.h \
-    qxtglobalshortcut.h \
-    qxtglobalshortcut_p.h
+			qxtglobal.h \
+			qxtglobalshortcut.h \
+			qxtglobalshortcut_p.h
 
 SOURCES	+= \
-    qxtglobalshortcut.cpp
+			qxtglobalshortcut.cpp
 
-unix:!macx:SOURCES += \
-    qxtglobalshortcut_x11.cpp
+linuxSOURCES += \
+			qxtglobalshortcut_x11.cpp
+bsd4:SOURCES += \
+			qxtglobalshortcut_x11.cpp
 
 macx:SOURCES += \
-    qxtglobalshortcut_mac.cpp
+			qxtglobalshortcut_mac.cpp
 
 win32:SOURCES += \
-    qxtglobalshortcut_win.cpp
+			qxtglobalshortcut_win.cpp
 
 contains(DEFINES,HAVE_XRANDR){
-    !win32:LIBS += -lXrandr
+	!win32:LIBS += -lXrandr
 }
 
 win32:LIBS      += -luser32

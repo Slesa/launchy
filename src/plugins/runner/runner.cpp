@@ -36,17 +36,17 @@ void RunnerPlugin::init()
 
     if ( _settings->value("runner/version", 0.0).toDouble() == 0.0 )
 	{
-        _settings->beginWriteArray("runner/cmds");
-        _settings->setArrayIndex(0);
-        #ifdef Q_OS_WIN
-        _settings->setValue("name", "cmd");
-        _settings->setValue("file", "C:\\Windows\\System32\\cmd.exe");
-        _settings->setValue("args", "/K $$");
+		_settings->beginWriteArray("runner/cmds");
+		_settings->setArrayIndex(0);
+		#ifdef Q_OS_WIN
+		_settings->setValue("name", "cmd");
+		_settings->setValue("file", "C:\\Windows\\System32\\cmd.exe");
+		_settings->setValue("args", "/K $$");
 		#endif
-        #ifdef Q_OS_LINUX
-        _settings->setValue("name", "cmd");
-        _settings->setValue("file", "/usr/bin/xterm");
-        _settings->setValue("args", "-hold -e $$");
+		#if (defined Q_OS_BSD4 ||  Q_OS_LINUX)
+		_settings->setValue("name", "cmd");
+		_settings->setValue("file", "/usr/bin/xterm");
+		_settings->setValue("args", "-hold -e $$");
 		#endif
                 /*
                 #ifdef Q_OS_MAC
@@ -59,17 +59,17 @@ void RunnerPlugin::init()
     _settings->setValue("runner/version", 2.0);
 
 	// Read in the array of websites
-    int count = _settings->beginReadArray("runner/cmds");
+	int count = _settings->beginReadArray("runner/cmds");
 	for(int i = 0; i < count; ++i)
 	{
-        _settings->setArrayIndex(i);
+		_settings->setArrayIndex(i);
 		runnerCmd cmd;
-        cmd.file = _settings->value("file").toString();
-        cmd.name = _settings->value("name").toString();
-        cmd.args = _settings->value("args").toString();
+		cmd.file = _settings->value("file").toString();
+		cmd.name = _settings->value("name").toString();
+		cmd.args = _settings->value("args").toString();
 		cmds.push_back(cmd);
 	}
-    _settings->endArray();
+	_settings->endArray();
 }
 
 

@@ -20,13 +20,13 @@ set(launchy_verby_trans
 set(launchy_verby_srcs
 	gui.cpp
 	Verby.cpp
-    ../../launchy/plugin_interface.cpp
-   )
+	../../launchy/plugin_interface.cpp
+	)
 set(launchy_verby_hdrs
 	gui.h
 	Verby.h
-    ../../launchy/plugin_interface.h
-   )
+	../../launchy/plugin_interface.h
+	)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/common)

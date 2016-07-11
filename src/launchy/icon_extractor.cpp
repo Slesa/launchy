@@ -52,7 +52,7 @@ void IconExtractor::processIcon(const CatItem& item, bool highPriority)
 
 	mutex.unlock();
 #ifdef Q_OS_MAC
-        run();
+	run();
 #else
 	if (!isRunning())
 		start(LowPriority);
@@ -82,7 +82,7 @@ void IconExtractor::processIcons(const QList<CatItem>& newItems, bool reset)
 	mutex.unlock();
 
 #ifdef Q_OS_MAC
-run();
+	run();
 #else
 
 	if (!isRunning())
@@ -134,29 +134,29 @@ QIcon IconExtractor::getIcon(const CatItem& item)
 	qDebug() << "Fetching icon for" << item.fullPath;
 
 #ifdef Q_OS_MAC
-    if (item.icon.endsWith(".png") || item.icon.endsWith(".ico"))
-        return QIcon(item.icon);
+	if (item.icon.endsWith(".png") || item.icon.endsWith(".ico"))
+		return QIcon(item.icon);
 #endif
 
 	if (item.icon.isNull())
 	{
-#ifdef Q_OS_LINUX
+#if (defined Q_OS_BSD4 || Q_OS_LINUX)
 		QFileInfo info(item.fullPath);
 		if (info.isDir())
-            return g_platform->icon(QFileIconProvider::Folder);
+			return g_platform->icon(QFileIconProvider::Folder);
 #endif
 		if (item.fullPath.length() == 0)
 			return QIcon();	
-        return g_platform->icon(QDir::toNativeSeparators(item.fullPath));
+		return g_platform->icon(QDir::toNativeSeparators(item.fullPath));
 	}
 	else
 	{
-#ifdef Q_OS_LINUX
+#if (defined Q_OS_BSD4 || Q_OS_LINUX)
 		if (QFile::exists(item.icon))
 		{
 			return QIcon(item.icon);
 		}
 #endif
-        return g_platform->icon(QDir::toNativeSeparators(item.icon));
+		return g_platform->icon(QDir::toNativeSeparators(item.icon));
 	}
 }
