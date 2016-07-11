@@ -8,6 +8,8 @@ if(__LIN__)
     find_package(X11 REQUIRED)
 elseif(__MAC__)
     find_package(X11 REQUIRED)
+elseif(__BSD__)
+    find_package(X11 REQUIRED)
 endif()
 
 set(launchy_trans
