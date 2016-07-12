@@ -61,6 +61,10 @@ QT5_ADD_TRANSLATION(launchy_qms ${launchy_trans})
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/common)
 include_directories(${CMAKE_SOURCE_DIR}/libqxt)
+#if (__LIN__)
+	find_package(X11 REQUIRED)
+    include_directories(${X11_INCLUDE_DIR})
+#endif(__LIN__)
 
 add_executable(launchy ${launchy_srcs} ${launchy_form_hdr} ${launchy_common_hdrs} ${launchy_hdr_moc} ${launchy_qms} ${launchy_win_srcs})
 
@@ -79,3 +83,5 @@ if(EXISTS ${PROJECT_BINARY_DIR}/launchy_fr.qm)
     file(COPY ${launchy_qms} DESTINATION ${PROJECT_BINARY_DIR}/../${BIN_INSTALL_DIR}/tr)
 endif()
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins DESTINATION ${PROJECT_BINARY_DIR}/../${RES_INSTALL_DIR})
+
+target_link_libraries(launchy common libqxt)

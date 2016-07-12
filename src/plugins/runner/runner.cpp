@@ -43,7 +43,7 @@ void RunnerPlugin::init()
 		_settings->setValue("file", "C:\\Windows\\System32\\cmd.exe");
 		_settings->setValue("args", "/K $$");
 		#endif
-		#if (defined Q_OS_BSD4 ||  Q_OS_LINUX)
+		#if (defined Q_OS_BSD4 || defined Q_OS_LINUX)
 		_settings->setValue("name", "cmd");
 		_settings->setValue("file", "/usr/bin/xterm");
 		_settings->setValue("args", "-hold -e $$");

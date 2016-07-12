@@ -1,15 +1,15 @@
 #ifndef X11KEYTRIGGER_H
 #define X11KEYTRIGGER_H
 
-#include "globalshortcutmanager.h"
-#include "globalshortcuttrigger.h"
-
 #include <QWidget>
 #include <QX11Info>
 #include <QKeyEvent>
 //#include <QCoreApplication>
 #include <QDebug>
 #include <QApplication>
+
+#include "globalshortcutmanager.h"
+#include "globalshortcuttrigger.h"
 
 #include <X11/X.h>
 #include <X11/Xlib.h>

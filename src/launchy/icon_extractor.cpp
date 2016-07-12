@@ -140,7 +140,7 @@ QIcon IconExtractor::getIcon(const CatItem& item)
 
 	if (item.icon.isNull())
 	{
-#if (defined Q_OS_BSD4 || Q_OS_LINUX)
+#if (defined Q_OS_BSD4 || defined Q_OS_LINUX)
 		QFileInfo info(item.fullPath);
 		if (info.isDir())
 			return g_platform->icon(QFileIconProvider::Folder);
@@ -151,7 +151,7 @@ QIcon IconExtractor::getIcon(const CatItem& item)
 	}
 	else
 	{
-#if (defined Q_OS_BSD4 || Q_OS_LINUX)
+#if (defined Q_OS_BSD4 || defined Q_OS_LINUX)
 		if (QFile::exists(item.icon))
 		{
 			return QIcon(item.icon);
