@@ -148,7 +148,7 @@ void runProgram(QString path, QString args, bool translateSeparators) {
 
 #endif
 
-#ifdef Q_OS_MAC
+#if(defined Q_OS_MAC)
 
 int getDesktop() { return DESKTOP_MAC; }
 
@@ -162,10 +162,7 @@ void runProgram(QString path, QString args, bool translateSeparators)
     return;
 }
 
-#endif
-
-
-#if (defined Q_OS_BSD4 || defined Q_OS_LINUX)
+#elif (defined Q_OS_BSD4 || defined Q_OS_LINUX)
 
 
 int getDesktop()

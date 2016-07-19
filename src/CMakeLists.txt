@@ -71,3 +71,53 @@ add_subdirectory(libqxt)
 add_subdirectory(plugins)
 add_subdirectory(launchy)
 add_subdirectory(launchy.specs)
+
+
+set(CPACK_PACKAGE_NAME, "Launchy")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Launchy application starter")
+set(CPACK_PACKAGE_VENDOR "joerg.preiss@slesa.de")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../Readme.pdf")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE.txt")
+set(CPACK_PACKAGE_VERSION_MAJOR "1")
+set(CPACK_PACKAGE_VERSION_MINOR "3")
+set(CPACK_PACKAGE_VERSION_PATCH "2")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "CMake ${CMake_VERSION_MAJOR}.${CMake_VERSION_MINOR}")
+set(CPACK_BUNDLE_NAME, "Launchy")
+set(CPACK_BUNDLE_ICON, "${CMAKE_CURRENT_SOURCE_DIR}/Launchy.ico")
+if(__WIN__)
+    # There is a bug in NSI that does not handle full unix paths properly. Make
+    # sure there is at least one set of four (4) backlasshes.
+    set(CPACK_PACKAGE_ICON "${CMake_SOURCE_DIR}/Utilities/Release\\\\InstallIcon.bmp")
+    set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\MyExecutable.exe")
+    set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY} My Famous Project")
+    set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\www.my-project-home-page.org")
+    set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\www.my-personal-home-page.com")
+    set(CPACK_NSIS_CONTACT "me@my-personal-home-page.com")
+    set(CPACK_NSIS_MODIFY_PATH ON)
+elseif(__MAC__)
+    set(CPACK_GENERATOR "Bundle")
+    set(CPACK_PACKAGE_VERSION, "1.0")
+    set(CPACK_PACKAGE_FILE_NAME, "Launchy-Setup")
+    set(CPACK_PACKAGE_ICON, "${CMAKE_CURRENT_SOURCE_DIR}/Launchy.ico")
+    set(CPACK_BUNDLE_PLIST, "${CMAKE_CURRENT_SOURCE_DIR}/../mac/launchy.plist")
+    set(CPACK_BUNDLE_STARTUP_COMMAND, "Contents/MacOS/Launchy")
+elseif(__LIN__)
+    set(CPACK_GENERATOR "DEB")
+    set(CPACK_DEBIAN_PACKAGE_MAINTAINER "David Doria") #required 
+elseif(__BSD__)
+    set(CPACK_STRIP_FILES "bin/MyExecutable")
+    set(CPACK_SOURCE_STRIP_FILES "")
+endif()
+#set(CPACK_PACKAGE_EXECUTABLES "MyExecutable" "My Executable")
+
+
+#install(PROGRAMS launchy/launchy ${CMAKE_CURRENT_BINARY_DIR}/launchy/launchy
+#  DESTINATION bin)
+
+#set(CPACK_COMPONENTS_ALL ${PROGRAMS})
+
+include(CPACK)
+
+# http://yanivresearch.info/software/CPackWindowsTutorial/CPackForWindows.html
+# https://schneide.wordpress.com/2013/02/11/build-a-rpm-package-using-cmake/
+# http://blog.beuc.net/posts/Build_a_SFML_project_with_CMake/

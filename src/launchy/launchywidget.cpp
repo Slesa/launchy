@@ -57,14 +57,12 @@ void SetForegroundWindowEx(HWND hWnd)
 
 
 LaunchyWidget::LaunchyWidget(CommandFlags command) :
-#ifdef Q_OS_WIN
+#if(defined Q_OS_WIN)
 	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
-#endif
-#if (defined Q_OS_BSD4 || defined Q_OS_LINUX)
-	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
-#endif
-#ifdef Q_OS_MAC
+#elif(defined Q_OS_MAC)
 	QWidget(NULL, Qt::FramelessWindowHint),
+#elif (defined Q_OS_BSD4 || defined Q_OS_LINUX)
+	QWidget(NULL, Qt::FramelessWindowHint | Qt::Tool),
 #endif
 
 	frameGraphic(NULL),
@@ -1629,14 +1627,12 @@ int LaunchyWidget::getHotkey() const
     int hotkey = g_settings.getHotkey();
 	if (hotkey == -1)
 	{
-#ifdef Q_OS_WIN
+#if (defined Q_OS_WIN)
 		int meta = Qt::AltModifier;
-#endif
-#if (defined Q_OS_BSD4 || defined Q_OS_LINUX)
-		int meta = Qt::ControlModifier;
-#endif
-#ifdef Q_OS_MAC
+#elif (defined Q_OS_MAC)
 		int meta = Qt::MetaModifier;
+#elif (defined Q_OS_BSD4 || defined Q_OS_LINUX)
+		int meta = Qt::ControlModifier;
 #endif
         hotkey = g_settings.getHotkeyModifier(meta) | g_settings.getHotkeyAction();
 	}

@@ -8,17 +8,28 @@ cmake ..
 make
 ctest
 
+if [[ "$unamestr" == 'Darwin' ]]; then
+   platform='mac'
+elif [[ "$unamestr" == 'Linux' ]]; then
+   platform='lin'
+elif [[ "$unamestr" == 'FreeBSD' ]]; then
+   platform='bsd'
+fi
+
+cd ../../setup
+if [[ $platform == 'lin' ]]; then
+#   sh -x setup/linux/create-.sh
+elif [[ $platform == 'mac' ]]; then
+	cpack -G Bundle -C cpack.mac
+elif [[ $platform == 'bsd' ]]; then
+#   sh -x setup/bsd/create-setup.sh
+fi
+cpack
+
 
 #$platform='unknown'
 #unamestr=`uname`
 #
-#if [[ "$unamestr" == 'Darwin' ]]; then
-#   platform='mac'
-#elif [[ "$unamestr" == 'Linux' ]]; then
-#   platform='lin'
-#elif [[ "$unamestr" == 'FreeBSD' ]]; then
-#   platform='bsd'
-#fi
 
 #echo Creating makefiles ...
 
