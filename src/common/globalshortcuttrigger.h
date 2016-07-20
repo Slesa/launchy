@@ -24,15 +24,16 @@
 #include "globalshortcutmanager.h"
 #include <QObject>
 #include <QSharedPointer>
-#ifdef Q_OS_LINUX
+
+//#ifdef Q_OS_LINUX
+//#include <memory>
+//#endif
+//#ifdef Q_OS_WIN
+//#include <memory>
+//#endif
+//#ifdef Q_OS_MAC
 #include <memory>
-#endif
-#ifdef Q_OS_WIN
-#include <memory>
-#endif
-#ifdef Q_OS_MAC
-#include <memory>
-#endif
+//#endif
 
 class GlobalShortcutManager::KeyTrigger : public QObject
 {

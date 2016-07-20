@@ -124,4 +124,5 @@ qt5_wrap_cpp(launchy_common_mocs ${launchy_common_moc_hdrs} ${launchy_common_ext
 
 add_library(common STATIC ${launchy_common_srcs} ${launchy_common_hdrs} ${launchy_common_extras} ${launchy_common_mocs} ${launchy_common_mochdrs} ${launchy_common_extra_mochdrs})
 qt5_use_modules(common Core Widgets ${launchy_common_mods})
+target_compile_features(common PRIVATE cxx_range_for)
 

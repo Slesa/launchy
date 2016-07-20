@@ -116,7 +116,7 @@ endif()
 
 #set(CPACK_COMPONENTS_ALL ${PROGRAMS})
 
-include(CPACK)
+include(CPack)
 
 # http://yanivresearch.info/software/CPackWindowsTutorial/CPackForWindows.html
 # https://schneide.wordpress.com/2013/02/11/build-a-rpm-package-using-cmake/

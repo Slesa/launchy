@@ -86,5 +86,3 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins DESTINATION ${PROJECT_BINARY_D
 
 target_link_libraries(launchy common libqxt)
 install(TARGETS launchy DESTINATION bin)
-include(CPACK)
-
