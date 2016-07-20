@@ -87,7 +87,8 @@ set(CPACK_BUNDLE_ICON, "${CMAKE_CURRENT_SOURCE_DIR}/Launchy.ico")
 if(__WIN__)
     # There is a bug in NSI that does not handle full unix paths properly. Make
     # sure there is at least one set of four (4) backlasshes.
-    set(CPACK_PACKAGE_ICON "${CMake_SOURCE_DIR}/Utilities/Release\\\\InstallIcon.bmp")
+    set(CPACK_PACKAGE_ICON, "${CMAKE_CURRENT_SOURCE_DIR}/Launchy.ico")
+#    set(CPACK_PACKAGE_ICON "${CMake_SOURCE_DIR}/Utilities/Release\\\\InstallIcon.bmp")
     set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\MyExecutable.exe")
     set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY} My Famous Project")
     set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\www.my-project-home-page.org")
