@@ -84,5 +84,18 @@ if(EXISTS ${PROJECT_BINARY_DIR}/launchy_fr.qm)
 endif()
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins DESTINATION ${PROJECT_BINARY_DIR}/../${RES_INSTALL_DIR})
 
+get_target_property(QtCore_location Qt5::Core LOCATION)
+get_target_property(QtGui_location Qt5::Gui LOCATION)
+get_target_property(QtWidgets_location Qt5::Widgets LOCATION)
+get_target_property(QtNetwork_location Qt5::Network LOCATION)
+
 target_link_libraries(launchy common libqxt)
-install(TARGETS launchy DESTINATION bin)
+install(TARGETS launchy RUNTIME DESTINATION bin)
+install(FILES 
+	${QtCore_location}
+	${QtGui_location}
+	${QtWidgets_location}
+	${QtNetwork_location}
+	DESTINATION bin)
+install(FILES ${launchy_qms} DESTINATION tr)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins DESTINATION skins)

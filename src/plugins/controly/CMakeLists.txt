@@ -57,3 +57,6 @@ QT5_ADD_TRANSLATION(launchy_controly_qms ${launchy_controly_trans})
 add_library(controly SHARED ${launchy_controly_srcs} ${launchy_controly_hdrs} ${launchy_controly_form} ${launchy_controly_qms})
 #target_link_libraries(controly common)
 qt5_use_modules(controly Core Gui Widgets Network ${launchy_controly_mods})
+
+install(TARGETS controly DESTINATION plugins)
+install(FILES ${launchy_controly_qms} DESTINATION tr)

@@ -44,3 +44,6 @@ qt5_use_modules(verby Core Gui Widgets)
 if(EXISTS "${PROJECT_BINARY_DIR}/verby_fr.qm")
     file(COPY ${launchy_verby_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
 endif()
+
+install(TARGETS verby DESTINATION plugins)
+install(FILES ${launchy_verby_qms} DESTINATION tr)

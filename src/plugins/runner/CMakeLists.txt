@@ -50,3 +50,6 @@ qt5_use_modules(runner Core Gui Widgets)
 if(EXISTS "${PROJECT_BINARY_DIR}/runner_fr.qm")
     file(COPY ${launchy_runner_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
 endif()
+
+install(TARGETS runner DESTINATION plugins)
+install(FILES ${launchy_runner_qms} DESTINATION tr)

@@ -49,3 +49,6 @@ qt5_use_modules(weby Core Gui Widgets Network)
 if(EXISTS "${PROJECT_BINARY_DIR}/weby_fr.qm")
     file(COPY ${launchy_weby_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
 endif()
+
+install(TARGETS weby DESTINATION plugins)
+install(FILES ${launchy_weby_qms} DESTINATION tr)

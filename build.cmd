@@ -5,7 +5,7 @@ call "c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" amd6
 cd src
 mkdir build
 cd build
-cmake -G "NMake Makefiles" ..
+cmake -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release ..
 if errorlevel 1 goto ERROR
 
 nmake
