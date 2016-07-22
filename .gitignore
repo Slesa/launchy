@@ -17,3 +17,5 @@ translations/*.qm
 setup/win/setup.nsi
 src/common/version.h
 src/build
+src/version.h
+src/win/launchy.rc

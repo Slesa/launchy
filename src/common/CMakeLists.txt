@@ -1,7 +1,9 @@
-cmake_minimum_required (VERSION 2.8.12)
+cmake_minimum_required (VERSION 3.5.1)
 project (common)
 
+set (Launchy_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set (Launchy_VERSION_MAJOR 3)
+set (Launchy_VERSION_MINOR ${PROJECT_VERSION_MINOR})
 set (Launchy_VERSION_MINOR 0)
 set (CMAKE_AUTOMOC OFF)
 
@@ -22,21 +24,25 @@ if(__LIN__)
 	set(launchy_common_mods
 		X11Extras
 	)
+	get_target_property(QtExtras_location Qt5::X11Extras LOCATION)
 elseif(__BSD__)
 	find_package(Qt5 COMPONENTS X11Extras)
 	set(launchy_common_mods
 		X11Extras
 	)
+	get_target_property(QtExtras_location Qt5::X11Extras LOCATION)
 elseif(__WIN__)
 	find_package(Qt5 COMPONENTS winextras)
 	set(launchy_common_mods
 		WinExtras
 	)
+	get_target_property(QtExtras_location Qt5::WinExtras LOCATION)
 elseif(__MAC__)
 	find_package(Qt5 COMPONENTS macextras)
 	set(launchy_common_mods
 		MacExtras
 	)
+	get_target_property(QtExtras_location Qt5::MacExtras LOCATION)
 endif()
 
 set(launchy_common_moc_hdrs
@@ -126,3 +132,6 @@ add_library(common STATIC ${launchy_common_srcs} ${launchy_common_hdrs} ${launch
 qt5_use_modules(common Core Widgets ${launchy_common_mods})
 target_compile_features(common PRIVATE cxx_range_for)
 
+install(FILES 
+	${QtExtras_location}
+	DESTINATION .)

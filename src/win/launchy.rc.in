@@ -1,8 +1,8 @@
 IDI_ICON1               ICON    DISCARDABLE     "launchy.ico"
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,9,9,1
- PRODUCTVERSION 1,9,9,1
+ FILEVERSION @PROJECT_VERSION_MAJOR@,@PROJECT_VERSION_MINOR@,@PROJECT_VERSION_PATCH@,1
+ PRODUCTVERSION @PROJECT_VERSION_MAJOR@,@PROJECT_VERSION_MINOR@,@PROJECT_VERSION_PATCH@,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -19,12 +19,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Code Jelly"
             VALUE "FileDescription", "Launchy"
-            VALUE "FileVersion", "1.0.0"
+            VALUE "FileVersion", "@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@"
             VALUE "InternalName", "Launchy.exe"
             VALUE "LegalCopyright", "This is GNU Software copyright Josh Karlin"
             VALUE "OriginalFilename", "Launchy.exe"
             VALUE "ProductName", "Launchy"
-            VALUE "ProductVersion", "2.0"
+            VALUE "ProductVersion", "@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@"
         END
     END
     BLOCK "VarFileInfo"

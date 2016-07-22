@@ -1,7 +1,22 @@
-cmake_minimum_required (VERSION 2.8.12)
+cmake_minimum_required (VERSION 3.5.1)
 project (LaunchyApp)
 
 # // http://www.executionunit.com/blog/2014/01/22/moving-from-qmake-to-cmake/
+
+set(PROJECT_VERSION_MAJOR 3)
+set(PROJECT_VERSION_MINOR 0)
+set(PROJECT_VERSION_PATCH 0)
+
+set (Launchy_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set (Launchy_VERSION_MAJOR 3)
+set (Launchy_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set (Launchy_VERSION_MINOR 0)
+set (CMAKE_AUTOMOC OFF)
+
+configure_file (
+	"${PROJECT_SOURCE_DIR}/win/launchy.rc.in"
+	"${PROJECT_SOURCE_DIR}/win/launchy.rc"
+	)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	set (CMAKE_PREFIX_PATH $ENV{QTDIR})
@@ -34,16 +49,11 @@ if(__MAC__)
 
 	#set(CMAKE_FIND_FRAMEWORK ONLY)
 	find_library(CARBON_FRAMEWORK Carbon)
-else()
+elseif(__LIN__)
 	set(BIN_INSTALL_DIR "bin")
     set(RES_INSTALL_DIR "bin/Resources")
 endif()
 	
-
-#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${BIN_INSTALL_DIR})
-#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${LIB_INSTALL_DIR})
-#set(BIN_PLUGINS_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/plugins")
-
 
 if(__LIN__)
 	add_definitions(-DPREFIX="/usr")
@@ -76,7 +86,7 @@ add_subdirectory(launchy.specs)
 
 set(CPACK_PACKAGE_NAME, "Launchy")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Launchy application starter")
-set(CPACK_PACKAGE_VENDOR "joerg.preiss@slesa.de")
+set(CPACK_PACKAGE_VENDOR "Code Jelly")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../Readme.pdf")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE.txt")
 set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
@@ -91,7 +101,7 @@ if(__WIN__)
     set(CPACK_PACKAGE_FILE_NAME, "Launchy-Setup-${PROJECT_VERSION}")
     set(CPACK_PACKAGE_ICON, "${CMAKE_CURRENT_SOURCE_DIR}/Launchy.ico")
 #    set(CPACK_PACKAGE_ICON "${CMake_SOURCE_DIR}/Utilities/Release\\\\InstallIcon.bmp")
-    set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\launchy.exe")
+    set(CPACK_NSIS_INSTALLED_ICON_NAME "launchy.exe")
     set(CPACK_NSIS_DISPLAY_NAME "Launchy")
     set(CPACK_NSIS_HELP_LINK "http:\\\\\\\\www.launchy.net")
     set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\www.launchy.net\\\\about.php")
@@ -111,11 +121,7 @@ elseif(__BSD__)
     set(CPACK_STRIP_FILES "bin/Launchy")
     set(CPACK_SOURCE_STRIP_FILES "")
 endif()
-#set(CPACK_PACKAGE_EXECUTABLES "MyExecutable" "My Executable")
-
-
-#install(PROGRAMS launchy/launchy ${CMAKE_CURRENT_BINARY_DIR}/launchy/launchy
-#  DESTINATION bin)
+set(CPACK_PACKAGE_EXECUTABLES launchy "Launchy")
 
 #set(CPACK_COMPONENTS_ALL ${PROGRAMS})
 

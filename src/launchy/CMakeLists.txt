@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8.12)
+cmake_minimum_required (VERSION 3.5.1)
 project (launchy)
 
 find_package(Qt5Core)
@@ -48,6 +48,7 @@ if(__WIN__)
 	set(launchy_win_srcs
 		win_launchywidget.cpp
 		win_launchywidget.h
+		../../win/launchy.rc
 	)
     find_package(Qt5 COMPONENTS winextras)
     set(launchy_mods
@@ -57,6 +58,7 @@ endif()
 
 QT5_WRAP_UI(launchy_form_hdr options.ui)
 QT5_ADD_TRANSLATION(launchy_qms ${launchy_trans})
+QT5_ADD_RESOURCES(launchy_qrcs launchy.qrc)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/common)
@@ -66,7 +68,7 @@ include_directories(${CMAKE_SOURCE_DIR}/libqxt)
     include_directories(${X11_INCLUDE_DIR})
 #endif(__LIN__)
 
-add_executable(launchy ${launchy_srcs} ${launchy_form_hdr} ${launchy_common_hdrs} ${launchy_hdr_moc} ${launchy_qms} ${launchy_win_srcs})
+add_executable(launchy ${launchy_srcs} ${launchy_form_hdr} ${launchy_common_hdrs} ${launchy_hdr_moc} ${launchy_qms} ${launchy_win_srcs} ${launchy_qrcs})
 
 qt5_use_modules(launchy Core Gui Widgets Network ${launchy_mods})
 
@@ -89,13 +91,20 @@ get_target_property(QtGui_location Qt5::Gui LOCATION)
 get_target_property(QtWidgets_location Qt5::Widgets LOCATION)
 get_target_property(QtNetwork_location Qt5::Network LOCATION)
 
-target_link_libraries(launchy common libqxt)
-install(TARGETS launchy RUNTIME DESTINATION bin)
+target_link_libraries(launchy common libqxt ${Qt5Core_QTMAIN_LIBRARIES})
+
+if(__WIN__)
+    set_target_properties(launchy PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:WINDOWS")
+    set_target_properties(launchy PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
+endif(__WIN__)
+
+
+install(TARGETS launchy RUNTIME DESTINATION .)
 install(FILES 
 	${QtCore_location}
 	${QtGui_location}
 	${QtWidgets_location}
 	${QtNetwork_location}
-	DESTINATION bin)
+	DESTINATION .)
 install(FILES ${launchy_qms} DESTINATION tr)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins DESTINATION skins)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins/ DESTINATION skins)
