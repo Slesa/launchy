@@ -1,16 +1,8 @@
 cmake_minimum_required (VERSION 3.5.1)
 project (common)
 
-set (Launchy_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
-set (Launchy_VERSION_MAJOR 3)
-set (Launchy_VERSION_MINOR ${PROJECT_VERSION_MINOR})
-set (Launchy_VERSION_MINOR 0)
 set (CMAKE_AUTOMOC OFF)
 
-configure_file (
-	"${PROJECT_SOURCE_DIR}/version.h.in"
-	"${PROJECT_SOURCE_DIR}/version.h"
-	)
 
 find_package(Qt5Core)
 find_package(Qt5Widgets)

@@ -7,15 +7,15 @@ set(PROJECT_VERSION_MAJOR 3)
 set(PROJECT_VERSION_MINOR 0)
 set(PROJECT_VERSION_PATCH 0)
 
-set (Launchy_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
-set (Launchy_VERSION_MAJOR 3)
-set (Launchy_VERSION_MINOR ${PROJECT_VERSION_MINOR})
-set (Launchy_VERSION_MINOR 0)
 set (CMAKE_AUTOMOC OFF)
 
 configure_file (
 	"${PROJECT_SOURCE_DIR}/win/launchy.rc.in"
 	"${PROJECT_SOURCE_DIR}/win/launchy.rc"
+	)
+configure_file (
+	"${PROJECT_SOURCE_DIR}/common/version.h.in"
+	"${PROJECT_SOURCE_DIR}/common/version.h"
 	)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -107,6 +107,7 @@ if(__WIN__)
     set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\www.launchy.net\\\\about.php")
     set(CPACK_NSIS_CONTACT "joerg.preiss@slesa.de")
     set(CPACK_NSIS_MODIFY_PATH OFF)
+    set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 elseif(__MAC__)
     set(CPACK_GENERATOR "Bundle")
     set(CPACK_PACKAGE_VERSION, "1.0")
@@ -118,7 +119,7 @@ elseif(__LIN__)
     set(CPACK_GENERATOR "DEB")
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "David Doria") #required 
 elseif(__BSD__)
-    set(CPACK_STRIP_FILES "bin/Launchy")
+    #set(CPACK_STRIP_FILES "bin/Launchy")
     set(CPACK_SOURCE_STRIP_FILES "")
 endif()
 set(CPACK_PACKAGE_EXECUTABLES launchy "Launchy")
