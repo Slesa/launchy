@@ -33,6 +33,9 @@ set(launchy_runner_hdrs
     ../../common/DropTableWidget.h
     ../../launchy/plugin_interface.h
    )
+set(runnery_pngs
+   runner.png)
+
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/common)
@@ -43,7 +46,7 @@ QT5_ADD_TRANSLATION(launchy_runner_qms ${launchy_runner_trans})
 
 add_library(runner SHARED ${launchy_runner_srcs} ${launchy_runner_hdrs} ${launchy_runner_form} ${launchy_runner_qms})
 set_target_properties(runner PROPERTIES 
-    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/plugins
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/fplugins
     RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/plugins
     )
 qt5_use_modules(runner Core Gui Widgets)
@@ -51,5 +54,8 @@ if(EXISTS "${PROJECT_BINARY_DIR}/runner_fr.qm")
     file(COPY ${launchy_runner_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
 endif()
 
-install(TARGETS runner DESTINATION plugins)
-install(FILES ${launchy_runner_qms} DESTINATION tr)
+install(TARGETS runner DESTINATION ${PREFIX_PLUGINS}/plugins COMPONENT PKG_PLUGINS)
+install(FILES ${runner_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT PKG_PLUGINS)
+if(__WIN__ OR __MAC__)
+    install(FILES ${launchy_runner_qms} DESTINATION ${TR_OUT_PATH}/tr COMPONENT PKG_PLUGINS)
+endif()

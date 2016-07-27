@@ -124,6 +124,7 @@ add_library(common STATIC ${launchy_common_srcs} ${launchy_common_hdrs} ${launch
 qt5_use_modules(common Core Widgets ${launchy_common_mods})
 target_compile_features(common PRIVATE cxx_range_for)
 
-install(FILES 
-	${QtExtras_location}
-	DESTINATION .)
+if(__WIN__ OR __MAC__)
+	install(FILES ${QtExtras_location} DESTINATION . COMPONENT PKG_MAIN)
+endif()
+

@@ -32,6 +32,8 @@ globals.h
     ../../launchy/plugin_interface.h
     ../../common/DropTableWidget.h
    )
+set(weby_pngs
+   weby.png)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/common)
@@ -50,5 +52,8 @@ if(EXISTS "${PROJECT_BINARY_DIR}/weby_fr.qm")
     file(COPY ${launchy_weby_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
 endif()
 
-install(TARGETS weby DESTINATION plugins)
-install(FILES ${launchy_weby_qms} DESTINATION tr)
+install(TARGETS weby DESTINATION ${PREFIX_PLUGINS}/plugins COMPONENT PKG_PLUGINS)
+install(FILES ${weby_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT PKG_PLUGINS)
+if(__WIN__ OR __MAC__)
+    install(FILES ${launchy_weby_qms} DESTINATION tr COMPONENT PKG_PLUGINS)
+endif()

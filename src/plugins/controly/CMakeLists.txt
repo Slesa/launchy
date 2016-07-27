@@ -40,6 +40,12 @@ globals.h
     ../../launchy/plugin_interface.h
     ../../common/DropTableWidget.h
    )
+set(controly_pngs
+   controly.png
+   launchy.exit.png
+   launchy.options.png
+   launchy.rebuild.png)
+
 if(__WIN__)
     find_package(Qt5 COMPONENTS winextras)
     set(launchy_controly_mods
@@ -58,5 +64,7 @@ add_library(controly SHARED ${launchy_controly_srcs} ${launchy_controly_hdrs} ${
 #target_link_libraries(controly common)
 qt5_use_modules(controly Core Gui Widgets Network ${launchy_controly_mods})
 
-install(TARGETS controly DESTINATION plugins)
-install(FILES ${launchy_controly_qms} DESTINATION tr)
+install(TARGETS controly DESTINATION ${PREFIX_PLUGINS}/plugins install(FILES ${controly_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT PKG_PLUGINS)
+if(__WIN__ OR __MAC__)
+    install(FILES ${launchy_controly_qms} DESTINATION tr COMPONENT PKG_PLUGINS)
+endif()

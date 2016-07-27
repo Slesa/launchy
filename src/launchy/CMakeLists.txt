@@ -99,12 +99,14 @@ if(__WIN__)
 endif(__WIN__)
 
 
-install(TARGETS launchy RUNTIME DESTINATION .)
-install(FILES 
-	${QtCore_location}
-	${QtGui_location}
-	${QtWidgets_location}
-	${QtNetwork_location}
-	DESTINATION .)
-install(FILES ${launchy_qms} DESTINATION tr)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins/ DESTINATION skins)
+install(TARGETS launchy RUNTIME DESTINATION ${PREFIX_BIN} COMPONENT PKG_MAIN)
+if(__WIN__ OR __MAC__)
+	install(FILES 
+		${QtCore_location}
+		${QtGui_location}
+		${QtWidgets_location}
+		${QtNetwork_location}
+		DESTINATION .)
+	install(FILES ${launchy_qms} DESTINATION tr COMPONENT PKG_MAIN)
+endif()
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins/ DESTINATION ${PREFIX_SKINS}/skins COMPONENT PKG_SKINS)

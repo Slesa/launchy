@@ -27,6 +27,13 @@ set(launchy_verby_hdrs
 	Verby.h
 	../../launchy/plugin_interface.h
 	)
+set(verby_pngs
+   copy.png
+   opencontainer.png
+   properties.png
+   run.png
+   verby.png)
+
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/common)
@@ -45,5 +52,8 @@ if(EXISTS "${PROJECT_BINARY_DIR}/verby_fr.qm")
     file(COPY ${launchy_verby_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
 endif()
 
-install(TARGETS verby DESTINATION plugins)
-install(FILES ${launchy_verby_qms} DESTINATION tr)
+install(TARGETS verby DESTINATION ${PREFIX_PLUGINS}/plugins COMPONENT PKG_PLUGINS)
+install(FILES ${verby_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT PKG_PLUGINS)
+if(__WIN__ OR __MAC__)
+    install(FILES ${launchy_verby_qms} DESTINATION tr COMPONENT PKG_PLUGINS)
+endif()
