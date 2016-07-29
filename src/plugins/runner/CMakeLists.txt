@@ -54,8 +54,10 @@ if(EXISTS "${PROJECT_BINARY_DIR}/runner_fr.qm")
     file(COPY ${launchy_runner_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
 endif()
 
-install(TARGETS runner DESTINATION ${PREFIX_PLUGINS}/plugins COMPONENT PKG_PLUGINS)
-install(FILES ${runner_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT PKG_PLUGINS)
+
+# *** Installation ***
+install(TARGETS runner DESTINATION ${PREFIX_PLUGINS}/plugins COMPONENT plugins)
+install(FILES ${runner_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT plugins)
 if(__WIN__ OR __MAC__)
-    install(FILES ${launchy_runner_qms} DESTINATION ${TR_OUT_PATH}/tr COMPONENT PKG_PLUGINS)
+    install(FILES ${launchy_runner_qms} DESTINATION ${TR_OUT_PATH}/tr COMPONENT plugins)
 endif()

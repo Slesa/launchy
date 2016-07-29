@@ -52,8 +52,10 @@ if(EXISTS "${PROJECT_BINARY_DIR}/verby_fr.qm")
     file(COPY ${launchy_verby_qms} DESTINATION ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/tr)
 endif()
 
-install(TARGETS verby DESTINATION ${PREFIX_PLUGINS}/plugins COMPONENT PKG_PLUGINS)
-install(FILES ${verby_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT PKG_PLUGINS)
+
+# *** Installation ***
+install(TARGETS verby DESTINATION ${PREFIX_PLUGINS}/plugins COMPONENT plugins)
+install(FILES ${verby_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT plugins)
 if(__WIN__ OR __MAC__)
-    install(FILES ${launchy_verby_qms} DESTINATION tr COMPONENT PKG_PLUGINS)
+    install(FILES ${launchy_verby_qms} DESTINATION tr COMPONENT plugins)
 endif()

@@ -64,7 +64,10 @@ add_library(controly SHARED ${launchy_controly_srcs} ${launchy_controly_hdrs} ${
 #target_link_libraries(controly common)
 qt5_use_modules(controly Core Gui Widgets Network ${launchy_controly_mods})
 
-install(TARGETS controly DESTINATION ${PREFIX_PLUGINS}/plugins install(FILES ${controly_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT PKG_PLUGINS)
+
+# *** Installation ***
+install(TARGETS controly DESTINATION ${PREFIX_PLUGINS}/plugins install(FILES ${controly_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT plugins)
+install(FILES ${controly_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT plugins)
 if(__WIN__ OR __MAC__)
-    install(FILES ${launchy_controly_qms} DESTINATION tr COMPONENT PKG_PLUGINS)
+    install(FILES ${launchy_controly_qms} DESTINATION tr COMPONENT plugins)
 endif()

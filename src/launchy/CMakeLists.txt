@@ -98,8 +98,14 @@ if(__WIN__)
     set_target_properties(launchy PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
 endif(__WIN__)
 
+add_custom_target(readme_gz ALL COMMAND
+    ${CMAKE_COMMAND} -E tar "cfvz" "Readme.pdf.gz" ${CMAKE_CURRENT_SOURCE_DIR}/../../Readme.pdf)
+# add_dependencies(readme_gz "${CMAKE_CURRENT_SOURCE_DIR}/../../Readme.pdf")
+# add_dependencies(launchy readme_gz)
 
-install(TARGETS launchy RUNTIME DESTINATION ${PREFIX_BIN} COMPONENT PKG_MAIN)
+
+# *** Installation ***
+install(TARGETS launchy RUNTIME DESTINATION ${PREFIX_BIN} COMPONENT launchy)
 if(__WIN__ OR __MAC__)
 	install(FILES 
 		${QtCore_location}
@@ -107,6 +113,33 @@ if(__WIN__ OR __MAC__)
 		${QtWidgets_location}
 		${QtNetwork_location}
 		DESTINATION .)
-	install(FILES ${launchy_qms} DESTINATION tr COMPONENT PKG_MAIN)
+	install(FILES ${launchy_qms} DESTINATION tr COMPONENT launchy)
 endif()
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins/ DESTINATION ${PREFIX_SKINS}/skins COMPONENT PKG_SKINS)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins/Default DESTINATION ${PREFIX_SKINS}/skins COMPONENT launchy)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins/ 
+    DESTINATION ${PREFIX_SKINS}/skins 
+    COMPONENT skins
+    PATTERN "Default" EXCLUDE
+    )
+if(__LIN__)
+    install(FILES 
+        ${CMAKE_CURRENT_SOURCE_DIR}/../linux/debian/launchy
+        DESTINATION ${PREFIX_MENU}
+        COMPONENT launchy)
+    install(FILES 
+        ${CMAKE_CURRENT_SOURCE_DIR}/../misc/icon/launchy_icon.png 
+        DESTINATION ${PREFIX_PIXMAPS}
+        COMPONENT launchy)
+    install(FILES 
+        ${CMAKE_CURRENT_SOURCE_DIR}/../linux/launchy.desktop 
+        DESTINATION ${PREFIX_DESKTOP} 
+        COMPONENT launchy)
+    install(FILES 
+        ${CMAKE_CURRENT_BINARY_DIR}/Readme.pdf.gz
+        ${CMAKE_CURRENT_SOURCE_DIR}/../linux/debian/copyright 
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../changelog
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../readme.txt
+        ${CMAKE_CURRENT_SOURCE_DIR}/../../plugin_api/api.html
+        DESTINATION ${PREFIX_DOC} 
+        COMPONENT launchy)
+endif(__LIN__)

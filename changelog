@@ -1,0 +1,4 @@
+v3.0.0
+- Use cmake as make system for all platforms
+- Introduce BSD as a platform
+- use QT5 inseatd of QT$
