@@ -37,8 +37,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
-enable_testing()
-
 if(__MAC__)
 	set(BUNDLE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 	set(BUNDLE_NAME "Launchy.app")
@@ -93,6 +91,8 @@ add_subdirectory(common)
 add_subdirectory(libqxt)
 add_subdirectory(plugins)
 add_subdirectory(launchy)
+
+enable_testing()
 add_subdirectory(launchy.specs)
 
 

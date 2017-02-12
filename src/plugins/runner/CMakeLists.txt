@@ -46,7 +46,7 @@ QT5_ADD_TRANSLATION(launchy_runner_qms ${launchy_runner_trans})
 
 add_library(runner SHARED ${launchy_runner_srcs} ${launchy_runner_hdrs} ${launchy_runner_form} ${launchy_runner_qms})
 set_target_properties(runner PROPERTIES 
-    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/fplugins
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/plugins
     RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../../${BIN_INSTALL_DIR}/plugins
     )
 qt5_use_modules(runner Core Gui Widgets)

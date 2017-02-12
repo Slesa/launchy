@@ -81,6 +81,11 @@ elseif (__MAC__)
 	target_link_libraries(launchy ${CARBON_FRAMEWORK})
 endif()
 
+set_target_properties(launchy PROPERTIES 
+    LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../${BIN_INSTALL_DIR}
+    RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/../${BIN_INSTALL_DIR}
+    )
+
 if(EXISTS ${PROJECT_BINARY_DIR}/launchy_fr.qm)
     file(COPY ${launchy_qms} DESTINATION ${PROJECT_BINARY_DIR}/../${BIN_INSTALL_DIR}/tr)
 endif()

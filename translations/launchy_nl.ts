@@ -57,53 +57,53 @@
 <context>
     <name>LaunchyWidget</name>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="112"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="110"/>
         <source>Launchy Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="118"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="116"/>
         <source>Close Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="191"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="189"/>
         <source>The hotkey %1 is already in use, please select another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="335"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="333"/>
         <source>Launchy (press %1 to activate)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="1649"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="1645"/>
         <source>Show Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="1652"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="1648"/>
         <source>Rebuild catalog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="78"/>
-        <location filename="../src/launchy/launchywidget.cpp" line="191"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="76"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="189"/>
         <source>Launchy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="1657"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="1653"/>
         <source>Reload skin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="1662"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="1658"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/launchy/launchywidget.cpp" line="1667"/>
+        <location filename="../src/launchy/launchywidget.cpp" line="1663"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>

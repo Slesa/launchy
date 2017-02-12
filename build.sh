@@ -6,7 +6,7 @@ cd src
 mkdir -p build && cd build
 cmake ..
 make
-ctest
+ctest --output-on-failure
 
 if [[ "$unamestr" == 'Darwin' ]]; then
    platform='mac'
