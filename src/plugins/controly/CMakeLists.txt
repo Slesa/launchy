@@ -18,8 +18,8 @@ set(launchy_controly_trans
     ../../../translations/controly_rus.ts   
     )
 set(launchy_controly_srcs
-	gui.cpp
-	controly.cpp
+    gui.cpp
+    controly.cpp
     ControlPanelItemFinder.cpp
     fhoicon.cpp
     fhoenv.cpp
@@ -29,7 +29,7 @@ set(launchy_controly_srcs
     ../../common/DropTableWidget.cpp
    )
 set(launchy_controly_hdrs
-globals.h
+    globals.h
 	gui.h
 	controly.h
     ControlPanelItemFinder.h
@@ -44,7 +44,8 @@ set(controly_pngs
    controly.png
    launchy.exit.png
    launchy.options.png
-   launchy.rebuild.png)
+   launchy.rebuild.png
+   )
 
 if(__WIN__)
     find_package(Qt5 COMPONENTS winextras)
@@ -66,7 +67,7 @@ qt5_use_modules(controly Core Gui Widgets Network ${launchy_controly_mods})
 
 
 # *** Installation ***
-install(TARGETS controly DESTINATION ${PREFIX_PLUGINS}/plugins install(FILES ${controly_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT plugins)
+install(TARGETS controly DESTINATION ${PREFIX_PLUGINS}/plugins)
 install(FILES ${controly_pngs} DESTINATION ${PREFIX_ICONS}/icons COMPONENT plugins)
 if(__WIN__ OR __MAC__)
     install(FILES ${launchy_controly_qms} DESTINATION tr COMPONENT plugins)

@@ -2,6 +2,7 @@
 #include "singleapplication.specs.h"
 #include <QCoreApplication>
 #include <QtTest>
+#include <QDebug>
 
 int main(int argc, char** argv) 
 {
@@ -15,5 +16,5 @@ int main(int argc, char** argv)
     SingleApplicationSpecs singleApplicationSpecs;
     success |= QTest::qExec(&singleApplicationSpecs, argc, argv)==0;
 
-    return success;
+    return success==true ? 0 : -1;
 }

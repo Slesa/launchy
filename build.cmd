@@ -1,6 +1,6 @@
 REM @echo off
 
-call "c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" amd64
+REM call "c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" amd64
 
 cd src
 mkdir build
@@ -12,7 +12,8 @@ if errorlevel 1 goto ERROR
 nmake
 if errorlevel 1 goto ERROR
 
-ctest
+
+ctest --output-on-failure
 if errorlevel 1 goto ERROR
 
 cpack
