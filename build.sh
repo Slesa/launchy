@@ -9,19 +9,19 @@ make
 ctest -V --output-on-failure
 
 if [[ "$unamestr" == 'Darwin' ]]; then
-   platform='mac'
+	platform='mac'
 elif [[ "$unamestr" == 'Linux' ]]; then
-   platform='lin'
+	platform='lin'
 elif [[ "$unamestr" == 'FreeBSD' ]]; then
-   platform='bsd'
+	platform='bsd'
 fi
 
-cd ../../setup
-if [[ $platform == 'lin' ]]; then
+#if [[ $platform == 'lin' ]]; then
 #   sh -x setup/linux/create-.sh
-elif [[ $platform == 'mac' ]]; then
+if [[ $platform == 'mac' ]]; then
+	cd ../../setup
 	cpack -G Bundle -C cpack.mac
-elif [[ $platform == 'bsd' ]]; then
+#elif [[ $platform == 'bsd' ]]; then
 #   sh -x setup/bsd/create-setup.sh
 fi
 cpack
