@@ -95,6 +95,16 @@ get_target_property(QtCore_location Qt5::Core LOCATION)
 get_target_property(QtGui_location Qt5::Gui LOCATION)
 get_target_property(QtWidgets_location Qt5::Widgets LOCATION)
 get_target_property(QtNetwork_location Qt5::Network LOCATION)
+if(__WIN__ OR __MAC__)
+    file(COPY ${QtCore_location} DESTINATION ${PROJECT_BINARY_DIR}/../${BIN_INSTALL_DIR})
+    file(COPY ${QtGui_location} DESTINATION ${PROJECT_BINARY_DIR}/../${BIN_INSTALL_DIR})
+    file(COPY ${QtWidgets_location} DESTINATION ${PROJECT_BINARY_DIR}/../${BIN_INSTALL_DIR})
+    file(COPY ${QtNetwork_location} DESTINATION ${PROJECT_BINARY_DIR}/../${BIN_INSTALL_DIR})
+    if(__WIN__)
+        get_target_property(QtWinExtras_location Qt5::WinExtras LOCATION)
+        file(COPY ${QtWinExtras_location} DESTINATION ${PROJECT_BINARY_DIR}/../${BIN_INSTALL_DIR})
+    endif()
+endif()
 
 target_link_libraries(launchy common libqxt ${Qt5Core_QTMAIN_LIBRARIES})
 
@@ -117,8 +127,12 @@ if(__WIN__ OR __MAC__)
 		${QtGui_location}
 		${QtWidgets_location}
 		${QtNetwork_location}
-		DESTINATION .)
-	install(FILES ${launchy_qms} DESTINATION tr COMPONENT launchy)
+		DESTINATION ${PREFIX_BIN}
+        COMPONENT launchy)
+	install(FILES ${launchy_qms} DESTINATION ${PREFIX_BIN}/tr COMPONENT launchy)
+    if(__WIN__)
+    install(FILES ${QtWinExtras_location} DESTINATION ${PREFIX_BIN} COMPONENT launchy)
+    endif()
 endif()
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins/Default DESTINATION ${PREFIX_SKINS}/skins COMPONENT launchy)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../skins/ 
