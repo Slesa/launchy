@@ -12,10 +12,11 @@ compiler:
 
 addons:
   apt:
-    sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7', 'kalakris-cmake', 'debian-sid']
-    packages: ['clang-3.7', 'cmake', 'qt5-default']
+#    sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7', 'kalakris-cmake', 'debian-sid']
+    sources: ['debian-sid']
+    packages: ['cmake', 'qt5-default']
 
-env: COMPILER=clang++-3.7
+# env: COMPILER=clang++-3.7
 
 # matrix:
 #   exclude:
