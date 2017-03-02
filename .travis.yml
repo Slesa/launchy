@@ -1,8 +1,28 @@
 language: cpp
 
+os:
+- osx
+- linux
+
 compiler:
 - gcc
 - clang
+
+addons:
+  apt:
+    sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7', 'kalakris-cmake']
+    packages: ['clang-3.7', 'cmake']
+
+env: COMPILER=clang++-3.7
+
+matrix:
+  exclude:
+    - os: osx
+      compiler: gcc
+
+notifications:
+  email: 
+    - joerg.preiss@slesa.de
 
 before_script:
 - mkdir src/build
