@@ -130,7 +130,15 @@ if(__WIN__)
     set(CPACK_NSIS_URL_INFO_ABOUT "http:\\\\\\\\www.launchy.net\\\\about.php")
     set(CPACK_NSIS_CONTACT "joerg.preiss@slesa.de")
     set(CPACK_NSIS_MODIFY_PATH OFF)
-    set(CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
+    set(CPACK_NSIS_EXECUTABLES_DIRECTORY "")
+    SET(CPACK_NSIS_CREATE_ICONS_EXTRA 
+        "
+            CreateShortcut \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\Launchy.lnk\\\" \\\"$INSTDIR\\\\launchy.exe\\\"
+        " )
+    SET(CPACK_NSIS_DELETE_ICONS_EXTRA 
+        "
+            Delete \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\Launchy.lnk\\\"
+        " )
 elseif(__MAC__)
     set(CPACK_GENERATOR "Bundle")
     set(CPACK_PACKAGE_VERSION, "1.0")
