@@ -1,3 +1,16 @@
-language: c++
-script:
-- build.sh
+language: cpp
+
+compiler:
+- gcc
+- clang
+
+before_script:
+- mkdir src/build
+- cd src/build
+- cmake ..
+
+script: make
+
+after_success:
+- ctest -V --output-on-failure 
+- cpack
