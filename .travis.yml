@@ -32,7 +32,7 @@ notifications:
 before_install:
 - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
 - sudo apt-get update -qq
-- sudo apt-get install cmake qt5-dev-tools
+- sudo apt-get install cmake qt5-default
 
 before_script:
 - mkdir src/build
