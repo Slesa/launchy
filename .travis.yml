@@ -30,6 +30,7 @@ notifications:
     - joerg.preiss@slesa.de
 
 before_install:
+- sudo add-apt-repository --yes ppa:george-edison55/precise-backports
 - sudo add-apt-repository --yes ppa:beineri/opt-qt562
 - sudo apt-get update -qq
 - sudo apt-get install cmake qt56base qt56svg qt56translations qt56x11extras
