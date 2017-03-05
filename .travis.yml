@@ -30,9 +30,9 @@ notifications:
     - joerg.preiss@slesa.de
 
 before_install:
-- sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
+- sudo add-apt-repository --yes ppa:beineri/opt-qt562
 - sudo apt-get update -qq
-- sudo apt-get install cmake qt5-default
+- sudo apt-get install cmake qt56-meta
 
 before_script:
 - mkdir src/build
