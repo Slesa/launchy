@@ -19,3 +19,5 @@ src/common/version.h
 src/build
 src/version.h
 src/win/launchy.rc
+Makefile.Debug
+Makefile.Release

@@ -19,12 +19,14 @@ fi
 #if [[ $platform == 'lin' ]]; then
 #   sh -x setup/linux/create-.sh
 if [[ $platform == 'mac' ]]; then
-	cd ../../setup
-	cpack -G Bundle -C cpack.mac
+    cpack -D CPACK_BUNDLE_NAME=Launchy -D CPACK_BUNDLE_PLIST=../mac/Info.plist -D CPACK_BUNDLE_ICON=../Launchy.ico
+	#cd ../../setup
+	#cpack -G Bundle -C cpack.mac
 #elif [[ $platform == 'bsd' ]]; then
 #   sh -x setup/bsd/create-setup.sh
+elif
+    cpack
 fi
-cpack
 
 
 #$platform='unknown'
